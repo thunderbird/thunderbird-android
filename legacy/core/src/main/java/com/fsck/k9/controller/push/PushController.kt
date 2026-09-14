@@ -1,6 +1,5 @@
 package com.fsck.k9.controller.push
 
-import app.k9mail.legacy.mailstore.FolderRepository
 import com.fsck.k9.backend.BackendManager
 import com.fsck.k9.helper.mapToSet
 import com.fsck.k9.notification.PushNotificationManager
@@ -33,6 +32,7 @@ import net.thunderbird.core.preference.BackgroundSync
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.AccountIdFactory
+import net.thunderbird.feature.mail.folder.api.data.repository.PushFolderTrackingRepository
 import net.thunderbird.legacy.logging.Log
 
 /**
@@ -50,7 +50,7 @@ class PushController internal constructor(
     private val pushNotificationManager: PushNotificationManager,
     private val connectivityManager: ConnectivityManager,
     private val accountPushControllerFactory: AccountPushControllerFactory,
-    private val folderRepository: FolderRepository,
+    private val pushFolderTrackingRepository: PushFolderTrackingRepository,
     private val coroutineScope: CoroutineScope = GlobalScope,
     private val coroutineDispatcher: CoroutineDispatcher = Executors.newSingleThreadExecutor().asCoroutineDispatcher(),
 ) {
@@ -91,7 +91,7 @@ class PushController internal constructor(
 
         coroutineScope.launch(coroutineDispatcher) {
             for (account in accountManager.getAccounts()) {
-                folderRepository.disable(account.id)
+                pushFolderTrackingRepository.disable(account.id)
             }
         }
     }
@@ -261,7 +261,7 @@ class PushController internal constructor(
         return getPushCapableAccounts()
             .asFlow()
             .filter { account ->
-                val outcome = folderRepository.isEnabled(account.id)
+                val outcome = pushFolderTrackingRepository.isEnabled(account.id)
                 outcome.fold(onSuccess = { it }, onFailure = { false })
             }
             .toSet()
@@ -330,7 +330,7 @@ class PushController internal constructor(
             for (account in newAccounts) {
                 pushEnabledCollectorJobs[account.uuid] = coroutineScope.launch(coroutineDispatcher) {
                     Log.v("..Starting to listen for push enabled changes in account: %s", account.uuid)
-                    folderRepository.observeEnabled(account.id)
+                    pushFolderTrackingRepository.observeEnabled(account.id)
                         .collect {
                             updatePushers()
                         }
