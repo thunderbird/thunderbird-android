@@ -12,6 +12,7 @@ interface FundingSettings {
 
     fun getReminderShownCount(): Int
     fun setReminderShownCount(count: Int)
+    fun incrementReminderShownCount()
 
     fun getActivityCounterInMillis(): Long
     fun setActivityCounterInMillis(activeTime: Long)

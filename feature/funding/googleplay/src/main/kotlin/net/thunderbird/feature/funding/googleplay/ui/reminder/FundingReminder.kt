@@ -68,7 +68,7 @@ constructor(
     }
 
     private fun wasReminderShown(): Boolean {
-        return settings.getReminderShownTimestamp() != 0L
+        return settings.getReminderShownTimestamp() != 0L || settings.getReminderShownCount() > 0
     }
 
     private fun shouldShowReminder(): Boolean {
@@ -77,7 +77,9 @@ constructor(
 
         return settings.getReminderShownTimestamp() == 0L &&
             settings.getReminderReferenceTimestamp() + FUNDING_REMINDER_DELAY_MILLIS <= currentTime &&
-            settings.getActivityCounterInMillis() >= FUNDING_REMINDER_MIN_ACTIVITY_MILLIS
+            settings.getActivityCounterInMillis() >= FUNDING_REMINDER_MIN_ACTIVITY_MILLIS &&
+            settings.getLastReminderShownTimestamp() == 0L &&
+            settings.getReminderShownCount() == 0
     }
 
     @Suppress("SwallowedException")
@@ -95,7 +97,10 @@ constructor(
         // We're about to show the funding reminder dialog. So mark it as being shown. This way, if there's an error,
         // we err on the side of the dialog not being shown rather than it being shown more than once.
         @OptIn(ExperimentalTime::class)
-        settings.setReminderShownTimestamp(clock.now().toEpochMilliseconds())
+        val now = clock.now().toEpochMilliseconds()
+        settings.setReminderShownTimestamp(now)
+        settings.setLastReminderShownTimestamp(now)
+        settings.incrementReminderShownCount()
 
         dialog.show(fragmentManager)
     }

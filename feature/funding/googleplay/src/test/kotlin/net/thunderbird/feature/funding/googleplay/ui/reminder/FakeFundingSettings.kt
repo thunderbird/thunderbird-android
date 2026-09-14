@@ -37,6 +37,10 @@ internal class FakeFundingSettings(
         fundingReminderCount = count
     }
 
+    override fun incrementReminderShownCount() {
+        fundingReminderCount++
+    }
+
     override fun getActivityCounterInMillis(): Long {
         return activityCounterInMillis
     }
