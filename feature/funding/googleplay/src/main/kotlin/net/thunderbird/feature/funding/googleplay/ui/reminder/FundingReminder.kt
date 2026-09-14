@@ -22,6 +22,11 @@ constructor(
     private val clock: Clock = Clock.System,
 ) : FundingReminderContract.Reminder {
 
+    /**
+     * Decide to display the reminder and do so if necessary
+     * We may choose to refactor this in the future to allow for multiple ongoing campaigns:
+     *      https://github.com/thunderbird/thunderbird-android/issues/11557
+     */
     override fun registerReminder(
         onOpenFunding: () -> Unit,
     ) {
@@ -56,7 +61,7 @@ constructor(
         }
 
         // If the reminder has already been shown, we don't need to show it again.
-        if (wasReminderShown()) {
+        if (wasReminderShown() && wasSecondReminderShown()) {
             return
         }
 
@@ -64,11 +69,22 @@ constructor(
             fragmentObserver.register(observedFragmentManager) {
                 showFundingReminderDialog(dialogFragmentManager)
             }
+        } else if (shouldShowSecondReminder()) {
+            // TODO make this point to the new dialog: #11526
+            fragmentObserver.register(observedFragmentManager) {
+                showSecondFundingReminderDialog(dialogFragmentManager)
+            }
         }
     }
 
     private fun wasReminderShown(): Boolean {
         return settings.getReminderShownTimestamp() != 0L || settings.getReminderShownCount() > 0
+    }
+
+    private fun wasSecondReminderShown(): Boolean {
+        return settings.getReminderShownTimestamp() != 0L &&
+            settings.getLastReminderShownTimestamp() > settings.getReminderShownTimestamp() &&
+            settings.getReminderShownCount() >= 2
     }
 
     private fun shouldShowReminder(): Boolean {
@@ -80,6 +96,20 @@ constructor(
             settings.getActivityCounterInMillis() >= FUNDING_REMINDER_MIN_ACTIVITY_MILLIS &&
             settings.getLastReminderShownTimestamp() == 0L &&
             settings.getReminderShownCount() == 0
+    }
+
+    /**
+     * The second reminder should display after 30 minutes of activity since the first reminder was shown
+     * It should only display if the current reminder has already displayed and has not been displayed already
+     */
+    private fun shouldShowSecondReminder(): Boolean {
+        @OptIn(ExperimentalTime::class)
+        val lastReminderShownTime = settings.getLastReminderShownTimestamp()
+
+        return settings.getReminderShownTimestamp() > 0L &&
+            settings.getActivityCounterInMillis() >= lastReminderShownTime + FUNDING_REMINDER_MIN_ACTIVITY_MILLIS &&
+            settings.getReminderShownCount() > 0 &&
+            settings.getReminderShownCount() < 2
     }
 
     @Suppress("SwallowedException")
@@ -99,6 +129,15 @@ constructor(
         @OptIn(ExperimentalTime::class)
         val now = clock.now().toEpochMilliseconds()
         settings.setReminderShownTimestamp(now)
+        settings.setLastReminderShownTimestamp(now)
+        settings.incrementReminderShownCount()
+
+        dialog.show(fragmentManager)
+    }
+
+    private fun showSecondFundingReminderDialog(fragmentManager: FragmentManager) {
+        @OptIn(ExperimentalTime::class)
+        val now = clock.now().toEpochMilliseconds()
         settings.setLastReminderShownTimestamp(now)
         settings.incrementReminderShownCount()
 
