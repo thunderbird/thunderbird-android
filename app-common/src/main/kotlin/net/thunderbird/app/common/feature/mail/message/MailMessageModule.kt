@@ -5,6 +5,7 @@ import com.fsck.k9.mail.Message
 import com.fsck.k9.mail.Part
 import com.fsck.k9.mailstore.DefaultAttachmentViewInfoMapper
 import com.fsck.k9.ui.helper.SizeFormatter
+import net.thunderbird.app.common.feature.mail.message.data.repository.DefaultMessageQueryRepository
 import net.thunderbird.app.common.feature.mail.message.list.LegacyUpdateSortCriteria
 import net.thunderbird.app.common.feature.mail.message.mapper.AttachmentResolver
 import net.thunderbird.app.common.feature.mail.message.mapper.DefaultMessageDataMapper
@@ -17,6 +18,7 @@ import net.thunderbird.feature.mail.message.LegacyMessageIdFactory
 import net.thunderbird.feature.mail.message.LegacyThreadIdFactory
 import net.thunderbird.feature.mail.message.MessageId
 import net.thunderbird.feature.mail.message.ThreadId
+import net.thunderbird.feature.mail.message.domain.MessageQueryRepository
 import net.thunderbird.feature.mail.message.export.DefaultMessageFileNameSuggester
 import net.thunderbird.feature.mail.message.export.MessageExporter
 import net.thunderbird.feature.mail.message.export.MessageFileNameSuggester
@@ -73,6 +75,16 @@ internal val mailMessageModule = module {
             folderIdLegacyEntityIdFactory = get<LegacyEntityIdFactory<FolderId>>(named(ByteRepresentation.FOLDERS)),
             attachmentResolver = get(),
             context = get(),
+        )
+    }
+
+    single<MessageQueryRepository> {
+        DefaultMessageQueryRepository(
+            logger = get(),
+            accountManager = get(),
+            localStoreProvider = get(),
+            messageIdLegacyEntityIdFactory = get<LegacyEntityIdFactory<MessageId>>(named(ByteRepresentation.MESSAGE)),
+            folderIdLegacyEntityIdFactory = get<LegacyEntityIdFactory<FolderId>>(named(ByteRepresentation.FOLDERS)),
         )
     }
 }
