@@ -12,18 +12,24 @@ import assertk.assertions.isFalse
 import assertk.assertions.isInstanceOf
 import assertk.assertions.isTrue
 import assertk.assertions.prop
+import com.eygraber.uri.Uri
 import com.fsck.k9.K9RobolectricTest
 import com.fsck.k9.Preferences
 import java.util.UUID
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
+import net.thunderbird.feature.account.avatar.AvatarImageRepository
+import net.thunderbird.feature.account.storage.profile.AvatarTypeDto
 import org.junit.Before
 import org.junit.Test
+import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.never
 import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
+import org.mockito.kotlin.whenever
+import org.mockito.kotlin.wheneverBlocking
 
 class SettingsImporterTest : K9RobolectricTest() {
     private val unifiedInboxConfigurator = mock<UnifiedInboxConfigurator>()
@@ -338,5 +344,59 @@ class SettingsImporterTest : K9RobolectricTest() {
         assertFailure {
             settingsImporter.getImportStreamContents(inputStream)
         }.isInstanceOf<SettingsImportExportException>()
+    }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun `importSettings() should import avatar image`() = runTest(UnconfinedTestDispatcher()) {
+        val tinyAvatar =
+            "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=="
+        val newAvatarUri = Uri.parse("file:///data/account_avatars/imported.png")
+        val avatarImageRepository = get<AvatarImageRepository>()
+        whenever { avatarImageRepository.update(any(), any()) }.thenReturn(newAvatarUri)
+
+        val accountUuid = UUID.randomUUID().toString()
+        val inputStream =
+            """
+            <k9settings format="1" version="${Settings.VERSION}">
+              <accounts>
+                <account uuid="$accountUuid">
+                  <name>Account</name>
+                  <incoming-server type="IMAP">
+                    <connection-security>SSL_TLS_REQUIRED</connection-security>
+                    <username>user@gmail.com</username>
+                    <authentication-type>PLAIN</authentication-type>
+                    <host>imap.gmail.com</host>
+                  </incoming-server>
+                  <outgoing-server type="SMTP">
+                    <connection-security>SSL_TLS_REQUIRED</connection-security>
+                    <username>user@gmail.com</username>
+                    <authentication-type>PLAIN</authentication-type>
+                    <host>smtp.gmail.com</host>
+                  </outgoing-server>
+                  <settings>
+                    <value key="avatarType">IMAGE</value>
+                  </settings>
+                  <identities>
+                    <identity>
+                      <email>user@gmail.com</email>
+                    </identity>
+                  </identities>
+                  <avatar-image>$tinyAvatar</avatar-image>
+                </account>
+              </accounts>
+            </k9settings>
+            """.trimIndent().byteInputStream()
+
+        val results = settingsImporter.importSettings(inputStream, globalSettings = false, listOf(accountUuid))
+
+        assertThat(results.erroneousAccounts).isEmpty()
+        assertThat(results.importedAccounts).hasSize(1)
+
+        val importedUuid = results.importedAccounts.first().imported.uuid
+        val account = Preferences.getPreferences().getAccount(importedUuid)!!
+
+        assertThat(account.avatar.avatarType).isEqualTo(AvatarTypeDto.IMAGE)
+        assertThat(account.avatar.avatarImageUri).isEqualTo(newAvatarUri.toString())
     }
 }

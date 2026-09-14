@@ -18,8 +18,11 @@ import net.thunderbird.feature.account.storage.legacy.LegacyAccountStorageHandle
 import net.thunderbird.feature.account.storage.legacy.LegacyAccountStorageHandler.Companion.IDENTITY_DESCRIPTION_KEY
 import net.thunderbird.feature.account.storage.legacy.LegacyAccountStorageHandler.Companion.IDENTITY_EMAIL_KEY
 import net.thunderbird.feature.account.storage.legacy.LegacyAccountStorageHandler.Companion.IDENTITY_NAME_KEY
+import net.thunderbird.feature.account.storage.profile.AvatarTypeDto
 import net.thunderbird.legacy.logging.Log
 import org.xmlpull.v1.XmlSerializer
+import androidx.core.net.toUri
+import android.util.Base64
 
 class SettingsExporter(
     private val contentResolver: ContentResolver,
@@ -245,6 +248,7 @@ class SettingsExporter(
         writeFolderNameSettings(account, folderRepository, serializer)
 
         serializer.endTag(null, SETTINGS_ELEMENT)
+        writeAvatarImage(account,serializer)
 
         if (identities.isNotEmpty()) {
             serializer.startTag(null, IDENTITIES_ELEMENT)
@@ -297,6 +301,23 @@ class SettingsExporter(
         }
     }
 
+    private fun writeAvatarImage(
+        account: LegacyAccountDto,
+        serializer: XmlSerializer
+    ){
+        val avatar = account.avatar
+        val uriString = avatar.avatarImageUri
+        require(avatar.avatarType == AvatarTypeDto.IMAGE && uriString != null){ return }
+
+        val uri = uriString.toUri()
+        val bytes: ByteArray? = contentResolver.openInputStream(uri)?.use { input ->
+            input.readBytes()
+        }
+        val encoded = Base64.encodeToString(bytes, Base64.NO_WRAP)
+        serializer.startTag(null, AVATAR_IMAGE_ELEMENT)
+        serializer.text(encoded)
+        serializer.endTag(null, AVATAR_IMAGE_ELEMENT)
+    }
     private fun writeFolderNameSettings(
         account: LegacyAccountDto,
         folderRepository: FolderRepository,
@@ -536,6 +557,8 @@ class SettingsExporter(
         const val NAME_ELEMENT = "name"
         const val EMAIL_ELEMENT = "email"
         const val DESCRIPTION_ELEMENT = "description"
+
+        const val AVATAR_IMAGE_ELEMENT = "avatar-image"
 
         private val FOLDER_NAME_KEYS = setOf(
             "autoExpandFolderName",
