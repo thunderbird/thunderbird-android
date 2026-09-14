@@ -29,9 +29,6 @@ import net.thunderbird.core.android.testing.RobolectricTest
 import net.thunderbird.core.common.mail.Flag
 import net.thunderbird.core.logging.testing.TestLogger
 import net.thunderbird.feature.account.AccountIdFactory
-import net.thunderbird.feature.mail.folder.LegacyFolderIdFactory
-import net.thunderbird.feature.mail.message.LegacyMessageIdFactory
-import net.thunderbird.feature.mail.message.LegacyThreadIdFactory
 import net.thunderbird.feature.mail.message.Message
 import net.thunderbird.feature.mail.message.MessageAddress
 import net.thunderbird.feature.mail.message.MessageAttachment
@@ -55,9 +52,6 @@ class DefaultMessageDataMapperTest : RobolectricTest() {
     private val context = RuntimeEnvironment.getApplication()
     private val testSubject: MessageDataMapper<LegacyMessage> = DefaultMessageDataMapper(
         logger = testLogger,
-        messageIdLegacyEntityIdFactory = LegacyMessageIdFactory,
-        threadIdLegacyEntityIdFactory = LegacyThreadIdFactory,
-        folderIdLegacyEntityIdFactory = LegacyFolderIdFactory,
         attachmentResolver = AttachmentResolver(testLogger, context),
         context = context,
     )

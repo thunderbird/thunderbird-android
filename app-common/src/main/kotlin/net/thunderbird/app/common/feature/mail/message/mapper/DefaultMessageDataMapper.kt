@@ -17,18 +17,12 @@ import com.fsck.k9.mail.Message as LegacyMessage
 
 internal class DefaultMessageDataMapper(
     logger: Logger,
-    messageIdLegacyEntityIdFactory: LegacyEntityIdFactory<MessageId>,
-    threadIdLegacyEntityIdFactory: LegacyEntityIdFactory<ThreadId>,
-    folderIdLegacyEntityIdFactory: LegacyEntityIdFactory<FolderId>,
     attachmentResolver: AttachmentResolver,
     context: Context,
     ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : MessageDataMapper<LegacyMessage> {
     private val legacyToDomainMessageMapper = LegacyToDomainMessageMapper(
         logger = logger,
-        messageIdLegacyEntityIdFactory = messageIdLegacyEntityIdFactory,
-        threadIdLegacyEntityIdFactory = threadIdLegacyEntityIdFactory,
-        folderIdLegacyEntityIdFactory = folderIdLegacyEntityIdFactory,
         attachmentResolver = attachmentResolver,
         ioDispatcher = ioDispatcher,
     )

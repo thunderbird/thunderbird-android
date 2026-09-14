@@ -22,12 +22,12 @@ import kotlinx.datetime.toLocalDateTime
 import net.thunderbird.app.common.feature.mail.message.domain.model.LegacyMessageSource
 import net.thunderbird.app.common.feature.mail.message.mapper.DefaultMessageDataMapper.Companion.LOG_ID
 import net.thunderbird.app.common.feature.mail.message.mapper.DefaultMessageDataMapper.Companion.PREVIEW_FALLBACK_LENGTH
-import net.thunderbird.core.architecture.model.LegacyEntityIdFactory
 import net.thunderbird.core.common.mail.Flag
 import net.thunderbird.core.logging.Logger
 import net.thunderbird.feature.account.AccountId
-import net.thunderbird.feature.account.AccountIdFactory
-import net.thunderbird.feature.mail.folder.FolderId
+import net.thunderbird.feature.mail.folder.LegacyFolderIdFactory
+import net.thunderbird.feature.mail.message.LegacyMessageIdFactory
+import net.thunderbird.feature.mail.message.LegacyThreadIdFactory
 import net.thunderbird.feature.mail.message.Message
 import net.thunderbird.feature.mail.message.MessageAddress
 import net.thunderbird.feature.mail.message.MessageAttachment
@@ -39,10 +39,8 @@ import net.thunderbird.feature.mail.message.MessageEnvelope
 import net.thunderbird.feature.mail.message.MessageFlag
 import net.thunderbird.feature.mail.message.MessageHeaderId
 import net.thunderbird.feature.mail.message.MessageHeaders
-import net.thunderbird.feature.mail.message.MessageId
 import net.thunderbird.feature.mail.message.MessageServerId
 import net.thunderbird.feature.mail.message.MimeType
-import net.thunderbird.feature.mail.message.ThreadId
 import com.fsck.k9.mail.Message as LegacyMessage
 
 /**
@@ -52,17 +50,11 @@ import com.fsck.k9.mail.Message as LegacyMessage
  * Values only available for locally stored messages, such as database identifiers, are `null` when
  * the message isn't backed by the local store.
  *
- * @param messageIdLegacyEntityIdFactory Creates [MessageId]s from legacy database identifiers.
- * @param threadIdLegacyEntityIdFactory Creates [ThreadId]s from legacy database identifiers.
- * @param folderIdLegacyEntityIdFactory Creates [FolderId]s from legacy database identifiers.
  * @param attachmentResolver Resolves attachment metadata and content.
  * @param ioDispatcher The dispatcher used for the blocking MIME and file operations.
  */
 internal class LegacyToDomainMessageMapper(
     private val logger: Logger,
-    private val messageIdLegacyEntityIdFactory: LegacyEntityIdFactory<MessageId>,
-    private val threadIdLegacyEntityIdFactory: LegacyEntityIdFactory<ThreadId>,
-    private val folderIdLegacyEntityIdFactory: LegacyEntityIdFactory<FolderId>,
     private val attachmentResolver: AttachmentResolver,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) {
@@ -82,11 +74,11 @@ internal class LegacyToDomainMessageMapper(
         val attachments: List<MessageAttachment>? = dto.toComposedAttachmentsOrNull(accountId)
 
         Message(
-            id = localMessage?.databaseId?.let(messageIdLegacyEntityIdFactory::of),
+            id = localMessage?.databaseId?.let(LegacyMessageIdFactory::of),
             serverId = dto.uid?.let(::MessageServerId),
             accountId = accountId,
-            folderId = localMessage?.folder?.databaseId?.let(folderIdLegacyEntityIdFactory::of),
-            threadRoot = localMessage?.threadId?.let(threadIdLegacyEntityIdFactory::of),
+            folderId = localMessage?.folder?.databaseId?.let(LegacyFolderIdFactory::of),
+            threadRoot = localMessage?.threadId?.let(LegacyThreadIdFactory::of),
             receivedAt = (dto.internalDate ?: Date()).toDomainLocalDateTime(),
             envelope = dto.toMessageEnvelop(),
             headers = dto.toMessageHeaders(),
