@@ -132,6 +132,8 @@ object K9 : KoinComponent {
     var fundingReminderReferenceTimestamp: Long = 0
     var fundingReminderShownTimestamp: Long = 0
     var fundingActivityCounterInMillis: Long = 0
+    var lastFundingReminderShownTimestamp: Long = 0
+    var fundingReminderCount: Int = 0
 
     @Synchronized
     @JvmStatic
@@ -181,6 +183,8 @@ object K9 : KoinComponent {
         fundingReminderReferenceTimestamp = storage.getLong("fundingReminderReferenceTimestamp", 0)
         fundingReminderShownTimestamp = storage.getLong("fundingReminderShownTimestamp", 0)
         fundingActivityCounterInMillis = storage.getLong("fundingActivityCounterInMillis", 0)
+        lastFundingReminderShownTimestamp = storage.getLong("lastFundingReminderShownTimestamp", 0)
+        fundingReminderCount = storage.getInt("fundingReminderCount", 0)
     }
 
     @Suppress("LongMethod")
@@ -198,6 +202,8 @@ object K9 : KoinComponent {
         editor.putLong("fundingReminderReferenceTimestamp", fundingReminderReferenceTimestamp)
         editor.putLong("fundingReminderShownTimestamp", fundingReminderShownTimestamp)
         editor.putLong("fundingActivityCounterInMillis", fundingActivityCounterInMillis)
+        editor.putLong("lastFundingReminderShownTimestamp", lastFundingReminderShownTimestamp)
+        editor.putInt("fundingReminderCount", fundingReminderCount)
 
         fontSizes.save(editor)
     }

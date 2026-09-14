@@ -5,6 +5,8 @@ import net.thunderbird.feature.funding.api.FundingSettings
 internal class FakeFundingSettings(
     private var reminderReferenceTimestamp: Long = 0L,
     private var reminderShownTimestamp: Long = 0L,
+    private var lastReminderShownTimestamp: Long = 0L,
+    private var fundingReminderCount: Int = 0,
     private var activityCounterInMillis: Long = 0L,
 ) : FundingSettings {
     override fun getReminderReferenceTimestamp(): Long {
@@ -21,6 +23,18 @@ internal class FakeFundingSettings(
 
     override fun setReminderShownTimestamp(timestamp: Long) {
         reminderShownTimestamp = timestamp
+    }
+
+    override fun getLastReminderShownTimestamp(): Long = lastReminderShownTimestamp
+
+    override fun setLastReminderShownTimestamp(timestamp: Long) {
+        lastReminderShownTimestamp = timestamp
+    }
+
+    override fun getReminderShownCount(): Int = fundingReminderCount
+
+    override fun setReminderShownCount(count: Int) {
+        fundingReminderCount = count
     }
 
     override fun getActivityCounterInMillis(): Long {
