@@ -1,0 +1,5 @@
+Thunderbird version 24.0b2
+
+Fixed:
+- Attachment filenames with non-ASCII characters were incorrectly decoded and saved
+- HTML signature text could disappear after rotating the screen

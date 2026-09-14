@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?xml-stylesheet type="text/xsl" href="changelog_style.xsl"?>
 <changelog>
+    <release version="24.0b2" versioncode="60" date="2026-09-14">
+        <change>Fixed: Attachment filenames with non-ASCII characters were incorrectly decoded and saved</change>
+        <change>Fixed: HTML signature text could disappear after rotating the screen</change>
+    </release>
     <release version="24.0b1" versioncode="59" date="2026-09-08">
         <change>New: Signatures can be formatted as HTML for individual identities</change>
         <change>Fixed: Reply prompts users to choose Reply or Reply All when both are applicable</change>
