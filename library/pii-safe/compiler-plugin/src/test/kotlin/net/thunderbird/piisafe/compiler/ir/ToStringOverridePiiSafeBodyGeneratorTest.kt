@@ -204,6 +204,59 @@ class ToStringOverridePiiSafeBodyGeneratorTest {
         assertThat(actual).isEqualTo("Session(email = <sensitive>)")
     }
 
+    @Test
+    fun `body generator should mask arrays maps and collections when they are annotated with Mask`() {
+        // Arrange
+        val result = compile(fixtureName = "ArraysMask.fixture.kt")
+
+        // Act
+        val actual = result.executeToStringPiiSafe(
+            "ArraysMask",
+            List::class.java to listOf("string-1", "string-2"),
+            Map::class.java to mapOf("key-1" to "value", "key-2" to "value"),
+            Array<Any>::class.java to arrayOf("value-1", "value-2", "value-3"),
+            ByteArray::class.java to byteArrayOf(1, 2, 3, 4, 5, 6),
+            ShortArray::class.java to shortArrayOf(1, 2, 3, 4, 5, 6),
+            IntArray::class.java to intArrayOf(1, 2, 3, 4, 5, 6),
+            LongArray::class.java to longArrayOf(1, 2, 3, 4, 5, 6),
+            FloatArray::class.java to floatArrayOf(1f, 2f, 3f, 4f, 5f, 6f),
+            DoubleArray::class.java to doubleArrayOf(1.0, 2.0, 3.0, 4.0, 5.0, 6.0),
+        )
+
+        // Assert
+        assertThat(result.exitCode).isEqualTo(KotlinCompilation.ExitCode.OK)
+        assertThat(actual)
+            .isEqualTo(
+                "ArraysMask(list = <sensitive>, map = <sensitive>, array = <sensitive>, " +
+                    "byteArray = <sensitive>, shortArray = <sensitive>, intArray = <sensitive>, " +
+                    "longArray = <sensitive>, floatArray = <sensitive>, doubleArray = <sensitive>)",
+            )
+    }
+
+    @Test
+    fun `body generator should hide arrays maps and collections when they are annotated with Hide`() {
+        // Arrange
+        val result = compile(fixtureName = "ArraysHide.fixture.kt")
+
+        // Act
+        val actual = result.executeToStringPiiSafe(
+            "ArraysHide",
+            List::class.java to listOf("string-1", "string-2"),
+            Map::class.java to mapOf("key-1" to "value", "key-2" to "value"),
+            Array<Any>::class.java to arrayOf("value-1", "value-2", "value-3"),
+            ByteArray::class.java to byteArrayOf(1, 2, 3, 4, 5, 6),
+            ShortArray::class.java to shortArrayOf(1, 2, 3, 4, 5, 6),
+            IntArray::class.java to intArrayOf(1, 2, 3, 4, 5, 6),
+            LongArray::class.java to longArrayOf(1, 2, 3, 4, 5, 6),
+            FloatArray::class.java to floatArrayOf(1f, 2f, 3f, 4f, 5f, 6f),
+            DoubleArray::class.java to doubleArrayOf(1.0, 2.0, 3.0, 4.0, 5.0, 6.0),
+        )
+
+        // Assert
+        assertThat(result.exitCode).isEqualTo(KotlinCompilation.ExitCode.OK)
+        assertThat(actual).isEqualTo("ArraysHide(+9 hidden properties)")
+    }
+
     private fun compile(fileName: String, @Language("kotlin") source: String): JvmCompilationResult =
         compileWithPiiSafePlugin(
             fileName = fileName,
