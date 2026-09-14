@@ -5,6 +5,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Stack;
 
 import com.fsck.k9.mail.Body;
@@ -26,6 +27,7 @@ import org.apache.james.mime4j.parser.MimeStreamParser;
 import org.apache.james.mime4j.stream.BodyDescriptor;
 import org.apache.james.mime4j.stream.Field;
 import org.apache.james.mime4j.stream.MimeConfig;
+import org.apache.james.mime4j.util.ContentUtil;
 
 public class MimePartStreamParser {
 
@@ -130,7 +132,7 @@ public class MimePartStreamParser {
         @Override
         public void field(Field parsedField) throws MimeException {
             String name = parsedField.getName();
-            String raw = parsedField.getRaw().toString();
+            String raw = ContentUtil.decode(StandardCharsets.UTF_8, parsedField.getRaw());
 
             Part part = (Part) stack.peek();
             part.addRawHeader(name, raw);
