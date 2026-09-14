@@ -8,7 +8,7 @@ val messageDetailsUiModule = module {
         MessageDetailsViewModel(
             resources = get(),
             messageRepository = get(),
-            folderRepository = get(),
+            folderQueryRepository = get(),
             contactSettingsProvider = get(),
             contactRepository = get(),
             contactPermissionResolver = get(),

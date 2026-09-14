@@ -6,6 +6,7 @@ import com.fsck.k9.backend.api.BackendFolder
 import com.fsck.k9.backend.api.BackendFolderUpdater
 import com.fsck.k9.backend.api.BackendStorage
 import com.fsck.k9.backend.api.FolderInfo
+import kotlinx.coroutines.runBlocking
 import com.fsck.k9.mail.FolderType as RemoteFolderType
 
 class K9BackendStorage(
@@ -72,7 +73,7 @@ class K9BackendStorage(
         }
 
         override fun close() {
-            listeners.forEach { it.onAfterFolderListRefresh() }
+            listeners.forEach { runBlocking { it.onAfterFolderListRefresh() } }
         }
     }
 }

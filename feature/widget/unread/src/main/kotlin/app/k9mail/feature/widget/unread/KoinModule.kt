@@ -16,7 +16,7 @@ val unreadWidgetModule = module {
             preferences = get(),
             messageCountsProvider = get(),
             defaultFolderProvider = get(),
-            folderRepository = get(),
+            folderQueryRepository = get(),
             folderNameFormatter = get(),
             coreResourceProvider = get(),
             logger = get(),
@@ -34,5 +34,5 @@ val unreadWidgetModule = module {
             logger = get(),
         )
     }
-    single { UnreadWidgetMigrations(accountRepository = get(), folderRepository = get()) }
+    single { UnreadWidgetMigrations(accountRepository = get(), folderQueryRepository = get()) }
 }
