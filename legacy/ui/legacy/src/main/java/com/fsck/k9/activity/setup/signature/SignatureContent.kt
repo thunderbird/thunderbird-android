@@ -57,54 +57,68 @@ internal fun SignatureContent(
         )
 
         if (state.useSignature) {
-            CheckboxInput(
-                text = stringResource(R.string.account_settings_signature_is_html_label),
-                checked = state.saveSignatureAsHtml,
-                onCheckedChange = { onEvent(Event.OnFormatSignatureAsHtmlCheck(it)) },
-            )
-            TextLabelSmall(
-                text = stringResource(R.string.account_settings_signature_is_html_summary),
-                modifier = Modifier.padding(horizontal = BoltTheme.spacings.double),
-            )
-            Spacer(modifier = Modifier.height(BoltTheme.spacings.default))
-            TextFieldOutlined(
-                isSingleLine = false,
-                label = stringResource(
-                    id = if (state.saveSignatureAsHtml) {
-                        R.string.account_settings_signature_html_label
-                    } else {
-                        R.string.account_settings_signature_label
-                    },
-                ),
-                value = state.signature,
-                onValueChange = { onEvent(Event.SignatureChange(it)) },
-                modifier = Modifier
-                    .padding(horizontal = BoltTheme.spacings.double)
-                    .fillMaxWidth(),
-            )
-            AnimatedVisibility(
-                visible = state.signature.isNotBlank(),
-                enter = fadeIn(),
-                exit = fadeOut(),
-                modifier = Modifier
-                    .padding(horizontal = BoltTheme.spacings.double)
-                    .align(Alignment.CenterHorizontally),
-            ) {
-                ButtonText(
-                    text = stringResource(R.string.account_settings_signature_clear_label),
-                    onClick = { onEvent(Event.SignatureChange("")) },
-                )
-            }
-
-            SignaturePreview(
-                signaturePreviewHtmlText = state.signaturePreviewHtmlText,
-                webViewConfig = state.webViewConfig,
-                isHtmlSignature = state.saveSignatureAsHtml,
-                modifier = Modifier.padding(horizontal = BoltTheme.spacings.double),
-            )
-
-            SignatureLocation(state, onEvent)
+            SignatureSettings(state = state, onEvent = onEvent)
         }
+    }
+}
+
+@Composable
+private fun SignatureSettings(
+    state: AccountSetupCompositionContract.State,
+    onEvent: (Event) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.default),
+        modifier = modifier.fillMaxWidth(),
+    ) {
+        CheckboxInput(
+            text = stringResource(R.string.account_settings_signature_is_html_label),
+            checked = state.saveSignatureAsHtml,
+            onCheckedChange = { onEvent(Event.OnFormatSignatureAsHtmlCheck(it)) },
+        )
+        TextLabelSmall(
+            text = stringResource(R.string.account_settings_signature_is_html_summary),
+            modifier = Modifier.padding(horizontal = BoltTheme.spacings.double),
+        )
+        Spacer(modifier = Modifier.height(BoltTheme.spacings.default))
+        TextFieldOutlined(
+            isSingleLine = false,
+            label = stringResource(
+                id = if (state.saveSignatureAsHtml) {
+                    R.string.account_settings_signature_html_label
+                } else {
+                    R.string.account_settings_signature_label
+                },
+            ),
+            value = state.signature,
+            onValueChange = { onEvent(Event.SignatureChange(it)) },
+            modifier = Modifier
+                .padding(horizontal = BoltTheme.spacings.double)
+                .fillMaxWidth(),
+        )
+        AnimatedVisibility(
+            visible = state.signature.isNotBlank(),
+            enter = fadeIn(),
+            exit = fadeOut(),
+            modifier = Modifier
+                .padding(horizontal = BoltTheme.spacings.double)
+                .align(Alignment.CenterHorizontally),
+        ) {
+            ButtonText(
+                text = stringResource(R.string.account_settings_signature_clear_label),
+                onClick = { onEvent(Event.SignatureChange("")) },
+            )
+        }
+
+        SignaturePreview(
+            signaturePreviewHtmlText = state.signaturePreviewHtmlText,
+            webViewConfig = state.webViewConfig,
+            isHtmlSignature = state.saveSignatureAsHtml,
+            modifier = Modifier.padding(horizontal = BoltTheme.spacings.double),
+        )
+
+        SignatureLocation(state, onEvent)
     }
 }
 
