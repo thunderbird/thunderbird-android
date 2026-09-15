@@ -628,6 +628,7 @@
     <string name="account_settings_signature_is_html_label">Save signature as HTML</string>
     <string name="account_settings_signature_is_html_summary">Interpret the signature as HTML. Scripts and event handlers will be removed for security.</string>
     <string name="account_settings_signature_preview">Signature preview</string>
+    <string name="account_settings_signature_preview_empty">Your signature preview will appear here</string>
     <string name="account_settings_signature_clear_label">Clear Signature</string>
 
     <string name="default_identity_description">Initial identity</string>

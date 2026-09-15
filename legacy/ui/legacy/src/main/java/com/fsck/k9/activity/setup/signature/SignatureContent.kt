@@ -1,7 +1,6 @@
 package com.fsck.k9.activity.setup.signature
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.Arrangement
@@ -9,7 +8,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -140,7 +141,7 @@ private fun SignaturePreview(
     modifier: Modifier = Modifier,
 ) {
     AnimatedVisibility(
-        visible = isHtmlSignature && signaturePreviewHtmlText?.isNotEmpty() == true && webViewConfig != null,
+        visible = isHtmlSignature && webViewConfig != null,
     ) {
         Column(
             modifier = modifier,
@@ -183,41 +184,30 @@ private fun SignatureHtmlPreview(
         debouncedSignature = signaturePreviewHtmlText
     }
 
-    // The preview lives in a scrolling column, so it is sized to its content rather than left to
-    // scroll on its own. Images that load after the page finishes can leave the height slightly
-    // short until the next edit.
-    var contentHeight by remember { mutableStateOf(0.dp) }
-    val animatedContentHeight by animateDpAsState(contentHeight)
-
-    // AndroidView's update block also runs for unrelated recompositions, e.g. height and window inset changes.
-    // Reloading the document in those cases can produce a new, incorrect content height while rotating the device.
-    val loadState = remember { SignaturePreviewLoadState() }
-
     AndroidView(
         factory = { context ->
             MessageWebView(context).apply {
                 configureForSignaturePreview(webViewConfig)
+
+                isVerticalScrollBarEnabled = false
+                isHorizontalScrollBarEnabled = false
             }
         },
         update = { webView ->
-            if (loadState.shouldLoad(debouncedSignature)) {
-                contentHeight = 0.dp
-                webView.displayHtmlContentWithInlineAttachments(debouncedSignature, null) {
-                    contentHeight = webView.contentHeight.dp
-                }
+            if (webView.tag != debouncedSignature) {
+                webView.tag = debouncedSignature
+                webView.displayHtmlContentWithInlineAttachments(
+                    htmlText = debouncedSignature,
+                    attachmentResolver = null,
+                    onPageFinishedListener = null,
+                )
             }
         },
-        modifier = modifier.height(animatedContentHeight),
+        onRelease = { webView ->
+            webView.destroy()
+        },
+        modifier = modifier
+            .heightIn(min = 1.dp)
+            .wrapContentHeight(),
     )
-}
-
-internal class SignaturePreviewLoadState {
-    private var loadedSignature: String? = null
-
-    fun shouldLoad(signature: String): Boolean {
-        if (signature == loadedSignature) return false
-
-        loadedSignature = signature
-        return true
-    }
 }
