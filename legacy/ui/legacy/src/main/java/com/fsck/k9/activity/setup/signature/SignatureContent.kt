@@ -3,6 +3,8 @@ package com.fsck.k9.activity.setup.signature
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -56,7 +58,11 @@ internal fun SignatureContent(
             onCheckedChange = { onEvent(Event.UseSignatureChange(it)) },
         )
 
-        if (state.useSignature) {
+        AnimatedVisibility(
+            visible = state.useSignature,
+            enter = fadeIn(),
+            exit = fadeOut(),
+        ) {
             SignatureSettings(state = state, onEvent = onEvent)
         }
     }
@@ -156,6 +162,8 @@ private fun SignaturePreview(
 ) {
     AnimatedVisibility(
         visible = isHtmlSignature && webViewConfig != null,
+        enter = slideInVertically() + fadeIn(),
+        exit = slideOutVertically() + fadeOut(),
     ) {
         Column(
             modifier = modifier,
