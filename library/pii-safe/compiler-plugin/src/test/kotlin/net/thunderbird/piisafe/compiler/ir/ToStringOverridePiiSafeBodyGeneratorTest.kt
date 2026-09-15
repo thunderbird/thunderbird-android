@@ -257,6 +257,32 @@ class ToStringOverridePiiSafeBodyGeneratorTest {
         assertThat(actual).isEqualTo("ArraysHide(+9 hidden properties)")
     }
 
+    @Test
+    fun `body generator should preserve ByteArray toString behaviour when it isn't Masked`() {
+        // Arrange
+        val result = compile(fixtureName = "PiiPlainArraysData.fixture.kt")
+
+        // Act
+        val actual = result.executeToStringPiiSafe(
+            className = "PiiPlainArraysData",
+            String::class.java to "secret string",
+            Array::class.java to arrayOf(1, 2, 3),
+            ByteArray::class.java to byteArrayOf(1, 2, 3),
+            ShortArray::class.java to shortArrayOf(1, 2, 3),
+            IntArray::class.java to intArrayOf(1, 2, 3),
+            LongArray::class.java to longArrayOf(1, 2, 3),
+            FloatArray::class.java to floatArrayOf(1f, 2f, 3f),
+            DoubleArray::class.java to doubleArrayOf(1.0, 2.0, 3.0),
+        )
+
+        assertThat(result.exitCode).isEqualTo(KotlinCompilation.ExitCode.OK)
+        assertThat(actual).isEqualTo(
+            "PiiPlainArraysData(label = <sensitive>, array = [1, 2, 3], bytes = [1, 2, 3], " +
+                "shorts = [1, 2, 3], ints = [1, 2, 3], longs = [1, 2, 3], floats = [1.0, 2.0, 3.0], " +
+                "doubles = [1.0, 2.0, 3.0])",
+        )
+    }
+
     private fun compile(fileName: String, @Language("kotlin") source: String): JvmCompilationResult =
         compileWithPiiSafePlugin(
             fileName = fileName,

@@ -22,7 +22,10 @@ import org.jetbrains.kotlin.ir.expressions.impl.IrStringConcatenationImpl
 import org.jetbrains.kotlin.ir.symbols.IrValueParameterSymbol
 import org.jetbrains.kotlin.ir.symbols.UnsafeDuringIrConstructionAPI
 import org.jetbrains.kotlin.ir.types.IrType
+import org.jetbrains.kotlin.ir.types.isArray
+import org.jetbrains.kotlin.ir.types.isNullableArray
 import org.jetbrains.kotlin.ir.util.hasAnnotation
+import org.jetbrains.kotlin.ir.util.isPrimitiveArray
 import org.jetbrains.kotlin.ir.util.primaryConstructor
 import org.jetbrains.kotlin.ir.util.properties
 
@@ -128,10 +131,21 @@ internal class ToStringOverridePiiSafeTransformer(override val pluginContext: Ir
             } else {
                 null
             }
-            buildIrCall(
+            val getterCall = buildIrCall(
                 target = target,
                 methodSymbol = getter.symbol,
             )
+            val returnType = getter.returnType
+            if (returnType.isArray() || returnType.isPrimitiveArray() || returnType.isNullableArray()) {
+                buildIrCall(
+                    target = null,
+                    methodSymbol = pluginContext.irBuiltIns.dataClassArrayMemberToStringSymbol,
+                ) {
+                    arguments[0] = getterCall
+                }
+            } else {
+                getterCall
+            }
         },
     ) {
         "Property '$name' does not contain getter."
