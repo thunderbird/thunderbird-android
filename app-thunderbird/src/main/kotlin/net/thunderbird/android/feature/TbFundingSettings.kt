@@ -1,11 +1,15 @@
 package net.thunderbird.android.feature
 
 import com.fsck.k9.K9
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
+import net.thunderbird.app.common.feature.funding.configstore.FundingConfig
 import net.thunderbird.app.common.feature.funding.configstore.FundingConfigStore
 import net.thunderbird.feature.funding.api.FundingSettings
 
 internal class TbFundingSettings(
-    fundingConfigStore: FundingConfigStore,
+    private val fundingConfigStore: FundingConfigStore,
+    private val scope: CoroutineScope,
 ) : FundingSettings {
     override fun getReminderReferenceTimestamp(): Long = K9.fundingReminderReferenceTimestamp
 
@@ -21,18 +25,28 @@ internal class TbFundingSettings(
         K9.saveSettingsAsync()
     }
 
-    override fun getLastReminderShownTimestamp(): Long = K9.lastFundingReminderShownTimestamp
-
-    override fun setLastReminderShownTimestamp(timestamp: Long) {
-        K9.lastFundingReminderShownTimestamp = timestamp
-        K9.saveSettingsAsync()
+    override fun getLastReminderShownTimestamp(): Long {
+        return fundingConfigStore.dataStateFlow().value.lastFundingReminderShownTimestamp
     }
 
-    override fun getReminderShownCount(): Int = K9.fundingReminderCount
+    override fun setLastReminderShownTimestamp(timestamp: Long) {
+        scope.launch {
+            fundingConfigStore.update {
+                it?.copy(lastFundingReminderShownTimestamp = timestamp) ?: FundingConfig.DEFAULT
+            }
+        }
+    }
+
+    override fun getReminderShownCount(): Int {
+        return fundingConfigStore.dataStateFlow().value.fundingReminderCount
+    }
 
     override fun setReminderShownCount(count: Int) {
-        K9.fundingReminderCount = count
-        K9.saveSettingsAsync()
+        scope.launch {
+            fundingConfigStore.update {
+                it?.copy(fundingReminderCount = count) ?: FundingConfig.DEFAULT
+            }
+        }
     }
 
     override fun getActivityCounterInMillis(): Long = K9.fundingActivityCounterInMillis

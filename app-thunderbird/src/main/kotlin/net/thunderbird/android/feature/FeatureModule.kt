@@ -12,6 +12,7 @@ import net.thunderbird.feature.funding.featureFundingModule
 import net.thunderbird.feature.mail.message.list.internal.featureMessageListModule
 import net.thunderbird.feature.mail.message.reader.api.css.CssClassNameProvider
 import net.thunderbird.feature.thundermail.thunderbird.inject.featureThundermailModule
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 internal val featureModule = module {
@@ -26,7 +27,8 @@ internal val featureModule = module {
 
     single<FundingSettings> {
         TbFundingSettings(
-            fundingConfigStore = get()
+            fundingConfigStore = get(),
+            scope = get(named("ConfigStoreScope")),
         )
     }
 
