@@ -959,4 +959,5 @@
     <string name="account_settings_signature_clear_label">Rensa signatur</string>
     <string name="sort_by_indicator">•</string>
     <string name="message_compose_encrypting_message">Krypterar meddelande…</string>
+    <string name="message_view_from_me_text">mig</string>
 </resources>
