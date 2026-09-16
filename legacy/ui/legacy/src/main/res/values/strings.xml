@@ -256,7 +256,7 @@
     <string name="message_view_additional_recipient_prefix">+</string>
     <!-- Displayed in the message view screen if the message was addressed to the user. Make sure this works with 'message_view_recipient_prefix'. In English it's "to me". -->
     <string name="message_view_to_me_text">me</string>
-    <!-- Displayed in the message view screen if the message was addressed to the user. Make sure this works with 'message_view_recipient_prefix'. In English it's "to me". -->
+    <!-- Displayed in the message details screen when the message was sent by the user. This is shown after the "From" label. Languages may require a different grammatical form than message_view_to_me_text. In English, both are "me". -->
     <string name="message_view_from_me_text">me</string>
 
     <!-- Text of the button that is displayed below the message header when the message body references one or more remote images -->
