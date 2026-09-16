@@ -8,6 +8,7 @@ dependencies {
 
     implementation(projects.legacy.logging)
     implementation(projects.core.common)
+    implementation(projects.feature.account.api)
     implementation(projects.feature.mail.folder.api)
 
     implementation(libs.androidx.annotation)
