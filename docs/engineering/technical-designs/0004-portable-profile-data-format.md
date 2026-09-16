@@ -4,7 +4,7 @@
 - RFC: [RFC 0008: Portable Profile Data Format](../rfcs/0008-portable-profile-data-format.md)
 - Format architecture: [Portable Profile Data Format](../../architecture/portable-profile-data-format.md)
 - Standards profile: [Portable Profile Data Standards](../../standards/portable-profile-data.md)
-- Mail archive compatibility target: [draft-ietf-mailmaint-pdparchive-01: Personal Data Portability Archive](https://datatracker.ietf.org/doc/html/draft-ietf-mailmaint-pdparchive-01)
+- Mail archive compatibility target: [draft-ietf-mailmaint-pdparchive-02: Personal Data Portability Archive](https://datatracker.ietf.org/doc/html/draft-ietf-mailmaint-pdparchive-02)
 - Encryption format: [age version 1](https://age-encryption.org/v1)
 - Android/JVM implementation: [Kage v0.7.0](https://github.com/android-password-store/kage/releases/tag/v0.7.0)
 - Status: **Proposed**
@@ -36,8 +36,10 @@ PDPArchive export, `archive.json` and `mail/` are at the ZIP64 payload root. The
 revision in the account metadata and, when present, the Thunderbird manifest. An account archive does not depend on
 Thunderbird settings and can be imported independently after age decryption and ZIP extraction.
 
-PDPArchive `-01` defines a raw file layout but does not select a container format or encryption mechanism. An
-age-encrypted ZIP64 payload is Thunderbird's convention until the standard settles those concerns. The complete
+PDPArchive `-02` defines a raw file layout but does not select a container format or encryption mechanism. An
+age-encrypted ZIP64 payload is Thunderbird's convention until the standard settles those concerns. PDPArchive JSON
+written for `-02` conforms to [I-JSON](https://www.rfc-editor.org/info/rfc7493). The importer may reject non-I-JSON input
+when processing `-02`. The complete
 multi-account archive is a Thunderbird format that contains PDPArchives. It is not represented as one PDPArchive.
 
 Android and JVM use [Kage v0.7.0](https://github.com/android-password-store/kage/releases/tag/v0.7.0) for streaming
@@ -89,7 +91,9 @@ The manifest records envelope version, generator, account-archive paths, and the
 Each PDPArchive `archive.json` contains one opaque source account identifier. This one-archive-per-account boundary
 avoids folder collisions and allows generic importers to consume account archives without understanding Thunderbird
 records. Account paths may include sanitized human-readable labels for manual identification after decryption. Labels
-are display-only and the portable account ID remains authoritative.
+are display-only and the portable account ID remains authoritative. Mail folders retain the source hierarchy as nested
+archive folders. Folder names that require translation for destination filesystem safety use a stable mapping across
+repeated exports and imports.
 
 `profile.json` identifies the exported Thunderbird profile and archive selection. `settings/global.json` holds portable
 global user preferences. Account records contain portable account configuration and profile data in a new format rather
@@ -144,7 +148,8 @@ credentials are requested only after configuration import and never read from th
 
 Import compares records by `recordId`. When a record already exists, import reports a conflict and leaves local state
 unchanged until the user chooses whether to keep the local record or replace it with the imported record. Import does
-not infer ordering from timestamps and does not merge fields automatically.
+not infer ordering from timestamps and does not merge fields automatically. Account-portability import preserves the
+exported folder nesting.
 
 Synchronization is outside this design. A future synchronization project must define transport, causal metadata,
 tombstones, conflict behavior, and any required record-version change. It must build on the portable record boundaries
@@ -189,7 +194,7 @@ verified archive remains a user-controlled artifact.
    compatibility fork only until an upstream release containing the patch is available.
 3. Integrate Kage's streaming age API around the ZIP64 payload, implement record codecs, the account-archive writer,
    cleanup, and untrusted-input validation with fixtures.
-4. Implement one independently importable full PDPArchive `-01` archive per mail account, including separate Thunderbird
+4. Implement one independently importable full PDPArchive `-02` archive per mail account, including separate Thunderbird
    POP3 and local-only profiles, size estimation, progress reporting, verified publication, and incomplete-output
    cleanup.
 5. Add full-backup account and content-type selection and the cross-device passphrase import flow.
@@ -216,6 +221,10 @@ Automated verification must cover:
   independent ZIP tools.
 - independent extraction and import of every account archive without the Thunderbird envelope.
 - required PDPArchive `archive.json` and `folder.json` fields and exact draft-revision metadata.
+- `-02` I-JSON generation and import validation, including UTF-8, duplicate decoded member names, invalid Unicode, and
+  interoperable numeric handling.
+- preservation of source folder nesting on export and account-portability import, with stable translation of unsafe
+  folder names across repeated round trips.
 - round-trip import of selected mail, global settings, account configuration, profile, identities, and folder settings.
 - exact RFC 5322/MIME fidelity, including character sets, transfer encodings, MIME structure, signatures, encryption,
   and available attachment data.
@@ -234,8 +243,10 @@ Automated verification must cover:
 - POP3 `Verified`, `Declined`, `Cancelled`, and `Failed` outcomes, with only the first two permitting database import.
 - archive-destination insufficient-space and verification failures retaining legacy storage.
 - IMAP optional archive cancellation or failure not blocking an IMAP-only Global Database migration.
-- rejection of path traversal, absolute and duplicate normalized paths, links, malformed references, excessive expanded
-  size, excessive entry count, and decompression bombs.
+- rejection of path traversal, absolute and duplicate normalized paths, filesystem links, malformed or out-of-context
+  references, implicit network retrieval, excessive expanded size, excessive entry count, and decompression bombs.
+- allow-listed serialization of portable fields, rejection of untrusted access-control metadata, and no polymorphic
+  deserialization based on archive-provided type names.
 - redaction: archive contents, destinations, passphrases, account addresses, and server configuration never appear in
   logs, telemetry, or migration reports.
 

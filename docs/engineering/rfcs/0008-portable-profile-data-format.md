@@ -5,7 +5,7 @@
 - Technical design: [Portable Profile Data Format](../technical-designs/0004-portable-profile-data-format.md)
 - Format architecture: [Portable Profile Data Format](../../architecture/portable-profile-data-format.md)
 - Standards profile: [Portable Profile Data Standards](../../standards/portable-profile-data.md)
-- Mail archive compatibility target: [draft-ietf-mailmaint-pdparchive-01: Personal Data Portability Archive](https://datatracker.ietf.org/doc/html/draft-ietf-mailmaint-pdparchive-01)
+- Mail archive compatibility target: [draft-ietf-mailmaint-pdparchive-02: Personal Data Portability Archive](https://datatracker.ietf.org/doc/html/draft-ietf-mailmaint-pdparchive-02)
 - Mail message format: [RFC 5322: Internet Message Format](https://www.rfc-editor.org/info/rfc5322/)
 - MIME: [RFC 2045: Multipurpose Internet Mail Extensions](https://www.rfc-editor.org/info/rfc2045/)
 - Encryption format: [age version 1](https://age-encryption.org/v1)
@@ -42,7 +42,7 @@ The app defines a versioned portable profile-data bundle with these parts:
 - **Mail:** One self-contained raw account archive per mail account, with
   [RFC 5322](https://www.rfc-editor.org/info/rfc5322/)/[MIME](https://www.rfc-editor.org/info/rfc2045/) message data and
   mail metadata following the current
-  [PDPArchive draft layout](https://datatracker.ietf.org/doc/html/draft-ietf-mailmaint-pdparchive-01).
+  [PDPArchive draft layout](https://datatracker.ietf.org/doc/html/draft-ietf-mailmaint-pdparchive-02).
 - **Global settings:** portable, user-selected application preferences in a Thunderbird-owned JSON namespace.
 - **Account configuration:** account identity, server endpoints and protocol configuration, identities, sync choices,
   folder choices, and other user-configured account behavior in a new portable shape.
@@ -53,10 +53,12 @@ The Thunderbird envelope has an app format version and generator version. It is 
 [age version 1](https://age-encryption.org/v1) file encrypted with the user passphrase. The authenticated plaintext is a
 ZIP64 archive. Every account archive records its exact PDPArchive draft revision and is importable after age decryption
 and ZIP extraction. Importers tolerate unknown fields, reject unknown required format versions safely, and migrate every
-older version that this app has emitted. PDPArchive is the app's versioned mail-archive format. The app maintains adapters
-as the draft evolves toward RFC status.
+older version that this app has emitted. PDPArchive is the app's versioned mail-archive format. The app initially emits
+and imports `-02`. Later revisions are introduced through explicit adapters as the draft evolves toward RFC status. All
+PDPArchive JSON generated for `-02` conforms to
+[I-JSON](https://www.rfc-editor.org/info/rfc7493).
 
-PDPArchive `-01` does not select a container or encryption mechanism. An age-encrypted ZIP64 payload is Thunderbird's
+PDPArchive `-02` does not select a container or encryption mechanism. An age-encrypted ZIP64 payload is Thunderbird's
 temporary container and encryption convention until the standard settles those concerns. The multi-account Thunderbird
 envelope contains raw PDPArchive account directories but is not itself represented as one PDPArchive. Thunderbird
 settings remain outside account archives. A standalone export uses the same age-encrypted representation, with
@@ -66,10 +68,11 @@ PDPArchive also defines standard contact and calendar representations based on
 [JSContact](https://www.rfc-editor.org/info/rfc9553),
 [RFC 9610 address-book objects](https://www.rfc-editor.org/info/rfc9610),
 [JSCalendar](https://www.rfc-editor.org/info/rfc8984), and
-[JMAP for Calendars](https://datatracker.ietf.org/doc/html/draft-ietf-jmap-calendars-26). The portable architecture supports adding contacts, address books, events, tasks, and calendar collections to the same
-per-account archives. PDPArchive `-01`
-[section 6.3.8](https://datatracker.ietf.org/doc/html/draft-ietf-mailmaint-pdparchive-01#section-6.3.8) excludes
-JSCalendar groups. Product support for contact and calendar export and import is TBD and outside the current rollout.
+[JMAP for Calendars](https://datatracker.ietf.org/doc/html/draft-ietf-jmap-calendars-28). The portable architecture supports adding contacts, address books, events, tasks, notes, and calendar collections to the same
+per-account archives. PDPArchive `-02`
+[section 6.3.8](https://datatracker.ietf.org/doc/html/draft-ietf-mailmaint-pdparchive-02#section-6.3.8) excludes
+JSCalendar groups. Product support for contact, calendar, note, and non-mail attachment export and import is TBD and
+outside the current rollout.
 
 ### Portable settings and profile records
 
@@ -87,15 +90,17 @@ representation.
 
 Portable export lets the user choose complete mail accounts, settings and profile data, or both. Every included mail
 account is exported as a full account archive. Partial, filtered, and incremental archives are deferred to the future
-synchronization project because PDPArchive `-01`
-[section 4.2](https://datatracker.ietf.org/doc/html/draft-ietf-mailmaint-pdparchive-01#section-4.2) does not define a
+synchronization project because PDPArchive `-02`
+[section 4.2](https://datatracker.ietf.org/doc/html/draft-ietf-mailmaint-pdparchive-02#section-4.2) does not define a
 complete interoperable incremental contract. A POP3-containing Global Database migration requires successful creation
 and verification of the mail part, unless the user declines it after an explicit warning. Settings/profile export is not a cutover prerequisite. An IMAP mail export remains user-requested and
 non-blocking.
 
-PDPArchive `-01` does not fully define non-IMAP mappings. Until it does, POP3 and local-only mail use separate declared,
+PDPArchive `-02` does not fully define non-IMAP mappings. Until it does, POP3 and local-only mail use separate declared,
 versioned Thunderbird profiles. Both retain the PDPArchive layout and standard fields, use stable opaque string
 identifiers, omit inapplicable IMAP-only metadata rather than fabricating it, and keep optional additions namespaced.
+Exports preserve source folder nesting. Account-portability imports preserve that nesting, and translations of folder
+names that are unsafe on the destination use a stable mapping so repeated imports identify the same folder.
 The POP3 profile describes mail downloaded from a configured POP3 source. The local-only profile describes app-managed
 mail with no remote source server.
 
@@ -176,7 +181,7 @@ It remains useful for its narrower mail-export use cases, not for profile portab
 - Which user settings and account or folder choices are portable, and which are explicitly device-local?
 - What field-group conflict presentation is appropriate when an imported record conflicts with local profile data?
 - Which age scrypt work factor provides an acceptable passphrase-derivation cost across supported Android devices?
-- Which PDPArchive `-01` target-client combinations are supported by the first release, and how are later revisions
+- Which PDPArchive `-02` target-client combinations are supported by the first release, and how are later revisions
   introduced?
 - Which upstream PDPArchive revision first provides standard POP3 and local-only mappings that can replace Thunderbird's
   versioned profiles?

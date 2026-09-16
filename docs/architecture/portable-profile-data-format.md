@@ -8,7 +8,7 @@ This document defines the durable archive-format contract for portable Thunderbi
 ## Goals
 
 The format prioritizes interoperability with
-[draft-ietf-mailmaint-pdparchive-01](https://datatracker.ietf.org/doc/html/draft-ietf-mailmaint-pdparchive-01)
+[draft-ietf-mailmaint-pdparchive-02](https://datatracker.ietf.org/doc/html/draft-ietf-mailmaint-pdparchive-02)
 (PDPArchive). In particular:
 
 - each exported mail account is independently usable as a PDPArchive full archive.
@@ -17,9 +17,10 @@ The format prioritizes interoperability with
 - decrypting the age file and unpacking its ZIP64 payload exposes account archives that can be imported independently.
 - draft-specific behavior is isolated so later PDPArchive revisions can be supported through explicit adapters.
 
-PDPArchive `-01` is a work in progress. It defines a raw file layout but does not select a container format, define an
+PDPArchive `-02` is a work in progress. It defines a raw file layout but does not select a container format, define an
 encryption mechanism, or provide a formal conformance section. In this document, a **PDPArchive account archive** means
-a directory tree that follows the raw layout and JSON requirements of PDPArchive `-01`. Thunderbird packages the tree in
+a directory tree that follows the raw layout and JSON requirements of PDPArchive `-02`, including
+[I-JSON](https://www.rfc-editor.org/info/rfc7493). Thunderbird packages the tree in
 a ZIP64 archive and encrypts the complete archive using
 [age version 1](https://age-encryption.org/v1) until PDPArchive standardizes a container and encryption mechanism.
 
@@ -92,7 +93,7 @@ destination receive the same privacy warning.
       "portableAccountId": "opaque-stable-account-id",
       "archive": {
         "path": "accounts/Personal--opaque-stable-account-id",
-        "pdpaRevision": "draft-ietf-mailmaint-pdparchive-01"
+        "pdpaRevision": "draft-ietf-mailmaint-pdparchive-02"
       },
       "extensions": []
     }
@@ -110,9 +111,9 @@ are rejected. Unknown optional fields are preserved when possible and otherwise 
 
 ## PDPArchive account archive
 
-Each account archive represents exactly one source account. The initial implementation follows PDPArchive `-01`
-[section 6.1](https://datatracker.ietf.org/doc/html/draft-ietf-mailmaint-pdparchive-01#section-6.1) and
-[section 6.3.1](https://datatracker.ietf.org/doc/html/draft-ietf-mailmaint-pdparchive-01#section-6.3.1) for mail:
+Each account archive represents exactly one source account. The initial implementation follows PDPArchive `-02`
+[section 6.1](https://datatracker.ietf.org/doc/html/draft-ietf-mailmaint-pdparchive-02#section-6.1) and
+[section 6.3.1](https://datatracker.ietf.org/doc/html/draft-ietf-mailmaint-pdparchive-02#section-6.3.1) for mail:
 
 ```text
 archive.json
@@ -132,24 +133,31 @@ archive.json
 mail/
 contacts/
 calendars/
+notes/
 ```
 
 Contact export and import will follow PDPArchive
-[section 6.3.2](https://datatracker.ietf.org/doc/html/draft-ietf-mailmaint-pdparchive-01#section-6.3.2) and
-[section 6.3.3](https://datatracker.ietf.org/doc/html/draft-ietf-mailmaint-pdparchive-01#section-6.3.3), using
+[section 6.3.2](https://datatracker.ietf.org/doc/html/draft-ietf-mailmaint-pdparchive-02#section-6.3.2) and
+[section 6.3.3](https://datatracker.ietf.org/doc/html/draft-ietf-mailmaint-pdparchive-02#section-6.3.3), using
 [JSContact](https://www.rfc-editor.org/info/rfc9553) and the
 [RFC 9610](https://www.rfc-editor.org/info/rfc9610) address-book objects. Calendar export and import will follow
-[section 6.3.4](https://datatracker.ietf.org/doc/html/draft-ietf-mailmaint-pdparchive-01#section-6.3.4) and
-[section 6.3.5](https://datatracker.ietf.org/doc/html/draft-ietf-mailmaint-pdparchive-01#section-6.3.5), using
+[section 6.3.4](https://datatracker.ietf.org/doc/html/draft-ietf-mailmaint-pdparchive-02#section-6.3.4) and
+[section 6.3.5](https://datatracker.ietf.org/doc/html/draft-ietf-mailmaint-pdparchive-02#section-6.3.5), using
 [JSCalendar](https://www.rfc-editor.org/rfc/rfc8984.html) for events and tasks and the calendar collection objects derived
-from [JMAP for Calendars `-26`](https://datatracker.ietf.org/doc/html/draft-ietf-jmap-calendars-26). JSCalendar groups
-are excluded because PDPArchive `-01`
-[section 6.3.8](https://datatracker.ietf.org/doc/html/draft-ietf-mailmaint-pdparchive-01#section-6.3.8) does not include
+from [JMAP for Calendars `-28`](https://datatracker.ietf.org/doc/html/draft-ietf-jmap-calendars-28). JSCalendar groups
+are excluded because PDPArchive `-02`
+[section 6.3.8](https://datatracker.ietf.org/doc/html/draft-ietf-mailmaint-pdparchive-02#section-6.3.8) does not include
 them in the archive format.
 
-Contact and calendar implementation is TBD and requires separate technical design and delivery work. Thunderbird MUST
-NOT create a separate proprietary contact or calendar representation when the selected PDPArchive revision provides the
-required data model. `archive.json` declares only data types actually included in an export. Until a data type is
+Future standalone contacts use the PDPArchive `pdpa-contact` schema. Address-book and calendar membership fields take
+precedence over physical folder placement, exporters write one physical object when it belongs to multiple collections,
+and importers restore every declared membership. Address books and calendars use their own collection objects rather
+than mail `folder.json` files. Notes and the shared Link/blob model for non-mail attachments are also deferred. The blob
+model does not apply to MIME attachments inside EML messages.
+
+Contact, calendar, note, and non-mail attachment implementation is TBD and requires separate technical design and
+delivery work. Thunderbird MUST NOT create a separate proprietary contact or calendar representation when the selected
+PDPArchive revision provides the required data model. `archive.json` declares only data types actually included in an export. Until a data type is
 implemented, import reports it as unsupported and does not modify or silently discard that data.
 
 ### Archive metadata
@@ -162,8 +170,8 @@ draft revision, including:
 - the `FULL` dataset extent, language, timezone, and the `MAIL` datatype.
 - datasource service and account information where applicable.
 
-`archive.version` identifies the exact PDPArchive draft revision. The Thunderbird generator version is recorded
-separately in `archive.generator`. `datasource.account` uses the opaque portable account ID. It MUST NOT contain an email
+Every generated PDPArchive JSON document conforms to I-JSON. `archive.version` identifies the exact PDPArchive draft
+revision. The Thunderbird generator version is recorded separately in `archive.generator`. `datasource.account` uses the opaque portable account ID. It MUST NOT contain an email
 address or credential. For example:
 
 ```json
@@ -173,7 +181,7 @@ address or credential. For example:
     "id": "opaque-unique-account-archive-id",
     "name": "Thunderbird mail export",
     "timestamp": "2026-08-28T12:00:00Z",
-    "version": "draft-ietf-mailmaint-pdparchive-01",
+    "version": "draft-ietf-mailmaint-pdparchive-02",
     "generator": "Thunderbird for Android/generator-version"
   },
   "dataset": {
@@ -190,14 +198,17 @@ address or credential. For example:
 ```
 
 The exported language and timezone reflect the dataset when known. The example values are not mandatory defaults. Each
-account archive contains only one account because PDPArchive `-01` has one `datasource/account` and one root mail
+account archive contains only one account because PDPArchive `-02` has one `datasource/account` and one root mail
 hierarchy.
 This also avoids collisions between same-named folders belonging to different accounts.
 
 ### Folders and messages
 
-Every exported mail folder has a required `folder.json`. Folder paths, metadata, item references, flags, special-use values, and subscription state follow the selected
-PDPArchive revision without Thunderbird-specific reinterpretation. Full exports omit removed-item lists and folder
+Every exported mail folder has a required `folder.json`. Source folder nesting is preserved as nested archive folders,
+and account-portability imports restore that nesting. A folder name that is unsafe on the destination is translated
+through a stable mapping so repeated exports and imports identify the same folder. Folder paths, metadata, item
+references, flags, special-use values, and subscription state follow the selected PDPArchive revision without
+Thunderbird-specific reinterpretation. Full exports omit removed-item lists and folder
 tombstones.
 
 Message files preserve the complete RFC 5322/MIME representation. Export MUST preserve message header fields, character
@@ -219,16 +230,16 @@ For an IMAP account, `FULL` covers the account data represented by Thunderbird, 
 remote data available. Thunderbird retrieves complete content for every represented message before publication. A
 retrieval failure fails that account archive rather than silently producing a partial archive.
 
-PDPArchive `-01` [section 4.2](https://datatracker.ietf.org/doc/html/draft-ietf-mailmaint-pdparchive-01#section-4.2)
+PDPArchive `-02` [section 4.2](https://datatracker.ietf.org/doc/html/draft-ietf-mailmaint-pdparchive-02#section-4.2)
 describes an approach to partial updates but does not define a complete interoperable incremental contract. Partial,
 filtered, and incremental account archives are unsupported. Their identifiers, baselines, removal semantics, and
 conflict behavior are deferred to the separately reviewed future synchronization project.
 
 ## Non-IMAP profile extensions
 
-PDPArchive `-01` describes IMAP/JMAP mailboxes and includes IMAP-specific folder metadata. Its prose requirements and
+PDPArchive `-02` describes IMAP/JMAP mailboxes and includes IMAP-specific folder metadata. Its prose requirements and
 published JSON Schema are not fully aligned for non-IMAP sources. Thunderbird MUST NOT fabricate IMAP protocol values
-such as UIDVALIDITY or UIDNEXT-derived values. PDPArchive `-01` does not require generic importers to preserve or ignore
+such as UIDVALIDITY or UIDNEXT-derived values. PDPArchive `-02` does not require generic importers to preserve or ignore
 unknown members, so both profiles below are implementation-specific and are not unqualified PDPArchive conformance.
 
 ### POP3 profile
@@ -275,9 +286,9 @@ A local-only account has no POP3, IMAP, or JMAP source server. Its folders and m
 ```
 
 The extension member is combined with, rather than substituted for, the standard `archive`, `dataset`, and `datasource`
-members. Both non-IMAP profiles are structurally compatible with the `-01` JSON Schema but do not satisfy the
+members. Both non-IMAP profiles are structurally compatible with the `-02` JSON Schema but do not satisfy the
 IMAP-specific prose requirements in PDPArchive
-[section 6.3.1](https://datatracker.ietf.org/doc/html/draft-ietf-mailmaint-pdparchive-01#section-6.3.1). Documentation and
+[section 6.3.1](https://datatracker.ietf.org/doc/html/draft-ietf-mailmaint-pdparchive-02#section-6.3.1). Documentation and
 UI identify the applicable Thunderbird profile. The implementation should raise both missing mappings with the IETF working group and replace each profile when a
 standardized mapping becomes available.
 
@@ -316,7 +327,11 @@ Import treats every archive as untrusted input. Before presenting or applying re
 - the envelope manifest and declared versions.
 - every account archive independently against the selected PDPArchive revision.
 - every JSON document's shape, required fields, numeric bounds, timestamps, and referenced files.
-- uniqueness and confinement of identifiers and file references.
+- I-JSON requirements for PDPArchive `-02`, including UTF-8, valid Unicode, unique decoded member names, and
+  interoperable numeric values. Parsers MUST detect duplicate member names rather than silently retain one value.
+- uniqueness and confinement of identifiers and file references, without implicit network retrieval.
+- allow-listed portable fields without trusting imported sharing, role, or access-control metadata or selecting
+  polymorphic deserializers from archive-provided type names.
 - RFC 5322/MIME parseability without altering the original message representation.
 
 Validation and selection occur before runtime repositories are changed. Failure in one account archive is reported for
@@ -325,13 +340,14 @@ account addresses, server configuration, message data, passphrases, or decrypted
 
 ## Versioning and interoperability
 
-Exporters write one selected PDPArchive revision and one Thunderbird envelope version. Importers support every
-PDPArchive revision and Thunderbird format version previously emitted by the app through explicit adapters.
+Exporters and importers initially support PDPArchive `-02` and one Thunderbird envelope version. Importers support every
+later PDPArchive revision and Thunderbird format version emitted by the app through explicit adapters.
 
 A new PDPArchive revision is enabled only after fixtures verify:
 
-- schema and required-field compliance.
+- schema, required-field, and I-JSON compliance.
 - independent import of each account archive.
+- preservation of source folder nesting on export and account-portability import, with stable mapping of unsafe names.
 - exact message/MIME fidelity.
 - folder hierarchy, flags, identifiers, subscription state, and complete message selection.
 - full-account export semantics and rejection of unsupported partial or incremental archives.
