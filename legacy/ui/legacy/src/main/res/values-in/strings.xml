@@ -779,7 +779,7 @@
     <string name="notification_notify_error_text">Kesalahan telah terjadi saat mencoba untuk membuat notifikasi sistem untuk pesan baru. Kemungkinan besar penyebabnya yaitu hilangnya suara notifikasi. \n \nKetuk untuk membuka pengaturan notifikasi.</string>
     <string name="debug_export_logs_success">Ekspor berhasil. Log mungkin berisi informasi sensitif. Berhati-hatilah kepada siapa Anda mengirimkannya.</string>
     <string name="message_view_additional_recipient_prefix">+</string>
-    <string name="message_view_me_text">saya</string>
+    <string name="message_view_to_me_text">saya</string>
     <string name="message_view_show_remote_images_action">Tampilkan gambar jarak jauh</string>
     <string name="general_settings_right_swipe_title">Geser kanan</string>
     <string name="general_settings_left_swipe_title">Geser kiri</string>

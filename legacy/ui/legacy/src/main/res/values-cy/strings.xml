@@ -863,7 +863,7 @@
     <string name="save_attachment_action">Cadw atodiad</string>
     <string name="message_view_recipients_format">at <xliff:g id="recipients">%s</xliff:g></string>
     <string name="message_view_additional_recipient_prefix">+</string>
-    <string name="message_view_me_text">fi</string>
+    <string name="message_view_to_me_text">fi</string>
     <string name="message_view_show_remote_images_action">Dangos delweddau pell</string>
     <string name="global_settings_messageview_body_content_type_title">Corff Math o Gynnwys</string>
     <string name="global_settings_messageview_body_content_type_text_html">HTML (testun/html)</string>

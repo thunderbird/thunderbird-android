@@ -778,7 +778,7 @@
     <string name="general_settings_swipe_action_toggle_read">Отбележи като прочетено/непрочетено</string>
     <string name="action_copy_email_address">Копиране на имейл адрес</string>
     <string name="account_settings_autodownload_message_size_10240">10 МБ</string>
-    <string name="message_view_me_text">мен</string>
+    <string name="message_view_to_me_text">мен</string>
     <string name="account_settings_notification_channels_label">Категории известия</string>
     <string name="action_compose_message_to">Напиши съобщение</string>
     <string name="account_settings_autodownload_message_size_512">512 КБ</string>

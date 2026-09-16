@@ -166,7 +166,7 @@
     <string name="message_compose_quote_header_separator">-------- Originalna Poruka --------</string>
     <string name="message_compose_quote_header_send_date">Poslano:</string>
     <string name="message_compose_quote_header_to">Za:</string>
-    <string name="message_view_me_text">mene</string>
+    <string name="message_view_to_me_text">mene</string>
     <string name="message_compose_quote_header_from">Od:</string>
     <string name="message_to_label">Za:</string>
     <string name="message_view_cc_label">Cc:</string>

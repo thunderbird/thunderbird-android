@@ -752,7 +752,7 @@
     <string name="new_messages_title">Posteloù nevez</string>
     <string name="debug_export_logs_title">Ezporzhiañ ar c\'herzhlevr</string>
     <string name="debug_export_logs_failure">Faziet war an ezporzhiañ.</string>
-    <string name="message_view_me_text">me</string>
+    <string name="message_view_to_me_text">me</string>
     <string name="general_settings_post_remove_action_return_to_list">Distreiñ da roll ar posteloù</string>
     <string name="general_settings_post_remove_action_title">Goude bezañ dilamet pe dilec\'hiet ur postel</string>
     <string name="account_settings_autodownload_message_size_2048">2 Mie</string>

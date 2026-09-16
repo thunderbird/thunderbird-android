@@ -178,7 +178,7 @@
     <!--Displayed in the message view screen in front of the number of additional recipients (the ones that are not displayed).-->
     <string name="message_view_additional_recipient_prefix">+</string>
     <!--Displayed in the message view screen if the message was addressed to the user. Make sure this works with 'message_view_recipient_prefix'. In English it's "to me".-->
-    <string name="message_view_me_text">mnie</string>
+    <string name="message_view_to_me_text">mnie</string>
     <!--Text of the button that is displayed below the message header when the message body references one or more remote images-->
     <string name="message_view_show_remote_images_action">Wyświetl zdalne obrazy</string>
     <string name="message_view_no_viewer">Nie moge znaleźć aplikacji do wyświetlenia pliku <xliff:g id="mimetype">%s</xliff:g>.</string>

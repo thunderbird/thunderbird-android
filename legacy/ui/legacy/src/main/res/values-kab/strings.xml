@@ -54,7 +54,7 @@
     <string name="message_compose_quote_header_from">Sɣur:</string>
     <string name="message_to_label">I:</string>
     <string name="message_view_bcc_label">Anɣ. Uff. I:</string>
-    <string name="message_view_me_text">nekki</string>
+    <string name="message_view_to_me_text">nekki</string>
     <string name="global_settings_confirm_action_spam">Aspam</string>
     <string name="general_settings_swipe_action_spam">Aspam</string>
     <string name="account_setup_expunge_policy_manual">S ufus</string>
