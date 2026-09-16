@@ -85,7 +85,7 @@ internal class MessageDetailsViewModel(
                     cryptoDetails = cryptoResult?.toCryptoDetails(),
                     from = messageDetails.from.toParticipants(account, isSender = true),
                     sender = senderList.toParticipants(account, isSender = true),
-                    replyTo = messageDetails.replyTo.toParticipants(account, isSender = true),
+                    replyTo = messageDetails.replyTo.toParticipants(account, isSender = false),
                     to = messageDetails.to.toParticipants(account, isSender = false),
                     cc = messageDetails.cc.toParticipants(account, isSender = false),
                     bcc = messageDetails.bcc.toParticipants(account, isSender = false),
