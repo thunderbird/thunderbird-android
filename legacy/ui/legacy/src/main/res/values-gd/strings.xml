@@ -895,5 +895,5 @@
     <string name="debug_enable_sync_debug_logging_title">Cuir an comas logadh dì-bhugachadh an t-sioncronachaidh</string>
     <string name="debug_enable_sync_debug_logging_summary">Dèan loga dhen fhiosrachadh diagnosachd fad 24 uair a thìde</string>
     <string name="debug_sync_export_logs_title">Às-phortaich logaichean an t-sioncronachaidh</string>
-    <string name="message_view_me_text">domh-sa</string>
+    <string name="message_view_to_me_text">domh-sa</string>
 </resources>

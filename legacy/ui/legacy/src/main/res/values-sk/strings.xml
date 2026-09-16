@@ -705,7 +705,7 @@
     <string name="about_app_authors_thunderbird">Tím Thunderbird Mobile</string>
     <string name="notification_notify_error_text">Vyskytla sa chyba počas pokusu o vytvorenie notifikácie pre noú správu. Dôvodom je pravdepodobne nenastavený zvuk notifikácie.\n\nKliknite pre otvorenie nastavení notifikácií.</string>
     <string name="message_view_show_remote_images_action">Zobraziť vzdialené obrázky</string>
-    <string name="message_view_me_text">mne</string>
+    <string name="message_view_to_me_text">mne</string>
     <string name="about_title">O aplikácií <xliff:g id="app_name">%s</xliff:g></string>
     <string name="debug_export_logs_failure">Export zlyhal.</string>
     <string name="general_settings_post_remove_action_title">Po zmazaní alebo presunutí správy</string>

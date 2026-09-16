@@ -175,7 +175,7 @@
     <string name="font_size_tiniest">Tiniest</string>
     <string name="idle_refresh_period_12min">Every 12 minutes</string>
     <string name="general_no_sender">No sender</string>
-    <string name="message_view_me_text">me</string>
+    <string name="message_view_to_me_text">me</string>
     <string name="notifications_title">Notifications</string>
     <string name="account_settings_notification_channels_label">Notification categories</string>
     <string name="message_compose_quote_header_subject">Subject:</string>
