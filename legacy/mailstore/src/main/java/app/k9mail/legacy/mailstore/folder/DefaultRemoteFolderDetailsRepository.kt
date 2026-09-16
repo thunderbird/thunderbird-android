@@ -13,7 +13,6 @@ import net.thunderbird.feature.mail.folder.api.RemoteFolder
 import net.thunderbird.feature.mail.folder.api.RemoteFolderDetails
 import net.thunderbird.feature.mail.folder.api.data.FolderError
 import net.thunderbird.feature.mail.folder.api.data.repository.RemoteFolderDetailsRepository
-import net.thunderbird.feature.mail.folder.api.toStringPiiSafe
 
 private const val LOG_ID = "[repository][remote-folder-details]"
 
@@ -43,9 +42,7 @@ class DefaultRemoteFolderDetailsRepository(
                         isPushEnabled = folder.isPushEnabled,
                     )
                 }
-                logger.verbose {
-                    "$LOG_ID remote folder details = ${folderDetails.joinToString() { it.toStringPiiSafe() }}"
-                }
+                logger.verbose { "$LOG_ID remote folder details = $folderDetails" }
                 Outcome.success(folderDetails)
             } catch (e: MessagingException) {
                 logger.error(throwable = e) { "$LOG_ID Failed to get remote folders details for account '$accountId'" }
