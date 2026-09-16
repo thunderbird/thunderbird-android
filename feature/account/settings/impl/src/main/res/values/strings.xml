@@ -154,4 +154,43 @@
     <string name="account_settings_idle_refresh_period_48min">Every 48 minutes</string>
     <string name="account_settings_idle_refresh_period_60min">Every 60 minutes</string>
 
+    <string name="account_settings_composition_label">Composition defaults</string>
+    <string name="account_settings_composition_summary">Set your default From, Bcc and signature</string>
+
+    <string name="account_settings_identities_label">Manage identities</string>
+    <string name="account_settings_identities_summary">Set up alternate \'From\' addresses and signatures</string>
+
+    <string name="account_settings_message_format_label">Message Format</string>
+    <string name="account_settings_message_format_text">Plain Text (remove images and formatting)</string>
+    <string name="account_settings_message_format_html">HTML (keep images and formatting)</string>
+    <string name="account_settings_message_format_auto">Automatic</string>
+
+    <string name="account_settings_always_show_cc_bcc_label">Always show Cc/Bcc</string>
+
+    <string name="account_settings_message_read_receipt_label">Read receipt</string>
+    <string name="account_settings_message_read_receipt_summary">Always request a read receipt</string>
+
+    <string name="account_settings_quote_style_label">Reply quoting style</string>
+    <string name="account_settings_quote_style_prefix">Prefix (like Gmail)</string>
+    <string name="account_settings_quote_style_header">Header (like Outlook)</string>
+
+    <string name="account_settings_default_quoted_text_shown_label">Quote message when replying</string>
+    <string name="account_settings_default_quoted_text_shown_summary">Include the original message in your reply.</string>
+
+    <string name="account_settings_reply_after_quote_label">Reply after quoted text</string>
+    <string name="account_settings_reply_after_quote_summary">The original message will appear above your reply.</string>
+
+    <string name="account_settings_strip_signature_label">Strip signatures on reply</string>
+    <string name="account_settings_strip_signature_summary">Signatures will be removed from quoted messages</string>
+
+    <string name="account_settings_quote_prefix_label">Quoted text prefix</string>
+
+    <string name="account_settings_upload_sent_messages_label">Upload sent messages</string>
+    <string name="account_settings_upload_sent_messages_summary">Upload messages to Sent folder after sending</string>
+
+    <string name="account_settings_outgoing_label">Outgoing server</string>
+    <string name="account_settings_outgoing_summary">Configure the outgoing mail (SMTP) server</string>
+
+    <string name="account_settings_composition">Sending mail</string>
+
 </resources>
