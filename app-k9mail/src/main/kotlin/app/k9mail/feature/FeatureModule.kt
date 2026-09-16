@@ -5,6 +5,7 @@ import app.k9mail.feature.onboarding.migration.onboardingMigrationModule
 import app.k9mail.feature.telemetry.telemetryModule
 import com.fsck.k9.BuildConfig
 import net.thunderbird.android.feature.mail.message.reader.api.css.DefaultCssClassNameProvider
+import net.thunderbird.app.common.feature.funding.fundingModule
 import net.thunderbird.feature.account.settings.featureAccountSettingsModule
 import net.thunderbird.feature.funding.api.FundingSettings
 import net.thunderbird.feature.funding.featureFundingModule
@@ -21,8 +22,11 @@ val featureModule = module {
     includes(featureMigrationModule)
     includes(featureMessageListModule)
     includes(featureThundermailModule)
+    includes(fundingModule)
 
-    single<FundingSettings> { K9FundingSettings() }
+    single<FundingSettings> {
+        K9FundingSettings(fundingConfigStore = get())
+    }
 
     single<CssClassNameProvider> {
         DefaultCssClassNameProvider(

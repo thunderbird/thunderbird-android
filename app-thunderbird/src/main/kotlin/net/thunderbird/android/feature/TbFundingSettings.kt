@@ -1,9 +1,12 @@
 package net.thunderbird.android.feature
 
 import com.fsck.k9.K9
+import net.thunderbird.app.common.feature.funding.configstore.FundingConfigStore
 import net.thunderbird.feature.funding.api.FundingSettings
 
-internal class TbFundingSettings : FundingSettings {
+internal class TbFundingSettings(
+    fundingConfigStore: FundingConfigStore,
+) : FundingSettings {
     override fun getReminderReferenceTimestamp(): Long = K9.fundingReminderReferenceTimestamp
 
     override fun setReminderReferenceTimestamp(timestamp: Long) {
