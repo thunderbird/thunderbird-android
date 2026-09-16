@@ -32,7 +32,8 @@ internal class K9FundingSettings(
     override fun setLastReminderShownTimestamp(timestamp: Long) {
         scope.launch {
             fundingConfigStore.update {
-                it?.copy(lastFundingReminderShownTimestamp = timestamp) ?: FundingConfig.DEFAULT
+                val oldConfig = it ?: FundingConfig.DEFAULT
+                oldConfig.copy(lastFundingReminderShownTimestamp = timestamp)
             }
         }
     }
@@ -44,7 +45,8 @@ internal class K9FundingSettings(
     override fun setReminderShownCount(count: Int) {
         scope.launch {
             fundingConfigStore.update {
-                it?.copy(fundingReminderCount = count) ?: FundingConfig.DEFAULT
+                val oldConfig = it ?: FundingConfig.DEFAULT
+                oldConfig.copy(fundingReminderCount = count)
             }
         }
     }
