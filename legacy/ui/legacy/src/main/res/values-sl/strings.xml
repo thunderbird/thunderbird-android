@@ -973,4 +973,5 @@
     <string name="account_settings_signature_preview">Predogled podpisa</string>
     <string name="account_settings_signature_clear_label">Počisti podpis</string>
     <string name="message_compose_encrypting_message">Šifriranje sporočila …</string>
+    <string name="message_view_from_me_text">mene</string>
 </resources>
