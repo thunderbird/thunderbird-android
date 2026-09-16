@@ -1,14 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="swipe_action_select">Pilih</string>
-    <string name="swipe_action_deselect">Hapus pilihan</string>
-    <string name="swipe_action_mark_as_read">Tandai sebagai dibaca</string>
+    <string name="swipe_action_deselect">Batalkan pilihan</string>
+    <string name="swipe_action_mark_as_read">Tandai telah dibaca</string>
     <string name="swipe_action_mark_as_unread">Tandai belum dibaca</string>
-    <string name="swipe_action_add_star">Tambah bintang</string>
+    <string name="swipe_action_add_star">Tambahkan bintang</string>
     <string name="swipe_action_remove_star">Hapus bintang</string>
     <string name="swipe_action_archive">Arsipkan</string>
     <string name="swipe_action_delete">Hapus</string>
     <string name="swipe_action_spam">Spam</string>
     <string name="swipe_action_move">Pindahkan…</string>
-    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> dipilih</string>
+    <string name="actionbar_selected">%d dipilih</string>
+    <string name="sort_by">Urutkan berdasarkan…</string>
+    <string name="sort_by_date_asc">Tanggal (terlama terlebih dahulu)</string>
+    <string name="sort_by_date_desc">Tanggal (terbaru terlebih dahulu)</string>
+    <string name="sort_by_arrival_asc">Waktu diterima (terlama terlebih dahulu)</string>
+    <string name="sort_by_arrival_desc">Waktu diterima (terbaru terlebih dahulu)</string>
+    <string name="sort_by_subject_asc">Subjek (A-Z)</string>
+    <string name="sort_by_subject_desc">Subjek (Z-A)</string>
+    <string name="sort_by_sender_asc">Pengirim (A-Z)</string>
+    <string name="sort_by_sender_desc">Pengirim (Z-A)</string>
+    <string name="sort_by_flag_asc">Berbintang terlebih dahulu</string>
+    <string name="sort_by_flag_desc">Tidak berbintang terlebih dahulu</string>
+    <string name="sort_by_unread_asc">Belum dibaca terlebih dahulu</string>
+    <string name="sort_by_unread_desc">Sudah dibaca terlebih dahulu</string>
+    <string name="sort_by_attach_asc">Dengan lampiran terlebih dahulu</string>
+    <string name="sort_by_attach_desc">Tanpa lampiran terlebih dahulu</string>
+    <string name="swipe_action_archive_folder_not_set">Atur Folder Arsip</string>
+    <string name="swipe_action_change_swipe_gestures">Ubah\nGerakan Gesek</string>
 </resources>

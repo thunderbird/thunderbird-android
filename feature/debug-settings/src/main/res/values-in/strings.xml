@@ -2,12 +2,27 @@
 <resources>
     <string name="debug_settings_screen_title">Layar Pengaturan Debug Rahasia</string>
     <string name="debug_settings_notifications_loading">Memuat…</string>
-    <string name="debug_settings_notifications_trigger_notification">Notifikasi pemicu</string>
+    <string name="debug_settings_notifications_trigger_notification">Picu notifikasi</string>
     <string name="debug_settings_notifications_single_mail_sender">Pengirim</string>
-    <string name="debug_settings_notifications_single_mail_subject">Subyek</string>
+    <string name="debug_settings_notifications_single_mail_subject">Subjek</string>
     <string name="debug_settings_notifications_single_mail_summary">Ringkasan</string>
     <string name="debug_settings_notifications_single_mail_preview">Pratinjau</string>
-    <string name="debug_settings_notifications_common_notification_information">Informasi pemberitahuan umum</string>
+    <string name="debug_settings_notifications_common_notification_information">Informasi notifikasi umum</string>
     <string name="debug_settings_notifications_in_app_notification">Notifikasi dalam aplikasi</string>
-    <string name="debug_settings_notifications_title">Pemberitahuan</string>
+    <string name="debug_settings_notifications_title">Notifikasi</string>
+    <string name="debug_settings_notifications_system_notification">Notifikasi sistem</string>
+    <string name="debug_settings_notifications_preparing_notification">Menyiapkan notifikasi %1$s</string>
+    <string name="debug_settings_notification_status_log">Log status notifikasi</string>
+    <string name="debug_settings_notifications_status">"Status: "</string>
+    <string name="debug_settings_notifications_clear_status_log">Hapus log status</string>
+    <string name="debug_settings_feature_flag_title">Feature flags</string>
+    <string name="debug_settings_feature_flag_unsaved_changes">Perubahan belum disimpan</string>
+    <string name="debug_settings_feature_flag_unsaved_changes_content_text">Anda memiliki perubahan yang belum disimpan. Apakah Anda yakin ingin keluar?</string>
+    <string name="debug_settings_feature_flag_unsaved_changes_stay_button">Tetap di sini</string>
+    <string name="debug_settings_feature_flag_unsaved_changes_leave_button">Keluar</string>
+    <string name="debug_settings_feature_flag_restore_default_values">Pulihkan Nilai Default</string>
+    <string name="debug_settings_feature_flag_apply_changes">Terapkan perubahan</string>
+    <string name="debug_settings_feature_flag_modified_indicator">"* "</string>
+    <string name="debug_settings_feature_flag_overridden">"overridden; "</string>
+    <string name="debug_settings_feature_flag_default_value">nilai default: %1$b</string>
 </resources>
