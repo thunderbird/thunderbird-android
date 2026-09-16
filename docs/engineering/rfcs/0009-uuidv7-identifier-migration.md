@@ -52,14 +52,20 @@ sentinel and is never generated or rewritten.
 ### Persisted account identifier consistency
 
 Before importing mail, the migration generates and durably records each old-to-new account mapping. A retry reuses that
-mapping. It does not generate another identifier for the same account.
+mapping. It does not generate another identifier for the same account. Replacement IDs are pairwise unique and must not
+equal any legacy account ID or `UnifiedAccountId`. A collision fails the unpublished migration before cutover.
 
 The migration copies every setting in the old account namespace to the corresponding new namespace and retains the old
 settings before cutover. Each copied account remains disabled through its existing `enabled` setting while migration is
 in progress, and the migration state retains whether the account was previously enabled. Imported mail rows, serialized
-queues, supported notifications and activity references, and other inventoried account-qualified data use the new
-`AccountId`. After validation succeeds, cutover publishes the new account list, restores each account's previous enabled
-state, and publishes the global database. Cleanup then removes old account settings and legacy mail storage.
+queues, and app-owned account-qualified data use the new `AccountId`. Android-owned and externally held references follow
+the owner-by-owner rewrite, recreation, reset, or cutover-expiration policy in the technical design's
+[persisted reference inventory](../technical-designs/0003-global-database.md#persisted-accountid-reference-inventory).
+Before migration starts, the app informs the user which externally held references or Android-managed settings may be
+reset or expire. After validation succeeds, cutover publishes the new account list, restores each account's previous
+enabled state, and publishes the global database. Cleanup then removes old account settings, legacy mail storage, and
+temporary migration mappings. Runtime code does not retain an old-ID compatibility lookup after migration completes.
+The completion result identifies affected categories and recovery actions.
 
 The migration gate prevents normal account and mail work from observing a partially switched profile. Recovery resumes
 or completes the durable cutover phase after process termination. A failure before cutover leaves the old account list,
@@ -86,7 +92,7 @@ bounded settings namespace copy and durable old-to-new mapping make replacement 
 
 - Account identifier replacement expands the Global Database cutover and requires a complete inventory of persisted
   account references.
-- External references that cannot be rewritten need an explicit compatibility or reset policy.
+- External references that cannot be rewritten expire at cutover and require an explicit safe fallback or reset policy.
 - UUIDv7 generation must preserve uniqueness and correct ordering behavior under concurrent generation.
 
 ## Validation
@@ -94,9 +100,14 @@ bounded settings namespace copy and durable old-to-new mapping make replacement 
 - Unit tests cover UUIDv7 generation behavior in the shared factory abstraction.
 - Compatibility tests verify parsing and equality for existing UUID values, UUIDv7 values, and `UnifiedAccountId`.
 - Migration tests cover settings namespace copying, disabled staging, restoration of each account's previous enabled
-  state, account order, multiple accounts, stable retry mappings, failures before cutover, process termination during
-  cutover, and post-cutover cleanup.
-- Migration fixtures verify every inventoried account-qualified database and serialized reference uses the new ID.
+  state, account order, multiple accounts, stable retry mappings, duplicate-target rejection, collisions with legacy and
+  unified account IDs, failures before cutover, process termination during cutover, and post-cutover cleanup.
+- Migration fixtures verify every inventoried account-qualified database and serialized reference follows its declared
+  rewrite, recreation, reset, or cutover-expiration policy. This includes account preferences, pending commands, WorkManager
+  requests, widgets, avatars, notification channels and active notifications, shortcuts, routes and saved intents, draft
+  identity metadata, content-provider URIs, and legacy storage paths.
+- UI tests verify that migration discloses possible resets and expirations before starting and reports affected categories
+  plus recovery actions afterward.
 - Import/export round-trip tests cover each format that contains identifier values.
 
 ## Outcome
