@@ -972,4 +972,5 @@
     <string name="account_settings_signature_is_html_summary">Podpis obravnavaj kot HTML. Zaradi varnosti bodo odstranjeni skripti in upravljalniki dogodkov.</string>
     <string name="account_settings_signature_preview">Predogled podpisa</string>
     <string name="account_settings_signature_clear_label">Počisti podpis</string>
+    <string name="message_compose_encrypting_message">Šifriranje sporočila …</string>
 </resources>

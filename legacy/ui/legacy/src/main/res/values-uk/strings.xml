@@ -962,4 +962,5 @@
     <string name="animation_setting_on">Увімкнено</string>
     <string name="animation_setting_off">Вимкнено</string>
     <string name="animation_setting_follow_system">Використовувати типові значення системи</string>
+    <string name="message_compose_encrypting_message">Шифрування повідомлення…</string>
 </resources>

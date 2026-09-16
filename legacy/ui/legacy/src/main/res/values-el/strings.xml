@@ -298,7 +298,7 @@
     <string name="account_setup_options_mail_display_count_10000">10000 μηνύματα</string>
     <string name="account_setup_options_mail_display_count_all">Όλα τα μηνύματα</string>
     <string name="move_copy_cannot_copy_unsynced_message">Δεν είναι δύνατη η αντιγραφή ή η μετακίνηση μηνύματος που δεν έχει συγχρονιστεί με τον διακομιστή</string>
-    <string name="account_settings_push_advanced_title">Προχωρημένα</string>
+    <string name="account_settings_push_advanced_title">Για προχωρημένους</string>
     <string name="account_settings_title_fmt">Ρυθμίσεις λογαριασμού</string>
     <string name="account_settings_notify_label">Ειδοποιήσεις νέων μηνυμάτων</string>
     <string name="account_settings_notify_sync_label">Συγχρονισμός ειδοποιήσεων</string>
@@ -313,8 +313,8 @@
     <string name="account_settings_ignore_chat_messages_summary">Να μην εμφανίζονται ειδοποιήσεις για μηνύματα που ανήκουν σε συζήτηση e-mail</string>
     <string name="account_settings_mark_message_as_read_on_view_label">Σήμανση ως αναγνωσμένο κατά το άνοιγμα</string>
     <string name="account_settings_mark_message_as_read_on_view_summary">Επισήμανση μηνύματος ως αναγνωσμένο όταν είναι ανοιχτό για προβολή</string>
-    <string name="account_settings_mark_message_as_read_on_delete_label">Σήμανση ως αναγνωσμένο κατά τη διαγραφή</string>
-    <string name="account_settings_mark_message_as_read_on_delete_summary">Να γίνεται σήμανση του μηνύματος ως αναγνωσμένο όταν διαγράφεται</string>
+    <string name="account_settings_mark_message_as_read_on_delete_label">Μαρκάρισμα ως διαβασμένων όταν διαγράφονται</string>
+    <string name="account_settings_mark_message_as_read_on_delete_summary">Μαρκάρισμα μηνύματος ως διαβασμένο όταν διαγράφεται</string>
     <string name="account_settings_notification_channels_label">Κατηγορίες ειδοποιήσεων</string>
     <string name="account_settings_open_notification_settings_messages_summary">Ρύθμιση ειδοποιήσεων για νέα μηνύματα</string>
     <string name="account_settings_open_notification_settings_miscellaneous_summary">Ρύθμιση ειδοποιήσεων σφαλμάτων και κατάστασης</string>
@@ -356,9 +356,9 @@
     <string name="account_settings_crypto_encrypt_all_drafts">Αποθήκευση όλων των πρόχειρων ως κρυπτογραφημένα</string>
     <string name="account_settings_crypto_encrypt_all_drafts_on">Όλα τα πρόχειρα θα αποθηκεύονται κρυπτογραφημένα</string>
     <string name="account_settings_crypto_encrypt_all_drafts_off">Κρυπτογράφηση πρόχειρων μόνο εάν είναι ενεργοποιημένη η λειτουργία κρυπτογράφησης</string>
-    <string name="account_settings_mail_check_frequency_label">Συχνότητα ενημέρωσης φακέλων</string>
+    <string name="account_settings_mail_check_frequency_label">Συχνότητα ανανέωσης φακέλου</string>
     <string name="account_settings_mail_display_count_label">Μέγεθος τοπικού φακέλου</string>
-    <string name="account_settings_autodownload_message_size_label">Μετάκληση μηνυμάτων μέχρι</string>
+    <string name="account_settings_autodownload_message_size_label">Άντλησε μηνύματα μέχρι το</string>
     <string name="account_settings_autodownload_message_size_1">1 KiB</string>
     <string name="account_settings_autodownload_message_size_2">2 KiB</string>
     <string name="account_settings_autodownload_message_size_4">4 KiB</string>
@@ -373,28 +373,28 @@
     <string name="account_settings_autodownload_message_size_2048">2 MiB</string>
     <string name="account_settings_autodownload_message_size_5120">5 MiB</string>
     <string name="account_settings_autodownload_message_size_10240">10 MiB</string>
-    <string name="account_settings_autodownload_message_size_any">Χωρίς όριο</string>
+    <string name="account_settings_autodownload_message_size_any">οποιοδήποτε μέγεθος (χωρίς όρια)</string>
     <string name="account_settings_message_age_label">Συγχρονισμός μηνυμάτων από</string>
     <string name="account_settings_message_age_any">οποιαδήποτε στιγμή (χωρίς όρια)</string>
     <string name="account_settings_message_age_0">σήμερα</string>
-    <string name="account_settings_message_age_1">τις τελευταίες 2 ημέρες</string>
-    <string name="account_settings_message_age_2">τις τελευταίες 3 ημέρες</string>
+    <string name="account_settings_message_age_1">τις τελευταίες 2 μέρες</string>
+    <string name="account_settings_message_age_2">τις τελευταίες 3 μέρες</string>
     <string name="account_settings_message_age_7">την τελευταία εβδομάδα</string>
-    <string name="account_settings_message_age_14">τις 2 τελευταίες εβδομάδες</string>
+    <string name="account_settings_message_age_14">τις τελευταίες 2 βδομάδες</string>
     <string name="account_settings_message_age_21">τις τελευταίες 3 εβδομάδες</string>
     <string name="account_settings_message_age_1_month">τον τελευταίο μήνα</string>
     <string name="account_settings_message_age_2_months">τους τελευταίους 2 μήνες</string>
     <string name="account_settings_message_age_3_months">τους τελευταίους 3 μήνες</string>
-    <string name="account_settings_message_age_6_months">τους τελευταίους 6 μήνες</string>
-    <string name="account_settings_message_age_1_year">το τελευταίο έτος</string>
+    <string name="account_settings_message_age_6_months">το τελευταίο 6μηνο</string>
+    <string name="account_settings_message_age_1_year">τον τελευταίο χρόνο</string>
     <string name="account_settings_sync_remote_deletetions_label">Συγχρονισμός διαγραφών διακομιστή</string>
-    <string name="account_settings_sync_remote_deletetions_summary">Αφαίρεση των μηνυμάτων όταν διαγράφονται από τον διακομιστή</string>
+    <string name="account_settings_sync_remote_deletetions_summary">Αφαίρεση μηνυμάτων όταν διαγράφονται στο διακομιστή</string>
     <string name="account_settings_openpgp_missing">Λείπει η εφαρμογή OpenPGP - απεγκαταστήθηκε;</string>
     <string name="folder_settings_title">Ρυθμίσεις φακέλων</string>
     <string name="folder_settings_in_top_group_label">Προβολή στην ομάδα κορυφής</string>
     <string name="folder_settings_clear_local_folder_action">Καθαρισμός τοπικών μηνυμάτων</string>
-    <string name="account_settings_incoming_label">Ρυθμίσεις εισερχομένων</string>
-    <string name="account_settings_incoming_summary">Διαμόρφωση του διακομιστή εισερχόμενων email</string>
+    <string name="account_settings_incoming_label">Διακομιστής εισερχομένων</string>
+    <string name="account_settings_incoming_summary">Διαμόρφωση διακομιστή εισερχόμενης αλληλογραφίας</string>
     <string name="account_settings_outgoing_label">Ρυθμίσεις εξερχομένων</string>
     <string name="account_settings_outgoing_summary">Διαμόρφωση του διακομιστή εισερχόμενων email (SMTP)</string>
     <string name="account_settings_name_label">Το όνομά σου</string>
@@ -925,4 +925,17 @@
     <string name="accessibility_move_up">Μετακίνηση πάνω</string>
     <string name="accessibility_move_item_up">Μετακίνηση <xliff:g id="item">%1$s</xliff:g> πάνω</string>
     <string name="accessibility_move_item_down">Μετακίνηση <xliff:g id="item">%1$s</xliff:g> κάτω</string>
+    <string name="camera_capture_lost">Η εικόνα που καταγράφηκε χάθηκε επειδή η εφαρμογή έκλεισε. Παρακαλώ δοκιμάστε ξανά.</string>
+    <string name="notification_summary_delete_title">Εμφάνιση της επιλογής «Διαγραφή» στις ειδοποιήσεις για πολλά μηνύματα</string>
+    <string name="notification_summary_delete_summary">Προσθέτει μια ενέργεια «Διαγραφή» στις ειδοποιήσεις που συνοψίζουν πολλά νέα μηνύματα</string>
+    <string name="notification_show_contact_picture_title">Εμφάνιση φωτογραφιών επαφών στις ειδοποιήσεις</string>
+    <string name="notification_show_contact_picture_summary">Εμφάνιση των προφίλ των αποστολέων στις ειδοποιήσεις για νέα μηνύματα</string>
+    <string name="notification_actions_settings_description">Αναδιάταξη των ενεργειών ειδοποίησης.</string>
+    <string name="notification_actions_cutoff_state">Οι ενέργειες πάνω από αυτή τη γραμμή εμφανίζονται στην ειδοποίηση</string>
+    <string name="notification_actions_shown_state">Εμφανίζεται στην ειδοποίηση</string>
+    <string name="notification_actions_hidden_state">Δεν εμφανίζεται στην ειδοποίηση</string>
+    <plurals name="message_view_attachment_summary">
+        <item quantity="one"><xliff:g id="count">%1$d</xliff:g> Συνημμένο (<xliff:g id="size">%2$s</xliff:g>)</item>
+        <item quantity="other"><xliff:g id="count">%1$d</xliff:g> Συνημμένα (<xliff:g id="size">%2$s</xliff:g>)</item>
+    </plurals>
 </resources>
