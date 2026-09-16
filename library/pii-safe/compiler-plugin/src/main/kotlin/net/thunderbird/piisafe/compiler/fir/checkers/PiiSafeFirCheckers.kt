@@ -9,8 +9,8 @@ import org.jetbrains.kotlin.fir.declarations.FirClass
 internal class PiiSafeFirCheckers(session: FirSession) : FirAdditionalCheckersExtension(session) {
     override val declarationCheckers: DeclarationCheckers = object : DeclarationCheckers() {
         override val classCheckers: Set<FirDeclarationChecker<FirClass>> = setOf(
-            HasPiiRequiresAnnotatedPropertyChecker(),
-            HasPiiPropagationChecker(),
+            HasPiiRequiresAnnotatedPropertyChecker(session),
+            HasPiiPropagationChecker(session),
         )
     }
 }

@@ -33,19 +33,3 @@ sealed interface BaseFolderDetails<TFolder> {
     val isNotificationsEnabled: Boolean
     val isPushEnabled: Boolean
 }
-
-/*
- * TODO(#11493): The logging compiler plugin will automatically should auto-generate
- *  this method with the correct masking.
- */
-fun FolderDetails.toStringPiiSafe(): String = "FolderDetails(folder=${folder.toStringPiiSafe()}, " +
-    "isInTopGroup=$isInTopGroup, isIntegrate=$isIntegrate, isSyncEnabled=$isSyncEnabled, " +
-    "isVisible=$isVisible, isNotificationsEnabled=$isNotificationsEnabled, isPushEnabled=$isPushEnabled)"
-
-/*
- * TODO(#11493): The logging compiler plugin will automatically should auto-generate
- *  this method with the correct masking.
- */
-fun RemoteFolderDetails.toStringPiiSafe(): String = "FolderDetails(folder=${folder.toStringPiiSafe()}, " +
-    "isInTopGroup=$isInTopGroup, isIntegrate=$isIntegrate, isSyncEnabled=$isSyncEnabled, " +
-    "isVisible=$isVisible, isNotificationsEnabled=$isNotificationsEnabled, isPushEnabled=$isPushEnabled)"
