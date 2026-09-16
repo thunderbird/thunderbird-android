@@ -84,4 +84,29 @@ class HasPiiRequiresAnnotatedPropertyCheckerTest {
         // Assert
         assertEquals(expected = KotlinCompilation.ExitCode.OK, actual = result.exitCode)
     }
+
+    @Test
+    fun `checker should compile OK when HasPii type is nested in generic type arguments`() {
+        // Arrange
+        val firExtensionRegistrar = TestFirExtensionRegistrar(::PiiSafeFirCheckers)
+        val source = """
+            import net.thunderbird.piisafe.annotation.PiiSafe
+
+            @PiiSafe.HasPii
+            data class MessageAddress(@get:PiiSafe.Mask val value: String)
+
+            @PiiSafe.HasPii
+            data class MessageEnvelope(val from: Map<String, List<MessageAddress>>)
+        """.trimIndent()
+
+        // Act
+        val result = compileWithPiiSafePlugin(
+            fileName = "NestedPiiTypeTest.kt",
+            source = source,
+            registrar = testFirRegistrar(firExtensionRegistrar),
+        )
+
+        // Assert
+        assertEquals(expected = KotlinCompilation.ExitCode.OK, actual = result.exitCode)
+    }
 }
