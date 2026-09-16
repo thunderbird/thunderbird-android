@@ -24,6 +24,10 @@ public class FileBackedBody implements Body, SizeAware, RawDataBody {
         this.encoding = encoding;
     }
 
+    public File getFile() {
+        return file;
+    }
+
     @Override
     public InputStream getInputStream() throws MessagingException {
         try {
