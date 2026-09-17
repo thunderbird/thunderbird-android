@@ -28,7 +28,7 @@ kotlin {
         }
 
         jvmMain.dependencies {
-            implementation(libs.androidx.navigationevent)
+            implementation(libs.jetbrains.compose.navigation.event)
         }
     }
 }
