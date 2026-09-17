@@ -66,11 +66,11 @@ class DefaultFundingConfigStoreTest {
             val testConfig = configTestSubject.config.first()
             assertEquals(
                 newConfig.lastFundingReminderShownTimestamp,
-                testConfig.lastFundingReminderShownTimestamp
+                testConfig.lastFundingReminderShownTimestamp,
             )
             assertEquals(
                 newConfig.fundingReminderCount,
-                testConfig.fundingReminderCount
+                testConfig.fundingReminderCount,
             )
         }
     }

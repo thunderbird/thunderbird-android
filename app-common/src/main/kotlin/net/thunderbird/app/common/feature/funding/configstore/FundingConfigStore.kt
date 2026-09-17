@@ -24,7 +24,8 @@ class DefaultFundingConfigStore(
 ) : BaseConfigStore<FundingConfig>(
     provider = provider,
     definition = FundingConfigDefinition(id = id),
-), FundingConfigStore {
+),
+    FundingConfigStore {
 
     override fun dataStateFlow(): StateFlow<FundingConfig> {
         return config.stateIn(

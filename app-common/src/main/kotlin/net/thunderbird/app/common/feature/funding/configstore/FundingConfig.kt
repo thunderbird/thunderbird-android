@@ -7,10 +7,10 @@ data class FundingConfig(
     val lastFundingReminderShownTimestamp: Long,
     val fundingReminderCount: Int,
 ) {
-   companion object {
-       val DEFAULT = FundingConfig(
-           lastFundingReminderShownTimestamp = 0L,
-           fundingReminderCount = 0,
-       )
-   }
+    companion object {
+        val DEFAULT = FundingConfig(
+            lastFundingReminderShownTimestamp = 0L,
+            fundingReminderCount = 0,
+        )
+    }
 }

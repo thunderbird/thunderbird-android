@@ -6,7 +6,7 @@ import net.thunderbird.core.configstore.ConfigKey
 import net.thunderbird.core.configstore.ConfigMapper
 import net.thunderbird.core.configstore.ConfigMigration
 
-class FundingConfigDefinition(override val id: ConfigId): ConfigDefinition<FundingConfig> {
+class FundingConfigDefinition(override val id: ConfigId) : ConfigDefinition<FundingConfig> {
     override val version: Int = 1
     override val mapper: ConfigMapper<FundingConfig> = FundingConfigMapper()
     override val defaultValue: FundingConfig = FundingConfig.DEFAULT
