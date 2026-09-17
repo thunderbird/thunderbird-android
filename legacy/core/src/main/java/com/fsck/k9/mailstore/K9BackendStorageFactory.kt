@@ -7,6 +7,10 @@ import net.thunderbird.core.preference.storage.StorageProvider
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.mail.folder.api.SpecialFolderUpdater
 import net.thunderbird.feature.mail.folder.api.data.repository.FolderQueryRepository
+import net.thunderbird.feature.mail.message.domain.MessageLifecycleRepository
+import net.thunderbird.feature.mail.message.domain.MessageQueryRepository
+import net.thunderbird.feature.mail.message.mapper.MessageDataMapper
+import com.fsck.k9.mail.Message as LegacyMessage
 
 class K9BackendStorageFactory(
     private val storageProvider: StorageProvider,
@@ -15,6 +19,9 @@ class K9BackendStorageFactory(
     private val messageStoreManager: MessageStoreManager,
     private val specialFolderUpdaterFactory: SpecialFolderUpdater.Factory,
     private val saveMessageDataCreator: SaveMessageDataCreator,
+    private val messageLifecycleRepository: MessageLifecycleRepository,
+    private val messageQueryRepository: MessageQueryRepository,
+    private val messageDataMapper: MessageDataMapper<LegacyMessage>,
 ) : BackendStorageFactory {
     override fun createBackendStorage(accountId: AccountId): K9BackendStorage {
         val messageStore = messageStoreManager.getMessageStore(accountId)
@@ -32,6 +39,9 @@ class K9BackendStorageFactory(
             folderSettingsProvider = folderSettingsProvider,
             saveMessageDataCreator = saveMessageDataCreator,
             listeners = listeners,
+            messageLifecycleRepository = messageLifecycleRepository,
+            messageQueryRepository = messageQueryRepository,
+            messageDataMapper = messageDataMapper,
         )
     }
 }
