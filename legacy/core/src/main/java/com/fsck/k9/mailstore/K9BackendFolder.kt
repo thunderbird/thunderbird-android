@@ -3,11 +3,11 @@ package com.fsck.k9.mailstore
 import app.k9mail.legacy.mailstore.MessageStore
 import com.fsck.k9.backend.api.BackendFolder
 import com.fsck.k9.backend.api.BackendFolder.MoreMessages
-import com.fsck.k9.mail.Message
 import com.fsck.k9.mail.MessageDownloadState
 import java.util.Date
 import net.thunderbird.core.common.mail.Flag
 import app.k9mail.legacy.mailstore.MoreMessages as StoreMoreMessages
+import com.fsck.k9.mail.Message as LegacyMessage
 
 class K9BackendFolder(
     private val messageStore: MessageStore,
@@ -83,7 +83,7 @@ class K9BackendFolder(
         messageStore.setMessageFlag(folderId, messageServerId, flag, value)
     }
 
-    override fun saveMessage(message: Message, downloadState: MessageDownloadState) {
+    override suspend fun saveMessage(message: LegacyMessage, downloadState: MessageDownloadState) {
         requireMessageServerId(message)
 
         val messageData = saveMessageDataCreator.createSaveMessageData(message, downloadState)
@@ -122,7 +122,7 @@ class K9BackendFolder(
         MoreMessages.TRUE -> StoreMoreMessages.TRUE
     }
 
-    private fun requireMessageServerId(message: Message) {
+    private fun requireMessageServerId(message: LegacyMessage) {
         if (message.uid.isNullOrEmpty()) {
             error("Message requires a server ID to be set")
         }
