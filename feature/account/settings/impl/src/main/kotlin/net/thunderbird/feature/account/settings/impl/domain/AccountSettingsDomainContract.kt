@@ -96,6 +96,18 @@ internal interface AccountSettingsDomainContract {
         data class UpdateIdleRefreshMinutes(val value: Int) : UpdateFetchingMailSettingsCommand
     }
 
+    sealed interface UpdateSendingMailSettingsCommand {
+        data class UpdateMessageFormat(val value: String) : UpdateSendingMailSettingsCommand
+        data class UpdateAlwaysShowCcBcc(val value: Boolean) : UpdateSendingMailSettingsCommand
+        data class UpdateReadReceipt(val value: Boolean) : UpdateSendingMailSettingsCommand
+        data class UpdateReplyQuotingStyle(val value: String) : UpdateSendingMailSettingsCommand
+        data class UpdateQuoteMessageWhenReplying(val value: Boolean) : UpdateSendingMailSettingsCommand
+        data class UpdateReplyAfterQuotedText(val value: Boolean) : UpdateSendingMailSettingsCommand
+        data class UpdateStripSignatureOnReply(val value: Boolean) : UpdateSendingMailSettingsCommand
+        data class UpdateQuotedTextPrefix(val value: String) : UpdateSendingMailSettingsCommand
+        data class UpdateUploadSentMessages(val value: Boolean) : UpdateSendingMailSettingsCommand
+    }
+
     sealed interface AccountSettingError {
         data class NotFound(
             val message: String,
