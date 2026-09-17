@@ -1,4 +1,4 @@
-package net.thunderbird.app.common.feature.funding.api
+package net.thunderbird.feature.funding.api
 
 import kotlinx.coroutines.flow.StateFlow
 import net.thunderbird.core.configstore.ConfigStore

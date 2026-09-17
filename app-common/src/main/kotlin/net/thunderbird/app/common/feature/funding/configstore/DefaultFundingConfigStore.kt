@@ -4,12 +4,11 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
-import net.thunderbird.app.common.feature.funding.api.FundingConfig
-import net.thunderbird.app.common.feature.funding.api.FundingConfigDefinition
-import net.thunderbird.app.common.feature.funding.api.FundingConfigStore
 import net.thunderbird.core.configstore.BaseConfigStore
 import net.thunderbird.core.configstore.ConfigId
 import net.thunderbird.core.configstore.backend.ConfigBackendProvider
+import net.thunderbird.feature.funding.api.FundingConfig
+import net.thunderbird.feature.funding.api.FundingConfigStore
 
 class DefaultFundingConfigStore(
     id: ConfigId,

@@ -1,4 +1,4 @@
-package net.thunderbird.app.common.feature.funding.api
+package net.thunderbird.feature.funding.api
 
 import kotlinx.serialization.Serializable
 

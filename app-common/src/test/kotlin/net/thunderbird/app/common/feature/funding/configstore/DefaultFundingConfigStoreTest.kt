@@ -8,14 +8,14 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runTest
-import net.thunderbird.app.common.feature.funding.api.FundingConfig
-import net.thunderbird.app.common.feature.funding.api.FundingConfigKeys
-import net.thunderbird.app.common.feature.funding.api.FundingConfigStore
 import net.thunderbird.core.configstore.Config
 import net.thunderbird.core.configstore.ConfigId
 import net.thunderbird.core.configstore.backend.ConfigBackend
 import net.thunderbird.core.configstore.backend.ConfigBackendProvider
 import net.thunderbird.core.configstore.testing.TestConfigBackend
+import net.thunderbird.feature.funding.api.FundingConfig
+import net.thunderbird.feature.funding.api.FundingConfigKeys
+import net.thunderbird.feature.funding.api.FundingConfigStore
 
 class DefaultFundingConfigStoreTest {
 

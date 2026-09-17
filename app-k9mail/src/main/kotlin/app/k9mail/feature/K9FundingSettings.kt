@@ -3,8 +3,8 @@ package app.k9mail.feature
 import com.fsck.k9.K9
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import net.thunderbird.app.common.feature.funding.api.FundingConfig
-import net.thunderbird.app.common.feature.funding.api.FundingConfigStore
+import net.thunderbird.feature.funding.api.FundingConfig
+import net.thunderbird.feature.funding.api.FundingConfigStore
 import net.thunderbird.feature.funding.api.FundingSettings
 
 internal class K9FundingSettings(
