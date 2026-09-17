@@ -669,7 +669,7 @@
     <string name="fetching_attachment_dialog_message">Получение вложений…</string>
     <!--Note: This references message_view_download_remainder-->
     <string name="preview_encrypted">*Зашифровано*</string>
-    <string name="add_from_contacts">Добавить из Контактов</string>
+    <string name="add_from_contacts">Добавить из контактов</string>
     <string name="recipient_cc">Копия</string>
     <string name="recipient_bcc">Скрытая копия</string>
     <string name="recipient_to">Кому</string>
@@ -973,4 +973,5 @@
     <string name="account_settings_signature_preview">Просмотр подписи</string>
     <string name="account_settings_signature_clear_label">Удалить подпись</string>
     <string name="message_compose_encrypting_message">Шифрование сообщения…</string>
+    <string name="message_view_from_me_text">меня</string>
 </resources>
