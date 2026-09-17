@@ -8,6 +8,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import net.thunderbird.android.feature.mail.message.reader.api.css.DefaultCssClassNameProvider
+import net.thunderbird.app.common.feature.funding.configstore.DefaultFundingConfigStore
 import net.thunderbird.app.common.feature.funding.fundingModule
 import net.thunderbird.feature.account.settings.featureAccountSettingsModule
 import net.thunderbird.feature.funding.api.FundingSettings
@@ -30,7 +31,7 @@ val featureModule = module {
 
     single<FundingSettings> {
         K9FundingSettings(
-            fundingConfigStore = get(),
+            fundingConfigStore = get<DefaultFundingConfigStore>(),
             scope = get(named("ConfigStoreScope")),
         )
     }

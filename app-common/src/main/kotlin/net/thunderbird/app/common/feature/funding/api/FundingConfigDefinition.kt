@@ -1,5 +1,7 @@
-package net.thunderbird.app.common.feature.funding.configstore
+package net.thunderbird.app.common.feature.funding.api
 
+import net.thunderbird.app.common.feature.funding.configstore.FundingConfigMapper
+import net.thunderbird.app.common.feature.funding.configstore.FundingConfigMigration
 import net.thunderbird.core.configstore.ConfigDefinition
 import net.thunderbird.core.configstore.ConfigId
 import net.thunderbird.core.configstore.ConfigKey

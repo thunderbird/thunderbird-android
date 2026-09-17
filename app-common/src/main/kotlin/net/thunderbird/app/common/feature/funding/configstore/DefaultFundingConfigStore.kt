@@ -1,21 +1,15 @@
 package net.thunderbird.app.common.feature.funding.configstore
 
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.runBlocking
+import net.thunderbird.app.common.feature.funding.api.FundingConfig
+import net.thunderbird.app.common.feature.funding.api.FundingConfigDefinition
+import net.thunderbird.app.common.feature.funding.api.FundingConfigStore
 import net.thunderbird.core.configstore.BaseConfigStore
 import net.thunderbird.core.configstore.ConfigId
-import net.thunderbird.core.configstore.ConfigStore
 import net.thunderbird.core.configstore.backend.ConfigBackendProvider
-
-interface FundingConfigStore : ConfigStore<FundingConfig> {
-    fun dataStateFlow(): StateFlow<FundingConfig>
-}
 
 class DefaultFundingConfigStore(
     id: ConfigId,
@@ -27,7 +21,7 @@ class DefaultFundingConfigStore(
 ),
     FundingConfigStore {
 
-    override fun dataStateFlow(): StateFlow<FundingConfig> {
+    override fun configAsStateFlow(): StateFlow<FundingConfig> {
         return config.stateIn(
             scope = scope,
             started = SharingStarted.Eagerly,

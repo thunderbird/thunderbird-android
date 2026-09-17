@@ -1,18 +1,16 @@
 package net.thunderbird.app.common.feature.funding.configstore
 
 import kotlin.apply
-import kotlin.test.AfterTest
-import kotlin.test.BeforeTest
 import kotlin.test.DefaultAsserter.assertEquals
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.TestScope
-import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
-import net.thunderbird.components.ui.testing.coroutines.MainDispatcherHelper
+import net.thunderbird.app.common.feature.funding.api.FundingConfig
+import net.thunderbird.app.common.feature.funding.api.FundingConfigKeys
+import net.thunderbird.app.common.feature.funding.api.FundingConfigStore
 import net.thunderbird.core.configstore.Config
 import net.thunderbird.core.configstore.ConfigId
 import net.thunderbird.core.configstore.backend.ConfigBackend

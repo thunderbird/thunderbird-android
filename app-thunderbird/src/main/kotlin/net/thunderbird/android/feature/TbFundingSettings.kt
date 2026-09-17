@@ -3,8 +3,8 @@ package net.thunderbird.android.feature
 import com.fsck.k9.K9
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import net.thunderbird.app.common.feature.funding.configstore.FundingConfig
-import net.thunderbird.app.common.feature.funding.configstore.FundingConfigStore
+import net.thunderbird.app.common.feature.funding.api.FundingConfig
+import net.thunderbird.app.common.feature.funding.api.FundingConfigStore
 import net.thunderbird.feature.funding.api.FundingSettings
 
 internal class TbFundingSettings(
@@ -26,7 +26,7 @@ internal class TbFundingSettings(
     }
 
     override fun getLastReminderShownTimestamp(): Long {
-        return fundingConfigStore.dataStateFlow().value.lastFundingReminderShownTimestamp
+        return fundingConfigStore.configAsStateFlow().value.lastFundingReminderShownTimestamp
     }
 
     override fun setLastReminderShownTimestamp(timestamp: Long) {
@@ -39,7 +39,7 @@ internal class TbFundingSettings(
     }
 
     override fun getReminderShownCount(): Int {
-        return fundingConfigStore.dataStateFlow().value.fundingReminderCount
+        return fundingConfigStore.configAsStateFlow().value.fundingReminderCount
     }
 
     override fun setReminderShownCount(count: Int) {

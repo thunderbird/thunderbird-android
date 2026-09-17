@@ -5,6 +5,7 @@ import app.k9mail.feature.onboarding.migration.onboardingMigrationModule
 import app.k9mail.feature.telemetry.telemetryModule
 import net.thunderbird.android.BuildConfig
 import net.thunderbird.android.feature.mail.message.reader.api.css.DefaultCssClassNameProvider
+import net.thunderbird.app.common.feature.funding.configstore.DefaultFundingConfigStore
 import net.thunderbird.app.common.feature.funding.fundingModule
 import net.thunderbird.feature.account.settings.featureAccountSettingsModule
 import net.thunderbird.feature.funding.api.FundingSettings
@@ -27,7 +28,7 @@ internal val featureModule = module {
 
     single<FundingSettings> {
         TbFundingSettings(
-            fundingConfigStore = get(),
+            fundingConfigStore = get<DefaultFundingConfigStore>(),
             scope = get(named("ConfigStoreScope")),
         )
     }
