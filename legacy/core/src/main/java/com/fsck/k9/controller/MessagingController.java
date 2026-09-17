@@ -80,6 +80,7 @@ import com.fsck.k9.mailstore.SendState;
 import com.fsck.k9.mailstore.SpecialLocalFoldersCreator;
 import com.fsck.k9.notification.NotificationController;
 import com.fsck.k9.notification.NotificationStrategy;
+import kotlinx.coroutines.Dispatchers;
 import net.thunderbird.core.android.account.DeletePolicy;
 import net.thunderbird.core.android.account.LegacyAccountDto;
 import net.thunderbird.core.common.exception.MessagingException;
@@ -1303,7 +1304,8 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
                 SyncConfig syncConfig = createSyncConfig(account);
                 backend.downloadMessage(syncConfig, folderServerId, messageServerId);
             } else {
-                backend.downloadCompleteMessage(folderServerId, messageServerId);
+                MessagingControllerWrapperKt.downloadCompleteMessageBlocking(
+                    backend, Dispatchers.getIO(), folderServerId, messageServerId);
             }
 
             for (MessagingListener l : getListeners(listener)) {
