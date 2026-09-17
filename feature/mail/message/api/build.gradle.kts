@@ -13,6 +13,7 @@ kotlin {
             api(projects.core.architecture.api)
             implementation(projects.feature.account.api)
             api(projects.feature.mail.folder.api)
+            implementation(libs.tb.mobile.components.core.outcome)
         }
     }
 }

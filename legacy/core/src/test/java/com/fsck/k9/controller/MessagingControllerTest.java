@@ -21,6 +21,7 @@ import com.fsck.k9.mail.AuthenticationFailedException;
 import com.fsck.k9.mail.CertificateChainException;
 import com.fsck.k9.mail.CertificateValidationException;
 import com.fsck.k9.mail.ConnectionSecurity;
+import com.fsck.k9.mail.Message;
 import net.thunderbird.core.common.mail.Flag;
 import net.thunderbird.core.common.exception.MessagingException;
 import com.fsck.k9.mail.ServerSettings;
@@ -39,6 +40,10 @@ import com.fsck.k9.notification.NotificationStrategy;
 import net.thunderbird.core.common.mail.Protocols;
 import net.thunderbird.core.logging.Logger;
 import net.thunderbird.components.core.outcome.Outcome;
+import net.thunderbird.feature.mail.folder.LegacyFolderIdFactory;
+import net.thunderbird.feature.mail.message.LegacyMessageIdFactory;
+import net.thunderbird.feature.mail.message.domain.MessageLifecycleRepository;
+import net.thunderbird.feature.mail.message.mapper.MessageDataMapper;
 import net.thunderbird.feature.mail.message.list.LocalDeleteOperationDecider;
 import net.thunderbird.feature.mail.folder.api.OutboxFolderManager;
 import net.thunderbird.feature.mail.message.list.LocalMessageUidPrefixProvider;
@@ -127,6 +132,10 @@ public class MessagingControllerTest extends K9RobolectricTest {
 
     @Mock
     private Logger syncLogger;
+    @Mock
+    private MessageLifecycleRepository messageLifecycleRepository;
+    @Mock
+    private MessageDataMapper<Message> messageDataMapper;
 
     @Before
     public void setUp() throws MessagingException {
@@ -163,7 +172,11 @@ public class MessagingControllerTest extends K9RobolectricTest {
             featureFlagProvider,
             syncLogger,
             notificationManager,
-            fakeOutboxFolderManager
+            fakeOutboxFolderManager,
+            messageLifecycleRepository,
+            messageDataMapper,
+            LegacyMessageIdFactory.INSTANCE,
+            LegacyFolderIdFactory.INSTANCE
         );
 
         configureAccount();

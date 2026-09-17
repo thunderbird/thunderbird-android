@@ -46,8 +46,8 @@ internal class SaveMessageOperations(
     private val accountId: AccountId,
     private val localMessageUidPrefixProvider: LocalMessageUidPrefixProvider,
 ) {
-    fun saveRemoteMessage(folderId: Long, messageServerId: String, messageData: SaveMessageData) {
-        saveMessage(folderId, messageServerId, messageData)
+    fun saveRemoteMessage(folderId: Long, messageServerId: String, messageData: SaveMessageData): Long {
+        return saveMessage(folderId, messageServerId, messageData)
     }
 
     fun saveLocalMessage(folderId: Long, messageData: SaveMessageData, existingMessageId: Long?): Long {

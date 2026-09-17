@@ -2,6 +2,7 @@ package com.fsck.k9.mailstore
 
 import android.database.sqlite.SQLiteDatabase
 import androidx.core.content.contentValuesOf
+import app.k9mail.legacy.mailstore.MessageStore
 import app.k9mail.legacy.mailstore.MessageStoreManager
 import assertk.assertFailure
 import assertk.assertThat
@@ -10,6 +11,8 @@ import assertk.assertions.hasMessage
 import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
 import assertk.assertions.isTrue
+import assertk.assertions.prop
+import assertk.assertions.single
 import com.fsck.k9.K9RobolectricTest
 import com.fsck.k9.Preferences
 import com.fsck.k9.backend.api.BackendFolder
@@ -25,12 +28,34 @@ import com.fsck.k9.mail.ServerSettings
 import com.fsck.k9.mail.internet.MimeMessage
 import com.fsck.k9.mail.internet.MimeMessageHelper
 import com.fsck.k9.mail.internet.TextBody
+import kotlin.uuid.ExperimentalUuidApi
+import kotlin.uuid.Uuid
 import kotlinx.coroutines.test.runTest
+import kotlinx.datetime.LocalDateTime
+import net.thunderbird.components.core.outcome.Outcome
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.common.mail.Flag
+import net.thunderbird.feature.account.AccountId
+import net.thunderbird.feature.mail.folder.FolderId
+import net.thunderbird.feature.mail.folder.LegacyFolderIdFactory
+import net.thunderbird.feature.mail.message.LegacyMessageIdFactory
+import net.thunderbird.feature.mail.message.MessageEnvelope
+import net.thunderbird.feature.mail.message.MessageFlag
+import net.thunderbird.feature.mail.message.MessageHeaderId
+import net.thunderbird.feature.mail.message.MessageHeaders
+import net.thunderbird.feature.mail.message.MessageServerId
+import net.thunderbird.feature.mail.message.domain.GetMessageIdCriteria
+import net.thunderbird.feature.mail.message.domain.MessageLifecycleError
+import net.thunderbird.feature.mail.message.domain.MessageLifecycleRepository
+import net.thunderbird.feature.mail.message.domain.MessageQueryError
+import net.thunderbird.feature.mail.message.domain.MessageQueryRepository
+import net.thunderbird.feature.mail.message.mapper.MessageDataMapper
 import org.junit.After
 import org.junit.Test
 import org.koin.core.component.inject
+import net.thunderbird.feature.mail.message.Message as DomainMessage
+import net.thunderbird.feature.mail.message.MessageDownloadState as DomainMessageDownloadState
+import net.thunderbird.feature.mail.message.MessageId as DomainMessageId
 
 class K9BackendFolderTest : K9RobolectricTest() {
     val preferences: Preferences by inject()
@@ -39,6 +64,9 @@ class K9BackendFolderTest : K9RobolectricTest() {
     val saveMessageDataCreator: SaveMessageDataCreator by inject()
 
     val account: LegacyAccountDto = createAccount()
+    val messageStore: MessageStore = messageStoreManager.getMessageStore(account)
+    private val messageLifecycleRepository = FakeMessageLifecycleRepository()
+    private val messageQueryRepository = FakeMessageQueryRepository()
     val backendFolder = createBackendFolder()
     val database: LockableDatabase = localStoreProvider.getInstance(account).database
 
@@ -98,6 +126,17 @@ class K9BackendFolderTest : K9RobolectricTest() {
             .hasMessage("Message requires a server ID to be set")
     }
 
+    @Test
+    fun saveMessage_withNewMessage_shouldCreateMessageViaLifecycleRepository() = runTest {
+        val message = createMessage(MESSAGE_SERVER_ID)
+
+        backendFolder.saveMessage(message, MessageDownloadState.FULL)
+
+        assertThat(messageLifecycleRepository.createdMessages).single()
+            .prop(DomainMessage::serverId)
+            .isEqualTo(MessageServerId(MESSAGE_SERVER_ID))
+    }
+
     fun createAccount(): LegacyAccountDto {
         // FIXME: This is a hack to get Preferences into a state where it's safe to call newAccount()
         preferences.clearAccounts()
@@ -108,12 +147,15 @@ class K9BackendFolderTest : K9RobolectricTest() {
     }
 
     fun createBackendFolder(): BackendFolder {
-        val messageStore = messageStoreManager.getMessageStore(account)
         val backendStorage = K9BackendStorage(
-            messageStore,
-            createFolderSettingsProvider(),
-            saveMessageDataCreator,
-            emptyList(),
+            messageStore = messageStore,
+            folderSettingsProvider = createFolderSettingsProvider(),
+            listeners = emptyList(),
+            saveMessageDataCreator = saveMessageDataCreator,
+            messageLifecycleRepository = messageLifecycleRepository,
+            messageQueryRepository = messageQueryRepository,
+            folderIdLegacyEntityIdFactory = LegacyFolderIdFactory,
+            messageDataMapper = FakeMessageDataMapper(),
         )
         backendStorage.updateFolders {
             createFolders(listOf(FolderInfo(FOLDER_SERVER_ID, FOLDER_NAME, FOLDER_TYPE)))
@@ -122,12 +164,14 @@ class K9BackendFolderTest : K9RobolectricTest() {
         val folderServerIds = backendStorage.getFolderServerIds()
         assertThat(folderServerIds).contains(FOLDER_SERVER_ID)
 
-        return K9BackendFolder(messageStore, saveMessageDataCreator, FOLDER_SERVER_ID)
+        return backendStorage.getFolder(FOLDER_SERVER_ID)
     }
 
-    suspend fun createMessageInBackendFolder(messageServerId: String, flags: Set<Flag> = emptySet()) {
+    fun createMessageInBackendFolder(messageServerId: String, flags: Set<Flag> = emptySet()) {
         val message = createMessage(messageServerId, flags)
-        backendFolder.saveMessage(message, MessageDownloadState.FULL)
+        val folderId = messageStore.getFolderId(FOLDER_SERVER_ID) ?: error("Couldn't find folder $FOLDER_SERVER_ID")
+        val messageData = saveMessageDataCreator.createSaveMessageData(message, MessageDownloadState.FULL)
+        messageStore.saveRemoteMessage(folderId, messageServerId, messageData)
 
         val messageServerIds = backendFolder.getMessageServerIds()
         assertThat(messageServerIds).contains(messageServerId)
@@ -176,4 +220,100 @@ class K9BackendFolderTest : K9RobolectricTest() {
             clientCertificateAlias = null,
         )
     }
+}
+
+/**
+ * A minimal [MessageDataMapper] good enough for [K9BackendFolderTest]: it maps the server id,
+ * subject and the general (non-download-state) flags of the legacy [Message] to the domain model.
+ *
+ * The real mapper (`DefaultMessageDataMapper`) lives in `:app-common`, which depends on this
+ * module, so it can't be reused here.
+ */
+private class FakeMessageDataMapper : MessageDataMapper<Message> {
+    @OptIn(ExperimentalUuidApi::class)
+    override suspend fun toDomain(dto: Message): DomainMessage {
+        val epoch = LocalDateTime(1970, 1, 1, 0, 0)
+        return DomainMessage(
+            id = null,
+            serverId = dto.uid?.let(::MessageServerId),
+            accountId = AccountId(Uuid.random()),
+            folderId = null,
+            threadRoot = null,
+            receivedAt = epoch,
+            envelope = MessageEnvelope(
+                subject = dto.subject,
+                from = emptyList(),
+                sender = null,
+                replyTo = emptyList(),
+                to = emptyList(),
+                cc = emptyList(),
+                bcc = emptyList(),
+                sentAt = epoch,
+            ),
+            headers = MessageHeaders(
+                messageId = MessageHeaderId(dto.messageId.orEmpty()),
+                references = null,
+                inReplyTo = emptyList(),
+                extra = emptyMap(),
+            ),
+            body = null,
+            downloadState = DomainMessageDownloadState.ENVELOPE,
+            flags = dto.toDomainFlags(),
+        )
+    }
+
+    override suspend fun toDto(domain: DomainMessage): Message = error("Not used by these tests")
+
+    private fun Message.toDomainFlags(): Set<MessageFlag> = buildSet {
+        if (isSet(Flag.SEEN)) add(MessageFlag.Read)
+        if (isSet(Flag.FLAGGED)) add(MessageFlag.Starred)
+        if (isSet(Flag.ANSWERED)) add(MessageFlag.Answered)
+        if (isSet(Flag.FORWARDED)) add(MessageFlag.Forwarded)
+        if (isSet(Flag.DRAFT)) add(MessageFlag.Draft)
+        if (isSet(Flag.DELETED)) add(MessageFlag.Deleted)
+    }
+}
+
+private class FakeMessageLifecycleRepository : MessageLifecycleRepository {
+    var createResult: Outcome<DomainMessageId, MessageLifecycleError> = Outcome.success(LegacyMessageIdFactory.of(1L))
+    val createdMessages = mutableListOf<DomainMessage>()
+
+    override suspend fun create(
+        message: DomainMessage,
+        accountId: AccountId,
+        folderId: FolderId?,
+    ): Outcome<DomainMessageId, MessageLifecycleError> {
+        createdMessages += message
+        return createResult
+    }
+
+    override suspend fun update(
+        message: DomainMessage,
+        accountId: AccountId,
+    ): Outcome<DomainMessageId, MessageLifecycleError> = error("Not used by these tests")
+
+    override suspend fun move(
+        messageId: DomainMessageId,
+        destinationFolderId: FolderId,
+    ): Outcome<DomainMessageId, MessageLifecycleError> = error("Not used by these tests")
+
+    override suspend fun copy(
+        messageId: DomainMessageId,
+        destinationFolderId: FolderId,
+    ): Outcome<DomainMessageId, MessageLifecycleError> = error("Not used by these tests")
+
+    override suspend fun destroy(
+        serverIds: List<MessageServerId>,
+        folderId: FolderId,
+        accountId: AccountId,
+    ): Outcome<Unit, MessageLifecycleError> = error("Not used by these tests")
+}
+
+private class FakeMessageQueryRepository : MessageQueryRepository {
+    var result: Outcome<DomainMessageId?, MessageQueryError> = Outcome.success(null)
+
+    override suspend fun findIdByCriteria(
+        accountId: AccountId,
+        criteria: GetMessageIdCriteria,
+    ): Outcome<DomainMessageId?, MessageQueryError> = result
 }
