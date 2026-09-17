@@ -52,6 +52,13 @@ internal interface AccountSettingsDomainContract {
             ): Outcome<Unit, AccountSettingError>
         }
 
+        fun interface UpdateSendingMailSettings {
+            suspend operator fun invoke(
+                accountId: AccountId,
+                command: UpdateSendingMailSettingsCommand,
+            ): Outcome<Unit, AccountSettingError>
+        }
+
         fun interface UpdateAvatarImage {
             suspend operator fun invoke(
                 accountId: AccountId,
