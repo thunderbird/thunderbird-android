@@ -12,9 +12,9 @@ import com.fsck.k9.mail.ConnectionSecurity
 import com.fsck.k9.mail.Message
 import com.fsck.k9.mail.ServerSettings
 import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.logging.testing.TestLogger
 import net.thunderbird.feature.mail.folder.LegacyFolderIdFactory
 import net.thunderbird.feature.mail.message.domain.MessageLifecycleRepository
-import net.thunderbird.feature.mail.message.domain.MessageQueryRepository
 import net.thunderbird.feature.mail.message.mapper.MessageDataMapper
 import org.junit.After
 import org.junit.Test
@@ -85,12 +85,11 @@ class K9BackendDefaultStorageTest : K9RobolectricTest() {
         val messageStore = messageStoreManager.getMessageStore(account)
         val folderSettingsProvider = createFolderSettingsProvider()
         return K9BackendStorage(
+            logger = TestLogger(),
             messageStore = messageStore,
             folderSettingsProvider = folderSettingsProvider,
-            saveMessageDataCreator = saveMessageDataCreator,
             listeners = emptyList(),
             messageLifecycleRepository = mock<MessageLifecycleRepository>(),
-            messageQueryRepository = mock<MessageQueryRepository>(),
             folderIdLegacyEntityIdFactory = LegacyFolderIdFactory,
             messageDataMapper = mock<MessageDataMapper<Message>>(),
         )

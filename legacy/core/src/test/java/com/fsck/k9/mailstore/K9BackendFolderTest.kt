@@ -35,6 +35,7 @@ import kotlinx.datetime.LocalDateTime
 import net.thunderbird.components.core.outcome.Outcome
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.common.mail.Flag
+import net.thunderbird.core.logging.testing.TestLogger
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.mail.folder.FolderId
 import net.thunderbird.feature.mail.folder.LegacyFolderIdFactory
@@ -148,12 +149,11 @@ class K9BackendFolderTest : K9RobolectricTest() {
 
     fun createBackendFolder(): BackendFolder {
         val backendStorage = K9BackendStorage(
+            logger = TestLogger(),
             messageStore = messageStore,
             folderSettingsProvider = createFolderSettingsProvider(),
             listeners = emptyList(),
-            saveMessageDataCreator = saveMessageDataCreator,
             messageLifecycleRepository = messageLifecycleRepository,
-            messageQueryRepository = messageQueryRepository,
             folderIdLegacyEntityIdFactory = LegacyFolderIdFactory,
             messageDataMapper = FakeMessageDataMapper(),
         )
@@ -290,6 +290,7 @@ private class FakeMessageLifecycleRepository : MessageLifecycleRepository {
     override suspend fun update(
         message: DomainMessage,
         accountId: AccountId,
+        folderId: FolderId,
     ): Outcome<DomainMessageId, MessageLifecycleError> = error("Not used by these tests")
 
     override suspend fun move(
