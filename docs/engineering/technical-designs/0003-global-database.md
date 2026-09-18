@@ -19,7 +19,8 @@ application. It keeps legacy mail behavior compatible, imports durable data, val
   history.
 - The internal mail database module owns mail schema, mappings, local data sources, and repository implementations.
 - Focused mail repository contracts hide both legacy and global storage from callers.
-- `app-common` or an app module binds repository contracts to the active implementation.
+- `app-composition` binds shared repository contracts to their active KMP implementations. Android or legacy-backed
+  bindings remain in `app-common` or an app module.
 
 The boundary follows ADR 0009. Mail schema and implementation types remain internal. `core:database` does not own mail
 schema, mail domain types, or mail repositories.
