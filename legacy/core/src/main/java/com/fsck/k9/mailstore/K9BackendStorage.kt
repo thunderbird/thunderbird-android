@@ -9,30 +9,28 @@ import com.fsck.k9.backend.api.FolderInfo
 import com.fsck.k9.mail.Message
 import kotlinx.coroutines.runBlocking
 import net.thunderbird.core.architecture.model.LegacyEntityIdFactory
+import net.thunderbird.core.logging.Logger
 import net.thunderbird.feature.mail.folder.FolderId
 import net.thunderbird.feature.mail.message.domain.MessageLifecycleRepository
-import net.thunderbird.feature.mail.message.domain.MessageQueryRepository
 import net.thunderbird.feature.mail.message.mapper.MessageDataMapper
 import com.fsck.k9.mail.FolderType as RemoteFolderType
 
 class K9BackendStorage(
+    private val logger: Logger,
     private val messageStore: MessageStore,
     private val folderSettingsProvider: FolderSettingsProvider,
-    private val saveMessageDataCreator: SaveMessageDataCreator,
     private val listeners: List<BackendFoldersRefreshListener>,
     private val messageLifecycleRepository: MessageLifecycleRepository,
-    private val messageQueryRepository: MessageQueryRepository,
     private val folderIdLegacyEntityIdFactory: LegacyEntityIdFactory<FolderId>,
     private val messageDataMapper: MessageDataMapper<Message>,
 ) : BackendStorage {
     override fun getFolder(folderServerId: String): BackendFolder = K9BackendFolder(
-        messageStore,
-        saveMessageDataCreator,
-        folderServerId,
-        messageLifecycleRepository,
-        messageQueryRepository,
-        folderIdLegacyEntityIdFactory,
-        messageDataMapper,
+        logger = logger,
+        messageStore = messageStore,
+        folderServerId = folderServerId,
+        messageLifecycleRepository = messageLifecycleRepository,
+        folderIdLegacyEntityIdFactory = folderIdLegacyEntityIdFactory,
+        mapper = messageDataMapper,
     )
 
     override fun getFolderServerIds(): List<String> {

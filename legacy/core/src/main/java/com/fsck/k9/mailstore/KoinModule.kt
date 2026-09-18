@@ -13,7 +13,10 @@ import com.fsck.k9.message.extractors.AttachmentCounter
 import com.fsck.k9.message.extractors.MessageFulltextCreator
 import com.fsck.k9.message.extractors.MessagePreviewCreator
 import net.thunderbird.backend.api.BackendStorageFactory
+import net.thunderbird.core.architecture.model.LegacyEntityIdFactory
+import net.thunderbird.core.architecture.model.LegacyEntityIdFactory.ByteRepresentation
 import net.thunderbird.core.common.cache.TimeLimitedCache
+import net.thunderbird.feature.mail.folder.FolderId
 import net.thunderbird.feature.mail.folder.LegacyFolderIdFactory
 import net.thunderbird.feature.mail.folder.api.OutboxFolderManager
 import net.thunderbird.feature.mail.folder.api.data.repository.FolderDetailsRepository
@@ -22,6 +25,7 @@ import net.thunderbird.feature.mail.folder.api.data.repository.PushFolderTrackin
 import net.thunderbird.feature.mail.folder.api.data.repository.PushFoldersQueryRepository
 import net.thunderbird.feature.mail.folder.api.data.repository.RemoteFolderDetailsRepository
 import net.thunderbird.feature.mail.folder.api.data.repository.RemoteFolderQueryRepository
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 val mailStoreModule = module {
@@ -72,15 +76,14 @@ val mailStoreModule = module {
     single { SpecialFolderSelectionStrategy() }
     single<BackendStorageFactory> {
         K9BackendStorageFactory(
+            logger = get(),
             preferences = get(),
             accountManager = get(),
             folderQueryRepository = get(),
             messageStoreManager = get(),
             specialFolderUpdaterFactory = get(),
-            saveMessageDataCreator = get(),
             messageLifecycleRepository = get(),
-            messageQueryRepository = get(),
-            folderIdLegacyEntityIdFactory = get<LegacyFolderIdFactory>(),
+            folderIdLegacyEntityIdFactory = get<LegacyEntityIdFactory<FolderId>>(named(ByteRepresentation.FOLDERS)),
             messageDataMapper = get(),
         )
     }

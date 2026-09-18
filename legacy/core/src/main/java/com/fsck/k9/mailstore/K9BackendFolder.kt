@@ -5,25 +5,26 @@ import com.fsck.k9.backend.api.BackendFolder
 import com.fsck.k9.backend.api.BackendFolder.MoreMessages
 import com.fsck.k9.mail.MessageDownloadState
 import java.util.Date
-import net.thunderbird.components.core.outcome.fold
+import net.thunderbird.components.core.outcome.Outcome
+import net.thunderbird.components.core.outcome.handle
 import net.thunderbird.core.architecture.model.LegacyEntityIdFactory
+import net.thunderbird.core.common.exception.MessagingException
 import net.thunderbird.core.common.mail.Flag
+import net.thunderbird.core.logging.Logger
 import net.thunderbird.feature.mail.folder.FolderId
-import net.thunderbird.feature.mail.message.MessageServerId
-import net.thunderbird.feature.mail.message.domain.GetMessageIdCriteria
+import net.thunderbird.feature.mail.message.MessageId
+import net.thunderbird.feature.mail.message.domain.MessageLifecycleError
 import net.thunderbird.feature.mail.message.domain.MessageLifecycleRepository
-import net.thunderbird.feature.mail.message.domain.MessageQueryRepository
 import net.thunderbird.feature.mail.message.mapper.MessageDataMapper
 import app.k9mail.legacy.mailstore.MoreMessages as StoreMoreMessages
 import com.fsck.k9.mail.Message as LegacyMessage
 import net.thunderbird.feature.mail.message.MessageDownloadState as DomainMessageDownloadState
 
 class K9BackendFolder(
+    private val logger: Logger,
     private val messageStore: MessageStore,
-    private val saveMessageDataCreator: SaveMessageDataCreator,
     folderServerId: String,
     private val messageLifecycleRepository: MessageLifecycleRepository,
-    private val messageQueryRepository: MessageQueryRepository,
     private val folderIdLegacyEntityIdFactory: LegacyEntityIdFactory<FolderId>,
     private val mapper: MessageDataMapper<LegacyMessage>,
 ) : BackendFolder {
@@ -101,28 +102,42 @@ class K9BackendFolder(
         val accountId = messageStore.accountId
         message.setAccountUuid(accountId.toString())
         val domainFolderId = folderIdLegacyEntityIdFactory.of(folderId)
-        val criteria = GetMessageIdCriteria(
-            folderId = domainFolderId,
-            messageServerId = MessageServerId(message.uid),
-        )
         // A message coming from the backend carries no X_DOWNLOADED_* flags yet, so the mapper would
         // infer ENVELOPE. The backend tells us explicitly how much was downloaded; that must win.
         val domainMessage = mapper.toDomain(message).copy(downloadState = downloadState.toDomainDownloadState())
 
-        messageQueryRepository
-            .findIdByCriteria(accountId, criteria)
-            .fold(
-                onSuccess = { messageId ->
-                    if (messageId == null) {
-                        messageLifecycleRepository.create(domainMessage, accountId, domainFolderId)
-                    } else {
-                        // TODO(#11470): update operation.
-                        val messageData = saveMessageDataCreator.createSaveMessageData(message, downloadState)
-                        messageStore.saveRemoteMessage(folderId, message.uid, messageData)
-                    }
-                },
-                onFailure = { error -> throw error.throwable },
-            )
+        messageLifecycleRepository
+            .create(domainMessage, accountId, domainFolderId)
+            .recoverAlreadyExists { existingId ->
+                // The message is already stored locally (e.g. re-download with a more complete body),
+                // so replace it instead.
+                messageLifecycleRepository.update(
+                    message = domainMessage.copy(id = existingId),
+                    accountId = accountId,
+                    folderId = domainFolderId,
+                )
+            }
+            .orThrow("Failed to save message '${message.uid}'")
+    }
+
+    private suspend fun Outcome<MessageId, MessageLifecycleError>.recoverAlreadyExists(
+        recover: suspend (existingId: MessageId) -> Outcome<MessageId, MessageLifecycleError>,
+    ): Outcome<MessageId, MessageLifecycleError> {
+        val error = (this as? Outcome.Failure)?.error
+        return when (this) {
+            is Outcome.Success -> this
+            is Outcome.Failure if error is MessageLifecycleError.MessageAlreadyExists -> recover(error.messageId)
+            else -> this
+        }
+    }
+
+    private fun Outcome<MessageId, MessageLifecycleError>.orThrow(message: String) {
+        handle(
+            onSuccess = { messageId -> logger.verbose { "Applied changes to message id '$messageId'" } },
+            onFailure = { error ->
+                throw error.throwable ?: MessagingException("$message: $error")
+            },
+        )
     }
 
     override fun getOldestMessageDate(): Date? {

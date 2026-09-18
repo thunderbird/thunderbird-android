@@ -239,6 +239,7 @@ internal fun sendMessageCompat(
     plaintextSubject: String?,
     onSuccess: (MessageId) -> Unit,
 ) = runBlocking {
+    message.setFlag(Flag.X_DOWNLOADED_FULL, true)
     message.setFlag(Flag.SEEN, true)
     message.setAccountUuid(account.uuid)
 

@@ -93,6 +93,7 @@ internal val mailMessageModule = module {
     single<MessageLifecycleRepository> {
         DefaultMessageLifecycleRepository(
             logger = get(),
+            messageQueryRepository = get(),
             messageStoreManager = get(),
             saveMessageDataCreator = get(),
             messageMapper = get(),
