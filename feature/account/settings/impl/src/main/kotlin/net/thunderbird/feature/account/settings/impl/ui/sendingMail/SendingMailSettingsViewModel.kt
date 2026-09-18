@@ -16,6 +16,8 @@ import net.thunderbird.feature.account.settings.impl.ui.sendingMail.SendingMailS
 import net.thunderbird.feature.account.settings.impl.ui.sendingMail.SendingMailSettingContract.State
 
 private const val TAG = "SendingMailSettingsViewModel"
+
+@Suppress("LongMethod")
 internal class SendingMailSettingsViewModel(
     private val accountId: AccountId,
     private val logger: Logger,
@@ -34,7 +36,7 @@ internal class SendingMailSettingsViewModel(
         quotedTextPrefix = ">",
         uploadSentMessages = false,
     ),
-) : BaseViewModel<State, Event, Effect>(initialState = initialState) {
+) : BaseViewModel<State, Event, Effect>(initialState = initialState), SendingMailSettingContract.ViewModel {
 
     init {
         observeAccountName()
@@ -43,7 +45,7 @@ internal class SendingMailSettingsViewModel(
 
     override fun event(event: Event) {
         when (event) {
-            is Event.onBackPressed -> {
+            is Event.OnBackPressed -> {
                 emitEffect(Effect.NavigateBack)
             }
 
@@ -55,6 +57,13 @@ internal class SendingMailSettingsViewModel(
                             .UpdateSendingMailSettingsCommand.UpdateMessageFormat(
                                 event.messageFormat.id,
                             ),
+                    ).handle(
+                        onSuccess = {
+                            updateState { state -> state.copy(messageFormat = event.messageFormat) }
+                        },
+                        onFailure = {
+                            handleError(it)
+                        },
                     )
                 }
             }
@@ -67,6 +76,13 @@ internal class SendingMailSettingsViewModel(
                             .UpdateSendingMailSettingsCommand.UpdateAlwaysShowCcBcc(
                                 event.alwaysShowCcBcc,
                             ),
+                    ).handle(
+                        onSuccess = {
+                            updateState { state -> state.copy(alwaysShowCcBcc = event.alwaysShowCcBcc) }
+                        },
+                        onFailure = {
+                            handleError(it)
+                        },
                     )
                 }
             }
@@ -79,6 +95,13 @@ internal class SendingMailSettingsViewModel(
                             .UpdateSendingMailSettingsCommand.UpdateReadReceipt(
                                 event.readReceipt,
                             ),
+                    ).handle(
+                        onSuccess = {
+                            updateState { state -> state.copy(readReceipt = event.readReceipt) }
+                        },
+                        onFailure = {
+                            handleError(it)
+                        },
                     )
                 }
             }
@@ -91,6 +114,13 @@ internal class SendingMailSettingsViewModel(
                             .UpdateSendingMailSettingsCommand.UpdateReplyQuotingStyle(
                                 event.replyQuotingStyle.id,
                             ),
+                    ).handle(
+                        onSuccess = {
+                            updateState { state -> state.copy(replyQuotingStyle = event.replyQuotingStyle) }
+                        },
+                        onFailure = {
+                            handleError(it)
+                        },
                     )
                 }
             }
@@ -103,9 +133,19 @@ internal class SendingMailSettingsViewModel(
                             .UpdateSendingMailSettingsCommand.UpdateQuoteMessageWhenReplying(
                                 event.quoteMessageWhenReplying,
                             ),
+                    ).handle(
+                        onSuccess = {
+                            updateState { state ->
+                                state.copy(quoteMessageWhenReplying = event.quoteMessageWhenReplying)
+                            }
+                        },
+                        onFailure = {
+                            handleError(it)
+                        },
                     )
                 }
             }
+
             is Event.OnReplyAfterQuotedTextToggle -> {
                 viewModelScope.launch {
                     updateSendingMailSettings(
@@ -114,11 +154,18 @@ internal class SendingMailSettingsViewModel(
                             .UpdateSendingMailSettingsCommand.UpdateReplyAfterQuotedText(
                                 event.replyAfterQuotedText,
                             ),
+                    ).handle(
+                        onSuccess = {
+                            updateState { state -> state.copy(replyAfterQuotedText = event.replyAfterQuotedText) }
+                        },
+                        onFailure = {
+                            handleError(it)
+                        },
                     )
                 }
             }
 
-            is Event.OnStripSignatureOnReplyToggle-> {
+            is Event.OnStripSignatureOnReplyToggle -> {
                 viewModelScope.launch {
                     updateSendingMailSettings(
                         accountId = accountId,
@@ -126,9 +173,17 @@ internal class SendingMailSettingsViewModel(
                             .UpdateSendingMailSettingsCommand.UpdateStripSignatureOnReply(
                                 event.stripSignatureOnReply,
                             ),
+                    ).handle(
+                        onSuccess = {
+                            updateState { state -> state.copy(stripSignatureOnReply = event.stripSignatureOnReply) }
+                        },
+                        onFailure = {
+                            handleError(it)
+                        },
                     )
                 }
             }
+
             is Event.OnQuotedTextPrefixChange -> {
                 viewModelScope.launch {
                     updateSendingMailSettings(
@@ -137,8 +192,14 @@ internal class SendingMailSettingsViewModel(
                             .UpdateSendingMailSettingsCommand.UpdateQuotedTextPrefix(
                                 event.quotedTextPrefix,
                             ),
+                    ).handle(
+                        onSuccess = {
+                            updateState { state -> state.copy(quotedTextPrefix = event.quotedTextPrefix) }
+                        },
+                        onFailure = {
+                            handleError(it)
+                        },
                     )
-
                 }
             }
 
@@ -150,15 +211,25 @@ internal class SendingMailSettingsViewModel(
                             .UpdateSendingMailSettingsCommand.UpdateUploadSentMessages(
                                 event.uploadSentMessages,
                             ),
+                    ).handle(
+                        onSuccess = {
+                            updateState { state -> state.copy(uploadSentMessages = event.uploadSentMessages) }
+                        },
+                        onFailure = {
+                            handleError(it)
+                        },
                     )
                 }
             }
+
             is Event.OnCompositionDefaultsClick -> {
                 emitEffect(Effect.NavigateToCompositionDefaults)
             }
+
             is Event.OnManageIdentitiesClick -> {
                 emitEffect(Effect.NavigateToManageIdentities)
             }
+
             is Event.OnOutgoingServerClick -> {
                 emitEffect(Effect.NavigateToOutGoingServerSettings)
             }
@@ -197,8 +268,8 @@ internal class SendingMailSettingsViewModel(
                     val quotedTextPrefix = it.quotePrefix ?: ""
                     val uploadSentMessages = it.isUploadSentMessages
 
-                    updateState {
-                        state -> state.copy(
+                    updateState { state ->
+                        state.copy(
                             messageFormat = messageFormat,
                             alwaysShowCcBcc = alwaysShowCcBcc,
                             readReceipt = readReceipt,
@@ -210,7 +281,6 @@ internal class SendingMailSettingsViewModel(
                             uploadSentMessages = uploadSentMessages,
                         )
                     }
-
                 },
                 onFailure = {
                     handleError(it)
