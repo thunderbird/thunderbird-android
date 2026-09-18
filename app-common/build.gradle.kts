@@ -52,8 +52,6 @@ dependencies {
     implementation(projects.feature.notification.impl)
     implementation(projects.feature.widget.messageList)
 
-    implementation(projects.feature.mail.message.export.api)
-    implementation(projects.feature.mail.message.export.implEml)
     implementation(projects.feature.mail.message.list.api)
     implementation(projects.feature.mail.message.reader.api)
     implementation(projects.feature.mail.message.reader.impl)
