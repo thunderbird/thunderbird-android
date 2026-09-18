@@ -42,7 +42,7 @@ IMAP UID, a folder server ID, and an RFC 5322 `Message-ID` header must not be us
 
 |   Identifier   |           Owner            |                                                                                                                                            Meaning and boundary                                                                                                                                             |
 |----------------|----------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `AccountId`    | `feature:account:api`      | The existing UUID-backed account identifier. Global-mail records retain its existing persisted value to establish account scope. Cutover neither replaces nor regenerates it. Account settings and profile runtime state remain outside the global mail database.                                           |
+| `AccountId`    | `feature:account:api`      | The UUID-backed account identifier. Cutover replaces each existing real account ID with UUIDv7 and uses it to establish account scope. Account settings and profile runtime state remain outside the global mail database, with persisted account references migrated to the replacement.                   |
 | `FolderId`     | `feature:mail:folder:api`  | Identifies one local folder record across all accounts. It replaces the legacy account-local folder number at repository boundaries.                                                                                                                                                                        |
 | `MessageId`    | `feature:mail:message:api` | Identifies one local message record across all accounts. A message copied to another folder is a separate local record and therefore has a separate `MessageId`.                                                                                                                                            |
 | `ThreadId`     | `feature:mail:message:api` | Identifies one account-scoped conversation, which can contain local message records from Inbox, Sent, Archive, and other folders. It is a durable conversation aggregate, not a legacy numeric thread-root key. Thread operations use `ThreadId`. Operations on an individual local record use `MessageId`. |
@@ -50,7 +50,8 @@ IMAP UID, a folder server ID, and an RFC 5322 `Message-ID` header must not be us
 
 RFC 0009 owns the UUID representation and generation policy for `FolderId`, `MessageId`, `ThreadId`, and `AttachmentId`.
 These types, along with `AccountId`, are the only identifiers that cross the mail repository boundary for this
-design. Repository contracts never expose legacy numeric IDs or persistence keys.
+design. Repository contracts never expose legacy numeric IDs or persistence keys. Replacing an existing `AccountId`
+during this one-time cutover is the only exception to its lifetime stability.
 
 The thread builder uses the imported messages' threading headers across all folders of the same account. When a newly
 observed message joins two conversations, the builder selects one existing `ThreadId` deterministically, merges the
@@ -66,21 +67,89 @@ an integer internal search-document key mapped to a `MessageId`. A UUID-backed `
 
 For imported data, the migrator records an account-qualified source key before linking dependent rows:
 
-| Logical record  |                     Source key                      | Target domain identifier |                                            Required dependent rewrite                                             |
-|-----------------|-----------------------------------------------------|--------------------------|-------------------------------------------------------------------------------------------------------------------|
-| Folder          | `(AccountId, legacy folder id)`                     | `FolderId`               | folder extra values, message folder references, queued-command folder references                                  |
-| Message         | `(AccountId, legacy message id)`                    | `MessageId`              | outbox state, notifications, full-text mapping, message part root, thread message reference                       |
-| Thread          | `(AccountId, legacy folder id, legacy thread root)` | `ThreadId`               | rebuild cross-folder memberships from message threading headers and rewrite threaded-list and thread-cache values |
-| Message part    | `(AccountId, legacy message-part id)`               | internal only            | part root and parent references, message root-part reference                                                      |
-| Attachment      | `(AccountId, legacy message-part id)`               | `AttachmentId`           | attachment-file lookup and access URI resolution                                                                  |
-| Pending command | `(AccountId, legacy command id)`                    | internal only            | command row identity and serialized folder references                                                             |
+| Logical record  |                         Source key                         | Target domain identifier |                                            Required dependent rewrite                                             |
+|-----------------|------------------------------------------------------------|--------------------------|-------------------------------------------------------------------------------------------------------------------|
+| Account         | legacy `AccountId`                                         | UUIDv7 `AccountId`       | account settings namespace, account order, mail rows, queues, notifications, activity references, and widgets     |
+| Folder          | `(legacy AccountId, legacy folder id)`                     | `FolderId`               | folder extra values, message folder references, queued-command folder references                                  |
+| Message         | `(legacy AccountId, legacy message id)`                    | `MessageId`              | outbox state, notifications, full-text mapping, message part root, thread message reference                       |
+| Thread          | `(legacy AccountId, legacy folder id, legacy thread root)` | `ThreadId`               | rebuild cross-folder memberships from message threading headers and rewrite threaded-list and thread-cache values |
+| Message part    | `(legacy AccountId, legacy message-part id)`               | internal only            | part root and parent references, message root-part reference                                                      |
+| Attachment      | `(legacy AccountId, legacy message-part id)`               | `AttachmentId`           | attachment-file lookup and access URI resolution                                                                  |
+| Pending command | `(legacy AccountId, legacy command id)`                    | internal only            | command row identity and serialized folder references                                                             |
 
-The exact physical representation is internal, but it must enforce uniqueness of every source key and reject an import
-that maps one source key to multiple targets. Several legacy folder-local thread roots may map to one `ThreadId` when
-the imported messages form one cross-folder conversation. Account-qualified mappings remain available until validation
-has completed and all durable queue, notification, attachment, and supported legacy external references have been
-translated. The implementation may retain them longer for compatibility. Their retention period and removal test are
-part of the migration implementation plan.
+### Persisted `AccountId` reference inventory
+
+Replacing an `AccountId` requires an explicit policy for each app-owned store and each reference that Android or another
+app may retain. The migration implementation owns the following inventory:
+
+#### Rewrite app-owned state
+
+- **Account preferences:** Copy the complete old settings namespace to the replacement ID. This includes OAuth state and
+  notification-channel version values. Publish replacement IDs in `accountUuids` only at cutover, then delete the old
+  namespace during verified cleanup. Protocol account IDs inside OAuth and server payloads are not Thunderbird
+  `AccountId` values and are not rewritten.
+- **Mail data, queues, and pending commands:** Import rows under the replacement account. Translate every supported
+  serialized command version before it can execute. An unsupported command version fails migration rather than being
+  dropped.
+- **Unread widgets:** Translate both the stored account UUID and legacy folder ID through the account and folder mappings.
+  Preserve unified sentinels and refresh widgets after cutover. Reset an untranslatable widget to setup state rather than
+  point it at another account or folder.
+- **Avatars:** Copy the avatar to the replacement-ID filename and update the copied account setting before validation.
+  Delete the old image during cleanup.
+- **Draft identity metadata:** Translate a draft's serialized original `MessageReference` during import. If the reference
+  cannot be translated, remove that internal reply linkage while preserving the draft's recipients, subject, body, and
+  attachments. Report the affected draft count in the migration result without including message content.
+
+#### Recreate Android-owned state
+
+- **Periodic mail sync:** Cancel each `MailSync:<oldAccountId>` WorkManager request while the migration gate is held.
+  Recreate eligible work with the replacement ID before releasing the gate. Do not edit WorkManager's internal database.
+- **Pending account removal:** Prevent new removal work after the migration gate closes. Finish pending removal before
+  inventorying accounts, or block migration until it reaches a terminal state. Do not migrate an account pending deletion.
+- **Notification channels and groups:** Create replacements for IDs derived from the old account UUID. Copy only properties
+  supported by Android, then delete the old group after cutover. Treat Android-managed customization that cannot be
+  copied as an explicit user-visible reset.
+- **Active notifications:** Cancel pre-cutover mail notifications and their `PendingIntent` objects. Repost applicable
+  notifications from migrated rows with replacement references after cutover.
+
+#### Handle externally held references
+
+- **Launcher shortcuts:** Update the intent of a pinned shortcut when Android permits it. Remove or invalidate shortcuts
+  that cannot be updated. A stale shortcut opens the account list rather than another account and may need to be added
+  again by the user.
+- **Routes and saved intents:** Discard in-progress configuration state and recreate app-owned tasks with global
+  identifiers. Deep links and external intents containing an old account or message reference expire at cutover and fail
+  safely to the relevant account or message list.
+- **Attachment and raw-message URIs:** Existing provider URIs containing legacy identifiers expire at cutover. New URIs
+  use global identifiers. Requests for stale paths return not found without exposing another account's data.
+
+#### Clean up source and transient state
+
+- **Legacy database and attachment paths:** Keep source artifacts unchanged through validation and cutover. Delete them
+  only through idempotent post-cutover cleanup.
+- **Runtime caches:** Stop normal work behind the migration gate, clear account and store caches, and rebuild them after
+  cutover. In-memory values are not durable migration inputs.
+
+This table is the minimum known inventory, not a substitute for implementation-time verification. Before implementation
+is accepted, a repository-wide search and owner review must account for every account-qualified database column,
+preference, file or directory name, serialized payload version, WorkManager request, widget configuration, notification,
+shortcut, provider URI, and intent route. Each discovered durable or external owner must be added to this table with one
+of four explicit outcomes: rewrite, cancel and recreate, intentional reset, or expiration at cutover. Protocol identifiers
+such as JMAP account IDs and the `UnifiedAccountId` sentinel are false positives and MUST NOT be rewritten.
+
+The account mapping is generated once and stored in the durable migration state before account data is copied. Retries
+reuse it. The exact physical representation is internal. Every source key maps to exactly one target, and every target
+identifier maps from at most one source key. Target identifiers are unique within their identifier type and account scope.
+A replacement `AccountId` must differ from every legacy account ID, every other replacement, and `UnifiedAccountId`.
+Duplicate targets, cross-account targets, and collisions with existing or reserved identifiers fail the unpublished
+migration before cutover.
+
+The only many-to-one exception is `ThreadId`. Several legacy folder-local thread roots from the same account may map to
+one `ThreadId` after the thread builder proves that their messages form one cross-folder conversation. A thread mapping
+must never merge roots from different accounts. Account-qualified mappings remain available throughout
+import, validation, cutover, retry, reference recreation, and verified cleanup. They are deleted after cleanup verifies
+that every app-owned reference has been rewritten or recreated and every declared reset or expiration policy has been
+applied. Runtime code does not retain an old-ID compatibility lookup after migration completes.
 
 `notifications.notification_id` is an Android application notification ID, not a mail-domain identifier. It must remain
 unique across the application notification namespace. Import validates that constraint and allocates a replacement when
@@ -93,28 +162,47 @@ The migration runs before normal mail access is available. A dedicated migration
 Android migration activity or introduce a suitable replacement, shows non-sensitive progress and a clear completion or
 failure state. A migration gate holds startup, sync, and other background mail work until migration completes or fails.
 
+Before migration starts, the screen explains that references outside Thunderbird's control cannot always be updated.
+Existing shared attachment or raw-message links may stop working, some launcher shortcuts may need to be added again,
+open account or message screens will be closed, and Android notification-channel customization may be reset. The
+completion screen identifies which categories were reset or expired and provides recovery actions such as re-adding a
+shortcut. It reports counts only and does not reveal account, folder, message, or attachment data.
+
 1. Calculate the required storage headroom and compare it with available space. If space is insufficient, block the
    migration and report how much additional space is needed.
 2. Create and verify the required RFC 0008 archive for POP3 accounts. The user may decline it after an explicit warning
    and continue at their own risk. IMAP export is optional. Then create an unpublished global database.
-3. Read legacy databases and attachment directories without modifying them. Import every durable record.
-4. Copy each attachment to its target and validate it. If validation fails, record the failure in the migration result
+3. Generate and durably record one UUIDv7 replacement for each existing real `AccountId`. Copy all keys from each old
+   account settings namespace to its new namespace, retaining the old keys. Record the account's previous `enabled`
+   value and force the copied account to remain disabled. Do not publish the new account list yet.
+4. Read legacy databases and attachment directories without modifying them. Import every durable record using the
+   account mapping.
+5. Copy each attachment to its target and validate it. If validation fails, record the failure in the migration result
    and fail the migration.
-5. Rebuild derived data, validate the imported database, and reopen it.
-6. Establish the durable cutover state and switch repository bindings to the global implementation.
-7. Start post-cutover cleanup of all legacy database and attachment artifacts.
+6. Rebuild derived data, validate the imported database and account settings, and reopen the database.
+7. Enter the durable cutover phase, replace old IDs in the ordered `accountUuids` value, restore each account's previous
+   `enabled` value, establish the global store as authoritative, and switch repository bindings to the global
+   implementation.
+8. Start post-cutover cleanup of old account settings and all legacy database and attachment artifacts.
+
+The owner-specific reference policies run under the migration gate. Before import, pending account removal reaches a
+terminal state and old scheduled mail work and active notifications are cancelled. App-owned preferences, payloads,
+widgets, avatars, draft metadata, and database records are translated before validation. After cutover becomes durable
+but before the gate is released, the app recreates eligible work, notification channels and notifications, refreshes
+widgets, and updates shortcuts where the platform permits. Process interruption leaves this post-cutover publication
+phase pending and startup resumes it before background mail work is enabled.
 
 The import writes folder, message, and attachment identifier mappings before importing dependents. After all message records for an
 account are available, it builds cross-folder `ThreadId` memberships from their threading headers and records the
 legacy folder-local thread-root mappings before rewriting threaded-list and cache values. It then validates all
 rewritten relationships before the global database is published. It translates serialized pending-command folder
-references to `FolderId` or to the chosen internal mapping before the command is eligible to execute. It also accepts
-supported pre-cutover message references, such as notification or activity references containing `(AccountId,
-legacyFolderId, UID)`, through the compatibility mapping until that support is intentionally retired. Newly created
-references use the global identifier model.
+references to `FolderId` or to the chosen internal mapping before the command is eligible to execute. It also translates supported app-owned pre-cutover message references, such as notification or activity references
+containing `(AccountId, legacyFolderId, UID)`, before publication. Newly created references use the global identifier
+model. Externally retained old references expire at cutover and are not resolved through a permanent alias.
 
-Before step 6, global data is not visible to normal mail code. Any failure before that step keeps legacy storage
-authoritative. A later retry starts with a new unpublished import.
+Before step 7, global data and copied settings are not visible to normal account or mail code. Any failure before that
+step keeps the old account list, old settings, and legacy mail storage authoritative. A later retry starts with a new
+unpublished import and reuses the durable account mapping.
 
 ### Pre-flight storage check
 
@@ -162,18 +250,20 @@ If the process stopped before cutover, startup keeps legacy storage authoritativ
 database and copied artifacts, and starts a fresh import when the migration is retried. SQLite transactions protect
 individual writes, while discarding the unpublished target prevents a partially imported database from being reused.
 
-Cutover commits the validated state as one durable operation. If that operation did not commit, startup uses legacy
-storage. If it committed, startup uses the global store and may resume cleanup. Legacy deletion cannot begin before this
-state is durable, so process termination cannot leave startup choosing between two authoritative stores.
+Cutover is an idempotent durable phase guarded from normal account and mail access. It publishes the new `accountUuids`
+value and global-store state using the previously recorded mapping. If the process stops between those writes, startup
+observes the in-progress cutover phase and completes it before releasing the migration gate. Old settings and legacy
+mail storage cannot be deleted before cutover completion is durable.
 
 ### Post-cutover cleanup
 
-Cutover atomically makes the global store authoritative and records cleanup as pending. Only then can an idempotent
-cleanup job delete the legacy per-account databases and attachment directories. The job also deletes orphaned artifacts
-left behind by accounts that were removed before migration.
+Completed cutover makes the global store and new account IDs authoritative and records cleanup as pending. Only then can
+an idempotent cleanup job delete the old account setting namespaces, legacy per-account databases, and attachment
+directories. The job also deletes orphaned artifacts left behind by accounts that were removed before migration.
 
-Cleanup is complete only after the job verifies that all known legacy artifacts are absent. If deletion fails or the app
-stops during cleanup, the state remains pending and the job retries on a later startup or scheduled background run. A
+Cleanup is complete only after the job verifies that all known legacy artifacts are absent, every reference policy has
+been applied, and the temporary migration mappings have been deleted. If deletion fails or the app stops during cleanup,
+the state remains pending and the job retries on a later startup or scheduled background run. A
 retry resumes cleanup without repeating the data migration. The job never reads legacy mail into the global store and
 mail repositories never bind to legacy storage after cutover.
 
@@ -190,13 +280,19 @@ implementation stays in the codebase, unbound and unused, until a later release 
 Cutover requires all of the following:
 
 - every configured account was imported
+- every real account has exactly one UUIDv7 replacement and retry preserves the same mapping
+- all settings from each old account namespace exist under the replacement, account ordering is preserved, and each
+  account's previous enabled state is restored
 - mapped data and relationships are complete
 - queued operations survive restart and remain executable
 - file-backed attachments, meaning parts with `data_location = 2`, are present and valid
 - database integrity checks pass after reopen
 - search is rebuilt and representative queries match
-- every source key maps to exactly one target, all dependent keys resolve, and no internal legacy numeric key crosses a
+- every source key maps to exactly one target, every non-thread target maps from at most one source key, all target IDs are
+  unique in their type and account scope, all dependent keys resolve, and no internal legacy numeric key crosses a
   repository boundary
+- no replacement `AccountId` equals a legacy account ID, another replacement, or `UnifiedAccountId`; no mapping targets
+  an object owned by another account
 - messages from Inbox, Sent, and other folders join the same `ThreadId` when their threading headers identify one
   conversation, without joining messages from different accounts
 - attachment URIs resolve to the same imported part after restart
@@ -234,8 +330,21 @@ Automated tests cover:
 - migration-gate behavior for startup and background work
 - report redaction
 - the guarantee that partial global data is never visible to normal callers
-- identifier-mapping completeness, duplicate-key rejection, pending-command payload translation, attachment URI
-  resolution, and notification-ID collision handling
+- identifier-mapping completeness, duplicate-source and duplicate-target rejection, existing-ID and reserved-ID collision
+  rejection, cross-account target rejection, stable account mapping across retries, account settings namespace copying,
+  disabled staging, enabled-state restoration, ordered account-list cutover, old-settings cleanup, pending-command
+  payload translation, attachment URI resolution, and notification-ID collision handling
+- the explicit `ThreadId` many-to-one exception, including valid same-account conversation merges and rejection of a merge
+  spanning different accounts
+- the persisted `AccountId` inventory policies: mail-sync cancellation and rescheduling, pending account-removal handling,
+  widget account and folder translation, avatar migration, notification-channel recreation, active-notification and
+  `PendingIntent` replacement, shortcut and route reset, preservation of draft content when reply linkage cannot be
+  translated, provider URI expiration, safe failure for stale references, and cleanup of legacy paths and migration
+  mappings
+- pre-migration disclosure and post-migration summaries for every user-visible reset or expiration, including recovery
+  actions and privacy-preserving counts
+- an instrumented cutover fixture that seeds every inventoried app-owned and Android-owned reference, proves that no stale
+  reference targets another account, and verifies each declared rewrite, recreation, reset, or expiration outcome
 - cross-folder thread construction, including a conversation spanning Inbox and Sent and a merge of two existing
   conversations
 
@@ -243,5 +352,4 @@ Automated tests cover:
 
 - Which supported legacy schema versions require dedicated fixtures?
 - Which Room driver and locations apply on Android and JVM desktop?
-- How long must compatibility mappings support pre-cutover external message references after migration?
 
