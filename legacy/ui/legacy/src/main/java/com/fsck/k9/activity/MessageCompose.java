@@ -1634,7 +1634,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
         }
 
         if (!relatedMessageProcessed) {
-            attachmentPresenter.loadAllAvailableAttachments(messageViewInfo);
+            attachmentPresenter.processDraftMessage(messageViewInfo);
         }
 
         // Decode the identity header when loading a draft.
@@ -1947,6 +1947,14 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
         @Override
         public void onMessageViewInfoLoadFinished(MessageViewInfo messageViewInfo) {
             internalMessageHandler.sendEmptyMessage(MSG_PROGRESS_OFF);
+
+            // When a draft was incomplete, the attachment presenter asked for the complete message and we end up
+            // here a second time. loadLocalMessageForDisplay() only rebuilds the quoted text in that case, so the
+            // attachments that just arrived have to be picked up explicitly.
+            if (relatedMessageProcessed && action == Action.EDIT_DRAFT) {
+                attachmentPresenter.processDraftMessage(messageViewInfo);
+            }
+
             loadLocalMessageForDisplay(messageViewInfo, action);
 
             if(!recipientPresenter.isToAddressAdded()) {
@@ -2205,6 +2213,16 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
         public void showMissingAttachmentsPartialMessageForwardWarning() {
             Toast.makeText(MessageCompose.this,
                     getString(R.string.message_compose_attachments_forward_toast), Toast.LENGTH_LONG).show();
+        }
+
+        @Override
+        public void downloadCompleteMessage() {
+            if (messageLoaderHelper == null) {
+                return;
+            }
+
+            internalMessageHandler.sendEmptyMessage(MSG_PROGRESS_ON);
+            messageLoaderHelper.downloadCompleteMessage();
         }
     };
 

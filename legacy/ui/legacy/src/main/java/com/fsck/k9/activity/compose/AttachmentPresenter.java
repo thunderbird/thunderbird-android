@@ -53,6 +53,7 @@ public class AttachmentPresenter {
     private final LinkedHashMap<Uri, InlineAttachment> inlineAttachments;
     private int nextLoaderId = 0;
     private WaitingAction actionToPerformAfterWaiting = WaitingAction.NONE;
+    private boolean completeMessageDownloadRequested = false;
 
 
     public AttachmentPresenter(Context context, AttachmentMvpView attachmentMvpView, LoaderManager loaderManager,
@@ -210,18 +211,50 @@ public class AttachmentPresenter {
         boolean allPartsAvailable = true;
 
         for (AttachmentViewInfo attachmentViewInfo : messageViewInfo.attachments) {
-            if (attachmentViewInfo.isContentAvailable()) {
-                if (attachmentViewInfo.inlineAttachment) {
-                    addInlineAttachment(attachmentViewInfo);
-                } else {
-                    addInternalAttachment(attachmentViewInfo);
-                }
-            } else {
+            if (!attachmentViewInfo.isContentAvailable()) {
                 allPartsAvailable = false;
+                continue;
+            }
+
+            if (isAlreadyAdded(attachmentViewInfo)) {
+                continue;
+            }
+
+            if (attachmentViewInfo.inlineAttachment) {
+                addInlineAttachment(attachmentViewInfo);
+            } else {
+                addInternalAttachment(attachmentViewInfo);
             }
         }
 
         return allPartsAvailable;
+    }
+
+    private boolean isAlreadyAdded(AttachmentViewInfo attachmentViewInfo) {
+        return attachments.containsKey(attachmentViewInfo.internalUri) ||
+                inlineAttachments.containsKey(attachmentViewInfo.internalUri);
+    }
+
+    /**
+     * Loads the attachments of a draft that is being edited.
+     *
+     * <p>Unlike a message that is only displayed, an edited draft is written back to the server. Attachments whose
+     * content was not downloaded are therefore not just missing from the screen, they are lost on the next save. So
+     * the complete message is fetched once, mirroring what the message view offers through its download button.</p>
+     */
+    public void processDraftMessage(MessageViewInfo messageViewInfo) {
+        boolean allPartsAvailable = loadAllAvailableAttachments(messageViewInfo);
+        if (allPartsAvailable) {
+            return;
+        }
+
+        if (completeMessageDownloadRequested) {
+            attachmentMvpView.showMissingAttachmentsPartialMessageWarning();
+            return;
+        }
+
+        completeMessageDownloadRequested = true;
+        attachmentMvpView.downloadCompleteMessage();
     }
 
     public void processMessageToForward(MessageViewInfo messageViewInfo) {
@@ -475,6 +508,7 @@ public class AttachmentPresenter {
 
         void showMissingAttachmentsPartialMessageWarning();
         void showMissingAttachmentsPartialMessageForwardWarning();
+        void downloadCompleteMessage();
     }
 
     public interface AttachmentsChangedListener {
