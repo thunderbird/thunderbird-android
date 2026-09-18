@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
@@ -37,6 +38,7 @@ import org.apache.james.mime4j.parser.MimeStreamParser;
 import org.apache.james.mime4j.stream.BodyDescriptor;
 import org.apache.james.mime4j.stream.Field;
 import org.apache.james.mime4j.stream.MimeConfig;
+import org.apache.james.mime4j.util.ContentUtil;
 import org.jetbrains.annotations.NotNull;
 import net.thunderbird.core.common.exception.MessagingException;
 
@@ -607,7 +609,7 @@ public class MimeMessage extends Message {
         public void field(Field parsedField) throws MimeException {
             expect(Part.class);
             String name = parsedField.getName();
-            String raw = parsedField.getRaw().toString();
+            String raw = ContentUtil.decode(StandardCharsets.UTF_8, parsedField.getRaw());
             ((Part) stack.peek()).addRawHeader(name, raw);
         }
     }
