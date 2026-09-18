@@ -218,7 +218,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
         initializeControllerExtensions(controllerExtensions);
 
         draftOperations = new DraftOperations(
-                Log.INSTANCE, this, messageStoreManager, saveMessageDataCreator, localMessageUidPrefixProvider,
+                Log.INSTANCE, this, messageStoreManager, localMessageUidPrefixProvider,
                 messageLifecycleRepository, messageDataMapper, accountManager
         );
         notificationOperations =
