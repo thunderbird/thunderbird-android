@@ -1,6 +1,5 @@
 package net.thunderbird.piisafe.compiler.fir.checkers
 
-import net.thunderbird.piisafe.compiler.extension.fir.containsHasPiiAnnotatedType
 import net.thunderbird.piisafe.compiler.extension.fir.isAnnotatedWithHasPii
 import net.thunderbird.piisafe.compiler.fir.checkers.errors.PiiSafeFirErrors
 import net.thunderbird.piisafe.compiler.symbols.ProjectClassIds
@@ -14,6 +13,7 @@ import org.jetbrains.kotlin.fir.declarations.FirClass
 import org.jetbrains.kotlin.fir.declarations.hasAnnotation
 import org.jetbrains.kotlin.fir.declarations.processAllDeclarations
 import org.jetbrains.kotlin.fir.declarations.utils.isData
+import org.jetbrains.kotlin.fir.resolve.toClassSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirPropertySymbol
 
 internal class HasPiiRequiresAnnotatedPropertyChecker(
@@ -49,5 +49,5 @@ internal class HasPiiRequiresAnnotatedPropertyChecker(
         getterSymbol?.hasAnnotation(ProjectClassIds.PiiSafeHideClassId, session) == true
 
     private fun FirPropertySymbol.isOfHasPiiAnnotatedType(session: FirSession): Boolean =
-        resolvedReturnType.containsHasPiiAnnotatedType(session)
+        resolvedReturnType.toClassSymbol(session)?.isAnnotatedWithHasPii(session) == true
 }

@@ -86,7 +86,7 @@ class HasPiiRequiresAnnotatedPropertyCheckerTest {
     }
 
     @Test
-    fun `checker should compile OK when HasPii type is nested in generic type arguments`() {
+    fun `checker should require Mask or Hide when HasPii type is nested in an unmasked generic`() {
         // Arrange
         val firExtensionRegistrar = TestFirExtensionRegistrar(::PiiSafeFirCheckers)
         val source = """
@@ -95,9 +95,16 @@ class HasPiiRequiresAnnotatedPropertyCheckerTest {
             @PiiSafe.HasPii
             data class MessageAddress(@get:PiiSafe.Mask val value: String)
 
+            class LeakyEnvelope<T>(val value: T) {
+                override fun toString() = (value as MessageAddress).value
+            }
+
             @PiiSafe.HasPii
-            data class MessageEnvelope(val from: Map<String, List<MessageAddress>>)
+            data class MessageEnvelope(val secret: LeakyEnvelope<MessageAddress>)
         """.trimIndent()
+        val expectedMessage =
+            "Class annotated with @PiiSafe.HasPii must have at least one property annotated with " +
+                "@PiiSafe.Hide or @PiiSafe.Mask."
 
         // Act
         val result = compileWithPiiSafePlugin(
@@ -107,6 +114,8 @@ class HasPiiRequiresAnnotatedPropertyCheckerTest {
         )
 
         // Assert
-        assertEquals(expected = KotlinCompilation.ExitCode.OK, actual = result.exitCode)
+        assertEquals(expected = KotlinCompilation.ExitCode.COMPILATION_ERROR, actual = result.exitCode)
+        assertEquals(expected = 1, actual = result.diagnosticMessages.size)
+        assertEquals(expected = expectedMessage, actual = result.diagnosticMessages.first().message)
     }
 }
