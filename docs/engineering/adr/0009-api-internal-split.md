@@ -28,8 +28,8 @@ content rules for both API and internal code — for both feature and core modul
 - `:core:*:impl` modules are renamed to `:core:*:internal`, marking them as private implementation details.
 - Other modules must only declare dependencies on `:feature:*:api` or `:core:*:api` of other areas. Depending on
   `:feature:*:internal` or `:core:*:internal` from a different area is prohibited.
-- Binding of contracts to implementations happens in central composition modules (application assembly): `:app-common`
-  and the app-specific modules `:app-k9mail` and `:app-thunderbird`.
+- Binding of contracts to implementations happens in central composition modules (application assembly): the KMP
+  `:app-composition` module, `:app-common`, and the app-specific modules `:app-k9mail` and `:app-thunderbird`.
 - **Strict Visibility**: Within `:feature:*:internal` and `:core:*:internal` modules, use the `internal` visibility modifier for all code that is not strictly required to be `public` for dependency injection or application composition. This ensures that implementation details are not accessible directly even when a module has a dependency on the `internal` module.
 
 ### What goes into API vs. Internal
@@ -38,7 +38,7 @@ Put only stable, intentionally shared contracts in `api`:
 - Public interfaces and abstractions other features depend on (e.g., repositories, use cases, service interfaces).
 - Data contracts exchanged across features (DTOs/value objects).
 - Navigation contracts and events that other features can trigger/observe.
-- DI entry points/interfaces needed by composition modules (`:app-common`, app modules).
+- DI entry points/interfaces needed by composition modules (`:app-composition`, `:app-common`, app modules).
 
 Keep everything else in `internal`:
 - Implementations of the above contracts (repositories, data sources, mappers, use case implementations).
@@ -102,7 +102,7 @@ Notes for core modules:
 - Core modules must not depend on `:feature:*` modules.
 - `:feature:*:internal` and `:core:*:internal` dependencies are only allowed from:
   - the same area’s `api` module (when strictly necessary), and
-  - composition modules: `:app-common`, `:app-k9mail`, `:app-thunderbird`.
+  - composition modules: `:app-composition`, `:app-common`, `:app-k9mail`, `:app-thunderbird`.
 - Build logic will add a check that fails the build if a module depends on a `:*:internal` outside of these exceptions.
 
 ### Migration plan
@@ -117,7 +117,8 @@ Notes for core modules:
 3. Update imports and references after package moves.
 4. Add build-plugin check to disallow external dependencies on `:feature:*:internal` and `:core:*:internal` (enforced
    in the root build).
-5. Move all composition wiring (DI, factory bindings, navigation registrations) to `:app-common` or app modules.
+5. Move shared KMP composition wiring to `:app-composition`; keep platform-specific wiring in `:app-common` or app
+   modules.
 6. When in doubt, prefer starting in `internal`. Promote types to `api` only once they’re needed and stable.
 
 ## Outcomes

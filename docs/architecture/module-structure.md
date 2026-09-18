@@ -68,7 +68,7 @@ When designing APIs, follow these principles:
 ### ⚙️ Internal Module
 
 The internal module depends on the API module but must not be depended upon by other modules (except for
-composition modules: `:app-common`, `:app-k9mail`, and `:app-thunderbird`).
+composition modules: `:app-composition`, `:app-common`, `:app-k9mail`, and `:app-thunderbird`).
 
 The internal module contains:
 
@@ -127,7 +127,7 @@ feature:account:internal
 #### Implementation Best Practices
 
 - **Encapsulation**: Keep implementation details hidden from consumers
-- **Strict Visibility Control**: Within an `internal` module, everything should be marked with the `internal` visibility modifier by default. Only code explicitly required for dependency injection (e.g., Koin modules) or composition (if absolutely necessary) should remain `public`. This prevents accidental usage of implementation details even in modules that depend on the `internal` module (like `:app-common`).
+- **Strict Visibility Control**: Within an `internal` module, everything should be marked with the `internal` visibility modifier by default. Only code explicitly required for dependency injection (e.g., Koin modules) or composition (if absolutely necessary) should remain `public`. This prevents accidental usage of implementation details even in modules that depend on the `internal` module (like `:app-composition` or `:app-common`).
 - **Testability**: Design internal code to be easily testable
 - **Dependency injection**: Use constructor injection for dependencies
 - **Error handling**: Implement robust error handling according to API contracts
@@ -286,9 +286,10 @@ graph TB
         APP_K9["`**:app-k9mail**<br>K-9 Mail`"]
     end
 
-    subgraph COMMON[App Common Module]
+    subgraph COMPOSITION[Composition Modules]
         direction TB
-        COMMON_APP["`**:app-common**<br>Integration Code`"]
+        APP_COMPOSITION["`**:app-composition**<br>KMP Bindings`"]
+        COMMON_APP["`**:app-common**<br>Android and Legacy Integration`"]
     end
 
     subgraph FEATURE[Feature Modules]
@@ -314,10 +315,11 @@ graph TB
 
     APP_K9 --> |depends on| COMMON_APP
     APP_TB --> |depends on| COMMON_APP
-    COMMON_APP --> |integrates| FEATURE1
-    COMMON_APP --> |injects| FEATURE2
+    COMMON_APP --> APP_COMPOSITION
+    APP_COMPOSITION --> |integrates| FEATURE1
+    APP_COMPOSITION --> |injects| FEATURE2
     FEATURE2 --> FEATURE1
-    COMMON_APP --> |integrates| FEATURE3
+    APP_COMPOSITION --> |integrates| FEATURE3
     APP_K9 --> |integrates| FEATURE_K9
     APP_TB --> |integrates| FEATURE_TB
     FEATURE1 --> |uses| CORE1
@@ -343,8 +345,8 @@ graph TB
 
     class APP app
     class APP_K9,APP_TB app_module
-    class COMMON common
-    class COMMON_APP common_module
+    class COMPOSITION common
+    class APP_COMPOSITION,COMMON_APP common_module
     class FEATURE feature
     class FEATURE1,FEATURE2,FEATURE3 feature_module
     class FEATURE_K9 featureK9
@@ -357,8 +359,9 @@ graph TB
 
 ### Module Interaction Patterns
 
-- **App Modules**: Depend on the App Common module for shared functionality and selectively integrate feature modules
-- **App Common**: Integrates various feature modules to provide a cohesive application
+- **App Modules**: Depend on application composition and selectively integrate app-specific feature modules
+- **App Composition**: Binds shared KMP feature and core implementations
+- **App Common**: Adds Android integration and legacy bridges
 - **Feature Modules**: Use core modules and libraries for their implementation, may depend on other feature API modules
 - **App-Specific Features**: Some features are integrated directly by specific apps (K-9 Mail or Thunderbird)
 
@@ -372,12 +375,12 @@ These rules must be strictly followed:
 2. **API-Internal Separation**:
    - Other modules must only declare dependencies on `:feature:*:api` or `:core:*:api` of other areas.
    - Depending on `:feature:*:internal` or `:core:*:internal` from a different area is prohibited.
-   - Binding of contracts to implementations happens in central composition modules: `:app-common`, `:app-k9mail`, and `:app-thunderbird`.
+   - Binding of contracts to implementations happens in central composition modules: `:app-composition`, `:app-common`, `:app-k9mail`, and `:app-thunderbird`.
 3. **Feature Integration**:
-   - Features should be integrated through the App Common module, which acts as a central hub
+   - Shared KMP bindings belong in `:app-composition`; Android and legacy integration belongs in `:app-common`
    - Direct dependencies between feature internal modules should be avoided, or limited to API modules
 4. **Dependency Direction**:
-   - Dependencies should flow from app modules to common, then to features, and finally to core and libraries
+   - Dependencies should flow from app modules through composition to features, core, and libraries
    - Higher-level modules should depend on lower-level modules, not vice versa
 5. **Minimal Dependencies**:
    - Each module should have the minimal set of dependencies required
