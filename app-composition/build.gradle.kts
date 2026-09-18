@@ -21,6 +21,7 @@ kotlin {
             implementation(projects.feature.account.core)
             implementation(projects.feature.mail.message.export.api)
             implementation(projects.feature.mail.message.export.implEml)
+            implementation(projects.feature.mail.message.reader.impl)
         }
     }
 }

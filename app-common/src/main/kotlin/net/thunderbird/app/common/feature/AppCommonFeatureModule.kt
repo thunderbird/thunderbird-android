@@ -6,7 +6,6 @@ import net.thunderbird.app.common.feature.account.appCommonFeatureAccountModule
 import net.thunderbird.app.common.feature.mail.appCommonFeatureMailModule
 import net.thunderbird.feature.account.avatar.di.featureAccountAvatarModule
 import net.thunderbird.feature.mail.message.composer.internal.featureMessageComposerModule
-import net.thunderbird.feature.mail.message.reader.impl.inject.featureMessageReaderModule
 import net.thunderbird.feature.navigation.drawer.api.NavigationDrawerExternalContract
 import net.thunderbird.feature.notification.impl.inject.featureNotificationModule
 import net.thunderbird.feature.thundermail.internal.common.inject.featureThundermailCommonModule
@@ -20,7 +19,6 @@ internal val appCommonFeatureModule = module {
     includes(featureLauncherModule)
     includes(featureNotificationModule)
     includes(featureMessageComposerModule)
-    includes(featureMessageReaderModule)
     includes(featureThundermailCommonModule)
 
     factory<FeatureLauncherExternalContract.MessageListLauncher> {
