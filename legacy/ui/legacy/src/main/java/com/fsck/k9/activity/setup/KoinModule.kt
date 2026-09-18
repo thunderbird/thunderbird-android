@@ -1,5 +1,6 @@
 package com.fsck.k9.activity.setup
 
+import app.k9mail.feature.launcher.FeatureLauncherExternalContract
 import com.fsck.k9.activity.account.identity.LegacyIdentitySignatureWebViewConfigurator
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
@@ -20,5 +21,9 @@ val setUpModule = module {
             emailAddressValidator = get(),
             legacyIdentitySignatureWebViewConfigurator = get(),
         )
+    }
+
+    single<FeatureLauncherExternalContract.AccountSetupCompositionLauncher> {
+        DefaultAccountSetupCompositionLauncher()
     }
 }
