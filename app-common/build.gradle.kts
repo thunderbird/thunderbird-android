@@ -47,7 +47,6 @@ dependencies {
     implementation(projects.feature.mail.message.composer.internal)
     implementation(projects.feature.migration.provider)
     implementation(projects.feature.notification.api)
-    implementation(projects.feature.notification.impl)
     implementation(projects.feature.widget.messageList)
 
     implementation(projects.feature.mail.message.api)
