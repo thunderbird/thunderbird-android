@@ -1,15 +1,12 @@
 package com.fsck.k9.controller
 
 import app.k9mail.legacy.mailstore.MessageStoreManager
-import app.k9mail.legacy.mailstore.SaveMessageData
 import com.fsck.k9.backend.api.Backend
 import com.fsck.k9.controller.MessagingControllerCommands.PendingAppend
 import com.fsck.k9.controller.MessagingControllerCommands.PendingReplace
 import com.fsck.k9.mail.FetchProfile
-import com.fsck.k9.mail.MessageDownloadState
 import com.fsck.k9.mailstore.LocalFolder
 import com.fsck.k9.mailstore.LocalMessage
-import com.fsck.k9.mailstore.SaveMessageDataCreator
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
@@ -31,7 +28,6 @@ internal class DraftOperations @JvmOverloads constructor(
     private val logger: Logger,
     private val messagingController: @NotNull MessagingController,
     private val messageStoreManager: @NotNull MessageStoreManager,
-    private val saveMessageDataCreator: SaveMessageDataCreator,
     private val localMessageUidPrefixProvider: LocalMessageUidPrefixProvider,
     private val messageLifecycleRepository: MessageLifecycleRepository,
     private val messageDataMapper: MessageDataMapper<LegacyMessage>,
@@ -68,7 +64,7 @@ internal class DraftOperations @JvmOverloads constructor(
         subject: String?,
     ): Long {
         val messageStore = messageStoreManager.getMessageStore(account)
-        val domainMessage = message.toDomainMessage(subject, account)
+        val domainMessage = message.toDomainMessage(subject, account, folderId)
         val domainFolderId = LegacyFolderIdFactory.of(folderId)
         val outcome = messageLifecycleRepository.create(domainMessage, account.id, domainFolderId)
         val messageId = outcome.fold(
@@ -103,17 +99,30 @@ internal class DraftOperations @JvmOverloads constructor(
         return messageId
     }
 
-    private fun saveDraftLocally(
+    private suspend fun saveDraftLocally(
         account: LegacyAccountDto,
         message: LegacyMessage,
         folderId: Long,
         existingDraftId: Long?,
         plaintextSubject: String?,
     ): Long {
-        val messageStore = messageStoreManager.getMessageStore(account)
-        val messageData = message.toSaveMessageData(plaintextSubject)
-
-        return messageStore.saveLocalMessage(folderId, messageData, existingDraftId)
+        val domainMessage = message.toDomainMessage(plaintextSubject, account, folderId)
+        val domainFolderId = LegacyFolderIdFactory.of(folderId)
+        val accountId = account.id
+        return if (existingDraftId == null) {
+            messageLifecycleRepository.create(domainMessage, accountId, domainFolderId)
+        } else {
+            messageLifecycleRepository.update(
+                message = domainMessage.copy(id = LegacyMessageIdFactory.of(existingDraftId)),
+                accountId = accountId,
+                folderId = domainFolderId,
+            )
+        }.fold(
+            onSuccess = LegacyMessageIdFactory::toLegacyId,
+            onFailure = { error ->
+                throw error.throwable ?: MessagingException("Failed to save draft locally: $error")
+            },
+        )
     }
 
     fun processPendingReplace(command: PendingReplace, account: LegacyAccountDto) {
@@ -186,20 +195,22 @@ internal class DraftOperations @JvmOverloads constructor(
         messagingController.destroyPlaceholderMessages(localFolder, messageServerIds)
     }
 
-    private fun LegacyMessage.toSaveMessageData(subject: String?): SaveMessageData {
-        return saveMessageDataCreator.createSaveMessageData(this, MessageDownloadState.FULL, subject)
-    }
-
-    private suspend fun LegacyMessage.toDomainMessage(subject: String?, account: LegacyAccountDto): Message {
+    private suspend fun LegacyMessage.toDomainMessage(
+        subject: String?,
+        account: LegacyAccountDto,
+        folderId: Long,
+    ): Message {
         setFlag(Flag.X_DOWNLOADED_FULL, true)
         accountId = account.id
-        val domainMessage = messageDataMapper.toDomain(this).let { domainMessage ->
-            if (subject.isNullOrBlank()) {
-                domainMessage
-            } else {
-                domainMessage.copy(envelope = domainMessage.envelope.copy(subject = subject))
-            }
+        val domainMessage = messageDataMapper.toDomain(this)
+        val envelop = if (subject.isNullOrBlank()) {
+            domainMessage.envelope
+        } else {
+            domainMessage.envelope.copy(subject = subject)
         }
-        return domainMessage
+        return domainMessage.copy(
+            folderId = LegacyFolderIdFactory.of(folderId),
+            envelope = envelop,
+        )
     }
 }

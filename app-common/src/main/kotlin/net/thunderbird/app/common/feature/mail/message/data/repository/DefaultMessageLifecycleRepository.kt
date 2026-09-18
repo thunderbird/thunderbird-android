@@ -9,6 +9,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import net.thunderbird.app.common.feature.mail.message.domain.model.LegacyMessageSource
 import net.thunderbird.components.core.outcome.Outcome
+import net.thunderbird.components.core.outcome.fold
 import net.thunderbird.core.logging.Logger
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.mail.folder.FolderId
@@ -19,8 +20,10 @@ import net.thunderbird.feature.mail.message.Message
 import net.thunderbird.feature.mail.message.MessageDownloadState
 import net.thunderbird.feature.mail.message.MessageId
 import net.thunderbird.feature.mail.message.MessageServerId
+import net.thunderbird.feature.mail.message.domain.GetMessageIdCriteria
 import net.thunderbird.feature.mail.message.domain.MessageLifecycleError
 import net.thunderbird.feature.mail.message.domain.MessageLifecycleRepository
+import net.thunderbird.feature.mail.message.domain.MessageQueryRepository
 import net.thunderbird.feature.mail.message.mapper.MessageDataMapper
 import com.fsck.k9.mail.Message as LegacyMessageDto
 import com.fsck.k9.mail.MessageDownloadState as LegacyMessageDownloadState
@@ -29,6 +32,7 @@ private const val LOG_ID = "[repository][message-lifecycle]"
 
 class DefaultMessageLifecycleRepository(
     private val logger: Logger,
+    private val messageQueryRepository: MessageQueryRepository,
     private val messageStoreManager: MessageStoreManager,
     private val saveMessageDataCreator: SaveMessageDataCreator,
     private val messageMapper: MessageDataMapper<LegacyMessageDto>,
@@ -40,6 +44,12 @@ class DefaultMessageLifecycleRepository(
         accountId: AccountId,
         folderId: FolderId?,
     ): Outcome<MessageId, MessageLifecycleError> = withContext(ioDispatcher) {
+        val messageServerId = message.serverId
+        val existingMessageId = verifyMessageExists(folderId, messageServerId, accountId)
+        if (existingMessageId != null) {
+            logger.warn { "$LOG_ID message already exists with id '$existingMessageId'. Use update instead." }
+            return@withContext Outcome.failure(MessageLifecycleError.MessageAlreadyExists(existingMessageId))
+        }
         logger.debug {
             "$LOG_ID creating new message in folder '${folderId ?: "<outbox-id>"}' for account '$accountId'"
         }
@@ -53,11 +63,10 @@ class DefaultMessageLifecycleRepository(
         }
         logger.verbose { "$LOG_ID assigning message to folder id = $legacyFolderId" }
 
-        val messageServerId = message.serverId
         val messageId = if (messageServerId == null) {
-            createLocalMessage(messageStore, legacyFolderId, messageData)
+            upsertLocalMessage(messageStore, legacyFolderId, messageData)
         } else {
-            createRemoteMessage(messageStore, legacyFolderId, messageServerId, messageData)
+            upsertRemoteMessage(messageStore, legacyFolderId, messageServerId, messageData)
         }
         logger.verbose { "$LOG_ID message created successfully. MessageId = $messageId" }
         Outcome.success(messageId)
@@ -66,8 +75,32 @@ class DefaultMessageLifecycleRepository(
     override suspend fun update(
         message: Message,
         accountId: AccountId,
-    ): Outcome<MessageId, MessageLifecycleError> {
-        TODO("Not yet implemented")
+        folderId: FolderId,
+    ): Outcome<MessageId, MessageLifecycleError> = withContext(ioDispatcher) {
+        // NOTE: The legacy store resolves remote messages by folder id, server id (messages.uid), so
+        //       message.id is not strictly needed for that branch today. We still require it so the
+        //       update() contract is the same for local and remote messages and stays valid when
+        //       the data source is replaced.
+        //       Revisit upsertRemoteMessage once the new db can update by message id directly.
+        val messageId = requireNotNull(message.id) { "$LOG_ID The message.id is required to update a message." }
+        logger.debug {
+            "$LOG_ID updating message '$messageId' in folder '$folderId' for account '$accountId'"
+        }
+        logger.verbose { "$LOG_ID message = $message" }
+        val legacyMessage = messageMapper.toDto(message)
+        val downloadState = message.downloadState.toLegacyDownloadState()
+        val messageData = saveMessageDataCreator.createSaveMessageData(legacyMessage, downloadState)
+        val messageStore = messageStoreManager.getMessageStore(accountId)
+        val legacyFolderId = LegacyFolderIdFactory.toLegacyId(folderId)
+        val messageServerId = message.serverId
+        val updatedMessageId = if (messageServerId == null) {
+            val legacyExistingMessageId = LegacyMessageIdFactory.toLegacyId(messageId)
+            upsertLocalMessage(messageStore, legacyFolderId, messageData, legacyExistingMessageId)
+        } else {
+            upsertRemoteMessage(messageStore, legacyFolderId, messageServerId, messageData)
+        }
+        logger.verbose { "$LOG_ID message updated successfully. MessageId = $updatedMessageId" }
+        Outcome.success(updatedMessageId)
     }
 
     override suspend fun move(
@@ -92,21 +125,36 @@ class DefaultMessageLifecycleRepository(
         TODO("Not yet implemented")
     }
 
-    private fun createLocalMessage(
+    private suspend fun verifyMessageExists(
+        folderId: FolderId?,
+        messageServerId: MessageServerId?,
+        accountId: AccountId,
+    ): MessageId? {
+        return if (folderId != null && messageServerId != null) {
+            messageQueryRepository
+                .findIdByCriteria(accountId, GetMessageIdCriteria(folderId, messageServerId))
+                .fold(onSuccess = { it }, onFailure = { throw it.throwable })
+        } else {
+            null
+        }
+    }
+
+    private fun upsertLocalMessage(
         messageStore: ListenableMessageStore,
         legacyFolderId: Long,
         messageData: SaveMessageData,
+        existingLegacyMessageId: Long? = null,
     ): MessageId {
         logger.verbose { "$LOG_ID creating local message in folder id '$legacyFolderId'" }
         val legacyMessageId = messageStore.saveLocalMessage(
             folderId = legacyFolderId,
             messageData = messageData,
-            existingMessageId = null,
+            existingMessageId = existingLegacyMessageId,
         )
         return LegacyMessageIdFactory.of(legacyMessageId)
     }
 
-    private fun createRemoteMessage(
+    private fun upsertRemoteMessage(
         messageStore: ListenableMessageStore,
         legacyFolderId: Long,
         messageServerId: MessageServerId,

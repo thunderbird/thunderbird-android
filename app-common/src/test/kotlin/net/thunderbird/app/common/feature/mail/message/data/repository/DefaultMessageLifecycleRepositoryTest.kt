@@ -6,8 +6,10 @@ import app.k9mail.legacy.mailstore.MessageStoreFactory
 import app.k9mail.legacy.mailstore.MessageStoreManager
 import app.k9mail.legacy.mailstore.SaveMessageData
 import app.k9mail.legacy.message.extractors.PreviewResult
+import assertk.assertFailure
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import assertk.assertions.isInstanceOf
 import com.fsck.k9.mail.internet.MimeMessage
 import com.fsck.k9.mailstore.SaveMessageDataCreator
 import kotlin.test.Test
@@ -40,11 +42,13 @@ import net.thunderbird.feature.mail.message.MessageHeaders
 import net.thunderbird.feature.mail.message.MessageId
 import net.thunderbird.feature.mail.message.MessageServerId
 import net.thunderbird.feature.mail.message.domain.GetMessageIdCriteria
+import net.thunderbird.feature.mail.message.domain.MessageLifecycleError
 import net.thunderbird.feature.mail.message.domain.MessageQueryError
 import net.thunderbird.feature.mail.message.domain.MessageQueryRepository
 import net.thunderbird.feature.mail.message.mapper.MessageDataMapper
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
+import org.mockito.kotlin.verifyNoInteractions
 import org.mockito.kotlin.whenever
 import com.fsck.k9.mail.Message as LegacyMessageDto
 import com.fsck.k9.mail.MessageDownloadState as LegacyMessageDownloadState
@@ -92,6 +96,7 @@ class DefaultMessageLifecycleRepositoryTest {
     @OptIn(ExperimentalCoroutinesApi::class)
     private val testSubject = DefaultMessageLifecycleRepository(
         logger = TestLogger(),
+        messageQueryRepository = messageQueryRepository,
         messageStoreManager = messageStoreManager,
         saveMessageDataCreator = saveMessageDataCreator,
         messageMapper = FakeMessageDataMapper(legacyMessage),
@@ -99,7 +104,7 @@ class DefaultMessageLifecycleRepositoryTest {
         ioDispatcher = UnconfinedTestDispatcher(),
     )
 
-    // region create
+    // region [create]
 
     @Test
     fun `create should save a remote message when it does not exist yet`() = runTest {
@@ -114,6 +119,25 @@ class DefaultMessageLifecycleRepositoryTest {
 
         // Assert
         assertThat(outcome).isEqualTo(Outcome.success(LegacyMessageIdFactory.of(SAVED_MESSAGE_ID)))
+        assertThat(messageQueryRepository.lastCriteria)
+            .isEqualTo(GetMessageIdCriteria(folderId, MessageServerId(SERVER_ID)))
+        verify(messageStore).saveRemoteMessage(FOLDER_ID, SERVER_ID, saveMessageData)
+    }
+
+    @Test
+    fun `create should return MessageAlreadyExists without touching the store when the message exists`() = runTest {
+        // Arrange
+        val existingMessageId = LegacyMessageIdFactory.of(EXISTING_MESSAGE_ID)
+        messageQueryRepository.result = Outcome.success(existingMessageId)
+        val message = buildDomainMessage(serverId = MessageServerId(SERVER_ID))
+
+        // Act
+        val outcome = testSubject.create(message, accountId, folderId)
+
+        // Assert
+        assertThat(outcome).isEqualTo(Outcome.failure(MessageLifecycleError.MessageAlreadyExists(existingMessageId)))
+        verifyNoInteractions(messageStore)
+        verifyNoInteractions(saveMessageDataCreator)
     }
 
     @Test
@@ -162,6 +186,56 @@ class DefaultMessageLifecycleRepositoryTest {
         // Assert
         assertThat(outcome).isEqualTo(Outcome.success(LegacyMessageIdFactory.of(SAVED_MESSAGE_ID)))
         verify(saveMessageDataCreator).createSaveMessageData(legacyMessage, LegacyMessageDownloadState.PARTIAL, null)
+    }
+
+    // endregion [create]
+
+    // region [update]
+
+    @Test
+    fun `update should replace the existing local message when the message has no server id`() = runTest {
+        // Arrange
+        val message = buildDomainMessage(id = LegacyMessageIdFactory.of(EXISTING_MESSAGE_ID), serverId = null)
+        stubSaveMessageData()
+        whenever(messageStore.saveLocalMessage(FOLDER_ID, saveMessageData, EXISTING_MESSAGE_ID))
+            .thenReturn(EXISTING_MESSAGE_ID)
+
+        // Act
+        val outcome = testSubject.update(message, accountId, folderId)
+
+        // Assert
+        assertThat(outcome).isEqualTo(Outcome.success(LegacyMessageIdFactory.of(EXISTING_MESSAGE_ID)))
+        verify(messageStore).saveLocalMessage(FOLDER_ID, saveMessageData, EXISTING_MESSAGE_ID)
+    }
+
+    @Test
+    fun `update should save the remote message by folder and server id`() = runTest {
+        // Arrange
+        val message = buildDomainMessage(
+            id = LegacyMessageIdFactory.of(EXISTING_MESSAGE_ID),
+            serverId = MessageServerId(SERVER_ID),
+        )
+        stubSaveMessageData()
+        whenever(messageStore.saveRemoteMessage(FOLDER_ID, SERVER_ID, saveMessageData))
+            .thenReturn(EXISTING_MESSAGE_ID)
+
+        // Act
+        val outcome = testSubject.update(message, accountId, folderId)
+
+        // Assert
+        assertThat(outcome).isEqualTo(Outcome.success(LegacyMessageIdFactory.of(EXISTING_MESSAGE_ID)))
+        verify(messageStore).saveRemoteMessage(FOLDER_ID, SERVER_ID, saveMessageData)
+    }
+
+    @Test
+    fun `update should fail fast when the message has no id`() = runTest {
+        // Arrange
+        val message = buildDomainMessage(id = null, serverId = null)
+
+        // Act & Assert
+        assertFailure { testSubject.update(message, accountId, folderId) }
+            .isInstanceOf<IllegalArgumentException>()
+        verifyNoInteractions(messageStore)
     }
 
     // endregion

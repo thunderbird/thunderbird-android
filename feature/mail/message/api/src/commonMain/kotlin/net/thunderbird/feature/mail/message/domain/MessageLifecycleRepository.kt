@@ -25,7 +25,12 @@ interface MessageLifecycleRepository {
         folderId: FolderId? = null,
     ): Outcome<MessageId, MessageLifecycleError>
 
-    suspend fun update(message: Message, accountId: AccountId): Outcome<MessageId, MessageLifecycleError>
+    suspend fun update(
+        message: Message,
+        accountId: AccountId,
+        folderId: FolderId,
+    ): Outcome<MessageId, MessageLifecycleError>
+
     suspend fun move(messageId: MessageId, destinationFolderId: FolderId): Outcome<MessageId, MessageLifecycleError>
     suspend fun copy(messageId: MessageId, destinationFolderId: FolderId): Outcome<MessageId, MessageLifecycleError>
     suspend fun destroy(
@@ -37,4 +42,10 @@ interface MessageLifecycleRepository {
 
 sealed interface MessageLifecycleError {
     val throwable: Throwable?
+
+    data class MessageAlreadyExists(val messageId: MessageId) : MessageLifecycleError {
+        override val throwable: Throwable? = null
+    }
+
+    data class UnhandledError(override val throwable: Throwable) : MessageLifecycleError
 }
