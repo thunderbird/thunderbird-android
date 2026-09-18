@@ -40,6 +40,18 @@ sealed class FeatureLauncherTarget(
         deepLinkUri = AccountSettingsRoute.FetchingMailSettings(accountUuid).route().toUri(),
     )
 
+    data class AccountSendingMailSettings(val accountUuid: String) : FeatureLauncherTarget(
+        deepLinkUri = AccountSettingsRoute.SendingMailSettings(accountUuid).route().toUri(),
+    )
+
+    data class AccountCompositionSettings(val accountUuid: String) : FeatureLauncherTarget(
+        deepLinkUri = AccountSettingsRoute.CompositionSettings(accountUuid).route().toUri(),
+    )
+
+    data class AccountManageIdentities(val accountUuid: String) : FeatureLauncherTarget(
+        deepLinkUri = AccountSettingsRoute.ManageIdentities(accountUuid).route().toUri(),
+    )
+
     data class AccountAdvancedFetchingMailSettings(val accountUuid: String) : FeatureLauncherTarget(
         deepLinkUri = AccountSettingsRoute.AdvancedFetchingMailSettings(accountUuid).route().toUri(),
     )
