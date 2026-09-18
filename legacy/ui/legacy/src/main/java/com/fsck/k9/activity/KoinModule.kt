@@ -1,5 +1,6 @@
 package com.fsck.k9.activity
 
+import app.k9mail.feature.launcher.FeatureLauncherExternalContract
 import com.fsck.k9.ui.messageview.AttachmentLoadingController
 import com.fsck.k9.ui.messageview.DefaultAttachmentLoadingController
 import org.koin.dsl.module
@@ -14,5 +15,8 @@ val activityModule = module {
     }
     factory<AttachmentLoadingController> {
         DefaultAttachmentLoadingController(messagingController = get(), accountManager = get())
+    }
+    single<FeatureLauncherExternalContract.AccountManageIdentitiesLauncher> {
+        DefaultAccountManageIdentitiesLauncher()
     }
 }
