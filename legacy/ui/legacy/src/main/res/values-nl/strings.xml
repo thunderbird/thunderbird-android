@@ -959,4 +959,5 @@
     <string name="account_settings_signature_preview">Voorbeeld ondertekening</string>
     <string name="account_settings_signature_clear_label">Ondertekening wissen</string>
     <string name="message_compose_encrypting_message">Bericht versleutelen…</string>
+    <string name="message_view_from_me_text">ik</string>
 </resources>
