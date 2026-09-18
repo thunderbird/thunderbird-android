@@ -18,8 +18,8 @@ import net.thunderbird.core.ui.setting.SettingValue
 import net.thunderbird.core.ui.setting.SettingViewProvider
 import net.thunderbird.feature.account.settings.R
 import net.thunderbird.feature.account.settings.impl.ui.sendingMail.SendingMailSettingContract.Event
-import net.thunderbird.feature.account.settings.impl.ui.sendingMail.SendingMailSettingContract.State
 import net.thunderbird.feature.account.settings.impl.ui.sendingMail.SendingMailSettingContract.SettingsBuilder
+import net.thunderbird.feature.account.settings.impl.ui.sendingMail.SendingMailSettingContract.State
 
 @Composable
 internal fun SendingMailSettingsContent(
@@ -44,7 +44,7 @@ internal fun SendingMailSettingsContent(
         onSettingValueChange = { setting ->
             handleSettingChange(setting, onEvent)
         },
-        onBack = { onEvent(Event.onBackPressed) },
+        onBack = { onEvent(Event.OnBackPressed) },
         modifier = modifier,
         actions = {
             var expanded by remember { mutableStateOf(false) }
@@ -89,6 +89,7 @@ internal fun SendingMailSettingsContent(
     }
 }
 
+@Suppress("CyclomaticComplexMethod")
 private fun handleSettingChange(
     setting: Setting,
     onEvent: (Event) -> Unit,
@@ -125,10 +126,11 @@ private fun handleSettingChange(
         }
 
         is SettingValue.Text -> {
-            when(setting.id) {
+            when (setting.id) {
                 SendingMailSettingsId.QUOTED_TEXT_PREFIX -> {
                     onEvent(Event.OnQuotedTextPrefixChange(setting.value))
                 }
+
                 else -> Unit
             }
         }
@@ -154,9 +156,11 @@ private fun handleSettingChange(
                 SendingMailSettingsId.MESSAGE_FORMAT -> {
                     onEvent(Event.OnMessageFormatChange(setting.value))
                 }
+
                 SendingMailSettingsId.REPLY_QUOTING_STYLE -> {
                     onEvent(Event.OnReplyQuotingStyleChange(setting.value))
                 }
+
                 else -> Unit
             }
         }
@@ -164,4 +168,3 @@ private fun handleSettingChange(
         else -> Unit
     }
 }
-
