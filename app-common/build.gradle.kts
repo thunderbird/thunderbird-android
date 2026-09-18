@@ -26,9 +26,6 @@ dependencies {
     implementation(projects.core.android.common)
 
     implementation(projects.core.logging.api)
-    implementation(projects.core.logging.implComposite)
-    implementation(projects.core.logging.implConsole)
-    implementation(projects.core.logging.implFile)
     implementation(projects.legacy.logging)
     implementation(projects.core.configstore.api)
     implementation(projects.core.configstore.implBackend)
