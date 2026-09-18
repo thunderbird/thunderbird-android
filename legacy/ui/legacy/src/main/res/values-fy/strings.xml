@@ -959,4 +959,5 @@
     <string name="account_settings_signature_preview">Foarbyld ûndertekening</string>
     <string name="account_settings_signature_clear_label">Undertekening wiskje</string>
     <string name="message_compose_encrypting_message">Berjocht fersiferje…</string>
+    <string name="message_view_from_me_text">ik</string>
 </resources>
