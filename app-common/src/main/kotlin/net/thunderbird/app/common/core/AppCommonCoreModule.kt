@@ -2,7 +2,7 @@ package net.thunderbird.app.common.core
 
 import com.eygraber.uri.toAndroidUri
 import net.thunderbird.app.common.appVersion.DefaultAppVersionProvider
-import net.thunderbird.app.common.core.configstore.appCommonCoreConfigStoreModule
+import net.thunderbird.app.common.core.configstore.appCommonConfigStoreModule
 import net.thunderbird.app.common.core.logging.appCommonCoreLogger
 import net.thunderbird.app.common.core.ui.appCommonCoreUiModule
 import net.thunderbird.core.common.provider.AppVersionProvider
@@ -21,7 +21,7 @@ import org.koin.dsl.module
 
 val appCommonCoreModule: Module = module {
     includes(
-        appCommonCoreConfigStoreModule,
+        appCommonConfigStoreModule,
         appCommonCoreLogger,
         appCommonCoreUiModule,
     )

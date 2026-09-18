@@ -9,6 +9,8 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
+            implementation(projects.core.configstore.api)
+            implementation(projects.core.configstore.implBackend)
             implementation(projects.core.file)
             implementation(projects.feature.account.core)
             implementation(projects.feature.mail.message.export.api)
