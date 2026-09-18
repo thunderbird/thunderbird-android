@@ -11,6 +11,8 @@ android {
 }
 
 dependencies {
+    implementation(projects.appComposition)
+
     api(projects.legacy.common)
     api(projects.legacy.ui.legacy)
 
