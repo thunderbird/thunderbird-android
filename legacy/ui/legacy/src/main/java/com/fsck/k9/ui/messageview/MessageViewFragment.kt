@@ -417,17 +417,15 @@ class MessageViewFragment :
             menu.findItem(R.id.spam).isVisible =
                 canMessageBeMovedToSpam && visualSettings.isMessageViewSpamActionVisible
 
-            menu.findItem(R.id.refile_move).isVisible = true
-            menu.findItem(R.id.refile_archive).isVisible = canMessageBeArchived
-            menu.findItem(R.id.refile_spam).isVisible = canMessageBeMovedToSpam
-
-            menu.findItem(R.id.refile).isVisible = true
+            menu.findItem(R.id.refile_move).isVisible = !visualSettings.isMessageViewMoveActionVisible
+            menu.findItem(R.id.refile_archive).isVisible =
+                canMessageBeArchived && !visualSettings.isMessageViewArchiveActionVisible
+            menu.findItem(R.id.refile_spam).isVisible =
+                canMessageBeMovedToSpam && !visualSettings.isMessageViewSpamActionVisible
         } else {
             menu.findItem(R.id.move).isVisible = false
             menu.findItem(R.id.archive).isVisible = false
             menu.findItem(R.id.spam).isVisible = false
-
-            menu.findItem(R.id.refile).isVisible = false
         }
 
         menu.findItem(R.id.set_format_plain).isVisible = !isRenderPlainFormat()
@@ -435,11 +433,17 @@ class MessageViewFragment :
 
         if (isCopyCapable) {
             menu.findItem(R.id.copy).isVisible = visualSettings.isMessageViewCopyActionVisible
-            menu.findItem(R.id.refile_copy).isVisible = true
+            menu.findItem(R.id.refile_copy).isVisible = !visualSettings.isMessageViewCopyActionVisible
         } else {
             menu.findItem(R.id.copy).isVisible = false
             menu.findItem(R.id.refile_copy).isVisible = false
         }
+
+        menu.findItem(R.id.refile).isVisible =
+            menu.findItem(R.id.refile_move).isVisible ||
+                menu.findItem(R.id.refile_archive).isVisible ||
+                menu.findItem(R.id.refile_spam).isVisible ||
+                menu.findItem(R.id.refile_copy).isVisible
 
         menu.findItem(R.id.move_to_drafts).isVisible = isOutbox
         menu.findItem(R.id.unsubscribe).isVisible = canMessageBeUnsubscribed()
