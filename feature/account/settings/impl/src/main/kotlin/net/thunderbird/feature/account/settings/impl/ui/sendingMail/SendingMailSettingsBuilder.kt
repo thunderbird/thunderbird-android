@@ -107,7 +107,7 @@ internal class SendingMailSettingsBuilder(
     fun replyAfterQuotedText(value: Boolean): Setting = SettingValue.Switch(
         id = SendingMailSettingsId.REPLY_AFTER_QUOTED_TEXT,
         title = { resources.stringResource(R.string.account_settings_reply_after_quote_label) },
-        description = { resources.stringResource(R.string.account_settings_default_quoted_text_shown_summary) },
+        description = { resources.stringResource(R.string.account_settings_reply_after_quote_summary) },
         value = value,
     )
 
