@@ -12,6 +12,7 @@ import assertk.assertions.isTrue
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
+import kotlin.test.assertEquals
 import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -21,6 +22,7 @@ import net.thunderbird.core.android.common.activity.ActivityProvider
 import net.thunderbird.core.testing.TestClock
 import net.thunderbird.feature.funding.api.FundingSettings
 import net.thunderbird.feature.funding.googleplay.ui.reminder.FundingReminderContract.Dialog
+import org.junit.Assert.assertFalse
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 
@@ -107,6 +109,79 @@ class FundingReminderTest {
         assertThat(activityObserver.isRegistered).isTrue()
     }
 
+    /**
+     * An incremented counter should be enough to prevent the reminder from displaying,
+     *  even if it would otherwise display
+     */
+    @Test
+    fun `should not register reminder when previously incremented`() {
+        val activity = createTestActivity()
+        val activityProvider = FakeActivityProvider(activity)
+        val settings = FakeFundingSettings(
+            reminderReferenceTimestamp = REMINDER_REFERENCE_TIMESTAMP,
+            reminderShownTimestamp = REMINDER_SHOWN_TIMESTAMP_UNSET,
+            activityCounterInMillis = FUNDING_REMINDER_MIN_ACTIVITY_MILLIS,
+            lastReminderShownTimestamp = LAST_REMINDER_SHOWN_UNSET,
+            fundingReminderCount = REMINDER_COUNTER_FIRST_SHOWN,
+        )
+        val currentTime = REMINDER_REFERENCE_TIMESTAMP + FUNDING_REMINDER_DELAY_MILLIS
+        val fragmentObserver = FakeFragmentLifecycleObserver()
+        val activityObserver = FakeActivityLifecycleObserver()
+        var dialogShown = false
+        val testSubject = createTestSubject(
+            activityProvider = activityProvider,
+            settings = settings,
+            fragmentObserver = fragmentObserver,
+            activityCounterObserver = activityObserver,
+            dialog = { dialogShown = true },
+            clock = TestClock(Instant.fromEpochMilliseconds(currentTime)),
+        )
+
+        testSubject.registerReminder { }
+
+        assertFalse(dialogShown)
+        assertFalse(fragmentObserver.isRegistered)
+        assertThat(settings.getReminderShownTimestamp()).isEqualTo(LAST_REMINDER_SHOWN_UNSET)
+        assertEquals(REMINDER_COUNTER_FIRST_SHOWN, settings.getReminderShownCount())
+    }
+
+    /**
+     * A value on the lastReminderShown timestamp should be enough to prevent the reminder from displaying,
+     *  even if it would otherwise display
+     */
+    @Test
+    fun `should not register reminder when lastReminderShown timestamp is not zero`() {
+        val activity = createTestActivity()
+        val activityProvider = FakeActivityProvider(activity)
+        val settings = FakeFundingSettings(
+            reminderReferenceTimestamp = REMINDER_REFERENCE_TIMESTAMP,
+            reminderShownTimestamp = REMINDER_SHOWN_TIMESTAMP_UNSET,
+            activityCounterInMillis = FUNDING_REMINDER_MIN_ACTIVITY_MILLIS,
+            lastReminderShownTimestamp = REMINDER_REFERENCE_TIMESTAMP,
+            fundingReminderCount = 0,
+        )
+        val currentTime = REMINDER_REFERENCE_TIMESTAMP + FUNDING_REMINDER_DELAY_MILLIS
+        val fragmentObserver = FakeFragmentLifecycleObserver()
+        val activityObserver = FakeActivityLifecycleObserver()
+        var dialogShown = false
+        val testSubject = createTestSubject(
+            activityProvider = activityProvider,
+            settings = settings,
+            fragmentObserver = fragmentObserver,
+            activityCounterObserver = activityObserver,
+            dialog = { dialogShown = true },
+            clock = TestClock(Instant.fromEpochMilliseconds(currentTime)),
+        )
+
+        testSubject.registerReminder { }
+
+        assertFalse(dialogShown)
+        assertFalse(fragmentObserver.isRegistered)
+        assertThat(settings.getReminderShownTimestamp()).isEqualTo(REMINDER_SHOWN_TIMESTAMP_UNSET)
+        assertThat(settings.getLastReminderShownTimestamp()).isEqualTo(REMINDER_REFERENCE_TIMESTAMP)
+        assertEquals(0, settings.getReminderShownCount())
+    }
+
     @Test
     fun `should register reminder when reminder was not shown and conditions met`() {
         val activity = createTestActivity()
@@ -129,12 +204,123 @@ class FundingReminderTest {
             clock = TestClock(Instant.fromEpochMilliseconds(currentTime)),
         )
 
+        // Should not be set until after register reminder called
+        assertThat(settings.getReminderShownCount()).isEqualTo(REMINDER_COUNTER_UNSET)
+        assertThat(settings.getLastReminderShownTimestamp()).isEqualTo(REMINDER_SHOWN_TIMESTAMP_UNSET)
+
+        // Test the reminder functionality
         testSubject.registerReminder { }
 
         assertThat(dialogShown).isEqualTo(true)
         assertThat(fragmentObserver.isRegistered).isTrue()
         assertThat(activityObserver.isRegistered).isTrue()
+        assertThat(settings.getLastReminderShownTimestamp()).isEqualTo(currentTime)
+        assertThat(settings.getReminderShownCount()).isEqualTo(REMINDER_COUNTER_FIRST_SHOWN)
         assertThat(settings.getReminderShownTimestamp()).isEqualTo(currentTime)
+    }
+
+    @Test
+    fun `second reminder does not show if first has not set timestamp`() {
+        val activity = createTestActivity()
+        val activityProvider = FakeActivityProvider(activity)
+        val settings = FakeFundingSettings(
+            reminderReferenceTimestamp = REMINDER_REFERENCE_TIMESTAMP,
+            reminderShownTimestamp = REMINDER_SHOWN_TIMESTAMP_UNSET,
+            fundingReminderCount = REMINDER_COUNTER_FIRST_SHOWN, // Prevent first reminder from showing
+            activityCounterInMillis = FUNDING_REMINDER_MIN_ACTIVITY_MILLIS,
+        )
+        val currentTime = REMINDER_REFERENCE_TIMESTAMP + FUNDING_REMINDER_DELAY_MILLIS
+        val fragmentObserver = FakeFragmentLifecycleObserver()
+        val activityObserver = FakeActivityLifecycleObserver()
+        var dialogShown = false
+        val testSubject = createTestSubject(
+            activityProvider = activityProvider,
+            settings = settings,
+            fragmentObserver = fragmentObserver,
+            activityCounterObserver = activityObserver,
+            dialog = { dialogShown = true },
+            clock = TestClock(Instant.fromEpochMilliseconds(currentTime)),
+        )
+
+        // Test the reminder functionality
+        testSubject.registerReminder { }
+
+        assertThat(dialogShown).isEqualTo(false)
+        assertThat(fragmentObserver.isRegistered).isFalse()
+        assertThat(settings.getLastReminderShownTimestamp()).isEqualTo(REMINDER_SHOWN_TIMESTAMP_UNSET)
+        assertThat(settings.getReminderShownCount()).isEqualTo(REMINDER_COUNTER_FIRST_SHOWN)
+        assertThat(settings.getReminderShownTimestamp()).isEqualTo(REMINDER_SHOWN_TIMESTAMP_UNSET)
+    }
+
+    @Test
+    fun `second reminder does not show if no reminders have been shown yet`() {
+        val activity = createTestActivity()
+        val activityProvider = FakeActivityProvider(activity)
+        // Only the first reminder could show with these settings
+        val settings = FakeFundingSettings(
+            reminderReferenceTimestamp = REMINDER_REFERENCE_TIMESTAMP,
+            reminderShownTimestamp = REMINDER_SHOWN_TIMESTAMP_UNSET,
+            fundingReminderCount = REMINDER_COUNTER_UNSET,
+            activityCounterInMillis = FUNDING_REMINDER_MIN_ACTIVITY_MILLIS,
+        )
+        val currentTime = REMINDER_REFERENCE_TIMESTAMP + FUNDING_REMINDER_DELAY_MILLIS
+        val fragmentObserver = FakeFragmentLifecycleObserver()
+        val activityObserver = FakeActivityLifecycleObserver()
+        var dialogShown = false
+        val testSubject = createTestSubject(
+            activityProvider = activityProvider,
+            settings = settings,
+            fragmentObserver = fragmentObserver,
+            activityCounterObserver = activityObserver,
+            dialog = { dialogShown = true },
+            clock = TestClock(Instant.fromEpochMilliseconds(currentTime)),
+        )
+
+        // Test the reminder functionality
+        testSubject.registerReminder { }
+
+        // Assert that only one donation reminder has displayed, the first one
+        assertThat(dialogShown).isEqualTo(true)
+        assertThat(fragmentObserver.isRegistered).isTrue()
+        assertThat(activityObserver.isRegistered).isTrue()
+        assertThat(settings.getReminderShownCount()).isEqualTo(REMINDER_COUNTER_FIRST_SHOWN)
+        assertThat(settings.getLastReminderShownTimestamp()).isEqualTo(currentTime)
+        assertThat(settings.getReminderShownTimestamp()).isEqualTo(currentTime)
+    }
+
+    @Test
+    fun `second reminder shows and increments timestamp and counter after first and after set time`() {
+        val activity = createTestActivity()
+        val activityProvider = FakeActivityProvider(activity)
+        val settings = FakeFundingSettings(
+            reminderReferenceTimestamp = REMINDER_REFERENCE_TIMESTAMP,
+            reminderShownTimestamp = REMINDER_SHOWN_TIMESTAMP,
+            lastReminderShownTimestamp = REMINDER_SHOWN_TIMESTAMP,
+            fundingReminderCount = REMINDER_COUNTER_FIRST_SHOWN,
+            activityCounterInMillis = SECOND_FUNDING_REMINDER_MIN_ACTIVITY_MILLIS,
+        )
+        val currentTime = REMINDER_REFERENCE_TIMESTAMP + SECOND_FUNDING_REMINDER_MIN_ACTIVITY_MILLIS
+        val fragmentObserver = FakeFragmentLifecycleObserver()
+        val activityObserver = FakeActivityLifecycleObserver()
+        var dialogShown = false
+        val testSubject = createTestSubject(
+            activityProvider = activityProvider,
+            settings = settings,
+            fragmentObserver = fragmentObserver,
+            activityCounterObserver = activityObserver,
+            dialog = { dialogShown = true },
+            clock = TestClock(Instant.fromEpochMilliseconds(currentTime)),
+        )
+
+        // Test the reminder functionality
+        testSubject.registerReminder { }
+
+        assertThat(dialogShown).isEqualTo(true)
+        assertThat(fragmentObserver.isRegistered).isTrue()
+        assertThat(activityObserver.isRegistered).isTrue()
+        assertThat(settings.getReminderShownCount()).isEqualTo(REMINDER_COUNTER_SECOND_SHOWN)
+        assertThat(settings.getReminderShownTimestamp()).isEqualTo(REMINDER_SHOWN_TIMESTAMP)
+        assertThat(settings.getLastReminderShownTimestamp()).isEqualTo(currentTime)
     }
 
     private fun createTestSubject(
@@ -192,7 +378,15 @@ class FundingReminderTest {
         const val REMINDER_SHOWN_TIMESTAMP_UNSET = 0L
         const val REMINDER_SHOWN_TIMESTAMP = 1111L
 
+        const val LAST_REMINDER_SHOWN_UNSET = 0L
+        const val LAST_REMINDER_SHOWN_TIMESTAMP = REMINDER_SHOWN_TIMESTAMP
+
+        const val REMINDER_COUNTER_UNSET = 0
+        const val REMINDER_COUNTER_FIRST_SHOWN = 1
+        const val REMINDER_COUNTER_SECOND_SHOWN = 2
+
         const val FUNDING_REMINDER_DELAY_MILLIS = 7 * 24 * 60 * 60 * 1000L
         const val FUNDING_REMINDER_MIN_ACTIVITY_MILLIS = 30 * 60 * 1000L
+        const val SECOND_FUNDING_REMINDER_MIN_ACTIVITY_MILLIS = FUNDING_REMINDER_MIN_ACTIVITY_MILLIS * 2
     }
 }
