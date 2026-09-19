@@ -22,8 +22,6 @@ import androidx.preference.PreferenceCategory
 import androidx.preference.SwitchPreference
 import app.k9mail.feature.launcher.FeatureLauncherActivity
 import app.k9mail.feature.launcher.FeatureLauncherTarget
-import com.fsck.k9.activity.ManageIdentities
-import com.fsck.k9.activity.setup.AccountSetupComposition
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.crypto.OpenPgpApiHelper
 import com.fsck.k9.fragment.ConfirmationDialogFragment
@@ -99,8 +97,6 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         initializeSendingMail()
         initializeSearch()
         initializeIncomingServer()
-        initializeComposition()
-        initializeManageIdentities()
         initializeUploadSentMessages(account)
         initializeOutgoingServer()
         initializeQuoteStyle()
@@ -217,18 +213,6 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
                 context = requireActivity(),
                 target = FeatureLauncherTarget.AccountEditIncomingSettings(accountUuid),
             )
-        }
-    }
-
-    private fun initializeComposition() {
-        findPreference<Preference>(PREFERENCE_COMPOSITION)?.onClick {
-            AccountSetupComposition.actionEditCompositionSettings(requireActivity(), accountUuid)
-        }
-    }
-
-    private fun initializeManageIdentities() {
-        findPreference<Preference>(PREFERENCE_MANAGE_IDENTITIES)?.onClick {
-            ManageIdentities.start(requireActivity(), accountUuid)
         }
     }
 
@@ -538,8 +522,6 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         private const val PREFERENCE_SENDING_MAIL = "composing"
         private const val PREFERENCE_SEARCH = "search"
         private const val PREFERENCE_INCOMING_SERVER = "incoming"
-        private const val PREFERENCE_COMPOSITION = "composition"
-        private const val PREFERENCE_MANAGE_IDENTITIES = "manage_identities"
         private const val PREFERENCE_OUTGOING_SERVER = "outgoing"
         private const val PREFERENCE_UPLOAD_SENT_MESSAGES = "upload_sent_messages"
         private const val PREFERENCE_QUOTE_STYLE = "quote_style"
