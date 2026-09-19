@@ -386,7 +386,7 @@ class MessageViewFragment :
             isEnabled = !isDeleteMenuItemDisabled
         }
 
-        val showToggleUnread = !isOutbox
+        val showToggleUnread = !isOutbox && visualSettings.isMessageViewToggleUnreadActionVisible
         menu.findItem(R.id.toggle_unread).isVisible = showToggleUnread
 
         if (showToggleUnread) {
