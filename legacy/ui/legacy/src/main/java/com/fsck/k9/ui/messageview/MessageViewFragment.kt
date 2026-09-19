@@ -379,9 +379,10 @@ class MessageViewFragment :
 
     @Suppress("LongMethod")
     private fun prepareMenu(menu: Menu) {
+        val visualSettings = generalSettingsManager.getConfig().display.visualSettings
+
         menu.findItem(R.id.delete).apply {
-            isVisible = generalSettingsManager.getConfig()
-                .display.visualSettings.isMessageViewDeleteActionVisible
+            isVisible = visualSettings.isMessageViewDeleteActionVisible
             isEnabled = !isDeleteMenuItemDisabled
         }
 
@@ -409,22 +410,12 @@ class MessageViewFragment :
         if (isMoveCapable) {
             val canMessageBeArchived = canMessageBeArchived()
             val canMessageBeMovedToSpam = canMessageBeMovedToSpam()
-            menu.findItem(R.id.move).isVisible =
-                generalSettingsManager.getConfig().display.visualSettings.isMessageViewMoveActionVisible
 
+            menu.findItem(R.id.move).isVisible = visualSettings.isMessageViewMoveActionVisible
             menu.findItem(R.id.archive).isVisible =
-                canMessageBeArchived &&
-                    generalSettingsManager.getConfig()
-                        .display
-                        .visualSettings
-                        .isMessageViewArchiveActionVisible
-
+                canMessageBeArchived && visualSettings.isMessageViewArchiveActionVisible
             menu.findItem(R.id.spam).isVisible =
-                canMessageBeMovedToSpam &&
-                    generalSettingsManager.getConfig()
-                        .display
-                        .visualSettings
-                        .isMessageViewSpamActionVisible
+                canMessageBeMovedToSpam && visualSettings.isMessageViewSpamActionVisible
 
             menu.findItem(R.id.refile_move).isVisible = true
             menu.findItem(R.id.refile_archive).isVisible = canMessageBeArchived
@@ -443,8 +434,7 @@ class MessageViewFragment :
         menu.findItem(R.id.set_format_html).isVisible = isRenderPlainFormat()
 
         if (isCopyCapable) {
-            menu.findItem(R.id.copy).isVisible = generalSettingsManager.getConfig()
-                .display.visualSettings.isMessageViewCopyActionVisible
+            menu.findItem(R.id.copy).isVisible = visualSettings.isMessageViewCopyActionVisible
             menu.findItem(R.id.refile_copy).isVisible = true
         } else {
             menu.findItem(R.id.copy).isVisible = false
