@@ -319,7 +319,7 @@ class SettingsExporter(
         serializer.text(encoded)
         serializer.endTag(null, AVATAR_IMAGE_ELEMENT)
     }
-    private fun writeFolderNameSettings(
+    private suspend fun writeFolderNameSettings(
         account: LegacyAccountDto,
         folderQueryRepository: FolderQueryRepository,
         serializer: XmlSerializer,
