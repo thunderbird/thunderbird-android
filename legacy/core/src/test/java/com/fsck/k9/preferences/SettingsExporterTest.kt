@@ -131,7 +131,7 @@ class SettingsExporterTest : K9RobolectricTest() {
     }
 
 
-    private suspend fun exportPreferences(globalSettings: Boolean, accounts: Set<String>): Document = runBlocking {
+    private fun exportPreferences(globalSettings: Boolean, accounts: Set<String>): Document = runBlocking {
         ByteArrayOutputStream().use { outputStream ->
             settingsExporter.exportPreferences(outputStream, globalSettings, accounts, includePasswords = false)
             parseXml(outputStream.toByteArray())
