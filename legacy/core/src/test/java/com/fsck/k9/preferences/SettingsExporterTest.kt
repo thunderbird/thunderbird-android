@@ -2,7 +2,6 @@ package com.fsck.k9.preferences
 
 import android.util.Base64
 import androidx.core.net.toUri
-import app.k9mail.legacy.mailstore.FolderRepository
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNotNull
@@ -118,7 +117,7 @@ class SettingsExporterTest : K9RobolectricTest() {
     }
 
 
-    private suspend fun exportPreferences(globalSettings: Boolean, accounts: Set<String>): Document = runBlocking {
+    private fun exportPreferences(globalSettings: Boolean, accounts: Set<String>): Document = runBlocking {
         ByteArrayOutputStream().use { outputStream ->
             settingsExporter.exportPreferences(outputStream, globalSettings, accounts, includePasswords = false)
             parseXml(outputStream.toByteArray())
