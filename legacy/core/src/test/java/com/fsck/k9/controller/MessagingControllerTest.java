@@ -16,6 +16,7 @@ import com.fsck.k9.K9RobolectricTest;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.backend.BackendManager;
 import com.fsck.k9.backend.api.Backend;
+import com.fsck.k9.controller.MessagingControllerCommands.PendingAppend;
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.AuthenticationFailedException;
 import com.fsck.k9.mail.CertificateChainException;
@@ -29,18 +30,20 @@ import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.mailstore.LocalStoreProvider;
+import app.k9mail.legacy.mailstore.ListenableMessageStore;
 import app.k9mail.legacy.mailstore.MessageStoreManager;
 import com.fsck.k9.mailstore.OutboxState;
 import com.fsck.k9.mailstore.OutboxStateRepository;
-import com.fsck.k9.mailstore.SaveMessageDataCreator;
 import com.fsck.k9.mailstore.SendState;
-import com.fsck.k9.mailstore.SpecialLocalFoldersCreator;
 import com.fsck.k9.notification.NotificationController;
 import com.fsck.k9.notification.NotificationStrategy;
 import net.thunderbird.core.common.mail.Protocols;
 import net.thunderbird.core.logging.Logger;
 import net.thunderbird.components.core.outcome.Outcome;
 import net.thunderbird.feature.account.AccountId;
+import net.thunderbird.feature.mail.folder.LegacyFolderIdFactory;
+import net.thunderbird.feature.mail.message.LegacyMessageIdFactory;
+import net.thunderbird.feature.mail.message.domain.MessageLifecycleError;
 import net.thunderbird.feature.mail.message.domain.MessageLifecycleRepository;
 import net.thunderbird.feature.mail.message.mapper.MessageDataMapper;
 import net.thunderbird.feature.mail.message.list.LocalDeleteOperationDecider;
@@ -65,6 +68,7 @@ import org.robolectric.RuntimeEnvironment;
 import org.robolectric.shadows.ShadowLog;
 
 import static java.util.Collections.emptyList;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.nullable;
 import static org.mockito.ArgumentMatchers.eq;
@@ -95,10 +99,6 @@ public class MessagingControllerTest extends K9RobolectricTest {
     private LocalStoreProvider localStoreProvider;
     @Mock
     private MessageStoreManager messageStoreManager;
-    @Mock
-    private SaveMessageDataCreator saveMessageDataCreator;
-    @Mock
-    private SpecialLocalFoldersCreator specialLocalFoldersCreator;
     @Mock
     private SimpleMessagingListener listener;
     @Mock
@@ -163,8 +163,6 @@ public class MessagingControllerTest extends K9RobolectricTest {
             backendManager,
             preferences,
             messageStoreManager,
-            saveMessageDataCreator,
-            specialLocalFoldersCreator,
             noOpLocalDeleteOperationDecider,
             fakeLocalMessageUidPrefixProvider,
             Collections.<ControllerExtension>emptyList(),
@@ -414,6 +412,48 @@ public class MessagingControllerTest extends K9RobolectricTest {
         controller.sendPendingMessagesSynchronous(account);
 
         verify(notificationController).showCertificateErrorNotification(account, false);
+    }
+
+    @Test
+    public void sendPendingMessagesSynchronous_withUploadSentMessages_shouldMoveMessageToSentFolderAndQueueAppend()
+        throws MessagingException {
+        setupAccountWithMessageToSend();
+        account.setUploadSentMessages(true);
+        when(sentFolder.getServerId()).thenReturn("Sent");
+        when(sentFolder.isLocalOnly()).thenReturn(false);
+        when(localStore.getPendingCommands()).thenReturn(emptyList());
+        ListenableMessageStore messageStore = mock(ListenableMessageStore.class);
+        when(messageStoreManager.getMessageStore(account)).thenReturn(messageStore);
+        when(messageStore.getMessageServerId(99L)).thenReturn("sent-uid");
+        when(messageLifecycleRepository.move(any(), any(), any(), null))
+            .thenReturn(Outcome.Companion.success(LegacyMessageIdFactory.INSTANCE.of(99L)));
+
+        controller.sendPendingMessagesSynchronous(account);
+
+        verify(messageLifecycleRepository).move(
+            eq(LegacyMessageIdFactory.INSTANCE.of(42L)),
+            eq(LegacyFolderIdFactory.INSTANCE.of(SENT_FOLDER_ID)),
+            eq(account.getId()),
+            null
+        );
+        verify(localStore).addPendingCommand(any(PendingAppend.class));
+        verify(notificationController, never()).showSendFailedNotification(eq(account), any());
+    }
+
+    @Test
+    public void sendPendingMessagesSynchronous_whenMoveToSentFolderFails_shouldNotifySendFailed()
+        throws MessagingException {
+        setupAccountWithMessageToSend();
+        account.setUploadSentMessages(true);
+        when(sentFolder.getServerId()).thenReturn("Sent");
+        RuntimeException cause = new RuntimeException("move failed");
+        when(messageLifecycleRepository.move(any(), any(), any(), null))
+            .thenReturn(Outcome.Companion.failure(new MessageLifecycleError.UnhandledError(cause)));
+
+        controller.sendPendingMessagesSynchronous(account);
+
+        verify(notificationController).showSendFailedNotification(eq(account), any(MessagingException.class));
+        verify(localStore, never()).addPendingCommand(any());
     }
 
     private void setupAccountWithMessageToSend() throws MessagingException {
