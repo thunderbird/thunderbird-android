@@ -39,6 +39,34 @@ class HasPiiPropagationCheckerTest {
     }
 
     @Test
+    fun `checker reports error when HasPii type is nested in generic type arguments`() {
+        // Arrange
+        val firExtensionRegistrar = TestFirExtensionRegistrar(::PiiSafeFirCheckers)
+        val source = """
+            import net.thunderbird.piisafe.annotation.PiiSafe
+
+            @PiiSafe.HasPii
+            data class MessageAddress(@get:PiiSafe.Mask val value: String)
+
+            data class MessageEnvelope(val from: Map<String, List<MessageAddress>>)
+        """.trimIndent()
+        val expectedMessage = "This class holds a property of a type annotated @PiiSafe.HasPii; this class " +
+            "must also be annotated @PiiSafe.HasPii."
+
+        // Act
+        val result = compileWithPiiSafePlugin(
+            fileName = "NestedPiiTypeTest.kt",
+            source = source,
+            registrar = testFirRegistrar(firExtensionRegistrar),
+        )
+
+        // Assert
+        assertEquals(expected = KotlinCompilation.ExitCode.COMPILATION_ERROR, actual = result.exitCode)
+        assertEquals(expected = 1, actual = result.diagnosticMessages.size)
+        assertEquals(expected = expectedMessage, actual = result.diagnosticMessages.first().message)
+    }
+
+    @Test
     fun `checker compile successful when class annotated with HasPii has property annotated with HasPii`() {
         // Arrange
         val firExtensionRegistrar = TestFirExtensionRegistrar(::PiiSafeFirCheckers)
