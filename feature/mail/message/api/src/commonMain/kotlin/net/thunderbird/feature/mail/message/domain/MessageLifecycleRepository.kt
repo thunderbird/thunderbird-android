@@ -31,7 +31,42 @@ interface MessageLifecycleRepository {
         folderId: FolderId,
     ): Outcome<MessageId, MessageLifecycleError>
 
-    suspend fun move(messageId: MessageId, destinationFolderId: FolderId): Outcome<MessageId, MessageLifecycleError>
+    /**
+     * Moves a locally stored message to another folder.
+     *
+     * The message is stored under a new id in the destination folder. The source entry is kept as a placeholder
+     * so threading information survives until the remote side confirms the move.
+     *
+     * @param messageId The id of the message to move.
+     * @param destinationFolderId The folder the message is moved to.
+     * @param accountId The account both the message and the destination folder belong to.
+     * @return An [Outcome] containing the [MessageId] of the message in the destination folder on success, or a
+     *   [MessageLifecycleError] on failure. The returned id differs from [messageId].
+     */
+    suspend fun move(
+        messageId: MessageId,
+        destinationFolderId: FolderId,
+        accountId: AccountId,
+    ): Outcome<MessageId, MessageLifecycleError>
+
+    /**
+     * Moves several locally stored messages to another folder. See [move] for the semantics of a single move.
+     *
+     * This operation is not atomic: messages are moved one by one. If a move fails, messages processed before the
+     * failure stay in the destination folder and the returned [Outcome] is a failure without any mapping.
+     *
+     * @param messageIds The ids of the messages to move. An empty list results in an empty mapping.
+     * @param destinationFolderId The folder the messages are moved to.
+     * @param accountId The account the messages and the destination folder belong to.
+     * @return An [Outcome] containing a mapping from each source [MessageId] to the [MessageId] of the message in
+     *   the destination folder on success, or a [MessageLifecycleError] on failure.
+     */
+    suspend fun moveAll(
+        messageIds: List<MessageId>,
+        destinationFolderId: FolderId,
+        accountId: AccountId,
+    ): Outcome<Map<MessageId, MessageId>, MessageLifecycleError>
+
     suspend fun copy(messageId: MessageId, destinationFolderId: FolderId): Outcome<MessageId, MessageLifecycleError>
     suspend fun destroy(
         serverIds: List<MessageServerId>,

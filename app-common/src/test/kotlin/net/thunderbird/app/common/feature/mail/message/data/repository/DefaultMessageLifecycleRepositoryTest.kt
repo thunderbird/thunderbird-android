@@ -28,6 +28,7 @@ import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.account.LegacyAccountDtoManager
 import net.thunderbird.core.logging.testing.TestLogger
 import net.thunderbird.feature.account.AccountId
+import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.mail.folder.FolderId
 import net.thunderbird.feature.mail.folder.LegacyFolderIdFactory
 import net.thunderbird.feature.mail.folder.api.OutboxFolderManager
@@ -241,6 +242,126 @@ class DefaultMessageLifecycleRepositoryTest {
     }
 
     // endregion
+
+    // region [move]
+
+    @Test
+    fun `move should return the destination message id when the store succeeds`() = runTest {
+        // Arrange
+        whenever(messageStore.moveMessage(EXISTING_MESSAGE_ID, FOLDER_ID)).thenReturn(SAVED_MESSAGE_ID)
+
+        // Act
+        val outcome = testSubject.move(LegacyMessageIdFactory.of(EXISTING_MESSAGE_ID), folderId, accountId)
+
+        // Assert
+        assertThat(outcome).isEqualTo(Outcome.success(LegacyMessageIdFactory.of(SAVED_MESSAGE_ID)))
+        verify(messageStore).moveMessage(EXISTING_MESSAGE_ID, FOLDER_ID)
+    }
+
+    @Test
+    fun `move should return UnhandledError when the store throws`() = runTest {
+        // Arrange
+        val exception = IllegalStateException("Couldn't find local message [ID: $EXISTING_MESSAGE_ID]")
+        whenever(messageStore.moveMessage(EXISTING_MESSAGE_ID, FOLDER_ID)).thenThrow(exception)
+
+        // Act
+        val outcome = testSubject.move(LegacyMessageIdFactory.of(EXISTING_MESSAGE_ID), folderId, accountId)
+
+        // Assert
+        assertThat(outcome).isEqualTo(Outcome.failure(MessageLifecycleError.UnhandledError(exception)))
+    }
+
+    @Test
+    fun `move should return UnhandledError when the account is unknown`() = runTest {
+        // Act
+        val outcome = testSubject.move(
+            messageId = LegacyMessageIdFactory.of(EXISTING_MESSAGE_ID),
+            destinationFolderId = folderId,
+            accountId = AccountIdFactory.of(UNKNOWN_ACCOUNT_ID),
+        )
+
+        // Assert
+        assertThat(outcome).isInstanceOf<Outcome.Failure<MessageLifecycleError>>()
+            .transform { it.error }
+            .isInstanceOf<MessageLifecycleError.UnhandledError>()
+            .transform { it.throwable }
+            .isInstanceOf<IllegalStateException>()
+        verifyNoInteractions(messageStore)
+    }
+
+    // endregion [move]
+
+    // region [moveAll]
+
+    @Test
+    fun `moveAll should return an empty mapping without touching the store when given no ids`() = runTest {
+        // Act
+        val outcome = testSubject.moveAll(emptyList(), folderId, accountId)
+
+        // Assert
+        assertThat(outcome).isEqualTo(Outcome.success(emptyMap<MessageId, MessageId>()))
+        verifyNoInteractions(messageStore)
+    }
+
+    @Test
+    fun `moveAll should map source ids to destination ids when the store succeeds`() = runTest {
+        // Arrange
+        whenever(messageStore.moveMessages(listOf(1L, 2L), FOLDER_ID)).thenReturn(mapOf(1L to 11L, 2L to 12L))
+
+        // Act
+        val outcome = testSubject.moveAll(
+            messageIds = listOf(LegacyMessageIdFactory.of(1L), LegacyMessageIdFactory.of(2L)),
+            destinationFolderId = folderId,
+            accountId = accountId,
+        )
+
+        // Assert
+        assertThat(outcome).isEqualTo(
+            Outcome.success(
+                mapOf(
+                    LegacyMessageIdFactory.of(1L) to LegacyMessageIdFactory.of(11L),
+                    LegacyMessageIdFactory.of(2L) to LegacyMessageIdFactory.of(12L),
+                ),
+            ),
+        )
+    }
+
+    @Test
+    fun `moveAll should return UnhandledError when the store throws`() = runTest {
+        // Arrange
+        val exception = IllegalStateException("Couldn't find local message [ID: 2]")
+        whenever(messageStore.moveMessages(listOf(1L, 2L), FOLDER_ID)).thenThrow(exception)
+
+        // Act
+        val outcome = testSubject.moveAll(
+            messageIds = listOf(LegacyMessageIdFactory.of(1L), LegacyMessageIdFactory.of(2L)),
+            destinationFolderId = folderId,
+            accountId = accountId,
+        )
+
+        // Assert
+        assertThat(outcome).isEqualTo(Outcome.failure(MessageLifecycleError.UnhandledError(exception)))
+    }
+
+    @Test
+    fun `moveAll should return UnhandledError when the account is unknown`() = runTest {
+        // Act
+        val outcome = testSubject.moveAll(
+            messageIds = listOf(LegacyMessageIdFactory.of(1L)),
+            destinationFolderId = folderId,
+            accountId = AccountIdFactory.of(UNKNOWN_ACCOUNT_ID),
+        )
+
+        // Assert
+        assertThat(outcome).isInstanceOf<Outcome.Failure<MessageLifecycleError>>()
+            .transform { it.error }
+            .isInstanceOf<MessageLifecycleError.UnhandledError>()
+            .transform { it.throwable }
+            .isInstanceOf<IllegalStateException>()
+        verifyNoInteractions(messageStore)
+    }
+
+    // endregion [moveAll]
 
     private fun stubSaveMessageData() {
         whenever(saveMessageDataCreator.createSaveMessageData(legacyMessage, LegacyMessageDownloadState.FULL, null))

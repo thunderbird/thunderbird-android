@@ -4,6 +4,7 @@ import app.k9mail.legacy.mailstore.ListenableMessageStore
 import app.k9mail.legacy.mailstore.MessageStoreManager
 import app.k9mail.legacy.mailstore.SaveMessageData
 import com.fsck.k9.mailstore.SaveMessageDataCreator
+import kotlin.coroutines.cancellation.CancellationException
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -55,7 +56,11 @@ class DefaultMessageLifecycleRepository(
             "$LOG_ID creating new message in folder '${folderId ?: "<outbox-id>"}' for account '$accountId'"
         }
         logger.verbose { "$LOG_ID message = $message" }
-        val messageData = message.toSaveMessageData()
+        val messageData = message.toSaveMessageData(
+            logger = logger,
+            saveMessageDataCreator = saveMessageDataCreator,
+            messageDataMapper = messageMapper,
+        )
         val messageStore = messageStoreManager.getMessageStore(accountId.value.toString())
         val legacyFolderId = if (folderId == null) {
             outboxFolderManager.getOutboxFolderId(accountId)
@@ -107,8 +112,61 @@ class DefaultMessageLifecycleRepository(
     override suspend fun move(
         messageId: MessageId,
         destinationFolderId: FolderId,
-    ): Outcome<MessageId, MessageLifecycleError> {
-        TODO("Not yet implemented")
+        accountId: AccountId,
+    ): Outcome<MessageId, MessageLifecycleError> = withContext(ioDispatcher) {
+        logger.debug { "$LOG_ID moving '$messageId' to folder '$destinationFolderId' for account '$accountId'" }
+        val legacyMessageId = messageIdLegacyEntityIdFactory.toLegacyId(messageId)
+        val legacyFolderId = folderIdLegacyEntityIdFactory.toLegacyId(destinationFolderId)
+        logger.verbose {
+            "$LOG_ID message id '$messageId' -> legacy id '$legacyMessageId', " +
+                "folder id '$destinationFolderId' -> legacy id '$legacyFolderId'"
+        }
+
+        runLegacy(operation = "move message '$messageId'") {
+            val messageStore = messageStoreManager.getMessageStore(accountId.value.toString())
+            val legacyDestinationMessageId = messageStore.moveMessage(legacyMessageId, legacyFolderId)
+            messageIdLegacyEntityIdFactory.of(legacyDestinationMessageId).also { destinationMessageId ->
+                logger.verbose { "$LOG_ID moved message '$messageId' -> '$destinationMessageId'" }
+            }
+        }
+    }
+
+    override suspend fun moveAll(
+        messageIds: List<MessageId>,
+        destinationFolderId: FolderId,
+        accountId: AccountId,
+    ): Outcome<Map<MessageId, MessageId>, MessageLifecycleError> = withContext(ioDispatcher) {
+        if (messageIds.isEmpty()) {
+            logger.verbose { "$LOG_ID nothing to move to folder '$destinationFolderId' for account '$accountId'" }
+            return@withContext Outcome.success(emptyMap())
+        }
+        logger.debug {
+            "$LOG_ID moving ${messageIds.size} messages to folder '$destinationFolderId' for account '$accountId'"
+        }
+        val legacyMessageIds = messageIds.map(messageIdLegacyEntityIdFactory::toLegacyId)
+        val legacyFolderId = folderIdLegacyEntityIdFactory.toLegacyId(destinationFolderId)
+        logger.verbose {
+            "$LOG_ID message ids $messageIds -> legacy ids $legacyMessageIds, " +
+                "folder id '$destinationFolderId' -> legacy id '$legacyFolderId'"
+        }
+
+        runLegacy(operation = "move ${messageIds.size} messages") {
+            val messageStore = messageStoreManager.getMessageStore(accountId.value.toString())
+            messageStore.moveMessages(legacyMessageIds, legacyFolderId)
+                .entries
+                .associate { (sourceLegacyId, destinationLegacyId) ->
+                    messageIdLegacyEntityIdFactory.of(sourceLegacyId) to
+                        messageIdLegacyEntityIdFactory.of(destinationLegacyId)
+                }
+                .also { mapping ->
+                    logger.verbose {
+                        val lines = mapping.entries.joinToString("\n") { (source, destination) ->
+                            "'$source' -> '$destination'"
+                        }
+                        "$LOG_ID moved messages to folder '$destinationFolderId':\n${lines.prependIndent("  ")}"
+                    }
+                }
+        }
     }
 
     override suspend fun copy(
@@ -124,6 +182,23 @@ class DefaultMessageLifecycleRepository(
         accountId: AccountId,
     ): Outcome<Unit, MessageLifecycleError> {
         TODO("Not yet implemented")
+    }
+
+    /**
+     * Runs a legacy store operation and converts any thrown exception into a [MessageLifecycleError.UnhandledError].
+     * [CancellationException] is rethrown so structured concurrency keeps working.
+     */
+    @Suppress("TooGenericExceptionCaught")
+    private inline fun <T> runLegacy(
+        operation: String,
+        block: () -> T,
+    ): Outcome<T, MessageLifecycleError> = try {
+        Outcome.success(block())
+    } catch (e: CancellationException) {
+        throw e
+    } catch (e: Exception) {
+        logger.error(throwable = e) { "$LOG_ID $operation failed" }
+        Outcome.failure(MessageLifecycleError.UnhandledError(e))
     }
 
     private suspend fun verifyMessageExists(
@@ -169,31 +244,35 @@ class DefaultMessageLifecycleRepository(
         )
         return messageIdLegacyEntityIdFactory.of(legacyMessageId)
     }
+}
 
-    private fun MessageDownloadState.toLegacyDownloadState(): LegacyMessageDownloadState = when (this) {
-        MessageDownloadState.ENVELOPE -> LegacyMessageDownloadState.ENVELOPE
-        MessageDownloadState.PARTIAL -> LegacyMessageDownloadState.PARTIAL
-        MessageDownloadState.FULL -> LegacyMessageDownloadState.FULL
-    }
+private fun MessageDownloadState.toLegacyDownloadState(): LegacyMessageDownloadState = when (this) {
+    MessageDownloadState.ENVELOPE -> LegacyMessageDownloadState.ENVELOPE
+    MessageDownloadState.PARTIAL -> LegacyMessageDownloadState.PARTIAL
+    MessageDownloadState.FULL -> LegacyMessageDownloadState.FULL
+}
 
-    private suspend fun Message.toSaveMessageData(): SaveMessageData {
-        val downloadState = downloadState.toLegacyDownloadState()
-        return when (val source = source) {
-            is LegacyMessageSource -> {
-                logger.verbose {
-                    "$LOG_ID convert message -> save message data using message source ($source)"
-                }
-                saveMessageDataCreator.createSaveMessageData(
-                    source.message,
-                    downloadState,
-                    envelope.subject,
-                )
+private suspend fun Message.toSaveMessageData(
+    logger: Logger,
+    saveMessageDataCreator: SaveMessageDataCreator,
+    messageDataMapper: MessageDataMapper<LegacyMessageDto>,
+): SaveMessageData {
+    val downloadState = downloadState.toLegacyDownloadState()
+    return when (val source = source) {
+        is LegacyMessageSource -> {
+            logger.verbose {
+                "$LOG_ID convert message -> save message data using message source ($source)"
             }
+            saveMessageDataCreator.createSaveMessageData(
+                source.message,
+                downloadState,
+                envelope.subject,
+            )
+        }
 
-            else -> {
-                logger.verbose { "$LOG_ID convert message -> save message data using message mapper" }
-                saveMessageDataCreator.createSaveMessageData(messageMapper.toDto(this), downloadState)
-            }
+        else -> {
+            logger.verbose { "$LOG_ID convert message -> save message data using message mapper" }
+            saveMessageDataCreator.createSaveMessageData(messageDataMapper.toDto(this), downloadState)
         }
     }
 }

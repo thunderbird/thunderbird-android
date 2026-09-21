@@ -161,6 +161,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
     private final MessageLifecycleRepository messageLifecycleRepository;
     private final MessageDataMapper<Message> messageDataMapper;
     private final LegacyEntityIdFactory<MessageId> messageIdLegacyEntityIdFactory;
+    private final LegacyEntityIdFactory<FolderId> folderIdLegacyEntityIdFactory;
 
     private volatile boolean stopped = false;
 
@@ -211,6 +212,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
         this.messageLifecycleRepository = messageLifecycleRepository;
         this.messageDataMapper = messageDataMapper;
         this.messageIdLegacyEntityIdFactory = messageIdLegacyEntityIdFactory;
+        this.folderIdLegacyEntityIdFactory = folderIdLegacyEntityIdFactory;
 
         controllerThread = new Thread(new Runnable() {
             @Override
@@ -1713,12 +1715,32 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
             String sentFolderServerId = sentFolder.getServerId();
             Log.i("Moving sent message to folder '%s' (%d)", sentFolderServerId, sentFolderId);
 
-            MessageStore messageStore = messageStoreManager.getMessageStore(account);
-            long destinationMessageId = messageStore.moveMessage(message.getDatabaseId(), sentFolderId);
+            final MessageId domainMessageId = messageIdLegacyEntityIdFactory.of(message.getDatabaseId());
+            final FolderId domainSentFolderId = folderIdLegacyEntityIdFactory.of(sentFolderId);
+            final Outcome<? extends MessageId, ? extends MessageLifecycleError> moveOutcome;
+            try {
+                moveOutcome = BuildersKt.runBlocking(EmptyCoroutineContext.INSTANCE, (scope, continuation) ->
+                    messageLifecycleRepository.move(domainMessageId, domainSentFolderId, account.getId(),
+                        continuation));
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                throw new MessagingException("Interrupted while moving sent message", e);
+            }
+
+            if (moveOutcome instanceof Outcome.Failure<?> failure) {
+                final MessageLifecycleError error = (MessageLifecycleError) failure.getError();
+                throw new MessagingException(
+                    String.format("Failed to move sent message to folder '%s' (%d)", sentFolderServerId, sentFolderId),
+                    error.getThrowable());
+            }
+
+            final MessageId domainDestinationMessageId = ((Outcome.Success<MessageId>) moveOutcome).getData();
+            final long destinationMessageId = messageIdLegacyEntityIdFactory.toLegacyId(domainDestinationMessageId);
 
             Log.i("Moved sent message to folder '%s' (%d)", sentFolderServerId, sentFolderId);
 
             if (!sentFolder.isLocalOnly()) {
+                MessageStore messageStore = messageStoreManager.getMessageStore(account);
                 String destinationUid = messageStore.getMessageServerId(destinationMessageId);
                 if (destinationUid != null) {
                     PendingCommand command = PendingAppend.create(sentFolderId, destinationUid);
@@ -1922,7 +1944,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
                         }
                     }
                 } else {
-                    resultIdMapping = messageStore.moveMessages(messageIds, destFolderId);
+                    resultIdMapping = moveAllMessages(account, messageIds, destFolderId);
 
                     unsuppressMessages(account, messages);
 
@@ -2132,7 +2154,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
                     messageIdToUidMapping.put(messageId, message.getUid());
                 }
 
-                Map<Long, Long> moveMessageIdMapping = messageStore.moveMessages(messageIds, trashFolderId);
+                final Map<Long, Long> moveMessageIdMapping = moveAllMessages(account, messageIds, trashFolderId);
 
                 Map<Long, String> destinationMapping = messageStore.getMessageServerIds(moveMessageIdMapping.values());
                 uidMap = new HashMap<>();
@@ -2200,6 +2222,43 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
         } catch (MessagingException me) {
             throw new RuntimeException("Error deleting message from local store.", me);
         }
+    }
+
+    @NonNull
+    private Map<Long, Long> moveAllMessages(LegacyAccountDto account, List<Long> messageIds, long destinationFolderId)
+        throws MessagingException {
+        final List<MessageId> domainMessageIds = new ArrayList<>(messageIds.size());
+        for (long messageId : messageIds) {
+            domainMessageIds.add(messageIdLegacyEntityIdFactory.of(messageId));
+        }
+        final FolderId domainDestinationFolderId = folderIdLegacyEntityIdFactory.of(destinationFolderId);
+
+        final Outcome<? extends Map<MessageId, MessageId>, ? extends MessageLifecycleError> outcome;
+        try {
+            outcome = BuildersKt.runBlocking(EmptyCoroutineContext.INSTANCE, (scope, continuation) ->
+                messageLifecycleRepository.moveAll(domainMessageIds, domainDestinationFolderId, account.getId(),
+                    continuation));
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new MessagingException("Interrupted while moving messages", e);
+        }
+
+        if (outcome instanceof Outcome.Failure<?> failure) {
+            final MessageLifecycleError error = (MessageLifecycleError) failure.getError();
+            throw new MessagingException(
+                String.format("Failed to move %d messages to folder %d", messageIds.size(), destinationFolderId),
+                error.getThrowable());
+        }
+
+        final Map<MessageId, MessageId> domainIdMapping =
+            ((Outcome.Success<Map<MessageId, MessageId>>) outcome).getData();
+        final Map<Long, Long> legacyIdMapping = new HashMap<>(domainIdMapping.size());
+        for (Entry<MessageId, MessageId> entry : domainIdMapping.entrySet()) {
+            legacyIdMapping.put(
+                messageIdLegacyEntityIdFactory.toLegacyId(entry.getKey()),
+                messageIdLegacyEntityIdFactory.toLegacyId(entry.getValue()));
+        }
+        return legacyIdMapping;
     }
 
     private static List<String> getUidsFromMessages(List<LocalMessage> messages) {

@@ -296,7 +296,14 @@ private class FakeMessageLifecycleRepository : MessageLifecycleRepository {
     override suspend fun move(
         messageId: DomainMessageId,
         destinationFolderId: FolderId,
+        accountId: AccountId,
     ): Outcome<DomainMessageId, MessageLifecycleError> = error("Not used by these tests")
+
+    override suspend fun moveAll(
+        messageIds: List<DomainMessageId>,
+        destinationFolderId: FolderId,
+        accountId: AccountId,
+    ): Outcome<Map<DomainMessageId, DomainMessageId>, MessageLifecycleError> = error("Not used by these tests")
 
     override suspend fun copy(
         messageId: DomainMessageId,
