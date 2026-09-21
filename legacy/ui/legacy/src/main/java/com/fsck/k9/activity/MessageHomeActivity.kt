@@ -198,7 +198,6 @@ open class MessageHomeActivity :
         initializeLayout()
         initializeFragments()
         displayViews()
-        initializeFunding()
         initializeFoldableObserver()
 
         val backPressedCallback = object : OnBackPressedCallback(true) {
@@ -207,6 +206,11 @@ open class MessageHomeActivity :
             }
         }
         onBackPressedDispatcher.addCallback(this, backPressedCallback)
+    }
+
+    public override fun onPostResume() {
+        super.onPostResume()
+        initializeFunding()
     }
 
     private fun initializeFoldableObserver() {
