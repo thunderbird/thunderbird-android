@@ -7,8 +7,13 @@ import net.thunderbird.feature.funding.api.FundingConfigKeys
 
 class FundingConfigMapper : ConfigMapper<FundingConfig> {
     override fun toConfig(obj: FundingConfig): Config = Config().apply {
-        this[FundingConfigKeys.LAST_FUNDING_REMINDER_SHOWN_TIMESTAMP] = obj.lastFundingReminderShownTimestamp
-        this[FundingConfigKeys.FUNDING_REMINDER_COUNT] = obj.fundingReminderCount
+        // Only set the values that do not match the default
+        if (obj.lastFundingReminderShownTimestamp != 0L) {
+            this[FundingConfigKeys.LAST_FUNDING_REMINDER_SHOWN_TIMESTAMP] = obj.lastFundingReminderShownTimestamp
+        }
+        if (obj.fundingReminderCount != 0) {
+            this[FundingConfigKeys.FUNDING_REMINDER_COUNT] = obj.fundingReminderCount
+        }
     }
 
     override fun fromConfig(config: Config): FundingConfig = FundingConfig(
