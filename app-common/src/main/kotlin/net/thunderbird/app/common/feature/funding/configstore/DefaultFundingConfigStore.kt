@@ -22,13 +22,11 @@ class DefaultFundingConfigStore(
 ),
     FundingConfigStore {
 
-    override fun configAsStateFlow(): StateFlow<FundingConfig> {
-        return config.stateIn(
-            scope = scope,
-            started = SharingStarted.Eagerly,
-            initialValue = FundingConfig.DEFAULT,
-        )
-    }
+    override val configStateFlow: StateFlow<FundingConfig> = config.stateIn(
+        scope = scope,
+        started = SharingStarted.Eagerly,
+        initialValue = FundingConfig.DEFAULT,
+    )
 
     override suspend fun ConfigStore<FundingConfig>.update(
         transform: (FundingConfig) -> FundingConfig,

@@ -210,7 +210,7 @@ open class MessageHomeActivity :
 
     public override fun onPostResume() {
         super.onPostResume()
-        initializeFunding()
+        initializeFunding() // TODO Remove this from here, make it only initialize once
     }
 
     private fun initializeFoldableObserver() {

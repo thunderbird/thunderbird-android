@@ -25,7 +25,7 @@ internal class TbFundingSettings(
     }
 
     override fun getLastReminderShownTimestamp(): Long {
-        return fundingConfigStore.configAsStateFlow().value.lastFundingReminderShownTimestamp
+        return fundingConfigStore.configStateFlow.value.lastFundingReminderShownTimestamp
     }
 
     override suspend fun setLastReminderShownTimestamp(timestamp: Long) {
@@ -39,7 +39,7 @@ internal class TbFundingSettings(
     }
 
     override fun getReminderShownCount(): Int {
-        return fundingConfigStore.configAsStateFlow().value.fundingReminderCount
+        return fundingConfigStore.configStateFlow.value.fundingReminderCount
     }
 
     override suspend fun setReminderShownCount(count: Int) {
