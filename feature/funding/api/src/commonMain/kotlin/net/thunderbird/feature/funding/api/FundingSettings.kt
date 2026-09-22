@@ -8,11 +8,11 @@ interface FundingSettings {
     fun setReminderShownTimestamp(timestamp: Long)
 
     fun getLastReminderShownTimestamp(): Long
-    fun setLastReminderShownTimestamp(timestamp: Long)
+    suspend fun setLastReminderShownTimestamp(timestamp: Long)
 
     fun getReminderShownCount(): Int
-    fun setReminderShownCount(count: Int)
-    fun incrementReminderShownCount()
+    suspend fun setReminderShownCount(count: Int)
+    suspend fun incrementReminderShownCount()
 
     fun getActivityCounterInMillis(): Long
     fun setActivityCounterInMillis(activeTime: Long)

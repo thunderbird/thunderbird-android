@@ -27,17 +27,17 @@ internal class FakeFundingSettings(
 
     override fun getLastReminderShownTimestamp(): Long = lastReminderShownTimestamp
 
-    override fun setLastReminderShownTimestamp(timestamp: Long) {
+    override suspend fun setLastReminderShownTimestamp(timestamp: Long) {
         lastReminderShownTimestamp = timestamp
     }
 
     override fun getReminderShownCount(): Int = fundingReminderCount
 
-    override fun setReminderShownCount(count: Int) {
+    override suspend fun setReminderShownCount(count: Int) {
         fundingReminderCount = count
     }
 
-    override fun incrementReminderShownCount() {
+    override suspend fun incrementReminderShownCount() {
         fundingReminderCount++
     }
 

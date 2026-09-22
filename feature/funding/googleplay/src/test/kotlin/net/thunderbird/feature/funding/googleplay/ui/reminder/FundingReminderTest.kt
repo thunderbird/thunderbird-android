@@ -15,7 +15,9 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import net.thunderbird.components.ui.testing.coroutines.MainDispatcherHelper
 import net.thunderbird.core.android.common.activity.ActivityProvider
@@ -23,6 +25,7 @@ import net.thunderbird.core.testing.TestClock
 import net.thunderbird.feature.funding.api.FundingSettings
 import net.thunderbird.feature.funding.googleplay.ui.reminder.FundingReminderContract.Dialog
 import org.junit.Assert.assertFalse
+import org.koin.core.component.getScopeId
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 
@@ -54,6 +57,7 @@ class FundingReminderTest {
             settings = settings,
             fragmentObserver = fragmentObserver,
             activityCounterObserver = activityObserver,
+            scope = CoroutineScope(mainDispatcher.testDispatcher),
         )
 
         testSubject.registerReminder { }
@@ -77,6 +81,7 @@ class FundingReminderTest {
             settings = settings,
             fragmentObserver = fragmentObserver,
             activityCounterObserver = activityObserver,
+            scope = CoroutineScope(mainDispatcher.testDispatcher),
         )
 
         testSubject.registerReminder { }
@@ -101,6 +106,7 @@ class FundingReminderTest {
             settings = settings,
             fragmentObserver = fragmentObserver,
             activityCounterObserver = activityObserver,
+            scope = CoroutineScope(mainDispatcher.testDispatcher),
         )
 
         testSubject.registerReminder { }
@@ -135,6 +141,7 @@ class FundingReminderTest {
             activityCounterObserver = activityObserver,
             dialog = { dialogShown = true },
             clock = TestClock(Instant.fromEpochMilliseconds(currentTime)),
+            scope = CoroutineScope(mainDispatcher.testDispatcher),
         )
 
         testSubject.registerReminder { }
@@ -171,6 +178,7 @@ class FundingReminderTest {
             activityCounterObserver = activityObserver,
             dialog = { dialogShown = true },
             clock = TestClock(Instant.fromEpochMilliseconds(currentTime)),
+            scope = CoroutineScope(mainDispatcher.testDispatcher),
         )
 
         testSubject.registerReminder { }
@@ -202,6 +210,7 @@ class FundingReminderTest {
             activityCounterObserver = activityObserver,
             dialog = { dialogShown = true },
             clock = TestClock(Instant.fromEpochMilliseconds(currentTime)),
+            scope = CoroutineScope(mainDispatcher.testDispatcher),
         )
 
         // Should not be set until after register reminder called
@@ -240,6 +249,7 @@ class FundingReminderTest {
             activityCounterObserver = activityObserver,
             dialog = { dialogShown = true },
             clock = TestClock(Instant.fromEpochMilliseconds(currentTime)),
+            scope = CoroutineScope(mainDispatcher.testDispatcher),
         )
 
         // Test the reminder functionality
@@ -274,6 +284,7 @@ class FundingReminderTest {
             activityCounterObserver = activityObserver,
             dialog = { dialogShown = true },
             clock = TestClock(Instant.fromEpochMilliseconds(currentTime)),
+            scope = CoroutineScope(mainDispatcher.testDispatcher),
         )
 
         // Test the reminder functionality
@@ -310,6 +321,7 @@ class FundingReminderTest {
             activityCounterObserver = activityObserver,
             dialog = { dialogShown = true },
             clock = TestClock(Instant.fromEpochMilliseconds(currentTime)),
+            scope = CoroutineScope(mainDispatcher.testDispatcher),
         )
 
         // Test the reminder functionality
@@ -330,6 +342,7 @@ class FundingReminderTest {
         activityCounterObserver: FundingReminderContract.ActivityLifecycleObserver,
         dialog: Dialog = Dialog { },
         clock: TestClock = TestClock(Instant.fromEpochMilliseconds(0)),
+        scope: CoroutineScope,
     ): FundingReminder {
         return FundingReminder(
             activityProvider = activityProvider,
@@ -338,6 +351,7 @@ class FundingReminderTest {
             activityCounterObserver = activityCounterObserver,
             dialog = dialog,
             clock = clock,
+            scope = scope,
         )
     }
 
@@ -379,7 +393,6 @@ class FundingReminderTest {
         const val REMINDER_SHOWN_TIMESTAMP = 1111L
 
         const val LAST_REMINDER_SHOWN_UNSET = 0L
-        const val LAST_REMINDER_SHOWN_TIMESTAMP = REMINDER_SHOWN_TIMESTAMP
 
         const val REMINDER_COUNTER_UNSET = 0
         const val REMINDER_COUNTER_FIRST_SHOWN = 1

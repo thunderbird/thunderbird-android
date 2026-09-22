@@ -2,7 +2,6 @@ package app.k9mail.feature
 
 import com.fsck.k9.K9
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
 import net.thunderbird.feature.funding.api.FundingConfig
 import net.thunderbird.feature.funding.api.FundingConfigStore
 import net.thunderbird.feature.funding.api.FundingSettings
@@ -29,12 +28,13 @@ internal class K9FundingSettings(
         return fundingConfigStore.configAsStateFlow().value.lastFundingReminderShownTimestamp
     }
 
-    override fun setLastReminderShownTimestamp(timestamp: Long) {
-        scope.launch {
-            fundingConfigStore.update {
-                val oldConfig = it ?: FundingConfig.DEFAULT
-                oldConfig.copy(lastFundingReminderShownTimestamp = timestamp)
-            }
+    override suspend fun setLastReminderShownTimestamp(timestamp: Long) {
+        fundingConfigStore.update {
+            val oldConfig = it ?: FundingConfig.DEFAULT
+            oldConfig.copy(
+                lastFundingReminderShownTimestamp = timestamp,
+                fundingReminderCount = oldConfig.fundingReminderCount,
+            )
         }
     }
 
@@ -42,16 +42,17 @@ internal class K9FundingSettings(
         return fundingConfigStore.configAsStateFlow().value.fundingReminderCount
     }
 
-    override fun setReminderShownCount(count: Int) {
-        scope.launch {
-            fundingConfigStore.update {
-                val oldConfig = it ?: FundingConfig.DEFAULT
-                oldConfig.copy(fundingReminderCount = count)
-            }
+    override suspend fun setReminderShownCount(count: Int) {
+        fundingConfigStore.update {
+            val oldConfig = it ?: FundingConfig.DEFAULT
+            oldConfig.copy(
+                lastFundingReminderShownTimestamp = oldConfig.lastFundingReminderShownTimestamp,
+                fundingReminderCount = count,
+            )
         }
     }
 
-    override fun incrementReminderShownCount() {
+    override suspend fun incrementReminderShownCount() {
         setReminderShownCount(getReminderShownCount() + 1)
     }
 

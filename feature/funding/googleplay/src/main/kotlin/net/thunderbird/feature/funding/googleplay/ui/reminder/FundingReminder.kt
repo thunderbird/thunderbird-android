@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 import net.thunderbird.core.android.common.activity.ActivityProvider
 import net.thunderbird.feature.funding.api.FundingSettings
 import net.thunderbird.feature.funding.googleplay.ui.reminder.FundingReminderContract.ActivityLifecycleObserver
@@ -20,6 +22,7 @@ constructor(
     private val activityCounterObserver: ActivityLifecycleObserver,
     private val dialog: FundingReminderContract.Dialog,
     private val clock: Clock = Clock.System,
+    private val scope: CoroutineScope,
 ) : FundingReminderContract.Reminder {
 
     /**
@@ -126,21 +129,24 @@ constructor(
     private fun showFundingReminderDialog(fragmentManager: FragmentManager) {
         // We're about to show the funding reminder dialog. So mark it as being shown. This way, if there's an error,
         // we err on the side of the dialog not being shown rather than it being shown more than once.
-        @OptIn(ExperimentalTime::class)
-        val now = clock.now().toEpochMilliseconds()
-        settings.setReminderShownTimestamp(now)
-        settings.setLastReminderShownTimestamp(now)
-        settings.incrementReminderShownCount()
+        scope.launch {
+            @OptIn(ExperimentalTime::class)
+            val now = clock.now().toEpochMilliseconds()
+            settings.setReminderShownTimestamp(now)
+            settings.setLastReminderShownTimestamp(now)
+            settings.incrementReminderShownCount()
+        }
 
         dialog.show(fragmentManager)
     }
 
     private fun showSecondFundingReminderDialog(fragmentManager: FragmentManager) {
-        @OptIn(ExperimentalTime::class)
-        val now = clock.now().toEpochMilliseconds()
-        settings.setLastReminderShownTimestamp(now)
-        settings.incrementReminderShownCount()
-
+        scope.launch {
+            @OptIn(ExperimentalTime::class)
+            val now = clock.now().toEpochMilliseconds()
+            settings.setLastReminderShownTimestamp(now)
+            settings.incrementReminderShownCount()
+        }
         dialog.show(fragmentManager)
     }
 }
