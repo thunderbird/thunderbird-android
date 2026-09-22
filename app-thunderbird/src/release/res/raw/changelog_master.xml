@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?xml-stylesheet type="text/xsl" href="changelog_style.xsl"?>
 <changelog>
-    <release version="23.1" versioncode="33" date="2026-09-21">
-        <change>Fixed: Attachment filenames with non-ASCII characters were incorrectly decoded and saved</change>
-    </release>
     <release version="23.0" versioncode="31" date="2026-09-08">
         <change>Fixed: Signature field only accepted single-line text in Composition defaults</change>
     </release>
