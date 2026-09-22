@@ -5,4 +5,5 @@ import net.thunderbird.core.configstore.ConfigStore
 
 interface FundingConfigStore : ConfigStore<FundingConfig> {
     fun configAsStateFlow(): StateFlow<FundingConfig>
+    suspend fun ConfigStore<FundingConfig>.update(transform: (FundingConfig) -> FundingConfig)
 }
