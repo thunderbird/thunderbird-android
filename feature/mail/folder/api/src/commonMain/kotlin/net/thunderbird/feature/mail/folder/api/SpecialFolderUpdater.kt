@@ -1,6 +1,7 @@
 package net.thunderbird.feature.mail.folder.api
 
 import net.thunderbird.feature.account.AccountId
+import net.thunderbird.feature.mail.folder.FolderType
 
 // TODO move to ???
 interface SpecialFolderUpdater {

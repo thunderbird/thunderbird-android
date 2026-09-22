@@ -17,7 +17,7 @@ import kotlinx.coroutines.test.runTest
 import net.thunderbird.components.core.outcome.Outcome
 import net.thunderbird.core.common.exception.MessagingException
 import net.thunderbird.feature.account.AccountIdFactory
-import net.thunderbird.feature.mail.folder.api.FolderType
+import net.thunderbird.feature.mail.folder.FolderType
 import net.thunderbird.feature.mail.folder.api.RemoteFolder
 import net.thunderbird.feature.mail.message.list.domain.AccountFolderError
 import net.thunderbird.feature.mail.message.list.internal.fakes.FakeRemoteFolderQueryRepository
