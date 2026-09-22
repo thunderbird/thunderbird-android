@@ -1949,13 +1949,13 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
             internalMessageHandler.sendEmptyMessage(MSG_PROGRESS_OFF);
 
             // When a draft was incomplete, the attachment presenter asked for the complete message and we end up
-            // here a second time. loadLocalMessageForDisplay() only rebuilds the quoted text in that case, so the
-            // attachments that just arrived have to be picked up explicitly.
+            // here a second time. The draft is already in the editor, and loadLocalMessageForDisplay() would add it
+            // once more as quoted text. So only the attachments that just arrived are picked up.
             if (relatedMessageProcessed && action == Action.EDIT_DRAFT) {
                 attachmentPresenter.processDraftMessage(messageViewInfo);
+            } else {
+                loadLocalMessageForDisplay(messageViewInfo, action);
             }
-
-            loadLocalMessageForDisplay(messageViewInfo, action);
 
             if(!recipientPresenter.isToAddressAdded()) {
                 recipientMvpView.requestFocusOnToField();
