@@ -35,6 +35,7 @@ public class AttachmentPresenter {
     private static final String STATE_KEY_ATTACHMENTS = "com.fsck.k9.activity.MessageCompose.attachments";
     private static final String STATE_KEY_WAITING_FOR_ATTACHMENTS = "waitingForAttachments";
     private static final String STATE_KEY_NEXT_LOADER_ID = "nextLoaderId";
+    private static final String STATE_KEY_COMPLETE_MESSAGE_DOWNLOAD = "completeMessageDownload";
 
     private static final String LOADER_ARG_ATTACHMENT = "attachment";
     private static final int LOADER_ID_MASK = 1 << 6;
@@ -53,7 +54,7 @@ public class AttachmentPresenter {
     private final LinkedHashMap<Uri, InlineAttachment> inlineAttachments;
     private int nextLoaderId = 0;
     private WaitingAction actionToPerformAfterWaiting = WaitingAction.NONE;
-    private boolean completeMessageDownloadRequested = false;
+    private CompleteMessageDownload completeMessageDownload = CompleteMessageDownload.NONE;
 
 
     public AttachmentPresenter(Context context, AttachmentMvpView attachmentMvpView, LoaderManager loaderManager,
@@ -71,12 +72,15 @@ public class AttachmentPresenter {
         outState.putString(STATE_KEY_WAITING_FOR_ATTACHMENTS, actionToPerformAfterWaiting.name());
         outState.putParcelableArrayList(STATE_KEY_ATTACHMENTS, createAttachmentList());
         outState.putInt(STATE_KEY_NEXT_LOADER_ID, nextLoaderId);
+        outState.putString(STATE_KEY_COMPLETE_MESSAGE_DOWNLOAD, completeMessageDownload.name());
     }
 
     public void onRestoreInstanceState(Bundle savedInstanceState) {
         actionToPerformAfterWaiting = WaitingAction.valueOf(
                 savedInstanceState.getString(STATE_KEY_WAITING_FOR_ATTACHMENTS));
         nextLoaderId = savedInstanceState.getInt(STATE_KEY_NEXT_LOADER_ID);
+        completeMessageDownload = CompleteMessageDownload.valueOf(savedInstanceState.getString(
+                STATE_KEY_COMPLETE_MESSAGE_DOWNLOAD, CompleteMessageDownload.NONE.name()));
 
         ArrayList<Attachment> attachmentList = savedInstanceState.getParcelableArrayList(STATE_KEY_ATTACHMENTS);
         // noinspection ConstantConditions, we know this is set in onSaveInstanceState
@@ -90,15 +94,25 @@ public class AttachmentPresenter {
                 initAttachmentContentLoader(attachment);
             }
         }
+
+        if (completeMessageDownload == CompleteMessageDownload.IN_PROGRESS) {
+            // The result of the download would have gone to the previous activity instance, so ask again.
+            attachmentMvpView.downloadCompleteMessage();
+        }
     }
 
-    public boolean checkOkForSendingOrDraftSaving() {
+    public boolean checkOkForSendingOrDraftSaving(WaitingAction waitingAction) {
         if (actionToPerformAfterWaiting != WaitingAction.NONE) {
             return true;
         }
 
-        if (hasLoadingAttachments()) {
-            actionToPerformAfterWaiting = WaitingAction.SEND;
+        if (completeMessageDownload == CompleteMessageDownload.FAILED) {
+            completeMessageDownload = CompleteMessageDownload.IN_PROGRESS;
+            attachmentMvpView.downloadCompleteMessage();
+        }
+
+        if (completeMessageDownload == CompleteMessageDownload.IN_PROGRESS || hasLoadingAttachments()) {
+            actionToPerformAfterWaiting = waitingAction;
             attachmentMvpView.showWaitingForAttachmentDialog(actionToPerformAfterWaiting);
             return true;
         }
@@ -245,16 +259,57 @@ public class AttachmentPresenter {
     public void processDraftMessage(MessageViewInfo messageViewInfo) {
         boolean allPartsAvailable = loadAllAvailableAttachments(messageViewInfo);
         if (allPartsAvailable) {
+            completeMessageDownload = CompleteMessageDownload.NONE;
+            postPerformStalledAction();
             return;
         }
 
-        if (completeMessageDownloadRequested) {
-            attachmentMvpView.showMissingAttachmentsPartialMessageWarning();
+        switch (completeMessageDownload) {
+            case NONE: {
+                completeMessageDownload = CompleteMessageDownload.IN_PROGRESS;
+                attachmentMvpView.downloadCompleteMessage();
+                break;
+            }
+            case IN_PROGRESS: {
+                if (messageViewInfo.isMessageIncomplete) {
+                    // Loaded again before the download finished, e.g. after a rotation. The result is still to come.
+                    break;
+                }
+                onCompleteMessageDownloadFailed();
+                break;
+            }
+            case FAILED: {
+                attachmentMvpView.showMissingAttachmentsPartialMessageWarning();
+                break;
+            }
+        }
+    }
+
+    /**
+     * Called when fetching the complete message of a draft failed, for example without a network connection.
+     *
+     * <p>Sending or saving now would drop the missing parts, so a waiting send or save is cancelled. The next attempt
+     * to send or save tries the download again.</p>
+     */
+    public void onCompleteMessageDownloadFailed() {
+        if (completeMessageDownload != CompleteMessageDownload.IN_PROGRESS) {
             return;
         }
 
-        completeMessageDownloadRequested = true;
-        attachmentMvpView.downloadCompleteMessage();
+        completeMessageDownload = CompleteMessageDownload.FAILED;
+        if (actionToPerformAfterWaiting != WaitingAction.NONE) {
+            actionToPerformAfterWaiting = WaitingAction.NONE;
+            attachmentMvpView.dismissWaitingForAttachmentDialog();
+        }
+        attachmentMvpView.showMissingAttachmentsPartialMessageWarning();
+    }
+
+    /**
+     * Whether the draft being edited still lacks parts that were not downloaded. Saving it in this state would remove
+     * those parts from the server.
+     */
+    public boolean hasMissingDraftParts() {
+        return completeMessageDownload != CompleteMessageDownload.NONE;
     }
 
     public void processMessageToForward(MessageViewInfo messageViewInfo) {
@@ -423,6 +478,14 @@ public class AttachmentPresenter {
     }
 
     private void performStalledAction() {
+        if (actionToPerformAfterWaiting == WaitingAction.NONE) {
+            return;
+        }
+
+        if (completeMessageDownload == CompleteMessageDownload.IN_PROGRESS || hasLoadingAttachments()) {
+            return;
+        }
+
         attachmentMvpView.dismissWaitingForAttachmentDialog();
 
         WaitingAction waitingFor = actionToPerformAfterWaiting;
@@ -491,6 +554,12 @@ public class AttachmentPresenter {
         NONE,
         SEND,
         SAVE
+    }
+
+    private enum CompleteMessageDownload {
+        NONE,
+        IN_PROGRESS,
+        FAILED
     }
 
     public interface AttachmentMvpView {
