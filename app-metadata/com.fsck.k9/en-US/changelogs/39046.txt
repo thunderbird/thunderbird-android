@@ -1,4 +1,0 @@
-K-9 Mail version 23.1
-
-Fixed:
-- Attachment filenames with non-ASCII characters were incorrectly decoded and saved
