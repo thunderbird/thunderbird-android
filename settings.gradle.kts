@@ -134,6 +134,8 @@ include(
     ":feature:mail:message:export:impl-eml",
     ":feature:mail:message:reader:api",
     ":feature:mail:message:reader:impl",
+    ":feature:mail:storage:global-db-migration:api",
+    ":feature:mail:storage:global-db-migration:internal",
 )
 
 include(
