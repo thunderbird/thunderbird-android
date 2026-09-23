@@ -958,4 +958,5 @@
     <string name="account_settings_signature_preview">Signaturvorschau</string>
     <string name="account_settings_signature_clear_label">Signatur löschen</string>
     <string name="message_compose_encrypting_message">Nachricht wird verschlüsselt…</string>
+    <string name="message_view_from_me_text">mir</string>
 </resources>

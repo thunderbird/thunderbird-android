@@ -966,4 +966,5 @@
     <string name="account_settings_signature_preview">Previzualizare semnătură</string>
     <string name="account_settings_signature_clear_label">Semnătură în clar (necriptată)</string>
     <string name="message_compose_encrypting_message">Se criptează mesajul…</string>
+    <string name="message_view_from_me_text">mine</string>
 </resources>

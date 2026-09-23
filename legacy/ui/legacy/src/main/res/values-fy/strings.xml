@@ -952,4 +952,12 @@
     <string name="global_settings_privacy_incognito_keyboard">Ynkognitotoetseboerd</string>
     <string name="global_settings_privacy_incognito_keyboard_detail">It toetseboerd freegje net te learen fan wat jo type wannear’t jo berjochten opstelle</string>
     <string name="sort_by_indicator">•</string>
+    <string name="camera_capture_lost">Skermôfdruk is ferlern gean, omdat de app sletten wie. Probearje it nochris.</string>
+    <string name="account_settings_signature_html_label">HTML-ûndertekening</string>
+    <string name="account_settings_signature_is_html_label">Undertekening as HTML bewarje</string>
+    <string name="account_settings_signature_is_html_summary">Ynterpretearje de ûndertekening as HTML. Scripts en barrens-handlers sille foar befeiliging fuortsmiten wurde.</string>
+    <string name="account_settings_signature_preview">Foarbyld ûndertekening</string>
+    <string name="account_settings_signature_clear_label">Undertekening wiskje</string>
+    <string name="message_compose_encrypting_message">Berjocht fersiferje…</string>
+    <string name="message_view_from_me_text">ik</string>
 </resources>
