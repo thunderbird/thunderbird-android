@@ -77,6 +77,7 @@ val legacyMailStoreModule = module {
             folderQueryRepository = get(),
             messageStoreManager = get(),
             specialFolderUpdaterFactory = get(),
+            messageQueryRepository = get(),
             messageLifecycleRepository = get(),
             messageDataMapper = get(),
         )

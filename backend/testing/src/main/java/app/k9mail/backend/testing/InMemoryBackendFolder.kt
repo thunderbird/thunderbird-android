@@ -72,14 +72,14 @@ class InMemoryBackendFolder(override var name: String, var type: FolderType) : B
             .toMap()
     }
 
-    override fun destroyMessages(messageServerIds: List<String>) {
+    override suspend fun destroyMessages(messageServerIds: List<String>) {
         for (messageServerId in messageServerIds) {
             messages.remove(messageServerId)
             messageFlags.remove(messageServerId)
         }
     }
 
-    override fun clearAllMessages() {
+    override suspend fun clearAllMessages() {
         destroyMessages(messages.keys.toList())
     }
 

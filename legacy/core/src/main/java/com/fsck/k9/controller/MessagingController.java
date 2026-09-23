@@ -1092,6 +1092,8 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
     }
 
     void destroyPlaceholderMessages(LocalFolder localFolder, List<String> uids) throws MessagingException {
+        final FolderId domainFolderId = LegacyFolderIdFactory.INSTANCE.of(localFolder.getDatabaseId());
+        final AccountId accountId = localFolder.getAccountId();
         for (String uid : uids) {
             LocalMessage placeholderMessage = localFolder.getMessage(uid);
             if (placeholderMessage == null) {
@@ -1099,7 +1101,17 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
             }
 
             if (placeholderMessage.isSet(Flag.DELETED)) {
-                placeholderMessage.destroy();
+                final Outcome<@NotNull Unit, @NotNull MessageLifecycleError>
+                    outcome = MessagingControllerWrapperKt.destroyByServerIdCompat(messageLifecycleRepository, uid,
+                    domainFolderId, accountId);
+                if (outcome instanceof Outcome.Failure<?> failure) {
+                    final MessageLifecycleError error = (MessageLifecycleError) failure.getError();
+                    throw new MessagingException(
+                        String.format("Failed to destroy message '%s' from folder '%s'", uid, domainFolderId),
+                        error.getThrowable());
+                } else {
+                    Log.i("destroyed message '%s' from '%s'", uid, domainFolderId);
+                }
             } else {
                 Log.w(TAG, "Expected local message %s in folder %s to be a placeholder, but DELETE flag wasn't set",
                     uid, localFolder.getServerId());

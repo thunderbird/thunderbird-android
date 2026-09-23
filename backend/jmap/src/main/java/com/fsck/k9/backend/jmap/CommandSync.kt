@@ -178,7 +178,7 @@ class CommandSync(
     ) {
         if (destroyServerIds.isNotEmpty()) {
             Log.d(TAG, "Removing messages no longer on server: %s", destroyServerIds)
-            backendFolder.destroyMessages(destroyServerIds)
+            runBlocking { backendFolder.destroyMessages(destroyServerIds) }
         }
 
         if (newServerIds.isEmpty()) {
