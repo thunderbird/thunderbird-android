@@ -7,4 +7,4 @@ import net.thunderbird.core.architecture.model.BaseUuidIdentifierFactory
  * Factory for creating [FolderId] values.
  */
 @OptIn(ExperimentalUuidApi::class)
-object FolderIdFactory : BaseUuidIdentifierFactory<FolderId>(::FolderId)
+public object FolderIdFactory : BaseUuidIdentifierFactory<FolderId>(::FolderId)
