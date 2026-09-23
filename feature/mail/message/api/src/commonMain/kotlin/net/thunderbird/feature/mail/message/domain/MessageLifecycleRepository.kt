@@ -104,8 +104,40 @@ interface MessageLifecycleRepository {
         accountId: AccountId,
     ): Outcome<Map<MessageId, MessageId>, MessageLifecycleError>
 
-    suspend fun destroy(
-        serverIds: List<MessageServerId>,
+    /**
+     * Permanently removes locally stored messages, identified by their server ids, from a folder.
+     *
+     * Unlike a delete that flags a message or moves it to the trash, this drops the message data, its parts,
+     * attachments on disk and its full-text index entry. If a message still has children in the thread structure,
+     * its row is kept as an empty threading placeholder instead of being deleted, so the thread stays connected.
+     * Empty parents that are left without children are removed as well.
+     *
+     * This operation is not atomic: messages are destroyed one by one. If one fails, messages processed before the
+     * failure stay destroyed and the returned [Outcome] is a failure. Server ids that don't match a message in the
+     * folder are ignored.
+     *
+     * @param serverIds The server ids of the messages to destroy. An empty collection is a no-op.
+     * @param folderId The folder the messages belong to.
+     * @param accountId The account the folder belongs to.
+     * @return An [Outcome] with [Unit] on success, or a [MessageLifecycleError] on failure.
+     */
+    suspend fun destroyAllByServerId(
+        serverIds: Collection<MessageServerId>,
+        folderId: FolderId,
+        accountId: AccountId,
+    ): Outcome<Unit, MessageLifecycleError>
+
+    /**
+     * Permanently removes a single locally stored message, identified by its server id, from a folder.
+     * See [destroyAllByServerId] for the semantics.
+     *
+     * @param serverId The server id of the message to destroy.
+     * @param folderId The folder the message belongs to.
+     * @param accountId The account the folder belongs to.
+     * @return An [Outcome] with [Unit] on success, or a [MessageLifecycleError] on failure.
+     */
+    suspend fun destroyByServerId(
+        serverId: MessageServerId,
         folderId: FolderId,
         accountId: AccountId,
     ): Outcome<Unit, MessageLifecycleError>
