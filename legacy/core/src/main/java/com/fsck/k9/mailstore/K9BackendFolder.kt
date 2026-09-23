@@ -6,14 +6,19 @@ import com.fsck.k9.backend.api.BackendFolder.MoreMessages
 import com.fsck.k9.mail.MessageDownloadState
 import java.util.Date
 import net.thunderbird.components.core.outcome.Outcome
+import net.thunderbird.components.core.outcome.flatMapSuccess
 import net.thunderbird.components.core.outcome.handle
 import net.thunderbird.core.common.exception.MessagingException
 import net.thunderbird.core.common.mail.Flag
 import net.thunderbird.core.logging.Logger
+import net.thunderbird.feature.mail.folder.FolderId
 import net.thunderbird.feature.mail.folder.LegacyFolderIdFactory
 import net.thunderbird.feature.mail.message.MessageId
+import net.thunderbird.feature.mail.message.MessageServerId
 import net.thunderbird.feature.mail.message.domain.MessageLifecycleError
 import net.thunderbird.feature.mail.message.domain.MessageLifecycleRepository
+import net.thunderbird.feature.mail.message.domain.MessageQueryError
+import net.thunderbird.feature.mail.message.domain.MessageQueryRepository
 import net.thunderbird.feature.mail.message.mapper.MessageDataMapper
 import app.k9mail.legacy.mailstore.MoreMessages as StoreMoreMessages
 import com.fsck.k9.mail.Message as LegacyMessage
@@ -23,6 +28,7 @@ class K9BackendFolder(
     private val logger: Logger,
     private val messageStore: MessageStore,
     folderServerId: String,
+    private val messageQueryRepository: MessageQueryRepository,
     private val messageLifecycleRepository: MessageLifecycleRepository,
     private val mapper: MessageDataMapper<LegacyMessage>,
 ) : BackendFolder {
@@ -30,6 +36,8 @@ class K9BackendFolder(
     private val folderId: Long
     override val name: String
     override val visibleLimit: Int
+    private val domainFolderId: FolderId get() = LegacyFolderIdFactory.of(folderId)
+    private val accountId = messageStore.accountId
 
     init {
         data class Init(val folderId: Long, val name: String, val visibleLimit: Int)
@@ -56,13 +64,53 @@ class K9BackendFolder(
         return messageStore.getAllMessagesAndEffectiveDates(folderId)
     }
 
-    override fun destroyMessages(messageServerIds: List<String>) {
-        messageStore.destroyMessages(folderId, messageServerIds)
+    override suspend fun destroyMessages(messageServerIds: List<String>) {
+        messageLifecycleRepository.destroyAllByServerId(
+            serverIds = messageServerIds.map(::MessageServerId),
+            folderId = domainFolderId,
+            accountId = accountId,
+        ).handle(
+            onSuccess = { logger.info { "All messages destroyed successfully" } },
+            onFailure = { error ->
+                when (val throwable = error.throwable) {
+                    null -> throw MessagingException(
+                        "Unexpected error happened while destroying messages $messageServerIds",
+                    )
+
+                    else -> throw MessagingException("Failed to destroy messages.", throwable)
+                }
+            },
+        )
     }
 
-    override fun clearAllMessages() {
-        val messageServerIds = messageStore.getMessageServerIds(folderId)
-        messageStore.destroyMessages(folderId, messageServerIds)
+    override suspend fun clearAllMessages() {
+        messageQueryRepository
+            .getAllServerIdByFolderId(domainFolderId, accountId)
+            .flatMapSuccess { messageServerIds ->
+                messageLifecycleRepository.destroyAllByServerId(
+                    serverIds = messageServerIds,
+                    folderId = domainFolderId,
+                    accountId = accountId,
+                )
+            }
+            .handle(
+                onSuccess = { logger.info { "All messages cleared successfully" } },
+                onFailure = { error ->
+                    throw when (error) {
+                        is MessageQueryError -> MessagingException(
+                            "Failed to clear all messages.",
+                            error.throwable,
+                        )
+
+                        is MessageLifecycleError -> MessagingException(
+                            "Failed to clear all messages.",
+                            error.throwable,
+                        )
+
+                        else -> MessagingException("Unhandled error while clearing all messages. Error: $error")
+                    }
+                },
+            )
     }
 
     override fun getMoreMessages(): MoreMessages {
@@ -97,7 +145,6 @@ class K9BackendFolder(
 
     override suspend fun saveMessage(message: LegacyMessage, downloadState: MessageDownloadState) {
         requireMessageServerId(message)
-        val accountId = messageStore.accountId
         message.accountId = accountId
         val domainFolderId = LegacyFolderIdFactory.of(folderId)
         // A message coming from the backend carries no X_DOWNLOADED_* flags yet, so the mapper would

@@ -56,6 +56,7 @@ internal val mailMessageModule = module {
             logger = get(),
             accountManager = get(),
             localStoreProvider = get(),
+            messageStoreManager = get(),
         )
     }
 

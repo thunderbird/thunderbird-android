@@ -10,6 +10,7 @@ import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.mail.folder.api.SpecialFolderUpdater
 import net.thunderbird.feature.mail.folder.api.data.repository.FolderQueryRepository
 import net.thunderbird.feature.mail.message.domain.MessageLifecycleRepository
+import net.thunderbird.feature.mail.message.domain.MessageQueryRepository
 import net.thunderbird.feature.mail.message.mapper.MessageDataMapper
 
 class K9BackendStorageFactory(
@@ -19,6 +20,7 @@ class K9BackendStorageFactory(
     private val folderQueryRepository: FolderQueryRepository,
     private val messageStoreManager: MessageStoreManager,
     private val specialFolderUpdaterFactory: SpecialFolderUpdater.Factory,
+    private val messageQueryRepository: MessageQueryRepository,
     private val messageLifecycleRepository: MessageLifecycleRepository,
     private val messageDataMapper: MessageDataMapper<Message>,
 ) : BackendStorageFactory {
@@ -38,6 +40,7 @@ class K9BackendStorageFactory(
             messageStore = messageStore,
             folderSettingsProvider = folderSettingsProvider,
             listeners = listeners,
+            messageQueryRepository = messageQueryRepository,
             messageLifecycleRepository = messageLifecycleRepository,
             messageDataMapper = messageDataMapper,
         )
