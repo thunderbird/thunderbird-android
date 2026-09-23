@@ -952,4 +952,12 @@
     <string name="global_settings_privacy_incognito_keyboard">Incognitotoetsenbord</string>
     <string name="global_settings_privacy_incognito_keyboard_detail">Het toetsenbord vragen niet te leren van wat u typt wanneer u berichten opstelt</string>
     <string name="sort_by_indicator">•</string>
+    <string name="camera_capture_lost">Schermafdruk is verloren gegaan, omdat de app was gesloten. Probeer het nog eens.</string>
+    <string name="account_settings_signature_html_label">HTML-ondertekening</string>
+    <string name="account_settings_signature_is_html_label">Ondertekening als HTML opslaan</string>
+    <string name="account_settings_signature_is_html_summary">Interpreteer de ondertekening als HTML. Scripts en gebeurtenis-handlers zullen ter beveiliging worden verwijderd.</string>
+    <string name="account_settings_signature_preview">Voorbeeld ondertekening</string>
+    <string name="account_settings_signature_clear_label">Ondertekening wissen</string>
+    <string name="message_compose_encrypting_message">Bericht versleutelen…</string>
+    <string name="message_view_from_me_text">ik</string>
 </resources>

@@ -973,4 +973,5 @@
     <string name="account_settings_signature_preview">Náhled podpisu</string>
     <string name="account_settings_signature_clear_label">Vymazat podpis</string>
     <string name="message_compose_encrypting_message">Šifrování zprávy…</string>
+    <string name="message_view_from_me_text">já</string>
 </resources>
