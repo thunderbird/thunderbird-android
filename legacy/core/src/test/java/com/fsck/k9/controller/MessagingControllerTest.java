@@ -4,6 +4,7 @@ package com.fsck.k9.controller;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import android.content.Context;
@@ -16,7 +17,9 @@ import com.fsck.k9.K9RobolectricTest;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.backend.BackendManager;
 import com.fsck.k9.backend.api.Backend;
+import com.fsck.k9.controller.MessagingController.MoveOrCopyFlavor;
 import com.fsck.k9.controller.MessagingControllerCommands.PendingAppend;
+import com.fsck.k9.controller.MessagingControllerCommands.PendingMoveOrCopy;
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.AuthenticationFailedException;
 import com.fsck.k9.mail.CertificateChainException;
@@ -59,6 +62,7 @@ import net.thunderbird.legacy.core.mailstore.folder.FakeOutboxFolderManager;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.ArgumentMatchers;
 import org.mockito.InOrder;
 import org.mockito.Mock;
@@ -69,6 +73,10 @@ import org.robolectric.RuntimeEnvironment;
 import org.robolectric.shadows.ShadowLog;
 
 import static java.util.Collections.emptyList;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.nullable;
@@ -88,6 +96,7 @@ public class MessagingControllerTest extends K9RobolectricTest {
     private static final long FOLDER_ID = 23;
     private static final String FOLDER_NAME = "Folder";
     private static final long SENT_FOLDER_ID = 10;
+    private static final long DEST_FOLDER_ID = 42;
     private static final int MAXIMUM_SMALL_MESSAGE_SIZE = 1000;
 
     private MessagingController controller;
@@ -110,6 +119,8 @@ public class MessagingControllerTest extends K9RobolectricTest {
     private LocalFolder localFolder;
     @Mock
     private LocalFolder sentFolder;
+    @Mock
+    private LocalFolder destFolder;
     @Mock
     private LocalStore localStore;
     @Mock
@@ -463,6 +474,64 @@ public class MessagingControllerTest extends K9RobolectricTest {
 
         verify(notificationController).showSendFailedNotification(eq(account), any(MessagingException.class));
         verify(localStore, never()).addPendingCommand(any());
+    }
+
+    @Test
+    public void moveOrCopyMessageSynchronous_withCopy_shouldCopyThroughRepositoryAndQueuePendingCopy()
+        throws MessagingException {
+        setupMessageToCopy();
+        when(messageLifecycleRepository.copyAll(any(), any(), any(), null))
+            .thenReturn(Outcome.Companion.success(Map.of(
+                LegacyMessageIdFactory.INSTANCE.of(42L), LegacyMessageIdFactory.INSTANCE.of(99L))));
+
+        controller.moveOrCopyMessageSynchronous(account, FOLDER_ID, Collections.singletonList(localNewMessage1),
+            DEST_FOLDER_ID, MoveOrCopyFlavor.COPY);
+
+        verify(messageLifecycleRepository).copyAll(
+            eq(Collections.singletonList(LegacyMessageIdFactory.INSTANCE.of(42L))),
+            eq(LegacyFolderIdFactory.INSTANCE.of(DEST_FOLDER_ID)),
+            eq(account.getId()),
+            null
+        );
+        ArgumentCaptor<PendingMoveOrCopy> commandCaptor = ArgumentCaptor.forClass(PendingMoveOrCopy.class);
+        verify(localStore).addPendingCommand(commandCaptor.capture());
+        PendingMoveOrCopy command = commandCaptor.getValue();
+        assertTrue(command.isCopy);
+        assertEquals(FOLDER_ID, command.srcFolderId);
+        assertEquals(DEST_FOLDER_ID, command.destFolderId);
+        assertEquals(Map.of("remote-uid", "copied-uid"), command.newUidMap);
+    }
+
+    @Test
+    public void moveOrCopyMessageSynchronous_whenCopyFails_shouldThrowAndNotQueuePendingCommand()
+        throws MessagingException {
+        setupMessageToCopy();
+        RuntimeException cause = new RuntimeException("copy failed");
+        when(messageLifecycleRepository.copyAll(any(), any(), any(), null))
+            .thenReturn(Outcome.Companion.failure(new MessageLifecycleError.UnhandledError(cause)));
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () ->
+            controller.moveOrCopyMessageSynchronous(account, FOLDER_ID,
+                Collections.singletonList(localNewMessage1), DEST_FOLDER_ID, MoveOrCopyFlavor.COPY));
+
+        assertTrue(exception.getCause() instanceof MessagingException);
+        assertSame(cause, exception.getCause().getCause());
+        verify(localStore, never()).addPendingCommand(any());
+    }
+
+    private void setupMessageToCopy() throws MessagingException {
+        when(backend.getSupportsCopy()).thenReturn(true);
+        when(localStore.getFolder(DEST_FOLDER_ID)).thenReturn(destFolder);
+        when(destFolder.getDatabaseId()).thenReturn(DEST_FOLDER_ID);
+        when(localNewMessage1.getUid()).thenReturn("remote-uid");
+        when(localNewMessage1.getDatabaseId()).thenReturn(42L);
+        when(localNewMessage1.isSet(Flag.SEEN)).thenReturn(true);
+        when(localFolder.getMessagesByUids(Collections.singletonList("remote-uid")))
+            .thenReturn(Collections.singletonList(localNewMessage1));
+        ListenableMessageStore messageStore = mock(ListenableMessageStore.class);
+        when(messageStoreManager.getMessageStore(account)).thenReturn(messageStore);
+        when(messageStore.getMessageServerIds(ArgumentMatchers.<Long>anyCollection()))
+            .thenReturn(Map.of(99L, "copied-uid"));
     }
 
     private void setupAccountWithMessageToSend() throws MessagingException {

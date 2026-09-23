@@ -363,6 +363,126 @@ class DefaultMessageLifecycleRepositoryTest {
 
     // endregion [moveAll]
 
+    // region [copy]
+
+    @Test
+    fun `copy should return the destination message id when the store succeeds`() = runTest {
+        // Arrange
+        whenever(messageStore.copyMessage(EXISTING_MESSAGE_ID, FOLDER_ID)).thenReturn(SAVED_MESSAGE_ID)
+
+        // Act
+        val outcome = testSubject.copy(LegacyMessageIdFactory.of(EXISTING_MESSAGE_ID), folderId, accountId)
+
+        // Assert
+        assertThat(outcome).isEqualTo(Outcome.success(LegacyMessageIdFactory.of(SAVED_MESSAGE_ID)))
+        verify(messageStore).copyMessage(EXISTING_MESSAGE_ID, FOLDER_ID)
+    }
+
+    @Test
+    fun `copy should return UnhandledError when the store throws`() = runTest {
+        // Arrange
+        val exception = IllegalStateException("Message with ID $EXISTING_MESSAGE_ID not found")
+        whenever(messageStore.copyMessage(EXISTING_MESSAGE_ID, FOLDER_ID)).thenThrow(exception)
+
+        // Act
+        val outcome = testSubject.copy(LegacyMessageIdFactory.of(EXISTING_MESSAGE_ID), folderId, accountId)
+
+        // Assert
+        assertThat(outcome).isEqualTo(Outcome.failure(MessageLifecycleError.UnhandledError(exception)))
+    }
+
+    @Test
+    fun `copy should return UnhandledError when the account is unknown`() = runTest {
+        // Act
+        val outcome = testSubject.copy(
+            messageId = LegacyMessageIdFactory.of(EXISTING_MESSAGE_ID),
+            destinationFolderId = folderId,
+            accountId = AccountIdFactory.of(UNKNOWN_ACCOUNT_ID),
+        )
+
+        // Assert
+        assertThat(outcome).isInstanceOf<Outcome.Failure<MessageLifecycleError>>()
+            .transform { it.error }
+            .isInstanceOf<MessageLifecycleError.UnhandledError>()
+            .transform { it.throwable }
+            .isInstanceOf<IllegalStateException>()
+        verifyNoInteractions(messageStore)
+    }
+
+    // endregion [copy]
+
+    // region [copyAll]
+
+    @Test
+    fun `copyAll should return an empty mapping without touching the store when given no ids`() = runTest {
+        // Act
+        val outcome = testSubject.copyAll(emptyList(), folderId, accountId)
+
+        // Assert
+        assertThat(outcome).isEqualTo(Outcome.success(emptyMap<MessageId, MessageId>()))
+        verifyNoInteractions(messageStore)
+    }
+
+    @Test
+    fun `copyAll should map source ids to destination ids when the store succeeds`() = runTest {
+        // Arrange
+        whenever(messageStore.copyMessages(listOf(1L, 2L), FOLDER_ID)).thenReturn(mapOf(1L to 11L, 2L to 12L))
+
+        // Act
+        val outcome = testSubject.copyAll(
+            messageIds = listOf(LegacyMessageIdFactory.of(1L), LegacyMessageIdFactory.of(2L)),
+            destinationFolderId = folderId,
+            accountId = accountId,
+        )
+
+        // Assert
+        assertThat(outcome).isEqualTo(
+            Outcome.success(
+                mapOf(
+                    LegacyMessageIdFactory.of(1L) to LegacyMessageIdFactory.of(11L),
+                    LegacyMessageIdFactory.of(2L) to LegacyMessageIdFactory.of(12L),
+                ),
+            ),
+        )
+    }
+
+    @Test
+    fun `copyAll should return UnhandledError when the store throws`() = runTest {
+        // Arrange
+        val exception = IllegalStateException("Message with ID 2 not found")
+        whenever(messageStore.copyMessages(listOf(1L, 2L), FOLDER_ID)).thenThrow(exception)
+
+        // Act
+        val outcome = testSubject.copyAll(
+            messageIds = listOf(LegacyMessageIdFactory.of(1L), LegacyMessageIdFactory.of(2L)),
+            destinationFolderId = folderId,
+            accountId = accountId,
+        )
+
+        // Assert
+        assertThat(outcome).isEqualTo(Outcome.failure(MessageLifecycleError.UnhandledError(exception)))
+    }
+
+    @Test
+    fun `copyAll should return UnhandledError when the account is unknown`() = runTest {
+        // Act
+        val outcome = testSubject.copyAll(
+            messageIds = listOf(LegacyMessageIdFactory.of(1L)),
+            destinationFolderId = folderId,
+            accountId = AccountIdFactory.of(UNKNOWN_ACCOUNT_ID),
+        )
+
+        // Assert
+        assertThat(outcome).isInstanceOf<Outcome.Failure<MessageLifecycleError>>()
+            .transform { it.error }
+            .isInstanceOf<MessageLifecycleError.UnhandledError>()
+            .transform { it.throwable }
+            .isInstanceOf<IllegalStateException>()
+        verifyNoInteractions(messageStore)
+    }
+
+    // endregion [copyAll]
+
     private fun stubSaveMessageData() {
         whenever(saveMessageDataCreator.createSaveMessageData(legacyMessage, LegacyMessageDownloadState.FULL, null))
             .thenReturn(saveMessageData)

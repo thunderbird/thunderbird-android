@@ -1934,7 +1934,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
 
                 Map<Long, Long> resultIdMapping;
                 if (operation == MoveOrCopyFlavor.COPY) {
-                    resultIdMapping = messageStore.copyMessages(messageIds, destFolderId);
+                    resultIdMapping = copyAllMessages(account, messageIds, destFolderId);
 
                     if (unreadCountAffected) {
                         // If this copy operation changes the unread count in the destination
@@ -2227,10 +2227,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
     @NonNull
     private Map<Long, Long> moveAllMessages(LegacyAccountDto account, List<Long> messageIds, long destinationFolderId)
         throws MessagingException {
-        final List<MessageId> domainMessageIds = new ArrayList<>(messageIds.size());
-        for (long messageId : messageIds) {
-            domainMessageIds.add(messageIdLegacyEntityIdFactory.of(messageId));
-        }
+        final List<MessageId> domainMessageIds = convertLegacyMessageIdsToDomainMessageIds(messageIds);
         final FolderId domainDestinationFolderId = folderIdLegacyEntityIdFactory.of(destinationFolderId);
 
         final Outcome<? extends Map<MessageId, MessageId>, ? extends MessageLifecycleError> outcome;
@@ -2252,6 +2249,39 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
 
         final Map<MessageId, MessageId> domainIdMapping =
             ((Outcome.Success<Map<MessageId, MessageId>>) outcome).getData();
+        return convertDomainIdMappingToLegacyIdMapping(domainIdMapping);
+    }
+
+    @NonNull
+    private Map<Long, Long> copyAllMessages(LegacyAccountDto account, List<Long> messageIds, long destinationFolderId)
+        throws MessagingException {
+        final List<MessageId> domainMessageIds = convertLegacyMessageIdsToDomainMessageIds(messageIds);
+        final FolderId domainDestinationFolderId = folderIdLegacyEntityIdFactory.of(destinationFolderId);
+
+        final Outcome<? extends Map<MessageId, MessageId>, ? extends MessageLifecycleError> outcome;
+        try {
+            outcome = BuildersKt.runBlocking(EmptyCoroutineContext.INSTANCE, (scope, continuation) ->
+                messageLifecycleRepository.copyAll(domainMessageIds, domainDestinationFolderId, account.getId(),
+                    continuation));
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new MessagingException("Interrupted while copying messages", e);
+        }
+
+        if (outcome instanceof Outcome.Failure<?> failure) {
+            final MessageLifecycleError error = (MessageLifecycleError) failure.getError();
+            throw new MessagingException(
+                String.format("Failed to copy %d messages to folder %d", messageIds.size(), destinationFolderId),
+                error.getThrowable());
+        }
+
+        final Map<MessageId, MessageId> domainIdMapping =
+            ((Outcome.Success<Map<MessageId, MessageId>>) outcome).getData();
+        return convertDomainIdMappingToLegacyIdMapping(domainIdMapping);
+    }
+
+    @NonNull
+    private Map<Long, Long> convertDomainIdMappingToLegacyIdMapping(Map<MessageId, MessageId> domainIdMapping) {
         final Map<Long, Long> legacyIdMapping = new HashMap<>(domainIdMapping.size());
         for (Entry<MessageId, MessageId> entry : domainIdMapping.entrySet()) {
             legacyIdMapping.put(
@@ -2259,6 +2289,15 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
                 messageIdLegacyEntityIdFactory.toLegacyId(entry.getValue()));
         }
         return legacyIdMapping;
+    }
+
+    @NonNull
+    private List<MessageId> convertLegacyMessageIdsToDomainMessageIds(List<Long> messageIds) {
+        final List<MessageId> domainMessageIds = new ArrayList<>(messageIds.size());
+        for (long messageId : messageIds) {
+            domainMessageIds.add(messageIdLegacyEntityIdFactory.of(messageId));
+        }
+        return domainMessageIds;
     }
 
     private static List<String> getUidsFromMessages(List<LocalMessage> messages) {
