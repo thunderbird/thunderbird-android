@@ -17,7 +17,6 @@ import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import net.thunderbird.components.ui.testing.coroutines.MainDispatcherHelper
 import net.thunderbird.core.android.common.activity.ActivityProvider
@@ -25,7 +24,6 @@ import net.thunderbird.core.testing.TestClock
 import net.thunderbird.feature.funding.api.FundingSettings
 import net.thunderbird.feature.funding.googleplay.ui.reminder.FundingReminderContract.Dialog
 import org.junit.Assert.assertFalse
-import org.koin.core.component.getScopeId
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 
@@ -127,7 +125,7 @@ class FundingReminderTest {
             reminderReferenceTimestamp = REMINDER_REFERENCE_TIMESTAMP,
             reminderShownTimestamp = REMINDER_SHOWN_TIMESTAMP_UNSET,
             activityCounterInMillis = FUNDING_REMINDER_MIN_ACTIVITY_MILLIS,
-            lastReminderShownTimestamp = LAST_REMINDER_SHOWN_UNSET,
+            lastReminderShownActivityAmount = LAST_REMINDER_SHOWN_UNSET,
             fundingReminderCount = REMINDER_COUNTER_FIRST_SHOWN,
         )
         val currentTime = REMINDER_REFERENCE_TIMESTAMP + FUNDING_REMINDER_DELAY_MILLIS
@@ -164,7 +162,7 @@ class FundingReminderTest {
             reminderReferenceTimestamp = REMINDER_REFERENCE_TIMESTAMP,
             reminderShownTimestamp = REMINDER_SHOWN_TIMESTAMP_UNSET,
             activityCounterInMillis = FUNDING_REMINDER_MIN_ACTIVITY_MILLIS,
-            lastReminderShownTimestamp = REMINDER_REFERENCE_TIMESTAMP,
+            lastReminderShownActivityAmount = REMINDER_REFERENCE_TIMESTAMP,
             fundingReminderCount = 0,
         )
         val currentTime = REMINDER_REFERENCE_TIMESTAMP + FUNDING_REMINDER_DELAY_MILLIS
@@ -186,7 +184,7 @@ class FundingReminderTest {
         assertFalse(dialogShown)
         assertFalse(fragmentObserver.isRegistered)
         assertThat(settings.getReminderShownTimestamp()).isEqualTo(REMINDER_SHOWN_TIMESTAMP_UNSET)
-        assertThat(settings.getLastReminderShownTimestamp()).isEqualTo(REMINDER_REFERENCE_TIMESTAMP)
+        assertThat(settings.getLastReminderShownActivityAmount()).isEqualTo(REMINDER_REFERENCE_TIMESTAMP)
         assertEquals(0, settings.getReminderShownCount())
     }
 
@@ -215,7 +213,7 @@ class FundingReminderTest {
 
         // Should not be set until after register reminder called
         assertThat(settings.getReminderShownCount()).isEqualTo(REMINDER_COUNTER_UNSET)
-        assertThat(settings.getLastReminderShownTimestamp()).isEqualTo(REMINDER_SHOWN_TIMESTAMP_UNSET)
+        assertThat(settings.getLastReminderShownActivityAmount()).isEqualTo(REMINDER_SHOWN_TIMESTAMP_UNSET)
 
         // Test the reminder functionality
         testSubject.registerReminder { }
@@ -223,7 +221,7 @@ class FundingReminderTest {
         assertThat(dialogShown).isEqualTo(true)
         assertThat(fragmentObserver.isRegistered).isTrue()
         assertThat(activityObserver.isRegistered).isTrue()
-        assertThat(settings.getLastReminderShownTimestamp()).isEqualTo(currentTime)
+        assertThat(settings.getLastReminderShownActivityAmount()).isEqualTo(FUNDING_REMINDER_MIN_ACTIVITY_MILLIS)
         assertThat(settings.getReminderShownCount()).isEqualTo(REMINDER_COUNTER_FIRST_SHOWN)
         assertThat(settings.getReminderShownTimestamp()).isEqualTo(currentTime)
     }
@@ -257,7 +255,7 @@ class FundingReminderTest {
 
         assertThat(dialogShown).isEqualTo(false)
         assertThat(fragmentObserver.isRegistered).isFalse()
-        assertThat(settings.getLastReminderShownTimestamp()).isEqualTo(REMINDER_SHOWN_TIMESTAMP_UNSET)
+        assertThat(settings.getLastReminderShownActivityAmount()).isEqualTo(REMINDER_SHOWN_TIMESTAMP_UNSET)
         assertThat(settings.getReminderShownCount()).isEqualTo(REMINDER_COUNTER_FIRST_SHOWN)
         assertThat(settings.getReminderShownTimestamp()).isEqualTo(REMINDER_SHOWN_TIMESTAMP_UNSET)
     }
@@ -295,7 +293,7 @@ class FundingReminderTest {
         assertThat(fragmentObserver.isRegistered).isTrue()
         assertThat(activityObserver.isRegistered).isTrue()
         assertThat(settings.getReminderShownCount()).isEqualTo(REMINDER_COUNTER_FIRST_SHOWN)
-        assertThat(settings.getLastReminderShownTimestamp()).isEqualTo(currentTime)
+        assertThat(settings.getLastReminderShownActivityAmount()).isEqualTo(FUNDING_REMINDER_MIN_ACTIVITY_MILLIS)
         assertThat(settings.getReminderShownTimestamp()).isEqualTo(currentTime)
     }
 
@@ -306,7 +304,7 @@ class FundingReminderTest {
         val settings = FakeFundingSettings(
             reminderReferenceTimestamp = REMINDER_REFERENCE_TIMESTAMP,
             reminderShownTimestamp = REMINDER_SHOWN_TIMESTAMP,
-            lastReminderShownTimestamp = REMINDER_SHOWN_TIMESTAMP,
+            lastReminderShownActivityAmount = REMINDER_SHOWN_TIMESTAMP,
             fundingReminderCount = REMINDER_COUNTER_FIRST_SHOWN,
             activityCounterInMillis = SECOND_FUNDING_REMINDER_MIN_ACTIVITY_MILLIS,
         )
@@ -332,7 +330,7 @@ class FundingReminderTest {
         assertThat(activityObserver.isRegistered).isTrue()
         assertThat(settings.getReminderShownCount()).isEqualTo(REMINDER_COUNTER_SECOND_SHOWN)
         assertThat(settings.getReminderShownTimestamp()).isEqualTo(REMINDER_SHOWN_TIMESTAMP)
-        assertThat(settings.getLastReminderShownTimestamp()).isEqualTo(currentTime)
+        assertThat(settings.getLastReminderShownActivityAmount()).isEqualTo(SECOND_FUNDING_REMINDER_MIN_ACTIVITY_MILLIS)
     }
 
     private fun createTestSubject(

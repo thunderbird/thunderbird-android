@@ -25,6 +25,15 @@ constructor(
     private val scope: CoroutineScope,
 ) : FundingReminderContract.Reminder {
 
+    init {
+        val activity = activityProvider.getCurrent() as AppCompatActivity
+        val observedFragmentManager = activity.supportFragmentManager
+        activityCounterObserver.register(activity.lifecycle) {
+            fragmentObserver.unregister(observedFragmentManager)
+            activityCounterObserver.unregister(activity.lifecycle)
+        }
+    }
+
     /**
      * Decide to display the reminder and do so if necessary
      * We may choose to refactor this in the future to allow for multiple ongoing campaigns:
@@ -58,10 +67,10 @@ constructor(
 
         // We register the activity counter observer to keep track of the time the user spends in the app.
         // We also ensure that the observers are unregistered when the activity is destroyed.
-        activityCounterObserver.register(activity.lifecycle) {
-            fragmentObserver.unregister(observedFragmentManager)
-            activityCounterObserver.unregister(activity.lifecycle)
-        }
+//        activityCounterObserver.register(activity.lifecycle) {
+//            fragmentObserver.unregister(observedFragmentManager)
+//            activityCounterObserver.unregister(activity.lifecycle)
+//        }
 
         // If the reminder has already been shown, we don't need to show it again.
         if (wasReminderShown() && wasSecondReminderShown()) {
@@ -86,7 +95,7 @@ constructor(
 
     private fun wasSecondReminderShown(): Boolean {
         return settings.getReminderShownTimestamp() != 0L &&
-            settings.getLastReminderShownTimestamp() > settings.getReminderShownTimestamp() &&
+            settings.getLastReminderShownActivityAmount() > settings.getReminderShownTimestamp() &&
             settings.getReminderShownCount() >= 2
     }
 
@@ -97,7 +106,7 @@ constructor(
         return settings.getReminderShownTimestamp() == 0L &&
             settings.getReminderReferenceTimestamp() + FUNDING_REMINDER_DELAY_MILLIS <= currentTime &&
             settings.getActivityCounterInMillis() >= FUNDING_REMINDER_MIN_ACTIVITY_MILLIS &&
-            settings.getLastReminderShownTimestamp() == 0L &&
+            settings.getLastReminderShownActivityAmount() == 0L &&
             settings.getReminderShownCount() == 0
     }
 
@@ -107,10 +116,10 @@ constructor(
      */
     private fun shouldShowSecondReminder(): Boolean {
         @OptIn(ExperimentalTime::class)
-        val lastReminderShownTime = settings.getLastReminderShownTimestamp()
-
+        val activityAtLastReminder = settings.getLastReminderShownActivityAmount()
+        val shouldShowTime = activityAtLastReminder + FUNDING_REMINDER_MIN_ACTIVITY_MILLIS
         return settings.getReminderShownTimestamp() > 0L &&
-            settings.getActivityCounterInMillis() >= lastReminderShownTime + FUNDING_REMINDER_MIN_ACTIVITY_MILLIS &&
+            settings.getActivityCounterInMillis() >= shouldShowTime &&
             settings.getReminderShownCount() > 0 &&
             settings.getReminderShownCount() < 2
     }
@@ -133,7 +142,7 @@ constructor(
             @OptIn(ExperimentalTime::class)
             val now = clock.now().toEpochMilliseconds()
             settings.setReminderShownTimestamp(now)
-            settings.setLastReminderShownTimestamp(now)
+            settings.setLastReminderShownActivityAmount(settings.getActivityCounterInMillis())
             settings.incrementReminderShownCount()
         }
 
@@ -144,7 +153,7 @@ constructor(
         scope.launch {
             @OptIn(ExperimentalTime::class)
             val now = clock.now().toEpochMilliseconds()
-            settings.setLastReminderShownTimestamp(now)
+            settings.setLastReminderShownActivityAmount(settings.getActivityCounterInMillis())
             settings.incrementReminderShownCount()
         }
         dialog.show(fragmentManager)

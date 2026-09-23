@@ -13,7 +13,7 @@ class FundingConfigDefinition(override val id: ConfigId) : ConfigDefinition<Fund
     override val mapper: ConfigMapper<FundingConfig> = FundingConfigMapper()
     override val defaultValue: FundingConfig = FundingConfig.DEFAULT
     override val keys: List<ConfigKey<*>> = listOf(
-        FundingConfigKeys.LAST_FUNDING_REMINDER_SHOWN_TIMESTAMP,
+        FundingConfigKeys.LAST_FUNDING_REMINDER_SHOWN_ACTIVITY_AMOUNT,
         FundingConfigKeys.FUNDING_REMINDER_COUNT,
     )
     override val migration: ConfigMigration = FundingConfigMigration()

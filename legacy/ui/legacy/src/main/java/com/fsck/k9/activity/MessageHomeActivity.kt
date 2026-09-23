@@ -53,6 +53,7 @@ import com.fsck.k9.ui.settings.SettingsActivity
 import com.fsck.k9.view.ViewSwitcher
 import com.fsck.k9.view.ViewSwitcher.OnSwitchCompleteListener
 import com.google.android.material.textview.MaterialTextView
+import kotlin.getValue
 import kotlinx.coroutines.launch
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.LegacyAccountDto

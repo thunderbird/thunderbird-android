@@ -31,7 +31,7 @@ val featureModule = module {
 
     single<FundingSettings> {
         K9FundingSettings(
-            fundingConfigStore = get<DefaultFundingConfigStore>(),
+            fundingConfigStore = get(),
         )
     }
 
