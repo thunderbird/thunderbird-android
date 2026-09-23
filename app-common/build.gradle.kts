@@ -21,6 +21,7 @@ dependencies {
 
     implementation(projects.legacy.core)
     implementation(projects.legacy.ui.base)
+    implementation(projects.legacy.storage)
     implementation(projects.core.android.account)
     implementation(projects.core.android.common)
 

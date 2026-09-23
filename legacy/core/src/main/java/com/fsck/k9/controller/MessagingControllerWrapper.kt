@@ -6,13 +6,17 @@ import com.fsck.k9.backend.api.Backend
 import java.util.concurrent.Future
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.runBlocking
+import net.thunderbird.components.core.outcome.Outcome
 import net.thunderbird.components.core.outcome.handle
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.account.LegacyAccountDtoManager
 import net.thunderbird.core.common.exception.MessagingException
 import net.thunderbird.core.common.mail.Flag
 import net.thunderbird.feature.account.AccountId
+import net.thunderbird.feature.mail.folder.FolderId
 import net.thunderbird.feature.mail.message.MessageId
+import net.thunderbird.feature.mail.message.MessageServerId
+import net.thunderbird.feature.mail.message.domain.MessageLifecycleError
 import net.thunderbird.feature.mail.message.domain.MessageLifecycleRepository
 import net.thunderbird.feature.mail.message.mapper.MessageDataMapper
 import com.fsck.k9.mail.Message as LegacyMessage
@@ -272,4 +276,12 @@ internal fun Backend.downloadCompleteMessageBlocking(
     runBlocking(ioDispatcher) {
         downloadCompleteMessage(folderServerId, messageServerId)
     }
+}
+
+internal fun MessageLifecycleRepository.destroyByServerIdCompat(
+    serverId: String,
+    folderId: FolderId,
+    accountId: AccountId,
+): Outcome<Unit, MessageLifecycleError> = runBlocking {
+    destroyByServerId(MessageServerId(serverId), folderId, accountId)
 }

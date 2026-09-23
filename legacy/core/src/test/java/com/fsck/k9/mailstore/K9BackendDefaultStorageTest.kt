@@ -15,6 +15,7 @@ import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.logging.testing.TestLogger
 import net.thunderbird.feature.mail.folder.LegacyFolderIdFactory
 import net.thunderbird.feature.mail.message.domain.MessageLifecycleRepository
+import net.thunderbird.feature.mail.message.domain.MessageQueryRepository
 import net.thunderbird.feature.mail.message.mapper.MessageDataMapper
 import org.junit.After
 import org.junit.Test
@@ -89,6 +90,7 @@ class K9BackendDefaultStorageTest : K9RobolectricTest() {
             messageStore = messageStore,
             folderSettingsProvider = folderSettingsProvider,
             listeners = emptyList(),
+            messageQueryRepository = mock<MessageQueryRepository>(),
             messageLifecycleRepository = mock<MessageLifecycleRepository>(),
             folderIdLegacyEntityIdFactory = LegacyFolderIdFactory,
             messageDataMapper = mock<MessageDataMapper<Message>>(),

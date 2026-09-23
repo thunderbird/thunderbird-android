@@ -82,6 +82,7 @@ val mailStoreModule = module {
             folderQueryRepository = get(),
             messageStoreManager = get(),
             specialFolderUpdaterFactory = get(),
+            messageQueryRepository = get(),
             messageLifecycleRepository = get(),
             folderIdLegacyEntityIdFactory = get<LegacyEntityIdFactory<FolderId>>(named(ByteRepresentation.FOLDERS)),
             messageDataMapper = get(),

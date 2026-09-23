@@ -483,6 +483,115 @@ class DefaultMessageLifecycleRepositoryTest {
 
     // endregion [copyAll]
 
+    // region [destroyAllByServerId]
+
+    @Test
+    fun `destroyAllByServerId should destroy the messages by folder and server ids when the store succeeds`() =
+        runTest {
+            // Arrange
+            val serverIds = listOf(MessageServerId("100"), MessageServerId("101"))
+
+            // Act
+            val outcome = testSubject.destroyAllByServerId(serverIds, folderId, accountId)
+
+            // Assert
+            assertThat(outcome).isEqualTo(Outcome.success(Unit))
+            verify(messageStore).destroyMessages(FOLDER_ID, listOf("100", "101"))
+        }
+
+    @Test
+    fun `destroyAllByServerId should forward an empty collection to the store`() = runTest {
+        // Act
+        val outcome = testSubject.destroyAllByServerId(emptyList(), folderId, accountId)
+
+        // Assert
+        assertThat(outcome).isEqualTo(Outcome.success(Unit))
+        verify(messageStore).destroyMessages(FOLDER_ID, emptyList())
+    }
+
+    @Test
+    fun `destroyAllByServerId should return UnhandledError when the store throws`() = runTest {
+        // Arrange
+        val exception = IllegalStateException("database is locked")
+        whenever(messageStore.destroyMessages(FOLDER_ID, listOf("100", "101"))).thenThrow(exception)
+
+        // Act
+        val outcome = testSubject.destroyAllByServerId(
+            serverIds = listOf(MessageServerId("100"), MessageServerId("101")),
+            folderId = folderId,
+            accountId = accountId,
+        )
+
+        // Assert
+        assertThat(outcome).isEqualTo(Outcome.failure(MessageLifecycleError.UnhandledError(exception)))
+    }
+
+    @Test
+    fun `destroyAllByServerId should return UnhandledError when the account is unknown`() = runTest {
+        // Act
+        val outcome = testSubject.destroyAllByServerId(
+            serverIds = listOf(MessageServerId(SERVER_ID)),
+            folderId = folderId,
+            accountId = AccountIdFactory.of(UNKNOWN_ACCOUNT_ID),
+        )
+
+        // Assert
+        assertThat(outcome).isInstanceOf<Outcome.Failure<MessageLifecycleError>>()
+            .transform { it.error }
+            .isInstanceOf<MessageLifecycleError.UnhandledError>()
+            .transform { it.throwable }
+            .isInstanceOf<IllegalStateException>()
+        verifyNoInteractions(messageStore)
+    }
+
+    // endregion [destroyAllByServerId]
+
+    // region [destroyByServerId]
+
+    @Test
+    fun `destroyByServerId should destroy the single message by folder and server id when the store succeeds`() =
+        runTest {
+            // Act
+            val outcome = testSubject.destroyByServerId(MessageServerId(SERVER_ID), folderId, accountId)
+
+            // Assert
+            assertThat(outcome).isEqualTo(Outcome.success(Unit))
+            verify(messageStore).destroyMessages(FOLDER_ID, listOf(SERVER_ID))
+        }
+
+    @Test
+    fun `destroyByServerId should return UnhandledError when the store throws`() = runTest {
+        // Arrange
+        val exception = IllegalStateException("database is locked")
+        whenever(messageStore.destroyMessages(FOLDER_ID, listOf(SERVER_ID))).thenThrow(exception)
+
+        // Act
+        val outcome = testSubject.destroyByServerId(MessageServerId(SERVER_ID), folderId, accountId)
+
+        // Assert
+        assertThat(outcome).isEqualTo(Outcome.failure(MessageLifecycleError.UnhandledError(exception)))
+    }
+
+    @Test
+    fun `destroyByServerId should return UnhandledError when the account is unknown`() = runTest {
+        // Act
+        val outcome = testSubject.destroyByServerId(
+            serverId = MessageServerId(SERVER_ID),
+            folderId = folderId,
+            accountId = AccountIdFactory.of(UNKNOWN_ACCOUNT_ID),
+        )
+
+        // Assert
+        assertThat(outcome).isInstanceOf<Outcome.Failure<MessageLifecycleError>>()
+            .transform { it.error }
+            .isInstanceOf<MessageLifecycleError.UnhandledError>()
+            .transform { it.throwable }
+            .isInstanceOf<IllegalStateException>()
+        verifyNoInteractions(messageStore)
+    }
+
+    // endregion [destroyByServerId]
+
     private fun stubSaveMessageData() {
         whenever(saveMessageDataCreator.createSaveMessageData(legacyMessage, LegacyMessageDownloadState.FULL, null))
             .thenReturn(saveMessageData)
@@ -554,6 +663,11 @@ private class FakeMessageQueryRepository : MessageQueryRepository {
         lastCriteria = criteria
         return result
     }
+
+    override suspend fun getAllServerIdByFolderId(
+        folderId: FolderId,
+        accountId: AccountId,
+    ): Outcome<Set<MessageServerId>, MessageQueryError> = error("Not used by these tests")
 }
 
 private class FakeMessageDataMapper(

@@ -12,8 +12,8 @@ interface BackendFolder {
 
     fun getMessageServerIds(): Set<String>
     fun getAllMessagesAndEffectiveDates(): Map<String, Long?>
-    fun destroyMessages(messageServerIds: List<String>)
-    fun clearAllMessages()
+    suspend fun destroyMessages(messageServerIds: List<String>)
+    suspend fun clearAllMessages()
     fun getMoreMessages(): MoreMessages
     fun setMoreMessages(moreMessages: MoreMessages)
     fun setLastChecked(timestamp: Long)

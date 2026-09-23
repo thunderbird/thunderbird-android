@@ -8,6 +8,7 @@ import assertk.assertFailure
 import assertk.assertThat
 import assertk.assertions.contains
 import assertk.assertions.hasMessage
+import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
 import assertk.assertions.isTrue
@@ -34,6 +35,7 @@ import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.LocalDateTime
 import net.thunderbird.components.core.outcome.Outcome
 import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.common.exception.MessagingException
 import net.thunderbird.core.common.mail.Flag
 import net.thunderbird.core.logging.testing.TestLogger
 import net.thunderbird.feature.account.AccountId
@@ -138,6 +140,70 @@ class K9BackendFolderTest : K9RobolectricTest() {
             .isEqualTo(MessageServerId(MESSAGE_SERVER_ID))
     }
 
+    @Test
+    fun destroyMessages_shouldDestroyTheGivenMessagesViaLifecycleRepository() = runTest {
+        backendFolder.destroyMessages(listOf("msg001", "msg003"))
+
+        assertThat(messageLifecycleRepository.destroyedServerIds).isEqualTo(
+            listOf(setOf(MessageServerId("msg001"), MessageServerId("msg003"))),
+        )
+    }
+
+    @Test
+    fun destroyMessages_whenRepositoryFails_shouldThrowMessagingException() = runTest {
+        val cause = IllegalStateException("database is locked")
+        messageLifecycleRepository.destroyError = MessageLifecycleError.UnhandledError(cause)
+
+        assertFailure {
+            backendFolder.destroyMessages(listOf("msg001"))
+        }.isInstanceOf<MessagingException>()
+            .transform { it.cause }
+            .isEqualTo(cause)
+    }
+
+    @Test
+    fun clearAllMessages_shouldDestroyEveryServerIdReturnedByQueryRepository() = runTest {
+        val serverIds = setOf(MessageServerId("msg001"), MessageServerId("msg002"))
+        messageQueryRepository.serverIds = serverIds
+
+        backendFolder.clearAllMessages()
+
+        assertThat(messageLifecycleRepository.destroyedServerIds).isEqualTo(listOf(serverIds))
+    }
+
+    @Test
+    fun clearAllMessages_onEmptyFolder_shouldNotFail() = runTest {
+        backendFolder.clearAllMessages()
+
+        assertThat(messageLifecycleRepository.destroyedServerIds).isEqualTo(listOf(emptySet()))
+    }
+
+    @Test
+    fun clearAllMessages_whenQueryFails_shouldThrowMessagingExceptionWithoutDestroying() = runTest {
+        val cause = IllegalStateException("database is locked")
+        messageQueryRepository.queryError = MessageQueryError.UnhandledError(cause)
+
+        assertFailure {
+            backendFolder.clearAllMessages()
+        }.isInstanceOf<MessagingException>()
+            .transform { it.cause }
+            .isEqualTo(cause)
+        assertThat(messageLifecycleRepository.destroyedServerIds).isEmpty()
+    }
+
+    @Test
+    fun clearAllMessages_whenRepositoryFails_shouldThrowMessagingException() = runTest {
+        messageQueryRepository.serverIds = setOf(MessageServerId("msg001"))
+        val cause = IllegalStateException("database is locked")
+        messageLifecycleRepository.destroyError = MessageLifecycleError.UnhandledError(cause)
+
+        assertFailure {
+            backendFolder.clearAllMessages()
+        }.isInstanceOf<MessagingException>()
+            .transform { it.cause }
+            .isEqualTo(cause)
+    }
+
     fun createAccount(): LegacyAccountDto {
         // FIXME: This is a hack to get Preferences into a state where it's safe to call newAccount()
         preferences.clearAccounts()
@@ -153,6 +219,7 @@ class K9BackendFolderTest : K9RobolectricTest() {
             messageStore = messageStore,
             folderSettingsProvider = createFolderSettingsProvider(),
             listeners = emptyList(),
+            messageQueryRepository = messageQueryRepository,
             messageLifecycleRepository = messageLifecycleRepository,
             folderIdLegacyEntityIdFactory = LegacyFolderIdFactory,
             messageDataMapper = FakeMessageDataMapper(),
@@ -277,6 +344,8 @@ private class FakeMessageDataMapper : MessageDataMapper<Message> {
 private class FakeMessageLifecycleRepository : MessageLifecycleRepository {
     var createResult: Outcome<DomainMessageId, MessageLifecycleError> = Outcome.success(LegacyMessageIdFactory.of(1L))
     val createdMessages = mutableListOf<DomainMessage>()
+    val destroyedServerIds = mutableListOf<Set<MessageServerId>>()
+    var destroyError: MessageLifecycleError? = null
 
     override suspend fun create(
         message: DomainMessage,
@@ -315,22 +384,38 @@ private class FakeMessageLifecycleRepository : MessageLifecycleRepository {
         messageIds: List<DomainMessageId>,
         destinationFolderId: FolderId,
         accountId: AccountId,
-    ): Outcome<Map<DomainMessageId, DomainMessageId>, MessageLifecycleError> {
-        throw UnsupportedOperationException("not implemented in this fake")
-    }
+    ): Outcome<Map<DomainMessageId, DomainMessageId>, MessageLifecycleError> = error("Not used by these tests")
 
-    override suspend fun destroy(
-        serverIds: List<MessageServerId>,
+    override suspend fun destroyAllByServerId(
+        serverIds: Collection<MessageServerId>,
         folderId: FolderId,
         accountId: AccountId,
-    ): Outcome<Unit, MessageLifecycleError> = error("Not used by these tests")
+    ): Outcome<Unit, MessageLifecycleError> {
+        destroyedServerIds += serverIds.toSet()
+        return destroyError?.let { Outcome.failure(it) } ?: Outcome.success(Unit)
+    }
+
+    override suspend fun destroyByServerId(
+        serverId: MessageServerId,
+        folderId: FolderId,
+        accountId: AccountId,
+    ): Outcome<Unit, MessageLifecycleError> = destroyAllByServerId(listOf(serverId), folderId, accountId)
 }
 
 private class FakeMessageQueryRepository : MessageQueryRepository {
-    var result: Outcome<DomainMessageId?, MessageQueryError> = Outcome.success(null)
+    var findIdResult: Outcome<DomainMessageId?, MessageQueryError> = Outcome.success(null)
+    var serverIds: Set<MessageServerId> = emptySet()
+    var queryError: MessageQueryError? = null
 
     override suspend fun findIdByCriteria(
         accountId: AccountId,
         criteria: GetMessageIdCriteria,
-    ): Outcome<DomainMessageId?, MessageQueryError> = result
+    ): Outcome<DomainMessageId?, MessageQueryError> = findIdResult
+
+    override suspend fun getAllServerIdByFolderId(
+        folderId: FolderId,
+        accountId: AccountId,
+    ): Outcome<Set<MessageServerId>, MessageQueryError> {
+        return queryError?.let { Outcome.failure(it) } ?: Outcome.success(serverIds)
+    }
 }

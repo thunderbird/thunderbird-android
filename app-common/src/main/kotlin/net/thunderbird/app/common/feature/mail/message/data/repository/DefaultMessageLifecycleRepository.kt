@@ -229,13 +229,23 @@ class DefaultMessageLifecycleRepository(
         }
     }
 
-    override suspend fun destroy(
-        serverIds: List<MessageServerId>,
+    override suspend fun destroyAllByServerId(
+        serverIds: Collection<MessageServerId>,
         folderId: FolderId,
         accountId: AccountId,
-    ): Outcome<Unit, MessageLifecycleError> {
-        TODO("Not yet implemented")
+    ): Outcome<Unit, MessageLifecycleError> = withContext(ioDispatcher) {
+        runLegacy("destroy ${serverIds.size} messages in '$folderId'") {
+            val store = messageStoreManager.getMessageStore(accountId)
+            val legacyFolderId = folderIdLegacyEntityIdFactory.toLegacyId(folderId)
+            store.destroyMessages(legacyFolderId, serverIds.map { it.value })
+        }
     }
+
+    override suspend fun destroyByServerId(
+        serverId: MessageServerId,
+        folderId: FolderId,
+        accountId: AccountId,
+    ): Outcome<Unit, MessageLifecycleError> = destroyAllByServerId(listOf(serverId), folderId, accountId)
 
     /**
      * Runs a legacy store operation and converts any thrown exception into a [MessageLifecycleError.UnhandledError].
@@ -262,7 +272,13 @@ class DefaultMessageLifecycleRepository(
         return if (folderId != null && messageServerId != null) {
             messageQueryRepository
                 .findIdByCriteria(accountId, GetMessageIdCriteria(folderId, messageServerId))
-                .fold(onSuccess = { it }, onFailure = { throw it.throwable })
+                .fold(
+                    onSuccess = { it },
+                    onFailure = { error ->
+                        throw error.throwable
+                            ?: IllegalStateException("Could not verify whether the message exists: $error")
+                    },
+                )
         } else {
             null
         }

@@ -85,6 +85,7 @@ internal val mailMessageModule = module {
             logger = get(),
             accountManager = get(),
             localStoreProvider = get(),
+            messageStoreManager = get(),
             messageIdLegacyEntityIdFactory = get<LegacyEntityIdFactory<MessageId>>(named(ByteRepresentation.MESSAGE)),
             folderIdLegacyEntityIdFactory = get<LegacyEntityIdFactory<FolderId>>(named(ByteRepresentation.FOLDERS)),
         )
