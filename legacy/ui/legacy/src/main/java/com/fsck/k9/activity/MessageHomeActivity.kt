@@ -208,11 +208,6 @@ open class MessageHomeActivity :
         onBackPressedDispatcher.addCallback(this, backPressedCallback)
     }
 
-    public override fun onPostResume() {
-        super.onPostResume()
-        initializeFunding() // TODO Remove this from here, make it only initialize once
-    }
-
     private fun initializeFoldableObserver() {
         // Register lifecycle observer
         lifecycle.addObserver(foldableStateObserver)
@@ -633,6 +628,11 @@ open class MessageHomeActivity :
         if (displayMode != DisplayMode.MESSAGE_VIEW) {
             onMessageListDisplayed()
         }
+    }
+
+    override fun onPostResume() {
+        super.onPostResume()
+        initializeFunding() // TODO Remove this from here, make it only initialize once
     }
 
     override fun onStart() {

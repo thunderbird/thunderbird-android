@@ -1,14 +1,12 @@
 package app.k9mail.feature
 
 import com.fsck.k9.K9
-import kotlinx.coroutines.CoroutineScope
 import net.thunderbird.feature.funding.api.FundingConfig
 import net.thunderbird.feature.funding.api.FundingConfigStore
 import net.thunderbird.feature.funding.api.FundingSettings
 
 internal class K9FundingSettings(
     private val fundingConfigStore: FundingConfigStore,
-    private val scope: CoroutineScope,
 ) : FundingSettings {
     override fun getReminderReferenceTimestamp(): Long = K9.fundingReminderReferenceTimestamp
 
