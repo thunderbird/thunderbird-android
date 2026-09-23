@@ -79,6 +79,7 @@ import kotlin.Unit;
 import kotlin.coroutines.EmptyCoroutineContext;
 import kotlinx.coroutines.BuildersKt;
 import kotlinx.coroutines.Dispatchers;
+import net.thunderbird.components.core.logging.Logger;
 import net.thunderbird.components.core.outcome.Outcome;
 import net.thunderbird.core.android.account.DeletePolicy;
 import net.thunderbird.core.android.account.LegacyAccount;
@@ -88,7 +89,6 @@ import net.thunderbird.core.common.exception.ThrowableExtensions;
 import net.thunderbird.core.common.mail.Flag;
 import net.thunderbird.core.featureflag.FeatureFlagProvider;
 import net.thunderbird.core.featureflag.keys.GeneratedFeatureFlagKey;
-import net.thunderbird.components.core.logging.Logger;
 import net.thunderbird.feature.account.AccountId;
 import net.thunderbird.feature.mail.folder.FolderId;
 import net.thunderbird.feature.mail.folder.LegacyFolderIdFactory;
@@ -216,8 +216,8 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
         initializeControllerExtensions(controllerExtensions);
 
         draftOperations = new DraftOperations(
-                Log.INSTANCE, this, messageStoreManager, localMessageUidPrefixProvider,
-                messageLifecycleRepository, messageDataMapper, accountManager
+            Log.INSTANCE, this, messageStoreManager, localMessageUidPrefixProvider,
+            messageLifecycleRepository, messageDataMapper, accountManager
         );
         notificationOperations =
             new NotificationOperations(notificationController, accountManager, messageStoreManager);
@@ -876,7 +876,8 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
                     Log.d(TAG, "Done processing pending command '%s'", commandName);
                 } catch (MessagingException me) {
                     if (me.isPermanentFailure()) {
-                        Log.e(TAG, me, "Failure of command '%s' was permanent, removing command from queue", commandName);
+                        Log.e(TAG, me, "Failure of command '%s' was permanent, removing command from queue",
+                            commandName);
                         localStore.removePendingCommand(processingCommand);
                     } else {
                         throw me;
@@ -1997,7 +1998,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
 
                 Map<Long, Long> resultIdMapping;
                 if (operation == MoveOrCopyFlavor.COPY) {
-                    resultIdMapping = messageStore.copyMessages(messageIds, destFolderId);
+                    resultIdMapping = copyAllMessages(accountId, messageIds, destFolderId);
 
                     if (unreadCountAffected) {
                         // If this copy operation changes the unread count in the destination
@@ -2300,10 +2301,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
     @NonNull
     private Map<Long, Long> moveAllMessages(AccountId accountId, List<Long> messageIds, long destinationFolderId)
         throws MessagingException {
-        final List<MessageId> domainMessageIds = new ArrayList<>(messageIds.size());
-        for (long messageId : messageIds) {
-            domainMessageIds.add(LegacyMessageIdFactory.INSTANCE.of(messageId));
-        }
+        final List<MessageId> domainMessageIds = convertLegacyMessageIdsToDomainMessageIds(messageIds);
         final FolderId domainDestinationFolderId = LegacyFolderIdFactory.INSTANCE.of(destinationFolderId);
 
         final Outcome<? extends Map<MessageId, MessageId>, ? extends MessageLifecycleError> outcome;
@@ -2325,6 +2323,39 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
 
         final Map<MessageId, MessageId> domainIdMapping =
             ((Outcome.Success<Map<MessageId, MessageId>>) outcome).getData();
+        return convertDomainIdMappingToLegacyIdMapping(domainIdMapping);
+    }
+
+    @NonNull
+    private Map<Long, Long> copyAllMessages(AccountId accountId, List<Long> messageIds, long destinationFolderId)
+        throws MessagingException {
+        final List<MessageId> domainMessageIds = convertLegacyMessageIdsToDomainMessageIds(messageIds);
+        final FolderId domainDestinationFolderId = LegacyFolderIdFactory.INSTANCE.of(destinationFolderId);
+
+        final Outcome<? extends Map<MessageId, MessageId>, ? extends MessageLifecycleError> outcome;
+        try {
+            outcome = BuildersKt.runBlocking(EmptyCoroutineContext.INSTANCE, (scope, continuation) ->
+                messageLifecycleRepository.copyAll(domainMessageIds, domainDestinationFolderId, accountId,
+                    continuation));
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new MessagingException("Interrupted while copying messages", e);
+        }
+
+        if (outcome instanceof Outcome.Failure<?> failure) {
+            final MessageLifecycleError error = (MessageLifecycleError) failure.getError();
+            throw new MessagingException(
+                String.format("Failed to copy %d messages to folder %d", messageIds.size(), destinationFolderId),
+                error.getThrowable());
+        }
+
+        final Map<MessageId, MessageId> domainIdMapping =
+            ((Outcome.Success<Map<MessageId, MessageId>>) outcome).getData();
+        return convertDomainIdMappingToLegacyIdMapping(domainIdMapping);
+    }
+
+    @NonNull
+    private Map<Long, Long> convertDomainIdMappingToLegacyIdMapping(Map<MessageId, MessageId> domainIdMapping) {
         final Map<Long, Long> legacyIdMapping = new HashMap<>(domainIdMapping.size());
         for (Entry<MessageId, MessageId> entry : domainIdMapping.entrySet()) {
             legacyIdMapping.put(
@@ -2332,6 +2363,15 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
                 LegacyMessageIdFactory.INSTANCE.toLegacyId(entry.getValue()));
         }
         return legacyIdMapping;
+    }
+
+    @NonNull
+    private List<MessageId> convertLegacyMessageIdsToDomainMessageIds(List<Long> messageIds) {
+        final List<MessageId> domainMessageIds = new ArrayList<>(messageIds.size());
+        for (long messageId : messageIds) {
+            domainMessageIds.add(LegacyMessageIdFactory.INSTANCE.of(messageId));
+        }
+        return domainMessageIds;
     }
 
     private static List<String> getUidsFromMessages(List<LocalMessage> messages) {
@@ -2579,7 +2619,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
                     } else {
                         List<LegacyAccount> accounts = accountManager.findAll();
                         accountIds = new ArrayList<>(accounts.size());
-                        for (LegacyAccount account: accountManager.findAll()) {
+                        for (LegacyAccount account : accountManager.findAll()) {
                             accountIds.add(account.getId());
                         }
                     }
@@ -2658,7 +2698,8 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
     private void synchronizeFolder(AccountId accountId, LocalFolder folder, boolean ignoreLastCheckedTime,
         boolean notify, MessagingListener listener, NotificationState notificationState) {
         putBackground("sync" + folder.getServerId(), null, () -> {
-            synchronizeFolderInBackground(accountId, folder, ignoreLastCheckedTime, notify, listener, notificationState);
+            synchronizeFolderInBackground(accountId, folder, ignoreLastCheckedTime, notify, listener,
+                notificationState);
         });
     }
 
