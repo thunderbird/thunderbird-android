@@ -65,13 +65,6 @@ constructor(
             resetReminderReferenceTimestamp(activity)
         }
 
-        // We register the activity counter observer to keep track of the time the user spends in the app.
-        // We also ensure that the observers are unregistered when the activity is destroyed.
-//        activityCounterObserver.register(activity.lifecycle) {
-//            fragmentObserver.unregister(observedFragmentManager)
-//            activityCounterObserver.unregister(activity.lifecycle)
-//        }
-
         // If the reminder has already been shown, we don't need to show it again.
         if (wasReminderShown() && wasSecondReminderShown()) {
             return
@@ -150,9 +143,12 @@ constructor(
     }
 
     private fun showSecondFundingReminderDialog(fragmentManager: FragmentManager) {
+        // TODO: This implementation is currently the same as showFundingReminderDialog(),
+        //  but will differ after the new UI and logic to block the first reminder for new users is introduced
         scope.launch {
             @OptIn(ExperimentalTime::class)
             val now = clock.now().toEpochMilliseconds()
+            settings.setReminderShownTimestamp(now)
             settings.setLastReminderShownActivityAmount(settings.getActivityCounterInMillis())
             settings.incrementReminderShownCount()
         }

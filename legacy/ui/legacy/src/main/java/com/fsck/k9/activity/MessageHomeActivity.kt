@@ -633,7 +633,7 @@ open class MessageHomeActivity :
 
     override fun onPostResume() {
         super.onPostResume()
-        initializeFunding() // TODO Remove this from here, make it only initialize once
+        initializeFunding()
     }
 
     override fun onStart() {
