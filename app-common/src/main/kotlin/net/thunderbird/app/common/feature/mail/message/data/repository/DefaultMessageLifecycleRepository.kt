@@ -31,6 +31,7 @@ import com.fsck.k9.mail.MessageDownloadState as LegacyMessageDownloadState
 
 private const val LOG_ID = "[repository][message-lifecycle]"
 
+@Suppress("TooManyFunctions")
 class DefaultMessageLifecycleRepository(
     private val logger: Logger,
     private val messageQueryRepository: MessageQueryRepository,
@@ -171,8 +172,60 @@ class DefaultMessageLifecycleRepository(
     override suspend fun copy(
         messageId: MessageId,
         destinationFolderId: FolderId,
-    ): Outcome<MessageId, MessageLifecycleError> {
-        TODO("Not yet implemented")
+        accountId: AccountId,
+    ): Outcome<MessageId, MessageLifecycleError> = withContext(ioDispatcher) {
+        logger.debug { "$LOG_ID copying '$messageId' to folder '$destinationFolderId' for account '$accountId'" }
+        val legacyMessageId = LegacyMessageIdFactory.toLegacyId(messageId)
+        val legacyFolderId = LegacyFolderIdFactory.toLegacyId(destinationFolderId)
+        logger.verbose {
+            "$LOG_ID message id '$messageId' -> legacy id '$legacyMessageId', " +
+                "folder id '$destinationFolderId' -> legacy id '$legacyFolderId'"
+        }
+
+        runLegacy(operation = "copy message '$messageId'") {
+            val messageStore = messageStoreManager.getMessageStore(accountId)
+            val legacyDestinationMessageId = messageStore.copyMessage(legacyMessageId, legacyFolderId)
+            LegacyMessageIdFactory.of(legacyDestinationMessageId).also { destinationMessageId ->
+                logger.verbose { "$LOG_ID copied message '$messageId' -> '$destinationMessageId'" }
+            }
+        }
+    }
+
+    override suspend fun copyAll(
+        messageIds: List<MessageId>,
+        destinationFolderId: FolderId,
+        accountId: AccountId,
+    ): Outcome<Map<MessageId, MessageId>, MessageLifecycleError> = withContext(ioDispatcher) {
+        if (messageIds.isEmpty()) {
+            logger.verbose { "$LOG_ID nothing to copy to folder '$destinationFolderId' for account '$accountId'" }
+            return@withContext Outcome.success(emptyMap())
+        }
+        logger.debug {
+            "$LOG_ID copying ${messageIds.size} messages to folder '$destinationFolderId' for account '$accountId'"
+        }
+        val legacyMessageIds = messageIds.map(LegacyMessageIdFactory::toLegacyId)
+        val legacyFolderId = LegacyFolderIdFactory.toLegacyId(destinationFolderId)
+        logger.verbose {
+            "$LOG_ID message ids $messageIds -> legacy ids $legacyMessageIds, " +
+                "folder id '$destinationFolderId' -> legacy id '$legacyFolderId'"
+        }
+        runLegacy(operation = "copy ${messageIds.size} messages") {
+            val messageStore = messageStoreManager.getMessageStore(accountId)
+            messageStore.copyMessages(legacyMessageIds, legacyFolderId)
+                .entries
+                .associate { (sourceLegacyId, destinationLegacyId) ->
+                    LegacyMessageIdFactory.of(sourceLegacyId) to
+                        LegacyMessageIdFactory.of(destinationLegacyId)
+                }
+                .also { mapping ->
+                    logger.verbose {
+                        val lines = mapping.entries.joinToString("\n") { (source, destination) ->
+                            "'$source' -> '$destination'"
+                        }
+                        "$LOG_ID copied messages to folder '$destinationFolderId':\n${lines.prependIndent("  ")}"
+                    }
+                }
+        }
     }
 
     override suspend fun destroy(
