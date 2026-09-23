@@ -308,7 +308,16 @@ private class FakeMessageLifecycleRepository : MessageLifecycleRepository {
     override suspend fun copy(
         messageId: DomainMessageId,
         destinationFolderId: FolderId,
+        accountId: AccountId,
     ): Outcome<DomainMessageId, MessageLifecycleError> = error("Not used by these tests")
+
+    override suspend fun copyAll(
+        messageIds: List<DomainMessageId>,
+        destinationFolderId: FolderId,
+        accountId: AccountId,
+    ): Outcome<Map<DomainMessageId, DomainMessageId>, MessageLifecycleError> {
+        throw UnsupportedOperationException("not implemented in this fake")
+    }
 
     override suspend fun destroy(
         serverIds: List<MessageServerId>,
