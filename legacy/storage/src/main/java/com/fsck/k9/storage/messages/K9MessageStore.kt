@@ -25,7 +25,7 @@ class K9MessageStore(
     storageFilesProvider: StorageFilesProvider,
     basicPartInfoExtractor: BasicPartInfoExtractor,
     generalSettingsManager: GeneralSettingsManager,
-    accountId: AccountId,
+    override val accountId: AccountId,
     localMessageUidPrefixProvider: LocalMessageUidPrefixProvider,
 ) : MessageStore {
     private val attachmentFileManager = AttachmentFileManager(storageFilesProvider, generalSettingsManager)
@@ -64,8 +64,8 @@ class K9MessageStore(
     private val keyValueStoreOperations = KeyValueStoreOperations(database)
     private val databaseOperations = DatabaseOperations(database, storageFilesProvider)
 
-    override fun saveRemoteMessage(folderId: Long, messageServerId: String, messageData: SaveMessageData) {
-        saveMessageOperations.saveRemoteMessage(folderId, messageServerId, messageData)
+    override fun saveRemoteMessage(folderId: Long, messageServerId: String, messageData: SaveMessageData): Long {
+        return saveMessageOperations.saveRemoteMessage(folderId, messageServerId, messageData)
     }
 
     override fun saveLocalMessage(folderId: Long, messageData: SaveMessageData, existingMessageId: Long?): Long {

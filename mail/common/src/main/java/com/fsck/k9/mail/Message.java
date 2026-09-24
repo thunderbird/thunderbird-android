@@ -8,6 +8,7 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 
+import androidx.annotation.Nullable;
 import net.thunderbird.core.common.mail.Flag;
 import com.fsck.k9.mail.filter.CountingOutputStream;
 import com.fsck.k9.mail.filter.EOLConvertingOutputStream;
@@ -29,6 +30,8 @@ public abstract class Message implements Part, Body {
     private Set<Flag> mFlags = EnumSet.noneOf(Flag.class);
 
     private Date mInternalDate;
+    @Nullable
+    private String accountUuid;
 
     public boolean olderThan(Date earliestDate) {
         if (earliestDate == null) {
@@ -151,6 +154,15 @@ public abstract class Message implements Part, Body {
 
     public boolean isSet(Flag flag) {
         return mFlags.contains(flag);
+    }
+
+    public void setAccountUuid(@NotNull String accountUuid) {
+        this.accountUuid = accountUuid;
+    }
+
+    @Nullable
+    public String getAccountUuid() {
+        return accountUuid;
     }
 
 

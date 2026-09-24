@@ -458,7 +458,8 @@ public class LocalMessage extends MimeMessage {
         return result;
     }
 
-    private String getAccountUuid() {
+    @Override
+    public String getAccountUuid() {
         return getAccount().getUuid();
     }
 }
