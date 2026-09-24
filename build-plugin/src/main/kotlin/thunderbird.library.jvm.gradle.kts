@@ -7,6 +7,7 @@ plugins {
     id("net.thunderbird.gradle.plugin.quality.coverage")
     id("net.thunderbird.gradle.plugin.quality.detekt")
     id("net.thunderbird.gradle.plugin.quality.spotless")
+    id("io.insert-koin.compiler.plugin")
 }
 
 java {
@@ -48,4 +49,12 @@ tasks.register("testsOnCi") {
             it.name.contains("konsist").not()
         },
     )
+}
+
+koinCompiler {
+    compileSafety = true
+    strictSafety = true
+    userLogs = true
+    debugLogs = false
+    unsafeDslChecks = true
 }

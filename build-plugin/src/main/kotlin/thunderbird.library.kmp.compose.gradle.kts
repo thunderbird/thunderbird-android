@@ -9,6 +9,7 @@ plugins {
     id("net.thunderbird.gradle.plugin.quality.coverage")
     id("net.thunderbird.gradle.plugin.quality.detekt")
     id("net.thunderbird.gradle.plugin.quality.spotless")
+    id("io.insert-koin.compiler.plugin")
 }
 
 kotlin {
@@ -103,4 +104,12 @@ tasks.register("testsOnCi") {
     dependsOn(
         tasks.withType<Test>(),
     )
+}
+
+koinCompiler {
+    compileSafety = true
+    strictSafety = true
+    userLogs = true
+    debugLogs = false
+    unsafeDslChecks = true
 }

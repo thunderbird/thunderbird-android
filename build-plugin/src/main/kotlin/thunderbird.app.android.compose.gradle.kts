@@ -6,6 +6,7 @@ plugins {
     id("net.thunderbird.gradle.plugin.quality.coverage")
     id("net.thunderbird.gradle.plugin.quality.detekt")
     id("net.thunderbird.gradle.plugin.quality.spotless")
+    id("io.insert-koin.compiler.plugin")
 }
 
 android {
@@ -68,4 +69,12 @@ dependencies {
         implementation(libs.tb.mobile.components.ui.bolt)
         testImplementation(libs.tb.mobile.components.ui.testing)
     }
+}
+
+koinCompiler {
+    compileSafety = true
+    strictSafety = true
+    userLogs = true
+    debugLogs = false
+    unsafeDslChecks = true
 }

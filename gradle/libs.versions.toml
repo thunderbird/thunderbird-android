@@ -92,6 +92,7 @@ junit = "4.13.2"
 jutf7 = "1.0.0"
 jzlib = "1.0.7"
 koinBom = "4.2.2"
+koinCompiler = "1.2.1"
 konsist = "0.18.1"
 kotlinBom = "2.4.21"
 kotlinCompileTesting = "0.14.0"
@@ -144,6 +145,7 @@ dependency-check = { id = "io.github.ben-manes.versions", version.ref = "depende
 dependency-guard = { id = "com.dropbox.dependency-guard", version.ref = "dependencyGuardPlugin" }
 detekt = { id = "dev.detekt", version.ref = "detektPlugin" }
 jetbrains-compose = { id = "org.jetbrains.compose", version.ref = "jetbrainsCompose" }
+koin-compiler = { id = "io.insert-koin.compiler.plugin", version.ref = "koinCompiler"}
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlinBom" }
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlinBom" }
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlinBom" }
