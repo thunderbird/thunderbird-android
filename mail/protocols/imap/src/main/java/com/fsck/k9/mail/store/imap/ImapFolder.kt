@@ -44,7 +44,7 @@ interface ImapFolder {
     fun areMoreMessagesAvailable(indexOfOldestMessage: Int, earliestDate: Date?): Boolean
 
     @Throws(MessagingException::class)
-    fun fetch(
+    suspend fun fetch(
         messages: List<ImapMessage>,
         fetchProfile: FetchProfile,
         listener: FetchListener?,
@@ -104,5 +104,5 @@ interface ImapFolder {
 }
 
 interface FetchListener {
-    fun onFetchResponse(message: ImapMessage, isFirstResponse: Boolean)
+    suspend fun onFetchResponse(message: ImapMessage, isFirstResponse: Boolean)
 }

@@ -15,7 +15,7 @@ import com.fsck.k9.mail.store.imap.OpenMode
 
 internal class CommandDownloadMessage(private val backendStorage: BackendStorage, private val imapStore: ImapStore) {
 
-    fun downloadMessageStructure(folderServerId: String, messageServerId: String) {
+    suspend fun downloadMessageStructure(folderServerId: String, messageServerId: String) {
         val folder = imapStore.getFolder(folderServerId)
         try {
             folder.open(OpenMode.READ_ONLY)
@@ -33,7 +33,7 @@ internal class CommandDownloadMessage(private val backendStorage: BackendStorage
         }
     }
 
-    fun downloadCompleteMessage(folderServerId: String, messageServerId: String) {
+    suspend fun downloadCompleteMessage(folderServerId: String, messageServerId: String) {
         val folder = imapStore.getFolder(folderServerId)
         try {
             folder.open(OpenMode.READ_ONLY)
@@ -48,13 +48,13 @@ internal class CommandDownloadMessage(private val backendStorage: BackendStorage
         }
     }
 
-    private fun fetchMessage(remoteFolder: ImapFolder, message: ImapMessage, fetchProfile: FetchProfile) {
+    private suspend fun fetchMessage(remoteFolder: ImapFolder, message: ImapMessage, fetchProfile: FetchProfile) {
         val maxDownloadSize = 0
         remoteFolder.fetch(
             messages = listOf(element = message),
             fetchProfile = fetchProfile,
             listener = null,
-            maxDownloadSize = maxDownloadSize
+            maxDownloadSize = maxDownloadSize,
         )
     }
 }
