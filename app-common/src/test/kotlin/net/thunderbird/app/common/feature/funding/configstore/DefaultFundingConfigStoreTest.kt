@@ -26,7 +26,7 @@ class DefaultFundingConfigStoreTest {
 
     @Test
     fun `config should provide the expected default`() = runTest {
-        assertEquals(defaultConfig, FundingConfig.DEFAULT)
+        assertEquals(defaultConfig, FundingConfig(0L, 0))
     }
 
     @Test
@@ -81,10 +81,8 @@ class DefaultFundingConfigStoreTest {
 
     private fun getDefaultTestConfigBackend() = TestConfigBackend(
         initialConfig = Config().apply {
-            this[FundingConfigKeys.LAST_FUNDING_REMINDER_SHOWN_ACTIVITY_AMOUNT] =
-                FundingConfig.DEFAULT.lastFundingReminderShownActivityAmount
-            this[FundingConfigKeys.FUNDING_REMINDER_COUNT] =
-                FundingConfig.DEFAULT.fundingReminderCount
+            this[FundingConfigKeys.LAST_FUNDING_REMINDER_SHOWN_ACTIVITY_AMOUNT] = 0L
+            this[FundingConfigKeys.FUNDING_REMINDER_COUNT] = 0
         },
     )
 
