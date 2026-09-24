@@ -974,4 +974,6 @@
     <string name="account_settings_signature_clear_label">Počisti podpis</string>
     <string name="message_compose_encrypting_message">Šifriranje sporočila …</string>
     <string name="message_view_from_me_text">mene</string>
+    <string name="account_settings_signature_preview_empty">Predogled vašega podpisa bo prikazan tukaj.</string>
+    <string name="error_no_contact_provider">Programa za stike ni bilo mogoče najti. Če želite dodati ta naslov, ga namestite.</string>
 </resources>
