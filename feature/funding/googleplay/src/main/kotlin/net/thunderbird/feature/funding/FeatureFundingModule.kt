@@ -22,6 +22,7 @@ import net.thunderbird.feature.funding.googleplay.ui.reminder.FundingReminder
 import net.thunderbird.feature.funding.googleplay.ui.reminder.FundingReminderContract
 import net.thunderbird.feature.funding.googleplay.ui.reminder.FundingReminderDialog
 import org.koin.core.module.dsl.viewModel
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 val featureFundingModule = module {
@@ -52,6 +53,7 @@ val featureFundingModule = module {
             fragmentObserver = get(),
             activityCounterObserver = get(),
             dialog = get(),
+            scope = get(named("ConfigStoreScope")),
         )
     }
 

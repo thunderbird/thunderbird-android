@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 import net.thunderbird.core.android.common.activity.ActivityProvider
 import net.thunderbird.feature.funding.api.FundingSettings
 import net.thunderbird.feature.funding.googleplay.ui.reminder.FundingReminderContract.ActivityLifecycleObserver
@@ -20,8 +22,23 @@ constructor(
     private val activityCounterObserver: ActivityLifecycleObserver,
     private val dialog: FundingReminderContract.Dialog,
     private val clock: Clock = Clock.System,
+    private val scope: CoroutineScope,
 ) : FundingReminderContract.Reminder {
 
+    init {
+        val activity = activityProvider.getCurrent() as AppCompatActivity
+        val observedFragmentManager = activity.supportFragmentManager
+        activityCounterObserver.register(activity.lifecycle) {
+            fragmentObserver.unregister(observedFragmentManager)
+            activityCounterObserver.unregister(activity.lifecycle)
+        }
+    }
+
+    /**
+     * Decide to display the reminder and do so if necessary
+     * We may choose to refactor this in the future to allow for multiple ongoing campaigns:
+     *      https://github.com/thunderbird/thunderbird-android/issues/11557
+     */
     override fun registerReminder(
         onOpenFunding: () -> Unit,
     ) {
@@ -48,36 +65,54 @@ constructor(
             resetReminderReferenceTimestamp(activity)
         }
 
-        // We register the activity counter observer to keep track of the time the user spends in the app.
-        // We also ensure that the observers are unregistered when the activity is destroyed.
-        activityCounterObserver.register(activity.lifecycle) {
-            fragmentObserver.unregister(observedFragmentManager)
-            activityCounterObserver.unregister(activity.lifecycle)
-        }
-
         // If the reminder has already been shown, we don't need to show it again.
-        if (wasReminderShown()) {
+        if (wasReminderShown() && wasSecondReminderShown()) {
             return
         }
 
-        if (shouldShowReminder()) {
-            fragmentObserver.register(observedFragmentManager) {
+        when {
+            shouldShowReminder() -> fragmentObserver.register(observedFragmentManager) {
                 showFundingReminderDialog(dialogFragmentManager)
+            }
+
+            shouldShowSecondReminder() -> fragmentObserver.register(observedFragmentManager) {
+                // TODO make this point to the new dialog: #11526
+                showSecondFundingReminderDialog(dialogFragmentManager)
             }
         }
     }
 
     private fun wasReminderShown(): Boolean {
-        return settings.getReminderShownTimestamp() != 0L
+        return settings.getReminderShownTimestamp() != 0L || settings.getReminderShownCount() > 0
+    }
+
+    private fun wasSecondReminderShown(): Boolean {
+        return settings.getReminderShownTimestamp() != 0L &&
+            settings.getLastReminderShownActivityAmount() > settings.getReminderShownTimestamp() &&
+            settings.getReminderShownCount() >= 2
     }
 
     private fun shouldShowReminder(): Boolean {
-        @OptIn(ExperimentalTime::class)
         val currentTime = clock.now().toEpochMilliseconds()
 
         return settings.getReminderShownTimestamp() == 0L &&
             settings.getReminderReferenceTimestamp() + FUNDING_REMINDER_DELAY_MILLIS <= currentTime &&
-            settings.getActivityCounterInMillis() >= FUNDING_REMINDER_MIN_ACTIVITY_MILLIS
+            settings.getActivityCounterInMillis() >= FUNDING_REMINDER_MIN_ACTIVITY_MILLIS &&
+            settings.getLastReminderShownActivityAmount() == 0L &&
+            settings.getReminderShownCount() == 0
+    }
+
+    /**
+     * The second reminder should display after 30 minutes of activity since the first reminder was shown
+     * It should only display if the current reminder has already displayed and has not been displayed already
+     */
+    private fun shouldShowSecondReminder(): Boolean {
+        val activityAtLastReminder = settings.getLastReminderShownActivityAmount()
+        val shouldShowTime = activityAtLastReminder + FUNDING_REMINDER_MIN_ACTIVITY_MILLIS
+        return settings.getReminderShownTimestamp() > 0L &&
+            settings.getActivityCounterInMillis() >= shouldShowTime &&
+            settings.getReminderShownCount() > 0 &&
+            settings.getReminderShownCount() < 2
     }
 
     @Suppress("SwallowedException")
@@ -94,9 +129,28 @@ constructor(
     private fun showFundingReminderDialog(fragmentManager: FragmentManager) {
         // We're about to show the funding reminder dialog. So mark it as being shown. This way, if there's an error,
         // we err on the side of the dialog not being shown rather than it being shown more than once.
-        @OptIn(ExperimentalTime::class)
-        settings.setReminderShownTimestamp(clock.now().toEpochMilliseconds())
+        scope.launch {
+            @OptIn(ExperimentalTime::class)
+            val now = clock.now().toEpochMilliseconds()
+            settings.setReminderShownTimestamp(now)
+            settings.setLastReminderShownActivityAmount(settings.getActivityCounterInMillis())
+            settings.incrementReminderShownCount()
+        }
 
+        dialog.show(fragmentManager)
+    }
+
+    private fun showSecondFundingReminderDialog(fragmentManager: FragmentManager) {
+        // TODO: This implementation is currently the same as showFundingReminderDialog(),
+        //  but will differ after the new UI and logic to block the first reminder for new users is introduced
+        //  GitHub ticket: #11620
+        scope.launch {
+            @OptIn(ExperimentalTime::class)
+            val now = clock.now().toEpochMilliseconds()
+            settings.setReminderShownTimestamp(now)
+            settings.setLastReminderShownActivityAmount(settings.getActivityCounterInMillis())
+            settings.incrementReminderShownCount()
+        }
         dialog.show(fragmentManager)
     }
 }
