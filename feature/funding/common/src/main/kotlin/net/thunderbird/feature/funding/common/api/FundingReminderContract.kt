@@ -1,4 +1,4 @@
-package net.thunderbird.feature.funding.googleplay.ui.reminder
+package net.thunderbird.feature.funding.common.api
 
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle

@@ -7,6 +7,7 @@ import androidx.lifecycle.LifecycleOwner
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 import net.thunderbird.feature.funding.api.FundingSettings
+import net.thunderbird.feature.funding.common.api.FundingReminderContract
 
 class ActivityLifecycleObserver(
     private val settings: FundingSettings,

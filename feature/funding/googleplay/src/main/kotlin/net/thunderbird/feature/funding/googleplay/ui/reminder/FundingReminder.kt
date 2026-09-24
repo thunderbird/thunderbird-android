@@ -11,8 +11,11 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import net.thunderbird.core.android.common.activity.ActivityProvider
 import net.thunderbird.feature.funding.api.FundingSettings
-import net.thunderbird.feature.funding.googleplay.ui.reminder.FundingReminderContract.ActivityLifecycleObserver
-import net.thunderbird.feature.funding.googleplay.ui.reminder.FundingReminderContract.FragmentLifecycleObserver
+import net.thunderbird.feature.funding.common.api.FUNDING_REMINDER_DELAY_MILLIS
+import net.thunderbird.feature.funding.common.api.FUNDING_REMINDER_MIN_ACTIVITY_MILLIS
+import net.thunderbird.feature.funding.common.api.FundingReminderContract
+import net.thunderbird.feature.funding.common.api.FundingReminderContract.ActivityLifecycleObserver
+import net.thunderbird.feature.funding.common.api.FundingReminderContract.FragmentLifecycleObserver
 
 class FundingReminder(
     private val activityProvider: ActivityProvider,
