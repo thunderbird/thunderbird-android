@@ -960,4 +960,6 @@
     <string name="account_settings_signature_clear_label">Eemalda allkiri</string>
     <string name="message_compose_encrypting_message">Krüptin e-kirja…</string>
     <string name="message_view_from_me_text">mina</string>
+    <string name="account_settings_signature_preview_empty">Sinu allkirja eelvaade saab olema nähtav siin</string>
+    <string name="error_no_contact_provider">Ühtegi kontaktide haldusrakendust ei leidunud. Selle aadressi lisamiseks paigalda mõni vastav rakendus.</string>
 </resources>
