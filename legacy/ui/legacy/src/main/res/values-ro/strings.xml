@@ -967,4 +967,6 @@
     <string name="account_settings_signature_clear_label">Semnătură în clar (necriptată)</string>
     <string name="message_compose_encrypting_message">Se criptează mesajul…</string>
     <string name="message_view_from_me_text">mine</string>
+    <string name="account_settings_signature_preview_empty">Previzualizarea semnăturii tale va apărea aici</string>
+    <string name="error_no_contact_provider">Nu s-a găsit nicio aplicație „Agendă de contacte”. Instalează o aplicație de Agendă de contacte pentru a adăuga această adresă.</string>
 </resources>
