@@ -8,7 +8,7 @@ android {
 
 dependencies {
     api(projects.core.common)
-    api(projects.core.android.webkit.api)
+    api(projects.core.android.webkit)
 }
 
 codeCoverage {
