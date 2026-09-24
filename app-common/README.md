@@ -1,7 +1,7 @@
 # App Common
 
-# App Common
+`app-common` contains Android-specific application integration and bridges to `legacy:*`, `mail:*`, and `backend:*`
+code shared by K-9 Mail and Thunderbird for Android.
 
-This is the central integration point for shared code among the K-9 Mail and Thunderbird for Android applications. Its purpose is to collect and organize the individual feature modules that contain the actual functionality, as well as the "glue code" and configurations that tie them together.
-
-By keeping the shared code focused on these boundaries, we can ensure that it remains lean and avoids unnecessary dependencies. This approach allows us to maintain a clean and modular architecture, making it easier to maintain and update the codebase.
+Shared Kotlin Multiplatform bindings belong in [`app-composition`](../app-composition/README.md). As legacy bridges are
+replaced, their platform-independent bindings should move there.

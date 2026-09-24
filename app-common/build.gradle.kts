@@ -11,6 +11,8 @@ android {
 }
 
 dependencies {
+    implementation(projects.appComposition)
+
     api(projects.legacy.common)
     api(projects.legacy.ui.legacy)
 
@@ -24,9 +26,6 @@ dependencies {
     implementation(projects.core.android.common)
 
     implementation(projects.core.logging.api)
-    implementation(projects.core.logging.implComposite)
-    implementation(projects.core.logging.implConsole)
-    implementation(projects.core.logging.implFile)
     implementation(projects.legacy.logging)
     implementation(projects.core.configstore.api)
     implementation(projects.core.configstore.implBackend)
@@ -47,14 +46,10 @@ dependencies {
     implementation(projects.feature.mail.message.composer.internal)
     implementation(projects.feature.migration.provider)
     implementation(projects.feature.notification.api)
-    implementation(projects.feature.notification.impl)
     implementation(projects.feature.widget.messageList)
 
-    implementation(projects.feature.mail.message.export.api)
-    implementation(projects.feature.mail.message.export.implEml)
     implementation(projects.feature.mail.message.list.api)
     implementation(projects.feature.mail.message.reader.api)
-    implementation(projects.feature.mail.message.reader.impl)
 
     implementation(projects.mail.protocols.imap)
     implementation(projects.backend.imap)
