@@ -146,14 +146,21 @@ class FundingReminder(
     }
 
     private fun showSecondFundingReminderDialog(fragmentManager: FragmentManager) {
-        // TODO: This implementation is currently the same as showFundingReminderDialog(),
-        //  but will differ after the new UI and logic to block the first reminder for new users is introduced
-        //  GitHub ticket: #11620
         scope.launch {
             val now = clock.now().toEpochMilliseconds()
+            val hasSeenFundingReminderBeforeCount = settings.getReminderShownCount() == 0 &&
+                settings.getReminderShownTimestamp() != 0L
+
             settings.setReminderShownTimestamp(now)
             settings.setLastReminderShownActivityAmount(settings.getActivityCounterInMillis())
-            settings.incrementReminderShownCount()
+
+            // Users who saw the first popup before the counter was added will need to increment this
+            // twice as to not potentially see a third one until we release another.
+            if (hasSeenFundingReminderBeforeCount) {
+                settings.setReminderShownCount(2)
+            } else {
+                settings.incrementReminderShownCount()
+            }
         }
         dialog.show(fragmentManager)
     }
