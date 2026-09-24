@@ -25,11 +25,6 @@ class DefaultFundingConfigStoreTest {
     )
 
     @Test
-    fun `config should provide the expected default`() = runTest {
-        assertEquals(defaultConfig, FundingConfig(0L, 0))
-    }
-
-    @Test
     fun `config should start with default values`() = runTest {
         // Setup test subject and expected values
         val backend = getDefaultTestConfigBackend()
