@@ -82,7 +82,9 @@ tasks.register("testsOnCi") {
 koinCompiler {
     compileSafety = true
     strictSafety = true
-    userLogs = true
+    userLogs = false
     debugLogs = false
     unsafeDslChecks = true
+    hiddenDependencyCheck = "warning"
+    versionCheckSeverity = "info"
 }
