@@ -12,7 +12,6 @@ import assertk.assertions.isTrue
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
-import kotlin.test.assertEquals
 import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
 import kotlinx.coroutines.CoroutineScope
@@ -23,7 +22,6 @@ import net.thunderbird.core.android.common.activity.ActivityProvider
 import net.thunderbird.core.testing.TestClock
 import net.thunderbird.feature.funding.api.FundingSettings
 import net.thunderbird.feature.funding.googleplay.ui.reminder.FundingReminderContract.Dialog
-import org.junit.Assert.assertFalse
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 
@@ -144,10 +142,10 @@ class FundingReminderTest {
 
         testSubject.registerReminder { }
 
-        assertFalse(dialogShown)
-        assertFalse(fragmentObserver.isRegistered)
+        assertThat(dialogShown).isFalse()
+        assertThat(fragmentObserver.isRegistered).isFalse()
         assertThat(settings.getReminderShownTimestamp()).isEqualTo(LAST_REMINDER_SHOWN_UNSET)
-        assertEquals(REMINDER_COUNTER_FIRST_SHOWN, settings.getReminderShownCount())
+        assertThat(REMINDER_COUNTER_FIRST_SHOWN).isEqualTo(settings.getReminderShownCount())
     }
 
     /**
@@ -181,11 +179,11 @@ class FundingReminderTest {
 
         testSubject.registerReminder { }
 
-        assertFalse(dialogShown)
-        assertFalse(fragmentObserver.isRegistered)
+        assertThat(dialogShown).isFalse()
+        assertThat(fragmentObserver.isRegistered).isFalse()
         assertThat(settings.getReminderShownTimestamp()).isEqualTo(REMINDER_SHOWN_TIMESTAMP_UNSET)
         assertThat(settings.getLastReminderShownActivityAmount()).isEqualTo(REMINDER_REFERENCE_TIMESTAMP)
-        assertEquals(0, settings.getReminderShownCount())
+        assertThat(0).isEqualTo(settings.getReminderShownCount())
     }
 
     @Test
@@ -329,7 +327,7 @@ class FundingReminderTest {
         assertThat(fragmentObserver.isRegistered).isTrue()
         assertThat(activityObserver.isRegistered).isTrue()
         assertThat(settings.getReminderShownCount()).isEqualTo(REMINDER_COUNTER_SECOND_SHOWN)
-        assertThat(settings.getReminderShownTimestamp()).isEqualTo(REMINDER_SHOWN_TIMESTAMP)
+        assertThat(settings.getReminderShownTimestamp()).isEqualTo(currentTime)
         assertThat(settings.getLastReminderShownActivityAmount()).isEqualTo(SECOND_FUNDING_REMINDER_MIN_ACTIVITY_MILLIS)
     }
 

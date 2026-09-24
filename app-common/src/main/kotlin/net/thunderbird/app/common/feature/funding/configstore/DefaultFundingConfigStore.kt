@@ -28,7 +28,7 @@ class DefaultFundingConfigStore(
         initialValue = FundingConfig.DEFAULT,
     )
 
-    override suspend fun ConfigStore<FundingConfig>.update(
+    override suspend fun ConfigStore<FundingConfig>.safeUpdate(
         transform: (FundingConfig) -> FundingConfig,
     ) {
         scope.launch {

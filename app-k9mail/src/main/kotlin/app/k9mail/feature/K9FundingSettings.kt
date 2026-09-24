@@ -31,7 +31,6 @@ internal class K9FundingSettings(
             val oldConfig = it ?: FundingConfig.DEFAULT
             oldConfig.copy(
                 lastFundingReminderShownActivityAmount = activityInMillis,
-                fundingReminderCount = oldConfig.fundingReminderCount,
             )
         }
     }
@@ -44,7 +43,6 @@ internal class K9FundingSettings(
         fundingConfigStore.update {
             val oldConfig = it ?: FundingConfig.DEFAULT
             oldConfig.copy(
-                lastFundingReminderShownActivityAmount = oldConfig.lastFundingReminderShownActivityAmount,
                 fundingReminderCount = count,
             )
         }

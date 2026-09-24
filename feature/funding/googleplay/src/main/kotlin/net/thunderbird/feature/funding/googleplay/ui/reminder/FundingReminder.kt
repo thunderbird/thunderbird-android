@@ -70,13 +70,13 @@ constructor(
             return
         }
 
-        if (shouldShowReminder()) {
-            fragmentObserver.register(observedFragmentManager) {
+        when {
+            shouldShowReminder() -> fragmentObserver.register(observedFragmentManager) {
                 showFundingReminderDialog(dialogFragmentManager)
             }
-        } else if (shouldShowSecondReminder()) {
-            // TODO make this point to the new dialog: #11526
-            fragmentObserver.register(observedFragmentManager) {
+
+            shouldShowSecondReminder() -> fragmentObserver.register(observedFragmentManager) {
+                // TODO make this point to the new dialog: #11526
                 showSecondFundingReminderDialog(dialogFragmentManager)
             }
         }
@@ -93,7 +93,6 @@ constructor(
     }
 
     private fun shouldShowReminder(): Boolean {
-        @OptIn(ExperimentalTime::class)
         val currentTime = clock.now().toEpochMilliseconds()
 
         return settings.getReminderShownTimestamp() == 0L &&
@@ -108,7 +107,6 @@ constructor(
      * It should only display if the current reminder has already displayed and has not been displayed already
      */
     private fun shouldShowSecondReminder(): Boolean {
-        @OptIn(ExperimentalTime::class)
         val activityAtLastReminder = settings.getLastReminderShownActivityAmount()
         val shouldShowTime = activityAtLastReminder + FUNDING_REMINDER_MIN_ACTIVITY_MILLIS
         return settings.getReminderShownTimestamp() > 0L &&
@@ -145,6 +143,7 @@ constructor(
     private fun showSecondFundingReminderDialog(fragmentManager: FragmentManager) {
         // TODO: This implementation is currently the same as showFundingReminderDialog(),
         //  but will differ after the new UI and logic to block the first reminder for new users is introduced
+        //  GitHub ticket: #11620
         scope.launch {
             @OptIn(ExperimentalTime::class)
             val now = clock.now().toEpochMilliseconds()
