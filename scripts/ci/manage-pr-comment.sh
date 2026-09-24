@@ -4,10 +4,13 @@ set -euo pipefail
 
 # This script manages a single PR comment by using a unique identifier.
 # Usage:
-#   ./manage-pr-comment.sh <pr-number> <identifier> <message> <status: invalid|valid>
+#   ./manage-pr-comment.sh <pr-number> <identifier> <message> <status: invalid|valid> [resolved-message]
+#
+# resolved-message is optional and only used when status is "valid" and an
+# existing comment is present. Defaults to a generic pass message.
 
-if [[ $# -ne 4 ]]; then
-    echo "Usage: $0 <pr-number> <identifier> <message> <status>"
+if [[ $# -lt 4 || $# -gt 5 ]]; then
+    echo "Usage: $0 <pr-number> <identifier> <message> <status> [resolved-message]"
     exit 1
 fi
 
@@ -15,6 +18,7 @@ PR_NUMBER="$1"
 IDENTIFIER="$2"
 MESSAGE="$3"
 STATUS="$4"
+RESOLVED_MESSAGE_TEXT="${5:-✅ **Validation Passed**}"
 
 COMMENT_ID=$(gh api "repos/{owner}/{repo}/issues/${PR_NUMBER}/comments" | \
     jq -r ".[] | select(.body | contains(\"${IDENTIFIER}\")) | .id" | head -n 1)
@@ -35,7 +39,7 @@ if [[ "$STATUS" == "invalid" ]]; then
     fi
 elif [[ "$STATUS" == "valid" ]]; then
     if [[ -n "$COMMENT_ID" ]]; then
-        RESOLVED_MESSAGE="✅ **Validation Passed**: All report and feature-flag labels are correctly set.${IDENTIFIER}"
+        RESOLVED_MESSAGE="${RESOLVED_MESSAGE_TEXT}${IDENTIFIER}"
         echo "Marking comment $COMMENT_ID as resolved"
         gh api -X PATCH "repos/{owner}/{repo}/issues/comments/${COMMENT_ID}" -f body="$RESOLVED_MESSAGE" > /dev/null
     else
