@@ -38,7 +38,7 @@ object SuspiciousAddressDetector {
         '​', // ZERO WIDTH SPACE
         '‌', // ZERO WIDTH NON-JOINER
         '‍', // ZERO WIDTH JOINER
-        '﻿', // ZERO WIDTH NO-BREAK SPACE / BOM
+        '\uFEFF', // ZERO WIDTH NO-BREAK SPACE / BOM
     )
 
     private const val TAG_BLOCK_START = 0xE0000
@@ -73,7 +73,10 @@ object SuspiciousAddressDetector {
         if (text.any { it in INVISIBLE_CHARACTERS }) {
             return true
         }
+        return containsTagBlockCharacter(text)
+    }
 
+    private fun containsTagBlockCharacter(text: String): Boolean {
         var index = 0
         while (index < text.length) {
             val codePoint = text.codePointAt(index)
