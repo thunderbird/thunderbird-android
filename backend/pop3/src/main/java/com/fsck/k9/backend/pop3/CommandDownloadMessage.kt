@@ -9,7 +9,7 @@ import com.fsck.k9.mail.store.pop3.Pop3Store
 
 internal class CommandDownloadMessage(private val backendStorage: BackendStorage, private val pop3Store: Pop3Store) {
 
-    fun downloadCompleteMessage(folderServerId: String, messageServerId: String) {
+    suspend fun downloadCompleteMessage(folderServerId: String, messageServerId: String) {
         val folder = pop3Store.getFolder(folderServerId)
         try {
             folder.open()
