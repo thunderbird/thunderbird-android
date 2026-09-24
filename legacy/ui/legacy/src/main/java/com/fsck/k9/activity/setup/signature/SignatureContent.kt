@@ -1,15 +1,18 @@
 package com.fsck.k9.activity.setup.signature
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -55,55 +58,73 @@ internal fun SignatureContent(
             onCheckedChange = { onEvent(Event.UseSignatureChange(it)) },
         )
 
-        if (state.useSignature) {
-            CheckboxInput(
-                text = stringResource(R.string.account_settings_signature_is_html_label),
-                checked = state.saveSignatureAsHtml,
-                onCheckedChange = { onEvent(Event.OnFormatSignatureAsHtmlCheck(it)) },
-            )
-            TextLabelSmall(
-                text = stringResource(R.string.account_settings_signature_is_html_summary),
-                modifier = Modifier.padding(horizontal = BoltTheme.spacings.double),
-            )
-            Spacer(modifier = Modifier.height(BoltTheme.spacings.default))
-            TextFieldOutlined(
-                isSingleLine = false,
-                label = stringResource(
-                    id = if (state.saveSignatureAsHtml) {
-                        R.string.account_settings_signature_html_label
-                    } else {
-                        R.string.account_settings_signature_label
-                    },
-                ),
-                value = state.signature,
-                onValueChange = { onEvent(Event.SignatureChange(it)) },
-                modifier = Modifier
-                    .padding(horizontal = BoltTheme.spacings.double)
-                    .fillMaxWidth(),
-            )
-            AnimatedVisibility(
-                visible = state.signature.isNotBlank(),
-                enter = fadeIn(),
-                exit = fadeOut(),
-                modifier = Modifier
-                    .padding(horizontal = BoltTheme.spacings.double)
-                    .align(Alignment.CenterHorizontally),
-            ) {
-                ButtonText(
-                    text = stringResource(R.string.account_settings_signature_clear_label),
-                    onClick = { onEvent(Event.SignatureChange("")) },
-                )
-            }
-
-            SignaturePreview(
-                signaturePreviewHtmlText = state.signaturePreviewHtmlText,
-                webViewConfig = state.webViewConfig,
-                isHtmlSignature = state.saveSignatureAsHtml,
-                modifier = Modifier.padding(horizontal = BoltTheme.spacings.double),
-            )
-
-            SignatureLocation(state, onEvent)
+        AnimatedVisibility(
+            visible = state.useSignature,
+            enter = fadeIn(),
+            exit = fadeOut(),
+        ) {
+            SignatureSettings(state = state, onEvent = onEvent)
         }
+    }
+}
+
+@Composable
+private fun SignatureSettings(
+    state: AccountSetupCompositionContract.State,
+    onEvent: (Event) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.default),
+        modifier = modifier.fillMaxWidth(),
+    ) {
+        CheckboxInput(
+            text = stringResource(R.string.account_settings_signature_is_html_label),
+            checked = state.saveSignatureAsHtml,
+            onCheckedChange = { onEvent(Event.OnFormatSignatureAsHtmlCheck(it)) },
+        )
+        TextLabelSmall(
+            text = stringResource(R.string.account_settings_signature_is_html_summary),
+            modifier = Modifier.padding(horizontal = BoltTheme.spacings.double),
+        )
+        Spacer(modifier = Modifier.height(BoltTheme.spacings.default))
+        TextFieldOutlined(
+            isSingleLine = false,
+            label = stringResource(
+                id = if (state.saveSignatureAsHtml) {
+                    R.string.account_settings_signature_html_label
+                } else {
+                    R.string.account_settings_signature_label
+                },
+            ),
+            value = state.signature,
+            onValueChange = { onEvent(Event.SignatureChange(it)) },
+            modifier = Modifier
+                .padding(horizontal = BoltTheme.spacings.double)
+                .fillMaxWidth(),
+        )
+        AnimatedVisibility(
+            visible = state.signature.isNotBlank(),
+            enter = fadeIn(),
+            exit = fadeOut(),
+            modifier = Modifier
+                .padding(horizontal = BoltTheme.spacings.double)
+                .align(Alignment.CenterHorizontally),
+        ) {
+            ButtonText(
+                text = stringResource(R.string.account_settings_signature_clear_label),
+                onClick = { onEvent(Event.SignatureChange("")) },
+            )
+        }
+
+        SignaturePreview(
+            signaturePreviewHtmlText = state.signaturePreviewHtmlText,
+            webViewConfig = state.webViewConfig,
+            isHtmlSignature = state.saveSignatureAsHtml,
+            modifier = Modifier.padding(horizontal = BoltTheme.spacings.double),
+        )
+
+        SignatureLocation(state, onEvent)
     }
 }
 
@@ -140,7 +161,9 @@ private fun SignaturePreview(
     modifier: Modifier = Modifier,
 ) {
     AnimatedVisibility(
-        visible = isHtmlSignature && signaturePreviewHtmlText?.isNotEmpty() == true && webViewConfig != null,
+        visible = isHtmlSignature && webViewConfig != null,
+        enter = slideInVertically() + fadeIn(),
+        exit = slideOutVertically() + fadeOut(),
     ) {
         Column(
             modifier = modifier,
@@ -183,41 +206,30 @@ private fun SignatureHtmlPreview(
         debouncedSignature = signaturePreviewHtmlText
     }
 
-    // The preview lives in a scrolling column, so it is sized to its content rather than left to
-    // scroll on its own. Images that load after the page finishes can leave the height slightly
-    // short until the next edit.
-    var contentHeight by remember { mutableStateOf(0.dp) }
-    val animatedContentHeight by animateDpAsState(contentHeight)
-
-    // AndroidView's update block also runs for unrelated recompositions, e.g. height and window inset changes.
-    // Reloading the document in those cases can produce a new, incorrect content height while rotating the device.
-    val loadState = remember { SignaturePreviewLoadState() }
-
     AndroidView(
         factory = { context ->
             MessageWebView(context).apply {
                 configureForSignaturePreview(webViewConfig)
+
+                isVerticalScrollBarEnabled = false
+                isHorizontalScrollBarEnabled = false
             }
         },
         update = { webView ->
-            if (loadState.shouldLoad(debouncedSignature)) {
-                contentHeight = 0.dp
-                webView.displayHtmlContentWithInlineAttachments(debouncedSignature, null) {
-                    contentHeight = webView.contentHeight.dp
-                }
+            if (webView.tag != debouncedSignature) {
+                webView.tag = debouncedSignature
+                webView.displayHtmlContentWithInlineAttachments(
+                    htmlText = debouncedSignature,
+                    attachmentResolver = null,
+                    onPageFinishedListener = null,
+                )
             }
         },
-        modifier = modifier.height(animatedContentHeight),
+        onRelease = { webView ->
+            webView.destroy()
+        },
+        modifier = modifier
+            .heightIn(min = 1.dp)
+            .wrapContentHeight(),
     )
-}
-
-internal class SignaturePreviewLoadState {
-    private var loadedSignature: String? = null
-
-    fun shouldLoad(signature: String): Boolean {
-        if (signature == loadedSignature) return false
-
-        loadedSignature = signature
-        return true
-    }
 }
