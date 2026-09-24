@@ -25,6 +25,7 @@ import com.fsck.k9.mail.ServerSettings
 import com.fsck.k9.mail.internet.MimeMessage
 import com.fsck.k9.mail.internet.MimeMessageHelper
 import com.fsck.k9.mail.internet.TextBody
+import kotlinx.coroutines.test.runTest
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.common.mail.Flag
 import org.junit.After
@@ -47,7 +48,7 @@ class K9BackendFolderTest : K9RobolectricTest() {
     }
 
     @Test
-    fun getMessageFlags() {
+    fun getMessageFlags() = runTest {
         val flags = setOf(Flag.SEEN, Flag.DRAFT, Flag.X_DOWNLOADED_FULL)
         createMessageInBackendFolder(MESSAGE_SERVER_ID, flags)
 
@@ -57,7 +58,7 @@ class K9BackendFolderTest : K9RobolectricTest() {
     }
 
     @Test
-    fun getMessageFlags_withFlagsColumnSetToNull_shouldBeTreatedAsEmpty() {
+    fun getMessageFlags_withFlagsColumnSetToNull_shouldBeTreatedAsEmpty() = runTest {
         createMessageInBackendFolder(MESSAGE_SERVER_ID)
         setFlagsColumnToNull()
 
@@ -67,7 +68,7 @@ class K9BackendFolderTest : K9RobolectricTest() {
     }
 
     @Test
-    fun getMessageFlags_withFlagsColumnSetToNull_shouldReadSpecialColumnFlags() {
+    fun getMessageFlags_withFlagsColumnSetToNull_shouldReadSpecialColumnFlags() = runTest {
         val flags = setOf(Flag.SEEN, Flag.FLAGGED, Flag.ANSWERED, Flag.FORWARDED)
         createMessageInBackendFolder(MESSAGE_SERVER_ID, flags)
         setFlagsColumnToNull()
@@ -78,7 +79,7 @@ class K9BackendFolderTest : K9RobolectricTest() {
     }
 
     @Test
-    fun saveCompleteMessage_withoutServerId_shouldThrow() {
+    fun saveCompleteMessage_withoutServerId_shouldThrow() = runTest {
         val message = createMessage(messageServerId = null)
 
         assertFailure {
@@ -88,7 +89,7 @@ class K9BackendFolderTest : K9RobolectricTest() {
     }
 
     @Test
-    fun savePartialMessage_withoutServerId_shouldThrow() {
+    fun savePartialMessage_withoutServerId_shouldThrow() = runTest {
         val message = createMessage(messageServerId = null)
 
         assertFailure {
@@ -124,7 +125,7 @@ class K9BackendFolderTest : K9RobolectricTest() {
         return K9BackendFolder(messageStore, saveMessageDataCreator, FOLDER_SERVER_ID)
     }
 
-    fun createMessageInBackendFolder(messageServerId: String, flags: Set<Flag> = emptySet()) {
+    suspend fun createMessageInBackendFolder(messageServerId: String, flags: Set<Flag> = emptySet()) {
         val message = createMessage(messageServerId, flags)
         backendFolder.saveMessage(message, MessageDownloadState.FULL)
 
