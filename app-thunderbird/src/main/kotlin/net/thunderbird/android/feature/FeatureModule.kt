@@ -29,7 +29,6 @@ internal val featureModule = module {
     single<FundingSettings> {
         TbFundingSettings(
             fundingConfigStore = get(),
-            scope = get(named("ConfigStoreScope")),
         )
     }
 

@@ -4,5 +4,6 @@ import kotlinx.coroutines.flow.StateFlow
 import net.thunderbird.core.configstore.ConfigStore
 
 interface FundingConfigStore : ConfigStore<FundingConfig> {
-    fun configAsStateFlow(): StateFlow<FundingConfig>
+    val configStateFlow: StateFlow<FundingConfig>
+    suspend fun ConfigStore<FundingConfig>.safeUpdate(transform: (FundingConfig) -> FundingConfig)
 }
