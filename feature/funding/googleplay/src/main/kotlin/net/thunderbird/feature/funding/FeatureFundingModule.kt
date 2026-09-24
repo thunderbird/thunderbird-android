@@ -1,6 +1,5 @@
 package net.thunderbird.feature.funding
 
-import kotlin.time.ExperimentalTime
 import net.thunderbird.feature.funding.api.FundingManager
 import net.thunderbird.feature.funding.api.FundingNavigation
 import net.thunderbird.feature.funding.googleplay.GooglePlayFundingManager
@@ -39,14 +38,12 @@ val featureFundingModule = module {
     }
 
     single<FundingReminderContract.ActivityLifecycleObserver> {
-        @OptIn(ExperimentalTime::class)
         ActivityLifecycleObserver(
             settings = get(),
         )
     }
 
     single<FundingReminderContract.Reminder> {
-        @OptIn(ExperimentalTime::class)
         FundingReminder(
             activityProvider = get(),
             settings = get(),

@@ -9,6 +9,8 @@ internal class FakeFundingSettings(
     private var fundingReminderCount: Int = 0,
     private var activityCounterInMillis: Long = 0L,
 ) : FundingSettings {
+
+    override fun isReady(): Boolean = true
     override fun getReminderReferenceTimestamp(): Long {
         return reminderReferenceTimestamp
     }

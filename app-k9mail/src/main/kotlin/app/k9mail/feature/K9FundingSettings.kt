@@ -5,9 +5,13 @@ import net.thunderbird.feature.funding.api.FundingConfig
 import net.thunderbird.feature.funding.api.FundingConfigStore
 import net.thunderbird.feature.funding.api.FundingSettings
 
+@Suppress("TooManyFunctions")
 internal class K9FundingSettings(
     private val fundingConfigStore: FundingConfigStore,
 ) : FundingSettings {
+
+    override fun isReady(): Boolean = fundingConfigStore.configStateFlow.value != FundingConfig.DEFAULT
+
     override fun getReminderReferenceTimestamp(): Long = K9.fundingReminderReferenceTimestamp
 
     override fun setReminderReferenceTimestamp(timestamp: Long) {
@@ -23,7 +27,7 @@ internal class K9FundingSettings(
     }
 
     override fun getLastReminderShownActivityAmount(): Long {
-        return fundingConfigStore.configStateFlow.value.lastFundingReminderShownActivityAmount
+        return fundingConfigStore.configStateFlow.value.lastFundingReminderShownActivityAmount ?: 0L
     }
 
     override suspend fun setLastReminderShownActivityAmount(activityInMillis: Long) {
@@ -36,7 +40,7 @@ internal class K9FundingSettings(
     }
 
     override fun getReminderShownCount(): Int {
-        return fundingConfigStore.configStateFlow.value.fundingReminderCount
+        return fundingConfigStore.configStateFlow.value.fundingReminderCount ?: 0
     }
 
     override suspend fun setReminderShownCount(count: Int) {

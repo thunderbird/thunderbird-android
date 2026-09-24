@@ -5,17 +5,16 @@ import android.content.pm.PackageManager.NameNotFoundException
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
 import kotlin.time.Clock
-import kotlin.time.ExperimentalTime
+import kotlin.time.Duration.Companion.milliseconds
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import net.thunderbird.core.android.common.activity.ActivityProvider
 import net.thunderbird.feature.funding.api.FundingSettings
 import net.thunderbird.feature.funding.googleplay.ui.reminder.FundingReminderContract.ActivityLifecycleObserver
 import net.thunderbird.feature.funding.googleplay.ui.reminder.FundingReminderContract.FragmentLifecycleObserver
 
-class FundingReminder
-@OptIn(ExperimentalTime::class)
-constructor(
+class FundingReminder(
     private val activityProvider: ActivityProvider,
     private val settings: FundingSettings,
     private val fragmentObserver: FragmentLifecycleObserver,
@@ -42,42 +41,47 @@ constructor(
     override fun registerReminder(
         onOpenFunding: () -> Unit,
     ) {
-        val activity = activityProvider.getCurrent() as? AppCompatActivity ?: return
-
-        // TODO: Let the caller make the decision on which FragmentManager to use.
-        val dialogFragmentManager = activity.supportFragmentManager
-
-        // TODO: Let the caller provide this. Or, better yet, let the caller notify FundingReminder when it's a good
-        //  time to display the funding reminder dialog.
-        val observedFragmentManager = activity.supportFragmentManager
-
-        dialogFragmentManager.setFragmentResultListener(
-            FundingReminderContract.Dialog.FRAGMENT_REQUEST_KEY,
-            activity,
-        ) { _, result ->
-            if (result.getBoolean(FundingReminderContract.Dialog.FRAGMENT_RESULT_SHOW_FUNDING, false)) {
-                onOpenFunding()
+        scope.launch {
+            // Wait a bit so settings can be ready to be used.
+            while (settings.getReminderReferenceTimestamp() != 0L && !settings.isReady()) {
+                delay(250.milliseconds)
             }
-        }
+            val activity = activityProvider.getCurrent() as? AppCompatActivity ?: return@launch
+            // TODO: Let the caller make the decision on which FragmentManager to use.
+            val dialogFragmentManager = activity.supportFragmentManager
 
-        // If the reminder reference timestamp is not set, we set it to the first install time.
-        if (settings.getReminderReferenceTimestamp() == 0L) {
-            resetReminderReferenceTimestamp(activity)
-        }
+            // TODO: Let the caller provide this. Or, better yet, let the caller notify FundingReminder when it's a good
+            //  time to display the funding reminder dialog.
+            val observedFragmentManager = activity.supportFragmentManager
 
-        // If the reminder has already been shown, we don't need to show it again.
-        if (wasReminderShown() && wasSecondReminderShown()) {
-            return
-        }
-
-        when {
-            shouldShowReminder() -> fragmentObserver.register(observedFragmentManager) {
-                showFundingReminderDialog(dialogFragmentManager)
+            dialogFragmentManager.setFragmentResultListener(
+                FundingReminderContract.Dialog.FRAGMENT_REQUEST_KEY,
+                activity,
+            ) { _, result ->
+                if (result.getBoolean(FundingReminderContract.Dialog.FRAGMENT_RESULT_SHOW_FUNDING, false)) {
+                    onOpenFunding()
+                }
             }
 
-            shouldShowSecondReminder() -> fragmentObserver.register(observedFragmentManager) {
-                // TODO make this point to the new dialog: #11526
-                showSecondFundingReminderDialog(dialogFragmentManager)
+            // If the reminder reference timestamp is not set, we set it to the first install time.
+            if (settings.getReminderReferenceTimestamp() == 0L) {
+                resetReminderReferenceTimestamp(activity)
+            }
+
+            // If the reminder has already been shown, we don't need to show it again.
+            if (wasReminderShown() && wasSecondReminderShown()) {
+                return@launch
+            }
+
+            when {
+                shouldShowReminder() -> fragmentObserver.register(observedFragmentManager) {
+                    showFundingReminderDialog(dialogFragmentManager)
+                }
+
+                shouldShowSecondReminder() -> fragmentObserver.register(observedFragmentManager) {
+                    // TODO make this point to the new dialog: #11526
+                    showSecondFundingReminderDialog(dialogFragmentManager)
+                }
             }
         }
     }
@@ -121,7 +125,6 @@ constructor(
             val installTime = context.packageManager.getPackageInfo(context.packageName, 0).firstInstallTime
             settings.setReminderReferenceTimestamp(installTime)
         } catch (exception: NameNotFoundException) {
-            @OptIn(ExperimentalTime::class)
             settings.setReminderReferenceTimestamp(clock.now().toEpochMilliseconds())
         }
     }
@@ -130,7 +133,6 @@ constructor(
         // We're about to show the funding reminder dialog. So mark it as being shown. This way, if there's an error,
         // we err on the side of the dialog not being shown rather than it being shown more than once.
         scope.launch {
-            @OptIn(ExperimentalTime::class)
             val now = clock.now().toEpochMilliseconds()
             settings.setReminderShownTimestamp(now)
             settings.setLastReminderShownActivityAmount(settings.getActivityCounterInMillis())
@@ -145,7 +147,6 @@ constructor(
         //  but will differ after the new UI and logic to block the first reminder for new users is introduced
         //  GitHub ticket: #11620
         scope.launch {
-            @OptIn(ExperimentalTime::class)
             val now = clock.now().toEpochMilliseconds()
             settings.setReminderShownTimestamp(now)
             settings.setLastReminderShownActivityAmount(settings.getActivityCounterInMillis())

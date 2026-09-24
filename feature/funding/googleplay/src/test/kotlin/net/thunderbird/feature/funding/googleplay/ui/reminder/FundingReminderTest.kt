@@ -12,7 +12,6 @@ import assertk.assertions.isTrue
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
-import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -25,7 +24,6 @@ import net.thunderbird.feature.funding.googleplay.ui.reminder.FundingReminderCon
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 
-@OptIn(ExperimentalTime::class)
 class FundingReminderTest {
 
     @OptIn(ExperimentalCoroutinesApi::class)

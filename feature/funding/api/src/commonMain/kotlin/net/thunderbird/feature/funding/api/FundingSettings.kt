@@ -1,6 +1,7 @@
 package net.thunderbird.feature.funding.api
 
 interface FundingSettings {
+    fun isReady(): Boolean
     fun getReminderReferenceTimestamp(): Long
     fun setReminderReferenceTimestamp(timestamp: Long)
 
