@@ -670,7 +670,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
     private void triggerIfNeededSentFolderNotFoundInAppNotification() {
         if (account != null && account.isUploadSentMessages() && !account.hasSentFolder()) {
             final SentFolderNotFoundNotification notification = NotificationFactoryCoroutineCompat.create(
-                continuation -> SentFolderNotFoundNotification(account.getUuid(), continuation)
+                continuation -> SentFolderNotFoundNotification(account.getId(), continuation)
             );
             notificationSenderCompat.send(notification, outcome -> {
                 OutcomeKt.handle(

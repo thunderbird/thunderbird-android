@@ -10,10 +10,12 @@ android {
 dependencies {
     api(projects.feature.changelog.api)
     implementation(projects.legacy.ui.base)
+
     implementation(projects.feature.onboarding.main)
     implementation(projects.feature.thundermail.api)
     implementation(projects.feature.settings.import)
 
+    implementation(projects.feature.account.api)
     implementation(projects.feature.account.edit)
     implementation(projects.feature.account.settings.api)
     implementation(projects.feature.account.setup)

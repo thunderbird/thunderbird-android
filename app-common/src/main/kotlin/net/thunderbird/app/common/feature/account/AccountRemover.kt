@@ -8,9 +8,10 @@ import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.mailstore.LocalStoreProvider
 import com.fsck.k9.preferences.UnifiedInboxConfigurator
 import kotlinx.coroutines.runBlocking
-import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.core.logging.Logger
-import net.thunderbird.feature.account.AccountIdFactory
+import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.avatar.AvatarImageRepository
 
 /**
@@ -21,51 +22,52 @@ class AccountRemover(
     private val messagingController: MessagingController,
     private val backendManager: BackendManager,
     private val localKeyStoreManager: LocalKeyStoreManager,
+    private val accountManager: LegacyAccountManager,
     private val preferences: Preferences,
     private val unifiedInboxConfigurator: UnifiedInboxConfigurator,
     private val avatarImageRepository: AvatarImageRepository,
     private val logger: Logger,
 ) {
 
-    fun removeAccount(accountUuid: String) {
-        val account = preferences.getAccount(accountUuid)
-        if (account == null) {
-            logger.warn { "Can't remove account with UUID $accountUuid because it doesn't exist." }
+    fun removeAccount(accountId: AccountId) {
+        val account = accountManager.getAccount(accountId.toString())
+        val legacyAccount = preferences.getAccount(accountId.toString())
+        if (account == null || legacyAccount == null) {
+            logger.warn { "Can't remove account with UUID $accountId because it doesn't exist." }
             return
         }
 
-        val accountName = account.toString()
-        logger.verbose { "Removing account '$accountName'…" }
+        logger.verbose { "Removing account '$accountId'…" }
 
-        removeAvatar(account.uuid)
+        removeAvatar(accountId)
         removeLocalStore(account)
-        messagingController.deleteAccount(account)
-        removeBackend(account)
+        messagingController.deleteAccount(legacyAccount)
+        removeBackend(accountId)
 
-        preferences.deleteAccount(account)
+        preferences.deleteAccount(legacyAccount)
 
         removeCertificates(account)
         Core.setServicesEnabled()
         unifiedInboxConfigurator.configureUnifiedInbox()
 
-        logger.verbose { "Finished removing account '$accountName'." }
+        logger.verbose { "Finished removing account '$accountId'." }
     }
 
     @Suppress("TooGenericExceptionCaught")
-    private fun removeAvatar(accountUuid: String) {
+    private fun removeAvatar(accountId: AccountId) {
         runBlocking {
             try {
-                avatarImageRepository.delete(AccountIdFactory.of(accountUuid))
+                avatarImageRepository.delete(accountId)
             } catch (e: Exception) {
-                logger.error(throwable = e) { "Failed to remove avatar for account $accountUuid" }
+                logger.error(throwable = e) { "Failed to remove avatar for account $accountId" }
             }
         }
     }
 
     @Suppress("TooGenericExceptionCaught")
-    private fun removeLocalStore(account: LegacyAccountDto) {
+    private fun removeLocalStore(account: LegacyAccount) {
         try {
-            val localStore = localStoreProvider.getInstance(account)
+            val localStore = localStoreProvider.getInstanceByLegacyAccount(account)
             localStore.delete()
         } catch (e: Exception) {
             logger.error(throwable = e) { "Error removing message database for account $account" }
@@ -75,16 +77,16 @@ class AccountRemover(
     }
 
     @Suppress("TooGenericExceptionCaught")
-    private fun removeBackend(account: LegacyAccountDto) {
+    private fun removeBackend(accountId: AccountId) {
         try {
-            backendManager.removeBackend(account.id)
+            backendManager.removeBackend(accountId)
         } catch (e: Exception) {
-            logger.error(throwable = e) { "Failed to reset remote store for account $account" }
+            logger.error(throwable = e) { "Failed to reset remote store for account $accountId" }
         }
     }
 
     @Suppress("TooGenericExceptionCaught")
-    private fun removeCertificates(account: LegacyAccountDto) {
+    private fun removeCertificates(account: LegacyAccount) {
         try {
             localKeyStoreManager.deleteCertificates(account)
         } catch (e: Exception) {

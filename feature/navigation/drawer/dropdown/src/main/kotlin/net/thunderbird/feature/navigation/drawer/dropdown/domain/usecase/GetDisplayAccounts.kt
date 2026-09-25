@@ -81,16 +81,16 @@ internal class GetDisplayAccounts(
         ) {
             flowOf(associateWith { false })
         } else {
-            val uuids = map { it.uuid }
+            val ids = map { it.id }
             notificationStream
                 .notifications
                 .map { notifications ->
                     notifications
-                        .filter { it is AuthenticationErrorNotification && it.accountUuid in uuids }
-                        .associateBy { it.accountUuid }
+                        .filter { it is AuthenticationErrorNotification && it.accountId in ids }
+                        .associateBy { it.accountId }
                 }
                 .map { notifications ->
-                    associateWith { account -> notifications[account.uuid] != null }
+                    associateWith { account -> notifications[account.id] != null }
                 }
         }
     }

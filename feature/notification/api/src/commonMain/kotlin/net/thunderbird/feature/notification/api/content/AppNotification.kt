@@ -5,6 +5,7 @@ import kotlin.time.ExperimentalTime
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
+import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.notification.api.LockscreenNotificationAppearance
 import net.thunderbird.feature.notification.api.NotificationChannel
 import net.thunderbird.feature.notification.api.NotificationGroup
@@ -20,6 +21,7 @@ import net.thunderbird.feature.notification.api.ui.style.SystemNotificationStyle
  * This interface defines the common properties that all notifications must have.
  * Must not be directly implemented. You must extend [AppNotification] instead.
  *
+ * @property accountId The account associated with the notification.
  * @property title The title of the notification.
  * @property accessibilityText The text to be used for accessibility purposes.
  * @property contentText The main content text of the notification, can be null.
@@ -30,7 +32,7 @@ import net.thunderbird.feature.notification.api.ui.style.SystemNotificationStyle
  * @see AppNotification
  */
 sealed interface Notification {
-    val accountUuid: String?
+    val accountId: AccountId?
     val title: String
     val accessibilityText: String
     val contentText: String?

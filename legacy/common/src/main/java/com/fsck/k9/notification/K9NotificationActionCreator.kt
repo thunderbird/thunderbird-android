@@ -122,7 +122,7 @@ internal class K9NotificationActionCreator(
     override fun getEditIncomingServerSettingsIntent(account: LegacyAccountDto): PendingIntent {
         val intent = FeatureLauncherActivity.getIntent(
             context = context,
-            target = FeatureLauncherTarget.AccountEditIncomingSettings(account.uuid),
+            target = FeatureLauncherTarget.AccountEditIncomingSettings(account.id),
         )
         return PendingIntentCompat.getActivity(context, account.accountNumber, intent, FLAG_UPDATE_CURRENT, false)!!
     }
@@ -130,7 +130,7 @@ internal class K9NotificationActionCreator(
     override fun getEditOutgoingServerSettingsIntent(account: LegacyAccountDto): PendingIntent {
         val intent = FeatureLauncherActivity.getIntent(
             context = context,
-            target = FeatureLauncherTarget.AccountEditOutgoingSettings(account.uuid),
+            target = FeatureLauncherTarget.AccountEditOutgoingSettings(account.id),
         )
         return PendingIntentCompat.getActivity(context, account.accountNumber, intent, FLAG_UPDATE_CURRENT, false)!!
     }

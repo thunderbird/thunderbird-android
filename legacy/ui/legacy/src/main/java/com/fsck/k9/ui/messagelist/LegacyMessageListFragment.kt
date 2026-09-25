@@ -2311,7 +2311,7 @@ class LegacyMessageListFragment :
     }
 
     override fun filterInAppNotificationEvents(notification: InAppNotification): Boolean {
-        val accountUuid = notification.accountUuid
+        val accountUuid = notification.accountId?.toString()
         return notification !is SentFolderNotFoundNotification &&
             accountUuid != null &&
             accountUuid in accountUuids
@@ -2324,13 +2324,13 @@ class LegacyMessageListFragment :
             is NotificationAction.UpdateIncomingServerSettings ->
                 FeatureLauncherActivity.launch(
                     context = requireContext(),
-                    target = FeatureLauncherTarget.AccountEditIncomingSettings(action.accountUuid),
+                    target = FeatureLauncherTarget.AccountEditIncomingSettings(action.accountId),
                 )
 
             is NotificationAction.UpdateOutgoingServerSettings ->
                 FeatureLauncherActivity.launch(
                     context = requireContext(),
-                    target = FeatureLauncherTarget.AccountEditOutgoingSettings(action.accountUuid),
+                    target = FeatureLauncherTarget.AccountEditOutgoingSettings(action.accountId),
                 )
 
             is NotificationAction.OpenNotificationCentre ->

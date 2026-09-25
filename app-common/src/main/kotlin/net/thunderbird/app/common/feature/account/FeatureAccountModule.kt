@@ -11,6 +11,7 @@ internal val appCommonFeatureAccountModule = module {
             messagingController = get(),
             backendManager = get(),
             localKeyStoreManager = get(),
+            accountManager = get(),
             preferences = get(),
             unifiedInboxConfigurator = get(),
             avatarImageRepository = get(),

@@ -738,7 +738,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
         return NotificationFactoryCoroutineCompat.create(
             continuation ->
                 AuthenticationErrorNotification.Companion.invoke(
-                    account.getUuid(),
+                    account.getId(),
                     account.getDisplayName(),
                     account.getAccountNumber(),
                     incoming,

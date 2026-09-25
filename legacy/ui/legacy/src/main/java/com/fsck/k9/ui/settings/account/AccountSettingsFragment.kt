@@ -43,6 +43,8 @@ import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.NO
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.account.QuoteStyle
 import net.thunderbird.core.common.provider.AppNameProvider
+import net.thunderbird.feature.account.AccountId
+import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.account.settings.api.BackgroundAccountRemover
 import net.thunderbird.feature.mail.folder.FolderType
 import net.thunderbird.feature.mail.folder.api.RemoteFolder
@@ -76,13 +78,16 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
     ) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             closeAccountSettings()
-            accountRemover.removeAccountAsync(accountUuid)
+            accountRemover.removeAccountAsync(accountId)
         }
     }
 
-    private val accountUuid: String by lazy {
-        checkNotNull(arguments?.getString(ARG_ACCOUNT_UUID)) { "$ARG_ACCOUNT_UUID == null" }
+    private val accountId: AccountId by lazy {
+        checkNotNull(
+            arguments?.getString(ARG_ACCOUNT_UUID)?.let { AccountIdFactory.of(it) }
+        ) { "$ARG_ACCOUNT_UUID == null" }
     }
+
     private var title: CharSequence? = null
 
     override fun onCreatePreferencesFix(savedInstanceState: Bundle?, rootKey: String?) {
@@ -165,7 +170,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         findPreference<Preference>(PREFERENCE_GENERAL)?.onClick {
             FeatureLauncherActivity.launch(
                 context = requireActivity(),
-                target = FeatureLauncherTarget.AccountSettings(accountUuid),
+                target = FeatureLauncherTarget.AccountSettings(accountId),
             )
         }
     }
@@ -174,7 +179,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         findPreference<Preference>(PREFERENCE_READING_MAIL)?.onClick {
             FeatureLauncherActivity.launch(
                 context = requireActivity(),
-                target = FeatureLauncherTarget.AccountReadingMailSettings(accountUuid),
+                target = FeatureLauncherTarget.AccountReadingMailSettings(accountId),
                 launcher = launcherForActivityResult,
             )
         }
@@ -184,7 +189,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         findPreference<Preference>(PREFERENCE_FETCHING_MAIL)?.onClick {
             FeatureLauncherActivity.launch(
                 context = requireActivity(),
-                target = FeatureLauncherTarget.AccountFetchingMailSettings(accountUuid),
+                target = FeatureLauncherTarget.AccountFetchingMailSettings(accountId),
                 launcher = launcherForActivityResult,
             )
         }
@@ -194,7 +199,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         findPreference<Preference>(PREFERENCE_SEARCH)?.onClick {
             FeatureLauncherActivity.launch(
                 context = requireActivity(),
-                target = FeatureLauncherTarget.AccountSearchSettings(accountUuid),
+                target = FeatureLauncherTarget.AccountSearchSettings(accountId),
                 launcher = launcherForActivityResult,
             )
         }
@@ -204,20 +209,20 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         findPreference<Preference>(PREFERENCE_INCOMING_SERVER)?.onClick {
             FeatureLauncherActivity.launch(
                 context = requireActivity(),
-                target = FeatureLauncherTarget.AccountEditIncomingSettings(accountUuid),
+                target = FeatureLauncherTarget.AccountEditIncomingSettings(accountId),
             )
         }
     }
 
     private fun initializeComposition() {
         findPreference<Preference>(PREFERENCE_COMPOSITION)?.onClick {
-            AccountSetupComposition.actionEditCompositionSettings(requireActivity(), accountUuid)
+            AccountSetupComposition.actionEditCompositionSettings(requireActivity(), accountId)
         }
     }
 
     private fun initializeManageIdentities() {
         findPreference<Preference>(PREFERENCE_MANAGE_IDENTITIES)?.onClick {
-            ManageIdentities.start(requireActivity(), accountUuid)
+            ManageIdentities.start(requireActivity(), accountId.toString())
         }
     }
 
@@ -233,7 +238,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         findPreference<Preference>(PREFERENCE_OUTGOING_SERVER)?.onClick {
             FeatureLauncherActivity.launch(
                 context = requireActivity(),
-                target = FeatureLauncherTarget.AccountEditOutgoingSettings(accountUuid),
+                target = FeatureLauncherTarget.AccountEditOutgoingSettings(accountId),
             )
         }
     }
@@ -477,7 +482,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
     }
 
     private fun getAccount(): LegacyAccountDto {
-        return viewModel.getAccountBlocking(accountUuid)
+        return viewModel.getAccountBlocking(accountId)
     }
 
     private fun onDeleteAccount() {
@@ -494,7 +499,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
 
     override fun doPositiveClick(dialogId: Int) {
         closeAccountSettings()
-        accountRemover.removeAccountAsync(accountUuid)
+        accountRemover.removeAccountAsync(accountId)
     }
 
     override fun doNegativeClick(dialogId: Int) = Unit

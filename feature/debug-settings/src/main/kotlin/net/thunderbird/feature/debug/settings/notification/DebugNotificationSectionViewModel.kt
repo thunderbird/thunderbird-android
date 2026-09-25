@@ -14,6 +14,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import net.thunderbird.core.common.resources.StringsResourceManager
 import net.thunderbird.core.ui.contract.mvi.BaseViewModel
+import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.debug.settings.R
 import net.thunderbird.feature.debug.settings.notification.DebugNotificationSectionContract.Effect
 import net.thunderbird.feature.debug.settings.notification.DebugNotificationSectionContract.Event
@@ -219,30 +220,30 @@ internal class DebugNotificationSectionViewModel(
     ): Notification? = when (notificationType) {
         AuthenticationErrorNotification::class -> AuthenticationErrorNotification(
             isIncomingServerError = true,
-            accountUuid = selectedAccount.uuid,
+            accountId = AccountIdFactory.of(selectedAccount.uuid),
             accountDisplayName = accountDisplay,
             accountNumber = 0,
         )
 
         CertificateErrorNotification::class -> CertificateErrorNotification(
             isIncomingServerError = true,
-            accountUuid = selectedAccount.uuid,
+            accountId = AccountIdFactory.of(selectedAccount.uuid),
             accountDisplayName = accountDisplay,
             accountNumber = 0,
         )
 
         FailedToCreateNotification::class -> FailedToCreateNotification(
-            accountUuid = selectedAccount.uuid,
+            accountId = AccountIdFactory.of(selectedAccount.uuid),
             failedNotification = AuthenticationErrorNotification(
                 isIncomingServerError = true,
-                accountUuid = selectedAccount.uuid,
+                accountId = AccountIdFactory.of(selectedAccount.uuid),
                 accountDisplayName = accountDisplay,
                 accountNumber = 0,
             ),
         )
 
         MailNotification.Fetching::class -> MailNotification.Fetching(
-            accountUuid = selectedAccount.uuid,
+            accountId = AccountIdFactory.of(selectedAccount.uuid),
             accountDisplayName = accountDisplay,
             folderName = state.folderName,
         )
@@ -253,7 +254,7 @@ internal class DebugNotificationSectionViewModel(
         )
 
         MailNotification.NewMailSummaryMail::class -> MailNotification.NewMailSummaryMail(
-            accountUuid = selectedAccount.uuid,
+            accountId = AccountIdFactory.of(selectedAccount.uuid),
             accountDisplayName = accountDisplay,
             messagesNotificationChannelSuffix = "",
             newMessageCount = 10,
@@ -265,12 +266,12 @@ internal class DebugNotificationSectionViewModel(
         )
 
         MailNotification.SendFailed::class -> MailNotification.SendFailed(
-            accountUuid = selectedAccount.uuid,
+            accountId = AccountIdFactory.of(selectedAccount.uuid),
             exception = Exception("What a failure"),
         )
 
         MailNotification.Sending::class -> MailNotification.Sending(
-            accountUuid = selectedAccount.uuid,
+            accountId = AccountIdFactory.of(selectedAccount.uuid),
             accountDisplayName = accountDisplay,
         )
 
@@ -295,7 +296,7 @@ internal class DebugNotificationSectionViewModel(
         selectedAccount: BaseAccount,
         accountDisplay: String,
     ): MailNotification.NewMailSingleMail? = MailNotification.NewMailSingleMail(
-        accountUuid = selectedAccount.uuid,
+        accountId = AccountIdFactory.of(selectedAccount.uuid),
         accountName = accountDisplay,
         messagesNotificationChannelSuffix = "",
         summary = singleNotificationData.summary,
