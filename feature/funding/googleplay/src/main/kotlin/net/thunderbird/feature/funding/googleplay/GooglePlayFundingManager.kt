@@ -2,7 +2,7 @@ package net.thunderbird.feature.funding.googleplay
 
 import net.thunderbird.feature.funding.api.FundingManager
 import net.thunderbird.feature.funding.api.FundingType
-import net.thunderbird.feature.funding.googleplay.ui.reminder.FundingReminderContract
+import net.thunderbird.feature.funding.common.api.FundingReminderContract
 
 class GooglePlayFundingManager(
     private val reminder: FundingReminderContract.Reminder,

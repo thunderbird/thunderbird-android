@@ -20,7 +20,8 @@ import net.thunderbird.components.ui.testing.coroutines.MainDispatcherHelper
 import net.thunderbird.core.android.common.activity.ActivityProvider
 import net.thunderbird.core.testing.TestClock
 import net.thunderbird.feature.funding.api.FundingSettings
-import net.thunderbird.feature.funding.googleplay.ui.reminder.FundingReminderContract.Dialog
+import net.thunderbird.feature.funding.common.api.FundingReminderContract
+import net.thunderbird.feature.funding.common.api.FundingReminderContract.Dialog
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 
