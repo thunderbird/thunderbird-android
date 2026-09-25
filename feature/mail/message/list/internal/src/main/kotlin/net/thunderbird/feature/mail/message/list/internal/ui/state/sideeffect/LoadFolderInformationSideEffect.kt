@@ -8,7 +8,7 @@ import net.thunderbird.core.logging.Logger
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.UnifiedAccountId
 import net.thunderbird.feature.account.profile.AccountProfileRepository
-import net.thunderbird.feature.mail.folder.api.FolderType
+import net.thunderbird.feature.mail.folder.FolderType
 import net.thunderbird.feature.mail.folder.api.data.repository.FolderQueryRepository
 import net.thunderbird.feature.mail.folder.api.data.repository.RemoteFolderQueryRepository
 import net.thunderbird.feature.mail.message.list.ui.effect.MessageListEffect

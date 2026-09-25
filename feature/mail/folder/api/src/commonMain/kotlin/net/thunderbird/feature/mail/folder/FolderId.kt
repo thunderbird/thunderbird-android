@@ -8,6 +8,6 @@ import net.thunderbird.core.architecture.model.BaseUuidIdentifier
  * Identifies a local folder record across all accounts.
  */
 @OptIn(ExperimentalUuidApi::class)
-class FolderId(
+public class FolderId(
     value: Uuid,
 ) : BaseUuidIdentifier(value)

@@ -1,6 +1,6 @@
 package app.k9mail.legacy.mailstore
 
-import net.thunderbird.feature.mail.folder.api.FolderType
+import net.thunderbird.feature.mail.folder.FolderType
 import com.fsck.k9.mail.FolderType as RemoteFolderType
 
 object RemoteFolderTypeMapper {

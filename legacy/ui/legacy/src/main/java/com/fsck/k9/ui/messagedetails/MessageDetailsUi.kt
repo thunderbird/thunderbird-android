@@ -3,7 +3,7 @@ package com.fsck.k9.ui.messagedetails
 import android.net.Uri
 import com.fsck.k9.mail.Address
 import com.fsck.k9.view.MessageCryptoDisplayStatus
-import net.thunderbird.feature.mail.folder.api.FolderType
+import net.thunderbird.feature.mail.folder.FolderType
 
 data class MessageDetailsUi(
     val date: String?,
