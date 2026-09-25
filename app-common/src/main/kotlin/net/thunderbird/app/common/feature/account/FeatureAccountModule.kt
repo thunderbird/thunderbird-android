@@ -14,6 +14,7 @@ val featureAccountModule = module {
             preferences = get(),
             unifiedInboxConfigurator = get(),
             avatarImageRepository = get(),
+            logger = get(),
         )
     }
     factory { (parameters: WorkerParameters) ->
