@@ -14,7 +14,7 @@ import com.fsck.k9.mail.ssl.LocalKeyStore
 import com.fsck.k9.mail.ssl.TrustManagerFactory
 import com.fsck.k9.mail.ssl.TrustedSocketFactory
 import com.fsck.k9.mailstore.LocalStoreProvider
-import com.fsck.k9.mailstore.mailStoreModule
+import com.fsck.k9.mailstore.legacyMailStoreModule
 import com.fsck.k9.message.extractors.extractorModule
 import com.fsck.k9.message.html.htmlModule
 import com.fsck.k9.message.quote.quoteModule
@@ -37,7 +37,7 @@ val legacyCoreModule = module {
         coreAndroidNetworkModule,
         openPgpModule,
         autocryptModule,
-        mailStoreModule,
+        legacyMailStoreModule,
         extractorModule,
         htmlModule,
         quoteModule,
