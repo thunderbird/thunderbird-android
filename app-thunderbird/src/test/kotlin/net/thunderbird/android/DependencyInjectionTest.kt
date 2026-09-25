@@ -24,6 +24,7 @@ import com.fsck.k9.view.K9WebViewClient
 import com.fsck.k9.view.MessageWebView
 import kotlin.test.Test
 import net.openid.appauth.AppAuthConfiguration
+import net.thunderbird.core.architecture.model.LegacyEntityIdFactory
 import net.thunderbird.core.common.mail.html.HtmlSettings
 import net.thunderbird.core.configstore.ConfigId
 import net.thunderbird.core.preference.storage.Storage
@@ -59,6 +60,7 @@ class DependencyInjectionTest {
                 Resources::class,
                 Storage::class,
                 ConfigId::class,
+                LegacyEntityIdFactory.ByteRepresentation::class,
             ),
             injections = injectedParameters(
                 definition<AccountRemoverWorker>(WorkerParameters::class),
@@ -78,6 +80,7 @@ class DependencyInjectionTest {
                 definition<SetupArchiveFolderDialogContract.ViewModel>(SetupArchiveFolderDialogContract.State::class),
                 definition<ThundermailContract.ViewModel>(ThundermailContract.State::class),
                 definition<MessageReaderViewContract.ViewModel<Part>>(MessageReaderViewContract.State::class),
+                definition<LegacyEntityIdFactory<*>>(Function1::class),
             ),
         )
     }

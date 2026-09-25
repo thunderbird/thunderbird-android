@@ -2,11 +2,20 @@ package com.fsck.k9.controller
 
 import app.k9mail.legacy.message.controller.MessageReference
 import app.k9mail.legacy.message.controller.MessagingListener
+import com.fsck.k9.backend.api.Backend
 import java.util.concurrent.Future
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.runBlocking
+import net.thunderbird.components.core.outcome.handle
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.account.LegacyAccountDtoManager
+import net.thunderbird.core.common.exception.MessagingException
 import net.thunderbird.core.common.mail.Flag
 import net.thunderbird.feature.account.AccountId
+import net.thunderbird.feature.mail.message.MessageId
+import net.thunderbird.feature.mail.message.domain.MessageLifecycleRepository
+import net.thunderbird.feature.mail.message.mapper.MessageDataMapper
+import com.fsck.k9.mail.Message as LegacyMessage
 
 /**
  * A wrapper around [MessagingController] that takes care of loading the account by [AccountId] and
@@ -218,4 +227,49 @@ class MessagingControllerWrapper(
     fun deleteMessages(messages: List<MessageReference>) = messagingController.deleteMessages(messages)
     fun archiveThreads(messages: List<MessageReference>) = messagingController.archiveThreads(messages)
     fun archiveMessages(messages: List<MessageReference>) = messagingController.archiveMessages(messages)
+}
+
+context(
+    messageDataMapper: MessageDataMapper<LegacyMessage>,
+    messageLifecycleRepository: MessageLifecycleRepository,
+)
+internal fun sendMessageCompat(
+    account: LegacyAccountDto,
+    message: LegacyMessage,
+    plaintextSubject: String?,
+    onSuccess: (MessageId) -> Unit,
+) = runBlocking {
+    message.setFlag(Flag.X_DOWNLOADED_FULL, true)
+    message.setFlag(Flag.SEEN, true)
+    message.setAccountUuid(account.uuid)
+
+    val domainMessage = messageDataMapper.toDomain(message)
+    val envelop = if (plaintextSubject.isNullOrBlank()) {
+        domainMessage.envelope
+    } else {
+        domainMessage.envelope.copy(subject = plaintextSubject)
+    }
+    val outcome = messageLifecycleRepository.create(
+        domainMessage.copy(envelope = envelop),
+        accountId = account.id,
+        folderId = null,
+    )
+
+    outcome.handle(
+        onSuccess = onSuccess,
+        onFailure = {
+            throw MessagingException("Failed to send message.", it.throwable)
+        },
+    )
+}
+
+@Throws(MessagingException::class)
+internal fun Backend.downloadCompleteMessageBlocking(
+    ioDispatcher: CoroutineDispatcher,
+    folderServerId: String,
+    messageServerId: String,
+) {
+    runBlocking(ioDispatcher) {
+        downloadCompleteMessage(folderServerId, messageServerId)
+    }
 }
