@@ -17,7 +17,7 @@ val fundingModule = module {
 
     single<FundingConfigStore> {
         DefaultFundingConfigStore(
-            id = ConfigId(backend = "funding", feature = "storage"),
+            id = ConfigId(backend = "funding_reminder", feature = "storage"),
             provider = get(),
             scope = get(named("ConfigStoreScope")),
         )
