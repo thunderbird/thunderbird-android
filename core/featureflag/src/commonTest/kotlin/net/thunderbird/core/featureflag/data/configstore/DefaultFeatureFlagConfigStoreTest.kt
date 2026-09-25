@@ -23,7 +23,7 @@ class DefaultFeatureFlagConfigStoreTest {
         // Arrange
         val backend = TestConfigBackend()
         val testSubject = createTestSubject(backend)
-        testSubject.update { current: FeatureFlagConfigData ->
+        testSubject.safeUpdate { current: FeatureFlagConfigData ->
             current.copy(overrides = mapOf("flag_a" to true, "flag_b" to false))
         }
 
@@ -39,7 +39,7 @@ class DefaultFeatureFlagConfigStoreTest {
         // Arrange
         val backend = TestConfigBackend()
         val testSubject = createTestSubject(backend)
-        testSubject.update { current: FeatureFlagConfigData ->
+        testSubject.safeUpdate { current: FeatureFlagConfigData ->
             current.copy(targetingKey = TARGETING_KEY, overrides = mapOf("flag_a" to true))
         }
 
@@ -56,10 +56,10 @@ class DefaultFeatureFlagConfigStoreTest {
         // Arrange
         val backend = TestConfigBackend()
         val testSubject = createTestSubject(backend)
-        testSubject.update { current: FeatureFlagConfigData -> current.copy(overrides = mapOf("flag_a" to true)) }
+        testSubject.safeUpdate { current: FeatureFlagConfigData -> current.copy(overrides = mapOf("flag_a" to true)) }
 
         // Act
-        testSubject.update { current: FeatureFlagConfigData -> current.copy(overrides = emptyMap()) }
+        testSubject.safeUpdate { current: FeatureFlagConfigData -> current.copy(overrides = emptyMap()) }
 
         // Assert
         assertThat(createTestSubject(backend).config.first().overrides).isEmpty()
