@@ -12,9 +12,20 @@ import net.thunderbird.core.featureflag.model.FeatureFlagCatalog
  */
 interface FeatureFlagCatalogDataSource {
     /**
-     * Loads the feature flag catalog as a reactive stream.
+     * Observes the most recently loaded feature flag catalog.
      *
-     * @return A Flow that emits the feature flag catalog containing flag definitions and overrides.
+     * Emits whenever [load] successfully retrieves a catalog, and replays the latest one to new
+     * subscribers. Emits nothing until the first successful [load] call, and does not emit on failure.
+     *
+     * @return A Flow of the most recently loaded feature flag catalog.
      */
-    fun load(): Flow<FeatureFlagCatalog>
+    fun observe(): Flow<FeatureFlagCatalog>
+
+    /**
+     * Loads the feature flag catalog.
+     *
+     * @return The feature flag catalog containing flag definitions and overrides, or `null` if the
+     *  catalog could not be loaded (e.g. disabled by configuration, or a network/parsing failure).
+     */
+    suspend fun load(): FeatureFlagCatalog?
 }

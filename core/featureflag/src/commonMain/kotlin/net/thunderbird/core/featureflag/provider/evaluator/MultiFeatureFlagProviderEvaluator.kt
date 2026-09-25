@@ -39,6 +39,7 @@ internal class DefaultMultiFeatureFlagProviderEvaluator(
 ),
     MultiFeatureFlagProviderEvaluator {
     private val scope: CoroutineScope = CoroutineScope(mainDispatcher)
+    override val metadata: ProviderMetadata = CatalogProviderMetadata(name = "multi_provider")
 
     init {
         scope.launch {
@@ -74,8 +75,6 @@ internal class DefaultMultiFeatureFlagProviderEvaluator(
         }
         return FeatureFlagResult.Unavailable
     }
-
-    override val metadata: ProviderMetadata = CatalogProviderMetadata(name = "multi_provider")
 
     override suspend fun initialize(initialContext: FeatureFlagContext) {
         super.initialize(initialContext)

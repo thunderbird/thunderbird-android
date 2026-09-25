@@ -1,7 +1,7 @@
 package net.thunderbird.core.featureflag.data
 
-import app.cash.turbine.test
 import assertk.all
+import assertk.assertFailure
 import assertk.assertThat
 import assertk.assertions.containsExactlyInAnyOrder
 import assertk.assertions.containsOnly
@@ -22,11 +22,14 @@ import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import kotlinx.serialization.SerializationException
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.modules.SerializersModule
 import net.thunderbird.core.featureflag.model.AppVariantOverridesRawType
 import net.thunderbird.core.featureflag.model.BaseAppVariantOverrides
 import net.thunderbird.core.featureflag.model.FeatureFlagCatalog
 import net.thunderbird.core.featureflag.model.FlagAttributeType
 import net.thunderbird.core.featureflag.model.FlagRegistry
+import net.thunderbird.core.featureflag.model.FlagRegistryOverride
 import net.thunderbird.core.featureflag.serialization.DefaultFeatureFlagCatalogJsonParser
 import net.thunderbird.core.featureflag.serialization.FeatureFlagCatalogJsonParser
 import net.thunderbird.core.featureflag.serialization.FlagRegistryOverrideSerializer
@@ -56,13 +59,11 @@ internal abstract class BaseLocalFeatureFlagCatalogDataSourceTest {
         val testSubject = createTestSubject()
 
         // Act
-        testSubject.load().test {
-            val catalog = awaitItem()
+        val catalog = testSubject.load()
 
-            // Assert
-            assertThat(catalog.version).isEqualTo(CATALOG_VERSION)
-            assertThat(catalog.flags).hasSize(CATALOG_FLAG_COUNT)
-        }
+        // Assert
+        assertThat(catalog.version).isEqualTo(CATALOG_VERSION)
+        assertThat(catalog.flags).hasSize(CATALOG_FLAG_COUNT)
     }
 
     @Test
@@ -71,14 +72,12 @@ internal abstract class BaseLocalFeatureFlagCatalogDataSourceTest {
         val testSubject = createTestSubject()
 
         // Act
-        testSubject.load().test {
-            val catalog = awaitItem()
+        val catalog = testSubject.load()
 
-            // Assert
-            assertThat(catalog.overrides.thunderbird.keys)
-                .containsExactlyInAnyOrder("debug", "daily", "beta", "release")
-            assertThat(catalog.overrides.k9.keys).containsExactlyInAnyOrder("debug", "release")
-        }
+        // Assert
+        assertThat(catalog.overrides.thunderbird.keys)
+            .containsExactlyInAnyOrder("debug", "daily", "beta", "release")
+        assertThat(catalog.overrides.k9.keys).containsExactlyInAnyOrder("debug", "release")
     }
 
     @Test
@@ -88,31 +87,29 @@ internal abstract class BaseLocalFeatureFlagCatalogDataSourceTest {
             val testSubject = createTestSubject()
 
             // Act
-            testSubject.load().test {
-                val catalog = awaitItem()
+            val catalog = testSubject.load()
 
-                // Assert
-                assertThat(catalog.overrides.thunderbird).all {
-                    key("debug").containsOnly(
-                        "display_in_app_notifications" to true,
-                        "use_notification_sender_for_system_notifications" to true,
-                        "message_view_action_export_eml" to true,
-                    )
-                    key("daily").containsOnly(
-                        "display_in_app_notifications" to true,
-                        "message_view_action_export_eml" to true,
-                    )
-                    key("beta").containsOnly("display_in_app_notifications" to true)
-                    key("release").isEmpty()
-                }
-                assertThat(catalog.overrides.k9).all {
-                    key("debug").containsOnly(
-                        "display_in_app_notifications" to true,
-                        "use_notification_sender_for_system_notifications" to true,
-                        "message_view_action_export_eml" to true,
-                    )
-                    key("release").isEmpty()
-                }
+            // Assert
+            assertThat(catalog.overrides.thunderbird).all {
+                key("debug").containsOnly(
+                    "display_in_app_notifications" to true,
+                    "use_notification_sender_for_system_notifications" to true,
+                    "message_view_action_export_eml" to true,
+                )
+                key("daily").containsOnly(
+                    "display_in_app_notifications" to true,
+                    "message_view_action_export_eml" to true,
+                )
+                key("beta").containsOnly("display_in_app_notifications" to true)
+                key("release").isEmpty()
+            }
+            assertThat(catalog.overrides.k9).all {
+                key("debug").containsOnly(
+                    "display_in_app_notifications" to true,
+                    "use_notification_sender_for_system_notifications" to true,
+                    "message_view_action_export_eml" to true,
+                )
+                key("release").isEmpty()
             }
         }
 
@@ -123,19 +120,17 @@ internal abstract class BaseLocalFeatureFlagCatalogDataSourceTest {
             val testSubject = createTestSubject()
 
             // Act
-            testSubject.load().test {
-                val catalog = awaitItem()
+            val catalog = testSubject.load()
 
-                // Assert
-                assertThat(catalog.flags.first { it.key == "archive_marks_as_read" }).all {
-                    prop(FlagRegistry::default).isTrue()
-                    prop(FlagRegistry::type).isEqualTo(FlagAttributeType.Boolean)
-                    prop(FlagRegistry::timeToPromote).isNull()
-                }
-                assertThat(catalog.flags.first { it.key == "use_new_message_reader_css_styles" })
-                    .prop(FlagRegistry::timeToPromote)
-                    .isEqualTo("2026-12-31")
+            // Assert
+            assertThat(catalog.flags.first { it.key == "archive_marks_as_read" }).all {
+                prop(FlagRegistry::default).isTrue()
+                prop(FlagRegistry::type).isEqualTo(FlagAttributeType.Boolean)
+                prop(FlagRegistry::timeToPromote).isNull()
             }
+            assertThat(catalog.flags.first { it.key == "use_new_message_reader_css_styles" })
+                .prop(FlagRegistry::timeToPromote)
+                .isEqualTo("2026-12-31")
         }
 
     @Test
@@ -147,14 +142,10 @@ internal abstract class BaseLocalFeatureFlagCatalogDataSourceTest {
                 jsonParser = FakeFeatureFlagCatalogJsonParser(Result.failure(parserFailure)),
             )
 
-            // Act
-            testSubject.load().test {
-                // Assert
-                assertThat(awaitError()).all {
-                    isInstanceOf<SerializationException>()
-                    hasMessage(MALFORMED_CATALOG_ERROR_MESSAGE)
-                }
-            }
+            // Act & Assert
+            assertFailure { testSubject.load() }
+                .isInstanceOf<SerializationException>()
+                .hasMessage(MALFORMED_CATALOG_ERROR_MESSAGE)
         }
 
     private fun TestScope.createTestSubject(
