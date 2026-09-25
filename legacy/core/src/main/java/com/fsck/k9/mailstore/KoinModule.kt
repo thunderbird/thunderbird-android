@@ -14,6 +14,7 @@ import com.fsck.k9.message.extractors.MessageFulltextCreator
 import com.fsck.k9.message.extractors.MessagePreviewCreator
 import net.thunderbird.backend.api.BackendStorageFactory
 import net.thunderbird.core.common.cache.TimeLimitedCache
+import net.thunderbird.feature.mail.folder.LegacyFolderIdFactory
 import net.thunderbird.feature.mail.folder.api.OutboxFolderManager
 import net.thunderbird.feature.mail.folder.api.data.repository.FolderDetailsRepository
 import net.thunderbird.feature.mail.folder.api.data.repository.FolderQueryRepository
@@ -77,6 +78,10 @@ val mailStoreModule = module {
             messageStoreManager = get(),
             specialFolderUpdaterFactory = get(),
             saveMessageDataCreator = get(),
+            messageLifecycleRepository = get(),
+            messageQueryRepository = get(),
+            folderIdLegacyEntityIdFactory = get<LegacyFolderIdFactory>(),
+            messageDataMapper = get(),
         )
     }
     factory { SpecialLocalFoldersCreator(preferences = get(), localStoreProvider = get(), outboxFolderManager = get()) }

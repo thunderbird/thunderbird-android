@@ -11,9 +11,13 @@ import com.fsck.k9.mailstore.SaveMessageDataCreator
 import com.fsck.k9.mailstore.SpecialLocalFoldersCreator
 import com.fsck.k9.notification.NotificationController
 import com.fsck.k9.notification.NotificationStrategy
+import net.thunderbird.core.architecture.model.LegacyEntityIdFactory
+import net.thunderbird.core.architecture.model.LegacyEntityIdFactory.ByteRepresentation
 import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.logging.Logger
+import net.thunderbird.feature.mail.folder.FolderId
 import net.thunderbird.feature.mail.folder.api.OutboxFolderManager
+import net.thunderbird.feature.mail.message.MessageId
 import net.thunderbird.feature.mail.message.list.LocalDeleteOperationDecider
 import net.thunderbird.feature.mail.message.list.LocalMessageUidPrefixProvider
 import net.thunderbird.feature.notification.api.NotificationManager
@@ -40,6 +44,10 @@ val controllerModule = module {
             get<Logger>(named("syncDebug")),
             get<NotificationManager>(),
             get<OutboxFolderManager>(),
+            get(),
+            get(),
+            get<LegacyEntityIdFactory<MessageId>>(named(ByteRepresentation.MESSAGE)),
+            get<LegacyEntityIdFactory<FolderId>>(named(ByteRepresentation.FOLDERS)),
         )
     } binds arrayOf(MessagingControllerRegistry::class)
 
