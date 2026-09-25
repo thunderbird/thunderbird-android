@@ -51,6 +51,10 @@ jobs:
           echo "BUILD_DIR=${BUILD_DIR}" >> $GITHUB_ENV
           echo "Building docs into ${BUILD_DIR}"
           mdbook build docs --dest-dir="${BUILD_DIR}"
+
+          # Copy the remote feature-flag catalog to the assets folder
+          cp "config/featureflag/thunderbird_mobile_featureflag.catalog.json" "${BUILD_DIR}/assets/thunderbird_mobile_featureflag.catalog.json"
+
           echo "Build output preview:"
           ls -la "${BUILD_DIR}" || true
 
