@@ -1,4 +1,4 @@
-package com.fsck.k9.account
+package net.thunderbird.app.common.feature.account
 
 import com.fsck.k9.Core
 import com.fsck.k9.LocalKeyStoreManager
@@ -9,9 +9,9 @@ import com.fsck.k9.mailstore.LocalStoreProvider
 import com.fsck.k9.preferences.UnifiedInboxConfigurator
 import kotlinx.coroutines.runBlocking
 import net.thunderbird.core.android.account.LegacyAccountDto
-import net.thunderbird.legacy.logging.Log
 import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.account.avatar.AvatarImageRepository
+import net.thunderbird.legacy.logging.Log
 
 /**
  * Removes an account and all associated data.
@@ -50,6 +50,7 @@ class AccountRemover(
         Log.v("Finished removing account '%s'.", accountName)
     }
 
+    @Suppress("TooGenericExceptionCaught")
     private fun removeAvatar(accountUuid: String) {
         runBlocking {
             try {
@@ -60,6 +61,7 @@ class AccountRemover(
         }
     }
 
+    @Suppress("TooGenericExceptionCaught")
     private fun removeLocalStore(account: LegacyAccountDto) {
         try {
             val localStore = localStoreProvider.getInstance(account)
@@ -73,6 +75,7 @@ class AccountRemover(
         localStoreProvider.removeInstance(account.uuid)
     }
 
+    @Suppress("TooGenericExceptionCaught")
     private fun removeBackend(account: LegacyAccountDto) {
         try {
             backendManager.removeBackend(account.id)
@@ -81,6 +84,7 @@ class AccountRemover(
         }
     }
 
+    @Suppress("TooGenericExceptionCaught")
     private fun removeCertificates(account: LegacyAccountDto) {
         try {
             localKeyStoreManager.deleteCertificates(account)

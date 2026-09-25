@@ -1,4 +1,4 @@
-package com.fsck.k9.account
+package net.thunderbird.app.common.feature.account
 
 import android.content.Context
 import net.thunderbird.feature.account.settings.api.BackgroundAccountRemover
