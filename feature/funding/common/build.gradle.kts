@@ -10,11 +10,6 @@ android {
 dependencies {
     implementation(projects.core.ui.compose.common)
     implementation(projects.core.ui.theme.api)
-
-    implementation(libs.android.material)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.androidx.core.ktx)
-    testImplementation(libs.junit)
 }
 
 codeCoverage {

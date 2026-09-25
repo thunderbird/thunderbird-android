@@ -5,5 +5,5 @@
     <string name="funding_reminder_decline">Not now</string>
     <string name="funding_reminder_donate">Donate</string>
     <string name="funding_reminder_roc_banner_content_description">Illustration of the Thunderbird mascot, Roc, carrying a letter in an envelope in the sky, surrounded by illustrations of hearts.</string>
+    <string name="funding_reminder_thunderbird_for_android">Thunderbird for Android</string>
 </resources>
-

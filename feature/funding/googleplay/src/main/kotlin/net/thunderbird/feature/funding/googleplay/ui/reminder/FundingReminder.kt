@@ -46,7 +46,7 @@ class FundingReminder(
     ) {
         scope.launch {
             // Wait a bit so settings can be ready to be used.
-            while (settings.getReminderReferenceTimestamp() != 0L && !settings.isReady()) {
+            while (wasReminderShown() && !settings.isReady()) {
                 delay(250.milliseconds)
             }
             val activity = activityProvider.getCurrent() as? AppCompatActivity ?: return@launch

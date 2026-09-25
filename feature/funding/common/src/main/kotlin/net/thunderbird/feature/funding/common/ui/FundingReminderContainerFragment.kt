@@ -7,17 +7,21 @@ import android.view.ViewGroup
 import android.view.Window
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
+import androidx.compose.ui.res.stringResource
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.setFragmentResult
 import kotlin.getValue
+import net.thunderbird.core.common.provider.AppNameProvider
 import net.thunderbird.core.ui.theme.api.FeatureThemeProvider
+import net.thunderbird.feature.funding.common.R
 import net.thunderbird.feature.funding.common.api.FundingReminderContract
 import org.koin.android.ext.android.inject
 
 class FundingReminderContainerFragment : DialogFragment() {
 
     private val themeProvider: FeatureThemeProvider by inject<FeatureThemeProvider>()
+    private val appNameProvider: AppNameProvider by inject<AppNameProvider>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         dialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -26,15 +30,15 @@ class FundingReminderContainerFragment : DialogFragment() {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
                 themeProvider.WithTheme(darkTheme = false) {
-                    FundingReminderContent(
-                        appNameHeader = "Thunderbird",
-                        appNameBody = "Thunderbird for Android",
-                        onClickDismiss = {
-                            dismiss()
+                    FundingReminderDialog(
+                        appNameHeader = appNameProvider.appName,
+                        appNameBody = if (appNameProvider.appName.lowercase().contains("thunderbird")) {
+                            stringResource(R.string.funding_reminder_thunderbird_for_android)
+                        } else {
+                            appNameProvider.appName
                         },
-                        onClickOk = {
-                            handlePositiveButton()
-                        },
+                        onDismissClick = ::dismiss,
+                        onOkClick = ::handlePositiveButton,
                     )
                 }
             }
