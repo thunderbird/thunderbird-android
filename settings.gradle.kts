@@ -320,3 +320,4 @@ check(JavaVersion.current().isCompatibleWith(JavaVersion.VERSION_21)) {
     """.trimIndent()
 }
 include(":feature:changelog:internal")
+include(":feature:funding:common")

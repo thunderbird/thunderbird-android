@@ -3,6 +3,7 @@ package net.thunderbird.feature.funding.googleplay.ui.reminder
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentManager.FragmentLifecycleCallbacks
+import net.thunderbird.feature.funding.common.api.FundingReminderContract
 
 class FragmentLifecycleObserver(
     private val targetFragmentTag: String,
