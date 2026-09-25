@@ -2,7 +2,7 @@ package app.k9mail.feature
 
 import net.thunderbird.feature.funding.api.FundingSettings
 
-@Suppress("TooManyFunctions")
+@Suppress("TooManyFunctions", "EmptyFunctionBlock")
 internal class K9FundingSettings : FundingSettings {
 
     override fun isReady(): Boolean = true
