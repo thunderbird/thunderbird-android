@@ -24,6 +24,10 @@ class FakeCoreResourceProvider : CoreResourceProvider {
         throw UnsupportedOperationException("not implemented")
     }
 
+    override fun suspiciousSenderPrefix(): String {
+        throw UnsupportedOperationException("not implemented")
+    }
+
     override fun messageHeaderFrom(): String {
         throw UnsupportedOperationException("not implemented")
     }

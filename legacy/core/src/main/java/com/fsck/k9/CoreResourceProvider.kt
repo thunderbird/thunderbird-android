@@ -8,6 +8,7 @@ interface CoreResourceProvider {
     fun contactDisplayNamePrefix(): String
     fun contactUnknownSender(): String
     fun contactUnknownRecipient(): String
+    fun suspiciousSenderPrefix(): String
 
     fun messageHeaderFrom(): String
     fun messageHeaderTo(): String
