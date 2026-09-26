@@ -43,7 +43,7 @@ val featureFundingModule = module {
 
     single<FundingManager> {
         LinkFundingManager(
-            reminder = get()
+            reminder = get(),
         )
     }
     single<FundingNavigation> { LinkFundingNavigation() }
