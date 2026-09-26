@@ -8,6 +8,7 @@ import com.fsck.k9.mail.AuthenticationFailedException
 import com.fsck.k9.mail.MessageDownloadState
 import com.fsck.k9.mail.internet.MimeMessage
 import java.util.Date
+import kotlinx.coroutines.runBlocking
 import net.thunderbird.core.common.mail.Flag
 import net.thunderbird.legacy.logging.Log
 import okhttp3.HttpUrl
@@ -175,7 +176,7 @@ class CommandSync(
     ) {
         if (destroyServerIds.isNotEmpty()) {
             Log.d("Removing messages no longer on server: %s", destroyServerIds)
-            backendFolder.destroyMessages(destroyServerIds)
+            runBlocking { backendFolder.destroyMessages(destroyServerIds) }
         }
 
         if (newServerIds.isEmpty()) {
@@ -200,7 +201,7 @@ class CommandSync(
                     setFlags(messageInfo.flags, true)
                 }
 
-                backendFolder.saveMessage(message, MessageDownloadState.FULL)
+                runBlocking { backendFolder.saveMessage(message, MessageDownloadState.FULL) }
             } else {
                 Log.d("Failed to download message: %s", messageInfo.serverId)
             }

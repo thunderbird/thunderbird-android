@@ -12,8 +12,8 @@ interface BackendFolder {
 
     fun getMessageServerIds(): Set<String>
     fun getAllMessagesAndEffectiveDates(): Map<String, Long?>
-    fun destroyMessages(messageServerIds: List<String>)
-    fun clearAllMessages()
+    suspend fun destroyMessages(messageServerIds: List<String>)
+    suspend fun clearAllMessages()
     fun getMoreMessages(): MoreMessages
     fun setMoreMessages(moreMessages: MoreMessages)
     fun setLastChecked(timestamp: Long)
@@ -21,7 +21,7 @@ interface BackendFolder {
     fun isMessagePresent(messageServerId: String): Boolean
     fun getMessageFlags(messageServerId: String): Set<Flag>
     fun setMessageFlag(messageServerId: String, flag: Flag, value: Boolean)
-    fun saveMessage(message: Message, downloadState: MessageDownloadState)
+    suspend fun saveMessage(message: Message, downloadState: MessageDownloadState)
     fun getOldestMessageDate(): Date?
     fun getFolderExtraString(name: String): String?
     fun setFolderExtraString(name: String, value: String?)

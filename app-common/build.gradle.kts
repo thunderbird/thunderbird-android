@@ -1,5 +1,6 @@
 plugins {
     id(ThunderbirdPlugins.Library.androidCompose)
+    alias(libs.plugins.tb.piisafe)
 }
 
 android {
@@ -20,6 +21,7 @@ dependencies {
 
     implementation(projects.legacy.core)
     implementation(projects.legacy.ui.base)
+    implementation(projects.legacy.storage)
     implementation(projects.core.android.account)
     implementation(projects.core.android.common)
 
@@ -50,6 +52,7 @@ dependencies {
     implementation(projects.feature.notification.impl)
     implementation(projects.feature.widget.messageList)
 
+    implementation(projects.feature.mail.message.api)
     implementation(projects.feature.mail.message.export.api)
     implementation(projects.feature.mail.message.export.implEml)
     implementation(projects.feature.mail.message.list.api)

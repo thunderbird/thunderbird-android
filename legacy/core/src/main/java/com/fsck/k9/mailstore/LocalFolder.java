@@ -1210,7 +1210,7 @@ public class LocalFolder {
         });
     }
 
-    private LegacyAccountDto getAccount() {
+    public LegacyAccountDto getAccount() {
         return localStore.getAccount();
     }
 
