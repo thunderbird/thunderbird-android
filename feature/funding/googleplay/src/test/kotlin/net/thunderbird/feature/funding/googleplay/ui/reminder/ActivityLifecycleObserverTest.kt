@@ -14,6 +14,7 @@ import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import net.thunderbird.components.ui.testing.coroutines.MainDispatcherHelper
 import net.thunderbird.core.testing.TestClock
+import net.thunderbird.feature.funding.common.ui.reminder.ActivityLifecycleObserver
 
 @OptIn(ExperimentalTime::class)
 class ActivityLifecycleObserverTest {

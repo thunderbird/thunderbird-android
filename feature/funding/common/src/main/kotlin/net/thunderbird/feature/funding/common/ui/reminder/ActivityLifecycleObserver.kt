@@ -1,4 +1,4 @@
-package net.thunderbird.feature.funding.googleplay.ui.reminder
+package net.thunderbird.feature.funding.common.ui.reminder
 
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle

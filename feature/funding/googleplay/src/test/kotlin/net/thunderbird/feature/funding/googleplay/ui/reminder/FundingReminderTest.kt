@@ -22,6 +22,7 @@ import net.thunderbird.core.testing.TestClock
 import net.thunderbird.feature.funding.api.FundingSettings
 import net.thunderbird.feature.funding.common.api.FundingReminderContract
 import net.thunderbird.feature.funding.common.api.FundingReminderContract.Dialog
+import net.thunderbird.feature.funding.common.ui.reminder.FundingReminder
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 

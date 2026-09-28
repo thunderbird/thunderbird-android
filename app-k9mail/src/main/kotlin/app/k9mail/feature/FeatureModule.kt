@@ -4,11 +4,7 @@ import app.k9mail.feature.migration.launcher.featureMigrationModule
 import app.k9mail.feature.onboarding.migration.onboardingMigrationModule
 import app.k9mail.feature.telemetry.telemetryModule
 import com.fsck.k9.BuildConfig
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
 import net.thunderbird.android.feature.mail.message.reader.api.css.DefaultCssClassNameProvider
-import net.thunderbird.app.common.feature.funding.configstore.DefaultFundingConfigStore
 import net.thunderbird.app.common.feature.funding.fundingModule
 import net.thunderbird.feature.account.settings.featureAccountSettingsModule
 import net.thunderbird.feature.funding.api.FundingSettings
@@ -16,7 +12,6 @@ import net.thunderbird.feature.funding.featureFundingModule
 import net.thunderbird.feature.mail.message.list.internal.featureMessageListModule
 import net.thunderbird.feature.mail.message.reader.api.css.CssClassNameProvider
 import net.thunderbird.feature.thundermail.thunderbird.inject.featureThundermailModule
-import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 val featureModule = module {
