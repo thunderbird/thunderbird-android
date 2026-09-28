@@ -1,6 +1,5 @@
 package net.thunderbird.core.featureflag.provider
 
-import kotlinx.coroutines.flow.firstOrNull
 import net.thunderbird.core.featureflag.data.FeatureFlagCatalogDataSource
 import net.thunderbird.core.featureflag.model.FeatureFlagCatalog
 import net.thunderbird.core.logging.Logger

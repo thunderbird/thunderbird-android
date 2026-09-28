@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<resources>
+    <string name="feature_flag_title">Feature flags</string>
+    <string name="feature_flag_unsaved_changes">Unsaved changes</string>
+    <string name="feature_flag_unsaved_changes_content_text">You have unsaved changes. Are you sure you want to leave?</string>
+    <string name="feature_flag_unsaved_changes_stay_button">Stay</string>
+    <string name="feature_flag_unsaved_changes_leave_button">Leave</string>
+    <string name="feature_flag_restore_default_values">Restore Default Values</string>
+    <string name="feature_flag_apply_changes">Apply changes</string>
+    <string name="feature_flag_modified_indicator" translatable="false">*</string>
+    <string name="feature_flag_overridden">overridden; </string>
+    <string name="feature_flag_default_value">default value: %1$s</string>
+</resources>

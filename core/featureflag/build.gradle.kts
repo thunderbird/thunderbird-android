@@ -6,7 +6,7 @@ import net.thunderbird.gradle.plugin.featureflag.task.registerGenerateFeatureFla
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 
 plugins {
-    id(ThunderbirdPlugins.Library.kmp)
+    id(ThunderbirdPlugins.Library.kmpCompose)
     alias(libs.plugins.tb.featureflag.library)
 }
 
@@ -49,6 +49,12 @@ kotlin {
         androidHostTest.dependencies {
             implementation(libs.robolectric)
         }
+    }
+}
+
+compose {
+    resources {
+        packageOfResClass = "net.thunderbird.core.featureflag.resources"
     }
 }
 
