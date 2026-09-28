@@ -960,4 +960,6 @@
     <string name="account_settings_signature_clear_label">Ondertekening wissen</string>
     <string name="message_compose_encrypting_message">Bericht versleutelen…</string>
     <string name="message_view_from_me_text">ik</string>
+    <string name="account_settings_signature_preview_empty">Het voorbeeld van uw ondertekening zal hier verschijnen</string>
+    <string name="error_no_contact_provider">Er is geen contacten-app gevonden. Installeer een contacten-app om dit adres toe te voegen.</string>
 </resources>
