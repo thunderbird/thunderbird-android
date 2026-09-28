@@ -5,6 +5,7 @@ import androidx.fragment.app.FragmentManager
 import assertk.assertThat
 import assertk.assertions.isFalse
 import assertk.assertions.isTrue
+import net.thunderbird.feature.funding.common.ui.reminder.FragmentLifecycleObserver
 import org.junit.Test
 import org.mockito.ArgumentMatchers.eq
 import org.mockito.kotlin.argumentCaptor

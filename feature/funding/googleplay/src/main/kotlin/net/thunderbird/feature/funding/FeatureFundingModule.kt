@@ -3,6 +3,10 @@ package net.thunderbird.feature.funding
 import net.thunderbird.feature.funding.api.FundingManager
 import net.thunderbird.feature.funding.api.FundingNavigation
 import net.thunderbird.feature.funding.common.api.FundingReminderContract
+import net.thunderbird.feature.funding.common.ui.reminder.ActivityLifecycleObserver
+import net.thunderbird.feature.funding.common.ui.reminder.FragmentLifecycleObserver
+import net.thunderbird.feature.funding.common.ui.reminder.FundingReminder
+import net.thunderbird.feature.funding.common.ui.reminder.FundingReminderDialog
 import net.thunderbird.feature.funding.googleplay.GooglePlayFundingManager
 import net.thunderbird.feature.funding.googleplay.GooglePlayFundingNavigation
 import net.thunderbird.feature.funding.googleplay.data.fundingDataModule
@@ -16,10 +20,6 @@ import net.thunderbird.feature.funding.googleplay.ui.contribution.list.Contribut
 import net.thunderbird.feature.funding.googleplay.ui.contribution.list.ContributionListSliceFactory
 import net.thunderbird.feature.funding.googleplay.ui.contribution.purchase.PurchaseSliceContract
 import net.thunderbird.feature.funding.googleplay.ui.contribution.purchase.PurchaseSliceFactory
-import net.thunderbird.feature.funding.googleplay.ui.reminder.ActivityLifecycleObserver
-import net.thunderbird.feature.funding.googleplay.ui.reminder.FragmentLifecycleObserver
-import net.thunderbird.feature.funding.googleplay.ui.reminder.FundingReminder
-import net.thunderbird.feature.funding.googleplay.ui.reminder.FundingReminderDialog
 import org.koin.core.module.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
