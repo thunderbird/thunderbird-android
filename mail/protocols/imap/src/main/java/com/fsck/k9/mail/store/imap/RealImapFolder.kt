@@ -566,7 +566,8 @@ internal class RealImapFolder(
     }
 
     @Throws(MessagingException::class)
-    override fun fetch(
+    @Suppress("CyclomaticComplexMethod", "LongMethod", "NestedBlockDepth")
+    override suspend fun fetch(
         messages: List<ImapMessage>,
         fetchProfile: FetchProfile,
         listener: FetchListener?,
