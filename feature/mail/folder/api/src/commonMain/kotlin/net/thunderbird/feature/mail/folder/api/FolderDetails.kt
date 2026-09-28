@@ -3,7 +3,7 @@ package net.thunderbird.feature.mail.folder.api
 import net.thunderbird.piisafe.annotation.PiiSafe
 
 @PiiSafe.HasPii
-data class FolderDetails(
+public data class FolderDetails(
     override val folder: Folder,
     override val isInTopGroup: Boolean,
     override val isIntegrate: Boolean,
@@ -14,7 +14,7 @@ data class FolderDetails(
 ) : BaseFolderDetails<Folder>
 
 @PiiSafe.HasPii
-data class RemoteFolderDetails(
+public data class RemoteFolderDetails(
     override val folder: RemoteFolder,
     override val isInTopGroup: Boolean,
     override val isIntegrate: Boolean,
@@ -24,12 +24,12 @@ data class RemoteFolderDetails(
     override val isPushEnabled: Boolean,
 ) : BaseFolderDetails<RemoteFolder>
 
-sealed interface BaseFolderDetails<TFolder> {
-    val folder: TFolder
-    val isInTopGroup: Boolean
-    val isIntegrate: Boolean
-    val isSyncEnabled: Boolean
-    val isVisible: Boolean
-    val isNotificationsEnabled: Boolean
-    val isPushEnabled: Boolean
+public sealed interface BaseFolderDetails<TFolder> {
+    public val folder: TFolder
+    public val isInTopGroup: Boolean
+    public val isIntegrate: Boolean
+    public val isSyncEnabled: Boolean
+    public val isVisible: Boolean
+    public val isNotificationsEnabled: Boolean
+    public val isPushEnabled: Boolean
 }

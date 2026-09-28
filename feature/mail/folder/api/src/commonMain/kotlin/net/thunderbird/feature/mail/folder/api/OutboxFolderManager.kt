@@ -12,7 +12,7 @@ import net.thunderbird.feature.account.AccountIdFactory
  * An outbox folder is a special folder used to store messages that are waiting to be sent.
  * This interface provides methods for getting and creating outbox folders.
  */
-interface OutboxFolderManager {
+public interface OutboxFolderManager {
     /**
      * Gets the folder ID of the outbox folder for the given account.
      *
@@ -21,7 +21,7 @@ interface OutboxFolderManager {
      * @return The folder ID of the outbox folder.
      * @throws IllegalStateException If the outbox folder could not be found.
      */
-    suspend fun getOutboxFolderId(accountId: AccountId, createIfMissing: Boolean = true): Long
+    public suspend fun getOutboxFolderId(accountId: AccountId, createIfMissing: Boolean = true): Long
 
     /**
      * Gets the outbox folder ID for the given account.
@@ -32,7 +32,7 @@ interface OutboxFolderManager {
      * @return The outbox folder ID.
      */
     @Discouraged(message = "Avoid blocking calls from the main thread. Use getOutboxFolderId instead.")
-    fun getOutboxFolderIdSync(accountId: AccountId, createIfMissing: Boolean = true): Long = runBlocking {
+    public fun getOutboxFolderIdSync(accountId: AccountId, createIfMissing: Boolean = true): Long = runBlocking {
         getOutboxFolderId(accountId, createIfMissing)
     }
 
@@ -43,7 +43,7 @@ interface OutboxFolderManager {
      * @return An [Outcome] that resolves to the ID of the created outbox folder on success,
      * or an [Exception] on failure.
      */
-    suspend fun createOutboxFolder(accountId: AccountId): Outcome<Long, Exception>
+    public suspend fun createOutboxFolder(accountId: AccountId): Outcome<Long, Exception>
 
     /**
      * Checks if there are any pending messages in the outbox for the given account.
@@ -51,7 +51,7 @@ interface OutboxFolderManager {
      * @param accountId The ID of the account.
      * @return `true` if there are pending messages, `false` otherwise.
      */
-    suspend fun hasPendingMessages(accountId: AccountId): Boolean
+    public suspend fun hasPendingMessages(accountId: AccountId): Boolean
 }
 
 /**
@@ -66,7 +66,7 @@ interface OutboxFolderManager {
         "Always use getOutboxFolderIdSync(uuid: AccountId) instead on Kotlin files.",
 )
 @JvmOverloads
-fun OutboxFolderManager.getOutboxFolderIdSync(accountId: String, createIfMissing: Boolean = true): Long {
+public fun OutboxFolderManager.getOutboxFolderIdSync(accountId: String, createIfMissing: Boolean = true): Long {
     return getOutboxFolderIdSync(accountId = AccountIdFactory.of(accountId), createIfMissing = createIfMissing)
 }
 
@@ -84,6 +84,6 @@ fun OutboxFolderManager.getOutboxFolderIdSync(accountId: String, createIfMissing
     message = "This is a wrapper for Java compatibility. " +
         "Always use hasPendingMessages(uuid: AccountId): Boolean instead on Kotlin files.",
 )
-fun OutboxFolderManager.hasPendingMessagesSync(accountId: String): Boolean = runBlocking {
+public fun OutboxFolderManager.hasPendingMessagesSync(accountId: String): Boolean = runBlocking {
     hasPendingMessages(accountId = AccountIdFactory.of(accountId))
 }

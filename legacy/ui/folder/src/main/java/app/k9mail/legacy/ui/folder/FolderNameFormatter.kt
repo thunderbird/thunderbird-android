@@ -2,7 +2,7 @@ package app.k9mail.legacy.ui.folder
 
 import android.content.res.Resources
 import net.thunderbird.feature.mail.folder.api.Folder
-import net.thunderbird.feature.mail.folder.api.FolderType
+import net.thunderbird.feature.mail.folder.FolderType
 import net.thunderbird.feature.mail.folder.api.RemoteFolder
 
 class FolderNameFormatter(private val resources: Resources) {
