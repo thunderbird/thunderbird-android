@@ -66,7 +66,7 @@ internal open class TestImapFolder(
         throw UnsupportedOperationException("not implemented")
     }
 
-    override fun fetch(
+    override suspend fun fetch(
         messages: List<ImapMessage>,
         fetchProfile: FetchProfile,
         listener: FetchListener?,

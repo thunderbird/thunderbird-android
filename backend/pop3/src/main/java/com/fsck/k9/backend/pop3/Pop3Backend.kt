@@ -52,7 +52,7 @@ class Pop3Backend(
         throw UnsupportedOperationException("not implemented")
     }
 
-    override fun downloadCompleteMessage(folderServerId: String, messageServerId: String) {
+    override suspend fun downloadCompleteMessage(folderServerId: String, messageServerId: String) {
         commandDownloadMessage.downloadCompleteMessage(folderServerId, messageServerId)
     }
 

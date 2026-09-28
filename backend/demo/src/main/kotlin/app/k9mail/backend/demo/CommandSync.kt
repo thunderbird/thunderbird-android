@@ -10,7 +10,7 @@ internal class CommandSync(
     private val demoStore: DemoStore,
 ) {
 
-    fun sync(folderServerId: String, listener: SyncListener) {
+    suspend fun sync(folderServerId: String, listener: SyncListener) {
         listener.syncStarted(folderServerId)
 
         val folder = demoStore.getFolder(folderServerId)

@@ -13,7 +13,7 @@ internal class CommandSendMessage(
     private val demoStore: DemoStore,
 ) {
 
-    fun sendMessage(message: Message) {
+    suspend fun sendMessage(message: Message) {
         val inboxServerId = demoStore.getInboxFolderId()
         val backendFolder = backendStorage.getFolder(inboxServerId)
 

@@ -16,6 +16,7 @@ import java.util.ArrayList
 import java.util.Date
 import java.util.HashMap
 import java.util.concurrent.atomic.AtomicInteger
+import kotlinx.coroutines.runBlocking
 import net.thunderbird.core.common.exception.MessagingException
 import net.thunderbird.core.common.exception.rootCauseMessage
 import net.thunderbird.core.common.mail.Flag
@@ -420,12 +421,13 @@ internal class Pop3Sync(
 
                 // Store the updated message locally
                 val completeMessage = message.isSet(Flag.X_DOWNLOADED_FULL)
-                if (completeMessage) {
-                    backendFolder.saveMessage(message, MessageDownloadState.FULL)
-                } else {
-                    backendFolder.saveMessage(message, MessageDownloadState.PARTIAL)
+                runBlocking {
+                    if (completeMessage) {
+                        backendFolder.saveMessage(message, MessageDownloadState.FULL)
+                    } else {
+                        backendFolder.saveMessage(message, MessageDownloadState.PARTIAL)
+                    }
                 }
-
                 val isOldMessage = isOldMessage(backendFolder, message)
                 listener.syncNewMessage(
                     folderServerId = folder,
@@ -538,7 +540,9 @@ internal class Pop3Sync(
                 try {
                     // Store the updated message locally
 
-                    backendFolder.saveMessage(message, MessageDownloadState.FULL)
+                    runBlocking {
+                        backendFolder.saveMessage(message, MessageDownloadState.FULL)
+                    }
                     progress.incrementAndGet()
 
                     // Increment the number of "new messages" if the newly downloaded message is
@@ -676,10 +680,12 @@ internal class Pop3Sync(
         }
 
         // Store the updated message locally
-        if (completeMessage) {
-            backendFolder.saveMessage(message, MessageDownloadState.FULL)
-        } else {
-            backendFolder.saveMessage(message, MessageDownloadState.PARTIAL)
+        runBlocking {
+            if (completeMessage) {
+                backendFolder.saveMessage(message, MessageDownloadState.FULL)
+            } else {
+                backendFolder.saveMessage(message, MessageDownloadState.PARTIAL)
+            }
         }
     }
 

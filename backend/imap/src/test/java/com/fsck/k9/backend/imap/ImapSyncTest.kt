@@ -19,6 +19,7 @@ import com.fsck.k9.mail.store.imap.FetchListener
 import com.fsck.k9.mail.store.imap.ImapMessage
 import com.fsck.k9.mail.testing.message.buildMessage
 import java.util.Date
+import kotlinx.coroutines.test.runTest
 import net.thunderbird.core.common.mail.Flag
 import net.thunderbird.core.logging.testing.TestLogger
 import net.thunderbird.legacy.logging.Log
@@ -54,7 +55,7 @@ class ImapSyncTest {
     }
 
     @Test
-    fun `sync of empty folder should notify listener`() {
+    fun `sync of empty folder should notify listener`() = runTest {
         imapSync.sync(FOLDER_SERVER_ID, defaultSyncConfig, syncListener)
 
         verify(syncListener).syncStarted(FOLDER_SERVER_ID)
@@ -64,7 +65,7 @@ class ImapSyncTest {
     }
 
     @Test
-    fun `sync of folder with negative messageCount should return an error`() {
+    fun `sync of folder with negative messageCount should return an error`() = runTest {
         imapFolder.messageCount = -1
 
         imapSync.sync(FOLDER_SERVER_ID, defaultSyncConfig, syncListener)
@@ -77,14 +78,14 @@ class ImapSyncTest {
     }
 
     @Test
-    fun `successful sync should close folder`() {
+    fun `successful sync should close folder`() = runTest {
         imapSync.sync(FOLDER_SERVER_ID, defaultSyncConfig, syncListener)
 
         assertThat(imapFolder.isClosed).isTrue()
     }
 
     @Test
-    fun `sync with error should close folder`() {
+    fun `sync with error should close folder`() = runTest {
         imapFolder.messageCount = -1
 
         imapSync.sync(FOLDER_SERVER_ID, defaultSyncConfig, syncListener)
@@ -93,7 +94,7 @@ class ImapSyncTest {
     }
 
     @Test
-    fun `sync with ExpungePolicy ON_POLL should expunge remote folder`() {
+    fun `sync with ExpungePolicy ON_POLL should expunge remote folder`() = runTest {
         val syncConfig = defaultSyncConfig.copy(expungePolicy = ExpungePolicy.ON_POLL)
 
         imapSync.sync(FOLDER_SERVER_ID, syncConfig, syncListener)
@@ -102,7 +103,7 @@ class ImapSyncTest {
     }
 
     @Test
-    fun `sync with ExpungePolicy MANUALLY should not expunge remote folder`() {
+    fun `sync with ExpungePolicy MANUALLY should not expunge remote folder`() = runTest {
         val syncConfig = defaultSyncConfig.copy(expungePolicy = ExpungePolicy.MANUALLY)
 
         imapSync.sync(FOLDER_SERVER_ID, syncConfig, syncListener)
@@ -111,7 +112,7 @@ class ImapSyncTest {
     }
 
     @Test
-    fun `sync with ExpungePolicy IMMEDIATELY should not expunge remote folder`() {
+    fun `sync with ExpungePolicy IMMEDIATELY should not expunge remote folder`() = runTest {
         val syncConfig = defaultSyncConfig.copy(expungePolicy = ExpungePolicy.IMMEDIATELY)
 
         imapSync.sync(FOLDER_SERVER_ID, syncConfig, syncListener)
@@ -120,7 +121,7 @@ class ImapSyncTest {
     }
 
     @Test
-    fun `sync with syncRemoteDeletions=true should remove local messages`() {
+    fun `sync with syncRemoteDeletions=true should remove local messages`() = runTest {
         addMessageToBackendFolder(uid = 42)
         val syncConfig = defaultSyncConfig.copy(syncRemoteDeletions = true)
 
@@ -132,7 +133,7 @@ class ImapSyncTest {
     }
 
     @Test
-    fun `sync with syncRemoteDeletions=false should not remove local messages`() {
+    fun `sync with syncRemoteDeletions=false should not remove local messages`() = runTest {
         addMessageToBackendFolder(uid = 23)
         val syncConfig = defaultSyncConfig.copy(syncRemoteDeletions = false)
 
@@ -144,7 +145,7 @@ class ImapSyncTest {
     }
 
     @Test
-    fun `sync should remove messages older than earliestPollDate`() {
+    fun `sync should remove messages older than earliestPollDate`() = runTest {
         addMessageToImapAndBackendFolder(uid = 23, date = "Mon, 03 Jan 2022 10:00:00 +0100")
         addMessageToImapAndBackendFolder(uid = 42, date = "Wed, 05 Jan 2022 20:00:00 +0100")
         val syncConfig = defaultSyncConfig.copy(
@@ -158,7 +159,7 @@ class ImapSyncTest {
     }
 
     @Test
-    fun `sync with new messages on server should download messages`() {
+    fun `sync with new messages on server should download messages`() = runTest {
         addMessageToImapFolder(uid = 9)
         addMessageToImapFolder(uid = 13)
 
@@ -170,7 +171,7 @@ class ImapSyncTest {
     }
 
     @Test
-    fun `sync downloading old messages should notify listener with isOldMessage=true`() {
+    fun `sync downloading old messages should notify listener with isOldMessage=true`() = runTest {
         addMessageToBackendFolder(uid = 42)
         addMessageToImapFolder(uid = 23)
         addMessageToImapFolder(uid = 42)
@@ -182,7 +183,7 @@ class ImapSyncTest {
     }
 
     @Test
-    fun `determining the highest UID should use numerical ordering`() {
+    fun `determining the highest UID should use numerical ordering`() = runTest {
         addMessageToBackendFolder(uid = 9)
         addMessageToBackendFolder(uid = 100)
         // When text ordering is used: "9" > "100" -> highest UID = 9 (when it should be 100)
@@ -195,7 +196,7 @@ class ImapSyncTest {
     }
 
     @Test
-    fun `sync should update flags of existing messages`() {
+    fun `sync should update flags of existing messages`() = runTest {
         addMessageToBackendFolder(uid = 2)
         addMessageToImapFolder(uid = 2, flags = setOf(Flag.SEEN, Flag.ANSWERED))
 
@@ -205,7 +206,7 @@ class ImapSyncTest {
     }
 
     @Test
-    fun `sync with UIDVALIDITY change should clear all messages`() {
+    fun `sync with UIDVALIDITY change should clear all messages`() = runTest {
         imapFolder.setUidValidity(1)
         addMessageToImapFolder(uid = 300)
         addMessageToImapFolder(uid = 301)
@@ -226,11 +227,11 @@ class ImapSyncTest {
     }
 
     @Test
-    fun `sync with multiple FETCH responses when downloading small message should report correct progress`() {
+    fun `sync with multiple FETCH responses when downloading small message should report correct progress`() = runTest {
         val folderServerId = "FOLDER_TWO"
         backendStorage.createBackendFolder(folderServerId)
         val specialImapFolder = object : TestImapFolder(folderServerId) {
-            override fun fetch(
+            override suspend fun fetch(
                 messages: List<ImapMessage>,
                 fetchProfile: FetchProfile,
                 listener: FetchListener?,
@@ -254,7 +255,7 @@ class ImapSyncTest {
         verify(syncListener, never()).syncProgress(folderServerId, completed = 2, total = 1)
     }
 
-    private fun addMessageToBackendFolder(uid: Long, date: String = DEFAULT_MESSAGE_DATE) {
+    private suspend fun addMessageToBackendFolder(uid: Long, date: String = DEFAULT_MESSAGE_DATE) {
         val messageServerId = uid.toString()
         val message = createSimpleMessage(messageServerId, date).apply {
             setUid(messageServerId)
@@ -286,7 +287,7 @@ class ImapSyncTest {
         }
     }
 
-    private fun addMessageToImapAndBackendFolder(uid: Long, date: String) {
+    private suspend fun addMessageToImapAndBackendFolder(uid: Long, date: String) {
         addMessageToBackendFolder(uid, date)
         addMessageToImapFolder(uid, date = date)
     }

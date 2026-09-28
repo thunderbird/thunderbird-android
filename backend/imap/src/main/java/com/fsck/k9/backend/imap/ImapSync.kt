@@ -30,11 +30,12 @@ internal class ImapSync(
     private val backendStorage: BackendStorage,
     private val imapStore: ImapStore,
 ) {
-    fun sync(folder: String, syncConfig: SyncConfig, listener: SyncListener) {
+    suspend fun sync(folder: String, syncConfig: SyncConfig, listener: SyncListener) {
         synchronizeMailboxSynchronous(folder, syncConfig, listener)
     }
 
-    private fun synchronizeMailboxSynchronous(folder: String, syncConfig: SyncConfig, listener: SyncListener) {
+    @Suppress("CyclomaticComplexMethod", "LongMethod")
+    private suspend fun synchronizeMailboxSynchronous(folder: String, syncConfig: SyncConfig, listener: SyncListener) {
         Log.i("Synchronizing folder %s:%s", accountName, folder)
 
         var remoteFolder: ImapFolder? = null
@@ -267,7 +268,7 @@ internal class ImapSync(
         }
     }
 
-    fun downloadMessage(syncConfig: SyncConfig, folderServerId: String, messageServerId: String) {
+    suspend fun downloadMessage(syncConfig: SyncConfig, folderServerId: String, messageServerId: String) {
         val backendFolder = backendStorage.getFolder(folderServerId)
         val remoteFolder = imapStore.getFolder(folderServerId)
         try {
@@ -297,7 +298,8 @@ internal class ImapSync(
      * @param inputMessages
      * A list of messages objects that store the UIDs of which messages to download.
      */
-    private fun downloadMessages(
+    @Suppress("LongMethod")
+    private suspend fun downloadMessages(
         syncConfig: SyncConfig,
         remoteFolder: ImapFolder,
         backendFolder: BackendFolder,
@@ -463,7 +465,7 @@ internal class ImapSync(
         return false
     }
 
-    private fun fetchUnsyncedMessages(
+    private suspend fun fetchUnsyncedMessages(
         syncConfig: SyncConfig,
         remoteFolder: ImapFolder,
         unsyncedMessages: List<ImapMessage>,
@@ -483,7 +485,7 @@ internal class ImapSync(
             messages = unsyncedMessages,
             fetchProfile = fetchProfile,
             listener = object : FetchListener {
-                override fun onFetchResponse(message: ImapMessage, isFirstResponse: Boolean) {
+                override suspend fun onFetchResponse(message: ImapMessage, isFirstResponse: Boolean) {
                     try {
                         if (message.isSet(Flag.DELETED)) {
                             Log.v(
@@ -519,7 +521,7 @@ internal class ImapSync(
         )
     }
 
-    private fun downloadSmallMessages(
+    private suspend fun downloadSmallMessages(
         remoteFolder: ImapFolder,
         backendFolder: BackendFolder,
         smallMessages: List<ImapMessage>,
@@ -540,7 +542,7 @@ internal class ImapSync(
             messages = smallMessages,
             fetchProfile = fetchProfile,
             listener = object : FetchListener {
-                override fun onFetchResponse(message: ImapMessage, isFirstResponse: Boolean) {
+                override suspend fun onFetchResponse(message: ImapMessage, isFirstResponse: Boolean) {
                     try {
                         // Store the updated message locally
                         backendFolder.saveMessage(message, MessageDownloadState.FULL)
@@ -578,7 +580,7 @@ internal class ImapSync(
         Log.d("SYNC: Done fetching small messages for folder %s", folder)
     }
 
-    private fun downloadLargeMessages(
+    private suspend fun downloadLargeMessages(
         remoteFolder: ImapFolder,
         backendFolder: BackendFolder,
         largeMessages: List<ImapMessage>,
@@ -634,7 +636,7 @@ internal class ImapSync(
         Log.d("SYNC: Done fetching large messages for folder %s", folder)
     }
 
-    private fun refreshLocalMessageFlags(
+    private suspend fun refreshLocalMessageFlags(
         syncConfig: SyncConfig,
         remoteFolder: ImapFolder,
         backendFolder: BackendFolder,
@@ -673,7 +675,7 @@ internal class ImapSync(
         }
     }
 
-    private fun downloadSaneBody(
+    private suspend fun downloadSaneBody(
         remoteFolder: ImapFolder,
         backendFolder: BackendFolder,
         message: ImapMessage,
@@ -703,7 +705,7 @@ internal class ImapSync(
         backendFolder.saveMessage(message, MessageDownloadState.PARTIAL)
     }
 
-    private fun downloadPartial(
+    private suspend fun downloadPartial(
         remoteFolder: ImapFolder,
         backendFolder: BackendFolder,
         message: ImapMessage,
