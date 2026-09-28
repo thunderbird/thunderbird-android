@@ -42,7 +42,7 @@ internal class CreateArchiveFolder(
         }
 
         val account = withContext(ioDispatcher) {
-            accountManager.getById(accountId).firstOrNull()
+            accountManager.getByIdFlow(accountId).firstOrNull()
         } ?: run {
             emit(Outcome.failure(CreateArchiveFolderOutcome.Error.AccountNotFound))
             return@flow

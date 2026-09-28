@@ -71,7 +71,7 @@ class AutoExpandFolderBackendFoldersRefreshListener(
     }
 
     private fun getAccountById(id: AccountId): LegacyAccount {
-        return accountManager.getByIdSync(id)
+        return accountManager.getById(id)
             ?: error("Account not found with ID: $id")
     }
 

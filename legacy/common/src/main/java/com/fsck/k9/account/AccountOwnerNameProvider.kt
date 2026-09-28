@@ -16,7 +16,7 @@ class AccountOwnerNameProvider(
     override suspend fun getOwnerName(): String? {
         return withContext(coroutineDispatcher) {
             getDefaultAccountId()?.let {
-                accountManager.getByIdSync(it)?.senderName
+                accountManager.getById(it)?.senderName
             }
         }
     }

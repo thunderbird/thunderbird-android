@@ -14,6 +14,7 @@ import java.util.UUID
 import net.thunderbird.core.android.account.Identity
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.testing.RobolectricTest
+import net.thunderbird.feature.account.AccountIdFactory
 import org.junit.Test
 
 class IdentityHelperTest : RobolectricTest() {
@@ -145,7 +146,7 @@ class IdentityHelperTest : RobolectricTest() {
         assertThat(identity).isNull()
     }
 
-    private fun createDummyAccount() = LegacyAccountDto(UUID.randomUUID().toString()).apply {
+    private fun createDummyAccount() = LegacyAccountDto(AccountIdFactory.create()).apply {
         replaceIdentities(
             listOf(
                 newIdentity("Default", DEFAULT_ADDRESS),

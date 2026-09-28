@@ -14,6 +14,8 @@ import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.common.mail.Flag
 import net.thunderbird.legacy.logging.Log
 import net.thunderbird.core.preference.interaction.InteractionSettingsPreferenceManager
+import net.thunderbird.feature.account.AccountId
+import net.thunderbird.feature.account.AccountIdFactory
 import org.koin.android.ext.android.inject
 import org.koin.core.qualifier.named
 
@@ -40,13 +42,13 @@ class NotificationActionService : Service() {
     }
 
     private fun handleCommand(intent: Intent) {
-        val accountUuid = intent.getStringExtra(EXTRA_ACCOUNT_UUID)
-        if (accountUuid == null) {
-            Log.w("Missing account UUID.")
+        val accountId = intent.getStringExtra(EXTRA_ACCOUNT_UUID)?.let { AccountIdFactory.of(it) }
+        if (accountId == null) {
+            Log.w("Missing account id.")
             return
         }
 
-        val account = preferences.getAccount(accountUuid)
+        val account = preferences.getById(accountId)
         if (account == null) {
             Log.w("Could not find account for notification action.")
             return

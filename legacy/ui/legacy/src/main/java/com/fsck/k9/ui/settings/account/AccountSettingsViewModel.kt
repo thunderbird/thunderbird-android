@@ -57,7 +57,7 @@ class AccountSettingsViewModel(
     }
 
     private fun loadAccount(accountId: AccountId): LegacyAccountDto? {
-        return accountManager.getAccount(accountId.toString())
+        return accountManager.getById(accountId)
     }
 
     fun getFolders(account: LegacyAccountDto): LiveData<RemoteFolderInfo> {

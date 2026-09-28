@@ -26,7 +26,7 @@ class DefaultFolderQueryRepository(
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : FolderQueryRepository {
     private suspend fun getAccountById(accountId: AccountId): LegacyAccount? =
-        accountManager.getById(accountId).firstOrNull()
+        accountManager.getByIdFlow(accountId).firstOrNull()
 
     override suspend fun findById(
         accountId: AccountId,

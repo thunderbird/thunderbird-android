@@ -14,6 +14,7 @@ import java.util.Calendar
 import java.util.Locale
 import net.thunderbird.components.core.outcome.fold
 import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.account.storage.legacy.LegacyAccountStorageHandler.Companion.ACCOUNT_DESCRIPTION_KEY
 import net.thunderbird.feature.account.storage.legacy.LegacyAccountStorageHandler.Companion.IDENTITY_DESCRIPTION_KEY
 import net.thunderbird.feature.account.storage.legacy.LegacyAccountStorageHandler.Companion.IDENTITY_EMAIL_KEY
@@ -76,7 +77,8 @@ class SettingsExporter(
 
             serializer.startTag(null, ACCOUNTS_ELEMENT)
             for (accountUuid in accountUuids) {
-                preferences.getAccount(accountUuid)?.let { account ->
+                val accountId = AccountIdFactory.of(accountUuid)
+                preferences.getById(accountId)?.let { account ->
                     writeAccount(serializer, account, prefs, includePasswords)
                 }
             }
@@ -131,7 +133,7 @@ class SettingsExporter(
         includePasswords: Boolean,
     ) {
         val identities = mutableSetOf<Int>()
-        val accountUuid = account.uuid
+        val accountUuid = account.id.toString()
 
         serializer.startTag(null, ACCOUNT_ELEMENT)
         serializer.attribute(null, UUID_ATTRIBUTE, accountUuid)

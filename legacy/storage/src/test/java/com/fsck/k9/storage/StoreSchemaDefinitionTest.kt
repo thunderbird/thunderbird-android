@@ -20,8 +20,9 @@ import com.fsck.k9.mail.ServerSettings
 import com.fsck.k9.mailstore.MigrationsHelper
 import net.thunderbird.core.android.account.FolderMode
 import net.thunderbird.core.android.account.LegacyAccountDto
-import net.thunderbird.legacy.logging.Log
 import net.thunderbird.core.logging.testing.TestLogger
+import net.thunderbird.feature.account.AccountIdFactory
+import net.thunderbird.legacy.logging.Log
 import org.junit.Before
 import org.junit.Test
 import org.mockito.kotlin.doReturn
@@ -395,6 +396,7 @@ class StoreSchemaDefinitionTest : RobolectricTest() {
 
     private fun createAccount(): LegacyAccountDto {
         return mock<LegacyAccountDto> {
+            on { id } doReturn AccountIdFactory.of(ACCOUNT_UUID)
             on { legacyInboxFolder } doReturn "Inbox"
             on { importedTrashFolder } doReturn "Trash"
             on { importedDraftsFolder } doReturn "Drafts"
@@ -424,6 +426,10 @@ class StoreSchemaDefinitionTest : RobolectricTest() {
         return SQLiteDatabase.create(null).also { database ->
             storeSchemaDefinition.doDbUpgrade(database)
         }
+    }
+
+    private companion object {
+        const val ACCOUNT_UUID = "00000000-0000-0000-0000-000000000000"
     }
 }
 

@@ -14,6 +14,7 @@ import app.k9mail.legacy.di.DI;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.ui.R;
 import com.fsck.k9.ui.identity.IdentityFormatter;
+import net.thunderbird.feature.account.AccountIdFactory;
 
 import java.util.List;
 
@@ -40,7 +41,7 @@ public class ChooseIdentity extends BaseListActivity {
         getListView().setChoiceMode(ListView.CHOICE_MODE_NONE);
         Intent intent = getIntent();
         String accountUuid = intent.getStringExtra(EXTRA_ACCOUNT);
-        mAccount = Preferences.getPreferences().getAccount(accountUuid);
+        mAccount = Preferences.getPreferences().getById(AccountIdFactory.INSTANCE.of(accountUuid));
 
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
 

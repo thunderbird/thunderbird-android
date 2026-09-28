@@ -40,12 +40,13 @@ private const val ARCHIVE_FOLDER_ID = 2L
 
 @Suppress("MaxLineLength")
 class DefaultPushFoldersQueryRepositoryTest {
-    private val account = LegacyAccountDto(ACCOUNT_ID_RAW)
-    private val accountId = account.id
+
+    private val accountId = AccountIdFactory.create()
+    private val account = LegacyAccountDto(accountId)
     private val messageStore = mock<ListenableMessageStore>()
     private val accountManager = FakePushFoldersLegacyAccountDtoManager(accounts = listOf(account))
     private val messageStoreFactory = FakePushFoldersMessageStoreFactory(
-        messageStoresByUuid = mapOf(account.uuid to messageStore),
+        messageStoresByUuid = mapOf(account.id to messageStore),
     )
     private val messageStoreManager = MessageStoreManager(accountManager, messageStoreFactory)
     private val remoteFolderDetailsRepository = FakeRemoteFolderDetailsRepository()
@@ -280,12 +281,12 @@ private class FakeRemoteFolderDetailsRepository(
 private class FakePushFoldersLegacyAccountDtoManager(
     accounts: List<LegacyAccountDto> = emptyList(),
 ) : LegacyAccountDtoManager {
-    private val accountsByUuid = accounts.associateBy { it.uuid }
+    private val accountsById = accounts.associateBy { it.id }
 
-    override fun getAccounts(): List<LegacyAccountDto> = accountsByUuid.values.toList()
+    override fun getAccounts(): List<LegacyAccountDto> = accountsById.values.toList()
     override fun getAccountsFlow(): Flow<List<LegacyAccountDto>> = flowOf(getAccounts())
-    override fun getAccount(accountUuid: String): LegacyAccountDto? = accountsByUuid[accountUuid]
-    override fun getAccountFlow(accountUuid: String): Flow<LegacyAccountDto?> = flowOf(getAccount(accountUuid))
+    override fun getById(accountId: AccountId): LegacyAccountDto? = accountsById[accountId]
+    override fun getByIdFlow(accountId: AccountId): Flow<LegacyAccountDto?> = flowOf(getById(accountId))
     override fun addAccountRemovedListener(listener: AccountRemovedListener) = Unit
     override fun moveAccount(account: LegacyAccountDto, newPosition: Int) = Unit
     override fun addOnAccountsChangeListener(accountsChangeListener: AccountsChangeListener) = Unit
@@ -294,8 +295,8 @@ private class FakePushFoldersLegacyAccountDtoManager(
 }
 
 private class FakePushFoldersMessageStoreFactory(
-    private val messageStoresByUuid: Map<String, ListenableMessageStore>,
+    private val messageStoresByUuid: Map<AccountId, ListenableMessageStore>,
 ) : MessageStoreFactory {
     override fun create(account: LegacyAccountDto): ListenableMessageStore =
-        messageStoresByUuid.getValue(account.uuid)
+        messageStoresByUuid.getValue(account.id)
 }

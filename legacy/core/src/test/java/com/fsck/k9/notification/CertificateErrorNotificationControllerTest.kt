@@ -17,6 +17,7 @@ import net.thunderbird.core.preference.network.NetworkSettings
 import net.thunderbird.core.preference.notification.NotificationPreference
 import net.thunderbird.core.preference.privacy.PrivacySettings
 import net.thunderbird.core.testing.TestClock
+import net.thunderbird.feature.account.AccountIdFactory
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -139,7 +140,7 @@ class CertificateErrorNotificationControllerTest : RobolectricTest() {
         return mock {
             on { accountNumber } doReturn ACCOUNT_NUMBER
             on { displayName } doReturn ACCOUNT_NAME
-            on { uuid } doReturn "test-uuid"
+            on { id } doReturn AccountIdFactory.create()
         }
     }
 

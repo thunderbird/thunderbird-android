@@ -15,7 +15,7 @@ internal class FakeDisplayFolderRepository(
         TODO("Not yet implemented")
     }
 
-    override fun getDisplayFoldersFlow(accountUuid: String): Flow<List<DisplayFolder>> {
+    override fun getDisplayFoldersFlow(accountId: String): Flow<List<DisplayFolder>> {
         return foldersFlow
     }
 }

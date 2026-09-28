@@ -48,13 +48,13 @@ class SettingsProvider : ContentProvider(), KoinComponent {
         val (readFileDescriptor, writeFileDescriptor) = ParcelFileDescriptor.createPipe()
 
         thread {
-            val accountUuids = accountManager.getAccounts().mapToSet { it.uuid }
+            val accountIds = accountManager.getAccounts().mapToSet { it.id.toString() }
             ParcelFileDescriptor.AutoCloseOutputStream(writeFileDescriptor).use { outputStream ->
                 runBlocking {
                     settingsExporter.exportPreferences(
                         outputStream,
                         includeGlobals = true,
-                        accountUuids,
+                        accountIds,
                         includePasswords = true,
                     )
                 }

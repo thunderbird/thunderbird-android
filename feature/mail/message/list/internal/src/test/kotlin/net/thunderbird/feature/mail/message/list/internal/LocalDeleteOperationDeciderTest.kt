@@ -6,10 +6,11 @@ import assertk.assertions.isTrue
 import java.util.UUID
 import kotlin.test.Test
 import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.feature.account.AccountIdFactory
 
 class LocalDeleteOperationDeciderTest {
     private val localDeleteOperationDecider = DefaultLocalDeleteOperationDecider()
-    private val account = LegacyAccountDto(UUID.randomUUID().toString()).apply {
+    private val account = LegacyAccountDto(AccountIdFactory.create()).apply {
         spamFolderId = SPAM_FOLDER_ID
         trashFolderId = TRASH_FOLDER_ID
     }

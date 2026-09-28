@@ -78,12 +78,11 @@ class NotificationChannelManager(
         notificationManager: NotificationManager,
         accounts: List<LegacyAccountDto>,
     ) {
-        val accountUuids = accounts.map { it.uuid }.toSet()
+        val accountIds = accounts.map { it.id.toString() }.toSet()
 
         val groups = notificationManager.notificationChannelGroups
         for (group in groups) {
-            val accountUuid = group.id.toAccountUuid()
-            if (accountUuid !in accountUuids) {
+            if (group.id !in accountIds) {
                 notificationManager.deleteNotificationChannelGroup(group.id)
             }
         }
@@ -127,7 +126,7 @@ class NotificationChannelManager(
 
         return NotificationChannel(channelId, channelName, importance).apply {
             description = resourceProvider.messagesChannelDescription
-            group = account.uuid
+            group = account.id.toString()
 
             setPropertiesFrom(account)
         }
@@ -139,7 +138,7 @@ class NotificationChannelManager(
         val channelDescription = resourceProvider.miscellaneousChannelDescription
         val channelId = getChannelIdFor(account, ChannelType.MISCELLANEOUS)
         val importance = NotificationManager.IMPORTANCE_LOW
-        val channelGroupId = account.uuid
+        val channelGroupId = account.id.toString()
 
         val miscellaneousChannel = NotificationChannel(channelId, channelName, importance)
         miscellaneousChannel.description = channelDescription
@@ -152,12 +151,12 @@ class NotificationChannelManager(
         return if (channelType == ChannelType.MESSAGES) {
             getMessagesChannelId(account, account.messagesNotificationChannelSuffix)
         } else {
-            "miscellaneous_channel_${account.uuid}"
+            "miscellaneous_channel_${account.id}"
         }
     }
 
     private fun getMessagesChannelId(account: LegacyAccountDto, suffix: String): String {
-        return "messages_channel_${account.uuid}$suffix"
+        return "messages_channel_${account.id}$suffix"
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -192,7 +191,7 @@ class NotificationChannelManager(
 
         val newNotificationChannel = NotificationChannel(newChannelId, channelName, importance).apply {
             description = resourceProvider.messagesChannelDescription
-            group = account.uuid
+            group = account.id.toString()
 
             copyPropertiesFrom(oldNotificationChannel)
             setPropertiesFrom(account)
@@ -255,9 +254,7 @@ class NotificationChannelManager(
     }
 
     private val LegacyAccountDto.notificationChannelGroupId: String
-        get() = uuid
-
-    private fun String.toAccountUuid(): String = this
+        get() = id.toString()
 
     private val LegacyAccountDto.messagesNotificationChannelSuffix: String
         get() = messagesNotificationChannelVersion.let { version -> if (version == 0) "" else "_$version" }

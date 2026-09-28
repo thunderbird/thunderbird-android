@@ -30,8 +30,8 @@ class AccountRemover(
 ) {
 
     fun removeAccount(accountId: AccountId) {
-        val account = accountManager.getAccount(accountId.toString())
-        val legacyAccount = preferences.getAccount(accountId.toString())
+        val account = accountManager.getById(accountId)
+        val legacyAccount = preferences.getById(accountId)
         if (account == null || legacyAccount == null) {
             logger.warn { "Can't remove account with UUID $accountId because it doesn't exist." }
             return
@@ -73,7 +73,7 @@ class AccountRemover(
             logger.error(throwable = e) { "Error removing message database for account $account" }
         }
 
-        localStoreProvider.removeInstance(account.uuid)
+        localStoreProvider.removeInstance(account.id)
     }
 
     @Suppress("TooGenericExceptionCaught")

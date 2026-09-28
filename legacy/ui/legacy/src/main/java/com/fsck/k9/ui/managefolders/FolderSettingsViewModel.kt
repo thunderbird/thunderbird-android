@@ -12,6 +12,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.components.core.outcome.fold
+import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.mail.folder.api.Folder
 import net.thunderbird.feature.mail.folder.api.FolderDetails
 import net.thunderbird.feature.mail.folder.api.data.repository.FolderDetailsRepository
@@ -65,7 +66,7 @@ class FolderSettingsViewModel(
     }
 
     private suspend fun loadAccount(accountUuid: String): LegacyAccountDto = withContext(ioDispatcher) {
-        preferences.getAccount(accountUuid) ?: error("Missing account: $accountUuid")
+        preferences.getById(AccountIdFactory.of(accountUuid)) ?: error("Missing account: $accountUuid")
     }
 
     private suspend fun FolderDetailsRepository.loadFolderDetails(

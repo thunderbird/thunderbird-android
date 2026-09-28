@@ -220,30 +220,30 @@ internal class DebugNotificationSectionViewModel(
     ): Notification? = when (notificationType) {
         AuthenticationErrorNotification::class -> AuthenticationErrorNotification(
             isIncomingServerError = true,
-            accountId = AccountIdFactory.of(selectedAccount.uuid),
+            accountId = selectedAccount.id,
             accountDisplayName = accountDisplay,
             accountNumber = 0,
         )
 
         CertificateErrorNotification::class -> CertificateErrorNotification(
             isIncomingServerError = true,
-            accountId = AccountIdFactory.of(selectedAccount.uuid),
+            accountId = selectedAccount.id,
             accountDisplayName = accountDisplay,
             accountNumber = 0,
         )
 
         FailedToCreateNotification::class -> FailedToCreateNotification(
-            accountId = AccountIdFactory.of(selectedAccount.uuid),
+            accountId = selectedAccount.id,
             failedNotification = AuthenticationErrorNotification(
                 isIncomingServerError = true,
-                accountId = AccountIdFactory.of(selectedAccount.uuid),
+                accountId = selectedAccount.id,
                 accountDisplayName = accountDisplay,
                 accountNumber = 0,
             ),
         )
 
         MailNotification.Fetching::class -> MailNotification.Fetching(
-            accountId = AccountIdFactory.of(selectedAccount.uuid),
+            accountId = selectedAccount.id,
             accountDisplayName = accountDisplay,
             folderName = state.folderName,
         )
@@ -254,7 +254,7 @@ internal class DebugNotificationSectionViewModel(
         )
 
         MailNotification.NewMailSummaryMail::class -> MailNotification.NewMailSummaryMail(
-            accountId = AccountIdFactory.of(selectedAccount.uuid),
+            accountId = selectedAccount.id,
             accountDisplayName = accountDisplay,
             messagesNotificationChannelSuffix = "",
             newMessageCount = 10,
@@ -266,12 +266,12 @@ internal class DebugNotificationSectionViewModel(
         )
 
         MailNotification.SendFailed::class -> MailNotification.SendFailed(
-            accountId = AccountIdFactory.of(selectedAccount.uuid),
+            accountId = selectedAccount.id,
             exception = Exception("What a failure"),
         )
 
         MailNotification.Sending::class -> MailNotification.Sending(
-            accountId = AccountIdFactory.of(selectedAccount.uuid),
+            accountId = selectedAccount.id,
             accountDisplayName = accountDisplay,
         )
 
@@ -296,7 +296,7 @@ internal class DebugNotificationSectionViewModel(
         selectedAccount: BaseAccount,
         accountDisplay: String,
     ): MailNotification.NewMailSingleMail? = MailNotification.NewMailSingleMail(
-        accountId = AccountIdFactory.of(selectedAccount.uuid),
+        accountId = selectedAccount.id,
         accountName = accountDisplay,
         messagesNotificationChannelSuffix = "",
         summary = singleNotificationData.summary,

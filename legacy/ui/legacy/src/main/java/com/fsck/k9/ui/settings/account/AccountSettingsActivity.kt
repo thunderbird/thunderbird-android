@@ -51,7 +51,7 @@ class AccountSettingsActivity : BaseActivity(), OnPreferenceStartScreenCallback 
 
         accountSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-                onAccountSelected(selectedAccountUuid = accountSpinner.selection.uuid)
+                onAccountSelected(selectedAccountUuid = accountSpinner.selection.id.toString())
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) = Unit

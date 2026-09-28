@@ -425,7 +425,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
 
     private fun configureAutocryptTransfer(account: LegacyAccountDto) {
         findPreference<Preference>(PREFERENCE_AUTOCRYPT_TRANSFER)!!.onClick {
-            val intent = AutocryptKeyTransferActivity.createIntent(requireContext(), account.uuid)
+            val intent = AutocryptKeyTransferActivity.createIntent(requireContext(), account.id.toString())
             startActivity(intent)
         }
     }

@@ -65,7 +65,7 @@ public class AttachmentInfoExtractor {
             uri = AttachmentProvider.getAttachmentUri(accountUuid, messagePartId);
         } else if (part instanceof LocalMessage) {
             LocalMessage localMessage = (LocalMessage) part;
-            String accountUuid = localMessage.getAccount().getUuid();
+            String accountUuid = localMessage.getAccount().getId().toString();
             long messagePartId = localMessage.getMessagePartId();
             size = localMessage.getSize();
             isContentAvailable = part.getBody() != null;

@@ -53,7 +53,7 @@ internal class GetDisplayAccounts(
                     val displayAccounts = messageCountsList.mapIndexed { index, messageCounts ->
                         val account = accounts[index]
                         MailDisplayAccount(
-                            id = account.uuid,
+                            id = account.id.toString(),
                             name = account.displayName,
                             email = account.email,
                             color = account.chipColor,
@@ -114,7 +114,7 @@ internal class GetDisplayAccounts(
                     send(messageCountsProvider.getMessageCounts(account))
                 }
             }
-            messageListRepository.addListener(account.uuid, listener)
+            messageListRepository.addListener(account.id, listener)
 
             awaitClose {
                 messageListRepository.removeListener(listener)

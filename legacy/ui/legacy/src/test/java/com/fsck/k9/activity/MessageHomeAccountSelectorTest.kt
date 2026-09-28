@@ -7,18 +7,20 @@ import net.thunderbird.core.android.account.AccountRemovedListener
 import net.thunderbird.core.android.account.AccountsChangeListener
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.account.LegacyAccountDtoManager
+import net.thunderbird.feature.account.AccountId
+import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.search.legacy.LocalMessageSearch
 import org.junit.Test
 
 class MessageHomeAccountSelectorTest {
-    private val firstAccount = LegacyAccountDto("11111111-1111-1111-1111-111111111111")
-    private val secondAccount = LegacyAccountDto("22222222-2222-2222-2222-222222222222")
+    private val firstAccount = LegacyAccountDto(AccountIdFactory.create())
+    private val secondAccount = LegacyAccountDto(AccountIdFactory.create())
     private val accountManager = FakeLegacyAccountDtoManager(firstAccount, secondAccount)
 
     @Test
     fun `single-account search should replace current account`() {
         val search = LocalMessageSearch().apply {
-            addAccountUuid(secondAccount.uuid)
+            addAccountUuid(secondAccount.id.toString())
         }
 
         val account = search.resolveAccount(
@@ -32,15 +34,15 @@ class MessageHomeAccountSelectorTest {
     private class FakeLegacyAccountDtoManager(
         vararg accounts: LegacyAccountDto,
     ) : LegacyAccountDtoManager {
-        private val accounts = accounts.associateBy { it.uuid }
+        private val accounts = accounts.associateBy { it.id }
 
         override fun getAccounts(): List<LegacyAccountDto> = accounts.values.toList()
 
         override fun getAccountsFlow(): Flow<List<LegacyAccountDto>> = error("Not implemented")
 
-        override fun getAccount(accountUuid: String): LegacyAccountDto? = accounts[accountUuid]
+        override fun getById(accountId: AccountId): LegacyAccountDto? = accounts[accountId]
 
-        override fun getAccountFlow(accountUuid: String): Flow<LegacyAccountDto?> = error("Not implemented")
+        override fun getByIdFlow(accountId: AccountId): Flow<LegacyAccountDto?> = error("Not implemented")
 
         override fun addAccountRemovedListener(listener: AccountRemovedListener) = error("Not implemented")
 

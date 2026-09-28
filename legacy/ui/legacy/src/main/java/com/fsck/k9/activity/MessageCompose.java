@@ -64,6 +64,7 @@ import com.fsck.k9.activity.listener.RecipientExpanderListener;
 import com.fsck.k9.ui.settings.account.AccountSettingsActivity;
 import com.fsck.k9.ui.settings.account.AccountSettingsFragment;
 import com.fsck.k9.message.html.DisplayHtml;
+import net.thunderbird.feature.account.AccountIdFactory;
 import net.thunderbird.feature.mail.message.composer.signature.HtmlSignatureSanitizer;
 import com.fsck.k9.ui.helper.DisplayHtmlUiFactory;
 import com.fsck.k9.view.MessageWebView;
@@ -353,7 +354,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
         if (account == null) {
             AccountId defaultAccountId = getDefaultAccountId.invoke();
             if (defaultAccountId != null) {
-                account = preferences.getAccount(defaultAccountId.toString());
+                account = preferences.getById(defaultAccountId);
             }
         }
 
@@ -651,12 +652,18 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
         String messageReferenceString = intent.getStringExtra(EXTRA_MESSAGE_REFERENCE);
         relatedMessageReference = MessageReference.parse(messageReferenceString);
 
-        final String accountUuid = (relatedMessageReference != null) ?
-            relatedMessageReference.getAccountUuid() :
-            intent.getStringExtra(EXTRA_ACCOUNT);
+        AccountId accountId = null;
+        if (relatedMessageReference != null) {
+            accountId = relatedMessageReference.getAccountId();
+        } else {
+            String accountUuid = intent.getStringExtra(EXTRA_ACCOUNT);
+            if (accountUuid != null) {
+                accountId = AccountIdFactory.INSTANCE.of(accountUuid);
+            }
+        }
 
-        if (accountUuid != null) {
-            account = preferences.getAccount(accountUuid);
+        if (accountId != null) {
+            account = preferences.getById(accountId);
         }
     }
 
@@ -935,7 +942,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
 
         if (account.isUploadSentMessages()
             && !ignoreSentFolderNotAssigned && !account.hasSentFolder()) {
-            sentFolderNotFoundDialogFragmentFactory.show(account.getUuid(), getSupportFragmentManager());
+            sentFolderNotFoundDialogFragmentFactory.show(account.getId().toString(), getSupportFragmentManager());
             return;
         }
 
@@ -1359,7 +1366,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
     private void openDefaultFolder() {
         long folderId = defaultFolderProvider.getDefaultFolder(account);
         LocalMessageSearch search = new LocalMessageSearch();
-        search.addAccountUuid(account.getUuid());
+        search.addAccountUuid(account.getId().toString());
         search.addAllowedFolder(folderId);
         MessageHomeActivity.actionDisplaySearch(this, search, false, true);
         finish();
@@ -1708,7 +1715,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
 
             if (messageReference != null) {
                 // Check if this is a valid account in our database
-                LegacyAccountDto account = preferences.getAccount(messageReference.getAccountUuid());
+                LegacyAccountDto account = preferences.getById(messageReference.getAccountId());
                 if (account != null) {
                     relatedMessageReference = messageReference;
                 }
@@ -1774,8 +1781,8 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
          **/
         private void addFlagToReferencedMessage() {
             if (messageReference != null && flag != null) {
-                String accountUuid = messageReference.getAccountUuid();
-                LegacyAccountDto account = preferences.getAccount(accountUuid);
+                AccountId accountId = messageReference.getAccountId();
+                LegacyAccountDto account = preferences.getById(accountId);
                 long folderId = messageReference.getFolderId();
                 String sourceMessageUid = messageReference.getUid();
 
@@ -2051,12 +2058,12 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
             return;
         }
 
-        final ArrayList<String> uuids = new ArrayList<>();
+        final ArrayList<String> accountIds = new ArrayList<>();
         for (LegacyAccountDto legacyAccountDto : accounts) {
-            uuids.add(legacyAccountDto.getUuid());
+            accountIds.add(legacyAccountDto.getId().toString());
         }
         final MessageComposeInAppNotificationFragment inAppNotificationFragment =
-            MessageComposeInAppNotificationFragment.newInstance(uuids);
+            MessageComposeInAppNotificationFragment.newInstance(accountIds);
         fragmentManager
             .beginTransaction()
             .add(R.id.message_compose_in_app_notifications_container, inAppNotificationFragment,
@@ -2073,11 +2080,11 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
                 return;
             }
 
-            String sourceAccountUuid = relatedMessageReference.getAccountUuid();
+            AccountId sourceAccountId = relatedMessageReference.getAccountId();
             long sourceFolderId = relatedMessageReference.getFolderId();
             String sourceMessageUid = relatedMessageReference.getUid();
 
-            boolean changedMessageIsCurrent = account.getUuid().equals(sourceAccountUuid) &&
+            boolean changedMessageIsCurrent = account.getId().equals(sourceAccountId) &&
                     folderId == sourceFolderId &&
                     oldUid.equals(sourceMessageUid);
 

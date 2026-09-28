@@ -77,7 +77,7 @@ internal class MessageDetailsViewModel(
     private fun loadData(messageReference: MessageReference) {
         viewModelScope.launch(ioDispatcher) {
             internalUiState.value = try {
-                val account = accountManager.getAccount(messageReference.accountUuid) ?: error("Account not found")
+                val account = accountManager.getById(messageReference.accountId) ?: error("Account not found")
                 val messageDetails = messageRepository.getMessageDetails(messageReference)
 
                 val folder = folderQueryRepository.findById(account.id, folderId = messageReference.folderId)

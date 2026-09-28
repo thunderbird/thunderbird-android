@@ -369,21 +369,13 @@ private class FakeLegacyAccountManager(
 
     override fun getAll(): Flow<List<LegacyAccount>> = accountsState
 
-    override fun getById(id: AccountId): Flow<LegacyAccount?> =
-        accountsState.map { list -> list.find { it.id == id } }
-
     override suspend fun update(account: LegacyAccount) {
         accountsState.update { currentList ->
             currentList.toMutableList().apply {
-                removeIf { it.uuid == account.uuid }
+                removeIf { it.id == account.id }
                 add(account)
             }
         }
-    }
-
-    override fun getByIdSync(id: AccountId): LegacyAccount? {
-        // no-op for tests
-        return null
     }
 
     override fun updateSync(account: LegacyAccount) {
@@ -394,11 +386,11 @@ private class FakeLegacyAccountManager(
 
     override fun getAccountsFlow(): Flow<List<LegacyAccount>> = accountsState
 
-    override fun getAccount(accountUuid: String): LegacyAccount? =
-        accountsState.value.find { it.uuid == accountUuid }
+    override fun getById(accountId: AccountId): LegacyAccount? =
+        accountsState.value.find { it.id == accountId }
 
-    override fun getAccountFlow(accountUuid: String): Flow<LegacyAccount?> =
-        accountsState.map { list -> list.find { it.uuid == accountUuid } }
+    override fun getByIdFlow(accountId: AccountId): Flow<LegacyAccount?> =
+        accountsState.map { list -> list.find { it.id == accountId } }
 
     override fun moveAccount(account: LegacyAccount, newPosition: Int) {
         // no-op for tests

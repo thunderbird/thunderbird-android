@@ -184,7 +184,7 @@ public class LocalStore {
         pendingCommandSerializer = PendingCommandSerializer.getInstance();
         attachmentInfoExtractor = DI.get(AttachmentInfoExtractor.class);
         StorageFilesProviderFactory storageFilesProviderFactory = DI.get(StorageFilesProviderFactory.class);
-        storageFilesProvider = storageFilesProviderFactory.createStorageFilesProvider(account.getUuid());
+        storageFilesProvider = storageFilesProviderFactory.createStorageFilesProvider(account.getId().toString());
         this.localMessageUidPrefixProvider = localMessageUidPrefixProvider;
         this.account = account;
         this.generalSettingsManager = generalSettingsManager;
@@ -727,7 +727,7 @@ public class LocalStore {
 
     public void notifyChange() {
         MessageListRepository messageListRepository = DI.get(MessageListRepository.class);
-        messageListRepository.notifyMessageListChanged(account.getUuid());
+        messageListRepository.notifyMessageListChanged(account.getId());
     }
 
     /**

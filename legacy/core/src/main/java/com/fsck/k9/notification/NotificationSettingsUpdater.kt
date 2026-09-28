@@ -4,6 +4,7 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import com.fsck.k9.Preferences
 import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.feature.account.AccountIdFactory
 
 /**
  * Update accounts with notification settings read from their "Messages" `NotificationChannel`.
@@ -17,7 +18,7 @@ class NotificationSettingsUpdater(
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return
 
         accountUuids
-            .mapNotNull { accountUuid -> preferences.getAccount(accountUuid) }
+            .mapNotNull { accountUuid -> preferences.getById(AccountIdFactory.of(accountUuid)) }
             .forEach { account ->
                 updateNotificationSettings(account)
                 preferences.saveAccount(account)

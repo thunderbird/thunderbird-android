@@ -13,6 +13,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
+import net.thunderbird.account.fake.FakeAccountData.ACCOUNT_ID
 import net.thunderbird.account.fake.FakeAccountData.ACCOUNT_ID_OTHER_RAW
 import net.thunderbird.account.fake.FakeAccountData.ACCOUNT_ID_RAW
 import net.thunderbird.core.android.account.AccountRemovedListener
@@ -21,6 +22,7 @@ import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.account.LegacyAccountDtoManager
 import net.thunderbird.core.logging.testing.TestLogger
 import net.thunderbird.components.core.outcome.Outcome
+import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.mail.folder.api.data.FolderError
 import org.mockito.kotlin.argumentCaptor
@@ -29,12 +31,12 @@ import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 
 class DefaultPushFolderTrackingRepositoryTest {
-    private val account = LegacyAccountDto(ACCOUNT_ID_RAW)
-    private val accountId = account.id
+    private val accountId = ACCOUNT_ID
+    private val account = LegacyAccountDto(accountId)
     private val messageStore = mock<ListenableMessageStore>()
     private val accountManager = FakeLegacyAccountDtoManager(accounts = listOf(account))
     private val messageStoreFactory = FakeMessageStoreFactory(
-        messageStoresByUuid = mapOf(account.uuid to messageStore),
+        messageStoresByUuid = mapOf(account.id to messageStore),
     )
     private val messageStoreManager = MessageStoreManager(accountManager, messageStoreFactory)
     private val testSubject = DefaultPushFolderTrackingRepository(
@@ -150,12 +152,12 @@ class DefaultPushFolderTrackingRepositoryTest {
 private class FakeLegacyAccountDtoManager(
     accounts: List<LegacyAccountDto> = emptyList(),
 ) : LegacyAccountDtoManager {
-    private val accountsByUuid = accounts.associateBy { it.uuid }
+    private val accountsByIds = accounts.associateBy { it.id }
 
-    override fun getAccounts(): List<LegacyAccountDto> = accountsByUuid.values.toList()
+    override fun getAccounts(): List<LegacyAccountDto> = accountsByIds.values.toList()
     override fun getAccountsFlow(): Flow<List<LegacyAccountDto>> = flowOf(getAccounts())
-    override fun getAccount(accountUuid: String): LegacyAccountDto? = accountsByUuid[accountUuid]
-    override fun getAccountFlow(accountUuid: String): Flow<LegacyAccountDto?> = flowOf(getAccount(accountUuid))
+    override fun getById(accountId: AccountId): LegacyAccountDto? = accountsByIds[accountId]
+    override fun getByIdFlow(accountId: AccountId): Flow<LegacyAccountDto?> = flowOf(getById(accountId))
     override fun addAccountRemovedListener(listener: AccountRemovedListener) = Unit
     override fun moveAccount(account: LegacyAccountDto, newPosition: Int) = Unit
     override fun addOnAccountsChangeListener(accountsChangeListener: AccountsChangeListener) = Unit
@@ -164,7 +166,7 @@ private class FakeLegacyAccountDtoManager(
 }
 
 private class FakeMessageStoreFactory(
-    private val messageStoresByUuid: Map<String, ListenableMessageStore>,
+    private val messageStoresByUuid: Map<AccountId, ListenableMessageStore>,
 ) : MessageStoreFactory {
-    override fun create(account: LegacyAccountDto): ListenableMessageStore = messageStoresByUuid.getValue(account.uuid)
+    override fun create(account: LegacyAccountDto): ListenableMessageStore = messageStoresByUuid.getValue(account.id)
 }

@@ -189,7 +189,7 @@ class SettingsListFragment : Fragment(), ItemTouchCallback {
     }
 
     private fun launchAccountSettings(account: LegacyAccountDto) {
-        AccountSettingsActivity.start(requireActivity(), account.uuid)
+        AccountSettingsActivity.start(requireActivity(), account.id.toString())
     }
 
     private fun launchOnboarding() {

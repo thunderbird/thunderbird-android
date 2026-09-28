@@ -118,8 +118,8 @@ private fun CommonNotificationInformation(
             },
             optionToStringTransformation = { account ->
                 account?.let { account ->
-                    val uuidStart = account.uuid.take(UUID_MAX_CHAR_DISPLAY)
-                    val uuidEnd = account.uuid.take(UUID_MAX_CHAR_DISPLAY)
+                    val uuidStart = account.id.toString().take(UUID_MAX_CHAR_DISPLAY)
+                    val uuidEnd = account.id.toString().take(UUID_MAX_CHAR_DISPLAY)
                     val accountDisplay = account.name ?: account.email
                     "$uuidStart..$uuidEnd - $accountDisplay"
                 } ?: loadingText

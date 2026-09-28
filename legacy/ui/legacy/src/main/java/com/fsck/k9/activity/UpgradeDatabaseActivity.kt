@@ -13,6 +13,7 @@ import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.BaseActivity
 import com.google.android.material.textview.MaterialTextView
 import net.thunderbird.core.android.account.LegacyAccountManager
+import net.thunderbird.feature.account.AccountIdFactory
 import org.koin.android.ext.android.inject
 
 /**
@@ -145,7 +146,7 @@ class UpgradeDatabaseActivity : BaseActivity() {
                     DatabaseUpgradeService.EXTRA_ACCOUNT_UUID,
                 ) ?: error("Missing Intent extra '${DatabaseUpgradeService.EXTRA_ACCOUNT_UUID}'")
 
-                val account = accountManager.getAccount(accountUuid)
+                val account = accountManager.getById(AccountIdFactory.of(accountUuid))
 
                 if (account != null) {
                     val upgradeStatus = getString(R.string.upgrade_database_format, account.profile.name)

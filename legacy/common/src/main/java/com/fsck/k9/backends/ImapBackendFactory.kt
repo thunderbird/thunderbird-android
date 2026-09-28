@@ -37,7 +37,7 @@ class DefaultImapBackendFactory(
     private val clientInfoAppVersion: String,
 ) : ImapBackendFactory {
     override fun createBackend(accountId: AccountId): Backend {
-        val account = accountManager.getAccount(accountId.toString()) ?: error("Account not found: $accountId")
+        val account = accountManager.getById(accountId) ?: error("Account not found: $accountId")
         // TODO: should we pass the account name or userId here?
         val accountName = account.profile.name
         val backendStorage = backendStorageFactory.createBackendStorage(accountId)
@@ -77,7 +77,7 @@ class DefaultImapBackendFactory(
     private fun createImapStoreConfig(account: LegacyAccount): ImapStoreConfig {
         return object : ImapStoreConfig {
             override val logLabel
-                get() = account.uuid
+                get() = account.id.toString()
 
             override fun isSubscribedFoldersOnly() = account.isSubscribedFoldersOnly
 
@@ -105,13 +105,13 @@ class DefaultImapBackendFactory(
 
     private fun createPushConfigProvider(account: LegacyAccount) = object : ImapPushConfigProvider {
         override val maxPushFoldersFlow: Flow<Int>
-            get() = accountManager.getAccountFlow(account.uuid)
+            get() = accountManager.getByIdFlow(account.id)
                 .filterNotNull()
                 .map { it.maxPushFolders }
                 .distinctUntilChanged()
 
         override val idleRefreshMinutesFlow: Flow<Int>
-            get() = accountManager.getAccountFlow(account.uuid)
+            get() = accountManager.getByIdFlow(account.id)
                 .filterNotNull()
                 .map { it.idleRefreshMinutes }
                 .distinctUntilChanged()

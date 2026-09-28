@@ -59,7 +59,7 @@ class MessageListAdapter internal constructor(
 
             field = value
             val messages = value.filterMessageListItem()
-            accountUuids = messages.map { it.account.uuid }.toSet()
+            accountUuids = messages.map { it.account.id.toString() }.toSet()
             messagesMap = messages.associateBy { it.uniqueId }
 
             if (selected.isNotEmpty()) {
@@ -185,7 +185,7 @@ class MessageListAdapter internal constructor(
         return viewItems
             .filterMessageListItem()
             .firstOrNull {
-                it.account.uuid == messageReference.accountUuid &&
+                it.account.id == messageReference.accountId &&
                     it.folderId == messageReference.folderId &&
                     it.messageUid == messageReference.uid
             }
@@ -204,7 +204,7 @@ class MessageListAdapter internal constructor(
             .map { (it as? MessageListViewItem.Message)?.item }
             .indexOfFirst {
                 it != null &&
-                    messageReference.equals(it.account.uuid, it.folderId, it.messageUid)
+                    messageReference.equals(it.account.id, it.folderId, it.messageUid)
             }
             .takeIf { it != -1 }
     }
@@ -302,7 +302,7 @@ class MessageListAdapter internal constructor(
     private fun isActiveMessage(item: MessageListItem): Boolean {
         val activeMessage = this.activeMessage ?: return false
 
-        return item.account.uuid == activeMessage.accountUuid &&
+        return item.account.id == activeMessage.accountId &&
             item.folderId == activeMessage.folderId &&
             item.messageUid == activeMessage.uid
     }
