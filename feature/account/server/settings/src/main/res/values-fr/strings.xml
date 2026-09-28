@@ -34,4 +34,5 @@
     <string name="account_server_settings_incoming_imap_send_client_info_label">Envoyer les renseignements du client</string>
     <string name="account_server_settings_password_authentication_failed">Échec d’authentification</string>
     <string name="account_server_settings_password_authentication_unable_to_start">Impossible de lancer l’invite biométrique.</string>
+    <string name="account_server_settings_password_input_label">Mot de passe</string>
 </resources>

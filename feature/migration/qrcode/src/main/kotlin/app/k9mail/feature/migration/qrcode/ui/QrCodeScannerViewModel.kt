@@ -103,6 +103,10 @@ internal class QrCodeScannerViewModel(
                 unsupportedPayloadHashes.removeFirst()
             }
             unsupportedPayloadHashes.add(payloadHash)
+
+            updateState {
+                it.copy(displayText = DisplayText.UnsupportedQrCode)
+            }
         }
     }
 

@@ -62,6 +62,8 @@ import net.thunderbird.components.ui.bolt.atom.icon.outlined.OutlinedOpenInNewIc
 import net.thunderbird.components.ui.bolt.atom.icon.outlined.OutlinedPersonIcon
 import net.thunderbird.components.ui.bolt.atom.icon.outlined.OutlinedPetsIcon
 import net.thunderbird.components.ui.bolt.atom.icon.outlined.OutlinedQrCode
+import net.thunderbird.components.ui.bolt.atom.icon.outlined.OutlinedReply
+import net.thunderbird.components.ui.bolt.atom.icon.outlined.OutlinedReplyAll
 import net.thunderbird.components.ui.bolt.atom.icon.outlined.OutlinedRocketIcon
 import net.thunderbird.components.ui.bolt.atom.icon.outlined.OutlinedSchoolIcon
 import net.thunderbird.components.ui.bolt.atom.icon.outlined.OutlinedSmileIcon
@@ -168,6 +170,8 @@ object Icons {
 
         val QrCode: ImageVector = OutlinedQrCode
 
+        val Reply: ImageVector = OutlinedReply
+        val ReplyAll: ImageVector = OutlinedReplyAll
         val Report: ImageVector = Icons.Outlined.Report
         val Rocket: ImageVector = OutlinedRocketIcon
 

@@ -7,6 +7,7 @@ import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import net.thunderbird.core.common.resources.StringsResourceManager
 import net.thunderbird.core.featureflag.FeatureFlagProvider
+import net.thunderbird.core.featureflag.keys.GeneratedFeatureFlagKey
 import net.thunderbird.core.outcome.fold
 import net.thunderbird.core.ui.setting.Setting
 import net.thunderbird.core.ui.setting.SettingDecoration
@@ -16,7 +17,6 @@ import net.thunderbird.feature.account.avatar.Avatar
 import net.thunderbird.feature.account.avatar.AvatarIcon
 import net.thunderbird.feature.account.avatar.AvatarIconCatalog
 import net.thunderbird.feature.account.avatar.AvatarMonogramCreator
-import net.thunderbird.feature.account.settings.AccountSettingsFeatureFlags
 import net.thunderbird.feature.account.settings.R
 import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.ValidateAccountNameError
 import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.ValidateMonogramError
@@ -49,7 +49,7 @@ internal class GeneralSettingsBuilder(
             avatar = state.avatar ?: Avatar.Icon(name = iconCatalog.defaultIcon.id),
         )
 
-        if (featureFlagProvider.provide(AccountSettingsFeatureFlags.EnableAvatarCustomization).isEnabled()) {
+        if (featureFlagProvider.provide(GeneratedFeatureFlagKey.ENABLE_AVATAR_CUSTOMIZATION).isEnabled()) {
             settings += avatar(
                 name = state.name.value,
                 avatar = state.avatar,

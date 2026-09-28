@@ -17,7 +17,7 @@ android {
         testApplicationId = "com.fsck.k9.tests"
 
         versionCode = 39045
-        versionName = "23.1"
+        versionName = "24.0"
 
         buildConfigField("String", "CLIENT_INFO_APP_NAME", "\"K-9 Mail\"")
     }

@@ -28,10 +28,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.LineBreak
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.LayoutDirection
 import net.thunderbird.components.ui.bolt.atom.text.TextBodyLarge
+import net.thunderbird.components.ui.bolt.atom.text.TextBodyLargeAutoResize
 import net.thunderbird.components.ui.bolt.atom.text.TextBodyMedium
+import net.thunderbird.components.ui.bolt.atom.text.TextDisplayMediumAutoResize
 import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.feature.navigation.drawer.dropdown.R
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayAccount
@@ -111,12 +114,14 @@ private fun RowScope.AccountSelectedView(
                     .weight(1f),
             ) {
                 val name = getDisplayAccountName(targetAccount)
-                TextBodyLarge(
+                TextBodyLargeAutoResize(
                     text = buildAnnotatedString {
                         withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
                             append(name)
                         }
                     },
+                    softWrap = true,
+                    maxLines = 2,
                 )
                 if (targetAccount is MailDisplayAccount && targetAccount.name != targetAccount.email) {
                     TextBodyMedium(

@@ -11,6 +11,8 @@ dependencies {
     implementation(projects.core.preference.api)
     implementation(projects.core.preference.impl)
 
+    implementation(libs.assertk)
+    implementation(libs.koin.test.junit4)
     implementation(libs.kotlin.test.junit)
     implementation(libs.robolectric)
 

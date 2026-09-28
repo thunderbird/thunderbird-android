@@ -93,9 +93,9 @@ import net.thunderbird.core.android.network.ConnectivityManager
 import net.thunderbird.core.common.action.SwipeAction
 import net.thunderbird.core.common.exception.MessagingException
 import net.thunderbird.core.common.mail.Flag
-import net.thunderbird.core.featureflag.FeatureFlagKey
 import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.featureflag.FeatureFlagResult
+import net.thunderbird.core.featureflag.keys.GeneratedFeatureFlagKey
 import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.core.preference.GeneralSettingsManager
@@ -589,7 +589,9 @@ class LegacyMessageListFragment :
 
         recyclerView.adapter = adapter
 
-        if (featureFlagProvider.provide(FeatureFlagKey.DisplayInAppNotifications) == FeatureFlagResult.Enabled) {
+        val isDisplayInAppNotificationEnabled = featureFlagProvider
+            .provide(GeneratedFeatureFlagKey.DISPLAY_IN_APP_NOTIFICATIONS) == FeatureFlagResult.Enabled
+        if (isDisplayInAppNotificationEnabled) {
             view.findViewById<ComposeView>(R.id.banner_global_compose_view).apply {
                 setContent {
                     featureThemeProvider.WithTheme {
@@ -2032,7 +2034,7 @@ class LegacyMessageListFragment :
         }
 
         adapter.viewItems = buildList {
-            if (featureFlagProvider.provide(FeatureFlagKey.DisplayInAppNotifications).isEnabled()) {
+            if (featureFlagProvider.provide(GeneratedFeatureFlagKey.DISPLAY_IN_APP_NOTIFICATIONS).isEnabled()) {
                 add(MessageListViewItem.InAppNotificationBannerList)
             }
             addAll(messageListItems.map { MessageListViewItem.Message(it) })

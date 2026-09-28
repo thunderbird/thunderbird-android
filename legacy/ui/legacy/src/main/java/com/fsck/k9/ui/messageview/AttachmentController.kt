@@ -4,6 +4,7 @@ import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.provider.DocumentsContract
 import android.widget.Toast
 import androidx.annotation.WorkerThread
 import app.k9mail.legacy.message.controller.SimpleMessagingListener
@@ -66,6 +67,21 @@ class AttachmentController internal constructor(
         }
     }
 
+    fun saveAttachmentToDirectory(scope: CoroutineScope, directoryUri: Uri?) {
+        if (directoryUri == null) return
+        scope.launch {
+            if (!attachment.isContentAvailable) {
+                val success = downloadAttachment()
+                if (success) {
+                    attachmentDisplayController.refreshAttachmentThumbnail(attachment)
+                    saveLocalAttachmentToDirectory(directoryUri)
+                }
+            } else {
+                saveLocalAttachmentToDirectory(directoryUri)
+            }
+        }
+    }
+
     private suspend fun saveLocalAttachmentTo(documentUri: Uri) {
         val success = withContext(ioDispatcher) {
             try {
@@ -73,6 +89,33 @@ class AttachmentController internal constructor(
                 true
             } catch (e: IOException) {
                 logger.error(throwable = e) { "Error saving attachment" }
+                false
+            }
+        }
+        if (!success) displayAttachmentNotSavedMessage()
+    }
+
+    private suspend fun saveLocalAttachmentToDirectory(directoryUri: Uri) {
+        val success = withContext(ioDispatcher) {
+            try {
+                val contentResolver = context.contentResolver
+                val treeId = DocumentsContract.getTreeDocumentId(directoryUri)
+                val rootDocUri = DocumentsContract.buildDocumentUriUsingTree(directoryUri, treeId)
+
+                val documentUri = attachment.mimeType?.let {
+                    attachment.displayName?.let { displayName ->
+                        DocumentsContract.createDocument(
+                            contentResolver,
+                            rootDocUri,
+                            it,
+                            displayName
+                        )
+                    }
+                } ?: return@withContext false
+                writeAttachment(documentUri)
+                true
+            } catch (e: IOException) {
+                logger.error(throwable = e) { "Error saving attachment to directory" }
                 false
             }
         }

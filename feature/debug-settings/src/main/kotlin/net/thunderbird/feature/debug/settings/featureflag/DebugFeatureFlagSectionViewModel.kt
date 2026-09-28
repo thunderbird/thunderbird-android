@@ -1,14 +1,17 @@
 package net.thunderbird.feature.debug.settings.featureflag
 
 import androidx.lifecycle.viewModelScope
+import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.persistentMapOf
 import kotlinx.collections.immutable.toImmutableMap
 import kotlinx.collections.immutable.toPersistentMap
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import net.thunderbird.core.featureflag.FeatureFlag
-import net.thunderbird.core.featureflag.FeatureFlagFactory
-import net.thunderbird.core.featureflag.FeatureFlagOverrides
+import kotlinx.coroutines.launch
+import net.thunderbird.core.featureflag.FeatureFlagKey
+import net.thunderbird.core.featureflag.keys.GeneratedFeatureFlagKey
+import net.thunderbird.core.featureflag.provider.BundledFeatureFlagDefaults
+import net.thunderbird.core.featureflag.provider.RuntimeDebugOverrideFeatureFlagProvider
 import net.thunderbird.core.ui.contract.mvi.BaseViewModel
 import net.thunderbird.feature.debug.settings.featureflag.DebugFeatureFlagSectionContract.Effect
 import net.thunderbird.feature.debug.settings.featureflag.DebugFeatureFlagSectionContract.Event
@@ -16,26 +19,23 @@ import net.thunderbird.feature.debug.settings.featureflag.DebugFeatureFlagSectio
 import net.thunderbird.feature.debug.settings.featureflag.DebugFeatureFlagSectionContract.ViewModel
 
 class DebugFeatureFlagSectionViewModel(
-    private val featureFlagFactory: FeatureFlagFactory,
-    private val featureFlagOverrides: FeatureFlagOverrides,
+    bundleDefaults: BundledFeatureFlagDefaults,
+    private val runtimeProvider: RuntimeDebugOverrideFeatureFlagProvider,
 ) : BaseViewModel<State, Event, Effect>(initialState = State()), ViewModel {
 
     init {
-        featureFlagFactory
-            .getCatalog()
-            .onEach { defaults ->
-                updateState { state ->
-                    state.copy(
-                        defaults = defaults.associateBy { it.key }.toPersistentMap(),
-                    )
-                }
-            }
-            .launchIn(viewModelScope)
+        val baseline = bundleDefaults.defaults()
+        val defaults = baseline.toFeatureFlagKeyMap()
+        updateState { state -> state.copy(defaults = defaults) }
 
-        featureFlagOverrides
+        runtimeProvider
             .overrides
             .onEach { overrides ->
-                updateState { it.copy(overrides = overrides.toImmutableMap()) }
+                updateState { state ->
+                    state.copy(
+                        overrides = overrides.mapKeys { (key, _) -> key.toFeatureFlagKey() }.toImmutableMap(),
+                    )
+                }
             }
             .launchIn(viewModelScope)
     }
@@ -43,41 +43,42 @@ class DebugFeatureFlagSectionViewModel(
     override fun event(event: Event) {
         when (event) {
             Event.ApplyChanges -> applyChanges()
-            is Event.OnToggle -> toggleFeatureFlag(event.flag)
+            is Event.OnToggle -> toggleFeatureFlag(event.key)
             Event.RestoreDefaults -> restoreDefaults()
         }
     }
 
     private fun applyChanges() {
-        val current = state.value
-        val defaults = current
-            .defaults
-            .mapValues { it.value.enabled }
-            .filter { it.key in current.pendingOverrides }
-        if (current.pendingOverrides == defaults) {
-            featureFlagOverrides.clearAll()
-        } else {
-            state.value.pendingOverrides.forEach { (key, enabled) ->
-                featureFlagOverrides[key] = enabled
+        viewModelScope.launch {
+            val current = state.value
+            val defaults = current
+                .defaults
+                .filter { it.key in current.pendingOverrides }
+            if (current.pendingOverrides == defaults) {
+                runtimeProvider.clearAllOverrides()
+            } else {
+                state.value.pendingOverrides.forEach { (key, enabled) ->
+                    runtimeProvider.setOverride(key, enabled)
+                }
             }
+            emitEffect(Effect.RestartMainActivity)
         }
-        emitEffect(Effect.RestartMainActivity)
     }
 
-    private fun toggleFeatureFlag(flag: FeatureFlag) {
+    private fun toggleFeatureFlag(flagKey: FeatureFlagKey) {
         updateState { state ->
-            val currentActiveValue = state.overrides[flag.key]
-                ?: state.defaults[flag.key]?.enabled
+            val currentActiveValue = state.overrides[flagKey]
+                ?: state.defaults[flagKey]
             val overrides = if (
-                flag.key in state.pendingOverrides &&
-                state.pendingOverrides[flag.key]?.not() == currentActiveValue
+                flagKey in state.pendingOverrides &&
+                state.pendingOverrides[flagKey]?.not() == currentActiveValue
             ) {
-                state.pendingOverrides - flag.key
+                state.pendingOverrides - flagKey
             } else {
-                val value = state.pendingOverrides[flag.key]
+                val value = state.pendingOverrides[flagKey]
                     ?: currentActiveValue
                     ?: false
-                state.pendingOverrides + (flag.key to !value)
+                state.pendingOverrides + (flagKey to !value)
             }
             emitEffect(Effect.NotifyPendingChanges(pendingOverrides = overrides.toPersistentMap()))
             state.copy(pendingOverrides = overrides.toPersistentMap())
@@ -94,7 +95,7 @@ class DebugFeatureFlagSectionViewModel(
                 val defaults = state.defaults.filter { (key, _) ->
                     key in pendingOverrides || key in currentOverrides
                 }
-                val defaultOverrides = defaults.mapValues { it.value.enabled }.toPersistentMap()
+                val defaultOverrides = defaults.mapValues { it.value }.toPersistentMap()
                 emitEffect(Effect.NotifyPendingChanges(pendingOverrides = defaultOverrides))
                 state.copy(
                     pendingOverrides = defaultOverrides,
@@ -102,4 +103,12 @@ class DebugFeatureFlagSectionViewModel(
             }
         }
     }
+
+    private fun Map<String, Boolean>.toFeatureFlagKeyMap(): ImmutableMap<FeatureFlagKey, Boolean> =
+        this.entries.associate { (key, value) ->
+            val flagKey: FeatureFlagKey = key.toFeatureFlagKey()
+            flagKey to value
+        }.toImmutableMap()
+
+    private fun String.toFeatureFlagKey(): FeatureFlagKey = GeneratedFeatureFlagKey.valueOf(uppercase())
 }

@@ -34,4 +34,5 @@
     <string name="account_server_settings_password_authentication_subtitle">Розблокуйте, щоб переглянути пароль</string>
     <string name="account_server_settings_password_authentication_failed">Не вдалося виконати аутентифікацію!</string>
     <string name="account_server_settings_password_authentication_unable_to_start">Не вдалося розпочати біометричне розпізнавання.</string>
+    <string name="account_server_settings_password_input_label">Пароль</string>
 </resources>

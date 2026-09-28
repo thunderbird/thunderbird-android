@@ -951,4 +951,10 @@
     <string name="global_settings_privacy_incognito_keyboard">Gizli klavye</string>
     <string name="global_settings_privacy_incognito_keyboard_detail">İleti oluştururken klavyenin yazdıklarınızı öğrenmemesini isteyin</string>
     <string name="sort_by_indicator">•</string>
+    <string name="camera_capture_lost">Uygulama kapatıldığı için yakalanan resim kayboldu. Lütfen tekrar deneyin.</string>
+    <string name="account_settings_signature_html_label">HTML İmza</string>
+    <string name="account_settings_signature_is_html_label">İmzayı HTML olarak kaydet</string>
+    <string name="account_settings_signature_is_html_summary">İmzayı HTML olarak yorumla. Güvenlik nedeniyle betikler ve olay işleyicileri kaldırılacaktır.</string>
+    <string name="account_settings_signature_preview">İmza ön izlemesi</string>
+    <string name="account_settings_signature_clear_label">İmzayı Temizle</string>
 </resources>

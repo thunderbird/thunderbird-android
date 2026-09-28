@@ -3,6 +3,7 @@ package com.fsck.k9.activity.setup
 import androidx.compose.runtime.Stable
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
+import net.thunderbird.core.android.webkit.WebViewConfig
 import net.thunderbird.core.ui.contract.mvi.UnidirectionalViewModel
 
 interface AccountSetupCompositionContract {
@@ -18,6 +19,9 @@ interface AccountSetupCompositionContract {
         val signature: String,
         val signatureLocations: PersistentList<Pair<Int, String>>,
         val selectedSignatureLocations: Pair<Int, String>,
+        val saveSignatureAsHtml: Boolean = false,
+        val signaturePreviewHtmlText: String? = null,
+        val webViewConfig: WebViewConfig? = null,
     ) {
         companion object {
             val EMPTY: State
@@ -40,6 +44,7 @@ interface AccountSetupCompositionContract {
         data class UseSignatureChange(val useSignature: Boolean) : Event
         data class SignatureChange(val signature: String) : Event
         data class SignatureLocationChange(val signatureLocation: Pair<Int, String>) : Event
+        data class OnFormatSignatureAsHtmlCheck(val checked: Boolean) : Event
         data object SavePressed : Event
         data object BackPressed: Event
     }

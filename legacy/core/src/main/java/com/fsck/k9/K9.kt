@@ -12,8 +12,6 @@ import com.fsck.k9.mailstore.LocalStore
 import com.fsck.k9.preferences.DefaultGeneralSettingsManager
 import net.thunderbird.core.android.account.AccountDefaultsProvider
 import net.thunderbird.core.android.account.SortType
-import net.thunderbird.core.featureflag.FeatureFlagProvider
-import net.thunderbird.core.featureflag.toFeatureFlagKey
 import net.thunderbird.core.preference.storage.Storage
 import net.thunderbird.core.preference.storage.StorageEditor
 import net.thunderbird.core.preference.storage.getEnumOrDefault
@@ -25,7 +23,6 @@ import timber.log.Timber
 object K9 : KoinComponent {
     private val generalSettingsManager: DefaultGeneralSettingsManager by inject()
     private val telemetryManager: TelemetryManager by inject()
-    private val featureFlagProvider: FeatureFlagProvider by inject()
 
     /**
      * Name of the [SharedPreferences] file used to store the last known version of the
@@ -173,11 +170,6 @@ object K9 : KoinComponent {
 
         val sortAscendingSetting = storage.getBoolean("sortAscending", AccountDefaultsProvider.DEFAULT_SORT_ASCENDING)
         sortAscending[sortType] = sortAscendingSetting
-
-        featureFlagProvider.provide("disable_font_size_config".toFeatureFlagKey())
-            .onDisabledOrUnavailable {
-                fontSizes.load(storage)
-            }
 
         pgpInlineDialogCounter = storage.getInt("pgpInlineDialogCounter", 0)
         pgpSignOnlyDialogCounter = storage.getInt("pgpSignOnlyDialogCounter", 0)

@@ -8,9 +8,9 @@ import assertk.assertions.isInstanceOf
 import assertk.assertions.prop
 import kotlin.test.Test
 import kotlinx.coroutines.test.runTest
-import net.thunderbird.core.featureflag.FeatureFlagKey
 import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.featureflag.FeatureFlagResult
+import net.thunderbird.core.featureflag.keys.GeneratedFeatureFlagKey
 import net.thunderbird.core.logging.testing.TestLogger
 import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.feature.notification.api.NotificationSeverity
@@ -33,7 +33,9 @@ class DisplaySystemNotificationCommandTest {
             val testSubject = createTestSubject(
                 featureFlagProvider = { key ->
                     when (key) {
-                        FeatureFlagKey.UseNotificationSenderForSystemNotifications -> FeatureFlagResult.Disabled
+                        GeneratedFeatureFlagKey.USE_NOTIFICATION_SENDER_FOR_SYSTEM_NOTIFICATIONS ->
+                            FeatureFlagResult.Disabled
+
                         else -> FeatureFlagResult.Enabled
                     }
                 },
@@ -52,7 +54,7 @@ class DisplaySystemNotificationCommandTest {
                     prop(UnsupportedCommand<SystemNotification>::reason)
                         .isInstanceOf<UnsupportedCommand.Reason.FeatureFlagDisabled>()
                         .prop(UnsupportedCommand.Reason.FeatureFlagDisabled::key)
-                        .isEqualTo(FeatureFlagKey.UseNotificationSenderForSystemNotifications)
+                        .isEqualTo(GeneratedFeatureFlagKey.USE_NOTIFICATION_SENDER_FOR_SYSTEM_NOTIFICATIONS)
                 }
         }
 
@@ -63,7 +65,9 @@ class DisplaySystemNotificationCommandTest {
             val testSubject = createTestSubject(
                 featureFlagProvider = { key ->
                     when (key) {
-                        FeatureFlagKey.UseNotificationSenderForSystemNotifications -> FeatureFlagResult.Unavailable
+                        GeneratedFeatureFlagKey.USE_NOTIFICATION_SENDER_FOR_SYSTEM_NOTIFICATIONS ->
+                            FeatureFlagResult.Unavailable
+
                         else -> FeatureFlagResult.Enabled
                     }
                 },
@@ -82,7 +86,7 @@ class DisplaySystemNotificationCommandTest {
                     prop(UnsupportedCommand<SystemNotification>::reason)
                         .isInstanceOf<UnsupportedCommand.Reason.FeatureFlagDisabled>()
                         .prop(UnsupportedCommand.Reason.FeatureFlagDisabled::key)
-                        .isEqualTo(FeatureFlagKey.UseNotificationSenderForSystemNotifications)
+                        .isEqualTo(GeneratedFeatureFlagKey.USE_NOTIFICATION_SENDER_FOR_SYSTEM_NOTIFICATIONS)
                 }
         }
 

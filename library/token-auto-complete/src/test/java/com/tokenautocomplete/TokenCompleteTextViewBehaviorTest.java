@@ -11,9 +11,11 @@ import android.os.Looper;
 import android.os.SystemClock;
 import android.text.Editable;
 import android.text.SpannableStringBuilder;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -284,5 +286,161 @@ public class TokenCompleteTextViewBehaviorTest {
 
         e.resetFromOther();
         e.tapAndAssert(xEmpty, yLast, null, 1);
+    }
+
+    private static KeyEvent tab(int action) {
+        return new KeyEvent(action, KeyEvent.KEYCODE_TAB);
+    }
+
+    private static KeyEvent shiftTab(int action) {
+        return new KeyEvent(0, 0, action, KeyEvent.KEYCODE_TAB, 0, KeyEvent.META_SHIFT_ON);
+    }
+
+    private static void openCompletionList(Env e, String... suggestions) {
+        e.v.setAdapter(new ArrayAdapter<>(e.a, android.R.layout.simple_list_item_1, suggestions));
+        e.v.showDropDown();
+        e.idle();
+        assertTrue("Expected the completion list to be open", e.v.isPopupShowing());
+    }
+
+    @Test
+    public void tab_withCompletionListClosed_isNotConsumed() {
+        Env e = new Env();
+        e.focusTokens();
+        assertFalse(e.v.isPopupShowing());
+
+        // Not consuming the key is what lets the framework move the focus on to the next view.
+        assertFalse(e.v.onKeyDown(KeyEvent.KEYCODE_TAB, tab(KeyEvent.ACTION_DOWN)));
+        assertEquals(0, e.spans().length);
+    }
+
+    @Test
+    public void shiftTab_withCompletionListClosed_isNotConsumed() {
+        Env e = new Env();
+        e.focusTokens();
+
+        assertFalse(e.v.onKeyDown(KeyEvent.KEYCODE_TAB, shiftTab(KeyEvent.ACTION_DOWN)));
+    }
+
+    @Test
+    public void tab_withSingleSuggestion_completesIt() {
+        Env e = new Env();
+        e.focusTokens();
+        openCompletionList(e, "one@example.com");
+
+        assertTrue(e.v.onKeyUp(KeyEvent.KEYCODE_TAB, tab(KeyEvent.ACTION_UP)));
+        e.layout();
+
+        assertEquals(1, e.spans().length);
+        assertEquals("one@example.com", e.v.getObjects().get(0));
+    }
+
+    @Test
+    public void tab_withSeveralSuggestions_selectsTheFirstOneInsteadOfCompleting() {
+        Env e = new Env();
+        e.focusTokens();
+        openCompletionList(e, "one@example.com", "two@example.com");
+
+        assertTrue(e.v.onKeyUp(KeyEvent.KEYCODE_TAB, tab(KeyEvent.ACTION_UP)));
+        e.layout();
+
+        assertEquals(0, e.v.getListSelection());
+        assertEquals("Nothing should be completed yet", 0, e.spans().length);
+    }
+
+    @Test
+    public void tab_withSeveralSuggestions_neverCompletesOnItsOwn() {
+        Env e = new Env();
+        e.focusTokens();
+        openCompletionList(e, "one@example.com", "two@example.com");
+        e.v.setListSelection(1);
+        e.idle();
+
+        assertTrue(e.v.onKeyUp(KeyEvent.KEYCODE_TAB, tab(KeyEvent.ACTION_UP)));
+        e.layout();
+
+        assertEquals("The selection is left for the list to move", 1, e.v.getListSelection());
+        assertEquals("Picking a suggestion is enter's job", 0, e.spans().length);
+    }
+
+    @Test
+    public void enter_completesTheSelectedSuggestion() {
+        Env e = new Env();
+        e.focusTokens();
+        openCompletionList(e, "one@example.com", "two@example.com");
+        e.v.setListSelection(1);
+        e.idle();
+
+        e.v.onKeyDown(KeyEvent.KEYCODE_ENTER, new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_ENTER));
+        e.v.onKeyUp(KeyEvent.KEYCODE_ENTER, new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_ENTER));
+        e.layout();
+
+        assertEquals(1, e.spans().length);
+        assertEquals("two@example.com", e.v.getObjects().get(0));
+    }
+
+    @Test
+    public void enter_stillCompletesTheCurrentText() {
+        Env e = new Env();
+        e.focusTokens();
+        e.v.append("one@example.com");
+        e.layout();
+
+        assertTrue(e.v.onKeyDown(KeyEvent.KEYCODE_ENTER, new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_ENTER)));
+        e.v.onKeyUp(KeyEvent.KEYCODE_ENTER, new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_ENTER));
+        e.layout();
+
+        assertEquals(1, e.spans().length);
+    }
+
+    @Test
+    public void tab_downThenUp_withSeveralSuggestions_selectsWithoutCompleting() {
+        Env e = new Env();
+        e.focusTokens();
+        e.v.append("one");
+        e.layout();
+        openCompletionList(e, "one@example.com", "two@example.com");
+
+        // The real key sequence: the down leg goes through the drop down, which may already move the selection.
+        e.v.onKeyDown(KeyEvent.KEYCODE_TAB, tab(KeyEvent.ACTION_DOWN));
+        assertTrue(e.v.onKeyUp(KeyEvent.KEYCODE_TAB, tab(KeyEvent.ACTION_UP)));
+        e.layout();
+
+        assertTrue("A suggestion should be selected", e.v.getListSelection() >= 0);
+        assertEquals("Picking one is enter's job", 0, e.spans().length);
+    }
+
+    @Test
+    public void tab_downThenUp_withSingleSuggestion_completesIt() {
+        Env e = new Env();
+        e.focusTokens();
+        e.v.append("one");
+        e.layout();
+        openCompletionList(e, "one@example.com");
+
+        e.v.onKeyDown(KeyEvent.KEYCODE_TAB, tab(KeyEvent.ACTION_DOWN));
+        assertTrue(e.v.onKeyUp(KeyEvent.KEYCODE_TAB, tab(KeyEvent.ACTION_UP)));
+        e.layout();
+
+        assertEquals(1, e.spans().length);
+        assertEquals("one@example.com", e.v.getObjects().get(0));
+    }
+
+    @Test
+    public void tab_doesNotLeaveAnEnterCompletionArmedForALaterKey() {
+        Env e = new Env();
+        e.focusTokens();
+        openCompletionList(e, "one@example.com", "two@example.com");
+
+        // Enter arms a completion for its own key up. A tab key up arriving first must not leave it armed.
+        e.v.onKeyDown(KeyEvent.KEYCODE_ENTER, new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_ENTER));
+        e.v.onKeyUp(KeyEvent.KEYCODE_TAB, tab(KeyEvent.ACTION_UP));
+        e.layout();
+        int spansAfterTab = e.spans().length;
+
+        e.v.onKeyUp(KeyEvent.KEYCODE_A, new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_A));
+        e.layout();
+
+        assertEquals("An unrelated key up must not complete anything", spansAfterTab, e.spans().length);
     }
 }

@@ -12,6 +12,7 @@ public enum IdentityField {
     MESSAGE_FORMAT("f"),
     MESSAGE_READ_RECEIPT("r"),
     SIGNATURE("s"),
+    SIGNATURE_IS_HTML("sh"),
     NAME("n"),
     EMAIL("e"),
     // TODO - store a reference to the message being replied so we can mark it at the time of send.

@@ -176,6 +176,8 @@ The data layer is responsible for data retrieval, storage, and synchronization.
 - **🔌 Data Sources**: Provide data from specific sources (API, database, preferences)
 - **📄 Data Transfer Objects**: Represent data at the data layer
 
+See the [Repository Pattern](repository-pattern.md) guide for repository responsibilities and API conventions.
+
 **Pattern: Data Source Pattern**
 - 🔍 Abstracts data sources behind a clean API
 -  Maps data between domain models and data transfer objects

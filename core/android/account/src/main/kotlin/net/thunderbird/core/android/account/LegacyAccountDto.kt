@@ -433,6 +433,15 @@ open class LegacyAccountDto(
             identities[0] = newIdentity
         }
 
+    @get:Synchronized
+    @set:Synchronized
+    var signatureIsHtml: Boolean
+        get() = identities[0].signatureIsHtml
+        set(signatureIsHtml) {
+            val newIdentity = identities[0].withSignatureIsHtml(signatureIsHtml)
+            identities[0] = newIdentity
+        }
+
     @get:JvmName("shouldMigrateToOAuth")
     @get:Synchronized
     @set:Synchronized
@@ -548,7 +557,12 @@ open class LegacyAccountDto(
 
     @Synchronized
     fun findIdentity(address: Address): Identity? {
+        // Prefer to match by email and name.
+        // Fall back to email only if no identity's name matches (e.g. a renamed identity).
         return identities.find { identity ->
+            identity.email.equals(address.address, ignoreCase = true) &&
+                identity.name.equals(address.personal, ignoreCase = true)
+        } ?: identities.find { identity ->
             identity.email.equals(address.address, ignoreCase = true)
         }
     }

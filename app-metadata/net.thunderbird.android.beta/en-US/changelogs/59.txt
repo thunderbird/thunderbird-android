@@ -1,0 +1,15 @@
+Thunderbird version 24.0b1
+
+New:
+- Signatures support HTML
+
+Fixed:
+- Reply prompts with Reply or Reply All
+- Selected compose text was invisible in light theme
+- Status bar icons became unreadable when selecting messages
+- Recipient expander would not collapse after editing subject or body
+- Thunderbird could crash when adding attachment to message using camera
+- Save All saved each attachment using content of last file
+
+Changed:
+- Long account names are resized to fit within two lines

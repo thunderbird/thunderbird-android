@@ -8,7 +8,7 @@
     <string name="setup_archive_folder_dialog_create_new_folder">Ustvari novo mapo</string>
     <string name="setup_archive_folder_dialog_done">Končano</string>
     <string name="setup_archive_folder_dialog_cancel">Prekliči</string>
-    <string name="setup_archive_folder_dialog_create_and_set_new_folder"><![CDATA[Create & set new folder]]></string>
+    <string name="setup_archive_folder_dialog_create_and_set_new_folder"><![CDATA[Ustvari in nastavi novo mapo]]></string>
     <string name="setup_archive_folder_set_archive_error_account_not_found">Računa, povezanega z UUID-jem \'%1$s\', ni bilo mogoče najti.</string>
     <string name="setup_archive_folder_unhandled_error">Nedoločena napaka: %1$s</string>
     <string name="setup_archive_folder_create_archive_folder_syncing">Usklajevanje …</string>

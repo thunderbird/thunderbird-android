@@ -945,4 +945,10 @@
     <string name="global_settings_privacy_incognito_keyboard">隐身键盘</string>
     <string name="global_settings_privacy_incognito_keyboard_detail">在撰写邮件时，让键盘不要从您的输入内容中学习</string>
     <string name="sort_by_indicator">•</string>
+    <string name="account_settings_signature_html_label">HTML 签名</string>
+    <string name="account_settings_signature_is_html_label">将签名保存为 HTML</string>
+    <string name="account_settings_signature_preview">签名预览</string>
+    <string name="account_settings_signature_clear_label">清除签名</string>
+    <string name="account_settings_signature_is_html_summary">将签名解析为 HTML。出于安全考虑，脚本和事件处理程序将被移除。</string>
+    <string name="camera_capture_lost">由于应用已关闭，捕获的图片已丢失。请重试。</string>
 </resources>

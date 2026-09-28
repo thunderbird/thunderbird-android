@@ -313,8 +313,8 @@
     <string name="account_settings_ignore_chat_messages_summary">Gjin meldingen toane foar berjochten dy’t ûnderdiel binne fan in e-mailpetear</string>
     <string name="account_settings_mark_message_as_read_on_view_label">As lêzen markearje wannear iepene</string>
     <string name="account_settings_mark_message_as_read_on_view_summary">In berjocht as lêzen markearje wannear it iepene is om te besjen</string>
-    <string name="account_settings_mark_message_as_read_on_delete_label">As lêzen markearje by wiskjen</string>
-    <string name="account_settings_mark_message_as_read_on_delete_summary">Markearje in berjocht as lêzen wannear’t dy wiske wurdt</string>
+    <string name="account_settings_mark_message_as_read_on_delete_label">As lêzen markearje wannear fuortsmiten</string>
+    <string name="account_settings_mark_message_as_read_on_delete_summary">In berjocht as lêzen markearje wannear’t dy fuortsmiten wurdt</string>
     <string name="account_settings_notification_channels_label">Meldingskategoryen</string>
     <string name="account_settings_open_notification_settings_messages_summary">Meldingen foar nije berjochten ynstelle</string>
     <string name="account_settings_open_notification_settings_miscellaneous_summary">Flater- en steatmeldingen ynstelle</string>
@@ -358,7 +358,7 @@
     <string name="account_settings_crypto_encrypt_all_drafts_off">Konsepten allinnich fersiferje as fersifering ynskeakele is</string>
     <string name="account_settings_mail_check_frequency_label">Map-peilingsfrekwinsje</string>
     <string name="account_settings_mail_display_count_label">Grutte fan lokale map</string>
-    <string name="account_settings_autodownload_message_size_label">Automatysk berjochten downloade oant</string>
+    <string name="account_settings_autodownload_message_size_label">Berjochten ophelje oant</string>
     <string name="account_settings_autodownload_message_size_1">1 KiB</string>
     <string name="account_settings_autodownload_message_size_2">2 KiB</string>
     <string name="account_settings_autodownload_message_size_4">4 KiB</string>
@@ -377,16 +377,16 @@
     <string name="account_settings_message_age_label">Berjochten syngronisearje fan</string>
     <string name="account_settings_message_age_any">alles (gjin limyt)</string>
     <string name="account_settings_message_age_0">hjoed</string>
-    <string name="account_settings_message_age_1">lêste 2 dagen</string>
-    <string name="account_settings_message_age_2">lêste 3 dagen</string>
-    <string name="account_settings_message_age_7">ôfrûne wike</string>
-    <string name="account_settings_message_age_14">ôfrûne 2 wiken</string>
-    <string name="account_settings_message_age_21">ôfrûne 3 wiken</string>
-    <string name="account_settings_message_age_1_month">ôfrûne moanne</string>
-    <string name="account_settings_message_age_2_months">ôfrûne 2 moannen</string>
-    <string name="account_settings_message_age_3_months">ôfrûne 3 moannen</string>
-    <string name="account_settings_message_age_6_months">ôfrûne 6 moannen</string>
-    <string name="account_settings_message_age_1_year">ôfrûne jier</string>
+    <string name="account_settings_message_age_1">de lêste 2 dagen</string>
+    <string name="account_settings_message_age_2">de lêste 3 dagen</string>
+    <string name="account_settings_message_age_7">de ôfrûne wike</string>
+    <string name="account_settings_message_age_14">de ôfrûne 2 wiken</string>
+    <string name="account_settings_message_age_21">de ôfrûne 3 wiken</string>
+    <string name="account_settings_message_age_1_month">de ôfrûne moanne</string>
+    <string name="account_settings_message_age_2_months">de ôfrûne 2 moannen</string>
+    <string name="account_settings_message_age_3_months">de ôfrûne 3 moannen</string>
+    <string name="account_settings_message_age_6_months">de ôfrûne 6 moannen</string>
+    <string name="account_settings_message_age_1_year">it ôfrûne jier</string>
     <string name="account_settings_sync_remote_deletetions_label">Ferwideringen op server syngronisearje</string>
     <string name="account_settings_sync_remote_deletetions_summary">Berjochten fuortsmite as fuortsmiten fan server</string>
     <string name="account_settings_openpgp_missing">OpenPGP-app net oanwêzich – is de app fuortsmiten?</string>
@@ -394,7 +394,7 @@
     <string name="folder_settings_in_top_group_label">Yn topgroep toane</string>
     <string name="folder_settings_clear_local_folder_action">Lokale berjochten wiskje</string>
     <string name="account_settings_incoming_label">Ynkommende server</string>
-    <string name="account_settings_incoming_summary">Ynkommende mailserver ynstelle</string>
+    <string name="account_settings_incoming_summary">Ynkommende mailserver konfigurearje</string>
     <string name="account_settings_outgoing_label">Utgeande server</string>
     <string name="account_settings_outgoing_summary">Utgeande (SMTP-)server ynstelle</string>
     <string name="account_settings_name_label">Jo namme</string>
@@ -949,4 +949,7 @@
     <string name="animation_setting_on">Oan</string>
     <string name="animation_setting_off">Ut</string>
     <string name="animation_setting_follow_system">Systeemstandert brûke</string>
+    <string name="global_settings_privacy_incognito_keyboard">Ynkognitotoetseboerd</string>
+    <string name="global_settings_privacy_incognito_keyboard_detail">It toetseboerd freegje net te learen fan wat jo type wannear’t jo berjochten opstelle</string>
+    <string name="sort_by_indicator">•</string>
 </resources>

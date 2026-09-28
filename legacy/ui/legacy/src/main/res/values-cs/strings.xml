@@ -966,4 +966,10 @@
     <string name="global_settings_privacy_incognito_keyboard">Klávesnice v anonymním režimu</string>
     <string name="global_settings_privacy_incognito_keyboard_detail">Při psaní zpráv nastavte klávesnici tak, aby se neučila z toho, co píšete</string>
     <string name="sort_by_indicator">•</string>
+    <string name="camera_capture_lost">Zaznamenaný obrázek byl ztracen, protože aplikace byla zavřena. Zkuste to prosím znovu.</string>
+    <string name="account_settings_signature_html_label">HTML podpis</string>
+    <string name="account_settings_signature_is_html_label">Uložit podpis jako HTML</string>
+    <string name="account_settings_signature_is_html_summary">Interpretovat podpis jako HTML. Skripty a obslužné rutiny událostí budou z bezpečnostních důvodů odstraněny.</string>
+    <string name="account_settings_signature_preview">Náhled podpisu</string>
+    <string name="account_settings_signature_clear_label">Vymazat podpis</string>
 </resources>

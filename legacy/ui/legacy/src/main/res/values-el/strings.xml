@@ -312,7 +312,7 @@
     <string name="account_settings_ignore_chat_messages_label">Αγνόηση μηνυμάτων συζήτησης</string>
     <string name="account_settings_ignore_chat_messages_summary">Να μην εμφανίζονται ειδοποιήσεις για μηνύματα που ανήκουν σε συζήτηση e-mail</string>
     <string name="account_settings_mark_message_as_read_on_view_label">Σήμανση ως αναγνωσμένο κατά το άνοιγμα</string>
-    <string name="account_settings_mark_message_as_read_on_view_summary">Σημείωση ως αναγνωσμένου με την προβολή</string>
+    <string name="account_settings_mark_message_as_read_on_view_summary">Επισήμανση μηνύματος ως αναγνωσμένο όταν είναι ανοιχτό για προβολή</string>
     <string name="account_settings_mark_message_as_read_on_delete_label">Σήμανση ως αναγνωσμένο κατά τη διαγραφή</string>
     <string name="account_settings_mark_message_as_read_on_delete_summary">Να γίνεται σήμανση του μηνύματος ως αναγνωσμένο όταν διαγράφεται</string>
     <string name="account_settings_notification_channels_label">Κατηγορίες ειδοποιήσεων</string>
@@ -375,7 +375,7 @@
     <string name="account_settings_autodownload_message_size_10240">10 MiB</string>
     <string name="account_settings_autodownload_message_size_any">Χωρίς όριο</string>
     <string name="account_settings_message_age_label">Συγχρονισμός μηνυμάτων από</string>
-    <string name="account_settings_message_age_any">οποτεδήποτε (δίχως όριο)</string>
+    <string name="account_settings_message_age_any">οποιαδήποτε στιγμή (χωρίς όρια)</string>
     <string name="account_settings_message_age_0">σήμερα</string>
     <string name="account_settings_message_age_1">τις τελευταίες 2 ημέρες</string>
     <string name="account_settings_message_age_2">τις τελευταίες 3 ημέρες</string>

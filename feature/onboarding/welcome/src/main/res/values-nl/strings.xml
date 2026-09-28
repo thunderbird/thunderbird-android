@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="onboarding_welcome_start_button">Starten</string>
-    <string name="onboarding_welcome_import_button">K-9 Instellingen importeren</string>
+    <string name="onboarding_welcome_import_button">K-9-instellingen importeren</string>
     <string name="onboarding_welcome_text">Een open source, op privacy gerichte en advertentievrije e-mail-app voor Android.</string>
     <string name="onboarding_welcome_developed_by">Ontwikkeld door een toegewijd team van MZLA Technologies en een wereldwijde gemeenschap van vrijwilligers. Onderdeel van de Mozilla-familie.</string>
 </resources>

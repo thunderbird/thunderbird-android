@@ -4,14 +4,11 @@ import android.app.Application
 import app.k9mail.feature.telemetry.telemetryModule
 import app.k9mail.legacy.di.DI
 import com.fsck.k9.contacts.ContactPictureLoader
-import kotlinx.coroutines.flow.emptyFlow
 import net.thunderbird.core.android.account.AccountDefaultsProvider
 import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.core.android.preferences.TestStoragePersister
 import net.thunderbird.core.common.appConfig.PlatformConfigProvider
 import net.thunderbird.core.common.inject.factoryListOf
-import net.thunderbird.core.featureflag.FeatureFlagProvider
-import net.thunderbird.core.featureflag.InMemoryFeatureFlagProvider
 import net.thunderbird.core.logging.LogLevel
 import net.thunderbird.core.logging.LogLevelManager
 import net.thunderbird.core.logging.LogLevelProvider
@@ -21,15 +18,14 @@ import net.thunderbird.core.logging.composite.CompositeLogSinkManager
 import net.thunderbird.core.logging.file.FileLogSink
 import net.thunderbird.core.logging.testing.TestLogLevelManager
 import net.thunderbird.core.logging.testing.TestLogger
-import net.thunderbird.legacy.logging.Log
 import net.thunderbird.core.preference.storage.StoragePersister
 import net.thunderbird.feature.mail.message.reader.api.css.CssClassNameProvider
 import net.thunderbird.feature.mail.message.reader.api.css.CssStyleProvider
 import net.thunderbird.feature.mail.message.reader.api.css.CssVariableNameProvider
+import net.thunderbird.legacy.logging.Log
 import org.koin.core.qualifier.named
 import org.koin.dsl.bind
 import org.koin.dsl.module
-import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 
 class TestApp : Application() {
@@ -77,15 +73,6 @@ val testModule = module {
         )
     }
     single<AccountDefaultsProvider> { mock<AccountDefaultsProvider>() }
-    single<FeatureFlagProvider> {
-        InMemoryFeatureFlagProvider(
-            featureFlagFactory = mock {
-                on { getCatalog() } doReturn emptyFlow()
-            },
-            featureFlagOverrides = mock(),
-        )
-    }
-
     single<ContactPictureLoader> { mock() }
     single<LegacyAccountManager> { mock() }
     single<PlatformConfigProvider> { FakePlatformConfigProvider() }

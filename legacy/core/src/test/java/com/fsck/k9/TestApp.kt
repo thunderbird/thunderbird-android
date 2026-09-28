@@ -13,14 +13,11 @@ import com.fsck.k9.notification.NotificationResourceProvider
 import com.fsck.k9.notification.NotificationStrategy
 import com.fsck.k9.notification.TestNotificationIconResourceProvider
 import com.fsck.k9.storage.storageModule
-import kotlinx.coroutines.flow.emptyFlow
 import net.thunderbird.core.android.account.AccountDefaultsProvider
 import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.core.android.preferences.TestStoragePersister
 import net.thunderbird.core.common.appConfig.PlatformConfigProvider
 import net.thunderbird.core.common.inject.factoryListOf
-import net.thunderbird.core.featureflag.FeatureFlagProvider
-import net.thunderbird.core.featureflag.InMemoryFeatureFlagProvider
 import net.thunderbird.core.logging.LogLevel
 import net.thunderbird.core.logging.LogLevelManager
 import net.thunderbird.core.logging.LogLevelProvider
@@ -28,7 +25,6 @@ import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.logging.composite.CompositeLogSink
 import net.thunderbird.core.logging.composite.CompositeLogSinkManager
 import net.thunderbird.core.logging.file.FileLogSink
-import net.thunderbird.legacy.logging.Log
 import net.thunderbird.core.logging.testing.TestLogLevelManager
 import net.thunderbird.core.logging.testing.TestLogger
 import net.thunderbird.core.preference.storage.StoragePersister
@@ -40,6 +36,7 @@ import net.thunderbird.feature.mail.message.reader.api.css.CssVariableNameProvid
 import net.thunderbird.legacy.core.FakeAccountDefaultsProvider
 import net.thunderbird.legacy.core.mailstore.folder.FakeLocalMessageUidPrefixProvider
 import net.thunderbird.legacy.core.mailstore.folder.FakeOutboxFolderManager
+import net.thunderbird.legacy.logging.Log
 import org.koin.core.qualifier.named
 import org.koin.dsl.bind
 import org.koin.dsl.module
@@ -95,14 +92,6 @@ val testModule = module {
     single(named("controllerExtensions")) { emptyList<ControllerExtension>() }
     single<AccountDefaultsProvider> { FakeAccountDefaultsProvider() }
     single { mock<WorkManager>() }
-    single<FeatureFlagProvider> {
-        InMemoryFeatureFlagProvider(
-            featureFlagFactory = mock {
-                on { getCatalog() } doReturn emptyFlow()
-            },
-            featureFlagOverrides = mock(),
-        )
-    }
     single<OutboxFolderManager> { FakeOutboxFolderManager() }
     single<LegacyAccountManager> { mock() }
     single<NotificationIconResourceProvider> { TestNotificationIconResourceProvider() }

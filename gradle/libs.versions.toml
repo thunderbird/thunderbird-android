@@ -54,17 +54,17 @@ androidxTestRunner = "1.7.0"
 androidxWebkit = "1.15.0"
 androidxWindow = "1.5.1"
 androidxWork = "2.11.2"
-apacheHttpclient5 = "5.6.2"
+apacheHttpclient5 = "5.6.4"
 appAuth = "0.11.1"
 assertk = "0.28.1"
 circleImageView = "3.1.0"
 ckchangelog = "2.0.0-beta02"
 clikt = "5.1.0"
 commonsIo = "2.22.0"
-dependencyCheckPlugin = "0.58.0"
+dependencyCheckPlugin = "0.61.0"
 dependencyGuardPlugin = "0.5.0"
-detektPlugin = "2.0.0-alpha.5"
-detektPluginCompose = "0.6.3"
+detektPlugin = "2.0.0-alpha.6"
+detektPluginCompose = "0.6.4"
 fastAdapter = "5.7.0"
 forkhandlesBom = "2.25.6.0"
 glide = "4.16.0"
@@ -76,7 +76,7 @@ jcipAnnotations = "1.0"
 jetbrainsAnnotations = "26.1.0"
 jetbrainsCompose = "1.11.1"
 jetbrainsComposeMaterialIcons = "1.7.3"
-jetbrainsComposeLifecycle = "2.10.0"
+jetbrainsComposeLifecycle = "2.11.0"
 jetbrainsComposeMaterial3 = "1.9.0"
 jetbrainsComposeMaterial3Adaptive = "1.2.0"
 jetbrainsComposeNavigation = "2.9.2"
@@ -91,32 +91,35 @@ jzlib = "1.0.7"
 koinBom = "4.2.2"
 konsist = "0.17.3"
 kotlinBom = "2.4.10"
-kotlinKsp = "2.3.10"
-kotlinxCoroutines = "1.11.0"
+kotlinKsp = "2.3.11"
+kotlinpoet = "2.3.0"
 kotlinxCollectionsImmutable = "0.5.1"
+kotlinxCoroutines = "1.11.0"
 kotlinxDateTime = "0.8.0"
 kotlinxIoCore = "0.9.1"
 kotlinxSerialization = "1.11.0"
 kover = "0.9.9"
 ktlint = "1.5.0"
-ktor = "3.5.1"
+ksoup = "0.2.6"
+ktor = "3.5.2"
 kxml2 = "1.0"
 landscapist = "2.9.8"
 leakcanary = "2.14"
-logbackClassic = "1.6.1"
+logbackClassic = "1.6.3"
 mime4j = "0.8.14"
 minidns = "1.1.1"
 mockito = "5.23.0"
 mockitoKotlin = "6.3.0"
 moshi = "1.15.2"
 mozillaAndroidComponents = "145.0.1"
-okhttp = "5.4.0"
-okio = "3.18.0"
+jsonSchemaValidator = "3.0.7"
+okhttp = "5.5.0"
+okio = "3.18.1"
 preferencesFix = "1.1.0"
-robolectric = "4.16.1"
+robolectric = "4.17-beta-4"
 safeContentResolver = "1.0.0"
 searchPreference = "2.7.3"
-spotlessPlugin = "8.9.0"
+spotlessPlugin = "8.10.0"
 tbMobileComponents = "0.1.0-SNAPSHOT"
 timber = "5.0.1"
 turbine = "1.2.1"
@@ -146,6 +149,8 @@ spotless = { id = "com.diffplug.spotless", version.ref = "spotlessPlugin" }
 # Build plugins
 tb-app-badging = { id = "net.thunderbird.gradle.plugin.app.badging" }
 tb-app-versioning = { id = "net.thunderbird.gradle.plugin.app.versioning" }
+tb-featureflag-root = { id = "net.thunderbird.gradle.plugin.featureflag.root" }
+tb-featureflag-library = { id = "net.thunderbird.gradle.plugin.featureflag.library" }
 tb-quality-code-coverage = { id = "net.thunderbird.gradle.plugin.quality.coverage" }
 tb-quality-detekt = { id = "net.thunderbird.gradle.plugin.quality.detekt" }
 tb-quality-spotless = { id = "net.thunderbird.gradle.plugin.quality.spotless" }
@@ -267,6 +272,7 @@ kotlin-bom = { module = "org.jetbrains.kotlin:kotlin-bom", version.ref = "kotlin
 kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test" }
 kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit" }
+kotlinpoet = { module = "com.squareup:kotlinpoet", version.ref = "kotlinpoet" }
 kotlinx-collections-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "kotlinxCollectionsImmutable" }
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinxCoroutines" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutines" }
@@ -274,6 +280,7 @@ kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-t
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDateTime" }
 kotlinx-io-core = { module = "org.jetbrains.kotlinx:kotlinx-io-core", version.ref = "kotlinxIoCore" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerialization" }
+ksoup = { module = "com.fleeksoft.ksoup:ksoup", version.ref = "ksoup" }
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
 ktor-client-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktor" }
 ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
@@ -292,6 +299,7 @@ moshi = { module = "com.squareup.moshi:moshi", version.ref = "moshi" }
 moshi-kotlin-codegen = { module = "com.squareup.moshi:moshi-kotlin-codegen", version.ref = "moshi" }
 mozilla-components-glean = { module = "org.mozilla.components:service-glean", version.ref = "mozillaAndroidComponents" }
 mozilla-components-fetch-okhttp = { module = "org.mozilla.components:lib-fetch-okhttp", version.ref = "mozillaAndroidComponents" }
+networknt-jsonSchemaValidator = { module = "com.networknt:json-schema-validator", version.ref = "jsonSchemaValidator" }
 okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
 okhttp-mockwebserver = { module = "com.squareup.okhttp3:mockwebserver", version.ref = "okhttp" }
 okio = { module = "com.squareup.okio:okio", version.ref = "okio" }

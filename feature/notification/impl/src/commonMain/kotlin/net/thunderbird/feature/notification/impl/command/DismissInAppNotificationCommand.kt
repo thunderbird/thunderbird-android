@@ -2,6 +2,7 @@ package net.thunderbird.feature.notification.impl.command
 
 import net.thunderbird.core.featureflag.FeatureFlagKey
 import net.thunderbird.core.featureflag.FeatureFlagProvider
+import net.thunderbird.core.featureflag.keys.GeneratedFeatureFlagKey
 import net.thunderbird.core.logging.Logger
 import net.thunderbird.feature.notification.api.NotificationRegistry
 import net.thunderbird.feature.notification.api.content.InAppNotification
@@ -23,5 +24,5 @@ class DismissInAppNotificationCommand(
     notification = notification,
     notifier = notifier,
 ) {
-    override val featureFlagKey: FeatureFlagKey = FeatureFlagKey.DisplayInAppNotifications
+    override val featureFlagKey: FeatureFlagKey = GeneratedFeatureFlagKey.DISPLAY_IN_APP_NOTIFICATIONS
 }

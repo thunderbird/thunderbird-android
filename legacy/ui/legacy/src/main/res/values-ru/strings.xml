@@ -966,4 +966,10 @@
     <string name="global_settings_privacy_incognito_keyboard_detail">Запрещать клавиатуре обучаться на том, что вы вводите при написании сообщений</string>
     <string name="global_settings_privacy_incognito_keyboard">Инкогнито-клавиатура</string>
     <string name="sort_by_indicator">•</string>
+    <string name="camera_capture_lost">Захваченное изображение утеряно, потому что приложение было закрыто. Повторите попытку.</string>
+    <string name="account_settings_signature_html_label">Подпись HTML</string>
+    <string name="account_settings_signature_is_html_label">Сохранить подпись как HTML</string>
+    <string name="account_settings_signature_is_html_summary">Интерпретировать подпись как HTML. Скрипты и обработчики событий будут удалены в целях безопасности.</string>
+    <string name="account_settings_signature_preview">Просмотр подписи</string>
+    <string name="account_settings_signature_clear_label">Удалить подпись</string>
 </resources>

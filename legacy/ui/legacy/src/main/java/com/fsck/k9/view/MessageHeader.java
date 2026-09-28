@@ -27,9 +27,6 @@ import com.fsck.k9.helper.ClipboardManager;
 import com.fsck.k9.helper.MessageHelper;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Message;
-import com.fsck.k9.message.ReplyAction;
-import com.fsck.k9.message.ReplyActionStrategy;
-import com.fsck.k9.message.ReplyActions;
 import com.fsck.k9.ui.R;
 import com.fsck.k9.ui.helper.BottomBaselineTextView;
 import com.fsck.k9.ui.helper.RelativeDateTimeFormatter;
@@ -44,6 +41,9 @@ import net.thunderbird.core.android.account.LegacyAccountDto;
 import net.thunderbird.core.common.mail.Flag;
 import net.thunderbird.core.preference.display.visualSettings.message.list.MessageListDateTimeFormat;
 import net.thunderbird.core.preference.display.visualSettings.message.list.MessageListPreferencesManager;
+import net.thunderbird.feature.mail.message.reader.api.domain.ReplyAction;
+import net.thunderbird.feature.mail.message.reader.api.domain.ReplyActions;
+import net.thunderbird.feature.mail.message.reader.api.strategy.ReplyActionStrategy;
 
 
 public class MessageHeader extends LinearLayout implements OnClickListener, OnLongClickListener {
@@ -52,7 +52,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
     private final MessageViewRecipientFormatter recipientFormatter = DI.get(MessageViewRecipientFormatter.class);
     private final MessageListPreferencesManager messageListPreferencesManager =
         DI.get(MessageListPreferencesManager.class);
-    private final ReplyActionStrategy replyActionStrategy = DI.get(ReplyActionStrategy.class);
+    private final ReplyActionStrategy<LegacyAccountDto, Message> replyActionStrategy = DI.get(ReplyActionStrategy.class);
     private final MessageHelper messageHelper = DI.get(MessageHelper.class);
     private final FontSizes fontSizes = K9.getFontSizes();
 

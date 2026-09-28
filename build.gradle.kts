@@ -15,6 +15,13 @@ plugins {
     id("thunderbird.dependency.check")
     id("net.thunderbird.gradle.plugin.quality.coverage")
     id("net.thunderbird.gradle.plugin.quality.spotless")
+    alias(libs.plugins.tb.featureflag.root)
+}
+
+featureFlag {
+    val dir = project.layout.projectDirectory
+    schema.set(dir.file("config/featureflag/thunderbird_mobile_featureflag.schema.json"))
+    catalog.set(dir.file("config/featureflag/thunderbird_mobile_featureflag.catalog.json"))
 }
 
 tasks.withType<Test>().configureEach {

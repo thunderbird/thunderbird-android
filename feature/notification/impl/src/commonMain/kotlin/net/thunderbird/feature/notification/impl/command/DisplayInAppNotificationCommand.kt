@@ -1,7 +1,7 @@
 package net.thunderbird.feature.notification.impl.command
 
-import net.thunderbird.core.featureflag.FeatureFlagKey
 import net.thunderbird.core.featureflag.FeatureFlagProvider
+import net.thunderbird.core.featureflag.keys.GeneratedFeatureFlagKey
 import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.feature.notification.api.command.NotificationCommand
@@ -31,12 +31,14 @@ internal class DisplayInAppNotificationCommand(
     override suspend fun execute(): NotificationCommandOutcome<InAppNotification> {
         logger.debug(TAG) { "execute() called with: notification = $notification" }
         return when {
-            featureFlagProvider.provide(FeatureFlagKey.DisplayInAppNotifications).isDisabledOrUnavailable() ->
+            featureFlagProvider
+                .provide(GeneratedFeatureFlagKey.DISPLAY_IN_APP_NOTIFICATIONS)
+                .isDisabledOrUnavailable() ->
                 Outcome.failure(
                     error = UnsupportedCommand(
                         command = this,
                         reason = UnsupportedCommand.Reason.FeatureFlagDisabled(
-                            key = FeatureFlagKey.DisplayInAppNotifications,
+                            key = GeneratedFeatureFlagKey.DISPLAY_IN_APP_NOTIFICATIONS,
                         ),
                     ),
                 )

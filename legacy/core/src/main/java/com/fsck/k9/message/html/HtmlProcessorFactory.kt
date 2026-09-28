@@ -3,7 +3,7 @@ package com.fsck.k9.message.html
 import app.k9mail.html.cleaner.HtmlProcessor
 import net.thunderbird.core.common.mail.html.HtmlSettings
 import net.thunderbird.core.featureflag.FeatureFlagProvider
-import net.thunderbird.feature.mail.message.reader.api.MessageReaderFeatureFlags
+import net.thunderbird.core.featureflag.keys.GeneratedFeatureFlagKey
 import net.thunderbird.feature.mail.message.reader.api.css.CssClassNameProvider
 
 class HtmlProcessorFactory(
@@ -14,7 +14,7 @@ class HtmlProcessorFactory(
     fun create(settings: HtmlSettings): HtmlProcessor {
         val displayHtml = displayHtmlFactory.create(settings)
         val customClasses =
-            if (featureFlagProvider.provide(MessageReaderFeatureFlags.UseNewMessageReaderCssStyles).isEnabled()) {
+            if (featureFlagProvider.provide(GeneratedFeatureFlagKey.USE_NEW_MESSAGE_READER_CSS_STYLES).isEnabled()) {
                 setOf(cssClassNameProvider.rootClassName, cssClassNameProvider.mainContentClassName)
             } else {
                 // TODO(#10498): Remove when UseNewMessageReaderCssStyles is no longer required
