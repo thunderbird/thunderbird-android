@@ -7,7 +7,7 @@ import assertk.assertions.isEqualTo
 import kotlin.test.Test
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
@@ -245,7 +245,6 @@ class BundledCatalogFeatureFlagProviderTest {
     ): BundledCatalogFeatureFlagProvider = BundledCatalogFeatureFlagProvider(
         dataSource = dataSource,
         logger = TestLogger(),
-        scope = backgroundScope,
     )
 
     private companion object {
@@ -295,9 +294,11 @@ private class FakeFeatureFlagCatalogDataSource(
     var loadCount: Int = 0
         private set
 
-    override fun load(): Flow<FeatureFlagCatalog> = flow {
+    override fun observe(): Flow<FeatureFlagCatalog> = emptyFlow()
+
+    override suspend fun load(): FeatureFlagCatalog {
         loadCount++
-        emit(catalog)
+        return catalog
     }
 }
 
