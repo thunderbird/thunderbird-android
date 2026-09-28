@@ -126,7 +126,7 @@ private fun NavigationDrawerLabel(
         TextLabelLarge(
             text = label,
             overflow = TextOverflow.Ellipsis,
-            maxLines = 2,
+            maxLines = 1,
             modifier = Modifier.weight(1f),
         )
         if (expandableState?.value != null) {
