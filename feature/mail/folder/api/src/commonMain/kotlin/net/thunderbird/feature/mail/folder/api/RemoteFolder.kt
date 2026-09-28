@@ -1,9 +1,10 @@
 package net.thunderbird.feature.mail.folder.api
 
+import net.thunderbird.feature.mail.folder.FolderType
 import net.thunderbird.piisafe.annotation.PiiSafe
 
 @PiiSafe.HasPii
-data class RemoteFolder(
+public data class RemoteFolder(
     val id: Long,
     @get:PiiSafe.Mask
     val serverId: String,

@@ -25,7 +25,7 @@ import net.thunderbird.components.ui.bolt.atom.icon.Icons
 import net.thunderbird.components.ui.bolt.atom.text.TextLabelLarge
 import net.thunderbird.components.ui.bolt.organism.drawer.NavigationDrawerItem
 import net.thunderbird.components.ui.bolt.theme.BoltTheme
-import net.thunderbird.feature.mail.folder.api.FolderType
+import net.thunderbird.feature.mail.folder.FolderType
 import net.thunderbird.feature.navigation.drawer.dropdown.R
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayFolder
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayTreeFolder

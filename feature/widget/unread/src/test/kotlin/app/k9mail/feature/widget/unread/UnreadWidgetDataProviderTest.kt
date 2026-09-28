@@ -16,9 +16,9 @@ import net.thunderbird.components.core.outcome.Outcome
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.logging.testing.TestLogger
 import net.thunderbird.feature.account.AccountId
+import net.thunderbird.feature.mail.folder.FolderType
 import net.thunderbird.feature.mail.folder.api.Folder
 import net.thunderbird.feature.mail.folder.api.FolderServerId
-import net.thunderbird.feature.mail.folder.api.FolderType
 import net.thunderbird.feature.mail.folder.api.data.FolderError
 import net.thunderbird.feature.mail.folder.api.data.repository.FolderQueryRepository
 import net.thunderbird.feature.search.legacy.LocalMessageSearch

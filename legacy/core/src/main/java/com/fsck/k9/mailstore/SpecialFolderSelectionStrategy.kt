@@ -1,6 +1,6 @@
 package com.fsck.k9.mailstore
 
-import net.thunderbird.feature.mail.folder.api.FolderType
+import net.thunderbird.feature.mail.folder.FolderType
 import net.thunderbird.feature.mail.folder.api.RemoteFolder
 
 /**

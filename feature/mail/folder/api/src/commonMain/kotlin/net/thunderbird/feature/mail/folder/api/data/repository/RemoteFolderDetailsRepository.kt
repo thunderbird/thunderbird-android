@@ -7,11 +7,11 @@ import net.thunderbird.feature.mail.folder.api.RemoteFolder
 import net.thunderbird.feature.mail.folder.api.RemoteFolderDetails
 import net.thunderbird.feature.mail.folder.api.data.FolderError
 
-interface RemoteFolderDetailsRepository {
+public interface RemoteFolderDetailsRepository {
     /**
      * Returns a list of [FolderDetails] of a [RemoteFolder] for the given [accountId].
      *
      * @param accountId The account identifier.
      */
-    suspend fun getAllByAccountId(accountId: AccountId): Outcome<List<RemoteFolderDetails>, FolderError>
+    public suspend fun getAllByAccountId(accountId: AccountId): Outcome<List<RemoteFolderDetails>, FolderError>
 }

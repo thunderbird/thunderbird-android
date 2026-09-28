@@ -18,7 +18,7 @@ import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.core.common.exception.MessagingException
 import net.thunderbird.feature.account.AccountId
-import net.thunderbird.feature.mail.folder.api.FolderType
+import net.thunderbird.feature.mail.folder.FolderType
 import net.thunderbird.feature.mail.folder.api.SpecialFolderSelection
 import net.thunderbird.feature.mail.folder.api.SpecialFolderUpdater
 import net.thunderbird.feature.mail.message.list.domain.CreateArchiveFolderOutcome

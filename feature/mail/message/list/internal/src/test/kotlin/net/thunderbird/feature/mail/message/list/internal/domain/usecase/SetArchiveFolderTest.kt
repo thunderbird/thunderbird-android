@@ -15,7 +15,7 @@ import net.thunderbird.components.core.outcome.Outcome
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.common.exception.MessagingException
 import net.thunderbird.feature.account.AccountIdFactory
-import net.thunderbird.feature.mail.folder.api.FolderType
+import net.thunderbird.feature.mail.folder.FolderType
 import net.thunderbird.feature.mail.folder.api.RemoteFolder
 import net.thunderbird.feature.mail.folder.api.SpecialFolderSelection
 import net.thunderbird.feature.mail.message.list.domain.SetAccountFolderOutcome

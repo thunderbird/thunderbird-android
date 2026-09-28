@@ -1,7 +1,7 @@
 package net.thunderbird.feature.mail.message.list.ui.state
 
 import androidx.compose.runtime.Immutable
-import net.thunderbird.feature.mail.folder.api.FolderType
+import net.thunderbird.feature.mail.folder.FolderType
 
 /**
  * Represents a folder in the mail account hierarchy.

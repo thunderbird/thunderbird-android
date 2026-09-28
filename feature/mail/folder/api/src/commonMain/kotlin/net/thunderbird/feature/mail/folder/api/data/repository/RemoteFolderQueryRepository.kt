@@ -6,12 +6,12 @@ import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.mail.folder.api.RemoteFolder
 import net.thunderbird.feature.mail.folder.api.data.FolderError
 
-interface RemoteFolderQueryRepository {
+public interface RemoteFolderQueryRepository {
     /**
      * Returns a list of [RemoteFolder]s for the given [accountId].
      *
      * @param accountId The account identifier.
      * @throws MessagingException if there's a problem accessing the folders.
      */
-    suspend fun getAllByAccountId(accountId: AccountId): Outcome<List<RemoteFolder>, FolderError>
+    public suspend fun getAllByAccountId(accountId: AccountId): Outcome<List<RemoteFolder>, FolderError>
 }

@@ -4,6 +4,8 @@ plugins {
 }
 
 kotlin {
+    explicitApi()
+
     android {
         namespace = "net.thunderbird.feature.mail.folder.api"
     }

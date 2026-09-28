@@ -1,6 +1,6 @@
 package net.thunderbird.feature.mail.folder.api
 
-enum class SpecialFolderSelection {
+public enum class SpecialFolderSelection {
     AUTOMATIC,
     MANUAL,
 }
