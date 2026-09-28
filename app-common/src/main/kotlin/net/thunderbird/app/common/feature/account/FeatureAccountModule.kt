@@ -4,7 +4,7 @@ import androidx.work.WorkerParameters
 import net.thunderbird.feature.account.settings.api.BackgroundAccountRemover
 import org.koin.dsl.module
 
-val featureAccountModule = module {
+internal val appCommonFeatureAccountModule = module {
     factory {
         AccountRemover(
             localStoreProvider = get(),

@@ -2,7 +2,7 @@ package net.thunderbird.app.common.feature
 
 import app.k9mail.feature.launcher.FeatureLauncherExternalContract
 import app.k9mail.feature.launcher.di.featureLauncherModule
-import net.thunderbird.app.common.feature.account.featureAccountModule
+import net.thunderbird.app.common.feature.account.appCommonFeatureAccountModule
 import net.thunderbird.app.common.feature.mail.appCommonFeatureMailModule
 import net.thunderbird.feature.account.avatar.di.featureAccountAvatarModule
 import net.thunderbird.feature.mail.message.composer.internal.featureMessageComposerModule
@@ -15,7 +15,7 @@ import org.koin.dsl.module
 
 internal val appCommonFeatureModule = module {
     includes(appCommonFeatureMailModule)
-    includes(featureAccountModule)
+    includes(appCommonFeatureAccountModule)
     includes(featureAccountAvatarModule)
     includes(featureLauncherModule)
     includes(featureNotificationModule)
