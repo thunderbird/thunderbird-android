@@ -15,12 +15,10 @@ import net.thunderbird.core.logging.Logger
 class BundledCatalogFeatureFlagProvider(
     dataSource: FeatureFlagCatalogDataSource,
     logger: Logger,
-    scope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Default),
 ) : DataSourceCatalogFeatureFlagProvider(
     dataSource = dataSource,
     providerName = "bundled_catalog",
     logger = logger,
-    scope = scope,
 ),
     BundledFeatureFlagDefaults {
     override fun defaults(): Map<String, Boolean> = resolvedFlags()
