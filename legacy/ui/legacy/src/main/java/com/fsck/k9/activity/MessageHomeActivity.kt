@@ -70,6 +70,7 @@ import net.thunderbird.core.preference.interaction.PostMarkAsUnreadNavigation
 import net.thunderbird.core.preference.interaction.PostRemoveNavigation
 import net.thunderbird.core.preference.storage.Storage
 import net.thunderbird.feature.account.storage.legacy.mapper.LegacyAccountDataMapper
+import net.thunderbird.feature.account.usecase.GetDefaultAccountId
 import net.thunderbird.feature.funding.api.FundingManager
 import net.thunderbird.feature.funding.api.FundingType
 import net.thunderbird.feature.navigation.drawer.api.NavigationDrawer
@@ -121,6 +122,7 @@ open class MessageHomeActivity :
     private val coreResourceProvider: CoreResourceProvider by inject()
     private val fundingManager: FundingManager by inject()
     private val logger: Logger by inject()
+    private val getDefaultAccountId: GetDefaultAccountId by inject()
     private val legacyAccountDataMapper: LegacyAccountDataMapper by inject()
     private val databaseUpgradeInterceptor: DatabaseUpgradeInterceptor by inject()
 
@@ -635,8 +637,9 @@ open class MessageHomeActivity :
     }
 
     private fun createDefaultLocalSearch(uuid: String? = null): LocalMessageSearch {
-        val account = uuid?.let { preferences.getAccount(it) } ?: run {
-            preferences.defaultAccount ?: error("No default account available")
+        val account = uuid?.let { accountManager.getAccount(it) } ?: run {
+            val defaultAccountId = getDefaultAccountId() ?: error("No default account available")
+            accountManager.getAccount(defaultAccountId.toString()) ?: error("Default account not found")
         }
         return LocalMessageSearch().apply {
             addAccountUuid(account.uuid)
@@ -1469,7 +1472,8 @@ open class MessageHomeActivity :
 
     private fun LocalMessageSearch.firstAccount(): LegacyAccountDto? {
         return if (searchAllAccounts()) {
-            preferences.defaultAccount
+            val defaultAccountId = getDefaultAccountId()
+            defaultAccountId?.let { accountManager.getAccount(it.toString()) }
         } else {
             val accountUuid = accountUuids.first()
             accountManager.getAccount(accountUuid)

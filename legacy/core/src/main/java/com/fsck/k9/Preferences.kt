@@ -220,9 +220,6 @@ class Preferences internal constructor(
         notifyAccountsChangeListeners()
     }
 
-    val defaultAccount: LegacyAccountDto?
-        get() = getAccounts().firstOrNull()
-
     override fun saveAccount(account: LegacyAccountDto) {
         ensureAssignedAccountNumber(account)
         processChangedValues(account)

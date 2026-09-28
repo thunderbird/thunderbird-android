@@ -70,6 +70,8 @@ import com.fsck.k9.view.MessageWebView;
 import com.fsck.k9.view.WebViewConfigProvider;
 import kotlin.Unit;
 import net.thunderbird.core.android.account.LegacyAccountDto;
+import net.thunderbird.feature.account.AccountId;
+import net.thunderbird.feature.account.usecase.GetDefaultAccountId;
 import app.k9mail.legacy.di.DI;
 import net.thunderbird.core.android.account.Identity;
 import com.fsck.k9.K9;
@@ -235,6 +237,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
     private final DefaultFolderProvider defaultFolderProvider = DI.get(DefaultFolderProvider.class);
     private final MessagingController messagingController = DI.get(MessagingController.class);
     private final Preferences preferences = DI.get(Preferences.class);
+    private final GetDefaultAccountId getDefaultAccountId = DI.get(GetDefaultAccountId.class);
     private final GeneralSettingsManager generalSettingsManager = DI.get(GeneralSettingsManager.class);
     private final WebViewConfigProvider webViewConfigProvider = DI.get(WebViewConfigProvider.class);
     private final DisplayHtml displayHtml = DI.get(DisplayHtmlUiFactory.class).createForMessageCompose();
@@ -348,7 +351,10 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
         fetchAccount(intent);
 
         if (account == null) {
-            account = preferences.getDefaultAccount();
+            AccountId defaultAccountId = getDefaultAccountId.invoke();
+            if (defaultAccountId != null) {
+                account = preferences.getAccount(defaultAccountId.toString());
+            }
         }
 
         if (account == null) {

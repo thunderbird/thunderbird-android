@@ -35,27 +35,32 @@ internal class FakeLegacyAccountManager(
     }
 
     override fun getByIdSync(id: AccountId): LegacyAccount? {
-        TODO("Not yet implemented")
+        return accounts.value.find { it.id == id }
     }
 
     override fun updateSync(account: LegacyAccount) {
-        TODO("Not yet implemented")
+        accountsState.update { currentList ->
+            currentList.toMutableList().apply {
+                removeIf { it.uuid == account.uuid }
+                add(account)
+            }
+        }
     }
 
     override fun getAccounts(): List<LegacyAccount> {
-        TODO("Not yet implemented")
+        return accounts.value
     }
 
     override fun getAccountsFlow(): Flow<List<LegacyAccount>> {
-        TODO("Not yet implemented")
+        return accounts
     }
 
     override fun getAccount(accountUuid: String): LegacyAccount? {
-        TODO("Not yet implemented")
+        return accounts.value.find { it.uuid == accountUuid }
     }
 
     override fun getAccountFlow(accountUuid: String): Flow<LegacyAccount?> {
-        TODO("Not yet implemented")
+        return accounts.map { list -> list.find { it.uuid == accountUuid } }
     }
 
     override fun moveAccount(account: LegacyAccount, newPosition: Int) {
