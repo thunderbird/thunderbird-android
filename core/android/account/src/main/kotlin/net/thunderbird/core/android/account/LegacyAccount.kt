@@ -113,8 +113,6 @@ data class LegacyAccount(
     val folderPathDelimiter: FolderPathDelimiter = "/",
 ) : Account, BaseAccount {
 
-    override val uuid: String = id.toString()
-
     fun hasDraftsFolder(): Boolean {
         return draftsFolderId != null
     }

@@ -31,7 +31,7 @@ internal class GetLegacyAccountTest {
         val legacyAccount = createLegacyAccount(accountId)
 
         val repository = object : LegacyAccountRepository {
-            override fun getById(id: AccountId) =
+            override fun observeById(id: AccountId) =
                 flowOf(legacyAccount)
 
             override suspend fun update(account: LegacyAccount) {
@@ -57,7 +57,7 @@ internal class GetLegacyAccountTest {
         val accountId = AccountIdFactory.create()
 
         val repository = object : LegacyAccountRepository {
-            override fun getById(id: AccountId): Flow<LegacyAccount?> = emptyFlow()
+            override fun observeById(id: AccountId): Flow<LegacyAccount?> = emptyFlow()
 
             override suspend fun update(account: LegacyAccount) {
                 error("Not implemented")

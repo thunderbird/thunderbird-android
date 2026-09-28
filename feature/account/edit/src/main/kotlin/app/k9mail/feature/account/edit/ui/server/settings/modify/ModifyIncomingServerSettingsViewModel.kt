@@ -8,9 +8,10 @@ import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSett
 import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSettingsViewModel
 import app.k9mail.feature.account.server.settings.ui.incoming.toIncomingServerSettingsState
 import kotlinx.coroutines.launch
+import net.thunderbird.feature.account.AccountId
 
 class ModifyIncomingServerSettingsViewModel(
-    val accountUuid: String,
+    val accountId: AccountId,
     private val accountStateLoader: AccountEditDomainContract.UseCase.LoadAccountState,
     validator: IncomingServerSettingsContract.Validator,
     accountStateRepository: AccountDomainContract.AccountStateRepository,
@@ -24,7 +25,7 @@ class ModifyIncomingServerSettingsViewModel(
 
     override fun loadAccountState() {
         viewModelScope.launch {
-            val state = accountStateLoader.execute(accountUuid)
+            val state = accountStateLoader.execute(accountId)
 
             updateState {
                 state.toIncomingServerSettingsState()

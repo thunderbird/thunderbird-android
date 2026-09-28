@@ -2,6 +2,7 @@ package net.thunderbird.core.android.account
 
 import androidx.annotation.Discouraged
 import kotlinx.coroutines.flow.Flow
+import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.mail.account.api.AccountManager
 
 @Discouraged(
@@ -10,8 +11,8 @@ import net.thunderbird.feature.mail.account.api.AccountManager
 interface LegacyAccountDtoManager : AccountManager<LegacyAccountDto> {
     override fun getAccounts(): List<LegacyAccountDto>
     override fun getAccountsFlow(): Flow<List<LegacyAccountDto>>
-    override fun getAccount(accountUuid: String): LegacyAccountDto?
-    override fun getAccountFlow(accountUuid: String): Flow<LegacyAccountDto?>
+    override fun getById(accountId: AccountId): LegacyAccountDto?
+    override fun getByIdFlow(accountId: AccountId): Flow<LegacyAccountDto?>
     fun addAccountRemovedListener(listener: AccountRemovedListener)
     override fun moveAccount(account: LegacyAccountDto, newPosition: Int)
     fun addOnAccountsChangeListener(accountsChangeListener: AccountsChangeListener)

@@ -9,14 +9,16 @@ import app.k9mail.feature.account.setup.AccountSetupExternalContract.AccountCrea
 import app.k9mail.feature.account.setup.AccountSetupExternalContract.AccountCreator.AccountCreatorResult
 import app.k9mail.feature.account.setup.domain.DomainContract.UseCase
 import java.util.UUID
+import net.thunderbird.feature.account.AccountId
+import net.thunderbird.feature.account.AccountIdFactory
 
 class CreateAccount(
     private val accountCreator: AccountCreator,
-    private val uuidGenerator: () -> String = { UUID.randomUUID().toString() },
+    private val uuidGenerator: () -> AccountId = { AccountIdFactory.create() },
 ) : UseCase.CreateAccount {
     override suspend fun execute(accountState: AccountState): AccountCreatorResult {
         val account = Account(
-            uuid = uuidGenerator(),
+            id = uuidGenerator(),
             emailAddress = accountState.emailAddress!!,
             incomingServerSettings = accountState.incomingServerSettings!!.copy(),
             outgoingServerSettings = accountState.outgoingServerSettings!!.copy(),

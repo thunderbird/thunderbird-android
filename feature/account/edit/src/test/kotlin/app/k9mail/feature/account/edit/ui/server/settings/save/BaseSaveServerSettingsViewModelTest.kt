@@ -18,6 +18,8 @@ import kotlin.test.Test
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import net.thunderbird.components.ui.testing.coroutines.MainDispatcherHelper
+import net.thunderbird.feature.account.AccountId
+import net.thunderbird.feature.account.AccountIdFactory
 
 class BaseSaveServerSettingsViewModelTest {
 
@@ -36,12 +38,12 @@ class BaseSaveServerSettingsViewModelTest {
 
     @Test
     fun `should save server settings when SaveServerSettings event received and emit NavigateNext`() = runMviTest {
-        var recordedAccountUuid: String? = null
+        var recordedAccountId: AccountId? = null
         var recordedIsIncoming: Boolean? = null
         val testSubject = TestSaveServerSettingsViewModel(
-            accountUuid = ACCOUNT_UUID,
-            saveServerSettings = { accountUuid, isIncoming ->
-                recordedAccountUuid = accountUuid
+            accountId = ACCOUNT_ID,
+            saveServerSettings = { accountId, isIncoming ->
+                recordedAccountId = accountId
                 recordedIsIncoming = isIncoming
             },
         )
@@ -53,7 +55,7 @@ class BaseSaveServerSettingsViewModelTest {
             isEqualTo(State(isLoading = false))
         }
 
-        assertThat(recordedAccountUuid).isNotNull().isEqualTo(ACCOUNT_UUID)
+        assertThat(recordedAccountId).isNotNull().isEqualTo(ACCOUNT_ID)
         assertThat(recordedIsIncoming).isNotNull().isEqualTo(true)
 
         turbines.assertThatAndEffectTurbineConsumed {
@@ -64,7 +66,7 @@ class BaseSaveServerSettingsViewModelTest {
     @Test
     fun `should set error state when save settings failed`() = runMviTest {
         val testSubject = TestSaveServerSettingsViewModel(
-            accountUuid = ACCOUNT_UUID,
+            accountId = ACCOUNT_ID,
             saveServerSettings = { _, _ ->
                 error("Test exception")
             },
@@ -87,7 +89,7 @@ class BaseSaveServerSettingsViewModelTest {
     fun `should allow NavigateBack when error and not loading`() = runMviTest {
         val failure = Failure.SaveServerSettingsFailed("Test exception")
         val testSubject = TestSaveServerSettingsViewModel(
-            accountUuid = ACCOUNT_UUID,
+            accountId = ACCOUNT_ID,
             saveServerSettings = { _, _ ->
                 // Do nothing
             },
@@ -106,17 +108,17 @@ class BaseSaveServerSettingsViewModelTest {
     }
 
     private class TestSaveServerSettingsViewModel(
-        accountUuid: String,
+        accountId: AccountId,
         saveServerSettings: AccountEditDomainContract.UseCase.SaveServerSettings,
         initialState: State = State(),
     ) : BaseSaveServerSettingsViewModel(
-        accountUuid = accountUuid,
+        accountId = accountId,
         isIncoming = true,
         saveServerSettings = saveServerSettings,
         initialState = initialState,
     )
 
     private companion object {
-        const val ACCOUNT_UUID = "accountUuid"
+        val ACCOUNT_ID = AccountIdFactory.create()
     }
 }

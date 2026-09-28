@@ -1,6 +1,7 @@
 package net.thunderbird.feature.mail.account.api
 
 import kotlinx.coroutines.flow.Flow
+import net.thunderbird.feature.account.AccountId
 
 interface AccountManager<TAccount : BaseAccount> {
     /**
@@ -14,18 +15,20 @@ interface AccountManager<TAccount : BaseAccount> {
     fun getAccountsFlow(): Flow<List<TAccount>>
 
     /**
-     * Returns the account with the specified [accountUuid].
+     * Returns the account with the specified [AccountId].
      *
-     * @param accountUuid The UUID of the account.
+     * @param accountId The [AccountId] of the account.
+     * @return The account with the specified [AccountId].
      */
-    fun getAccount(accountUuid: String): TAccount?
+    fun getById(accountId: AccountId): TAccount?
 
     /**
-     * Returns a flow of the account with the specified [accountUuid].
+     * Returns a flow of the account with the specified [AccountId].
      *
-     * @param accountUuid The UUID of the account.
+     * @param accountId The [AccountId] of the account.
+     * @return The flow of the account with the specified [AccountId]
      */
-    fun getAccountFlow(accountUuid: String): Flow<TAccount?>
+    fun getByIdFlow(accountId: AccountId): Flow<TAccount?>
 
     /**
      * Moves the specified [account] to the [newPosition].

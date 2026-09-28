@@ -23,8 +23,13 @@ internal class DefaultLegacyAccountManager(
             }
     }
 
-    override fun getById(id: AccountId): Flow<LegacyAccount?> {
-        return accountManager.getAccountFlow(id.toString()).map { account ->
+    override fun getById(accountId: AccountId): LegacyAccount? {
+        val dto = accountManager.getById(accountId)
+        return dto?.let { accountDataMapper.toDomain(it) }
+    }
+
+    override fun getByIdFlow(accountId: AccountId): Flow<LegacyAccount?> {
+        return accountManager.getByIdFlow(accountId).map { account ->
             account?.let {
                 accountDataMapper.toDomain(it)
             }
@@ -46,29 +51,12 @@ internal class DefaultLegacyAccountManager(
 
     override fun getAccountsFlow(): Flow<List<LegacyAccount>> = getAll()
 
-    override fun getAccount(accountUuid: String): LegacyAccount? {
-        val dto = accountManager.getAccount(accountUuid)
-        return dto?.let { accountDataMapper.toDomain(it) }
-    }
-
-    override fun getAccountFlow(accountUuid: String): Flow<LegacyAccount?> {
-        return accountManager.getAccountFlow(accountUuid).map { account ->
-            account?.let {
-                accountDataMapper.toDomain(it)
-            }
-        }
-    }
-
     override fun moveAccount(account: LegacyAccount, newPosition: Int) {
         accountManager.moveAccount(accountDataMapper.toDto(account), newPosition)
     }
 
     override fun saveAccount(account: LegacyAccount) {
         accountManager.saveAccount(accountDataMapper.toDto(account))
-    }
-
-    override fun getByIdSync(id: AccountId): LegacyAccount? {
-        return getAccount(id.toString())
     }
 
     override fun updateSync(account: LegacyAccount) {

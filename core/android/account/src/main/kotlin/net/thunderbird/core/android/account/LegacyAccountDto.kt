@@ -28,12 +28,12 @@ const val DEFAULT_VISIBLE_LIMIT = 25
 )
 @Suppress("TooManyFunctions")
 open class LegacyAccountDto(
-    override val uuid: String,
+    // [Account]
+    override val id: AccountId,
+
+    // Uncategorized
     val isSensitiveDebugLoggingEnabled: () -> Boolean = { false },
 ) : Account, BaseAccount {
-
-    // [Account]
-    override val id: AccountId = AccountIdFactory.of(uuid)
 
     // [BaseAccount]
     @get:Synchronized
@@ -628,19 +628,19 @@ open class LegacyAccountDto(
     }
 
     override fun toString(): String {
-        return if (isSensitiveDebugLoggingEnabled()) displayName else uuid
+        return if (isSensitiveDebugLoggingEnabled()) displayName else id.toString()
     }
 
     override fun equals(other: Any?): Boolean {
         return if (other is LegacyAccountDto) {
-            other.uuid == uuid
+            other.id == id
         } else {
             super.equals(other)
         }
     }
 
     override fun hashCode(): Int {
-        return uuid.hashCode()
+        return id.hashCode()
     }
 
     companion object Companion {

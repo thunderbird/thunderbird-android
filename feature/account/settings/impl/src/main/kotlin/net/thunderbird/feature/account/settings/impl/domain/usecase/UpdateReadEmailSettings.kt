@@ -17,7 +17,7 @@ internal class UpdateReadEmailSettings(
         accountId: AccountId,
         command: UpdateReadMessageSettingsCommand,
     ): Outcome<Unit, AccountSettingsDomainContract.AccountSettingError> {
-        return repository.getById(accountId).firstOrNull()?.let { account: LegacyAccount ->
+        return repository.observeById(accountId).firstOrNull()?.let { account: LegacyAccount ->
             when (command) {
                 is UpdateReadMessageSettingsCommand.UpdateIsMarkMessageAsReadOnView -> {
                     repository.update(account.copy(isMarkMessageAsReadOnView = command.value))

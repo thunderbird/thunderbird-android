@@ -7,6 +7,7 @@ import app.k9mail.feature.account.setup.AccountSetupExternalContract.AccountCrea
 import app.k9mail.feature.account.setup.ui.fake.FakeBrandNameProvider
 import net.thunderbird.components.ui.bolt.PreviewWithTheme
 import net.thunderbird.components.ui.bolt.common.annotation.PreviewDevices
+import net.thunderbird.feature.account.AccountIdFactory
 
 @Composable
 @PreviewDevices
@@ -17,7 +18,7 @@ internal fun AccountOptionsScreenK9Preview() {
             onBack = {},
             viewModel = viewModel {
                 CreateAccountViewModel(
-                    createAccount = { AccountCreatorResult.Success("irrelevant") },
+                    createAccount = { AccountCreatorResult.Success(AccountIdFactory.create()) },
                     accountStateRepository = InMemoryAccountStateRepository(),
                 )
             },
