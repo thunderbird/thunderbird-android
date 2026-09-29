@@ -16,7 +16,11 @@ enum class IncomingProtocolType(
         fun all() = entries.toImmutableList()
 
         fun fromName(name: String): IncomingProtocolType {
-            return entries.find { it.defaultName == name } ?: throw IllegalArgumentException("Unknown protocol: $name")
+            return fromNameOrNull(name) ?: throw IllegalArgumentException("Unknown protocol: $name")
+        }
+
+        fun fromNameOrNull(name: String): IncomingProtocolType? {
+            return entries.find { it.defaultName == name }
         }
     }
 }
