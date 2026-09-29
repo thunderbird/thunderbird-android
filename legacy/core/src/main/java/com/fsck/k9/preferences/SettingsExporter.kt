@@ -26,6 +26,8 @@ import net.thunderbird.legacy.logging.Log
 import org.xmlpull.v1.XmlSerializer
 import androidx.core.net.toUri
 import android.util.Base64
+import java.io.IOException
+import net.thunderbird.feature.account.storage.profile.AvatarDto
 
 private const val TAG = "SettingsExporter"
 
@@ -316,12 +318,24 @@ class SettingsExporter(
     ){
         val avatar = account.profile.avatar
         val uriString = avatar.avatarImageUri
-        require(avatar.avatarType == AvatarTypeDto.IMAGE && uriString != null){ return }
 
-        val uri = uriString.toUri()
-        val bytes: ByteArray? = contentResolver.openInputStream(uri)?.use { input ->
-            input.readBytes()
+        if (avatar.avatarType != AvatarTypeDto.IMAGE ||
+            uriString == null ||
+            uriString == AvatarDto.PLACEHOLDER_IMAGE_URI
+            ){
+            return
         }
+        val uri = uriString.toUri()
+
+        val bytes = try {
+            contentResolver.openInputStream(uri)?.use { input ->
+                input.readBytes()
+            }
+        } catch (e: IOException) {
+            Log.w(TAG, e, "Avatar image could not be exported")
+            null
+        }?: return
+
         val encoded = Base64.encodeToString(bytes, Base64.NO_WRAP)
         serializer.startTag(null, AVATAR_IMAGE_ELEMENT)
         serializer.text(encoded)

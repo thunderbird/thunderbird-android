@@ -105,7 +105,7 @@ class SettingsExporterTest : K9RobolectricTest() {
     }
 
     @Test
-    fun exportPreferences_includesAvatarImageForImageAvatar() =runTest{
+    fun exportPreferences_includesAvatarImageForImageAvatar() = runTest {
         val avatarUri = "content://test/avatar".toUri()
         val imageBytes = byteArrayOf(1, 2, 3, 4)
         val expectedEncoded = Base64.encodeToString(imageBytes, Base64.NO_WRAP)
@@ -122,8 +122,38 @@ class SettingsExporterTest : K9RobolectricTest() {
     }
 
     @Test
-    fun exportPreferences_omitsAvatarImageForMonogramAvatar() =runTest{
+    fun exportPreferences_omitsAvatarImageForMonogramAvatar() = runTest {
         val accountUuid = saveAccount(avatarType = AvatarTypeDto.MONOGRAM, avatarMonogram = "XX")
+
+        val document = exportPreferences(false, setOf(accountUuid))
+        val exported = document.rootElement.getChild("accounts").getChild("account")
+        assertThat(exported.getChild("avatar-image")).isNull()
+    }
+
+    @Test
+    fun exportPreferences_omitsAvatarImageForImagePlaceholderUri() = runTest {
+        val accountUuid = saveAccount(
+            avatarType = AvatarTypeDto.IMAGE,
+            avatarImageUri = AvatarDto.PLACEHOLDER_IMAGE_URI,
+        )
+
+        val document = exportPreferences(false, setOf(accountUuid))
+        val exported = document.rootElement.getChild("accounts").getChild("account")
+        assertThat(exported.getChild("avatar-image")).isNull()
+    }
+
+    @Test
+    fun exportPreferences_omitsAvatarImageForImageWithNullUri() = runTest {
+        val accountUuid = saveAccount(avatarType = AvatarTypeDto.IMAGE)
+
+        val document = exportPreferences(false, setOf(accountUuid))
+        val exported = document.rootElement.getChild("accounts").getChild("account")
+        assertThat(exported.getChild("avatar-image")).isNull()
+    }
+
+    @Test
+    fun exportPreferences_omitsAvatarImageForIconAvatar() = runTest {
+        val accountUuid = saveAccount(avatarType = AvatarTypeDto.ICON, avatarIconName = "star")
 
         val document = exportPreferences(false, setOf(accountUuid))
         val exported = document.rootElement.getChild("accounts").getChild("account")

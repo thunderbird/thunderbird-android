@@ -9,6 +9,7 @@ import com.eygraber.uri.toKmpUri
 import com.fsck.k9.Core
 import com.fsck.k9.mailstore.SpecialLocalFoldersCreator
 import java.io.File
+import java.io.IOException
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.UNASSIGNED_ACCOUNT_NUMBER
@@ -37,6 +38,9 @@ import net.thunderbird.feature.notification.NotificationLight
 import net.thunderbird.feature.notification.NotificationSettings
 import net.thunderbird.feature.notification.NotificationVibration
 import net.thunderbird.feature.notification.VibratePattern
+import net.thunderbird.legacy.logging.Log.logger
+
+private const val TAG = "AccountSettingsWriter"
 
 /**
  * Saves imported account settings through the account manager and defers folder settings until folder creation.
@@ -70,20 +74,7 @@ internal class AccountSettingsWriter(
         val accountName = getUniqueAccountName(originalAccountName)
         val writtenAccount = AccountDescription(accountName, accountId.toString())
 
-        var avatarImageUri: String? = null
-        val base64 = account.avatarImage
-        if (base64 != null) {
-            val bytes = Base64.decode(base64, Base64.NO_WRAP)
-            val tempFile = File(context.cacheDir, "avatar_import_$accountId").apply { writeBytes(bytes) }
-            try {
-                val tempUri = Uri.fromFile(tempFile)
-                val newUri = avatarImageRepository.update(accountId, tempUri.toKmpUri())
-                avatarImageUri = newUri.toString()
-            } finally {
-                tempFile.delete()
-            }
-        }
-
+        val avatarImageUri = account.decodeAvatarImage(accountId)
         val importedAccount = createAccount(account, accountId, accountName, avatarImageUri)
         // A failed folder-settings commit must not leave an account behind that a retry would duplicate.
         writeFolders(accountId, account.folders)
@@ -260,5 +251,24 @@ internal class AccountSettingsWriter(
 
     private fun isAccountNameUsed(name: String?, accounts: List<LegacyAccount>): Boolean {
         return accounts.any { it.profile.name == name }
+    }
+
+    private suspend fun ValidatedSettings.Account.decodeAvatarImage(accountId: AccountId): String? {
+        val base64 = avatarImage
+        return base64?.let { base64 ->
+            val bytes = Base64.decode(base64, Base64.NO_WRAP)
+            val tempFile = File(context.cacheDir, "avatar_import_$accountId")
+            try {
+                tempFile.writeBytes(bytes)
+                val tempUri = Uri.fromFile(tempFile)
+                val newUri = avatarImageRepository.update(accountId, tempUri.toKmpUri())
+                newUri.toString()
+            } catch (e: IOException) {
+                logger.error(tag = TAG, throwable = e) { "Failed to decode avatar image." }
+                null
+            } finally {
+                tempFile.delete()
+            }
+        }
     }
 }
