@@ -53,7 +53,7 @@ class TestApp : Application() {
         Log.logger = logger
         DI.start(
             application = this,
-            modules = legacyCoreModules + storageModule + telemetryModule + testModule,
+            modules = legacyCoreModule + storageModule + telemetryModule + testModule,
             allowOverride = true,
         )
 

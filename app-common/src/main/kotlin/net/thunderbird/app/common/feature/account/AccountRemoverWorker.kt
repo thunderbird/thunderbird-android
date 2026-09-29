@@ -1,4 +1,4 @@
-package com.fsck.k9.account
+package net.thunderbird.app.common.feature.account
 
 import android.content.Context
 import androidx.work.Data
@@ -12,7 +12,7 @@ import com.fsck.k9.notification.BackgroundWorkNotificationController
 import com.fsck.k9.ui.R
 
 /**
- * A [Worker] to remove an account in the background.
+ * A [androidx.work.Worker] to remove an account in the background.
  */
 // IMPORTANT: Update K9WorkerFactory when moving this class and the FQCN no longer starts with "com.fsck.k9".
 class AccountRemoverWorker(
