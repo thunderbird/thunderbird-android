@@ -10,6 +10,7 @@ import com.fsck.k9.Core
 import com.fsck.k9.Preferences
 import com.fsck.k9.mailstore.SpecialLocalFoldersCreator
 import java.io.File
+import java.io.IOException
 import java.util.UUID
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
@@ -22,6 +23,7 @@ import net.thunderbird.feature.account.storage.legacy.LegacyAccountStorageHandle
 import net.thunderbird.feature.account.storage.legacy.LegacyAccountStorageHandler.Companion.INCOMING_SERVER_SETTINGS_KEY
 import net.thunderbird.feature.account.storage.legacy.LegacyAccountStorageHandler.Companion.OUTGOING_SERVER_SETTINGS_KEY
 import net.thunderbird.feature.account.storage.legacy.serializer.ServerSettingsDtoSerializer
+import net.thunderbird.legacy.logging.Log.logger
 
 internal class AccountSettingsWriter
 @OptIn(ExperimentalTime::class)
@@ -59,18 +61,7 @@ constructor(
 
         // Convert account settings to the string representation used in preference storage
         val stringSettings = AccountSettingsDescriptions.convert(account.settings)
-        val base64 = account.avatarImage
-        if (base64 != null) {
-            val bytes = Base64.decode(base64, Base64.NO_WRAP)
-            val tempFile = File(context.cacheDir, "avatar_import_$accountUuid").apply { writeBytes(bytes) }
-            try {
-                val tempUri = Uri.fromFile(tempFile)
-                val newUri = avatarImageRepository.update(AccountIdFactory.of(accountUuid), tempUri.toKmpUri())
-                stringSettings["avatarImageUri"] = newUri.toString()
-            } finally {
-                tempFile.delete()
-            }
-        }
+        account.decodeAvatarImage()?.let { stringSettings["avatarImageUri"] = it }
 
         for ((accountKey, value) in stringSettings) {
             editor.putStringWithLogging(
@@ -193,5 +184,24 @@ constructor(
 
     private fun isAccountNameUsed(name: String?, accounts: List<LegacyAccountDto>): Boolean {
         return accounts.any { it.displayName == name }
+    }
+
+    private suspend fun ValidatedSettings.Account.decodeAvatarImage(): String? {
+        val base64 = avatarImage
+        return base64?.let { base64 ->
+            val bytes = Base64.decode(base64, Base64.NO_WRAP)
+            val tempFile = File(context.cacheDir, "avatar_import_$uuid")
+            try {
+                tempFile.writeBytes(bytes)
+                val tempUri = Uri.fromFile(tempFile)
+                val newUri = avatarImageRepository.update(AccountIdFactory.of(uuid), tempUri.toKmpUri())
+                newUri.toString()
+            } catch (e: IOException) {
+                logger.error(throwable = e) { "Failed to decode avatar image." }
+                null
+            } finally {
+                tempFile.delete()
+            }
+        }
     }
 }
