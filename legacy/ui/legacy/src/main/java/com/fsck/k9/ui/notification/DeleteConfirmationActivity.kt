@@ -7,7 +7,6 @@ import androidx.fragment.app.DialogFragment
 import app.k9mail.legacy.message.controller.MessageReference
 import com.fsck.k9.Preferences
 import com.fsck.k9.controller.MessageReferenceHelper
-import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.fragment.ConfirmationDialogFragment
 import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmentListener
 import com.fsck.k9.notification.NotificationActionIntents
@@ -19,7 +18,6 @@ import org.koin.android.ext.android.inject
 
 class DeleteConfirmationActivity : BaseActivity(ThemeType.DIALOG), ConfirmationDialogFragmentListener {
     private val preferences: Preferences by inject()
-    private val messagingController: MessagingController by inject()
 
     private lateinit var account: LegacyAccountDto
     private lateinit var messagesToDelete: List<MessageReference>
@@ -77,15 +75,8 @@ class DeleteConfirmationActivity : BaseActivity(ThemeType.DIALOG), ConfirmationD
     }
 
     private fun deleteAndFinish() {
-        cancelNotifications()
         triggerDelete()
         finish()
-    }
-
-    private fun cancelNotifications() {
-        for (messageReference in messagesToDelete) {
-            messagingController.cancelNotificationForMessage(account, messageReference)
-        }
     }
 
     private fun triggerDelete() {
