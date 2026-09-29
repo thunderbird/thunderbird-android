@@ -839,4 +839,19 @@
 <string name="general_settings_post_remove_action_show_next_message">Vis næste meddelelse</string>
     <string name="general_settings_post_remove_action_show_previous_message">Vis forrige meddelelse</string>
     <string name="about_title">Om <xliff:g id="app_name">%s</xliff:g></string>
+    <string name="archiving_not_available_for_this_account">Arkivering er ikke tilgængelig for denne konto.</string>
+    <string name="settings_ui_data_collection">Dataindsamling</string>
+    <string name="message_list_content_description_unread_prefix">ulæst, %s</string>
+    <string name="background_work_notification_remove_account">Fjerner konto…</string>
+    <string name="expand_content_description">Udvid</string>
+    <string name="dialog_confirm_empty_spam_message">Vil du tømme spam mappen?</string>
+    <string name="dialog_confirm_empty_spam_title">Bekræft tøm spam</string>
+    <string name="expand_folders">Udvid mapper</string>
+    <string name="animation_setting_off">Fra</string>
+    <string name="animation_setting_on">Til</string>
+    <string name="navigation_drawer_preferences">Sidemenu</string>
+    <string name="folder_list_show_hidden_folders">Vis skjulte mapper</string>
+    <string name="sort_by_indicator">•</string>
+    <string name="account_settings_signature_clear_label">Ryd signatur</string>
+    <string name="account_settings_signature_is_html_label">Gem signatur som HTML</string>
 </resources>
