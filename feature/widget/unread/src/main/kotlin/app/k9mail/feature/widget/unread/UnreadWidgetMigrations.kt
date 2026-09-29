@@ -33,7 +33,8 @@ internal class UnreadWidgetMigrations(
         preferences.edit {
             for (widgetId in widgetIds) {
                 val accountUuid = preferences.getString("unread_widget.$widgetId", null) ?: continue
-                val account = accountRepository.getById(AccountIdFactory.of(accountUuid)) ?: continue
+                val accountId = runCatching { AccountIdFactory.of(accountUuid) }.getOrNull() ?: continue
+                val account = accountRepository.getById(accountId) ?: continue
 
                 val folderServerId = preferences.getString("unread_widget.$widgetId.folder_name", null)
                 if (folderServerId != null) {
