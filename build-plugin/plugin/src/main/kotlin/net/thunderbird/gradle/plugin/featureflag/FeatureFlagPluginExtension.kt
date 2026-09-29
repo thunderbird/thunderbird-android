@@ -25,6 +25,11 @@ abstract class FeatureFlagPluginExtension @Inject constructor(objects: ObjectFac
     abstract val catalog: RegularFileProperty
     abstract val schema: RegularFileProperty
     abstract val validateFormats: Property<Boolean>
+    abstract val cacheFilename: Property<String>
+
+    init {
+        cacheFilename.convention("cached_thunderbird_mobile_featureflag.catalog.json")
+    }
 
     @get:Nested
     internal val featureFlagKeys: FeatureFlagKeyEnumsExtension = objects.newInstance<FeatureFlagKeyEnumsExtension>()
