@@ -1,7 +1,5 @@
 package com.fsck.k9.preferences
 
-import android.R.attr.mimeType
-import android.content.ClipData.newUri
 import android.content.Context
 import android.net.Uri
 import android.util.Base64
