@@ -76,13 +76,13 @@ class SettingsExporterTest : K9RobolectricTest() {
     }
 
     @Test
-    fun exportPreferences_includesAvatarImageForImageAvatar() =runTest{
+    fun exportPreferences_includesAvatarImageForImageAvatar() = runTest {
         val avatarUri = "content://test/avatar".toUri()
         val imageBytes = byteArrayOf(1, 2, 3, 4)
         val expectedEncoded = Base64.encodeToString(imageBytes, Base64.NO_WRAP)
 
         shadowOf(contentResolver).registerInputStream(avatarUri, imageBytes.inputStream())
-        val mockAccount =preferences.newAccount().apply {
+        val mockAccount = preferences.newAccount().apply {
             incomingServerSettings = SERVER_SETTINGS
             outgoingServerSettings = SERVER_SETTINGS
             avatar = AvatarDto(
@@ -103,11 +103,68 @@ class SettingsExporterTest : K9RobolectricTest() {
     }
 
     @Test
-    fun exportPreferences_omitsAvatarImageForMonogramAvatar() =runTest{
+    fun exportPreferences_omitsAvatarImageForMonogramAvatar() = runTest {
         val account = preferences.newAccount().apply {
             incomingServerSettings = SERVER_SETTINGS
             outgoingServerSettings = SERVER_SETTINGS
             avatar = AvatarDto(AvatarTypeDto.MONOGRAM, "XX", null, null)
+        }
+        preferences.saveAccount(account)
+
+        val document = exportPreferences(false, setOf(account.uuid))
+        val exported = document.rootElement.getChild("accounts").getChild("account")
+        assertThat(exported.getChild("avatar-image")).isNull()
+    }
+
+    @Test
+    fun exportPreferences_omitsAvatarImageForImagePlaceholderUri() = runTest {
+        val account = preferences.newAccount().apply {
+            incomingServerSettings = SERVER_SETTINGS
+            outgoingServerSettings = SERVER_SETTINGS
+            avatar = AvatarDto(
+                avatarType = AvatarTypeDto.IMAGE,
+                avatarMonogram = null,
+                avatarImageUri = AvatarDto.PLACEHOLDER_IMAGE_URI,
+                avatarIconName = null,
+            )
+        }
+        preferences.saveAccount(account)
+
+        val document = exportPreferences(false, setOf(account.uuid))
+        val exported = document.rootElement.getChild("accounts").getChild("account")
+        assertThat(exported.getChild("avatar-image")).isNull()
+    }
+
+    @Test
+    fun exportPreferences_omitsAvatarImageForImageWithNullUri() = runTest {
+        val account = preferences.newAccount().apply {
+            incomingServerSettings = SERVER_SETTINGS
+            outgoingServerSettings = SERVER_SETTINGS
+            avatar = AvatarDto(
+                avatarType = AvatarTypeDto.IMAGE,
+                avatarMonogram = null,
+                avatarImageUri = null,
+                avatarIconName = null,
+            )
+        }
+        preferences.saveAccount(account)
+
+        val document = exportPreferences(false, setOf(account.uuid))
+        val exported = document.rootElement.getChild("accounts").getChild("account")
+        assertThat(exported.getChild("avatar-image")).isNull()
+    }
+
+    @Test
+    fun exportPreferences_omitsAvatarImageForIconAvatar() = runTest {
+        val account = preferences.newAccount().apply {
+            incomingServerSettings = SERVER_SETTINGS
+            outgoingServerSettings = SERVER_SETTINGS
+            avatar = AvatarDto(
+                avatarType = AvatarTypeDto.ICON,
+                avatarMonogram = null,
+                avatarImageUri = null,
+                avatarIconName = "star",
+            )
         }
         preferences.saveAccount(account)
 

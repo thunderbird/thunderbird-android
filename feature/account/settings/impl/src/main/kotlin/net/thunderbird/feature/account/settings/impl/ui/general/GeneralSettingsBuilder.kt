@@ -24,6 +24,7 @@ import net.thunderbird.feature.account.settings.impl.ui.general.GeneralSettingsC
 import net.thunderbird.feature.account.settings.impl.ui.general.GeneralSettingsContract.State
 import net.thunderbird.feature.account.settings.impl.ui.general.components.AvatarImageSelection
 import net.thunderbird.feature.account.settings.impl.ui.general.components.GeneralSettingsProfileView
+import net.thunderbird.feature.account.storage.profile.AvatarDto
 
 /**
  * Builds the General Settings from [State].
@@ -221,7 +222,7 @@ internal class GeneralSettingsBuilder(
                 id = AVATAR_IMAGE_ID,
                 title = { resources.stringResource(R.string.account_settings_general_avatar_option_image) },
                 value = (avatar as? Avatar.Image) ?: Avatar.Image(
-                    uri = "avatar_placeholder_uri",
+                    uri = AvatarDto.PLACEHOLDER_IMAGE_URI,
                 ),
             ),
             SettingValue.SegmentedButton.SegmentedButtonOption(
