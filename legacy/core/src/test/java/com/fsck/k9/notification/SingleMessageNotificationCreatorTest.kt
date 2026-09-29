@@ -13,23 +13,20 @@ import com.fsck.k9.mail.Address
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.test.UnconfinedTestDispatcher
-import kotlinx.coroutines.test.runTest
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.testing.MockHelper.mockBuilder
 import net.thunderbird.core.android.testing.RobolectricTest
 import net.thunderbird.core.preference.notification.NotificationPreference
 import net.thunderbird.core.preference.notification.NotificationPreferenceManager
-import net.thunderbird.components.ui.testing.coroutines.MainDispatcherHelper
-import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.mockito.kotlin.any
 import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.verify
 
 class SingleMessageNotificationCreatorTest : RobolectricTest() {
-    private val mainDispatcher = MainDispatcherHelper(UnconfinedTestDispatcher())
     private val notificationPreferenceManager = FakeNotificationPreferenceManager()
     private val resourceProvider = TestAvatarNotificationResourceProvider()
     private val notification = mock<Notification>()
@@ -41,7 +38,6 @@ class SingleMessageNotificationCreatorTest : RobolectricTest() {
 
     @Before
     fun setUp() {
-        mainDispatcher.setUp()
         testSubject = SingleMessageNotificationCreator(
             notificationHelper = createNotificationHelper(),
             actionCreator = createNotificationActionCreator(),
@@ -52,33 +48,48 @@ class SingleMessageNotificationCreatorTest : RobolectricTest() {
         )
     }
 
-    @After
-    fun tearDown() {
-        mainDispatcher.tearDown()
-    }
-
     @Test
-    fun `create notification looks up avatar when notification contact pictures are enabled`() = runTest {
+    fun `create notification looks up avatar when notification contact pictures are enabled`() {
         notificationPreferenceManager.setShowContactPictureInNotification(true)
 
         testSubject.createSingleNotification(
             baseNotificationData = createBaseNotificationData(),
             singleNotificationData = createSingleNotificationData(),
-        ).join()
+        )
 
         assertThat(resourceProvider.avatarCalls).isEqualTo(1)
     }
 
     @Test
-    fun `create notification skips avatar lookup when notification contact pictures are disabled`() = runTest {
+    fun `create notification skips avatar lookup when notification contact pictures are disabled`() {
         notificationPreferenceManager.setShowContactPictureInNotification(false)
 
         testSubject.createSingleNotification(
             baseNotificationData = createBaseNotificationData(),
             singleNotificationData = createSingleNotificationData(),
-        ).join()
+        )
 
         assertThat(resourceProvider.avatarCalls).isEqualTo(0)
+    }
+
+    @Test
+    fun `create notification posts notification synchronously`() {
+        val notificationHelper = createNotificationHelper()
+        testSubject = SingleMessageNotificationCreator(
+            notificationHelper = notificationHelper,
+            actionCreator = createNotificationActionCreator(),
+            resourceProvider = resourceProvider,
+            lockScreenNotificationCreator = mock(),
+            notificationPreferenceManager = notificationPreferenceManager,
+            application = ApplicationProvider.getApplicationContext<Application>(),
+        )
+
+        testSubject.createSingleNotification(
+            baseNotificationData = createBaseNotificationData(),
+            singleNotificationData = createSingleNotificationData(),
+        )
+
+        verify(notificationHelper).notify(any(), eq(23), eq(notification))
     }
 
     private fun createNotificationHelper(): NotificationHelper {
@@ -133,7 +144,7 @@ class SingleMessageNotificationCreatorTest : RobolectricTest() {
         NotificationResourceProvider by TestNotificationResourceProvider() {
         var avatarCalls = 0
 
-        override suspend fun avatar(address: Address): Bitmap? {
+        override fun avatar(address: Address): Bitmap? {
             avatarCalls += 1
             return Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888)
         }
