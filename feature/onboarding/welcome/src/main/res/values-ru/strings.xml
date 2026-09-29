@@ -3,5 +3,5 @@
     <string name="onboarding_welcome_start_button">Начать</string>
     <string name="onboarding_welcome_import_button">Импорт настроек K-9</string>
     <string name="onboarding_welcome_text">Почтовое приложение для Android с открытым исходным кодом, ориентированное на конфиденциальность и не содержащее рекламы.</string>
-    <string name="onboarding_welcome_developed_by">Разрабатывается специальной командой MZLA Technologies и глобальным сообществом волонтёров. Часть семейства Mozilla.</string>
+    <string name="onboarding_welcome_developed_by">Разрабатывается специальной командой в Thunderbird Technologies Corporation и глобальным сообществом волонтёров. С гордостью входит в семейство Mozilla.</string>
 </resources>
