@@ -1,7 +1,7 @@
 package net.thunderbird.app.common
 
 import com.fsck.k9.legacyCommonAppModules
-import com.fsck.k9.legacyCoreModules
+import com.fsck.k9.legacyCoreModule
 import com.fsck.k9.legacyUiModules
 import net.thunderbird.app.common.account.appCommonAccountModule
 import net.thunderbird.app.common.activity.DefaultActivityProvider
@@ -17,7 +17,7 @@ import org.koin.dsl.module
 
 val appCommonModule: Module = module {
     includes(legacyCommonAppModules)
-    includes(legacyCoreModules)
+    includes(legacyCoreModule)
     includes(legacyUiModules)
 
     includes(
