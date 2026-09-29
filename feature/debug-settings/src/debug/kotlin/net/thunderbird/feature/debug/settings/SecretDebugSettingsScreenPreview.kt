@@ -46,7 +46,7 @@ private fun SecretDebugSettingsScreenPreview() {
                     override fun getAccounts(): List<BaseAccount> = listOf()
                     override fun getAccountsFlow(): Flow<List<BaseAccount>> = flowOf(listOf())
                     override fun getById(accountId: AccountId): BaseAccount? = null
-                    override fun getByIdFlow(accountId: AccountId): Flow<BaseAccount?> = flowOf(null)
+                    override fun observeById(accountId: AccountId): Flow<BaseAccount?> = flowOf(null)
                     override fun moveAccount(
                         account: BaseAccount,
                         newPosition: Int,

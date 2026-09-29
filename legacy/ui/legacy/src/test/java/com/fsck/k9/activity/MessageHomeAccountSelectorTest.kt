@@ -42,7 +42,7 @@ class MessageHomeAccountSelectorTest {
 
         override fun getById(accountId: AccountId): LegacyAccountDto? = accounts[accountId]
 
-        override fun getByIdFlow(accountId: AccountId): Flow<LegacyAccountDto?> = error("Not implemented")
+        override fun observeById(accountId: AccountId): Flow<LegacyAccountDto?> = error("Not implemented")
 
         override fun addAccountRemovedListener(listener: AccountRemovedListener) = error("Not implemented")
 

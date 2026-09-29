@@ -389,7 +389,7 @@ private class FakeLegacyAccountManager(
     override fun getById(accountId: AccountId): LegacyAccount? =
         accountsState.value.find { it.id == accountId }
 
-    override fun getByIdFlow(accountId: AccountId): Flow<LegacyAccount?> =
+    override fun observeById(accountId: AccountId): Flow<LegacyAccount?> =
         accountsState.map { list -> list.find { it.id == accountId } }
 
     override fun moveAccount(account: LegacyAccount, newPosition: Int) {

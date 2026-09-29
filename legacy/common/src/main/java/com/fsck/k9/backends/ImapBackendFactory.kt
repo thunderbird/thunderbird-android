@@ -105,13 +105,13 @@ class DefaultImapBackendFactory(
 
     private fun createPushConfigProvider(account: LegacyAccount) = object : ImapPushConfigProvider {
         override val maxPushFoldersFlow: Flow<Int>
-            get() = accountManager.getByIdFlow(account.id)
+            get() = accountManager.observeById(account.id)
                 .filterNotNull()
                 .map { it.maxPushFolders }
                 .distinctUntilChanged()
 
         override val idleRefreshMinutesFlow: Flow<Int>
-            get() = accountManager.getByIdFlow(account.id)
+            get() = accountManager.observeById(account.id)
                 .filterNotNull()
                 .map { it.idleRefreshMinutes }
                 .distinctUntilChanged()

@@ -144,7 +144,7 @@ class Preferences internal constructor(
         }
     }
 
-    override fun getByIdFlow(accountId: AccountId): Flow<LegacyAccountDto?> {
+    override fun observeById(accountId: AccountId): Flow<LegacyAccountDto?> {
         return callbackFlow {
             val initialAccount = getById(accountId)
             if (initialAccount == null) {

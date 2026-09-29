@@ -20,7 +20,7 @@ class FakeLegacyAccountDtoManager(
 
     override fun getById(accountId: AccountId): LegacyAccountDto? = accounts[accountId]
 
-    override fun getByIdFlow(accountId: AccountId): Flow<LegacyAccountDto> {
+    override fun observeById(accountId: AccountId): Flow<LegacyAccountDto> {
         TODO("Not yet implemented")
     }
 

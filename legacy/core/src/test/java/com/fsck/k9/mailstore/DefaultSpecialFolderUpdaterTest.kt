@@ -242,7 +242,7 @@ class DefaultSpecialFolderUpdaterTest {
         override fun getAccounts(): List<LegacyAccount> = accounts
         override fun getAccountsFlow(): Flow<List<LegacyAccount>> = throw UnsupportedOperationException()
         override fun getById(accountId: AccountId): LegacyAccount? = accounts.find { it.id == accountId }
-        override fun getByIdFlow(accountId: AccountId): Flow<LegacyAccount?> = flowOf(getById(accountId))
+        override fun observeById(accountId: AccountId): Flow<LegacyAccount?> = flowOf(getById(accountId))
         override fun moveAccount(account: LegacyAccount, newPosition: Int) = Unit
         override fun saveAccount(account: LegacyAccount) = updateSync(account)
     }

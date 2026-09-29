@@ -23,12 +23,12 @@ interface AccountManager<TAccount : BaseAccount> {
     fun getById(accountId: AccountId): TAccount?
 
     /**
-     * Returns a flow of the account with the specified [AccountId].
+     * Observe the account with the specified [AccountId].
      *
      * @param accountId The [AccountId] of the account.
      * @return The flow of the account with the specified [AccountId]
      */
-    fun getByIdFlow(accountId: AccountId): Flow<TAccount?>
+    fun observeById(accountId: AccountId): Flow<TAccount?>
 
     /**
      * Moves the specified [account] to the [newPosition].

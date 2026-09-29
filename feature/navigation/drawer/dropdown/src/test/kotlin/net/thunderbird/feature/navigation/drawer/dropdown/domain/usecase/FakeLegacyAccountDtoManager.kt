@@ -24,7 +24,7 @@ internal class FakeLegacyAccountDtoManager(
         return accounts.find { it.id == accountId }
     }
 
-    override fun getByIdFlow(accountId: AccountId): Flow<LegacyAccountDto> {
+    override fun observeById(accountId: AccountId): Flow<LegacyAccountDto> {
         TODO("Not yet implemented")
     }
 

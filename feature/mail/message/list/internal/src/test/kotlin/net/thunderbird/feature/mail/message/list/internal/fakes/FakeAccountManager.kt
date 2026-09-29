@@ -15,7 +15,7 @@ internal open class FakeAccountManager(
 
     override fun getById(accountId: AccountId): BaseAccount? = accounts.firstOrNull { it.id == accountId }
 
-    override fun getByIdFlow(accountId: AccountId): Flow<BaseAccount?> = flowOf(getById(accountId))
+    override fun observeById(accountId: AccountId): Flow<BaseAccount?> = flowOf(getById(accountId))
 
     override fun moveAccount(
         account: BaseAccount,

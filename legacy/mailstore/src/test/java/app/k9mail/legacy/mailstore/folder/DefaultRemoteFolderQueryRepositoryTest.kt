@@ -166,7 +166,7 @@ private class FakeRemoteFolderLegacyAccountDtoManager(
     override fun getAccounts(): List<LegacyAccountDto> = accountsByIds.values.toList()
     override fun getAccountsFlow(): Flow<List<LegacyAccountDto>> = flowOf(getAccounts())
     override fun getById(accountId: AccountId): LegacyAccountDto? = accountsByIds[accountId]
-    override fun getByIdFlow(accountId: AccountId): Flow<LegacyAccountDto?> = flowOf(getById(accountId))
+    override fun observeById(accountId: AccountId): Flow<LegacyAccountDto?> = flowOf(getById(accountId))
     override fun addAccountRemovedListener(listener: AccountRemovedListener) = Unit
     override fun moveAccount(account: LegacyAccountDto, newPosition: Int) = Unit
     override fun addOnAccountsChangeListener(accountsChangeListener: AccountsChangeListener) = Unit

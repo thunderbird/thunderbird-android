@@ -24,7 +24,7 @@ internal class FakeLegacyAccountManager(
         return accounts.value.find { it.id == accountId }
     }
 
-    override fun getByIdFlow(accountId: AccountId): Flow<LegacyAccount?> = accounts
+    override fun observeById(accountId: AccountId): Flow<LegacyAccount?> = accounts
         .map { list ->
             list.find { it.id == accountId }
         }

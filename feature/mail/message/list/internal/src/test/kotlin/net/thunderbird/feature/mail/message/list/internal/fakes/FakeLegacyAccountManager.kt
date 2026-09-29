@@ -18,7 +18,7 @@ internal open class FakeLegacyAccountManager(
 
     override fun getById(accountId: AccountId): LegacyAccount? = accounts.firstOrNull { it.id == accountId }
 
-    override fun getByIdFlow(accountId: AccountId): Flow<LegacyAccount?> {
+    override fun observeById(accountId: AccountId): Flow<LegacyAccount?> {
         getByIdFlowCalls += accountId
         return flowOf(getById(accountId))
     }

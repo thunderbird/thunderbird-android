@@ -383,7 +383,7 @@ private class FakeFolderQueryLegacyAccountManager(
     override fun getAccounts(): List<LegacyAccount> = accounts
     override fun getAccountsFlow(): Flow<List<LegacyAccount>> = flowOf(accounts)
     override fun getById(accountId: AccountId): LegacyAccount? = accounts.find { it.id == accountId }
-    override fun getByIdFlow(accountId: AccountId): Flow<LegacyAccount?> = flowOf(getById(accountId))
+    override fun observeById(accountId: AccountId): Flow<LegacyAccount?> = flowOf(getById(accountId))
     override fun moveAccount(account: LegacyAccount, newPosition: Int) = error("Not implemented")
     override fun saveAccount(account: LegacyAccount) = error("Not implemented")
 }
@@ -396,7 +396,7 @@ private class FakeFolderQueryLegacyAccountDtoManager(
     override fun getAccounts(): List<LegacyAccountDto> = accountsByUuid.values.toList()
     override fun getAccountsFlow(): Flow<List<LegacyAccountDto>> = flowOf(getAccounts())
     override fun getById(accountId: AccountId): LegacyAccountDto? = accountsByUuid[accountId]
-    override fun getByIdFlow(accountId: AccountId): Flow<LegacyAccountDto?> = flowOf(getById(accountId))
+    override fun observeById(accountId: AccountId): Flow<LegacyAccountDto?> = flowOf(getById(accountId))
     override fun addAccountRemovedListener(listener: AccountRemovedListener) = Unit
     override fun moveAccount(account: LegacyAccountDto, newPosition: Int) = Unit
     override fun addOnAccountsChangeListener(accountsChangeListener: AccountsChangeListener) = Unit

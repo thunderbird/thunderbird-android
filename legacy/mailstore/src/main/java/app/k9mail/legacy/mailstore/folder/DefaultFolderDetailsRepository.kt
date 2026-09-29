@@ -32,7 +32,7 @@ class DefaultFolderDetailsRepository(
             logger.verbose {
                 "$LOG_ID finding folder details for account '$accountId' and folder '$folderId'"
             }
-            val account = accountManager.getByIdFlow(accountId).firstOrNull()
+            val account = accountManager.observeById(accountId).firstOrNull()
                 ?: return@withContext Outcome.failure(
                     FolderError.AccountNotFound(throwable = IllegalStateException("Account not found: $accountId")),
                 )

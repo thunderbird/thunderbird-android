@@ -12,7 +12,7 @@ interface LegacyAccountDtoManager : AccountManager<LegacyAccountDto> {
     override fun getAccounts(): List<LegacyAccountDto>
     override fun getAccountsFlow(): Flow<List<LegacyAccountDto>>
     override fun getById(accountId: AccountId): LegacyAccountDto?
-    override fun getByIdFlow(accountId: AccountId): Flow<LegacyAccountDto?>
+    override fun observeById(accountId: AccountId): Flow<LegacyAccountDto?>
     fun addAccountRemovedListener(listener: AccountRemovedListener)
     override fun moveAccount(account: LegacyAccountDto, newPosition: Int)
     fun addOnAccountsChangeListener(accountsChangeListener: AccountsChangeListener)

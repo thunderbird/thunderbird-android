@@ -28,8 +28,8 @@ internal class DefaultLegacyAccountManager(
         return dto?.let { accountDataMapper.toDomain(it) }
     }
 
-    override fun getByIdFlow(accountId: AccountId): Flow<LegacyAccount?> {
-        return accountManager.getByIdFlow(accountId).map { account ->
+    override fun observeById(accountId: AccountId): Flow<LegacyAccount?> {
+        return accountManager.observeById(accountId).map { account ->
             account?.let {
                 accountDataMapper.toDomain(it)
             }
