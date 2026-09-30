@@ -42,6 +42,8 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import org.openintents.openpgp.util.OpenPgpIntentStarter
 
+private const val TAG = "MessageDetailsFragment"
+
 class MessageDetailsFragment : ToolbarBottomSheetDialogFragment() {
     private val viewModel: MessageDetailsViewModel by viewModel()
     private val addToContactsLauncher: AddToContactsLauncher by inject()
@@ -351,7 +353,7 @@ class MessageDetailsFragment : ToolbarBottomSheetDialogFragment() {
         try {
             OpenPgpIntentStarter.startIntentSender(requireActivity(), pendingIntent.intentSender)
         } catch (e: SendIntentException) {
-            Log.e(e, "Error starting PendingIntent")
+            Log.e(TAG, e, "Error starting PendingIntent")
         }
     }
 

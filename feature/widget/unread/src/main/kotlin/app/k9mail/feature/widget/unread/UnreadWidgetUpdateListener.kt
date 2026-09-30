@@ -2,8 +2,8 @@ package app.k9mail.feature.widget.unread
 
 import app.k9mail.legacy.message.controller.SimpleMessagingListener
 import com.fsck.k9.mail.Message
+import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.core.android.account.LegacyAccountDto
-import net.thunderbird.core.logging.Logger
 
 private const val TAG = "UnreadWidgetUpdateListener"
 

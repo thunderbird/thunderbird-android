@@ -4,10 +4,12 @@ import assertk.assertThat
 import assertk.assertions.hasSize
 import assertk.assertions.isEqualTo
 import kotlin.test.Test
-import net.thunderbird.core.logging.LogEvent
-import net.thunderbird.core.logging.LogLevel
-import net.thunderbird.core.logging.testing.TestLogger
-import net.thunderbird.core.logging.testing.TestLogger.Companion.TIMESTAMP
+import net.thunderbird.components.core.logging.LogEvent
+import net.thunderbird.components.core.logging.LogLevel
+import net.thunderbird.components.core.logging.testing.TestLogger
+import net.thunderbird.components.core.logging.testing.TestLogger.Companion.TIMESTAMP
+
+private const val TAG = "LogTest"
 
 class LogTest {
 
@@ -135,24 +137,24 @@ class LogTest {
         // Act - Test all legacy method signatures for each log level
 
         // Verbose methods
-        Log.v("Verbose message %s", "arg1")
-        Log.v(exception, "Verbose message with exception %s", "arg1")
+        Log.v(TAG, "Verbose message %s", "arg1")
+        Log.v(TAG, exception, "Verbose message with exception %s", "arg1")
 
         // Debug methods
-        Log.d("Debug message %s", "arg1")
-        Log.d(exception, "Debug message with exception %s", "arg1")
+        Log.d(TAG, "Debug message %s", "arg1")
+        Log.d(TAG, exception, "Debug message with exception %s", "arg1")
 
         // Info methods
-        Log.i("Info message %s", "arg1")
-        Log.i(exception, "Info message with exception %s", "arg1")
+        Log.i(TAG, "Info message %s", "arg1")
+        Log.i(TAG, exception, "Info message with exception %s", "arg1")
 
         // Warn methods
-        Log.w("Warn message %s", "arg1")
-        Log.w(exception, "Warn message with exception %s", "arg1")
+        Log.w(TAG, "Warn message %s", "arg1")
+        Log.w(TAG, exception, "Warn message with exception %s", "arg1")
 
         // Error methods
-        Log.e("Error message %s", "arg1")
-        Log.e(exception, "Error message with exception %s", "arg1")
+        Log.e(TAG, "Error message %s", "arg1")
+        Log.e(TAG, exception, "Error message with exception %s", "arg1")
 
         // Assert
         val events = logger.events
@@ -162,7 +164,7 @@ class LogTest {
         assertThat(events[0]).isEqualTo(
             LogEvent(
                 level = LogLevel.VERBOSE,
-                tag = null,
+                tag = TAG,
                 message = "Verbose message arg1",
                 throwable = null,
                 timestamp = TIMESTAMP,
@@ -171,7 +173,7 @@ class LogTest {
         assertThat(events[1]).isEqualTo(
             LogEvent(
                 level = LogLevel.VERBOSE,
-                tag = null,
+                tag = TAG,
                 message = "Verbose message with exception arg1",
                 throwable = exception,
                 timestamp = TIMESTAMP,
@@ -182,7 +184,7 @@ class LogTest {
         assertThat(events[2]).isEqualTo(
             LogEvent(
                 level = LogLevel.DEBUG,
-                tag = null,
+                tag = TAG,
                 message = "Debug message arg1",
                 throwable = null,
                 timestamp = TIMESTAMP,
@@ -191,7 +193,7 @@ class LogTest {
         assertThat(events[3]).isEqualTo(
             LogEvent(
                 level = LogLevel.DEBUG,
-                tag = null,
+                tag = TAG,
                 message = "Debug message with exception arg1",
                 throwable = exception,
                 timestamp = TIMESTAMP,
@@ -202,7 +204,7 @@ class LogTest {
         assertThat(events[4]).isEqualTo(
             LogEvent(
                 level = LogLevel.INFO,
-                tag = null,
+                tag = TAG,
                 message = "Info message arg1",
                 throwable = null,
                 timestamp = TIMESTAMP,
@@ -211,7 +213,7 @@ class LogTest {
         assertThat(events[5]).isEqualTo(
             LogEvent(
                 level = LogLevel.INFO,
-                tag = null,
+                tag = TAG,
                 message = "Info message with exception arg1",
                 throwable = exception,
                 timestamp = TIMESTAMP,
@@ -222,7 +224,7 @@ class LogTest {
         assertThat(events[6]).isEqualTo(
             LogEvent(
                 level = LogLevel.WARN,
-                tag = null,
+                tag = TAG,
                 message = "Warn message arg1",
                 throwable = null,
                 timestamp = TIMESTAMP,
@@ -231,7 +233,7 @@ class LogTest {
         assertThat(events[7]).isEqualTo(
             LogEvent(
                 level = LogLevel.WARN,
-                tag = null,
+                tag = TAG,
                 message = "Warn message with exception arg1",
                 throwable = exception,
                 timestamp = TIMESTAMP,
@@ -242,7 +244,7 @@ class LogTest {
         assertThat(events[8]).isEqualTo(
             LogEvent(
                 level = LogLevel.ERROR,
-                tag = null,
+                tag = TAG,
                 message = "Error message arg1",
                 throwable = null,
                 timestamp = TIMESTAMP,
@@ -251,7 +253,7 @@ class LogTest {
         assertThat(events[9]).isEqualTo(
             LogEvent(
                 level = LogLevel.ERROR,
-                tag = null,
+                tag = TAG,
                 message = "Error message with exception arg1",
                 throwable = exception,
                 timestamp = TIMESTAMP,

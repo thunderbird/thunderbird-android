@@ -5,7 +5,7 @@ import assertk.assertions.containsExactly
 import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
 import net.thunderbird.core.common.mail.Flag
-import net.thunderbird.core.logging.testing.TestLogger
+import net.thunderbird.components.core.logging.testing.TestLogger
 import net.thunderbird.legacy.logging.Log
 import org.junit.Before
 import org.junit.Test

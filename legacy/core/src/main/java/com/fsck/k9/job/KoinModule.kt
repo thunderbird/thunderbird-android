@@ -5,9 +5,7 @@ import androidx.work.WorkManager
 import androidx.work.WorkerFactory
 import androidx.work.WorkerParameters
 import kotlin.time.ExperimentalTime
-import net.thunderbird.core.logging.Logger
-import net.thunderbird.core.logging.composite.CompositeLogSink
-import net.thunderbird.core.logging.file.FileLogSink
+import net.thunderbird.components.core.logging.Logger
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
@@ -48,8 +46,8 @@ val jobModule = module {
         SyncDebugWorker(
             context = get(),
             baseLogger = get<Logger>(),
-            fileLogSink = get<FileLogSink>(named("syncDebug")),
-            syncDebugCompositeSink = get<CompositeLogSink>(named("syncDebug")),
+            logExporter = get(),
+            debugLogConfigurator = get(),
             generalSettingsManager = get(),
             parameters = parameters,
         )

@@ -5,8 +5,10 @@ import android.net.Network
 import android.net.NetworkCapabilities
 import android.os.Build
 import androidx.annotation.RequiresApi
-import net.thunderbird.core.logging.Logger
+import net.thunderbird.components.core.logging.Logger
 import android.net.ConnectivityManager as SystemConnectivityManager
+
+private const val TAG = "ConnectivityManagerApi24"
 
 @RequiresApi(Build.VERSION_CODES.N)
 internal class ConnectivityManagerApi24(
@@ -18,7 +20,7 @@ internal class ConnectivityManagerApi24(
 
     private val networkCallback = object : NetworkCallback() {
         override fun onAvailable(network: Network) {
-            logger.verbose { "Network available: $network" }
+            logger.verbose(TAG) { "Network available: $network" }
             synchronized(this@ConnectivityManagerApi24) {
                 isNetworkAvailable = true
                 notifyOnConnectivityChanged()
@@ -26,7 +28,7 @@ internal class ConnectivityManagerApi24(
         }
 
         override fun onLost(network: Network) {
-            logger.verbose { "Network lost: $network" }
+            logger.verbose(TAG) { "Network lost: $network" }
             synchronized(this@ConnectivityManagerApi24) {
                 isNetworkAvailable = false
                 notifyOnConnectivityLost()

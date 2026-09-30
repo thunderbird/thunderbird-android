@@ -7,11 +7,13 @@ import com.fsck.k9.ui.base.BaseActivity
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import net.thunderbird.app.common.startup.StartupRouter
+import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.core.android.common.startup.DatabaseUpgradeInterceptor
 import net.thunderbird.core.featureflag.provider.CatalogFeatureFlagProvider
 import net.thunderbird.core.featureflag.provider.evaluator.MultiFeatureFlagProviderEvaluator
-import net.thunderbird.core.logging.Logger
 import org.koin.android.ext.android.inject
+
+private const val TAG = "MainActivity"
 
 class MainActivity : BaseActivity() {
 
@@ -27,7 +29,7 @@ class MainActivity : BaseActivity() {
         featureFlagProvider
             .state
             .onEach { state ->
-                logger.verbose { "[feature-flag][${featureFlagProvider.metadata.name}] state = $state" }
+                logger.verbose(TAG) { "[feature-flag][${featureFlagProvider.metadata.name}] state = $state" }
                 if (state == CatalogFeatureFlagProvider.State.Resolved) {
                     ready = true
                     if (databaseUpgradeInterceptor.checkAndHandleUpgrade(this@MainActivity, intent)) {
@@ -42,7 +44,7 @@ class MainActivity : BaseActivity() {
             .launchIn(lifecycleScope)
 
         splashScreen.setKeepOnScreenCondition {
-            logger.verbose { "[feature-flag] keep on screen; ready = $ready" }
+            logger.verbose(TAG) { "[feature-flag] keep on screen; ready = $ready" }
             !ready
         }
     }

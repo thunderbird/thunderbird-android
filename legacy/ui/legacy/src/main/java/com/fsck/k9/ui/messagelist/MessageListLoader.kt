@@ -18,6 +18,8 @@ import net.thunderbird.feature.search.legacy.api.MessageSearchField
 import net.thunderbird.feature.search.legacy.sql.SqlWhereClause
 import net.thunderbird.legacy.logging.Log
 
+private const val TAG = "MessageListLoader"
+
 @Suppress("LongParameterList")
 class MessageListLoader(
     private val accountManager: LegacyAccountManager,
@@ -34,7 +36,7 @@ class MessageListLoader(
         return try {
             getMessageListInfo(config)
         } catch (e: Exception) {
-            Log.e(e, "Error while fetching message list")
+            Log.e(TAG, e, "Error while fetching message list")
 
             // TODO: Return an error object instead of an empty list
             MessageListInfo(messageListItems = emptyList(), hasMoreMessages = false)

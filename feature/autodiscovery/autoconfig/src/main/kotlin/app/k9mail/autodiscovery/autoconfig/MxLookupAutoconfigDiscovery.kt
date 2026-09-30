@@ -13,6 +13,8 @@ import net.thunderbird.legacy.logging.Log
 import okhttp3.OkHttpClient
 import org.minidns.dnsname.InvalidDnsNameException
 
+private const val TAG = "MxLookupAutoconfigDiscovery"
+
 class MxLookupAutoconfigDiscovery internal constructor(
     private val mxResolver: SuspendableMxResolver,
     private val baseDomainExtractor: BaseDomainExtractor,
@@ -68,10 +70,10 @@ class MxLookupAutoconfigDiscovery internal constructor(
         return try {
             mxResolver.lookup(domain).takeIf { it.mxNames.isNotEmpty() }
         } catch (e: IOException) {
-            Log.d(e, "Failed to get MX record for domain: %s", domain.value)
+            Log.d(TAG, e, "Failed to get MX record for domain: %s", domain.value)
             null
         } catch (e: InvalidDnsNameException) {
-            Log.d(e, "Invalid DNS name for domain: %s", domain.value)
+            Log.d(TAG, e, "Invalid DNS name for domain: %s", domain.value)
             null
         }
     }

@@ -30,6 +30,8 @@ import net.thunderbird.feature.mail.message.list.LocalMessageUidPrefixProvider;
 
 
 public class LocalMessage extends MimeMessage {
+    private static final String TAG = "LocalMessage";
+
     private final LocalStore localStore;
 
     private long databaseId;
@@ -87,7 +89,7 @@ public class LocalMessage extends MimeMessage {
 
                 catch (Exception e) {
                     if (!"X_BAD_FLAG".equals(flag)) {
-                        Log.w("Unable to parse flag %s", flag);
+                        Log.w(TAG, "Unable to parse flag %s", flag);
                     }
                 }
             }
@@ -144,7 +146,7 @@ public class LocalMessage extends MimeMessage {
         if (header != null) {
             MessageHeaderParser.parse(new ByteArrayInputStream(header), this::addRawHeader);
         } else {
-            Log.d("No headers available for this message!");
+            Log.d(TAG, "No headers available for this message!");
         }
 
         headerNeedsUpdating = false;

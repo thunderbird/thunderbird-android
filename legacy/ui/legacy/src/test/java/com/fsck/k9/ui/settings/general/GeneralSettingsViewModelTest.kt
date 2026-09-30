@@ -18,9 +18,9 @@ import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
-import net.thunderbird.core.android.logging.LogFileWriter
-import net.thunderbird.core.logging.file.FileLogSink
-import net.thunderbird.core.logging.testing.TestLogger
+import net.thunderbird.core.logging.LogcatExporter
+import net.thunderbird.core.logging.SyncDebugLogExporter
+import net.thunderbird.components.core.logging.testing.TestLogger
 import net.thunderbird.legacy.logging.Log
 import org.junit.After
 import org.junit.Before
@@ -29,11 +29,11 @@ import org.mockito.kotlin.mock
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class GeneralSettingsViewModelTest {
-    private val logFileWriter = TestLogFileWriter()
+    private val logFileWriter = TestLogcatExporter()
     private val contentUri = mock<Uri>()
     private val viewModel = GeneralSettingsViewModel(
-        logFileWriter,
-        syncDebugFileLogSink = mock<FileLogSink>(),
+        logcatExporter = logFileWriter,
+        syncDebugLogExporter = mock<SyncDebugLogExporter>(),
     )
     private val testCoroutineDispatcher = StandardTestDispatcher()
 
@@ -134,11 +134,11 @@ class GeneralSettingsViewModelTest {
     }
 }
 
-class TestLogFileWriter : LogFileWriter {
+class TestLogcatExporter : LogcatExporter {
     var exception: Throwable? = null
     private var mutex: Mutex? = null
 
-    override suspend fun writeLogTo(contentUri: Uri) {
+    override suspend fun export(destination: Uri) {
         exception?.let { throw it }
 
         mutex?.lock()

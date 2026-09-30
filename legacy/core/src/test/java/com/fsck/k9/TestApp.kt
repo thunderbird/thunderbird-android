@@ -16,17 +16,14 @@ import com.fsck.k9.storage.storageModule
 import net.thunderbird.core.android.account.AccountDefaultsProvider
 import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.core.android.preferences.TestStoragePersister
+import net.thunderbird.components.core.logging.LogLevel
+import net.thunderbird.components.core.logging.LogLevelProvider
+import net.thunderbird.components.core.logging.Logger
+import net.thunderbird.components.core.logging.LoggingControl
 import net.thunderbird.core.common.appConfig.PlatformConfigProvider
 import net.thunderbird.core.common.inject.factoryListOf
-import net.thunderbird.core.logging.LogLevel
-import net.thunderbird.core.logging.LogLevelManager
-import net.thunderbird.core.logging.LogLevelProvider
-import net.thunderbird.core.logging.Logger
-import net.thunderbird.core.logging.composite.CompositeLogSink
-import net.thunderbird.core.logging.composite.CompositeLogSinkManager
-import net.thunderbird.core.logging.file.FileLogSink
-import net.thunderbird.core.logging.testing.TestLogLevelManager
-import net.thunderbird.core.logging.testing.TestLogger
+import net.thunderbird.components.core.logging.testing.TestLogger
+import net.thunderbird.core.logging.DebugLogConfigurator
 import net.thunderbird.core.preference.storage.StoragePersister
 import net.thunderbird.feature.mail.folder.api.OutboxFolderManager
 import net.thunderbird.feature.mail.message.list.LocalMessageUidPrefixProvider
@@ -38,7 +35,6 @@ import net.thunderbird.legacy.core.mailstore.folder.FakeLocalMessageUidPrefixPro
 import net.thunderbird.legacy.core.mailstore.folder.FakeOutboxFolderManager
 import net.thunderbird.legacy.logging.Log
 import org.koin.core.qualifier.named
-import org.koin.dsl.bind
 import org.koin.dsl.module
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
@@ -63,24 +59,15 @@ class TestApp : Application() {
 
     companion object {
         val logger: Logger = TestLogger()
-        val sinkManager: CompositeLogSinkManager = mock<CompositeLogSinkManager>()
-        val fileSink: FileLogSink = mock<FileLogSink>()
-
-        val compositeSink: CompositeLogSink = CompositeLogSink(
-            logLevelProvider = { LogLevel.DEBUG },
-            manager = sinkManager,
-            sinks = listOf(fileSink),
-        )
     }
 }
 
 val testModule = module {
     single<Logger> { TestApp.logger }
-    single<LogLevelManager> { TestLogLevelManager() }.bind<LogLevelProvider>()
-    single(named("syncDebug")) { TestApp.logger }
-    single(named("syncDebug")) { TestApp.compositeSink }
-    single(named("syncDebug")) { TestApp.fileSink }
-    single(named("syncDebug")) { TestApp.sinkManager }
+    single<LogLevelProvider> { LogLevelProvider { LogLevel.DEBUG } }
+    single<Logger>(named("syncDebug")) { TestApp.logger }
+    single<DebugLogConfigurator> { mock() }
+    single<LoggingControl> { mock() }
     single<AppConfig> { DefaultAppConfig(emptyList()) }
     single { mock<CoreResourceProvider>() }
     single { mock<EncryptionExtractor>() }

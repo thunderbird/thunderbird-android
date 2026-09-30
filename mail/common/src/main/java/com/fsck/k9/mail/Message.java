@@ -17,6 +17,8 @@ import net.thunderbird.core.common.exception.MessagingException;
 
 
 public abstract class Message implements Part, Body {
+    private static final String TAG = "Message";
+
     protected static final String DEFAULT_MIME_TYPE = "text/plain";
 
 
@@ -166,7 +168,7 @@ public abstract class Message implements Part, Body {
             eolOut.flush();
             return out.getCount();
         } catch (IOException | MessagingException e) {
-            Log.e(e, "Failed to calculate a message size");
+            Log.e(TAG, e, "Failed to calculate a message size");
         }
         return 0;
     }

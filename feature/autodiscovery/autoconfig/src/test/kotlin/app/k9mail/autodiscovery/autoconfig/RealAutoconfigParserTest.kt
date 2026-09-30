@@ -16,10 +16,10 @@ import assertk.assertions.isInstanceOf
 import assertk.assertions.isNotNull
 import assertk.assertions.prop
 import java.io.InputStream
+import net.thunderbird.components.core.logging.testing.TestLogger
 import net.thunderbird.core.common.mail.toUserEmailAddress
 import net.thunderbird.core.common.net.toHostname
 import net.thunderbird.core.common.net.toPort
-import net.thunderbird.core.logging.testing.TestLogger
 import net.thunderbird.legacy.logging.Log
 import org.intellij.lang.annotations.Language
 import org.jsoup.Jsoup

@@ -22,11 +22,11 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.components.core.outcome.Outcome
 import net.thunderbird.components.core.outcome.handleAsync
 import net.thunderbird.components.core.outcome.mapFailure
 import net.thunderbird.core.android.common.activity.ActivityProvider
-import net.thunderbird.core.logging.Logger
 import net.thunderbird.feature.funding.googleplay.data.FundingDataContract
 import net.thunderbird.feature.funding.googleplay.data.FundingDataContract.Remote
 import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract.ContributionError
@@ -34,6 +34,8 @@ import net.thunderbird.feature.funding.googleplay.domain.entity.ContributionId
 import net.thunderbird.feature.funding.googleplay.domain.entity.OneTimeContribution
 import net.thunderbird.feature.funding.googleplay.domain.entity.PurchasedContribution
 import net.thunderbird.feature.funding.googleplay.domain.entity.RecurringContribution
+
+private const val TAG = "BillingClient"
 
 internal typealias OneTimeContributionOutcome = Outcome<List<OneTimeContribution>, ContributionError>
 internal typealias RecurringContributionOutcome = Outcome<List<RecurringContribution>, ContributionError>
@@ -76,6 +78,7 @@ internal class BillingClient(
             }
         }.mapFailure { billingError, _ ->
             logger.error(
+                tag = TAG,
                 message = {
                     "Error loading one-time products: ${oneTimeProductsResult.billingResult.debugMessage}"
                 },
@@ -94,6 +97,7 @@ internal class BillingClient(
             }
         }.mapFailure { billingError, _ ->
             logger.error(
+                tag = TAG,
                 message = {
                     "Error loading recurring products: ${recurringProductsResult.billingResult.debugMessage}"
                 },
@@ -111,6 +115,7 @@ internal class BillingClient(
             purchaseHandler.handleOneTimePurchases(clientProvider, purchasesResult.purchasesList)
         }.mapFailure { billingError, _ ->
             logger.error(
+                tag = TAG,
                 message = {
                     "Error loading one-time purchases: ${purchasesResult.billingResult.debugMessage}"
                 },
@@ -128,6 +133,7 @@ internal class BillingClient(
             purchaseHandler.handleRecurringPurchases(clientProvider, purchasesResult.purchasesList)
         }.mapFailure { billingError, _ ->
             logger.error(
+                tag = TAG,
                 message = {
                     "Error loading recurring purchases: ${purchasesResult.billingResult.debugMessage}"
                 },
@@ -227,7 +233,7 @@ internal class BillingClient(
         val billingResult = clientProvider.current.launchBillingFlow(activity, billingFlowParams)
         return billingResult.mapToOutcome { }.mapFailure(
             transformFailure = { error, _ ->
-                logger.error(message = { "Error launching billing flow: ${error.message}" })
+                logger.error(tag = TAG, message = { "Error launching billing flow: ${error.message}" })
                 error
             },
         )
@@ -250,11 +256,11 @@ internal class BillingClient(
                 },
                 onFailure = { error ->
                     if (error is ContributionError.UserCancelled) {
-                        logger.debug(message = { "User cancelled the purchase flow" })
+                        logger.debug(tag = TAG, message = { "User cancelled the purchase flow" })
                     } else if (error is ContributionError.PurchaseFailed) {
-                        logger.error(message = { "Purchase failed: ${error.message}" })
+                        logger.error(tag = TAG, message = { "Purchase failed: ${error.message}" })
                     } else {
-                        logger.error(message = { "Purchase failed with unknown error: ${error.message}" })
+                        logger.error(tag = TAG, message = { "Purchase failed with unknown error: ${error.message}" })
                     }
                     _purchasedContribution.value = Outcome.failure(error)
                 },

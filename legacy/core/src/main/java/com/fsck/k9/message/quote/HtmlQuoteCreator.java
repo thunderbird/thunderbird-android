@@ -17,6 +17,8 @@ import net.thunderbird.core.preference.GeneralSettingsManager;
 
 
 public class HtmlQuoteCreator {
+    private static final String TAG = "HtmlQuoteCreator";
+
     // Regular expressions to look for various HTML tags. This is no HTML::Parser, but hopefully it's good enough for
     // our purposes.
     private static final Pattern FIND_INSERTION_POINT_HTML = Pattern.compile("(?si:.*?(<html(?:>|\\s+[^>]*>)).*)");
@@ -149,7 +151,7 @@ public class HtmlQuoteCreator {
             hasBodyTag = true;
         }
 
-        Log.d("Open: hasHtmlTag:%s hasHeadTag:%s hasBodyTag:%s", hasHtmlTag, hasHeadTag, hasBodyTag);
+        Log.d(TAG, "Open: hasHtmlTag:%s hasHeadTag:%s hasBodyTag:%s", hasHtmlTag, hasHeadTag, hasBodyTag);
 
         // Given our inspections, let's figure out where to start our content.
         // This is the ideal case -- there's a BODY tag and we insert ourselves just after it.
@@ -200,7 +202,7 @@ public class HtmlQuoteCreator {
             hasBodyEndTag = true;
         }
 
-        Log.d("Close: hasHtmlEndTag:%s hasBodyEndTag:%s", hasHtmlEndTag, hasBodyEndTag);
+        Log.d(TAG, "Close: hasHtmlEndTag:%s hasBodyEndTag:%s", hasHtmlEndTag, hasBodyEndTag);
 
         // Now figure out where to put our footer.
         // This is the ideal case -- there's a BODY tag and we insert ourselves just before it.

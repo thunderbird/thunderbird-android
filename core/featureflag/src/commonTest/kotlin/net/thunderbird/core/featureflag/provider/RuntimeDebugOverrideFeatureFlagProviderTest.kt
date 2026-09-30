@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
+import net.thunderbird.components.core.logging.testing.TestLogger
 import net.thunderbird.core.featureflag.FeatureFlagResult
 import net.thunderbird.core.featureflag.data.configstore.FeatureFlagConfigData
 import net.thunderbird.core.featureflag.data.configstore.FeatureFlagConfigStore
@@ -27,7 +28,6 @@ import net.thunderbird.core.featureflag.keys.GeneratedFeatureFlagKey.MESSAGE_VIE
 import net.thunderbird.core.featureflag.model.FlagOverrides
 import net.thunderbird.core.featureflag.provider.context.FeatureFlagContext
 import net.thunderbird.core.featureflag.provider.context.ImmutableFeatureFlagContext
-import net.thunderbird.core.logging.testing.TestLogger
 
 @OptIn(ExperimentalCoroutinesApi::class, ExperimentalUuidApi::class)
 class RuntimeDebugOverrideFeatureFlagProviderTest {

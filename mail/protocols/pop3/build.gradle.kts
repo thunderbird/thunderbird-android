@@ -8,7 +8,6 @@ dependencies {
     implementation(projects.core.common)
     implementation(projects.legacy.logging)
 
-    testImplementation(projects.core.logging.testing)
     testImplementation(projects.mail.testing)
 
     testImplementation(libs.okio)

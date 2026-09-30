@@ -21,6 +21,8 @@ import org.openintents.openpgp.util.OpenPgpServiceConnection.OnBound;
 
 
 public class OpenPgpApiManager implements DefaultLifecycleObserver {
+    private static final String TAG = "OpenPgpApiManager";
+
     private final Context context;
 
     @Nullable
@@ -94,7 +96,7 @@ public class OpenPgpApiManager implements DefaultLifecycleObserver {
 
             @Override
             public void onError(Exception e) {
-                Log.e(e, "error connecting to crypto provider!");
+                Log.e(TAG, e, "error connecting to crypto provider!");
                 setOpenPgpProviderState(OpenPgpProviderState.ERROR);
                 callbackOpenPgpProviderError(OpenPgpProviderError.ConnectionFailed);
             }
@@ -120,7 +122,7 @@ public class OpenPgpApiManager implements DefaultLifecycleObserver {
 
         if (!openPgpServiceConnection.isBound()) {
             userInteractionPendingIntent = null;
-            Log.d("attempting to bind to openpgp provider: %s (%s)", openPgpProvider, openPgpServiceConnection);
+            Log.d(TAG, "attempting to bind to openpgp provider: %s (%s)", openPgpProvider, openPgpServiceConnection);
             openPgpServiceConnection.bindToService();
             return;
         }
@@ -178,7 +180,7 @@ public class OpenPgpApiManager implements DefaultLifecycleObserver {
     private void setOpenPgpProviderState(OpenPgpProviderState state) {
         boolean statusChanged = openPgpProviderState != state;
         if (statusChanged) {
-            Log.d("callback provider status changed from %s to %s", openPgpProviderState, state);
+            Log.d(TAG, "callback provider status changed from %s to %s", openPgpProviderState, state);
             openPgpProviderState = state;
             if (callback != null) {
                 callback.onOpenPgpProviderStatusChanged();
@@ -187,7 +189,7 @@ public class OpenPgpApiManager implements DefaultLifecycleObserver {
     }
 
     private void handleOpenPgpError(@Nullable OpenPgpError error) {
-        Log.e("OpenPGP Api error: %s", error);
+        Log.e(TAG, "OpenPGP Api error: %s", error);
 
         if (error != null && error.getErrorId() == OpenPgpError.INCOMPATIBLE_API_VERSIONS) {
             callbackOpenPgpProviderError(OpenPgpProviderError.VersionIncompatible);
@@ -199,7 +201,7 @@ public class OpenPgpApiManager implements DefaultLifecycleObserver {
     }
 
     private void callbackOpenPgpProviderError(OpenPgpProviderError providerError) {
-        Log.d("callback provider connection error %s", providerError);
+        Log.d(TAG, "callback provider connection error %s", providerError);
         if (callback != null) {
             callback.onOpenPgpProviderError(providerError);
         }
@@ -215,7 +217,7 @@ public class OpenPgpApiManager implements DefaultLifecycleObserver {
 
     public OpenPgpApi getOpenPgpApi() {
         if (openPgpServiceConnection == null || !openPgpServiceConnection.isBound()) {
-            Log.e("Obtained OpenPgpApi object, but service is not bound! Inconsistent state?");
+            Log.e(TAG, "Obtained OpenPgpApi object, but service is not bound! Inconsistent state?");
         }
         return openPgpApi;
     }

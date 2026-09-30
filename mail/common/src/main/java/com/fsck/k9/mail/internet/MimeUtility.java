@@ -22,6 +22,8 @@ import org.apache.james.mime4j.util.MimeUtil;
 
 
 public class MimeUtility {
+    private static final String TAG = "MimeUtility";
+
     public static String unfold(String s) {
         if (s == null) {
             return null;
@@ -159,7 +161,7 @@ public class MimeUtility {
                     }
                 };
             } else {
-                Log.w("Unsupported encoding: %s", encoding);
+                Log.w(TAG, "Unsupported encoding: %s", encoding);
                 inputStream = rawInputStream;
             }
         } else {

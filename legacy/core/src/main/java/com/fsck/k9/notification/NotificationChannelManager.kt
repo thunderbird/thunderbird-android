@@ -15,6 +15,8 @@ import net.thunderbird.legacy.logging.Log
 import net.thunderbird.feature.notification.NotificationLight
 import net.thunderbird.feature.notification.NotificationSettings
 
+private const val TAG = "NotificationChannelManager"
+
 class NotificationChannelManager(
     private val accountManager: LegacyAccountDtoManager,
     private val backgroundExecutor: Executor,
@@ -180,7 +182,7 @@ class NotificationChannelManager(
         val oldNotificationChannel = notificationManager.getNotificationChannel(oldChannelId)
 
         if (oldNotificationChannel.matches(account)) {
-            Log.v("Not recreating NotificationChannel. The current one already matches the app's settings.")
+            Log.v(TAG, "Not recreating NotificationChannel. The current one already matches the app's settings.")
             return
         }
 
@@ -197,9 +199,9 @@ class NotificationChannelManager(
             setPropertiesFrom(account)
         }
 
-        Log.v("Recreating NotificationChannel(%s => %s)", oldChannelId, newChannelId)
-        Log.v("Old NotificationChannel: %s", oldNotificationChannel)
-        Log.v("New NotificationChannel: %s", newNotificationChannel)
+        Log.v(TAG, "Recreating NotificationChannel(%s => %s)", oldChannelId, newChannelId)
+        Log.v(TAG, "Old NotificationChannel: %s", oldNotificationChannel)
+        Log.v(TAG, "New NotificationChannel: %s", newNotificationChannel)
         notificationManager.createNotificationChannel(newNotificationChannel)
 
         // To avoid a race condition we first create the new NotificationChannel, point the Account to it,

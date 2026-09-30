@@ -39,6 +39,8 @@ import org.openintents.openpgp.OpenPgpApiManager.OpenPgpApiManagerCallback
 import org.openintents.openpgp.OpenPgpApiManager.OpenPgpProviderError
 import org.openintents.openpgp.OpenPgpApiManager.OpenPgpProviderState
 
+private const val TAG = "RecipientPresenter"
+
 private const val STATE_KEY_CC_SHOWN = "state:ccShown"
 private const val STATE_KEY_BCC_SHOWN = "state:bccShown"
 private const val STATE_KEY_LAST_FOCUSED_TYPE = "state:lastFocusedType"
@@ -571,7 +573,7 @@ class RecipientPresenter(
     fun onClickCryptoStatus() {
         when (openPgpApiManager.openPgpProviderState) {
             OpenPgpProviderState.UNCONFIGURED -> {
-                Log.e("click on crypto status while unconfigured - this should not really happen?!")
+                Log.e(TAG, "click on crypto status while unconfigured - this should not really happen?!")
             }
 
             OpenPgpProviderState.OK -> {
@@ -593,7 +595,7 @@ class RecipientPresenter(
     private fun toggleEncryptionState(showGotIt: Boolean) {
         val currentCryptoStatus = currentCachedCryptoStatus
         if (currentCryptoStatus == null) {
-            Log.e("click on crypto status while crypto status not available - should not really happen?!")
+            Log.e(TAG, "click on crypto status while crypto status not available - should not really happen?!")
             return
         }
 

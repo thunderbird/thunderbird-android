@@ -7,6 +7,8 @@ import net.thunderbird.core.preference.storage.StorageEditor
 import net.thunderbird.feature.account.storage.legacy.LegacyAccountStorageHandler
 import net.thunderbird.legacy.logging.Log
 
+private const val TAG = "GeneralSettingsWriter"
+
 internal class GeneralSettingsWriter(
     private val preferences: Preferences,
     private val generalSettingsManager: DefaultGeneralSettingsManager,
@@ -32,7 +34,7 @@ internal class GeneralSettingsWriter(
         }
 
         return if (editor.commit()) {
-            Log.v("Committed general settings to the preference storage.")
+            Log.v(TAG, "Committed general settings to the preference storage.")
 
             generalSettingsManager.loadSettings()
             mergedSettings.keys.forEach {
@@ -42,7 +44,7 @@ internal class GeneralSettingsWriter(
 
             true
         } else {
-            Log.v("Failed to commit general settings to the preference storage")
+            Log.v(TAG, "Failed to commit general settings to the preference storage")
             false
         }
     }
@@ -68,7 +70,7 @@ internal fun StorageEditor.putStringWithLogging(
             outputValue = "*sensitive*"
         }
 
-        Log.v("Setting %s=%s", key, outputValue)
+        Log.v(TAG, "Setting %s=%s", key, outputValue)
     }
 
     putString(key, value)

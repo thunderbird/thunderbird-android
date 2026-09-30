@@ -20,6 +20,8 @@ import net.thunderbird.legacy.logging.Log;
 
 @SuppressWarnings("WeakerAccess")
 public class MessageCryptoPresenter {
+    private static final String TAG = "MessageCryptoPresenter";
+
     public static final int REQUEST_CODE_UNKNOWN_KEY = 123;
     public static final int REQUEST_CODE_SECURITY_WARNING = 124;
 
@@ -122,7 +124,7 @@ public class MessageCryptoPresenter {
                     pendingIntent.getIntentSender(), REQUEST_CODE_UNKNOWN_KEY);
             }
         } catch (IntentSender.SendIntentException e) {
-            Log.e(e, "SendIntentException");
+            Log.e(TAG, e, "SendIntentException");
         }
     }
 
@@ -138,7 +140,7 @@ public class MessageCryptoPresenter {
                         pendingIntent.getIntentSender(), REQUEST_CODE_SECURITY_WARNING);
             }
         } catch (IntentSender.SendIntentException e) {
-            Log.e(e, "SendIntentException");
+            Log.e(TAG, e, "SendIntentException");
         }
     }
 

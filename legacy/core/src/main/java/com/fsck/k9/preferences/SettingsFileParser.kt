@@ -13,6 +13,8 @@ import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserException
 import org.xmlpull.v1.XmlPullParserFactory
 
+private const val TAG = "SettingsFileParser"
+
 /**
  * Parser for K-9 Mail's settings file format.
  */
@@ -79,7 +81,7 @@ private class XmlSettingsParser(
                         if (generalSettings == null) {
                             generalSettings = readGlobalSettings()
                         } else {
-                            Log.w("More than one '${SettingsExporter.GLOBAL_ELEMENT}' element!")
+                            Log.w(TAG, "More than one '${SettingsExporter.GLOBAL_ELEMENT}' element!")
                             skipElement()
                         }
                     }
@@ -87,7 +89,7 @@ private class XmlSettingsParser(
                         if (accounts == null) {
                             accounts = readAccounts()
                         } else {
-                            Log.w("More than one '${SettingsExporter.ACCOUNTS_ELEMENT}' element!")
+                            Log.w(TAG, "More than one '${SettingsExporter.ACCOUNTS_ELEMENT}' element!")
                             skipElement()
                         }
                     }
@@ -128,7 +130,7 @@ private class XmlSettingsParser(
                         val value = readText()
 
                         if (settings.containsKey(key)) {
-                            Log.w("Already read key \"%s\". Ignoring value \"%s\"", key, value)
+                            Log.w(TAG, "Already read key \"%s\". Ignoring value \"%s\"", key, value)
                         } else {
                             settings[key] = value
                         }
@@ -155,7 +157,7 @@ private class XmlSettingsParser(
                         if (account == null) {
                             // Do nothing - readAccount() already logged a message
                         } else if (accounts.any { it.uuid == account.uuid }) {
-                            Log.w("Duplicate account entries with UUID %s. Ignoring!", account.uuid)
+                            Log.w(TAG, "Duplicate account entries with UUID %s. Ignoring!", account.uuid)
                         } else {
                             accounts.add(account)
                         }
@@ -226,7 +228,7 @@ private class XmlSettingsParser(
         try {
             UUID.fromString(uuid)
         } catch (e: IllegalArgumentException) {
-            Log.w(e, "Invalid account UUID: %s", uuid)
+            Log.w(TAG, e, "Invalid account UUID: %s", uuid)
             return null
         }
 
@@ -405,7 +407,7 @@ private class XmlSettingsParser(
     }
 
     private fun skipElement() {
-        Log.d("Skipping element '%s'", pullParser.name)
+        Log.d(TAG, "Skipping element '%s'", pullParser.name)
         readElement { /* Do nothing */ }
     }
 

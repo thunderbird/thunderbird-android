@@ -18,6 +18,8 @@ import net.openid.appauth.ResponseTypeValues
 import net.thunderbird.core.common.oauth.OAuthConfiguration
 import net.thunderbird.legacy.logging.Log
 
+private const val TAG = "AuthorizationRepository"
+
 class AuthorizationRepository(
     private val service: AuthorizationService,
 ) : AccountOAuthDomainContract.AuthorizationRepository {
@@ -35,7 +37,7 @@ class AuthorizationRepository(
         return try {
             AuthorizationResponse.fromIntent(intent)
         } catch (e: IllegalArgumentException) {
-            Log.e(e, "Error deserializing AuthorizationResponse")
+            Log.e(TAG, e, "Error deserializing AuthorizationResponse")
             null
         }
     }
@@ -44,7 +46,7 @@ class AuthorizationRepository(
         return try {
             AuthorizationException.fromIntent(intent)
         } catch (e: IllegalArgumentException) {
-            Log.e(e, "Error deserializing AuthorizationException")
+            Log.e(TAG, e, "Error deserializing AuthorizationException")
             null
         }
     }

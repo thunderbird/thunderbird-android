@@ -14,6 +14,8 @@ import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.AccountIdFactory
 
+private const val TAG = "MailSyncWorker"
+
 // IMPORTANT: Update K9WorkerFactory when moving this class and the FQCN no longer starts with "com.fsck.k9".
 class MailSyncWorker(
     private val messagingController: MessagingController,
@@ -27,31 +29,31 @@ class MailSyncWorker(
         val accountId = inputData.getString(EXTRA_ACCOUNT_UUID)?.let { AccountIdFactory.of(it) }
         requireNotNull(accountId)
 
-        Log.d("Executing periodic mail sync for account %s", accountId)
+        Log.d(TAG, "Executing periodic mail sync for account %s", accountId)
 
         if (isBackgroundSyncDisabled()) {
-            Log.d("Background sync is disabled. Skipping mail sync.")
+            Log.d(TAG, "Background sync is disabled. Skipping mail sync.")
             return Result.success()
         }
 
         val account = preferences.getById(accountId)
         if (account == null) {
-            Log.e("Account %s not found. Can't perform mail sync.", accountId)
+            Log.e(TAG, "Account %s not found. Can't perform mail sync.", accountId)
             return Result.failure()
         }
 
         if (account.isPeriodicMailSyncDisabled) {
-            Log.d("Periodic mail sync has been disabled for this account. Skipping mail sync.")
+            Log.d(TAG, "Periodic mail sync has been disabled for this account. Skipping mail sync.")
             return Result.success()
         }
 
         if (account.incomingServerSettings.isMissingCredentials) {
-            Log.d("Password for this account is missing. Skipping mail sync.")
+            Log.d(TAG, "Password for this account is missing. Skipping mail sync.")
             return Result.success()
         }
 
         if (account.incomingServerSettings.authenticationType == AuthType.XOAUTH2 && account.oAuthState == null) {
-            Log.d("Account requires sign-in. Skipping mail sync.")
+            Log.d(TAG, "Account requires sign-in. Skipping mail sync.")
             return Result.success()
         }
 

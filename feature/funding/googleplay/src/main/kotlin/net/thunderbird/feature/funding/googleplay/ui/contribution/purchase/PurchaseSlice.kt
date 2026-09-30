@@ -4,8 +4,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.components.core.outcome.handle
-import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.ui.contract.udf.BaseUnidirectionalSlice
 import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract
 import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract.UseCase
@@ -14,6 +14,8 @@ import net.thunderbird.feature.funding.googleplay.ui.contribution.purchase.Purch
 import net.thunderbird.feature.funding.googleplay.ui.contribution.purchase.PurchaseSliceContract.Event
 import net.thunderbird.feature.funding.googleplay.ui.contribution.purchase.PurchaseSliceContract.PurchaseFlow
 import net.thunderbird.feature.funding.googleplay.ui.contribution.purchase.PurchaseSliceContract.State
+
+private const val TAG = "PurchaseSlice"
 
 private const val PURCHASE_FLOW_DELAY_MS = 300L
 
@@ -44,7 +46,7 @@ internal class PurchaseSlice(
     }
 
     private fun onPurchaseClicked(contributionId: ContributionId) {
-        logger.debug { "Purchase clicked for contribution: $contributionId" }
+        logger.debug(TAG) { "Purchase clicked for contribution: $contributionId" }
 
         updateState { state ->
             state.copy(
@@ -58,7 +60,7 @@ internal class PurchaseSlice(
             delay(PURCHASE_FLOW_DELAY_MS)
             repository.purchaseContribution(contributionId).handle(
                 onSuccess = {
-                    logger.debug { "Purchase successfully launched for contribution: $contributionId" }
+                    logger.debug(TAG) { "Purchase successfully launched for contribution: $contributionId" }
                     updateState { state ->
                         state.copy(
                             purchaseFlow = PurchaseFlow.Waiting(contributionId),
@@ -67,7 +69,7 @@ internal class PurchaseSlice(
                 },
 
                 onFailure = { error ->
-                    logger.error { "Purchase failed for contribution: $contributionId, error: ${error.message}" }
+                    logger.error(TAG) { "Purchase failed for contribution: $contributionId, error: ${error.message}" }
                     updateState { state ->
                         state.copy(
                             purchaseFlow = PurchaseFlow.Failed(contributionId, error),
@@ -79,7 +81,7 @@ internal class PurchaseSlice(
     }
 
     private fun onCancelPurchaseClicked() {
-        logger.debug { "Cancel purchase clicked" }
+        logger.debug(TAG) { "Cancel purchase clicked" }
         purchaseJob?.cancel()
         purchaseJob = null
         updateState { state ->
@@ -90,7 +92,7 @@ internal class PurchaseSlice(
     }
 
     private fun onDismissPurchaseErrorClicked() {
-        logger.debug { "Dismiss purchase error clicked" }
+        logger.debug(TAG) { "Dismiss purchase error clicked" }
         updateState { state ->
             state.copy(
                 purchaseFlow = PurchaseFlow.Idle,
@@ -99,23 +101,23 @@ internal class PurchaseSlice(
     }
 
     private fun onRefreshPurchase() {
-        logger.debug { "Refresh purchase triggered  " }
+        logger.debug(TAG) { "Refresh purchase triggered  " }
         if (state.value.purchaseFlow is PurchaseFlow.Waiting) {
-            logger.debug { "Already waiting for purchase update, ignoring refresh" }
+            logger.debug(TAG) { "Already waiting for purchase update, ignoring refresh" }
             loadLatestPurchase()
         }
     }
 
     private fun loadLatestPurchase() {
-        logger.debug { "Loading purchased contribution" }
+        logger.debug(TAG) { "Loading purchased contribution" }
         scope.launch {
             getLastestPurchase().collect { outcome ->
                 outcome.handle(
                     onSuccess = { contribution ->
                         if (contribution != null) {
-                            logger.debug { "Latest purchased contribution: ${contribution.id.value}" }
+                            logger.debug(TAG) { "Latest purchased contribution: ${contribution.id.value}" }
                         } else {
-                            logger.debug { "No purchased contribution found" }
+                            logger.debug(TAG) { "No purchased contribution found" }
                         }
 
                         updateState { state ->
@@ -130,14 +132,14 @@ internal class PurchaseSlice(
 
                     onFailure = { error ->
                         if (error is FundingDomainContract.ContributionError.UserCancelled) {
-                            logger.debug { "User cancelled the purchase flow" }
+                            logger.debug(TAG) { "User cancelled the purchase flow" }
                             updateState { state ->
                                 state.copy(
                                     purchaseFlow = PurchaseFlow.Idle,
                                 )
                             }
                         } else {
-                            logger.error { "Failed to load latest purchased contribution: ${error.message}" }
+                            logger.error(TAG) { "Failed to load latest purchased contribution: ${error.message}" }
                             updateState { state ->
                                 state.copy(
                                     purchaseFlow = PurchaseFlow.Failed(
@@ -154,12 +156,12 @@ internal class PurchaseSlice(
     }
 
     private fun emitManageSubscriptionEffect(contributionId: ContributionId) {
-        logger.debug { "Manage subscription clicked for contribution: $contributionId" }
+        logger.debug(TAG) { "Manage subscription clicked for contribution: $contributionId" }
         emitEffect(Effect.ManageSubscription(contributionId))
     }
 
     private fun emitPurchasedEffect(contributionId: ContributionId?) {
-        logger.debug { "Emitting purchased effect for contribution: $contributionId" }
+        logger.debug(TAG) { "Emitting purchased effect for contribution: $contributionId" }
         emitEffect(Effect.Purchased(contributionId))
     }
 

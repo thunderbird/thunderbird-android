@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.pm.PackageManager
 import androidx.annotation.WorkerThread
 import androidx.core.content.pm.PackageInfoCompat
-import net.thunderbird.core.logging.Logger
+import net.thunderbird.components.core.logging.Logger
 
 private const val TAG = "ImportAppFetcher"
 

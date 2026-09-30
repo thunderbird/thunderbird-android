@@ -8,7 +8,7 @@ import android.provider.Settings
 import androidx.annotation.RequiresApi
 import androidx.core.app.PendingIntentCompat
 import androidx.core.net.toUri
-import net.thunderbird.core.logging.Logger
+import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.feature.notification.api.content.Notification
 import net.thunderbird.feature.notification.api.content.PushServiceNotification
 import net.thunderbird.feature.notification.api.ui.action.NotificationAction

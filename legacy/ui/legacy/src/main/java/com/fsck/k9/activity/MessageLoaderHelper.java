@@ -73,6 +73,8 @@ import net.thunderbird.legacy.logging.Log;
  *
  */
 public class MessageLoaderHelper {
+    private static final String TAG = "MessageLoaderHelper";
+
     private static final int LOCAL_MESSAGE_LOADER_ID = 1;
     private static final int DECODE_MESSAGE_LOADER_ID = 2;
 
@@ -120,7 +122,7 @@ public class MessageLoaderHelper {
             if (cachedDecryptionResult instanceof OpenPgpDecryptionResult) {
                 this.cachedDecryptionResult = (OpenPgpDecryptionResult) cachedDecryptionResult;
             } else {
-                Log.e("Got decryption result of unknown type - ignoring");
+                Log.e(TAG, "Got decryption result of unknown type - ignoring");
             }
         }
 
@@ -208,12 +210,12 @@ public class MessageLoaderHelper {
         boolean isLoaderStale = (loader == null) || !loader.isCreatedFor(messageReference);
 
         if (isLoaderStale) {
-            Log.d("Creating new local message loader");
+            Log.d(TAG, "Creating new local message loader");
             cancelAndClearCryptoOperation();
             cancelAndClearDecodeLoader();
             loaderManager.restartLoader(LOCAL_MESSAGE_LOADER_ID, null, localMessageLoaderCallback);
         } else {
-            Log.d("Reusing local message loader");
+            Log.d(TAG, "Reusing local message loader");
             loaderManager.initLoader(LOCAL_MESSAGE_LOADER_ID, null, localMessageLoaderCallback);
         }
     }
@@ -374,10 +376,10 @@ public class MessageLoaderHelper {
         boolean isLoaderStale = (loader == null) || !loader.isCreatedFor(localMessage, messageCryptoAnnotations);
 
         if (isLoaderStale) {
-            Log.d("Creating new decode message loader");
+            Log.d(TAG, "Creating new decode message loader");
             loaderManager.restartLoader(DECODE_MESSAGE_LOADER_ID, null, decodeMessageLoaderCallback);
         } else {
-            Log.d("Reusing decode message loader");
+            Log.d(TAG, "Reusing decode message loader");
             loaderManager.initLoader(DECODE_MESSAGE_LOADER_ID, null, decodeMessageLoaderCallback);
         }
     }

@@ -26,7 +26,9 @@ dependencies {
     implementation(projects.core.android.account)
     implementation(projects.core.android.common)
 
-    implementation(projects.core.logging.api)
+    implementation(libs.tb.mobile.components.core.logging.file)
+    implementation(libs.filekit.core)
+    implementation(projects.core.logging.internal)
     implementation(projects.legacy.logging)
     implementation(projects.core.configstore.api)
     implementation(projects.core.configstore.implBackend)
@@ -68,7 +70,6 @@ dependencies {
     testImplementation(projects.core.testing)
     testImplementation(projects.core.android.testing)
     testImplementation(projects.core.configstore.testing)
-    testImplementation(projects.core.logging.testing)
 
     testImplementation(libs.mockito.kotlin)
 }
