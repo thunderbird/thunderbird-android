@@ -6,13 +6,19 @@ import app.k9mail.legacy.mailstore.ListenableMessageStore
 import app.k9mail.legacy.mailstore.MessageStoreFactory
 import app.k9mail.legacy.mailstore.MessageStoreManager
 import app.k9mail.legacy.mailstore.MoreMessages
+import app.k9mail.legacy.mailstore.domain.GetFolderIdsForTypeUseCase
 import app.k9mail.legacy.mailstore.domain.SetPushForFolderUseCase
 import assertk.assertThat
+import assertk.assertions.first
+import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
+import assertk.assertions.isNotEmpty
 import assertk.assertions.isNull
+import assertk.assertions.isNullOrEmpty
 import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ConnectionSecurity
+import com.fsck.k9.mail.FolderType as K9FolderType
 import com.fsck.k9.mail.ServerSettings
 import junit.framework.TestCase.assertFalse
 import junit.framework.TestCase.assertTrue
@@ -334,10 +340,68 @@ class DefaultFolderDetailsRepositoryTest {
         )
     }
 
+    @Test
+    fun `GetFolderIdsForTypeUseCase should return relevant message ids`() = runTest {
+        // Setup
+        val accessor = FakeFolderDetailsAccessor(
+            id = REGULAR_FOLDER_ID,
+            name = "Regular",
+            type = K9FolderType.REGULAR,
+            isInTopGroup = true,
+            isIntegrate = true,
+            isSyncEnabled = true,
+            isVisible = true,
+            isNotificationsEnabled = false,
+            isPushEnabled = true,
+        )
+        stubGetFolders(accessor)
+        val testSubject = GetFolderIdsForTypeUseCase(messageStoreManager)
+
+        // Test
+        val folderList = testSubject.invoke(
+            accountUuid = accountId.value.toString(),
+            folderType = K9FolderType.REGULAR
+        )
+        assertThat(folderList).isNotEmpty()
+        assertThat(folderList.first()).isEqualTo(REGULAR_FOLDER_ID)
+    }
+
+    @Test
+    fun `GetFolderIdsForTypeUseCase should return no message ids if type does not match`() = runTest {
+        // Setup
+        val accessor = FakeFolderDetailsAccessor(
+            id = INBOX_FOLDER_ID,
+            name = "Inbox",
+            type = K9FolderType.INBOX,
+            isInTopGroup = true,
+            isIntegrate = true,
+            isSyncEnabled = true,
+            isVisible = true,
+            isNotificationsEnabled = false,
+            isPushEnabled = true,
+        )
+        stubGetFolders(accessor)
+        val testSubject = GetFolderIdsForTypeUseCase(messageStoreManager)
+
+        // Test
+        val folderList = testSubject.invoke(
+            accountUuid = accountId.value.toString(),
+            folderType = K9FolderType.REGULAR
+        )
+        assertThat(folderList).isNotEmpty()
+        assertThat(folderList.first()).isNull()
+    }
+
     private fun stubGetFolder(folderId: Long, accessor: FolderDetailsAccessor) {
         whenever(messageStore.getFolder<FolderDetails?>(eq(folderId), any())).thenAnswer { invocation ->
             val mapper = invocation.getArgument<FolderMapper<FolderDetails?>>(1)
             mapper.map(accessor)
+        }
+    }
+    private fun stubGetFolders(accessor: FolderDetailsAccessor) {
+        whenever(messageStore.getFolders<FolderDetails>(eq(true), any())).thenAnswer { invocation ->
+            val mapper = invocation.getArgument<FolderMapper<FolderDetails?>>(1)
+            listOf(mapper.map(accessor))
         }
     }
 }
@@ -399,7 +463,7 @@ private class FakeFolderDetailsAccessor(
     override val id: Long,
     override val name: String = "Folder",
     override val serverId: String? = "serverId",
-    override val type: com.fsck.k9.mail.FolderType = com.fsck.k9.mail.FolderType.REGULAR,
+    override val type: K9FolderType = K9FolderType.REGULAR,
     override val isLocalOnly: Boolean = false,
     override val isInTopGroup: Boolean = false,
     override val isIntegrate: Boolean = false,
