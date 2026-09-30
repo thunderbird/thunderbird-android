@@ -966,4 +966,7 @@
     <string name="account_settings_signature_clear_label">Limpar assinatura</string>
     <string name="sort_by_indicator">•</string>
     <string name="message_compose_encrypting_message">Criptografando mensagem…</string>
+    <string name="message_view_from_me_text">eu</string>
+    <string name="account_settings_signature_preview_empty">A prévia da sua assinatura aparecerá aqui</string>
+    <string name="error_no_contact_provider">Nenhum aplicativo de contatos foi encontrado. Instale um primeiro para adicionar este endereço.</string>
 </resources>

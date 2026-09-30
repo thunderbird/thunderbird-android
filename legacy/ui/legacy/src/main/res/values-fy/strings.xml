@@ -960,4 +960,6 @@
     <string name="account_settings_signature_clear_label">Undertekening wiskje</string>
     <string name="message_compose_encrypting_message">Berjocht fersiferje…</string>
     <string name="message_view_from_me_text">ik</string>
+    <string name="account_settings_signature_preview_empty">It foarbyld fan jo ûndertekening sil hjir ferskine</string>
+    <string name="error_no_contact_provider">Der is gjin kontakte-app fûn. Ynstallearje in kontakte-app om dit adres ta te foegjen.</string>
 </resources>

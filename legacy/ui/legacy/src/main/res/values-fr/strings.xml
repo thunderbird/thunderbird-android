@@ -964,4 +964,9 @@
     <string name="account_settings_signature_is_html_summary">Interprétez la signature en tant que code HTML. Les scripts et les gestionnaires d’événements seront supprimés par mesure de sécurité.</string>
     <string name="account_settings_signature_preview">Aperçu de la signature</string>
     <string name="sort_by_indicator">•</string>
+    <string name="message_view_from_me_text">moi</string>
+    <string name="account_settings_signature_clear_label">Effacer la signature</string>
+    <string name="error_no_contact_provider">Aucune application de contacts n’a été trouvée. Installez une application de contacts pour ajouter cette adresse.</string>
+    <string name="message_compose_encrypting_message">Chiffrement du message…</string>
+    <string name="account_settings_signature_preview_empty">Votre aperçu de la signature s’affichera ici</string>
 </resources>

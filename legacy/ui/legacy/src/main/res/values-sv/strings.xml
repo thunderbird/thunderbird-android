@@ -960,4 +960,6 @@
     <string name="sort_by_indicator">•</string>
     <string name="message_compose_encrypting_message">Krypterar meddelande…</string>
     <string name="message_view_from_me_text">mig</string>
+    <string name="account_settings_signature_preview_empty">Förhandsgranskningen av din signatur visas här</string>
+    <string name="error_no_contact_provider">Ingen kontaktapp hittades. Installera en kontaktapp för att lägga till den här adressen.</string>
 </resources>

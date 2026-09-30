@@ -973,4 +973,6 @@
     <string name="account_settings_signature_html_label">Podpis HTML</string>
     <string name="message_compose_encrypting_message">Szyfrowanie wiadomości…</string>
     <string name="message_view_from_me_text">mnie</string>
+    <string name="account_settings_signature_preview_empty">Tutaj pojawi się podgląd Twojego podpisu</string>
+    <string name="error_no_contact_provider">Nie znaleziono aplikacji kontaktów. Zainstaluj aplikację kontaktów, aby dodać ten adres.</string>
 </resources>
