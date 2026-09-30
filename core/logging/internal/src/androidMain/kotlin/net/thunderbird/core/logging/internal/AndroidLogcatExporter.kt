@@ -1,0 +1,28 @@
+package net.thunderbird.core.logging.internal
+
+import android.content.ContentResolver
+import android.net.Uri
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import net.thunderbird.core.logging.LogcatExporter
+import org.apache.commons.io.IOUtils
+
+internal class AndroidLogcatExporter(
+    private val contentResolver: ContentResolver,
+    private val processExecutor: ProcessExecutor,
+    private val coroutineDispatcher: CoroutineDispatcher = Dispatchers.IO,
+) : LogcatExporter {
+    override suspend fun export(contentUri: Uri) {
+        return withContext(coroutineDispatcher) {
+            val outputStream = contentResolver.openOutputStream(contentUri, "wt")
+                ?: error("Error opening contentUri for writing")
+
+            outputStream.use {
+                processExecutor.exec("logcat -d").use { inputStream ->
+                    IOUtils.copy(inputStream, outputStream)
+                }
+            }
+        }
+    }
+}

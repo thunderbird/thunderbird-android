@@ -36,14 +36,12 @@ kotlin {
             implementation(project.dependencies.platform(libs.kotlin.bom))
             implementation(project.dependencies.platform(libs.koin.bom))
             implementation(libs.bundles.shared.kmp.common)
-
-            if (rootProject.name != "components") {
-                implementation(libs.bundles.shared.tfa.components)
-            }
+            implementation(libs.bundles.shared.tmc.components)
         }
 
         commonTest.dependencies {
             implementation(libs.bundles.shared.kmp.common.test)
+            implementation(libs.bundles.shared.tmc.components.test)
         }
 
         androidMain.dependencies {

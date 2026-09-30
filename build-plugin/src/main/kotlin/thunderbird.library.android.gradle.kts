@@ -68,12 +68,10 @@ dependencies {
     implementation(platform(libs.koin.bom))
 
     implementation(libs.bundles.shared.android)
-
-    if (rootProject.name != "components") {
-        implementation(libs.bundles.shared.tfa.components)
-    }
+    implementation(libs.bundles.shared.tmc.components)
 
     testImplementation(libs.bundles.shared.android.test)
+    testImplementation(libs.bundles.shared.tmc.components.test)
 }
 
 tasks.register("testsOnCi") {
