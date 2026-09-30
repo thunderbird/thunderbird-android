@@ -14,8 +14,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import net.thunderbird.core.common.appConfig.PlatformConfigProvider
-import net.thunderbird.core.logging.Logger
-import net.thunderbird.core.logging.config.DebugLogConfigurator
+import net.thunderbird.components.core.logging.Logger
+import net.thunderbird.core.logging.DebugLogConfigurator
 import net.thunderbird.core.preference.GeneralSettings
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.PreferenceChangePublisher
@@ -31,6 +31,8 @@ import net.thunderbird.core.preference.network.NetworkSettingsPreferenceManager
 import net.thunderbird.core.preference.notification.NotificationPreferenceManager
 import net.thunderbird.core.preference.privacy.PrivacySettingsPreferenceManager
 import net.thunderbird.core.preference.storage.Storage
+
+private const val TAG = "DefaultGeneralSettingsManager"
 
 /**
  * Retrieve and modify general settings.
@@ -98,7 +100,7 @@ internal class DefaultGeneralSettingsManager(
             )
         }
         .combine(messageListPreferencesManager.getConfigFlow()) { generalSettings, messageListSettings ->
-            logger.debug { "messageListSettings: $messageListSettings" }
+            logger.debug(TAG) { "messageListSettings: $messageListSettings" }
             generalSettings.copy(
                 display = generalSettings.display.copy(
                     visualSettings = generalSettings.display.visualSettings.copy(
@@ -121,7 +123,6 @@ internal class DefaultGeneralSettingsManager(
             generalSettings.copy(
                 debugging = debuggingSettings,
             ).also {
-                debugLogConfigurator.updateLoggingStatus(debuggingSettings.isDebugLoggingEnabled)
                 debugLogConfigurator.updateSyncLogging(debuggingSettings.isSyncLoggingEnabled)
             }
         }

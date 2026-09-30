@@ -10,15 +10,17 @@ import rs.ltt.jmap.common.method.response.email.QueryEmailMethodResponse
 import rs.ltt.jmap.common.method.response.email.SetEmailMethodResponse
 import rs.ltt.jmap.common.util.Patches
 
+private const val TAG = "CommandSetFlag"
+
 class CommandSetFlag(
     private val jmapClient: JmapClient,
     private val accountId: String,
 ) {
     fun setFlag(messageServerIds: List<String>, flag: Flag, newState: Boolean) {
         if (newState) {
-            Log.v("Setting flag %s for messages %s", flag, messageServerIds)
+            Log.v(TAG, "Setting flag %s for messages %s", flag, messageServerIds)
         } else {
-            Log.v("Removing flag %s for messages %s", flag, messageServerIds)
+            Log.v(TAG, "Removing flag %s for messages %s", flag, messageServerIds)
         }
 
         val keyword = flag.toKeyword()
@@ -48,7 +50,7 @@ class CommandSetFlag(
     }
 
     fun markAllAsRead(folderServerId: String) {
-        Log.d("Marking all messages in %s as read", folderServerId)
+        Log.d(TAG, "Marking all messages in %s as read", folderServerId)
 
         val keywordsPatch = Patches.set("keywords/\$seen", true)
 
@@ -56,7 +58,7 @@ class CommandSetFlag(
         val limit = minOf(MAX_CHUNK_SIZE, session.maxObjectsInSet).toLong()
 
         do {
-            Log.v("Trying to mark up to %d messages in %s as read", limit, folderServerId)
+            Log.v(TAG, "Trying to mark up to %d messages in %s as read", limit, folderServerId)
 
             val queryEmailCall = jmapClient.call(
                 QueryEmailMethodCall.builder()
@@ -77,7 +79,7 @@ class CommandSetFlag(
             val totalNumberOfEmails = queryEmailResponse.total ?: error("Server didn't return property 'total'")
 
             if (numberOfReturnedEmails == 0) {
-                Log.v("There were no messages in %s to mark as read", folderServerId)
+                Log.v(TAG, "There were no messages in %s to mark as read", folderServerId)
             } else {
                 val updates = queryEmailResponse.ids.map { emailId ->
                     emailId to keywordsPatch
@@ -92,7 +94,7 @@ class CommandSetFlag(
 
                 setEmailCall.getMainResponseBlocking<SetEmailMethodResponse>()
 
-                Log.v("Marked %d messages in %s as read", numberOfReturnedEmails, folderServerId)
+                Log.v(TAG, "Marked %d messages in %s as read", numberOfReturnedEmails, folderServerId)
             }
         } while (totalNumberOfEmails > numberOfReturnedEmails)
     }

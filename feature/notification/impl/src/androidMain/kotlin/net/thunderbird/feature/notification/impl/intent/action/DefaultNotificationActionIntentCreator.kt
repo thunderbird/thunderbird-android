@@ -3,7 +3,7 @@ package net.thunderbird.feature.notification.impl.intent.action
 import android.app.PendingIntent
 import android.content.Context
 import androidx.core.app.PendingIntentCompat
-import net.thunderbird.core.logging.Logger
+import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.feature.notification.api.content.Notification
 import net.thunderbird.feature.notification.api.ui.action.NotificationAction
 

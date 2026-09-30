@@ -39,6 +39,8 @@ import org.openintents.openpgp.util.ParcelFileDescriptorUtil.DataSourceTransferT
 
 public class OpenPgpApi {
 
+    private static final String TAG = "OpenPgpApi";
+
     public static final String SERVICE_INTENT_2 = "org.openintents.openpgp.IOpenPgpService2";
 
     /**
@@ -451,7 +453,7 @@ public class OpenPgpApi {
             pumpThread.join();
             return new OpenPgpDataResult<>(result, pumpThread.getResult());
         } catch (Exception e) {
-            Log.e(e, "Exception in executeApi call");
+            Log.e(TAG, e, "Exception in executeApi call");
             Intent result = new Intent();
             result.putExtra(RESULT_CODE, RESULT_CODE_ERROR);
             result.putExtra(
@@ -490,7 +492,7 @@ public class OpenPgpApi {
 
             return result;
         } catch (Exception e) {
-            Log.e(e, "Exception in executeApi call");
+            Log.e(TAG, e, "Exception in executeApi call");
             Intent result = new Intent();
             result.putExtra(RESULT_CODE, RESULT_CODE_ERROR);
             result.putExtra(
@@ -577,7 +579,7 @@ public class OpenPgpApi {
 
             return result;
         } catch (Exception e) {
-            Log.e(e, "Exception in executeApi call");
+            Log.e(TAG, e, "Exception in executeApi call");
             Intent result = new Intent();
             result.putExtra(RESULT_CODE, RESULT_CODE_ERROR);
             result.putExtra(
@@ -608,7 +610,7 @@ public class OpenPgpApi {
 
             return result;
         } catch (Exception e) {
-            Log.e(e, "Exception in executeApi call");
+            Log.e(TAG, e, "Exception in executeApi call");
             Intent result = new Intent();
             result.putExtra(RESULT_CODE, RESULT_CODE_ERROR);
             result.putExtra(
@@ -627,7 +629,7 @@ public class OpenPgpApi {
             try {
                 input.close();
             } catch (IOException e) {
-                Log.e(e, "IOException when closing ParcelFileDescriptor!");
+                Log.e(TAG, e, "IOException when closing ParcelFileDescriptor!");
             }
         }
     }

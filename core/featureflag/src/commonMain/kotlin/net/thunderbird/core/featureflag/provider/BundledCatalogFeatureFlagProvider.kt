@@ -2,8 +2,8 @@ package net.thunderbird.core.featureflag.provider
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.core.featureflag.data.FeatureFlagCatalogDataSource
-import net.thunderbird.core.logging.Logger
 
 /**
  * [FeatureFlagProvider][BaseCatalogFeatureFlagProvider] backed by the bundled (offline) catalog.

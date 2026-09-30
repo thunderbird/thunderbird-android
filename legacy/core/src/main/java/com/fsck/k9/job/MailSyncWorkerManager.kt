@@ -11,11 +11,13 @@ import java.util.concurrent.TimeUnit
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 import net.thunderbird.core.android.account.LegacyAccountDto
-import net.thunderbird.core.logging.Logger
+import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.legacy.logging.Log
 import net.thunderbird.core.preference.BackgroundOps
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.feature.account.AccountId
+
+private const val TAG = "MailSyncWorkerManager"
 
 class MailSyncWorkerManager
 @OptIn(ExperimentalTime::class)
@@ -27,7 +29,7 @@ constructor(
 ) {
 
     fun cancelMailSync(account: LegacyAccountDto) {
-        Log.v("Canceling mail sync worker for %s", account)
+        Log.v(TAG, "Canceling mail sync worker for %s", account)
         val uniqueWorkName = createUniqueWorkName(account.id)
         workManager.cancelUniqueWork(uniqueWorkName)
     }
@@ -36,10 +38,10 @@ constructor(
         if (isNeverSyncInBackground()) return
 
         getSyncIntervalIfEnabled(account)?.let { syncIntervalMinutes ->
-            Log.v("Scheduling mail sync worker for %s", account)
-            Log.v("  sync interval: %d minutes", syncIntervalMinutes)
-            syncDebugLogger.info(null, null) { "Scheduling mail sync worker $account" }
-            syncDebugLogger.info(null, null) { "  sync interval: $syncIntervalMinutes minutes\"" }
+            Log.v(TAG, "Scheduling mail sync worker for %s", account)
+            Log.v(TAG, "  sync interval: %d minutes", syncIntervalMinutes)
+            syncDebugLogger.info(TAG, null) { "Scheduling mail sync worker $account" }
+            syncDebugLogger.info(TAG, null) { "  sync interval: $syncIntervalMinutes minutes\"" }
 
             val constraints = Constraints.Builder()
                 .setRequiredNetworkType(NetworkType.CONNECTED)
@@ -47,12 +49,12 @@ constructor(
                 .build()
 
             val lastSyncTime = account.lastSyncTime
-            Log.v("  last sync time: %tc", lastSyncTime)
-            syncDebugLogger.info(null, null) { "last sync time: $lastSyncTime" }
+            Log.v(TAG, "  last sync time: %tc", lastSyncTime)
+            syncDebugLogger.info(TAG, null) { "last sync time: $lastSyncTime" }
 
             val initialDelay = calculateInitialDelay(lastSyncTime, syncIntervalMinutes)
-            Log.v("  initial delay: %d ms", initialDelay)
-            syncDebugLogger.info(null, null) { "  initial delay: $initialDelay ms" }
+            Log.v(TAG, "  initial delay: %d ms", initialDelay)
+            syncDebugLogger.info(TAG, null) { "  initial delay: $initialDelay ms" }
 
             val data = workDataOf(MailSyncWorker.EXTRA_ACCOUNT_UUID to account.id.toString())
 

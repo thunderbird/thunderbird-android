@@ -98,6 +98,7 @@ androidx.datastore:datastore-preferences-external-protobuf:1.2.1
 androidx.datastore:datastore-preferences-proto:1.2.1
 androidx.datastore:datastore-preferences:1.2.1
 androidx.datastore:datastore:1.2.1
+androidx.documentfile:documentfile:1.1.0
 androidx.drawerlayout:drawerlayout:1.1.1
 androidx.dynamicanimation:dynamicanimation:1.1.0
 androidx.emoji2:emoji2-views-helper:1.4.0
@@ -239,7 +240,6 @@ com.google.guava:guava:33.3.1-android
 com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava
 com.google.j2objc:j2objc-annotations:3.0.0
 com.google.zxing:core:3.5.4
-com.jakewharton.timber:timber:5.0.1
 com.jcraft:jzlib:1.0.7
 com.mikepenz:fastadapter-extensions-drag:5.7.0
 com.mikepenz:fastadapter-extensions-expandable:5.7.0
@@ -269,6 +269,8 @@ io.coil-kt.coil3:coil-network-okhttp-android:3.4.0
 io.coil-kt.coil3:coil-network-okhttp:3.4.0
 io.coil-kt.coil3:coil-video:3.4.0
 io.coil-kt.coil3:coil:3.4.0
+io.github.vinceglb:filekit-core-android:0.14.2
+io.github.vinceglb:filekit-core:0.14.2
 io.insert-koin:koin-android:4.2.2
 io.insert-koin:koin-bom:4.2.2
 io.insert-koin:koin-compose-android:4.2.2
@@ -321,6 +323,10 @@ net.jcip:jcip-annotations:1.0
 net.openid:appauth:0.11.1
 net.thauvin.erik.urlencoder:urlencoder-lib-jvm:1.6.0
 net.thauvin.erik.urlencoder:urlencoder-lib:1.6.0
+net.thunderbird.components.core.logging:core-android:0.1.0-SNAPSHOT
+net.thunderbird.components.core.logging:core:0.1.0-SNAPSHOT
+net.thunderbird.components.core.logging:file-android:0.1.0-SNAPSHOT
+net.thunderbird.components.core.logging:file:0.1.0-SNAPSHOT
 net.thunderbird.components.core:outcome-android:0.1.0-SNAPSHOT
 net.thunderbird.components.core:outcome:0.1.0-SNAPSHOT
 org.apache.commons:commons-lang3:3.7

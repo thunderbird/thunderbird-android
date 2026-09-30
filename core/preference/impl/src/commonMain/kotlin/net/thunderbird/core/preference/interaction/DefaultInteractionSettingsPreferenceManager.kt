@@ -10,8 +10,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.core.common.action.SwipeActions
-import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.preference.PreferenceChangeBroker
 import net.thunderbird.core.preference.PreferenceChangeSubscriber
 import net.thunderbird.core.preference.PreferenceScope

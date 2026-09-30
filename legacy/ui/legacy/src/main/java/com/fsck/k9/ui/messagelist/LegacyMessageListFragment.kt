@@ -96,7 +96,7 @@ import net.thunderbird.core.common.mail.Flag
 import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.featureflag.FeatureFlagResult
 import net.thunderbird.core.featureflag.keys.GeneratedFeatureFlagKey
-import net.thunderbird.core.logging.Logger
+import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.components.core.outcome.Outcome
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.display.visualSettings.message.list.DisplayMessageListSettings

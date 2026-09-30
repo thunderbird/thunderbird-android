@@ -26,9 +26,9 @@ import net.openid.appauth.AuthState
 import net.openid.appauth.AuthorizationException
 import net.openid.appauth.AuthorizationResponse
 import net.openid.appauth.AuthorizationService
+import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.account.LegacyAccountDtoManager
-import net.thunderbird.core.logging.Logger
 
 private const val KEY_AUTHORIZATION = "app.k9mail_auth"
 private const val TAG = "AuthViewModel"

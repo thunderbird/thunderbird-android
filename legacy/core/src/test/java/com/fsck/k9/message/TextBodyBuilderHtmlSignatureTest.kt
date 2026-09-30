@@ -5,7 +5,7 @@ import assertk.assertions.contains
 import assertk.assertions.doesNotContain
 import com.fsck.k9.notification.FakePlatformConfigProvider
 import kotlinx.coroutines.flow.Flow
-import net.thunderbird.core.logging.testing.TestLogger
+import net.thunderbird.components.core.logging.testing.TestLogger
 import net.thunderbird.core.preference.GeneralSettings
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.feature.mail.message.composer.signature.HtmlSignatureSanitizer

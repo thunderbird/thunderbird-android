@@ -26,6 +26,8 @@ import net.thunderbird.feature.search.legacy.LocalMessageSearch
 import net.thunderbird.feature.search.legacy.SearchAccount
 import net.thunderbird.feature.search.legacy.SearchConditionTreeNode
 
+private const val TAG = "DefaultMessageCountsProvider"
+
 internal class DefaultMessageCountsProvider(
     private val accountManager: LegacyAccountDtoManager,
     private val messageStoreManager: MessageStoreManager,
@@ -71,7 +73,7 @@ internal class DefaultMessageCountsProvider(
                 messageStore.getUnreadMessageCount(folderId)
             }
         } catch (e: Exception) {
-            Log.e(e, "Unable to getUnreadMessageCount for account: %s, folder: %d", account, folderId)
+            Log.e(TAG, e, "Unable to getUnreadMessageCount for account: %s, folder: %d", account, folderId)
             0
         }
     }
@@ -104,7 +106,7 @@ internal class DefaultMessageCountsProvider(
                 starred = messageStore.getStarredMessageCount(conditions),
             )
         } catch (e: Exception) {
-            Log.e(e, "Unable to getMessageCounts for account: %s", account)
+            Log.e(TAG, e, "Unable to getMessageCounts for account: %s", account)
             MessageCounts(unread = 0, starred = 0)
         }
     }

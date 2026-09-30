@@ -35,6 +35,8 @@ import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.mail.folder.api.data.repository.PushFolderTrackingRepository
 import net.thunderbird.legacy.logging.Log
 
+private const val TAG = "PushController"
+
 /**
  * Starts and stops [AccountPushController]s as necessary. Manages the Push foreground service.
  */
@@ -87,7 +89,7 @@ class PushController internal constructor(
     }
 
     fun disablePush() {
-        Log.v("PushController.disablePush()")
+        Log.v(TAG, "PushController.disablePush()")
 
         coroutineScope.launch(coroutineDispatcher) {
             for (account in accountManager.getAccounts()) {
@@ -97,7 +99,7 @@ class PushController internal constructor(
     }
 
     private fun initInBackground() {
-        Log.v("PushController.initInBackground()")
+        Log.v(TAG, "PushController.initInBackground()")
 
         accountManager.addOnAccountsChangeListener(::onAccountsChanged)
         listenForBackgroundSyncChanges()
@@ -165,7 +167,7 @@ class PushController internal constructor(
 
     @Suppress("LongMethod", "CyclomaticComplexMethod")
     private suspend fun updatePushers() {
-        Log.v("PushController.updatePushers()")
+        Log.v(TAG, "PushController.updatePushers()")
 
         val generalSettings = generalSettingsManager.getSettings()
 
@@ -194,7 +196,7 @@ class PushController internal constructor(
             val stopPushAccountUuids = currentPushAccountUuids - pushAccountUuids
 
             if (stopPushAccountUuids.isNotEmpty()) {
-                Log.v("..Stopping PushController for accounts: %s", stopPushAccountUuids)
+                Log.v(TAG, "..Stopping PushController for accounts: %s", stopPushAccountUuids)
                 for (accountUuid in stopPushAccountUuids) {
                     val accountPushController = pushers.remove(accountUuid)
                     accountPushController?.stop()
@@ -202,7 +204,7 @@ class PushController internal constructor(
             }
 
             if (startPushAccountUuids.isNotEmpty()) {
-                Log.v("..Starting PushController for accounts: %s", startPushAccountUuids)
+                Log.v(TAG, "..Starting PushController for accounts: %s", startPushAccountUuids)
                 for (accountUuid in startPushAccountUuids) {
                     val accountId = AccountIdFactory.of(accountUuid)
                     pushers[accountUuid] =
@@ -212,7 +214,7 @@ class PushController internal constructor(
                 }
             }
 
-            Log.v("..Running PushControllers: %s", pushers.keys)
+            Log.v(TAG, "..Running PushControllers: %s", pushers.keys)
 
             pushers.isNotEmpty()
         }
@@ -319,7 +321,7 @@ class PushController internal constructor(
             while (iterator.hasNext()) {
                 val (accountId, collectorJob) = iterator.next()
                 if (accountId !in accountIds) {
-                    Log.v("..Stopping to listen for push enabled changes in account: %s", accountId)
+                    Log.v(TAG, "..Stopping to listen for push enabled changes in account: %s", accountId)
                     iterator.remove()
                     collectorJob.cancel()
                 }
@@ -329,7 +331,7 @@ class PushController internal constructor(
             val newAccounts = accounts.filterNot { account -> pushEnabledCollectorJobs.containsKey(account.id) }
             for (account in newAccounts) {
                 pushEnabledCollectorJobs[account.id] = coroutineScope.launch(coroutineDispatcher) {
-                    Log.v("..Starting to listen for push enabled changes in account: %s", account.id)
+                    Log.v(TAG, "..Starting to listen for push enabled changes in account: %s", account.id)
                     pushFolderTrackingRepository.observeEnabled(account.id)
                         .collect {
                             updatePushers()

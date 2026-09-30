@@ -1,6 +1,6 @@
 package net.thunderbird.feature.notification.impl.receiver
 
-import net.thunderbird.core.logging.Logger
+import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.feature.notification.api.NotificationId
 import net.thunderbird.feature.notification.api.NotificationRegistry
 import net.thunderbird.feature.notification.api.content.InAppNotification

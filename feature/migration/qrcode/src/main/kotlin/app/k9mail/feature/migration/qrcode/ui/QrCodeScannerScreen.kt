@@ -18,6 +18,8 @@ import net.thunderbird.core.ui.contract.mvi.observe
 import net.thunderbird.legacy.logging.Log
 import org.koin.compose.viewmodel.koinViewModel
 
+private const val TAG = "QrCodeScannerScreen"
+
 @Composable
 internal fun QrCodeScannerScreen(
     finishWithResult: (Uri) -> Unit,
@@ -58,7 +60,7 @@ private fun Context.goToAppInfoScreen() {
     try {
         startActivity(intent)
     } catch (e: ActivityNotFoundException) {
-        Log.e(e, "Error opening Android's app settings")
+        Log.e(TAG, e, "Error opening Android's app settings")
     }
 }
 

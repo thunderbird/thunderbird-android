@@ -3,12 +3,12 @@ package net.thunderbird.core.common.state.builder
 import kotlin.reflect.KClass
 import kotlin.time.Clock
 import kotlinx.coroutines.CoroutineScope
+import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.core.common.state.DefaultStateMachine
 import net.thunderbird.core.common.state.DefaultStateMachine.StateRegistry
 import net.thunderbird.core.common.state.StateMachine
 import net.thunderbird.core.common.state.StateMachine.Transition
 import net.thunderbird.core.common.state.TransactionKey
-import net.thunderbird.core.logging.Logger
 
 /**
  * A DSL builder for creating [StateMachine] instances.
@@ -32,7 +32,7 @@ class StateMachineBuilder<TState : Any, TEvent : Any> internal constructor(
     private var logTag: String? = null
     private var debuggerBuilder: StateMachineDebuggerBuilder<TState, TEvent>? = null
 
-    fun withLogger(logger: Logger, logTag: String? = null) {
+    fun withLogger(logger: Logger, logTag: String) {
         this.logger = logger
         this.logTag = logTag
     }

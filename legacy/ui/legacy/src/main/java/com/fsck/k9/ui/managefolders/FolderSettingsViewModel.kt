@@ -18,6 +18,8 @@ import net.thunderbird.feature.mail.folder.api.FolderDetails
 import net.thunderbird.feature.mail.folder.api.data.repository.FolderDetailsRepository
 import net.thunderbird.legacy.logging.Log
 
+private const val TAG = "FolderSettingsViewModel"
+
 private const val NO_FOLDER_ID = 0L
 
 class FolderSettingsViewModel(
@@ -49,7 +51,7 @@ class FolderSettingsViewModel(
             val account = loadAccount(accountUuid)
             val folderDetails = folderDetailsRepository.loadFolderDetails(account, folderId)
             if (folderDetails == null) {
-                Log.w("Folder with ID $folderId not found")
+                Log.w(TAG, "Folder with ID $folderId not found")
                 emit(FolderNotFound)
                 return@liveData
             }

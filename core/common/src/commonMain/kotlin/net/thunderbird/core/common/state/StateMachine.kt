@@ -13,10 +13,10 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.core.common.state.StateMachine.Transition
 import net.thunderbird.core.common.state.builder.StateMachineBuilderDsl
 import net.thunderbird.core.common.state.builder.StateMachineDebugger
-import net.thunderbird.core.logging.Logger
 
 internal typealias TransactionKey<TState, TEvent> = Pair<KClass<out TState>, KClass<out TEvent>>
 
@@ -218,17 +218,17 @@ internal class DefaultStateMachine<TState : Any, TEvent : Any>(
 
     private fun verbose(message: () -> String) {
         if (stateMachineDebugger != null) {
-            logger?.verbose(logTag, message = message)
+            logger?.verbose(requireNotNull(logTag), message = message)
         }
     }
 
     private fun debug(message: () -> String) {
         if (stateMachineDebugger != null) {
-            logger?.debug(logTag, message = message)
+            logger?.debug(requireNotNull(logTag), message = message)
         }
     }
 
     private fun info(message: () -> String) {
-        logger?.info(logTag, message = message)
+        logger?.info(requireNotNull(logTag), message = message)
     }
 }

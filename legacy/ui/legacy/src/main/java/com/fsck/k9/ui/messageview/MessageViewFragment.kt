@@ -84,7 +84,7 @@ import net.thunderbird.core.common.mail.Flag
 import net.thunderbird.core.common.provider.AppNameProvider
 import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.featureflag.keys.GeneratedFeatureFlagKey
-import net.thunderbird.core.logging.Logger
+import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.interaction.InteractionSettings
 import net.thunderbird.core.ui.contract.mvi.observe
@@ -106,6 +106,8 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.compose.koinInject
 import org.openintents.openpgp.util.OpenPgpIntentStarter
 import net.thunderbird.feature.mail.message.reader.api.R as MessageReaderR
+
+private const val TAG = "MessageViewFragment"
 
 @Suppress("LargeClass", "TooManyFunctions")
 class MessageViewFragment :
@@ -331,7 +333,7 @@ class MessageViewFragment :
     }
 
     private fun loadMessage(messageReference: MessageReference) {
-        Log.d("MessageViewFragment displaying message %s", messageReference)
+        Log.d(TAG, "MessageViewFragment displaying message %s", messageReference)
 
         account = accountManager.getById(messageReference.accountId)
             ?: error("Account ${messageReference.accountId} not found")
@@ -1225,7 +1227,7 @@ class MessageViewFragment :
                     maskedRequestCode,
                 )
             } catch (e: SendIntentException) {
-                Log.e(e, "Irrecoverable error calling PendingIntent!")
+                Log.e(TAG, e, "Irrecoverable error calling PendingIntent!")
             }
 
             return true

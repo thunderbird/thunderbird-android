@@ -5,7 +5,7 @@ import com.fsck.k9.mail.Body;
 import net.thunderbird.core.common.exception.MessagingException;
 import com.fsck.k9.mailstore.BinaryMemoryBody;
 import net.thunderbird.legacy.logging.Log;
-import net.thunderbird.core.logging.testing.TestLogger;
+import net.thunderbird.components.core.logging.testing.TestLogger;
 import org.apache.james.mime4j.util.MimeUtil;
 import org.junit.Before;
 import org.junit.Test;

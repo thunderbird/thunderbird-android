@@ -8,6 +8,8 @@ import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.common.mail.Protocols
 import net.thunderbird.legacy.logging.Log
 
+private const val TAG = "MigrationTo76"
+
 /**
  * Clean up special local folders
  *
@@ -30,17 +32,17 @@ internal class MigrationTo76(private val db: SQLiteDatabase, private val migrati
         val account = migrationsHelper.account
 
         if (account.isPop3()) {
-            Log.v("Cleaning up Drafts folder")
+            Log.v(TAG, "Cleaning up Drafts folder")
             val draftsFolderId = account.draftsFolderId ?: createFolder("Drafts", "Drafts", DRAFTS_FOLDER_TYPE)
             moveMessages(DRAFTS_FOLDER_TYPE, draftsFolderId)
             account.draftsFolderId = draftsFolderId
 
-            Log.v("Cleaning up Sent folder")
+            Log.v(TAG, "Cleaning up Sent folder")
             val sentFolderId = account.sentFolderId ?: createFolder("Sent", "Sent", SENT_FOLDER_TYPE)
             moveMessages(SENT_FOLDER_TYPE, sentFolderId)
             account.sentFolderId = sentFolderId
 
-            Log.v("Cleaning up Trash folder")
+            Log.v(TAG, "Cleaning up Trash folder")
             val trashFolderId = account.trashFolderId ?: createFolder("Trash", "Trash", TRASH_FOLDER_TYPE)
             moveMessages(TRASH_FOLDER_TYPE, trashFolderId)
             account.trashFolderId = trashFolderId
@@ -50,7 +52,7 @@ internal class MigrationTo76(private val db: SQLiteDatabase, private val migrati
     }
 
     private fun createFolder(name: String, serverId: String, type: String): Long {
-        Log.v("  Creating new local folder (name=$name, serverId=$serverId, type=$type)…")
+        Log.v(TAG, "  Creating new local folder (name=$name, serverId=$serverId, type=$type)…")
         val values = ContentValues().apply {
             put("name", name)
             put("visible_limit", 25)
@@ -65,7 +67,7 @@ internal class MigrationTo76(private val db: SQLiteDatabase, private val migrati
         }
 
         val folderId = db.insert("folders", null, values)
-        Log.v("    Created folder with ID $folderId")
+        Log.v(TAG, "    Created folder with ID $folderId")
 
         return folderId
     }
@@ -93,18 +95,18 @@ internal class MigrationTo76(private val db: SQLiteDatabase, private val migrati
     }
 
     private fun moveMessages(sourceFolderId: Long, destinationFolderId: Long) {
-        Log.v("  Moving messages from folder [$sourceFolderId] to folder [$destinationFolderId]…")
+        Log.v(TAG, "  Moving messages from folder [$sourceFolderId] to folder [$destinationFolderId]…")
 
         val values = ContentValues().apply {
             put("folder_id", destinationFolderId)
         }
         val rows = db.update("messages", values, "folder_id = ?", arrayOf(sourceFolderId.toString()))
 
-        Log.v("    $rows messages moved.")
+        Log.v(TAG, "    $rows messages moved.")
     }
 
     private fun deleteFolder(folderId: Long) {
-        Log.v("  Deleting folder [$folderId]")
+        Log.v(TAG, "  Deleting folder [$folderId]")
         db.delete("folders", "id = ?", arrayOf(folderId.toString()))
     }
 

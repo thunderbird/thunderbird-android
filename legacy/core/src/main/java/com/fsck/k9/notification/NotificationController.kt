@@ -6,6 +6,8 @@ import com.fsck.k9.mailstore.LocalMessage
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.legacy.logging.Log
 
+private const val TAG = "NotificationController"
+
 class NotificationController internal constructor(
     private val certificateErrorNotificationController: CertificateErrorNotificationController,
     private val authenticationErrorNotificationController: AuthenticationErrorNotificationController,
@@ -63,6 +65,7 @@ class NotificationController internal constructor(
 
     fun addNewMailNotification(account: LegacyAccountDto, message: LocalMessage, silent: Boolean) {
         Log.v(
+            TAG,
             "Creating notification for message %s:%s:%s",
             message.account.id,
             message.folder.databaseId,
@@ -73,7 +76,7 @@ class NotificationController internal constructor(
     }
 
     fun removeNewMailNotification(account: LegacyAccountDto, messageReference: MessageReference) {
-        Log.v("Removing notification for message %s", messageReference)
+        Log.v(TAG, "Removing notification for message %s", messageReference)
 
         newMailNotificationController.removeNewMailNotifications(account, clearNewMessageState = true) {
             listOf(messageReference)
@@ -84,13 +87,13 @@ class NotificationController internal constructor(
         account: LegacyAccountDto,
         selector: (List<MessageReference>) -> List<MessageReference>,
     ) {
-        Log.v("Removing some notifications for account %s", account.id)
+        Log.v(TAG, "Removing some notifications for account %s", account.id)
 
         newMailNotificationController.removeNewMailNotifications(account, clearNewMessageState = false, selector)
     }
 
     fun clearNewMailNotifications(account: LegacyAccountDto, clearNewMessageState: Boolean) {
-        Log.v("Removing all notifications for account %s", account.id)
+        Log.v(TAG, "Removing all notifications for account %s", account.id)
 
         newMailNotificationController.clearNewMailNotifications(account, clearNewMessageState)
     }

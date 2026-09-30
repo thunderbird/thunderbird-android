@@ -19,6 +19,8 @@ import com.fsck.k9.ui.R
 import com.fsck.k9.view.MessageWebView.OnPageFinishedListener
 import net.thunderbird.legacy.logging.Log
 
+private const val TAG = "K9WebViewClient"
+
 /**
  * [WebViewClient] that intercepts requests for `cid:` URIs to load the respective body part.
  */
@@ -72,7 +74,7 @@ class K9WebViewClient(
         try {
             context.startActivity(intent)
         } catch (e: ActivityNotFoundException) {
-            Log.d(e, "Couldn't open URL: %s", uri)
+            Log.d(TAG, e, "Couldn't open URL: %s", uri)
             Toast.makeText(context, R.string.error_activity_not_found, Toast.LENGTH_LONG).show()
         }
     }
@@ -102,7 +104,7 @@ class K9WebViewClient(
                 addCacheControlHeader()
             }
         } catch (e: Exception) {
-            Log.e(e, "Error while intercepting URI: %s", uri)
+            Log.e(TAG, e, "Error while intercepting URI: %s", uri)
             RESULT_DUMMY_RESPONSE
         }
     }
@@ -126,7 +128,7 @@ class K9WebViewClient(
     override fun onReceivedError(view: WebView, request: WebResourceRequest, error: WebResourceError) {
         super.onReceivedError(view, request, error)
         if (request.isForMainFrame) {
-            Log.d("Message WebView load error: %d %s for %s", error.errorCode, error.description, request.url)
+            Log.d(TAG, "Message WebView load error: %d %s for %s", error.errorCode, error.description, request.url)
         }
     }
 

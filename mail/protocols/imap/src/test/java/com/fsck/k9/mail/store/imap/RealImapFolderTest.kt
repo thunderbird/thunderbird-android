@@ -33,7 +33,7 @@ import java.util.TimeZone
 import kotlinx.coroutines.test.runTest
 import net.thunderbird.core.common.exception.MessagingException
 import net.thunderbird.core.common.mail.Flag
-import net.thunderbird.core.logging.testing.TestLogger
+import net.thunderbird.components.core.logging.testing.TestLogger
 import net.thunderbird.feature.mail.folder.api.FOLDER_DEFAULT_PATH_DELIMITER
 import net.thunderbird.feature.mail.folder.api.FolderPathDelimiter
 import net.thunderbird.legacy.logging.Log

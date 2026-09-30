@@ -40,6 +40,8 @@ import net.thunderbird.legacy.logging.Log
 import org.apache.commons.io.IOUtils
 import org.jetbrains.annotations.VisibleForTesting
 
+private const val TAG = "SmtpTransport"
+
 private const val SOCKET_SEND_MESSAGE_READ_TIMEOUT = 5 * 60 * 1000 // 5 minutes
 
 private const val SMTP_CONTINUE_REQUEST = 334
@@ -78,7 +80,7 @@ class SmtpTransport(
             get() = K9MailLib.isDebug()
 
         override fun log(throwable: Throwable?, message: String, vararg args: Any?) {
-            Log.v(throwable, message, *args)
+            Log.v(TAG, throwable, message, *args)
         }
     }
 
@@ -223,7 +225,7 @@ class SmtpTransport(
             connectException = try {
                 return connectToAddress(address)
             } catch (e: IOException) {
-                Log.w(e, "Could not connect to %s", address)
+                Log.w(TAG, e, "Could not connect to %s", address)
                 e
             }
         }
@@ -233,7 +235,7 @@ class SmtpTransport(
 
     private fun connectToAddress(address: InetAddress): Socket {
         if (K9MailLib.isDebug() && K9MailLib.DEBUG_PROTOCOL_SMTP) {
-            Log.d("Connecting to %s as %s", host, address)
+            Log.d(TAG, "Connecting to %s as %s", host, address)
         }
 
         val socketAddress = InetSocketAddress(address, port)
@@ -260,7 +262,7 @@ class SmtpTransport(
     private fun logResponse(smtpResponse: SmtpResponse, sensitive: Boolean = false) {
         if (K9MailLib.isDebug()) {
             val omitText = sensitive && !K9MailLib.isDebugSensitive()
-            Log.v("%s", smtpResponse.toLogString(omitText, linePrefix = "SMTP <<< "))
+            Log.v(TAG, "%s", smtpResponse.toLogString(omitText, linePrefix = "SMTP <<< "))
         }
     }
 
@@ -272,7 +274,7 @@ class SmtpTransport(
                 largestAcceptableMessage = size
             } else {
                 if (K9MailLib.isDebug() && K9MailLib.DEBUG_PROTOCOL_SMTP) {
-                    Log.d("SIZE parameter is not a valid integer: %s", sizeParameter)
+                    Log.d(TAG, "SIZE parameter is not a valid integer: %s", sizeParameter)
                 }
             }
         }
@@ -300,13 +302,13 @@ class SmtpTransport(
             helloResponse.keywords
         } else {
             if (K9MailLib.isDebug()) {
-                Log.v("Server doesn't support the EHLO command. Trying HELO...")
+                Log.v(TAG, "Server doesn't support the EHLO command. Trying HELO...")
             }
 
             try {
                 executeCommand("HELO %s", host)
             } catch (e: NegativeSmtpReplyException) {
-                Log.w("Server doesn't support the HELO command. Continuing anyway.")
+                Log.w(TAG, "Server doesn't support the HELO command. Continuing anyway.")
             }
 
             emptyMap()
@@ -415,7 +417,7 @@ class SmtpTransport(
 
     private fun ensureClosed() {
         if (inputStream != null || outputStream != null || socket != null || responseParser != null) {
-            Log.w(RuntimeException(), "SmtpTransport was open when it was expected to be closed")
+            Log.w(TAG, RuntimeException(), "SmtpTransport was open when it was expected to be closed")
             close()
         }
     }
@@ -448,7 +450,7 @@ class SmtpTransport(
             } else {
                 "SMTP >>> $command"
             }
-            Log.d(commandToLog)
+            Log.d(TAG, commandToLog)
         }
 
         // Important: Send command + CRLF using just one write() call. Using multiple calls might result in multiple
@@ -550,7 +552,7 @@ class SmtpTransport(
     }
 
     private fun saslOAuth(method: OAuthMethod) {
-        Log.d("saslOAuth() called with: method = $method")
+        Log.d(TAG, "saslOAuth() called with: method = $method")
         retryOAuthWithNewToken = true
         checkNotNull(oauthTokenProvider) { "No OAuth2TokenProvider available." }
 
@@ -565,7 +567,7 @@ class SmtpTransport(
         val negativeResponses = authenticateUsers(users, method)
 
         if (negativeResponses.isNotEmpty()) {
-            Log.w("failed to authenticate with all discovered users.")
+            Log.w(TAG, "failed to authenticate with all discovered users.")
             val (user, negativeResponse) = negativeResponses[username]?.let { username to it }
                 ?: negativeResponses.entries.first().toPair()
 
@@ -605,7 +607,7 @@ class SmtpTransport(
                 negativeResponses.clear()
                 break
             } catch (negativeResponse: NegativeSmtpReplyException) {
-                Log.w(negativeResponse, "saslOAuth: failed to authenticate.")
+                Log.w(TAG, negativeResponse, "saslOAuth: failed to authenticate.")
                 if (negativeResponse.replyCode != SMTP_AUTHENTICATION_FAILURE_ERROR_CODE) {
                     throw negativeResponse
                 }
@@ -634,7 +636,7 @@ class SmtpTransport(
     ) {
         // Token was invalid. We could avoid this double check if we had a reasonable chance of knowing if a token was
         // invalid before use (e.g. due to expiry). But we don't. This is the intended behaviour per AccountManager.
-        Log.v(negativeResponseFromOldToken, "Authentication exception, re-trying with new token")
+        Log.v(TAG, negativeResponseFromOldToken, "Authentication exception, re-trying with new token")
 
         try {
             attempOAuth(method, username)
@@ -644,7 +646,7 @@ class SmtpTransport(
             }
 
             // Okay, we failed on a new token. Invalidate the token anyway but assume it's permanent.
-            Log.v(negativeResponseFromNewToken, "Authentication exception for new token, permanent error assumed")
+            Log.v(TAG, negativeResponseFromNewToken, "Authentication exception for new token, permanent error assumed")
 
             oauthTokenProvider!!.invalidateToken()
             handlePermanentOAuthFailure(method, negativeResponseFromNewToken)
@@ -692,7 +694,7 @@ class SmtpTransport(
         try {
             open()
         } catch (e: Exception) {
-            Log.e(e, "Error while checking server settings")
+            Log.e(TAG, e, "Error while checking server settings")
             throw e
         } finally {
             close()

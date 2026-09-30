@@ -15,6 +15,8 @@ import net.thunderbird.legacy.logging.Log;
 
 
 public class IdentityHeaderBuilder {
+    private static final String TAG = "IdentityHeaderBuilder";
+
     private static final int MAX_LINE_LENGTH = 72;
     private static final int FIRST_LINE_EXTRA_LENGTH = K9.IDENTITY_HEADER.length() + 2;
 
@@ -103,7 +105,7 @@ public class IdentityHeaderBuilder {
         String k9identity = IdentityField.IDENTITY_VERSION_1 + uri.build().getEncodedQuery();
         String headerValue = foldHeaderValue(k9identity);
 
-        Log.d("Generated identity: %s", headerValue);
+        Log.d(TAG, "Generated identity: %s", headerValue);
         return headerValue;
     }
 

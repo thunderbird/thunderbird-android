@@ -10,9 +10,9 @@ import com.fsck.k9.activity.MessageHomeActivity
 import com.fsck.k9.ui.messagelist.DefaultFolderProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.components.core.outcome.fold
 import net.thunderbird.core.android.account.LegacyAccountDto
-import net.thunderbird.core.logging.Logger
 import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.mail.folder.api.data.repository.FolderQueryRepository
 import net.thunderbird.feature.search.legacy.LocalMessageSearch

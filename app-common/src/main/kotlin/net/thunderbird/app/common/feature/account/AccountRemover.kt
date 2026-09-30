@@ -8,11 +8,13 @@ import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.mailstore.LocalStoreProvider
 import com.fsck.k9.preferences.UnifiedInboxConfigurator
 import kotlinx.coroutines.runBlocking
+import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.LegacyAccountManager
-import net.thunderbird.core.logging.Logger
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.avatar.AvatarImageRepository
+
+private const val TAG = "AccountRemover"
 
 /**
  * Removes an account and all associated data.
@@ -33,11 +35,11 @@ class AccountRemover(
         val account = accountManager.getById(accountId)
         val legacyAccount = preferences.getById(accountId)
         if (account == null || legacyAccount == null) {
-            logger.warn { "Can't remove account with UUID $accountId because it doesn't exist." }
+            logger.warn(TAG) { "Can't remove account with UUID $accountId because it doesn't exist." }
             return
         }
 
-        logger.verbose { "Removing account '$accountId'…" }
+        logger.verbose(TAG) { "Removing account '$accountId'…" }
 
         removeAvatar(accountId)
         removeLocalStore(account)
@@ -50,7 +52,7 @@ class AccountRemover(
         Core.setServicesEnabled()
         unifiedInboxConfigurator.configureUnifiedInbox()
 
-        logger.verbose { "Finished removing account '$accountId'." }
+        logger.verbose(TAG) { "Finished removing account '$accountId'." }
     }
 
     @Suppress("TooGenericExceptionCaught")
@@ -59,7 +61,7 @@ class AccountRemover(
             try {
                 avatarImageRepository.delete(accountId)
             } catch (e: Exception) {
-                logger.error(throwable = e) { "Failed to remove avatar for account $accountId" }
+                logger.error(tag = TAG, throwable = e) { "Failed to remove avatar for account $accountId" }
             }
         }
     }
@@ -70,7 +72,7 @@ class AccountRemover(
             val localStore = localStoreProvider.getInstanceByLegacyAccount(account)
             localStore.delete()
         } catch (e: Exception) {
-            logger.error(throwable = e) { "Error removing message database for account $account" }
+            logger.error(tag = TAG, throwable = e) { "Error removing message database for account $account" }
         }
 
         localStoreProvider.removeInstance(account.id)
@@ -81,7 +83,7 @@ class AccountRemover(
         try {
             backendManager.removeBackend(accountId)
         } catch (e: Exception) {
-            logger.error(throwable = e) { "Failed to reset remote store for account $accountId" }
+            logger.error(tag = TAG, throwable = e) { "Failed to reset remote store for account $accountId" }
         }
     }
 
@@ -90,7 +92,7 @@ class AccountRemover(
         try {
             localKeyStoreManager.deleteCertificates(account)
         } catch (e: Exception) {
-            logger.error(throwable = e) { "Failed to remove certificates for account $account" }
+            logger.error(tag = TAG, throwable = e) { "Failed to remove certificates for account $account" }
         }
     }
 }

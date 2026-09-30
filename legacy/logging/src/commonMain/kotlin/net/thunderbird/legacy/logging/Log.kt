@@ -1,9 +1,11 @@
 package net.thunderbird.legacy.logging
 
 import androidx.annotation.Discouraged
-import net.thunderbird.core.logging.LogMessage
-import net.thunderbird.core.logging.LogTag
-import net.thunderbird.core.logging.Logger
+import net.thunderbird.components.core.logging.LogMessage
+import net.thunderbird.components.core.logging.LogTag
+import net.thunderbird.components.core.logging.Logger
+
+private const val TAG = "Log"
 
 /**
  * Legacy static facade over a [Logger].
@@ -15,19 +17,19 @@ import net.thunderbird.core.logging.Logger
  *
  * ```kotlin
  * import net.thunderbird.legacy.logging.Log
- * import net.thunderbird.core.logging.DefaultLogger // or any other Logger implementation
+ * import net.thunderbird.components.core.logging.DefaultLogger // or any other Logger implementation
  * fun main() {
  *     val sink: LogSink = // Your LogSink implementation
  *     val logger: Logger = DefaultLogger(sink)
  *
  *     Log.logger = logger
- *     Log.i("Application started")
+ *     Log.i(TAG, "Application started")
  *     // Your application code here
  *  }
  * ```
  */
 @Discouraged(
-    message = "Use a net.thunderbird.core.logging.Logger instance via dependency injection instead. " +
+    message = "Use a net.thunderbird.components.core.logging.Logger instance via dependency injection instead. " +
         "This class will be removed in a future release.",
 )
 @Suppress("TooManyFunctions")
@@ -36,7 +38,7 @@ object Log : Logger {
     lateinit var logger: Logger
 
     override fun verbose(
-        tag: LogTag?,
+        tag: LogTag,
         throwable: Throwable?,
         message: () -> LogMessage,
     ) {
@@ -48,7 +50,7 @@ object Log : Logger {
     }
 
     override fun debug(
-        tag: LogTag?,
+        tag: LogTag,
         throwable: Throwable?,
         message: () -> LogMessage,
     ) {
@@ -60,7 +62,7 @@ object Log : Logger {
     }
 
     override fun info(
-        tag: LogTag?,
+        tag: LogTag,
         throwable: Throwable?,
         message: () -> LogMessage,
     ) {
@@ -72,7 +74,7 @@ object Log : Logger {
     }
 
     override fun warn(
-        tag: LogTag?,
+        tag: LogTag,
         throwable: Throwable?,
         message: () -> LogMessage,
     ) {
@@ -84,7 +86,7 @@ object Log : Logger {
     }
 
     override fun error(
-        tag: LogTag?,
+        tag: LogTag,
         throwable: Throwable?,
         message: () -> LogMessage,
     ) {
@@ -98,53 +100,53 @@ object Log : Logger {
     // Legacy Logger implementation
 
     @JvmStatic
-    fun v(message: String?, vararg args: Any?) {
-        logger.verbose(message = { formatMessage(message, args) })
+    fun v(tag: String, message: String?, vararg args: Any?) {
+        logger.verbose(tag = tag, message = { formatMessage(message, args) })
     }
 
     @JvmStatic
-    fun v(t: Throwable?, message: String?, vararg args: Any?) {
-        logger.verbose(message = { formatMessage(message, args) }, throwable = t)
+    fun v(tag: String, t: Throwable?, message: String?, vararg args: Any?) {
+        logger.verbose(tag = tag, message = { formatMessage(message, args) }, throwable = t)
     }
 
     @JvmStatic
-    fun d(message: String?, vararg args: Any?) {
-        logger.debug(message = { formatMessage(message, args) })
+    fun d(tag: String, message: String?, vararg args: Any?) {
+        logger.debug(tag = tag, message = { formatMessage(message, args) })
     }
 
     @JvmStatic
-    fun d(t: Throwable?, message: String?, vararg args: Any?) {
-        logger.debug(message = { formatMessage(message, args) }, throwable = t)
+    fun d(tag: String, t: Throwable?, message: String?, vararg args: Any?) {
+        logger.debug(tag = tag, message = { formatMessage(message, args) }, throwable = t)
     }
 
     @JvmStatic
-    fun i(message: String?, vararg args: Any?) {
-        logger.info(message = { formatMessage(message, args) })
+    fun i(tag: String, message: String?, vararg args: Any?) {
+        logger.info(tag = tag, message = { formatMessage(message, args) })
     }
 
     @JvmStatic
-    fun i(t: Throwable?, message: String?, vararg args: Any?) {
-        logger.info(message = { formatMessage(message, args) }, throwable = t)
+    fun i(tag: String, t: Throwable?, message: String?, vararg args: Any?) {
+        logger.info(tag = tag, message = { formatMessage(message, args) }, throwable = t)
     }
 
     @JvmStatic
-    fun w(message: String?, vararg args: Any?) {
-        logger.warn(message = { formatMessage(message, args) })
+    fun w(tag: String, message: String?, vararg args: Any?) {
+        logger.warn(tag = tag, message = { formatMessage(message, args) })
     }
 
     @JvmStatic
-    fun w(t: Throwable?, message: String?, vararg args: Any?) {
-        logger.warn(message = { formatMessage(message, args) }, throwable = t)
+    fun w(tag: String, t: Throwable?, message: String?, vararg args: Any?) {
+        logger.warn(tag = tag, message = { formatMessage(message, args) }, throwable = t)
     }
 
     @JvmStatic
-    fun e(message: String?, vararg args: Any?) {
-        logger.error(message = { formatMessage(message, args) })
+    fun e(tag: String, message: String?, vararg args: Any?) {
+        logger.error(tag = tag, message = { formatMessage(message, args) })
     }
 
     @JvmStatic
-    fun e(t: Throwable?, message: String?, vararg args: Any?) {
-        logger.error(message = { formatMessage(message, args) }, throwable = t)
+    fun e(tag: String, t: Throwable?, message: String?, vararg args: Any?) {
+        logger.error(tag = tag, message = { formatMessage(message, args) }, throwable = t)
     }
 
     @Suppress("SpreadOperator", "TooGenericExceptionCaught")
