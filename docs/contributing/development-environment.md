@@ -144,7 +144,8 @@ See the [Android Studio Debugger Guide](https://developer.android.com/studio/deb
 
 ### Logging
 
-Use the project's core logging API `net.thunderbird.core.logging.Logger`, which is provided via dependency injection
+Use the [Thunderbird Mobile Components](../developer/thunderbird-mobile-components.md) logging API
+`net.thunderbird.components.core.logging.Logger`, which is provided via dependency injection
 (Koin). Avoid logging **personally identifiable information (PII)**.
 
 Example with DI (Koin):
