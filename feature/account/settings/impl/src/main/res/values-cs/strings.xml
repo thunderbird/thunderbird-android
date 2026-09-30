@@ -7,7 +7,7 @@
     <string name="account_settings_general_name_title">Název účtu</string>
     <string name="account_settings_general_name_description">Název spojený s vaším účtem.</string>
     <string name="account_settings_general_color_title">Barva účtu</string>
-    <string name="account_settings_general_color_description">Barva tohot účtu použitá ve složkách a seznamech účtů.</string>
+    <string name="account_settings_general_color_description">Barva tohoto účtu použitá ve složkách a seznamech účtů.</string>
     <string name="account_settings_general_avatar_title">Avatar</string>
     <string name="account_settings_general_avatar_description">Vyberte, jak bude zobrazen avatar vašeho účtu.</string>
     <string name="account_settings_general_name_error_empty">Název nemůže být prázdný</string>

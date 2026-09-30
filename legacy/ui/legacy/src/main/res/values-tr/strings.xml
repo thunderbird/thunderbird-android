@@ -959,4 +959,6 @@
     <string name="account_settings_signature_clear_label">İmzayı Temizle</string>
     <string name="message_compose_encrypting_message">İleti şifreleniyor…</string>
     <string name="message_view_from_me_text">ben</string>
+    <string name="account_settings_signature_preview_empty">İmzanızın ön izlemesi burada görünecek</string>
+    <string name="error_no_contact_provider">Kişiler uygulaması bulunamadı. Bu adresi eklemek için bir kişiler uygulaması kurun.</string>
 </resources>
