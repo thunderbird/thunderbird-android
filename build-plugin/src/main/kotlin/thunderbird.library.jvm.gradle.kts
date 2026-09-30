@@ -34,18 +34,16 @@ dependencies {
     implementation(platform(libs.koin.bom))
 
     implementation(libs.bundles.shared.jvm)
-
-    if (rootProject.name != "components") {
-        implementation(libs.bundles.shared.tfa.components)
-    }
+    implementation(libs.bundles.shared.tmc.components)
 
     testImplementation(libs.bundles.shared.jvm.test)
+    testImplementation(libs.bundles.shared.tmc.components.test)
 }
 
 tasks.register("testsOnCi") {
     dependsOn(
         tasks.withType<Test>().matching {
             it.name.contains("konsist").not()
-        }
+        },
     )
 }
