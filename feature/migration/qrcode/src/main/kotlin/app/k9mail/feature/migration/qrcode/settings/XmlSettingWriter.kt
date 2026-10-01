@@ -73,7 +73,7 @@ internal class XmlSettingWriter(
                         id = 0, // Unused in import file
                         name = "INBOX",
                         type = FolderType.INBOX, // Unused in import file
-                        isLocalOnly = false // Unused in import file
+                        isLocalOnly = false, // Unused in import file
                     ),
                     isInTopGroup = false,
                     isIntegrate = false,
@@ -81,7 +81,7 @@ internal class XmlSettingWriter(
                     isVisible = true,
                     isNotificationsEnabled = true,
                     isPushEnabled = true,
-                )
+                ),
             )
             writeFolders(folders)
         }
