@@ -18,6 +18,7 @@ dependencies {
 
     implementation(projects.core.common)
     implementation(projects.core.android.account)
+    implementation(projects.core.featureflag)
     implementation(projects.legacy.common)
     implementation(projects.legacy.logging)
     implementation(projects.legacy.ui.base)
