@@ -34,7 +34,7 @@ class RuntimeDebugOverrideFeatureFlagProvider(
     val data: StateFlow<FeatureFlagConfigData> = configStore
         .config
         .onEach { data ->
-            logger.verbose { "[feature-flag] runtime override data update: $data" }
+            logger.verbose { "$logPrefix runtime override data update: $data" }
             // Keeps flag evaluation in sync with the persisted overrides, so a toggle takes effect
             // without recreating the provider.
             resolvedFlags = data.overrides
@@ -56,7 +56,7 @@ class RuntimeDebugOverrideFeatureFlagProvider(
     /** Sets the override for [key] to [enabled] and persists it. */
     suspend fun setOverride(key: FeatureFlagKey, enabled: Boolean) {
         val key = key.key
-        logger.verbose { "[feature-flag] overriding '$key' with '$enabled' value" }
+        logger.verbose { "$logPrefix overriding '$key' with '$enabled' value" }
         configStore.safeUpdate { current: FeatureFlagConfigData ->
             current.copy(overrides = current.overrides + (key to enabled))
         }
@@ -65,7 +65,7 @@ class RuntimeDebugOverrideFeatureFlagProvider(
     /** Removes the override for [key] and persists the change. */
     suspend fun clearOverride(key: FeatureFlagKey) {
         val key = key.key
-        logger.verbose { "[feature-flag] clearing '$key' override" }
+        logger.verbose { "$logPrefix clearing '$key' override" }
         configStore.safeUpdate { current: FeatureFlagConfigData ->
             current.copy(overrides = current.overrides - key)
         }
@@ -73,7 +73,7 @@ class RuntimeDebugOverrideFeatureFlagProvider(
 
     /** Removes all overrides and persists the change. */
     suspend fun clearAllOverrides() {
-        logger.verbose { "[feature-flag] clearing all flag overrides" }
+        logger.verbose { "$logPrefix clearing all flag overrides" }
         // Only the overrides are dropped; clearing the whole store would also discard the
         // per-install targeting key used for rollout bucketing.
         configStore.safeUpdate { current: FeatureFlagConfigData ->

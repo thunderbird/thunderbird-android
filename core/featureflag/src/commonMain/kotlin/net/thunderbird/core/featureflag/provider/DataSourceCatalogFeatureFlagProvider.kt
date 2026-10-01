@@ -16,9 +16,9 @@ import net.thunderbird.core.logging.Logger
  * @param logger Logger instance for diagnostic and error messages.
  */
 abstract class DataSourceCatalogFeatureFlagProvider internal constructor(
-    private val dataSource: FeatureFlagCatalogDataSource,
+    protected val dataSource: FeatureFlagCatalogDataSource,
     providerName: String,
-    private val logger: Logger,
+    protected val logger: Logger,
 ) : BaseCatalogFeatureFlagProvider(providerName, logger) {
     /**
      * Initializes the feature flag provider with the given context and loads the catalog.
@@ -30,9 +30,9 @@ abstract class DataSourceCatalogFeatureFlagProvider internal constructor(
         try {
             catalog = loadCatalog()
             resolvedFlags = resolve(context)
-            logger.verbose { "[feature-flag] Resolved feature flags: $resolvedFlags" }
+            logger.verbose { "$logPrefix Resolved feature flags: $resolvedFlags" }
         } catch (e: IOException) {
-            logger.error(throwable = e) { "[feature-flag] Failed to load feature flag catalog." }
+            logger.error(throwable = e) { "$logPrefix Failed to load feature flag catalog." }
         }
     }
 
