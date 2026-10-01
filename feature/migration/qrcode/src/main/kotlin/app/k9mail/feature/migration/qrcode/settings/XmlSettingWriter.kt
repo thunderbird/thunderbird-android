@@ -8,6 +8,8 @@ import app.k9mail.feature.migration.qrcode.domain.entity.AccountData.OutgoingSer
 import app.k9mail.feature.migration.qrcode.domain.entity.AccountData.OutgoingServerGroup
 import java.io.OutputStream
 import net.thunderbird.core.android.account.DeletePolicy
+import net.thunderbird.core.featureflag.FeatureFlagProvider
+import net.thunderbird.core.featureflag.keys.GeneratedFeatureFlagKey
 import net.thunderbird.feature.mail.folder.FolderType
 import net.thunderbird.feature.mail.folder.api.Folder
 import net.thunderbird.feature.mail.folder.api.FolderDetails
@@ -18,6 +20,7 @@ import org.xmlpull.v1.XmlSerializer
 @Suppress("TooManyFunctions")
 internal class XmlSettingWriter(
     private val uuidGenerator: UuidGenerator,
+    private val featureFlagProvider: FeatureFlagProvider,
 ) {
     fun writeSettings(outputStream: OutputStream, accounts: List<Account>) {
         val serializer = Xml.newSerializer()
@@ -66,25 +69,28 @@ internal class XmlSettingWriter(
         writeOutgoingServers(account.outgoingServerGroups)
 
         // Only write a default inbox with push enabled on IMAP accounts
-        if (account.incomingServer.protocol.mapToSettingsString() == "IMAP") {
-            val folders = listOf(
-                FolderDetails(
-                    folder = Folder(
-                        id = 0, // Unused in import file
-                        name = "INBOX",
-                        type = FolderType.INBOX, // Unused in import file
-                        isLocalOnly = false, // Unused in import file
-                    ),
-                    isInTopGroup = false,
-                    isIntegrate = false,
-                    isSyncEnabled = true,
-                    isVisible = true,
-                    isNotificationsEnabled = true,
-                    isPushEnabled = true,
-                ),
-            )
-            writeFolders(folders)
-        }
+        featureFlagProvider.provide(GeneratedFeatureFlagKey.PUSH_ENABLED_ON_INBOX_BY_DEFAULT)
+            .onEnabled {
+                if (account.incomingServer.protocol.mapToSettingsString() == "IMAP") {
+                    val folders = listOf(
+                        FolderDetails(
+                            folder = Folder(
+                                id = 0, // Unused in import file
+                                name = "INBOX",
+                                type = FolderType.INBOX, // Unused in import file
+                                isLocalOnly = false, // Unused in import file
+                            ),
+                            isInTopGroup = false,
+                            isIntegrate = false,
+                            isSyncEnabled = true,
+                            isVisible = true,
+                            isNotificationsEnabled = true,
+                            isPushEnabled = true,
+                        ),
+                    )
+                    writeFolders(folders)
+                }
+            }
 
         endTag(null, ACCOUNT_ELEMENT)
     }
