@@ -9,6 +9,7 @@ import net.thunderbird.app.common.appConfig.AndroidPlatformConfigProvider
 import net.thunderbird.app.common.core.appCommonCoreModule
 import net.thunderbird.app.common.feature.appCommonFeatureModule
 import net.thunderbird.app.common.startup.appCommonStartupModule
+import net.thunderbird.app.composition.appCompositionModule
 import net.thunderbird.core.android.common.activity.ActivityProvider
 import net.thunderbird.core.common.appConfig.PlatformConfigProvider
 import org.koin.android.ext.koin.androidApplication
@@ -21,6 +22,7 @@ val appCommonModule: Module = module {
     includes(legacyUiModules)
 
     includes(
+        appCompositionModule,
         appCommonAccountModule,
         appCommonCoreModule,
         appCommonFeatureModule,
