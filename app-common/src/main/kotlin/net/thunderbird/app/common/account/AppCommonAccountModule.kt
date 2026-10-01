@@ -17,7 +17,6 @@ import net.thunderbird.feature.account.avatar.AvatarMonogramCreator
 import net.thunderbird.feature.account.avatar.DefaultAvatarIconCatalog
 import net.thunderbird.feature.account.avatar.DefaultAvatarMonogramCreator
 import net.thunderbird.feature.account.core.AccountCoreExternalContract.AccountProfileLocalDataSource
-import net.thunderbird.feature.account.core.featureAccountCoreModule
 import net.thunderbird.feature.account.storage.legacy.featureAccountStorageLegacyModule
 import net.thunderbird.feature.mail.account.api.AccountManager
 import org.koin.android.ext.koin.androidApplication
@@ -28,10 +27,7 @@ import org.koin.dsl.module
 import app.k9mail.core.ui.legacy.theme2.common.R as ThemeCommonR
 
 internal val appCommonAccountModule = module {
-    includes(
-        featureAccountCoreModule,
-        featureAccountStorageLegacyModule,
-    )
+    includes(featureAccountStorageLegacyModule)
 
     single<AccountManager<LegacyAccount>> {
         DefaultLegacyAccountManager(

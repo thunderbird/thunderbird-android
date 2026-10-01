@@ -31,9 +31,9 @@ Expose a repository contract from an `:api` module only when another area needs 
 contract, criteria, errors, and domain models in that module. Keep repository implementations, data sources, mappers,
 and storage models in the area's `:internal` module.
 
-Bind the contract to its implementation in `:app-common` or an app-specific composition module. Dependency injection
-then provides the implementation when a caller requests the contract, without exposing the implementation to that
-caller. This maintains the API/internal boundary defined by
+Bind shared KMP contracts to their implementations in `:app-composition`. Keep Android, legacy, and app-specific
+bindings in `:app-common` or an app module. Dependency injection then provides the implementation when a caller requests
+the contract, without exposing the implementation to that caller. This maintains the API/internal boundary defined by
 [ADR-0009](../engineering/adr/0009-api-internal-split.md).
 
 ## Scope and identifiers

@@ -35,7 +35,8 @@ For more details on how these artifacts work together, see the [Engineering](../
 The application is organized into several module types:
 
 - **📱 App Modules**: `app-thunderbird` and `app-k9mail` - Application entry points
-- **🔄 App Common**: `app-common` - Shared code between applications
+- **🧩 App Composition**: `app-composition` - Shared Kotlin Multiplatform application bindings
+- **🔄 App Common**: `app-common` - Android integration and legacy bridges
 - **✨ Feature Modules**: `feature:*` - Independent feature modules
 - **🧰 Core Modules**: `core:*` - Foundational components and utilities used across multiple features
 - **📚 Library Modules**: `library:*` - Specific implementations for reuse

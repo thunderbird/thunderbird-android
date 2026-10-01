@@ -82,6 +82,7 @@ include(
 
 include(
     ":app-common",
+    ":app-composition",
 )
 
 include(

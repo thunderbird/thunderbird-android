@@ -1,10 +1,10 @@
-package net.thunderbird.app.common.core.logging
+package net.thunderbird.app.composition.core.logging
 
-import android.content.Context
 import kotlin.time.ExperimentalTime
-import net.thunderbird.app.common.BuildConfig
+import net.thunderbird.core.common.appConfig.PlatformConfigProvider
 import net.thunderbird.core.common.inject.getList
 import net.thunderbird.core.common.inject.singleListOf
+import net.thunderbird.core.file.DirectoryProvider
 import net.thunderbird.core.logging.DefaultLogger
 import net.thunderbird.core.logging.LogLevel
 import net.thunderbird.core.logging.LogLevelManager
@@ -12,19 +12,18 @@ import net.thunderbird.core.logging.LogLevelProvider
 import net.thunderbird.core.logging.LogSink
 import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.logging.composite.CompositeLogSink
+import net.thunderbird.core.logging.config.InMemoryLogLevelManager
 import net.thunderbird.core.logging.console.ConsoleLogSink
 import net.thunderbird.core.logging.file.FileLogSink
 import org.koin.core.qualifier.named
 import org.koin.dsl.bind
 import org.koin.dsl.module
 
-val appCommonCoreLogger = module {
-    single<LogLevel> {
-        if (BuildConfig.DEBUG) LogLevel.VERBOSE else LogLevel.INFO
-    }
-
+internal val loggingCompositionModule = module {
     single<LogLevelManager> {
-        DefaultLogLevelManager()
+        val defaultLevel = if (get<PlatformConfigProvider>().isDebug) LogLevel.VERBOSE else LogLevel.INFO
+
+        InMemoryLogLevelManager(defaultLevel)
     }.bind<LogLevelProvider>()
 
     singleListOf<LogSink>(
@@ -45,7 +44,6 @@ val appCommonCoreLogger = module {
         )
     }
 
-    // Setup for sync debug logger
     // Define this list lazily to avoid eager initialization at app startup
     single<List<LogSink>>(qualifier = named(SYNC_DEBUG_LOG), createdAtStart = false) {
         listOf(get<FileLogSink>(named(SYNC_DEBUG_LOG)))
@@ -62,7 +60,7 @@ val appCommonCoreLogger = module {
         FileLogSink(
             level = LogLevel.DEBUG,
             fileName = "thunderbird-sync-debug",
-            fileLocation = get<Context>().filesDir.path,
+            fileLocation = requireNotNull(get<DirectoryProvider>().getFilesDir().path),
             fileManager = get(),
         )
     }
@@ -75,4 +73,4 @@ val appCommonCoreLogger = module {
     }
 }
 
-internal const val SYNC_DEBUG_LOG = "syncDebug"
+private const val SYNC_DEBUG_LOG = "syncDebug"
