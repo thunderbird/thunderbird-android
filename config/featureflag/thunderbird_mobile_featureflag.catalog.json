@@ -1,6 +1,6 @@
 {
   "$schema": "thunderbird_mobile_featureflag.schema.json",
-  "version": "2026-09-10.1",
+  "version": "2026-10-01.1",
   "flags": [
     {
       "key": "archive_marks_as_read",
@@ -80,7 +80,8 @@
       },
       "daily": {
         "display_in_app_notifications": true,
-        "message_view_action_export_eml": true
+        "message_view_action_export_eml": true,
+        "push_enabled_on_inbox_by_default": true
       },
       "beta": {
         "display_in_app_notifications": true
