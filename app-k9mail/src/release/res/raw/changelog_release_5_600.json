@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "version": "5.600",
+  "versioncode": 26000,
+  "date": "2018-09-02",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Allow some outdated HTML attributes so emails from popular internet services are displayed as intended",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed bug when moving or copying message (IMAP)",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

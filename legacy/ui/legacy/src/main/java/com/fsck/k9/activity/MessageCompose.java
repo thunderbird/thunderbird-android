@@ -141,7 +141,7 @@ import net.thunderbird.core.android.account.MessageFormat;
 import net.thunderbird.core.android.contact.ContactIntentHelper;
 import net.thunderbird.core.featureflag.FeatureFlagProvider;
 import net.thunderbird.core.featureflag.keys.GeneratedFeatureFlagKey;
-import net.thunderbird.core.outcome.OutcomeKt;
+import net.thunderbird.components.core.outcome.OutcomeKt;
 import net.thunderbird.core.preference.GeneralSettingsManager;
 import net.thunderbird.core.ui.theme.manager.ThemeManager;
 import net.thunderbird.feature.mail.message.composer.dialog.SentFolderNotFoundConfirmationDialogFragmentFactory;
@@ -208,6 +208,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
             "com.fsck.k9.activity.MessageCompose.activeInAppNotifications";
 
     private static final String FRAGMENT_WAITING_FOR_ATTACHMENT = "waitingForAttachment";
+    private static final String FRAGMENT_ENCRYPTING_MESSAGE = "encryptingMessage";
 
     private static final int MSG_PROGRESS_ON = 1;
     private static final int MSG_PROGRESS_OFF = 2;
@@ -278,6 +279,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
      * have already been added from the restore of the view state.
      */
     private boolean relatedMessageProcessed = false;
+    private MessageLoaderCallbacks messageLoaderCallbacks;
     private MessageViewInfo currentMessageViewInfo;
 
     private RecipientPresenter recipientPresenter;
@@ -369,7 +371,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
         replyToPresenter = new ReplyToPresenter(replyToView);
 
         RecipientMvpView recipientMvpView = new RecipientMvpView(this);
-        MessageLoaderCallbacks messageLoaderCallbacks = new MessageComposeMessageLoaderCallback(recipientMvpView);
+        messageLoaderCallbacks = new MessageComposeMessageLoaderCallback(recipientMvpView);
         ComposePgpInlineDecider composePgpInlineDecider = new ComposePgpInlineDecider();
         ComposePgpEnableByDefaultDecider composePgpEnableByDefaultDecider = new ComposePgpEnableByDefaultDecider();
 
@@ -873,7 +875,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
             return;
         }
 
-        if (attachmentPresenter.checkOkForSendingOrDraftSaving()) {
+        if (attachmentPresenter.checkOkForSendingOrDraftSaving(WaitingAction.SEND)) {
             return;
         }
 
@@ -886,7 +888,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
             return;
         }
 
-        if (attachmentPresenter.checkOkForSendingOrDraftSaving()) {
+        if (attachmentPresenter.checkOkForSendingOrDraftSaving(WaitingAction.SAVE)) {
             return;
         }
 
@@ -900,6 +902,11 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
         }
 
         if (!changesMadeSinceLastSave) {
+            return;
+        }
+
+        if (attachmentPresenter.hasMissingDraftParts()) {
+            // Saving now would remove the parts that were not downloaded from the server.
             return;
         }
 
@@ -935,7 +942,34 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
             sendMessageHasBeenTriggered = true;
             changesMadeSinceLastSave = false;
             setProgressBarIndeterminateVisibility(true);
+            showEncryptedMessageProgressIndicatorIfNeeded();
             currentMessageBuilder.buildAsync(this);
+        }
+    }
+
+    private void showEncryptedMessageProgressIndicatorIfNeeded() {
+        ComposeCryptoStatus cryptoStatus = recipientPresenter.getCurrentCachedCryptoStatus();
+        boolean hasAttachments = !attachmentPresenter.getAttachments().isEmpty();
+        if (cryptoStatus == null || !cryptoStatus.isEncryptionEnabled() || !hasAttachments) {
+            return;
+        }
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        if (fragmentManager.findFragmentByTag(FRAGMENT_ENCRYPTING_MESSAGE) != null) {
+            return;
+        }
+
+        ProgressDialogFragment fragment = ProgressDialogFragment.Companion.newInstance(
+                getString(R.string.fetching_attachment_dialog_title_send),
+                getString(R.string.message_compose_encrypting_message));
+        fragment.setCancelable(false);
+        fragment.show(fragmentManager, FRAGMENT_ENCRYPTING_MESSAGE);
+    }
+
+    private void dismissEncryptedMessageProgressIndicator() {
+        Fragment fragment = getSupportFragmentManager().findFragmentByTag(FRAGMENT_ENCRYPTING_MESSAGE);
+        if (fragment instanceof ProgressDialogFragment) {
+            ((ProgressDialogFragment) fragment).dismiss();
         }
     }
 
@@ -991,6 +1025,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
                             "this is an illegal state!");
                     return;
                 }
+                showEncryptedMessageProgressIndicatorIfNeeded();
                 currentMessageBuilder.onActivityResult(requestCode, resultCode, data, this);
                 return;
             }
@@ -1605,7 +1640,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
         }
 
         if (!relatedMessageProcessed) {
-            attachmentPresenter.loadAllAvailableAttachments(messageViewInfo);
+            attachmentPresenter.processDraftMessage(messageViewInfo);
         }
 
         // Decode the identity header when loading a draft.
@@ -1813,6 +1848,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
 
     @Override
     public void onMessageBuildSuccess(MimeMessage message, boolean isDraft) {
+        dismissEncryptedMessageProgressIndicator();
         String plaintextSubject =
                 (currentMessageBuilder instanceof PgpMessageBuilder) ? currentMessageBuilder.getSubject() : null;
 
@@ -1837,6 +1873,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
 
     @Override
     public void onMessageBuildCancel() {
+        dismissEncryptedMessageProgressIndicator();
         sendMessageHasBeenTriggered = false;
         currentMessageBuilder = null;
         setProgressBarIndeterminateVisibility(false);
@@ -1844,6 +1881,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
 
     @Override
     public void onMessageBuildException(MessagingException me) {
+        dismissEncryptedMessageProgressIndicator();
         Log.e(me, "Error sending message");
         Toast.makeText(MessageCompose.this,
                 getString(R.string.send_failed_reason, me.getLocalizedMessage()), Toast.LENGTH_LONG).show();
@@ -1854,6 +1892,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
 
     @Override
     public void onMessageBuildReturnPendingIntent(PendingIntent pendingIntent, int requestCode) {
+        dismissEncryptedMessageProgressIndicator();
         requestCode |= REQUEST_MASK_MESSAGE_BUILDER;
         try {
             OpenPgpIntentStarter.startIntentSenderForResult(this, pendingIntent.getIntentSender(), requestCode);
@@ -1914,7 +1953,15 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
         @Override
         public void onMessageViewInfoLoadFinished(MessageViewInfo messageViewInfo) {
             internalMessageHandler.sendEmptyMessage(MSG_PROGRESS_OFF);
-            loadLocalMessageForDisplay(messageViewInfo, action);
+
+            // When a draft was incomplete, the attachment presenter asked for the complete message and we end up
+            // here a second time. The draft is already in the editor, and loadLocalMessageForDisplay() would add it
+            // once more as quoted text. So only the attachments that just arrived are picked up.
+            if (relatedMessageProcessed && action == Action.EDIT_DRAFT) {
+                attachmentPresenter.processDraftMessage(messageViewInfo);
+            } else {
+                loadLocalMessageForDisplay(messageViewInfo, action);
+            }
 
             if(!recipientPresenter.isToAddressAdded()) {
                 recipientMvpView.requestFocusOnToField();
@@ -1953,7 +2000,9 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
+                    internalMessageHandler.sendEmptyMessage(MSG_PROGRESS_OFF);
                     Toast.makeText(MessageCompose.this, R.string.status_invalid_id_error, Toast.LENGTH_LONG).show();
+                    attachmentPresenter.onCompleteMessageDownloadFailed();
                 }
             });
         }
@@ -1963,7 +2012,9 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
+                    internalMessageHandler.sendEmptyMessage(MSG_PROGRESS_OFF);
                     Toast.makeText(MessageCompose.this, R.string.status_network_error, Toast.LENGTH_LONG).show();
+                    attachmentPresenter.onCompleteMessageDownloadFailed();
                 }
             });
         }
@@ -2172,6 +2223,23 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
         public void showMissingAttachmentsPartialMessageForwardWarning() {
             Toast.makeText(MessageCompose.this,
                     getString(R.string.message_compose_attachments_forward_toast), Toast.LENGTH_LONG).show();
+        }
+
+        @Override
+        public void downloadCompleteMessage() {
+            if (messageLoaderHelper == null) {
+                if (relatedMessageReference == null) {
+                    return;
+                }
+
+                // After a configuration change the draft is already processed, so onCreate() created no loader.
+                messageLoaderHelper = messageLoaderHelperFactory.createForMessageCompose(MessageCompose.this,
+                        getSupportLoaderManager(), getSupportFragmentManager(), messageLoaderCallbacks);
+                messageLoaderHelper.asyncStartOrResumeLoadingMessage(relatedMessageReference, null);
+            }
+
+            internalMessageHandler.sendEmptyMessage(MSG_PROGRESS_ON);
+            messageLoaderHelper.downloadCompleteMessage();
         }
     };
 

@@ -1,20 +1,24 @@
 package com.fsck.k9.mailstore
 
-import app.k9mail.legacy.mailstore.FolderRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import net.thunderbird.components.core.outcome.handleAsync
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.core.common.mail.Protocols
+import net.thunderbird.core.logging.Logger
 import net.thunderbird.feature.account.AccountId
-import net.thunderbird.feature.mail.folder.api.FolderType
+import net.thunderbird.feature.mail.folder.FolderType
 import net.thunderbird.feature.mail.folder.api.RemoteFolder
 import net.thunderbird.feature.mail.folder.api.SpecialFolderSelection
 import net.thunderbird.feature.mail.folder.api.SpecialFolderUpdater
+import net.thunderbird.feature.mail.folder.api.data.repository.FolderDetailsRepository
+import net.thunderbird.feature.mail.folder.api.data.repository.PartialUpdatableFolderDetails
+import net.thunderbird.feature.mail.folder.api.data.repository.RemoteFolderQueryRepository
 
 /**
  * Updates special folders in [LegacyAccountDto] if they are marked as [SpecialFolderSelection.AUTOMATIC] or if they
@@ -24,10 +28,12 @@ import net.thunderbird.feature.mail.folder.api.SpecialFolderUpdater
 @Suppress("TooManyFunctions")
 class DefaultSpecialFolderUpdater(
     private val accountManager: LegacyAccountManager,
-    private val folderRepository: FolderRepository,
+    private val remoteFolderQueryRepository: RemoteFolderQueryRepository,
+    private val folderDetailsRepository: FolderDetailsRepository,
     private val specialFolderSelectionStrategy: SpecialFolderSelectionStrategy,
     private val accountId: AccountId,
     private val coroutineScope: CoroutineScope,
+    private val logger: Logger,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : SpecialFolderUpdater {
 
@@ -43,26 +49,35 @@ class DefaultSpecialFolderUpdater(
         }
     }
 
-    private fun updateSpecialFoldersSynchronous() {
+    private suspend fun updateSpecialFoldersSynchronous() {
         var account: LegacyAccount = getAccountById(accountId)
-        val folders = folderRepository.getRemoteFolders(accountId)
+        remoteFolderQueryRepository.getAllByAccountId(accountId).handleAsync(
+            onSuccess = { folders ->
+                account = updateInbox(account, folders)
 
-        account = updateInbox(account, folders)
+                if (!account.isPop3()) {
+                    account = updateSpecialFolderSynchronous(account, FolderType.ARCHIVE, folders)
+                    account = updateSpecialFolderSynchronous(account, FolderType.DRAFTS, folders)
+                    account = updateSpecialFolderSynchronous(account, FolderType.SENT, folders)
+                    account = updateSpecialFolderSynchronous(account, FolderType.SPAM, folders)
+                    account = updateSpecialFolderSynchronous(account, FolderType.TRASH, folders)
+                }
 
-        if (!account.isPop3()) {
-            account = updateSpecialFolderSynchronous(account, FolderType.ARCHIVE, folders)
-            account = updateSpecialFolderSynchronous(account, FolderType.DRAFTS, folders)
-            account = updateSpecialFolderSynchronous(account, FolderType.SENT, folders)
-            account = updateSpecialFolderSynchronous(account, FolderType.SPAM, folders)
-            account = updateSpecialFolderSynchronous(account, FolderType.TRASH, folders)
-        }
+                account = removeImportedSpecialFoldersData(account)
 
-        account = removeImportedSpecialFoldersData(account)
-
-        updateAccount(account)
+                updateAccount(account)
+            },
+            onFailure = { error ->
+                logger.error { "Failed to update special folders. Folder error: $error" }
+                when (val throwable = error.throwable) {
+                    null -> error("Unknown error while loading folders. Error: $error")
+                    else -> throw throwable
+                }
+            },
+        )
     }
 
-    private fun updateInbox(account: LegacyAccount, folders: List<RemoteFolder>): LegacyAccount {
+    private suspend fun updateInbox(account: LegacyAccount, folders: List<RemoteFolder>): LegacyAccount {
         val oldInboxId = account.inboxFolderId
         val newInboxId = folders.firstOrNull { it.type == FolderType.INBOX }?.id
         if (newInboxId == oldInboxId) return account
@@ -70,20 +85,28 @@ class DefaultSpecialFolderUpdater(
         val updated = account.copy(inboxFolderId = newInboxId)
 
         if (oldInboxId != null && folders.any { it.id == oldInboxId }) {
-            folderRepository.setIncludeInUnifiedInbox(accountId, oldInboxId, false)
+            val partialUpdate = PartialUpdatableFolderDetails(
+                folderId = oldInboxId,
+                includeInUnifiedInbox = false,
+            )
+            folderDetailsRepository.update(accountId, partialUpdate)
         }
 
         if (newInboxId != null) {
-            folderRepository.setIncludeInUnifiedInbox(accountId, newInboxId, true)
-            folderRepository.setVisible(accountId, newInboxId, true)
-            folderRepository.setSyncEnabled(accountId, newInboxId, true)
-            folderRepository.setNotificationsEnabled(accountId, newInboxId, true)
+            val partialUpdate = PartialUpdatableFolderDetails(
+                folderId = newInboxId,
+                includeInUnifiedInbox = true,
+                visible = true,
+                syncEnabled = true,
+                notificationsEnabled = true,
+            )
+            folderDetailsRepository.update(accountId, partialUpdate)
         }
 
         return updated
     }
 
-    private fun updateSpecialFolderSynchronous(
+    private suspend fun updateSpecialFolderSynchronous(
         account: LegacyAccount,
         type: FolderType,
         folders: List<RemoteFolder>,
@@ -150,7 +173,7 @@ class DefaultSpecialFolderUpdater(
         }
     }
 
-    private fun setSpecialFolderSynchronous(
+    private suspend fun setSpecialFolderSynchronous(
         account: LegacyAccount,
         type: FolderType,
         folderId: Long?,
@@ -198,7 +221,8 @@ class DefaultSpecialFolderUpdater(
         }
 
         if (folderId != null) {
-            folderRepository.setVisible(accountId, folderId, true)
+            val partialUpdate = PartialUpdatableFolderDetails(folderId = folderId, visible = true)
+            folderDetailsRepository.update(accountId, partialUpdate)
         }
 
         return updatedAccount
@@ -224,17 +248,21 @@ class DefaultSpecialFolderUpdater(
 
     class Factory(
         private val accountManager: LegacyAccountManager,
-        private val folderRepository: FolderRepository,
+        private val remoteFolderQueryRepository: RemoteFolderQueryRepository,
+        private val folderDetailsRepository: FolderDetailsRepository,
         private val specialFolderSelectionStrategy: SpecialFolderSelectionStrategy,
         private val coroutineScope: CoroutineScope,
+        private val logger: Logger,
         private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
     ) : SpecialFolderUpdater.Factory {
         override fun create(accountId: AccountId): SpecialFolderUpdater = DefaultSpecialFolderUpdater(
             accountManager = accountManager,
-            folderRepository = folderRepository,
+            remoteFolderQueryRepository = remoteFolderQueryRepository,
+            folderDetailsRepository = folderDetailsRepository,
             specialFolderSelectionStrategy = specialFolderSelectionStrategy,
             accountId = accountId,
             coroutineScope = coroutineScope,
+            logger = logger,
             ioDispatcher = ioDispatcher,
         )
     }

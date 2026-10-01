@@ -4,9 +4,9 @@ import com.fsck.k9.K9
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import net.thunderbird.components.core.outcome.Outcome
 import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.core.logging.Logger
-import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.mail.message.list.domain.DomainContract.UseCase.UpdateSortCriteria
 import net.thunderbird.feature.mail.message.list.domain.UpdateSortCriteriaOutcome

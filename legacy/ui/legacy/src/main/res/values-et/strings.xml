@@ -173,7 +173,7 @@
     <!--Displayed in the message view screen in front of the number of additional recipients (the ones that are not displayed).-->
     <string name="message_view_additional_recipient_prefix">+</string>
     <!--Displayed in the message view screen if the message was addressed to the user. Make sure this works with 'message_view_recipient_prefix'. In English it's "to me".-->
-    <string name="message_view_me_text">mina</string>
+    <string name="message_view_to_me_text">mina</string>
     <!--Text of the button that is displayed below the message header when the message body references one or more remote images-->
     <string name="message_view_show_remote_images_action">Näita kirjavälist sisu</string>
     <string name="message_view_no_viewer">Ei leia <xliff:g id="mimetype">%s</xliff:g> kuvamiseks programmi.</string>
@@ -958,4 +958,8 @@
     <string name="account_settings_signature_is_html_summary">Tõlgenda allkirja sisu HTML-ina. Skriptid ja interaktiivne sisu eemaldatakse turvalisuse nimel.</string>
     <string name="account_settings_signature_preview">Allkirja eelvaade</string>
     <string name="account_settings_signature_clear_label">Eemalda allkiri</string>
+    <string name="message_compose_encrypting_message">Krüptin e-kirja…</string>
+    <string name="message_view_from_me_text">mina</string>
+    <string name="account_settings_signature_preview_empty">Sinu allkirja eelvaade saab olema nähtav siin</string>
+    <string name="error_no_contact_provider">Ühtegi kontaktide haldusrakendust ei leidunud. Selle aadressi lisamiseks paigalda mõni vastav rakendus.</string>
 </resources>

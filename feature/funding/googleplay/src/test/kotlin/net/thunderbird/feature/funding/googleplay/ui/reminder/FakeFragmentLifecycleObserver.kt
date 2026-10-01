@@ -1,6 +1,7 @@
 package net.thunderbird.feature.funding.googleplay.ui.reminder
 
 import androidx.fragment.app.FragmentManager
+import net.thunderbird.feature.funding.common.api.FundingReminderContract
 
 class FakeFragmentLifecycleObserver(
     var isRegistered: Boolean = false,

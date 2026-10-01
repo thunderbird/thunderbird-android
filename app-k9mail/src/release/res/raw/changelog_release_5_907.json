@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "version": "5.907",
+  "versioncode": 29007,
+  "date": "2021-12-27",
+  "notes": [
+    {
+      "type": "new",
+      "text": "Added support for setting the notification vibration pattern on Android 8+",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Added support for setting a custom notification light color on Android 8+",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed back button behavior when opening a single message from a notification",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Improved behavior when clicking grouped notifications for new messages of an account",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Hide sensitive information when sync and error notifications are displayed on the lock screen",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "The account color is now used for sync and error notifications",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Hide notification vibration settings when there's no vibrator hardware",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed hotkey handling when using non-QWERTY keyboard layouts",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Updated translations",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

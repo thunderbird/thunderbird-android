@@ -4,7 +4,7 @@ import androidx.compose.runtime.Immutable
 
 @Immutable
 sealed interface AttachmentUiItem<out TPart> {
-    val id: AttachmentId
+    val id: AttachmentUri
     val filename: String?
     val formattedSize: String
     val size: Long
@@ -14,7 +14,7 @@ sealed interface AttachmentUiItem<out TPart> {
     val encrypted: Boolean
 
     data class RemoteImage<out TPart>(
-        override val id: AttachmentId,
+        override val id: AttachmentUri,
         val url: String,
         override val filename: String?,
         override val formattedSize: String,
@@ -26,7 +26,7 @@ sealed interface AttachmentUiItem<out TPart> {
     ) : AttachmentUiItem<TPart>
 
     data class InlinedImage<out TPart>(
-        override val id: AttachmentId,
+        override val id: AttachmentUri,
         val rawBase64: String,
         override val filename: String?,
         override val formattedSize: String,
@@ -38,7 +38,7 @@ sealed interface AttachmentUiItem<out TPart> {
     ) : AttachmentUiItem<TPart>
 
     data class File<out TPart>(
-        override val id: AttachmentId,
+        override val id: AttachmentUri,
         override val filename: String?,
         override val formattedSize: String,
         override val size: Long,
@@ -49,7 +49,7 @@ sealed interface AttachmentUiItem<out TPart> {
     ) : AttachmentUiItem<TPart>
 
     data class InlinedFile<out TPart>(
-        override val id: AttachmentId,
+        override val id: AttachmentUri,
         override val filename: String?,
         override val formattedSize: String,
         override val size: Long,
@@ -61,4 +61,4 @@ sealed interface AttachmentUiItem<out TPart> {
 }
 
 @JvmInline
-value class AttachmentId(val uri: String)
+value class AttachmentUri(val uri: String)

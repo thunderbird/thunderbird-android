@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "version": "5.501",
+  "versioncode": 25010,
+  "date": "2018-02-25",
+  "notes": [
+    {
+      "type": "fixed",
+      "text": "Fixed bug that lead to important files being stripped from the APK",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

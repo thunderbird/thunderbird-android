@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "version": "5.401",
+  "versioncode": 23610,
+  "date": "2018-01-03",
+  "notes": [
+    {
+      "type": "fixed",
+      "text": "Fixed bug that lead to some messages showing as empty",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

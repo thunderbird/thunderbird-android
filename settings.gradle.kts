@@ -43,6 +43,12 @@ dependencyResolutionManagement {
                 includeGroup("com.github.cketti")
             }
         }
+        maven(url = "https://central.sonatype.com/repository/maven-snapshots/") {
+            mavenContent {
+                snapshotsOnly()
+                includeGroupAndSubgroups("net.thunderbird.components")
+            }
+        }
         mavenCentral()
     }
 }
@@ -76,6 +82,7 @@ include(
 
 include(
     ":app-common",
+    ":app-composition",
 )
 
 include(
@@ -119,6 +126,7 @@ include(
 include(
     ":feature:mail:account:api",
     ":feature:mail:folder:api",
+    ":feature:mail:message:api",
     ":feature:mail:message:composer:api",
     ":feature:mail:message:composer:internal",
     ":feature:mail:message:list:api",
@@ -127,6 +135,8 @@ include(
     ":feature:mail:message:export:impl-eml",
     ":feature:mail:message:reader:api",
     ":feature:mail:message:reader:impl",
+    ":feature:mail:storage:global-db-migration:api",
+    ":feature:mail:storage:global-db-migration:internal",
 )
 
 include(
@@ -196,7 +206,6 @@ include(
     ":core:mail:mailserver",
     ":core:preference:api",
     ":core:preference:impl",
-    ":core:outcome",
     ":core:testing",
     ":core:validation",
 )
@@ -209,8 +218,7 @@ include(
     ":core:android:network",
     ":core:android:permissions",
     ":core:android:testing",
-    ":core:android:webkit:api",
-    ":core:android:webkit:internal",
+    ":core:android:webkit",
 )
 
 include(
@@ -284,6 +292,8 @@ include(
 include(
     ":library:html-cleaner",
     ":library:token-auto-complete",
+    ":library:pii-safe:annotations",
+    ":library:pii-safe:compiler-plugin",
 )
 
 include(
@@ -313,3 +323,4 @@ check(JavaVersion.current().isCompatibleWith(JavaVersion.VERSION_21)) {
     """.trimIndent()
 }
 include(":feature:changelog:internal")
+include(":feature:funding:common")

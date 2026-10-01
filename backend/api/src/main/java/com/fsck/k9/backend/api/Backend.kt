@@ -31,7 +31,7 @@ interface Backend {
     fun downloadMessageStructure(folderServerId: String, messageServerId: String)
 
     @Throws(MessagingException::class)
-    fun downloadCompleteMessage(folderServerId: String, messageServerId: String)
+    suspend fun downloadCompleteMessage(folderServerId: String, messageServerId: String)
 
     @Throws(MessagingException::class)
     fun setFlag(folderServerId: String, messageServerIds: List<String>, flag: Flag, newState: Boolean)

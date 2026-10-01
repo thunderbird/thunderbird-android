@@ -9,9 +9,9 @@ import kotlinx.coroutines.launch
 import net.thunderbird.core.featureflag.FeatureFlagKey
 import net.thunderbird.core.featureflag.FeatureFlagResult
 import net.thunderbird.core.featureflag.provider.BaseCatalogFeatureFlagProvider
+import net.thunderbird.core.featureflag.provider.BundledCatalogFeatureFlagProvider
 import net.thunderbird.core.featureflag.provider.CatalogFeatureFlagProvider
 import net.thunderbird.core.featureflag.provider.CatalogProviderMetadata
-import net.thunderbird.core.featureflag.provider.DataSourceCatalogFeatureFlagProvider
 import net.thunderbird.core.featureflag.provider.ProviderMetadata
 import net.thunderbird.core.featureflag.provider.context.FeatureFlagContext
 import net.thunderbird.core.logging.Logger
@@ -39,6 +39,7 @@ internal class DefaultMultiFeatureFlagProviderEvaluator(
 ),
     MultiFeatureFlagProviderEvaluator {
     private val scope: CoroutineScope = CoroutineScope(mainDispatcher)
+    override val metadata: ProviderMetadata = CatalogProviderMetadata(name = "multi_provider")
 
     init {
         scope.launch {
@@ -48,7 +49,7 @@ internal class DefaultMultiFeatureFlagProviderEvaluator(
                 .collect { providerStates ->
                     var resolved = 0
                     for ((provider, state) in providerStates) {
-                        logger.verbose { "[feature-flag][${metadata.name}] provider '$provider' state: $state" }
+                        logger.verbose { "$logPrefix provider '$provider' state: $state" }
                         if (state == CatalogFeatureFlagProvider.State.Resolved) {
                             resolved++
                         }
@@ -75,13 +76,11 @@ internal class DefaultMultiFeatureFlagProviderEvaluator(
         return FeatureFlagResult.Unavailable
     }
 
-    override val metadata: ProviderMetadata = CatalogProviderMetadata(name = "multi_provider")
-
     override suspend fun initialize(initialContext: FeatureFlagContext) {
         super.initialize(initialContext)
         val bundledCatalogProvider =
-            checkNotNull(providers.filterIsInstance<DataSourceCatalogFeatureFlagProvider>().singleOrNull()) {
-                "[feature-flag] A MultiFeatureFlagProviderEvaluator requires a one CatalogFeatureFlagProvider"
+            checkNotNull(providers.filterIsInstance<BundledCatalogFeatureFlagProvider>().singleOrNull()) {
+                "$logPrefix A MultiFeatureFlagProviderEvaluator requires a one BundledCatalogFeatureFlagProvider"
             }
 
         bundledCatalogProvider.initialize(initialContext)

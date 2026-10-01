@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "version": "6.302",
+  "versioncode": 33002,
+  "date": "2022-09-05",
+  "notes": [
+    {
+      "type": "fixed",
+      "text": "Fixed moving to next/previous message when sorting the message list by read/unread or starred/unstarred",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed a crash when a third-party app shared a file to K-9 Mail without granting access to it",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Keep some more attributes when sanitizing HTML",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "A lot of internal changes and improvements",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Updated translations",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

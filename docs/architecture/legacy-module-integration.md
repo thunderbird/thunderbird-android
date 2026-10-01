@@ -21,7 +21,8 @@ The key components in this integration strategy are:
 1. **Legacy Modules**: `legacy:*`, `mail:*`, and `backend:*` modules containing existing functionality
 2. **Interfaces**: Well-defined interfaces in `feature:*:api` and `core:*` modules
 3. **App Common Bridge**: The `:app-common` module that implements these interfaces and delegates to legacy code
-4. **Dependency Injection**: Configuration that provides the appropriate implementations to modules
+4. **App Composition**: The `:app-composition` module that binds platform-independent modern implementations
+5. **Dependency Injection**: Configuration that provides the appropriate implementations to modules
 
 ## Integration Approach "_The App Common Bridge_"
 
@@ -52,7 +53,9 @@ The typical flow is:
 4. **Delegation to Legacy**: Internally, these implementations within `:app-common` delegate the actual work to the code residing in the legacy modules (e.g., `legacy:*`, `mail:*`, `backend:*`).
 5. **Dependency Injection**: The application's dependency injection framework is configured to provide instances of these `:app-common` bridge implementations when a newer module requests an implementation of the interface.
 
-This pattern ensures that newer modules remain decoupled from the specifics of legacy code.
+This pattern ensures that newer modules remain decoupled from the specifics of legacy code. A binding remains in
+`:app-common` while it requires Android or legacy dependencies. Once a modern implementation and all of its dependencies
+support the required KMP targets, its shared binding moves to `:app-composition`.
 
 The following diagram illustrates this pattern, showing how both a feature's own implementation and `app-common` can relate to the interfaces, with `app-common` specifically bridging to legacy systems:
 
@@ -349,8 +352,9 @@ The long-term strategy involves gradually migrating functionality out of the leg
 2. **Define Interfaces**: Ensure clear interfaces are defined (typically in feature `api` modules) for this functionality.
 3. **Entity Modeling**: Create proper domain entity models that represent the business objects as immutable data classes.
 4. **Implement in New Modules**: Re-implement the functionality within new, dedicated feature `internal` modules or core modules.
-5. **Update Bridge (Optional)**: If `:app-common` was bridging to this specific legacy code, its bridge implementation can be updated or removed.
-6. **Switch DI Configuration**: Update the dependency injection to provide the new modern implementation instead of the legacy bridge.
+5. **Update Bridge (Optional)**: If `:app-common` was bridging to this specific legacy code, remove or reduce the bridge.
+6. **Move Shared Binding**: Bind the KMP implementation in `:app-composition`; keep platform-specific wiring in the
+   relevant application module.
 7. **Retire Legacy Code**: Once no longer referenced, the corresponding legacy code can be safely removed.
 
 ### Migration Example
@@ -372,8 +376,9 @@ This approach ensures a smooth transition with minimal disruption to the applica
 ## Dependency Direction
 
 A strict dependency rule is enforced: **New modules (features, core) must not directly depend on legacy modules.**
-The dependency flow is always from newer modules to interfaces, with `:app-common` providing the implementation.
-If `:app-common` bridges to legacy code, that is an internal detail of `:app-common`.
+The dependency flow is always from newer modules to interfaces. `:app-composition` binds modern KMP implementations,
+while `:app-common` binds Android or legacy-backed implementations. Legacy access remains an internal detail of
+`:app-common`.
 
 The legacy module integration diagram below explains how legacy code is integrated into the new modular architecture:
 

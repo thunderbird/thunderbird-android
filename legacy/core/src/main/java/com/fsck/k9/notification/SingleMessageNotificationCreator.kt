@@ -5,10 +5,6 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationCompat.WearableExtender
 import androidx.core.graphics.drawable.IconCompat
 import com.fsck.k9.notification.NotificationChannelManager.ChannelType
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.launch
 import net.thunderbird.legacy.logging.Log
 import net.thunderbird.core.preference.notification.NotificationPreferenceManager
 import androidx.core.app.NotificationCompat.Builder as NotificationBuilder
@@ -21,13 +17,11 @@ internal class SingleMessageNotificationCreator(
     private val notificationPreferenceManager: NotificationPreferenceManager,
     private val application: Application,
 ) {
-    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
-
     fun createSingleNotification(
         baseNotificationData: BaseNotificationData,
         singleNotificationData: SingleNotificationData,
         isGroupSummary: Boolean = false,
-    ) = scope.launch {
+    ) {
         val account = baseNotificationData.account
         val notificationId = singleNotificationData.notificationId
         val content = singleNotificationData.content
@@ -64,7 +58,7 @@ internal class SingleMessageNotificationCreator(
         notificationHelper.notify(account, notificationId, notification)
     }
 
-    private suspend fun NotificationBuilder.setAvatar(content: NotificationContent) = apply {
+    private fun NotificationBuilder.setAvatar(content: NotificationContent) = apply {
         if (!notificationPreferenceManager.getConfig().isShowContactPictureInNotification) return@apply
 
         resourceProvider.avatar(content.sender)?.let {

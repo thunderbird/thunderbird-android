@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "version": "4.510",
+  "versioncode": 18010,
+  "date": "2013-08-27",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Fix erroneous SSL certificate warnings when connecting to a server that speaks STARTTLS",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Updates to Russian and Slovakian translations",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Major performance updates when opening folder lists",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Fix a crashing bug related to random number generation on some 3rd party roms",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed a bug that prevented starring messages in the message list",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

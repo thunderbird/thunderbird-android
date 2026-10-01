@@ -6,7 +6,7 @@ import assertk.assertions.isNull
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
-import net.thunderbird.core.outcome.Outcome
+import net.thunderbird.components.core.outcome.Outcome
 import net.thunderbird.feature.funding.googleplay.data.FundingDataContract.Local
 import net.thunderbird.feature.funding.googleplay.data.local.configstore.ContributionConfig
 import net.thunderbird.feature.funding.googleplay.data.local.configstore.ContributionPurchase

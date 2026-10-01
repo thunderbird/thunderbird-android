@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "version": "5.905",
+  "versioncode": 29005,
+  "date": "2021-11-24",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Set subject when forwarding a message as attachment",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Added a menu option to export the debug log under Settings → General settings → Debugging",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Don't display \"unread count\" in notifications; only number of new messages",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Properly decode multiple encoded words using the ISO-2022-JP charset (e.g. in subjects)",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed a crash when users left the message view screen before the download of an image attachment was complete",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Don't crash when loading images without internet permission (could only happen with custom ROMs)",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed a rare crash when auto-completing email addresses in the compose screen",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "A lot of internal changes and cleanup",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Updated translations",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

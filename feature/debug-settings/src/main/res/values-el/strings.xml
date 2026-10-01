@@ -16,4 +16,13 @@
     <string name="debug_settings_notifications_status">"Κατάσταση: "</string>
     <string name="debug_settings_feature_flag_unsaved_changes">Μη αποθηκευμένες αλλαγές</string>
     <string name="debug_settings_notifications_in_app_notification">Ειδοποίηση εντός εφαρμογής</string>
+    <string name="debug_settings_screen_title">Οθόνη κρυφών ρυθμίσεων αποσφαλμάτωσης</string>
+    <string name="debug_settings_notifications_trigger_notification">Πρόσθετες ειδοποιήσεις</string>
+    <string name="debug_settings_notifications_common_notification_information">Γενικές πληροφορίες ειδοποιήσεων</string>
+    <string name="debug_settings_notifications_system_notification">Ειδοποίηση συστήματος</string>
+    <string name="debug_settings_notifications_preparing_notification">Προετοιμασία ειδοποίησης %1$s</string>
+    <string name="debug_settings_notification_status_log">Αρχείο καταγραφής κατάστασης ειδοποιήσεων</string>
+    <string name="debug_settings_notifications_clear_status_log">Εκκαθάριση αρχείου καταγραφής κατάστασης</string>
+    <string name="debug_settings_feature_flag_title">Σημαίες λειτουργιών</string>
+    <string name="debug_settings_feature_flag_overridden">"έχει παρακαμφθεί; "</string>
 </resources>

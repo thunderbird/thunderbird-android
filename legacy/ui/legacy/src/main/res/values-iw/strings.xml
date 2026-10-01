@@ -678,7 +678,7 @@
     <string name="message_view_status_attachment_not_saved">לא ניתן לשמור קבצים מצורפים.</string>
     <string name="message_view_recipients_format">אל <xliff:g id="recipients">%s</xliff:g></string>
     <string name="message_view_additional_recipient_prefix">+</string>
-    <string name="message_view_me_text">אני</string>
+    <string name="message_view_to_me_text">אני</string>
     <string name="font_size_message_compose_input">שדות טקסט</string>
     <string name="dialog_confirm_empty_trash_message">רוצה לרוקן את תיקיית פריטים שנמחקו?</string>
     <plurals name="dialog_confirm_delete_messages">

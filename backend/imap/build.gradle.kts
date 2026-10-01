@@ -6,7 +6,7 @@ plugins {
 dependencies {
     api(projects.backend.api)
     implementation(projects.core.common)
-    api(projects.core.outcome)
+    api(libs.tb.mobile.components.core.outcome)
 
     api(projects.feature.mail.account.api)
 

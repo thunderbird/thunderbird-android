@@ -1,5 +1,6 @@
 plugins {
     id(ThunderbirdPlugins.Library.androidCompose)
+    alias(libs.plugins.tb.piisafe)
 }
 
 android {
@@ -11,6 +12,8 @@ android {
 }
 
 dependencies {
+    implementation(projects.appComposition)
+
     api(projects.legacy.common)
     api(projects.legacy.ui.legacy)
 
@@ -24,11 +27,7 @@ dependencies {
     implementation(projects.core.android.common)
 
     implementation(projects.core.logging.api)
-    implementation(projects.core.logging.implComposite)
-    implementation(projects.core.logging.implConsole)
-    implementation(projects.core.logging.implFile)
     implementation(projects.legacy.logging)
-
     implementation(projects.core.configstore.api)
     implementation(projects.core.configstore.implBackend)
 
@@ -43,18 +42,18 @@ dependencies {
     implementation(projects.feature.account.avatar.impl)
     implementation(projects.feature.account.settings.api)
     implementation(projects.feature.account.setup)
+    implementation(projects.feature.funding.api)
     implementation(projects.feature.mail.account.api)
     implementation(projects.feature.mail.message.composer.internal)
     implementation(projects.feature.migration.provider)
     implementation(projects.feature.notification.api)
-    implementation(projects.feature.notification.impl)
     implementation(projects.feature.widget.messageList)
 
+    implementation(projects.feature.mail.message.api)
     implementation(projects.feature.mail.message.export.api)
     implementation(projects.feature.mail.message.export.implEml)
     implementation(projects.feature.mail.message.list.api)
     implementation(projects.feature.mail.message.reader.api)
-    implementation(projects.feature.mail.message.reader.impl)
 
     implementation(projects.mail.protocols.imap)
     implementation(projects.backend.imap)
@@ -68,6 +67,7 @@ dependencies {
     testImplementation(projects.feature.account.fake)
     testImplementation(projects.core.testing)
     testImplementation(projects.core.android.testing)
+    testImplementation(projects.core.configstore.testing)
     testImplementation(projects.core.logging.testing)
 
     testImplementation(libs.mockito.kotlin)

@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "version": "5.723",
+  "versioncode": 27023,
+  "date": "2020-10-31",
+  "notes": [
+    {
+      "type": "fixed",
+      "text": "Fixed bug that prevented some messages from being moved",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed message list display bug when multiple roles were assigned to the same folder",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Number of messages in Outbox folder are now displayed in the side drawer",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Tweaked message list appearance of Outbox",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Message list footer is now hidden while list is loading",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

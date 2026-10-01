@@ -177,7 +177,7 @@
     <!--Displayed in the message view screen in front of the number of additional recipients (the ones that are not displayed).-->
     <string name="message_view_additional_recipient_prefix">+</string>
     <!--Displayed in the message view screen if the message was addressed to the user. Make sure this works with 'message_view_recipient_prefix'. In English it's "to me".-->
-    <string name="message_view_me_text">мне</string>
+    <string name="message_view_to_me_text">мне</string>
     <!--Text of the button that is displayed below the message header when the message body references one or more remote images-->
     <string name="message_view_show_remote_images_action">Загрузить изображения</string>
     <string name="message_view_no_viewer">Отсутствует просмотрщик <xliff:g id="mimetype">%s</xliff:g>.</string>
@@ -669,7 +669,7 @@
     <string name="fetching_attachment_dialog_message">Получение вложений…</string>
     <!--Note: This references message_view_download_remainder-->
     <string name="preview_encrypted">*Зашифровано*</string>
-    <string name="add_from_contacts">Добавить из Контактов</string>
+    <string name="add_from_contacts">Добавить из контактов</string>
     <string name="recipient_cc">Копия</string>
     <string name="recipient_bcc">Скрытая копия</string>
     <string name="recipient_to">Кому</string>
@@ -972,4 +972,8 @@
     <string name="account_settings_signature_is_html_summary">Интерпретировать подпись как HTML. Скрипты и обработчики событий будут удалены в целях безопасности.</string>
     <string name="account_settings_signature_preview">Просмотр подписи</string>
     <string name="account_settings_signature_clear_label">Удалить подпись</string>
+    <string name="message_compose_encrypting_message">Шифрование сообщения…</string>
+    <string name="message_view_from_me_text">меня</string>
+    <string name="error_no_contact_provider">Приложение \"Контакты\" не найдено. Установите приложение для работы с контактами, чтобы добавить этот адрес.</string>
+    <string name="account_settings_signature_preview_empty">Здесь будет отображаться ваша подпись</string>
 </resources>

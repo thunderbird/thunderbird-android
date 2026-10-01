@@ -1,27 +1,31 @@
 package app.k9mail.feature
 
-import com.fsck.k9.K9
 import net.thunderbird.feature.funding.api.FundingSettings
 
+@Suppress("TooManyFunctions", "EmptyFunctionBlock")
 internal class K9FundingSettings : FundingSettings {
-    override fun getReminderReferenceTimestamp(): Long = K9.fundingReminderReferenceTimestamp
 
-    override fun setReminderReferenceTimestamp(timestamp: Long) {
-        K9.fundingReminderReferenceTimestamp = timestamp
-        K9.saveSettingsAsync()
-    }
+    override fun isReady(): Boolean = true
 
-    override fun getReminderShownTimestamp() = K9.fundingReminderShownTimestamp
+    override fun getReminderReferenceTimestamp(): Long = 0L
 
-    override fun setReminderShownTimestamp(timestamp: Long) {
-        K9.fundingReminderShownTimestamp = timestamp
-        K9.saveSettingsAsync()
-    }
+    override fun setReminderReferenceTimestamp(timestamp: Long) {}
 
-    override fun getActivityCounterInMillis(): Long = K9.fundingActivityCounterInMillis
+    override fun getReminderShownTimestamp() = 0L
 
-    override fun setActivityCounterInMillis(activeTime: Long) {
-        K9.fundingActivityCounterInMillis = activeTime
-        K9.saveSettingsAsync()
-    }
+    override fun setReminderShownTimestamp(timestamp: Long) {}
+
+    override fun getLastReminderShownActivityAmount(): Long = 0L
+
+    override suspend fun setLastReminderShownActivityAmount(activityInMillis: Long) {}
+
+    override fun getReminderShownCount(): Int = 100
+
+    override suspend fun setReminderShownCount(count: Int) {}
+
+    override suspend fun incrementReminderShownCount() {}
+
+    override fun getActivityCounterInMillis(): Long = 0L
+
+    override fun setActivityCounterInMillis(activeTime: Long) {}
 }

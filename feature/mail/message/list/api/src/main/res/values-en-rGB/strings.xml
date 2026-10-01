@@ -8,7 +8,7 @@
     <string name="swipe_action_remove_star">Remove star</string>
     <string name="swipe_action_archive">Archive</string>
     <string name="swipe_action_archive_folder_not_set">Set Up Archive Folder</string>
-    <string name="swipe_action_change_swipe_gestures">Change \n\nSwipe Gestures</string>
+    <string name="swipe_action_change_swipe_gestures">Change \nSwipe Gestures</string>
     <string name="swipe_action_delete">Delete</string>
     <string name="swipe_action_spam">Spam</string>
     <string name="swipe_action_move">Move…</string>

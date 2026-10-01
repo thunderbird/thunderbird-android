@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "version": "5.105",
+  "versioncode": 23050,
+  "date": "2015-03-14",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Reverted all changes introduced with v5.104 except for the bugfixes related to Android 5.1",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

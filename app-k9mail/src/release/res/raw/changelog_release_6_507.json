@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "version": "6.507",
+  "versioncode": 35007,
+  "date": "2023-02-10",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Respect \"show contact names\" setting in message details screen",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Display folder name in message details screen",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Small adjustment to the appearance of the \"Download complete message\" button",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Internal changes",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Updated translations",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

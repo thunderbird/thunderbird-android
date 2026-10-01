@@ -3,7 +3,7 @@
 package net.thunderbird.feature.notification.api.command.outcome
 
 import androidx.annotation.Discouraged
-import net.thunderbird.core.outcome.Outcome
+import net.thunderbird.components.core.outcome.Outcome
 import net.thunderbird.feature.notification.api.NotificationId
 import net.thunderbird.feature.notification.api.command.NotificationCommand
 import net.thunderbird.feature.notification.api.content.Notification

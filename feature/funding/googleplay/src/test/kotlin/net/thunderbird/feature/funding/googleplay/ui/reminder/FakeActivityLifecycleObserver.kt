@@ -1,6 +1,7 @@
 package net.thunderbird.feature.funding.googleplay.ui.reminder
 
 import androidx.lifecycle.Lifecycle
+import net.thunderbird.feature.funding.common.api.FundingReminderContract
 
 class FakeActivityLifecycleObserver(
     var isRegistered: Boolean = false,

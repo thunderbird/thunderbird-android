@@ -21,6 +21,13 @@ class UnifiedAccountIdTest {
     }
 
     @Test
+    fun `factory parses nil UUID as unified account id`() {
+        val accountId = AccountIdFactory.of("00000000-0000-0000-0000-000000000000")
+
+        assertThat(accountId).isEqualTo(UnifiedAccountId)
+    }
+
+    @Test
     fun `isUnified returns false for non-unified account id`() {
         val nonUnifiedAccountId = AccountIdFactory.of("123e4567-e89b-12d3-a456-426614174000")
         assertThat(nonUnifiedAccountId.isUnified).isFalse()

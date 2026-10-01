@@ -27,7 +27,7 @@ from jsonschema import Draft202012Validator
 APP_CONFIG = {
     "com.fsck.k9": {
         "app_dir": "app-k9mail",
-        "build_type": "main",
+        "build_type": "release",
     },
     "net.thunderbird.android": {
         "app_dir": "app-thunderbird",

@@ -1,7 +1,7 @@
 package net.thunderbird.core.file
 
 import com.eygraber.uri.Uri
-import net.thunderbird.core.outcome.Outcome
+import net.thunderbird.components.core.outcome.Outcome
 
 /**
  * File manager for common file operations.

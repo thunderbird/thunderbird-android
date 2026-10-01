@@ -1,9 +1,11 @@
 package com.fsck.k9.activity
 
 import android.app.SearchManager
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
+import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
 import android.view.KeyEvent
@@ -11,6 +13,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.ProgressBar
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.view.ActionMode
@@ -68,6 +71,7 @@ import net.thunderbird.core.preference.interaction.PostRemoveNavigation
 import net.thunderbird.core.preference.storage.Storage
 import net.thunderbird.feature.account.storage.legacy.mapper.LegacyAccountDataMapper
 import net.thunderbird.feature.funding.api.FundingManager
+import net.thunderbird.feature.funding.api.FundingType
 import net.thunderbird.feature.navigation.drawer.api.NavigationDrawer
 import net.thunderbird.feature.navigation.drawer.dropdown.DropDownDrawer
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.UnifiedDisplayAccount
@@ -82,6 +86,7 @@ import org.koin.android.ext.android.inject
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import org.koin.core.parameter.parametersOf
+import androidx.core.net.toUri
 
 private const val TAG = "MainActivity"
 
@@ -198,7 +203,6 @@ open class MessageHomeActivity :
         initializeLayout()
         initializeFragments()
         displayViews()
-        initializeFunding()
         initializeFoldableObserver()
 
         val backPressedCallback = object : OnBackPressedCallback(true) {
@@ -254,11 +258,34 @@ open class MessageHomeActivity :
     }
 
     private fun initializeFunding() {
-        fundingManager.addFundingReminder {
-            FeatureLauncherActivity.launch(
-                context = this,
-                target = FeatureLauncherTarget.Funding,
-            )
+        when (fundingManager.getFundingType()) {
+            FundingType.GOOGLE_PLAY -> {
+                fundingManager.addFundingReminder {
+                    FeatureLauncherActivity.launch(
+                        context = this,
+                        target = FeatureLauncherTarget.Funding,
+                    )
+                }
+            }
+
+            FundingType.LINK -> {
+                fundingManager.addFundingReminder {
+                    try {
+                        val viewIntent =
+                            Intent(Intent.ACTION_VIEW, resources.getString(R.string.funding_url).toUri())
+                        startActivity(viewIntent)
+                    } catch (e: ActivityNotFoundException) {
+                        Toast.makeText(
+                            this,
+                            "${resources.getString(R.string.error_activity_not_found)}: ${e.message}",
+                            Toast.LENGTH_SHORT,
+                        ).show()
+                    }
+                }
+            }
+
+            else -> { // Noop
+            }
         }
     }
 
@@ -629,6 +656,11 @@ open class MessageHomeActivity :
         if (displayMode != DisplayMode.MESSAGE_VIEW) {
             onMessageListDisplayed()
         }
+    }
+
+    override fun onPostResume() {
+        super.onPostResume()
+        initializeFunding()
     }
 
     override fun onStart() {

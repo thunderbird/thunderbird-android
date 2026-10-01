@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "version": "6.310",
+  "versioncode": 33010,
+  "date": "2022-10-24",
+  "notes": [
+    {
+      "type": "fixed",
+      "text": "Fixed \"K-9 Accounts\" shortcuts (you probably have to remove existing shortcuts and add them again)",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed a couple of bugs and display issues in the message list widget",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed bug that could lead to a crypto provider popup showing before swiping to the next/previous message was completed",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Some other minor bug fixes",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Updated translations",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

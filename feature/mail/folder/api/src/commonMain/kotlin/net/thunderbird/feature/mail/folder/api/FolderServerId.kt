@@ -1,4 +1,4 @@
 package net.thunderbird.feature.mail.folder.api
 
 @JvmInline
-value class FolderServerId(val serverId: String)
+public value class FolderServerId(public val serverId: String)

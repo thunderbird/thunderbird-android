@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "version": "5.728",
+  "versioncode": 27028,
+  "date": "2021-02-10",
+  "notes": [
+    {
+      "type": "new",
+      "text": "Added support for using a client certificate and a password at the same time",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Unified Inbox is now displayed on top of the folder list in the drawer",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Improved the sort order of email addresses in the auto-complete popup",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed a bug when parsing recipient email addresses in the \"compose\" screen",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed bug where the folder list wasn't fetched from the server",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed a bug in the \"import settings\" screen",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Updated translations",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

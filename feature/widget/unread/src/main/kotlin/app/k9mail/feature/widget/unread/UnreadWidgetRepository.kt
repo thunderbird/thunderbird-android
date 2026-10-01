@@ -34,7 +34,7 @@ internal class UnreadWidgetRepository(
         return dataRetriever.loadUnreadWidgetData(configuration)
     }
 
-    private fun upgradePreferences(version: Int, preferences: SharedPreferences) {
+    private suspend fun upgradePreferences(version: Int, preferences: SharedPreferences) {
         if (version > PREFS_VERSION) {
             error("UnreadWidgetRepository: Version downgrades are not supported")
         } else {

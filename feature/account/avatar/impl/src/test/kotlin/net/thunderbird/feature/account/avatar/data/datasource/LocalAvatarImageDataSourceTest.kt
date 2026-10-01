@@ -10,12 +10,12 @@ import kotlin.test.Test
 import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
 import kotlinx.coroutines.test.runTest
+import net.thunderbird.components.core.outcome.Outcome
 import net.thunderbird.core.file.DirectoryProvider
 import net.thunderbird.core.file.FileManager
 import net.thunderbird.core.file.FileOperationError
 import net.thunderbird.core.file.MimeType
 import net.thunderbird.core.file.MimeTypeResolver
-import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.core.testing.TestClock
 import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.account.avatar.data.AvatarDataContract

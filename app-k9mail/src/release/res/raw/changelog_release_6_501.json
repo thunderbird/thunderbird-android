@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "version": "6.501",
+  "versioncode": 35001,
+  "date": "2023-01-09",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Delete spam messages immediately without moving them to the trash folder",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Changed the way home screen widgets are disabled when there is no account set up to work around a bug in Android versions prior to 12",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Mark recent changes as read when the snackbar is dismissed via swipe",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "version": "6.202",
+  "versioncode": 32002,
+  "date": "2022-07-26",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Increased timeout when sending messages because some users have reported problems with sending large attachments",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Allow all URI schemes in HTML links",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed display bug with search in general settings",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "When composing messages don't hide Cc and Bcc fields if they contain incomplete email addresses",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "version": "4.328",
+  "versioncode": 17029,
+  "date": "2013-02-20",
+  "notes": [
+    {
+      "type": "fixed",
+      "text": "Fixed the changelog :)",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

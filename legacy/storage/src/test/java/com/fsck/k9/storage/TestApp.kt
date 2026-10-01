@@ -11,7 +11,7 @@ import com.fsck.k9.DefaultAppConfig
 import com.fsck.k9.K9
 import com.fsck.k9.backend.BackendManager
 import com.fsck.k9.crypto.EncryptionExtractor
-import com.fsck.k9.legacyCoreModules
+import com.fsck.k9.legacyCoreModule
 import com.fsck.k9.preferences.K9StoragePersister
 import com.fsck.k9.storage.messages.FakeLocalMessageUidPrefixProvider
 import net.thunderbird.core.android.account.AccountDefaultsProvider
@@ -43,7 +43,7 @@ class TestApp : Application() {
         Log.logger = logger
         DI.start(
             application = this,
-            modules = legacyCoreModules + storageModule + telemetryModule + testModule,
+            modules = legacyCoreModule + storageModule + telemetryModule + testModule,
         )
 
         K9.init(this)

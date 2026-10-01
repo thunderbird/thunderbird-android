@@ -8,9 +8,9 @@ import com.eygraber.uri.toKmpUri
 import java.io.IOException
 import kotlin.test.Test
 import kotlinx.coroutines.test.runTest
+import net.thunderbird.components.core.outcome.Outcome
 import net.thunderbird.core.file.MimeType
 import net.thunderbird.core.file.MimeTypeResolver
-import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.account.avatar.Avatar

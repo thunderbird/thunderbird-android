@@ -1,6 +1,6 @@
 package net.thunderbird.feature.account.server.settings.ui.common
 
-import net.thunderbird.core.outcome.Outcome
+import net.thunderbird.components.core.outcome.Outcome
 
 /**
  * A functional interface for authenticating a user.

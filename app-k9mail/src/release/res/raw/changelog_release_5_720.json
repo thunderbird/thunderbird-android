@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "version": "5.720",
+  "versioncode": 27020,
+  "date": "2020-10-06",
+  "notes": [
+    {
+      "type": "fixed",
+      "text": "Fixed bug in preview text extraction that could stop synchronization",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "When displaying text/plain parts the signature is de-emphasized",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Sharing a message now includes subject, date, sender, and recipients",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "No longer use ISO-8859-1 encoding for headers",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

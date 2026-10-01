@@ -1,13 +1,16 @@
 package net.thunderbird.feature.navigation.drawer.dropdown.ui.setting
 
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import net.thunderbird.components.ui.bolt.atom.icon.Icons
 import net.thunderbird.components.ui.bolt.common.window.WindowHeightSizeClass
+import net.thunderbird.components.ui.bolt.common.window.WindowWidthSizeClass
 import net.thunderbird.components.ui.bolt.common.window.calculateWindowSizeInfo
 import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.feature.navigation.drawer.dropdown.R
@@ -23,12 +26,21 @@ internal fun AccountSettingList(
     val windowSizeInfo = calculateWindowSizeInfo()
     val isLandscape = windowSizeInfo.size.width > windowSizeInfo.size.height
     val isCompactHeight = windowSizeInfo.sizeClass.heightSizeClass == WindowHeightSizeClass.Compact
-    val hideText = isLandscape && isCompactHeight
+    val isSmallDisplay = windowSizeInfo.sizeClass.widthSizeClass == WindowWidthSizeClass.Small ||
+        windowSizeInfo.sizeClass.heightSizeClass == WindowHeightSizeClass.Small
+    val hideText = (isLandscape && isCompactHeight) || isSmallDisplay
 
     SettingList(
-        modifier = modifier
-            .padding(vertical = BoltTheme.spacings.default)
-            .fillMaxWidth(),
+        modifier = if (hideText) {
+            modifier
+                .padding(vertical = BoltTheme.spacings.double)
+                .fillMaxWidth()
+                .height(BoltTheme.sizes.iconAvatar)
+        } else {
+            modifier
+                .padding(vertical = BoltTheme.spacings.default)
+                .fillMaxWidth()
+        },
     ) {
         item(span = { if (hideText) GridItemSpan(1) else GridItemSpan(maxLineSpan) }) {
             SettingListItem(

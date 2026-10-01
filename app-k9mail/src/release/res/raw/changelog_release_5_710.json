@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "version": "5.710",
+  "versioncode": 27010,
+  "date": "2020-04-24",
+  "notes": [
+    {
+      "type": "fixed",
+      "text": "Fixed duplicate message bug after moving a message",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Removed keyboard shortcuts for menu items; on some devices they conflicted with system shortcuts",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Don't show fullscreen keyboard in landscape mode",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed bug where line breaks were ignored when loading draft messages",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "POP3: Fixed moving deleted messages to the Trash folder",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

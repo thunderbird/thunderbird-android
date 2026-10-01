@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "version": "6.711",
+  "versioncode": 37011,
+  "date": "2023-10-04",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Simplified the app icon so it can be a vector drawable",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Improved screen reader experience in various places",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Improved logging on failing settings import",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Improved display of some HTML messages",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Changed background color in message view and compose screens when using dark theme",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed OAuth 2.0 with Yahoo and AOL",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed display issues when rendering a message/rfc822 inline part",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Updated translations",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

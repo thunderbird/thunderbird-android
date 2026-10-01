@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "version": "5.300",
+  "versioncode": 23500,
+  "date": "2017-09-10",
+  "notes": [
+    {
+      "type": "new",
+      "text": "New app icon",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "New widget: Message List",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "New OpenPGP flow, adhering to Autocrypt specification",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Settings export uses Storage Access Framework",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Better support for multi-window",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Recipient search now includes nicknames",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Many bugfixes and optimizations",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Added translations: Esperanto, Gaelic (Scottish), Icelandic, Welsh",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

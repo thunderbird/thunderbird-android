@@ -11,6 +11,7 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             api(projects.core.ui.navigation)
+            implementation(projects.core.configstore.api)
         }
     }
 }

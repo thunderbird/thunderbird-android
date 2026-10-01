@@ -227,9 +227,14 @@ internal class DrawerViewModel(
     private fun openAccount(account: DisplayAccount?) {
         if (account != null) {
             emitEffect(Effect.OpenAccount(account.id))
-            if (account is MailDisplayAccount && account.hasAutoExpandFolder) {
-                viewModelScope.launch {
-                    delay(DRAWER_CLOSE_DELAY)
+            viewModelScope.launch {
+                delay(DRAWER_CLOSE_DELAY)
+                updateState {
+                    it.copy(
+                        showAccountSelection = false,
+                    )
+                }
+                if (account is MailDisplayAccount && account.hasAutoExpandFolder) {
                     emitEffect(Effect.CloseDrawer)
                 }
             }

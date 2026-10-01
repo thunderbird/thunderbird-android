@@ -14,7 +14,8 @@ class K9WorkerFactory : WorkerFactory() {
         workerParameters: WorkerParameters,
     ): ListenableWorker? {
         // Don't attempt to load classes outside of our namespace.
-        if (!workerClassName.startsWith("com.fsck.k9")) {
+        if (!workerClassName.startsWith("com.fsck.k9") &&
+            !workerClassName.startsWith("net.thunderbird.app.common")) {
             return null
         }
 

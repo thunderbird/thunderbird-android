@@ -1,6 +1,7 @@
 package com.fsck.k9.notification
 
 import android.graphics.Bitmap
+import androidx.annotation.WorkerThread
 import com.fsck.k9.mail.Address
 
 interface NotificationResourceProvider {
@@ -31,7 +32,8 @@ interface NotificationResourceProvider {
     fun authenticationErrorTitle(): String
     fun authenticationErrorBody(accountName: String): String
 
-    suspend fun avatar(address: Address): Bitmap?
+    @WorkerThread
+    fun avatar(address: Address): Bitmap?
 
     fun notifyErrorTitle(): String
     fun notifyErrorText(): String

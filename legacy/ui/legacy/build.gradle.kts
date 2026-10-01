@@ -16,7 +16,7 @@ dependencies {
     implementation(projects.mail.common)
     implementation(projects.uiUtils.toolbarBottomSheet)
     implementation(projects.core.android.contact)
-    implementation(projects.core.android.webkit.api)
+    implementation(projects.core.android.webkit)
     implementation(projects.feature.changelog.internal)
 
     implementation(projects.core.featureflag)
@@ -60,7 +60,6 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.localbroadcastmanager)
     implementation(libs.androidx.swiperefreshlayout)
-    implementation(libs.ckchangelog.core)
     implementation(projects.library.tokenAutoComplete)
     implementation(libs.safeContentResolver)
     implementation(libs.searchPreference)

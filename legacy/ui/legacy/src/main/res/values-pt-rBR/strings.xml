@@ -175,7 +175,7 @@
     <!--Displayed in the message view screen in front of the number of additional recipients (the ones that are not displayed).-->
     <string name="message_view_additional_recipient_prefix">+</string>
     <!--Displayed in the message view screen if the message was addressed to the user. Make sure this works with 'message_view_recipient_prefix'. In English it's "to me".-->
-    <string name="message_view_me_text">mim</string>
+    <string name="message_view_to_me_text">mim</string>
     <!--Text of the button that is displayed below the message header when the message body references one or more remote images-->
     <string name="message_view_show_remote_images_action">Exibir imagens remotas</string>
     <string name="message_view_no_viewer">Não foi possível encontrar um visualizador para <xliff:g id="mimetype">%s</xliff:g>.</string>
@@ -956,4 +956,17 @@
     <string name="animation_setting_on">Sim</string>
     <string name="animation_setting_off">Não</string>
     <string name="animation_setting_follow_system">Usar padrão do sistema</string>
+    <string name="camera_capture_lost">A imagem capturada foi perdida porque o aplicativo foi fechado. Tente novamente.</string>
+    <string name="global_settings_privacy_incognito_keyboard">Teclado anônimo</string>
+    <string name="global_settings_privacy_incognito_keyboard_detail">Diga ao teclado para não aprender com o que você digita ao criar mensagens</string>
+    <string name="account_settings_signature_html_label">Assinatura HTML</string>
+    <string name="account_settings_signature_is_html_label">Salvar assinatura como HTML</string>
+    <string name="account_settings_signature_is_html_summary">Interprete a assinatura como HTML. Scripts e manipuladores de eventos serão removidos por segurança.</string>
+    <string name="account_settings_signature_preview">Prévia da assinatura</string>
+    <string name="account_settings_signature_clear_label">Limpar assinatura</string>
+    <string name="sort_by_indicator">•</string>
+    <string name="message_compose_encrypting_message">Criptografando mensagem…</string>
+    <string name="message_view_from_me_text">eu</string>
+    <string name="account_settings_signature_preview_empty">A prévia da sua assinatura aparecerá aqui</string>
+    <string name="error_no_contact_provider">Nenhum aplicativo de contatos foi encontrado. Instale um primeiro para adicionar este endereço.</string>
 </resources>

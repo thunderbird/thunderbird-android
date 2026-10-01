@@ -12,7 +12,6 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.work.WorkerParameters
 import app.k9mail.core.ui.compose.common.window.FoldableStateObserver
 import app.k9mail.feature.account.common.domain.entity.InteractionMode
-import com.fsck.k9.account.AccountRemoverWorker
 import com.fsck.k9.job.MailSyncWorker
 import com.fsck.k9.job.SyncDebugWorker
 import com.fsck.k9.mail.Part
@@ -24,6 +23,7 @@ import com.fsck.k9.view.K9WebViewClient
 import com.fsck.k9.view.MessageWebView
 import kotlin.test.Test
 import net.openid.appauth.AppAuthConfiguration
+import net.thunderbird.app.common.feature.account.AccountRemoverWorker
 import net.thunderbird.core.common.mail.html.HtmlSettings
 import net.thunderbird.core.configstore.ConfigId
 import net.thunderbird.core.preference.storage.Storage

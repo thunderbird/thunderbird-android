@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "version": "4.511",
+  "versioncode": 18011,
+  "date": "2013-08-31",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Remove remote/local store references when deleting accounts",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Add visual indicator that a menu item opens a submenu",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Make actions shown in message view menu configurable",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Remove icons from the \"Refile\" submenu, as we don't show icons in any other submenu.",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Add icon for the copy action",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

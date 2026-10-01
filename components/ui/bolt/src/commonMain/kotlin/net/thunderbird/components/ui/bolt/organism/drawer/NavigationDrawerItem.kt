@@ -1,6 +1,9 @@
 package net.thunderbird.components.ui.bolt.organism.drawer
 
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.AccountBox
 import androidx.compose.material3.NavigationDrawerItem as Material3NavigationDrawerItem
@@ -10,9 +13,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import net.thunderbird.components.ui.bolt.PreviewWithThemes
 import net.thunderbird.components.ui.bolt.atom.icon.Icon
 import net.thunderbird.components.ui.bolt.atom.text.TextLabelLarge
+import net.thunderbird.components.ui.bolt.atom.text.TextLabelMedium
+import net.thunderbird.components.ui.bolt.atom.text.TextLabelSmall
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 
 /**
  * A navigation drawer item that can be used in a navigation drawer.
@@ -32,18 +39,32 @@ fun NavigationDrawerItem(
     modifier: Modifier = Modifier,
     icon: (@Composable () -> Unit)? = null,
     badge: (@Composable () -> Unit)? = null,
+    reduceTextSize: Boolean = false,
 ) {
     NavigationDrawerItem(
         label = {
-            TextLabelLarge(
-                text = label,
-                overflow = TextOverflow.Ellipsis,
-                maxLines = 2,
-            )
+            if (reduceTextSize) {
+                TextLabelLarge(
+                    text = label,
+                    overflow = TextOverflow.Ellipsis,
+                    maxLines = 2,
+                )
+            } else {
+                TextLabelLarge(
+                    text = label,
+                    overflow = TextOverflow.Ellipsis,
+                    maxLines = 2,
+                )
+            }
         },
         selected = selected,
         onClick = onClick,
-        modifier = modifier,
+        modifier = if (reduceTextSize) {
+            modifier
+                .height((BoltTheme.typography.labelLarge.lineHeight.value + BoltTheme.spacings.double.value).dp)
+        } else {
+            modifier
+        },
         icon = icon,
         badge = badge,
     )

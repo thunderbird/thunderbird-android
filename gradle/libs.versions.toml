@@ -57,14 +57,14 @@ androidxWork = "2.11.2"
 apacheHttpclient5 = "5.6.4"
 appAuth = "0.11.1"
 assertk = "0.28.1"
+buildconfig = "6.1.1"
 circleImageView = "3.1.0"
-ckchangelog = "2.0.0-beta02"
 clikt = "5.1.0"
 commonsIo = "2.22.0"
-dependencyCheckPlugin = "0.61.0"
+dependencyCheckPlugin = "0.64.0"
 dependencyGuardPlugin = "0.5.0"
 detektPlugin = "2.0.0-alpha.6"
-detektPluginCompose = "0.6.4"
+detektPluginCompose = "0.6.6"
 fastAdapter = "5.7.0"
 forkhandlesBom = "2.25.6.0"
 glide = "4.16.0"
@@ -74,7 +74,7 @@ icu4j = "78.3"
 javaDiffUtils = "4.17"
 jcipAnnotations = "1.0"
 jetbrainsAnnotations = "26.1.0"
-jetbrainsCompose = "1.11.1"
+jetbrainsCompose = "1.12.1"
 jetbrainsComposeMaterialIcons = "1.7.3"
 jetbrainsComposeLifecycle = "2.11.0"
 jetbrainsComposeMaterial3 = "1.9.0"
@@ -90,10 +90,11 @@ jutf7 = "1.0.0"
 jzlib = "1.0.7"
 koinBom = "4.2.2"
 konsist = "0.17.3"
-kotlinBom = "2.4.10"
-kotlinKsp = "2.3.11"
-kotlinpoet = "2.3.0"
-kotlinxCollectionsImmutable = "0.5.1"
+kotlinBom = "2.4.20"
+kotlinCompileTesting = "0.14.0"
+kotlinKsp = "2.3.12"
+kotlinpoet = "2.4.0"
+kotlinxCollectionsImmutable = "0.5.2"
 kotlinxCoroutines = "1.11.0"
 kotlinxDateTime = "0.8.0"
 kotlinxIoCore = "0.9.1"
@@ -101,12 +102,12 @@ kotlinxSerialization = "1.11.0"
 kover = "0.9.9"
 ktlint = "1.5.0"
 ksoup = "0.2.6"
-ktor = "3.5.2"
+ktor = "3.6.0"
 kxml2 = "1.0"
 landscapist = "2.9.8"
 leakcanary = "2.14"
 logbackClassic = "1.6.3"
-mime4j = "0.8.14"
+mime4j = "0.8.15"
 minidns = "1.1.1"
 mockito = "5.23.0"
 mockitoKotlin = "6.3.0"
@@ -114,12 +115,12 @@ moshi = "1.15.2"
 mozillaAndroidComponents = "145.0.1"
 jsonSchemaValidator = "3.0.7"
 okhttp = "5.5.0"
-okio = "3.18.1"
+okio = "3.18.2"
 preferencesFix = "1.1.0"
-robolectric = "4.17-beta-4"
+robolectric = "4.17"
 safeContentResolver = "1.0.0"
 searchPreference = "2.7.3"
-spotlessPlugin = "8.10.0"
+spotlessPlugin = "8.10.2"
 tbMobileComponents = "0.1.0-SNAPSHOT"
 timber = "5.0.1"
 turbine = "1.2.1"
@@ -133,6 +134,7 @@ android-library = { id = "com.android.library", version.ref = "androidGradlePlug
 android-multiplatform-library = { id = "com.android.kotlin.multiplatform.library", version.ref = "androidGradlePlugin" }
 android-lint = { id = "com.android.lint", version.ref = "androidGradlePlugin" }
 android-test = { id = "com.android.test", version.ref = "androidGradlePlugin" }
+buildconfig = { id = "com.github.gmazzo.buildconfig", version.ref = "buildconfig" }
 compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlinBom" }
 dependency-check = { id = "com.github.ben-manes.versions", version.ref = "dependencyCheckPlugin" }
 dependency-guard = { id = "com.dropbox.dependency-guard", version.ref = "dependencyGuardPlugin" }
@@ -151,6 +153,7 @@ tb-app-badging = { id = "net.thunderbird.gradle.plugin.app.badging" }
 tb-app-versioning = { id = "net.thunderbird.gradle.plugin.app.versioning" }
 tb-featureflag-root = { id = "net.thunderbird.gradle.plugin.featureflag.root" }
 tb-featureflag-library = { id = "net.thunderbird.gradle.plugin.featureflag.library" }
+tb-piisafe = { id = "net.thunderbird.piisafe" }
 tb-quality-code-coverage = { id = "net.thunderbird.gradle.plugin.quality.coverage" }
 tb-quality-detekt = { id = "net.thunderbird.gradle.plugin.quality.detekt" }
 tb-quality-spotless = { id = "net.thunderbird.gradle.plugin.quality.spotless" }
@@ -218,7 +221,6 @@ apache-httpclient5 = { module = "org.apache.httpcomponents.client5:httpclient5",
 appauth = { module = "net.openid:appauth", version.ref = "appAuth" }
 assertk = { module = "com.willowtreeapps.assertk:assertk-jvm", version.ref = "assertk" }
 circleImageView = { module = "de.hdodenhof:circleimageview", version.ref = "circleImageView" }
-ckchangelog-core = { module = "de.cketti.library.changelog:ckchangelog-core", version.ref = "ckchangelog" }
 clikt = { module = "com.github.ajalt.clikt:clikt", version.ref = "clikt" }
 commons-io = { module = "commons-io:commons-io", version.ref = "commonsIo" }
 detekt-plugin-compose = { module = "io.nlopez.compose.rules:detekt", version.ref = "detektPluginCompose" }
@@ -269,6 +271,9 @@ koin-test = { module = "io.insert-koin:koin-test" }
 koin-test-junit4 = { module = "io.insert-koin:koin-test-junit4" }
 konsist = { module = "com.lemonappdev:konsist", version.ref = "konsist" }
 kotlin-bom = { module = "org.jetbrains.kotlin:kotlin-bom", version.ref = "kotlinBom" }
+kotlin-compile-testing = { module = "dev.zacsweers.kctfork:core", version.ref = "kotlinCompileTesting" }
+kotlin-compiler = { module = "org.jetbrains.kotlin:kotlin-compiler" }
+kotlin-gradle-plugin-api  = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin-api" }
 kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test" }
 kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit" }
@@ -309,6 +314,7 @@ preferencex-datetimepicker = { module = "com.takisoft.preferencex:preferencex-da
 robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
 safeContentResolver = { module = "de.cketti.safecontentresolver:safe-content-resolver-v21", version.ref = "safeContentResolver" }
 searchPreference = { module = "com.github.ByteHamster:SearchPreference", version.ref = "searchPreference" }
+tb-mobile-components-core-outcome = { module = "net.thunderbird.components.core:outcome", version.ref = "tbMobileComponents" }
 tb-mobile-components-ui-bolt = { module = "net.thunderbird.components.ui.bolt:bolt", version.ref = "tbMobileComponents" }
 tb-mobile-components-ui-testing = { module = "net.thunderbird.components.ui:testing", version.ref = "tbMobileComponents" }
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
@@ -318,6 +324,10 @@ xmlpull = { module = "com.github.cketti:xmlpull-extracted-from-android", version
 zxing = { module = "com.google.zxing:core", version.ref = "zxing" }
 
 [bundles]
+shared-tfa-components = [
+  "tb-mobile-components-core-outcome",
+]
+
 shared-kmp-common = [
   "androidx-annotation",
   "koin-core",

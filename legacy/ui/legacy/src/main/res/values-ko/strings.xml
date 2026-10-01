@@ -737,7 +737,7 @@
     <string name="notification_notify_error_title">알림 오류</string>
     <string name="general_settings_post_remove_action_title">메시지를 이동하거나 삭제한 후에</string>
     <string name="message_view_recipients_format"><xliff:g id="recipients">%s</xliff:g>에게</string>
-    <string name="message_view_me_text">나</string>
+    <string name="message_view_to_me_text">나</string>
     <string name="message_view_show_remote_images_action">외부 이미지 표시</string>
     <string name="general_settings_post_remove_action_show_previous_message">이전 메시지 보기</string>
     <string name="general_settings_post_mark_as_unread_action_stay">현재 메시지에 머무르기</string>
@@ -955,4 +955,6 @@
     <string name="account_settings_signature_is_html_summary">서명을 HTML로 해석합니다. 스크립트와 이벤트 핸들러는 보안을 위해 제거됩니다.</string>
     <string name="account_settings_signature_preview">서명 미리보기</string>
     <string name="account_settings_signature_clear_label">서명 지우기</string>
+    <string name="message_compose_encrypting_message">메시지 암호화 중…</string>
+    <string name="message_view_from_me_text">나</string>
 </resources>

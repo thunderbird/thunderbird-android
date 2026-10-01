@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "version": "6.506",
+  "versioncode": 35006,
+  "date": "2023-02-03",
+  "notes": [
+    {
+      "type": "fixed",
+      "text": "Fixed a crash when displaying a message without any recipients",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Fetch BCC header when partially downloading a message",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

@@ -3,7 +3,6 @@ package com.fsck.k9.preferences
 import android.content.ContentResolver
 import android.net.Uri
 import android.util.Xml
-import app.k9mail.legacy.mailstore.FolderRepository
 import com.fsck.k9.Preferences
 import com.fsck.k9.notification.NotificationSettingsUpdater
 import com.fsck.k9.preferences.ServerTypeConverter.fromServerSettingsType
@@ -13,11 +12,13 @@ import java.io.OutputStream
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
+import net.thunderbird.components.core.outcome.fold
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.feature.account.storage.legacy.LegacyAccountStorageHandler.Companion.ACCOUNT_DESCRIPTION_KEY
 import net.thunderbird.feature.account.storage.legacy.LegacyAccountStorageHandler.Companion.IDENTITY_DESCRIPTION_KEY
 import net.thunderbird.feature.account.storage.legacy.LegacyAccountStorageHandler.Companion.IDENTITY_EMAIL_KEY
 import net.thunderbird.feature.account.storage.legacy.LegacyAccountStorageHandler.Companion.IDENTITY_NAME_KEY
+import net.thunderbird.feature.mail.folder.api.data.repository.FolderQueryRepository
 import net.thunderbird.legacy.logging.Log
 import org.xmlpull.v1.XmlSerializer
 
@@ -25,12 +26,12 @@ class SettingsExporter(
     private val contentResolver: ContentResolver,
     private val preferences: Preferences,
     private val folderSettingsProvider: FolderSettingsProvider,
-    private val folderRepository: FolderRepository,
+    private val folderQueryRepository: FolderQueryRepository,
     private val notificationSettingsUpdater: NotificationSettingsUpdater,
     private val filePrefixProvider: FilePrefixProvider,
 ) {
     @Throws(SettingsImportExportException::class)
-    fun exportToUri(includeGlobals: Boolean, accountUuids: Set<String>, uri: Uri) {
+    suspend fun exportToUri(includeGlobals: Boolean, accountUuids: Set<String>, uri: Uri) {
         try {
             contentResolver.openOutputStream(uri, "wt")!!.use { outputStream ->
                 exportPreferences(outputStream, includeGlobals, accountUuids, includePasswords = false)
@@ -41,7 +42,7 @@ class SettingsExporter(
     }
 
     @Throws(SettingsImportExportException::class)
-    fun exportPreferences(
+    suspend fun exportPreferences(
         outputStream: OutputStream,
         includeGlobals: Boolean,
         accountUuids: Set<String>,
@@ -123,7 +124,7 @@ class SettingsExporter(
     }
 
     @Suppress("LongMethod", "CyclomaticComplexMethod", "NestedBlockDepth")
-    private fun writeAccount(
+    private suspend fun writeAccount(
         serializer: XmlSerializer,
         account: LegacyAccountDto,
         prefs: Map<String, Any>,
@@ -242,7 +243,7 @@ class SettingsExporter(
             }
         }
 
-        writeFolderNameSettings(account, folderRepository, serializer)
+        writeFolderNameSettings(account, folderQueryRepository, serializer)
 
         serializer.endTag(null, SETTINGS_ELEMENT)
 
@@ -297,19 +298,29 @@ class SettingsExporter(
         }
     }
 
-    private fun writeFolderNameSettings(
+    private suspend fun writeFolderNameSettings(
         account: LegacyAccountDto,
-        folderRepository: FolderRepository,
+        folderQueryRepository: FolderQueryRepository,
         serializer: XmlSerializer,
     ) {
-        fun writeFolderNameSetting(
+        suspend fun writeFolderNameSetting(
             key: String,
             folderId: Long?,
             importedFolderServerId: String?,
             writeEmptyValue: Boolean = false,
         ) {
             val folderServerId = folderId?.let {
-                folderRepository.getFolderServerId(account.id, folderId)
+                folderQueryRepository.findFolderServerIdById(account.id, folderId)
+                    .fold(
+                        onSuccess = { it },
+                        onFailure = { error ->
+                            when (val throwable = error.throwable) {
+                                null -> null
+                                else -> throw throwable
+                            }
+                        },
+                    )
+                    ?.serverId
             } ?: importedFolderServerId
 
             if (folderServerId != null) {
