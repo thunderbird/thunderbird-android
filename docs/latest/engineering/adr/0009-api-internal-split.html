@@ -37,7 +37,7 @@
             const path_to_root = "../../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../../searchindex-ac364af5.js";
+            window.path_to_searchindex_js = "../../searchindex-9f093b94.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../../toc-0f8055a0.js"></script>
@@ -207,8 +207,8 @@ content rules for both API and internal code — for both feature and core modul
 <li><code>:core:*:impl</code> modules are renamed to <code>:core:*:internal</code>, marking them as private implementation details.</li>
 <li>Other modules must only declare dependencies on <code>:feature:*:api</code> or <code>:core:*:api</code> of other areas. Depending on
 <code>:feature:*:internal</code> or <code>:core:*:internal</code> from a different area is prohibited.</li>
-<li>Binding of contracts to implementations happens in central composition modules (application assembly): <code>:app-common</code>
-and the app-specific modules <code>:app-k9mail</code> and <code>:app-thunderbird</code>.</li>
+<li>Binding of contracts to implementations happens in central composition modules (application assembly): the KMP
+<code>:app-composition</code> module, <code>:app-common</code>, and the app-specific modules <code>:app-k9mail</code> and <code>:app-thunderbird</code>.</li>
 <li><strong>Strict Visibility</strong>: Within <code>:feature:*:internal</code> and <code>:core:*:internal</code> modules, use the <code>internal</code> visibility modifier for all code that is not strictly required to be <code>public</code> for dependency injection or application composition. This ensures that implementation details are not accessible directly even when a module has a dependency on the <code>internal</code> module.</li>
 </ul>
 <h3 id="what-goes-into-api-vs-internal"><a class="header" href="#what-goes-into-api-vs-internal">What goes into API vs. Internal</a></h3>
@@ -217,7 +217,7 @@ and the app-specific modules <code>:app-k9mail</code> and <code>:app-thunderbird
 <li>Public interfaces and abstractions other features depend on (e.g., repositories, use cases, service interfaces).</li>
 <li>Data contracts exchanged across features (DTOs/value objects).</li>
 <li>Navigation contracts and events that other features can trigger/observe.</li>
-<li>DI entry points/interfaces needed by composition modules (<code>:app-common</code>, app modules).</li>
+<li>DI entry points/interfaces needed by composition modules (<code>:app-composition</code>, <code>:app-common</code>, app modules).</li>
 </ul>
 <p>Keep everything else in <code>internal</code>:</p>
 <ul>
@@ -305,7 +305,7 @@ kebab-case in package names.</li>
 <li><code>:feature:*:internal</code> and <code>:core:*:internal</code> dependencies are only allowed from:
 <ul>
 <li>the same area’s <code>api</code> module (when strictly necessary), and</li>
-<li>composition modules: <code>:app-common</code>, <code>:app-k9mail</code>, <code>:app-thunderbird</code>.</li>
+<li>composition modules: <code>:app-composition</code>, <code>:app-common</code>, <code>:app-k9mail</code>, <code>:app-thunderbird</code>.</li>
 </ul>
 </li>
 <li>Build logic will add a check that fails the build if a module depends on a <code>:*:internal</code> outside of these exceptions.</li>
@@ -328,7 +328,8 @@ kebab-case in package names.</li>
 <li>Update imports and references after package moves.</li>
 <li>Add build-plugin check to disallow external dependencies on <code>:feature:*:internal</code> and <code>:core:*:internal</code> (enforced
 in the root build).</li>
-<li>Move all composition wiring (DI, factory bindings, navigation registrations) to <code>:app-common</code> or app modules.</li>
+<li>Move shared KMP composition wiring to <code>:app-composition</code>; keep platform-specific wiring in <code>:app-common</code> or app
+modules.</li>
 <li>When in doubt, prefer starting in <code>internal</code>. Promote types to <code>api</code> only once they’re needed and stable.</li>
 </ol>
 <h2 id="outcomes"><a class="header" href="#outcomes">Outcomes</a></h2>
@@ -347,7 +348,7 @@ in the root build).</li>
 <li>Slight learning overhead for contributors until the pattern becomes familiar.</li>
 <li>Temporary churn in open branches during the migration window.</li>
 </ul>
-<footer id="last-change">Last change: <time datetime="2026-09-29">2026-09-29</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/0e1137f">0e1137f</a></footer>
+<footer id="last-change">Last change: <time datetime="2026-10-01">2026-10-01</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/0927fce">0927fce</a></footer>
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">

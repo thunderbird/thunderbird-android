@@ -37,7 +37,7 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-ac364af5.js";
+            window.path_to_searchindex_js = "../searchindex-9f093b94.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../toc-0f8055a0.js"></script>
@@ -194,9 +194,10 @@ developers to understand the codebase structure and ensure consistent architectu
         APP_K9["`**:app-k9mail**&lt;br&gt;K-9 Mail`"]
     end
 
-    subgraph COMMON[App Common Module]
+    subgraph COMPOSITION[Composition Modules]
         direction TB
-        COMMON_APP["`**:app-common**&lt;br&gt;Integration Code`"]
+        APP_COMPOSITION["`**:app-composition**&lt;br&gt;KMP Bindings`"]
+        COMMON_APP["`**:app-common**&lt;br&gt;Android and Legacy Integration`"]
     end
 
     subgraph FEATURE[Feature Modules]
@@ -232,17 +233,18 @@ developers to understand the codebase structure and ensure consistent architectu
         LEGACY_BACKEND["`**:backend**`"]
     end
 
-    APP ~~~ COMMON
-    COMMON ~~~ FEATURE
+    APP ~~~ COMPOSITION
+    COMPOSITION ~~~ FEATURE
     FEATURE ~~~ CORE
     CORE ~~~ LIBRARY
     LIBRARY ~~~ LEGACY
 
-    APP --&gt; |depends on| COMMON
-    COMMON --&gt; |depends on| FEATURE
+    APP --&gt; |depends on| COMPOSITION
+    COMMON_APP --&gt; APP_COMPOSITION
+    APP_COMPOSITION --&gt; |depends on| FEATURE
     FEATURE --&gt; |depends on| CORE
     CORE --&gt; |depends on| LIBRARY
-    COMMON --&gt; |depends on&lt;br&gt;as legacy bridge| LEGACY
+    COMMON_APP --&gt; |depends on&lt;br&gt;as legacy bridge| LEGACY
 
     classDef app fill:#d9e9ff,stroke:#000000,color:#000000
     classDef app_module fill:#4d94ff,stroke:#000000,color:#000000
@@ -262,8 +264,8 @@ developers to understand the codebase structure and ensure consistent architectu
 
     class APP app
     class APP_TB,APP_K9 app_module
-    class COMMON common
-    class COMMON_APP common_module
+    class COMPOSITION common
+    class APP_COMPOSITION,COMMON_APP common_module
     class FEATURE feature
     class FEATURE_ACCOUNT,FEATURE_SETTINGS,FEATURE_ONBOARDING,FEATURE_MAIL,FEATURE_NAV_DRAWER feature_module
     class CORE core
@@ -284,81 +286,55 @@ developers to understand the codebase structure and ensure consistent architectu
 <li>Integration with feature modules solely for that application</li>
 <li>App-specific themes and resources (strings, themes, etc.)</li>
 </ul>
+<h4 id="-app-composition-module"><a class="header" href="#-app-composition-module">🧩 App Composition Module</a></h4>
+<p>The KMP <code>app-composition</code> module is the central integration point for shared, platform-independent application wiring.
+It binds feature and core contracts to their internal implementations for reuse by Android and future application
+targets.</p>
+<h5 id="what-should-go-in-app-composition"><a class="header" href="#what-should-go-in-app-composition">What Should Go in App Composition</a></h5>
+<p>The <code>app-composition</code> module should contain:</p>
+<ol>
+<li><strong>Shared Application Logic</strong>: Platform-independent code needed by all application targets but not owned by one
+feature. This avoids duplication between application targets.</li>
+<li><strong>Feature Integration Code</strong>: Wiring that coordinates features, such as account and mail, while keeping their
+implementations separate.</li>
+<li><strong>Shared Dependency Injection Setup</strong>: Koin modules that bind KMP-capable feature and core implementations
+consistently for every application target.</li>
+<li><strong>Compile-Time Application Assembly</strong>: Shared assembled structures, such as the application database schema.</li>
+</ol>
+<h5 id="what-should-not-go-in-app-composition"><a class="header" href="#what-should-not-go-in-app-composition">What Should Not Go in App Composition</a></h5>
+<p>The following should not be placed in <code>app-composition</code>:</p>
+<ol>
+<li><strong>Feature-Specific Business Logic</strong>: Mail composition logic, for example, belongs in <code>feature:mail</code>.</li>
+<li><strong>Reusable UI Components</strong>: A shared button belongs in <code>core:ui</code>; mail-specific UI belongs in <code>feature:mail</code>.</li>
+<li><strong>Platform APIs</strong>: Android or other platform-specific setup belongs in the relevant application integration module.</li>
+<li><strong>Legacy Dependencies</strong>: Legacy mail code remains in its legacy module and is exposed through a bridge in
+<code>app-common</code>.</li>
+<li><strong>New Feature Implementations</strong>: A calendar implementation, for example, belongs in <code>feature:calendar</code> and is only
+bound here.</li>
+</ol>
 <h4 id="-app-common-module"><a class="header" href="#-app-common-module">🔄 App Common Module</a></h4>
-<p>The <code>app-common</code> module acts as the central hub for shared code between both applications. This module serves as the
-primary “glue” that binds various <code>feature</code> modules together, providing a seamless integration point. It also contains:</p>
-<ul>
-<li>Shared application logic</li>
-<li>Feature coordination</li>
-<li>Common dependency injection setup</li>
-<li>Legacy code bridges and adapters</li>
-</ul>
-<h5 id="what-should-go-in-app-common"><a class="header" href="#what-should-go-in-app-common">What Should Go in App Common</a></h5>
-<p>The app-common module should contain:</p>
+<p>The Android <code>app-common</code> module consumes <code>app-composition</code> and provides:</p>
 <ol>
-<li><strong>Shared Application Logic</strong>: Code that’s needed by both app modules but isn’t specific to any one feature.
-<ul>
-<li>Example: <code>BaseApplication</code> provides common application initialization, language management, and theme setup.</li>
-<li>This avoids duplication between app-thunderbird and app-k9mail.</li>
-</ul>
-</li>
-<li><strong>Feature Integration Code</strong>: Code that connects different features together.
-<ul>
-<li>Example: Code that coordinates between account and mail features.</li>
-<li>This maintains separation between features while allowing them to work together.</li>
-</ul>
-</li>
-<li><strong>Common Dependency Injection Setup</strong>: Koin modules that configure dependencies shared by both applications.
-<ul>
-<li>Example: <code>AppCommonModule</code> includes legacy modules and app-common specific modules.</li>
-<li>This ensures consistent dependency configuration across both applications.</li>
-</ul>
-</li>
-<li><strong>Legacy Code Bridges/Adapters</strong>: Implementations of interfaces defined in feature modules that delegate to legacy code.
-<ul>
-<li>Example: <code>DefaultAccountProfileLocalDataSource</code> implements <code>AccountProfileLocalDataSource</code> from <code>feature:account:core</code> and delegates to legacy account code.</li>
-<li>These bridges isolate legacy code and prevent direct dependencies on it from feature modules.</li>
-</ul>
-</li>
+<li><strong>Android Application Setup</strong>: Shared Android initialization, lifecycle, resources, and platform services. For
+example, <code>BaseApplication</code> provides common Android application initialization.</li>
+<li><strong>Legacy Code Bridges and Adapters</strong>: Implementations of modern interfaces that delegate to <code>legacy:*</code>, <code>mail:*</code>, or
+<code>backend:*</code>.</li>
+<li><strong>Android and Legacy Dependency Injection</strong>: Bindings that cannot yet be shared across KMP targets.</li>
 </ol>
-<h5 id="what-should-not-go-in-app-common"><a class="header" href="#what-should-not-go-in-app-common">What Should NOT Go in App Common</a></h5>
-<p>The following should NOT be placed in app-common:</p>
+<p>For example, <code>DefaultAccountProfileLocalDataSource</code> implements an account interface and delegates to legacy account
+storage. This bridge remains in <code>app-common</code> until a KMP implementation replaces it.</p>
+<h5 id="decision-criteria-for-new-code"><a class="header" href="#decision-criteria-for-new-code">Decision Criteria for New Code</a></h5>
+<p>When deciding where code belongs, consider:</p>
 <ol>
-<li><strong>Feature-Specific Business Logic</strong>: Business logic that belongs to a specific feature domain should be in that feature’s module.
-<ul>
-<li>Example: Mail composition logic should be in <code>feature:mail</code>, not in app-common.</li>
-<li>This maintains clear separation of concerns and feature independence.</li>
-</ul>
-</li>
-<li><strong>UI Components</strong>: UI components should be in core:ui or in feature modules.
-<ul>
-<li>Example: A custom button component should be in core:ui, while a mail-specific UI component should be in feature:mail.</li>
-<li>This ensures proper layering and reusability.</li>
-</ul>
-</li>
-<li><strong>Direct Legacy Code</strong>: Legacy code should remain in legacy modules, with app-common providing bridges.
-<ul>
-<li>Example: Don’t move legacy mail code into app-common; instead, create a bridge in app-common.</li>
-<li>This maintains the separation between legacy and modern code.</li>
-</ul>
-</li>
-<li><strong>New Feature Implementations</strong>: New features should be implemented in feature modules, not in app-common.
-<ul>
-<li>Example: A new calendar feature should be in <code>feature:calendar</code>, not in app-common.</li>
-<li>This ensures features can evolve independently.</li>
-</ul>
-</li>
+<li><strong>Is it shared application wiring and KMP-compatible?</strong> Put it in <code>app-composition</code>.</li>
+<li><strong>Is it Android-specific?</strong> Put it in <code>app-common</code> or an Android application module.</li>
+<li><strong>Does it bridge to legacy code?</strong> Put the bridge in <code>app-common</code>.</li>
+<li><strong>Is it specific to one feature domain?</strong> Put it in that feature module.</li>
+<li><strong>Is it reusable UI?</strong> Put it in <code>core:ui</code> or the owning feature.</li>
+<li><strong>Is it application-specific?</strong> Put it in <code>app-k9mail</code> or <code>app-thunderbird</code>.</li>
 </ol>
-<h5 id="decision-criteria-for-new-contributors"><a class="header" href="#decision-criteria-for-new-contributors">Decision Criteria for New Contributors</a></h5>
-<p>When deciding whether code belongs in app-common or a feature module, consider:</p>
-<ol>
-<li><strong>Is it shared between both applications?</strong> If yes, it might belong in app-common.</li>
-<li><strong>Is it specific to a single feature domain?</strong> If yes, it belongs in that feature module.</li>
-<li><strong>Does it bridge to legacy code?</strong> If yes, it belongs in app-common.</li>
-<li><strong>Does it coordinate between multiple features?</strong> If yes, it might belong in app-common.</li>
-<li><strong>Is it a new feature implementation?</strong> If yes, create a new feature module instead.</li>
-</ol>
-<p>Remember that app-common should primarily contain integration code, shared application logic, and bridges to legacy code. Feature-specific logic should be in feature modules, even if used by both applications.</p>
+<p>Platform-independent bindings should move from <code>app-common</code> to <code>app-composition</code> when their implementations and full
+dependency graphs support the required KMP targets.</p>
 <h4 id="-feature-modules"><a class="header" href="#-feature-modules">✨ Feature Modules</a></h4>
 <p>The <code>feature:*</code> modules are independent and encapsulate distinct user-facing feature domains. They are designed to be
 reusable and can be integrated into any application module as needed.</p>
@@ -393,24 +369,26 @@ These modules should not be used for new development. The goal is to migrate the
 new structure over time.</p>
 <p>Similarly the <code>mail:*</code> and <code>backend:*</code> modules are legacy modules that contain the old mail and backend implementations.
 These modules are being gradually replaced by the new feature modules.</p>
-<p>The <code>legacy</code> modules are integrated into the <code>app-common</code> module, allowing them to be used by other parts of the app.
-The glue code for bridging legacy code to the new modular architecture is also located in the <code>app-common</code> module. See
-<a href="legacy-module-integration.html">module legacy integration</a> for more details.</p>
+<p>The <code>legacy</code> modules and their bridges remain isolated in <code>app-common</code>. Shared modern bindings belong in
+<code>app-composition</code>. See <a href="legacy-module-integration.html">module legacy integration</a> for the migration path.</p>
 <h2 id="-module-dependencies"><a class="header" href="#-module-dependencies">🔗 Module Dependencies</a></h2>
 <p>The module dependency diagram below illustrates how different modules interact with each other in the project,
 showing the dependencies and integration points between modules:</p>
 <ul>
-<li><strong>App Modules</strong>: Depend on the App Common module for shared functionality and selectively integrate feature modules</li>
-<li><strong>App Common</strong>: Integrates various feature modules to provide a cohesive application</li>
-<li><strong>Feature Modules</strong>: Use core modules and libraries for their implementation, may depend on other feature api modules</li>
+<li><strong>App Modules</strong>: Depend on application composition and selectively integrate app-specific feature modules</li>
+<li><strong>App Composition</strong>: Binds shared KMP feature and core implementations</li>
+<li><strong>App Common</strong>: Adds Android integration and legacy bridges</li>
+<li><strong>Feature Modules</strong>: Use core modules and libraries for their implementation, may depend on other feature API modules</li>
 <li><strong>App-Specific Features</strong>: Some features are integrated directly by specific apps (K-9 Mail or Thunderbird)</li>
 </ul>
 <p>Rules for module dependencies:</p>
 <ul>
 <li><strong>One-Way Dependencies</strong>: Modules should not depend on each other in a circular manner</li>
 <li><strong>API-Internal Separation</strong>: Other modules must only declare dependencies on <code>:feature:*:api</code> or <code>:core:*:api</code> of other areas. Depending on <code>:feature:*:internal</code> or <code>:core:*:internal</code> from a different area is prohibited. See <a href="module-structure.html#module-structure">module structure</a>.</li>
-<li><strong>Feature Integration</strong>: Features should be integrated through the <code>app-common</code> module, which acts as the central integration hub</li>
-<li><strong>Dependency Direction</strong>: Dependencies should flow from app modules to common, then to features, and finally to core and libraries</li>
+<li><strong>Feature Integration</strong>: Shared KMP bindings belong in <code>app-composition</code>; Android and legacy bindings belong in
+<code>app-common</code></li>
+<li><strong>Dependency Direction</strong>: Dependencies should flow from app modules through composition to features, core, and
+libraries</li>
 </ul>
 <pre class="mermaid">graph TB
     subgraph APP[App Modules]
@@ -419,9 +397,10 @@ showing the dependencies and integration points between modules:</p>
         APP_K9["`**:app-k9mail**&lt;br&gt;K-9 Mail`"]
     end
 
-    subgraph COMMON[App Common Module]
+    subgraph COMPOSITION[Composition Modules]
         direction TB
-        COMMON_APP["`**:app-common**&lt;br&gt;Integration Code`"]
+        APP_COMPOSITION["`**:app-composition**&lt;br&gt;KMP Bindings`"]
+        COMMON_APP["`**:app-common**&lt;br&gt;Android and Legacy Integration`"]
     end
 
     subgraph FEATURE[Feature Modules]
@@ -447,10 +426,11 @@ showing the dependencies and integration points between modules:</p>
 
     APP_K9 --&gt; |depends on| COMMON_APP
     APP_TB --&gt; |depends on| COMMON_APP
-    COMMON_APP --&gt; |uses| FEATURE_ACCOUNT_API
-    COMMON_APP --&gt; |injects/uses internal of| FEATURE_ACCOUNT_INTERNAL
+    COMMON_APP --&gt; APP_COMPOSITION
+    APP_COMPOSITION --&gt; |uses| FEATURE_ACCOUNT_API
+    APP_COMPOSITION --&gt; |injects/uses internal of| FEATURE_ACCOUNT_INTERNAL
     FEATURE_ACCOUNT_INTERNAL --&gt; FEATURE_ACCOUNT_API
-    COMMON_APP --&gt; |uses| FEATURE_SETTINGS_API
+    APP_COMPOSITION --&gt; |uses| FEATURE_SETTINGS_API
     APP_K9 --&gt; |injects/uses internal of| FEATURE_K9
     APP_TB --&gt; |injects/uses internal of| FEATURE_TB
     FEATURE_ACCOUNT_API --&gt; |uses| CORE_UI_API
@@ -476,10 +456,10 @@ showing the dependencies and integration points between modules:</p>
 
     class APP app
     class APP_TB,APP_K9 app_module
-    class COMMON common
-    class COMMON_APP common_module
+    class COMPOSITION common
+    class APP_COMPOSITION,COMMON_APP common_module
     class FEATURE feature
-    class FEATURE_ACCOUNT_API,FEATURE_ACCOUNT_INTERNAL,FEATURE_SETTINGS_API,FEATURE_MAIL feature_module
+    class FEATURE_ACCOUNT_API,FEATURE_ACCOUNT_INTERNAL,FEATURE_SETTINGS_API feature_module
     class CORE core
     class CORE_UI_API,CORE_COMMON_API core_module
     class LIBRARY library
@@ -491,7 +471,7 @@ showing the dependencies and integration points between modules:</p>
     class FEATURE_TB featureTB
 </pre>
 
-<footer id="last-change">Last change: <time datetime="2026-09-29">2026-09-29</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/0e1137f">0e1137f</a></footer>
+<footer id="last-change">Last change: <time datetime="2026-10-01">2026-10-01</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/0927fce">0927fce</a></footer>
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">

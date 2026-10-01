@@ -37,7 +37,7 @@
             const path_to_root = "../../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../../searchindex-ac364af5.js";
+            window.path_to_searchindex_js = "../../searchindex-9f093b94.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../../toc-0f8055a0.js"></script>
@@ -198,7 +198,8 @@ support. It composes feature schema contributions deterministically and owns one
 history.</li>
 <li>The internal mail database module owns mail schema, mappings, local data sources, and repository implementations.</li>
 <li>Focused mail repository contracts hide both legacy and global storage from callers.</li>
-<li><code>app-common</code> or an app module binds repository contracts to the active implementation.</li>
+<li><code>app-composition</code> binds shared repository contracts to their active KMP implementations. Android or legacy-backed
+bindings remain in <code>app-common</code> or an app module.</li>
 </ul>
 <p>The boundary follows ADR 0009. Mail schema and implementation types remain internal. <code>core:database</code> does not own mail
 schema, mail domain types, or mail repositories.</p>
@@ -396,7 +397,7 @@ conversations</li>
 <li>Which Room driver and locations apply on Android and JVM desktop?</li>
 <li>How long must compatibility mappings support pre-cutover external message references after migration?</li>
 </ul>
-<footer id="last-change">Last change: <time datetime="2026-09-29">2026-09-29</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/0e1137f">0e1137f</a></footer>
+<footer id="last-change">Last change: <time datetime="2026-10-01">2026-10-01</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/0927fce">0927fce</a></footer>
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">

@@ -37,7 +37,7 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-ac364af5.js";
+            window.path_to_searchindex_js = "../searchindex-9f093b94.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../toc-0f8055a0.js"></script>
@@ -201,9 +201,9 @@ operation. A caller depends on the narrowest focused contracts it needs.</p>
 <p>Expose a repository contract from an <code>:api</code> module only when another area needs that stable contract. Place the shared
 contract, criteria, errors, and domain models in that module. Keep repository implementations, data sources, mappers,
 and storage models in the area’s <code>:internal</code> module.</p>
-<p>Bind the contract to its implementation in <code>:app-common</code> or an app-specific composition module. Dependency injection
-then provides the implementation when a caller requests the contract, without exposing the implementation to that
-caller. This maintains the API/internal boundary defined by
+<p>Bind shared KMP contracts to their implementations in <code>:app-composition</code>. Keep Android, legacy, and app-specific
+bindings in <code>:app-common</code> or an app module. Dependency injection then provides the implementation when a caller requests
+the contract, without exposing the implementation to that caller. This maintains the API/internal boundary defined by
 <a href="../engineering/adr/0009-api-internal-split.html">ADR-0009</a>.</p>
 <h2 id="scope-and-identifiers"><a class="header" href="#scope-and-identifiers">Scope and identifiers</a></h2>
 <p>Make the identifiers that scope every operation explicit. For example, an operation on a folder within an account takes
@@ -427,7 +427,7 @@ may use any storage technology, as long as it maintains the contract.</p>
 <p>Test consumers with fakes that implement the focused contract. Cover successful values, nullable absence, empty
 collections, and each expected domain failure. Repository implementations must test account filtering and the mapping
 of expected data-source failures to domain errors.</p>
-<footer id="last-change">Last change: <time datetime="2026-09-29">2026-09-29</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/0e1137f">0e1137f</a></footer>
+<footer id="last-change">Last change: <time datetime="2026-10-01">2026-10-01</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/0927fce">0927fce</a></footer>
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">

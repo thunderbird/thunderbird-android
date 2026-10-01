@@ -37,7 +37,7 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-ac364af5.js";
+            window.path_to_searchindex_js = "../searchindex-9f093b94.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../toc-0f8055a0.js"></script>
@@ -199,6 +199,7 @@ directly depending on it.</p>
 <li><strong>Legacy Modules</strong>: <code>legacy:*</code>, <code>mail:*</code>, and <code>backend:*</code> modules containing existing functionality</li>
 <li><strong>Interfaces</strong>: Well-defined interfaces in <code>feature:*:api</code> and <code>core:*</code> modules</li>
 <li><strong>App Common Bridge</strong>: The <code>:app-common</code> module that implements these interfaces and delegates to legacy code</li>
+<li><strong>App Composition</strong>: The <code>:app-composition</code> module that binds platform-independent modern implementations</li>
 <li><strong>Dependency Injection</strong>: Configuration that provides the appropriate implementations to modules</li>
 </ol>
 <h2 id="integration-approach-the-app-common-bridge"><a class="header" href="#integration-approach-the-app-common-bridge">Integration Approach “<em>The App Common Bridge</em>”</a></h2>
@@ -228,7 +229,9 @@ this role, <code>app-common</code> is responsible for:</p>
 <li><strong>Delegation to Legacy</strong>: Internally, these implementations within <code>:app-common</code> delegate the actual work to the code residing in the legacy modules (e.g., <code>legacy:*</code>, <code>mail:*</code>, <code>backend:*</code>).</li>
 <li><strong>Dependency Injection</strong>: The application’s dependency injection framework is configured to provide instances of these <code>:app-common</code> bridge implementations when a newer module requests an implementation of the interface.</li>
 </ol>
-<p>This pattern ensures that newer modules remain decoupled from the specifics of legacy code.</p>
+<p>This pattern ensures that newer modules remain decoupled from the specifics of legacy code. A binding remains in
+<code>:app-common</code> while it requires Android or legacy dependencies. Once a modern implementation and all of its dependencies
+support the required KMP targets, its shared binding moves to <code>:app-composition</code>.</p>
 <p>The following diagram illustrates this pattern, showing how both a feature’s own implementation and <code>app-common</code> can relate to the interfaces, with <code>app-common</code> specifically bridging to legacy systems:</p>
 <pre class="mermaid">graph TB
     subgraph FEATURE[Feature Modules]
@@ -528,8 +531,9 @@ this role, <code>app-common</code> is responsible for:</p>
 <li><strong>Define Interfaces</strong>: Ensure clear interfaces are defined (typically in feature <code>api</code> modules) for this functionality.</li>
 <li><strong>Entity Modeling</strong>: Create proper domain entity models that represent the business objects as immutable data classes.</li>
 <li><strong>Implement in New Modules</strong>: Re-implement the functionality within new, dedicated feature <code>internal</code> modules or core modules.</li>
-<li><strong>Update Bridge (Optional)</strong>: If <code>:app-common</code> was bridging to this specific legacy code, its bridge implementation can be updated or removed.</li>
-<li><strong>Switch DI Configuration</strong>: Update the dependency injection to provide the new modern implementation instead of the legacy bridge.</li>
+<li><strong>Update Bridge (Optional)</strong>: If <code>:app-common</code> was bridging to this specific legacy code, remove or reduce the bridge.</li>
+<li><strong>Move Shared Binding</strong>: Bind the KMP implementation in <code>:app-composition</code>; keep platform-specific wiring in the
+relevant application module.</li>
 <li><strong>Retire Legacy Code</strong>: Once no longer referenced, the corresponding legacy code can be safely removed.</li>
 </ol>
 <h3 id="migration-example"><a class="header" href="#migration-example">Migration Example</a></h3>
@@ -551,8 +555,9 @@ this role, <code>app-common</code> is responsible for:</p>
 <p>This approach ensures a smooth transition with minimal disruption to the application’s functionality.</p>
 <h2 id="dependency-direction"><a class="header" href="#dependency-direction">Dependency Direction</a></h2>
 <p>A strict dependency rule is enforced: <strong>New modules (features, core) must not directly depend on legacy modules.</strong>
-The dependency flow is always from newer modules to interfaces, with <code>:app-common</code> providing the implementation.
-If <code>:app-common</code> bridges to legacy code, that is an internal detail of <code>:app-common</code>.</p>
+The dependency flow is always from newer modules to interfaces. <code>:app-composition</code> binds modern KMP implementations,
+while <code>:app-common</code> binds Android or legacy-backed implementations. Legacy access remains an internal detail of
+<code>:app-common</code>.</p>
 <p>The legacy module integration diagram below explains how legacy code is integrated into the new modular architecture:</p>
 <pre class="mermaid">graph TB
     subgraph APP[App Modules]
@@ -633,7 +638,7 @@ If <code>:app-common</code> bridges to legacy code, that is an internal detail o
     class LEGACY_CODE legacy_module
 </pre>
 
-<footer id="last-change">Last change: <time datetime="2026-09-29">2026-09-29</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/0e1137f">0e1137f</a></footer>
+<footer id="last-change">Last change: <time datetime="2026-10-01">2026-10-01</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/0927fce">0927fce</a></footer>
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">

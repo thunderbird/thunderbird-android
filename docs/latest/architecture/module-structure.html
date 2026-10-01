@@ -37,7 +37,7 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-ac364af5.js";
+            window.path_to_searchindex_js = "../searchindex-9f093b94.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../toc-0f8055a0.js"></script>
@@ -240,7 +240,7 @@ contain any implementation details.</p>
 </ul>
 <h3 id="-internal-module"><a class="header" href="#-internal-module">⚙️ Internal Module</a></h3>
 <p>The internal module depends on the API module but must not be depended upon by other modules (except for
-composition modules: <code>:app-common</code>, <code>:app-k9mail</code>, and <code>:app-thunderbird</code>).</p>
+composition modules: <code>:app-composition</code>, <code>:app-common</code>, <code>:app-k9mail</code>, and <code>:app-thunderbird</code>).</p>
 <p>The internal module contains:</p>
 <ul>
 <li><strong>Interface implementations</strong>: Concrete implementations of the interfaces defined in the API module</li>
@@ -292,7 +292,7 @@ modules and named accordingly:</p>
 <h4 id="implementation-best-practices"><a class="header" href="#implementation-best-practices">Implementation Best Practices</a></h4>
 <ul>
 <li><strong>Encapsulation</strong>: Keep implementation details hidden from consumers</li>
-<li><strong>Strict Visibility Control</strong>: Within an <code>internal</code> module, everything should be marked with the <code>internal</code> visibility modifier by default. Only code explicitly required for dependency injection (e.g., Koin modules) or composition (if absolutely necessary) should remain <code>public</code>. This prevents accidental usage of implementation details even in modules that depend on the <code>internal</code> module (like <code>:app-common</code>).</li>
+<li><strong>Strict Visibility Control</strong>: Within an <code>internal</code> module, everything should be marked with the <code>internal</code> visibility modifier by default. Only code explicitly required for dependency injection (e.g., Koin modules) or composition (if absolutely necessary) should remain <code>public</code>. This prevents accidental usage of implementation details even in modules that depend on the <code>internal</code> module (like <code>:app-composition</code> or <code>:app-common</code>).</li>
 <li><strong>Testability</strong>: Design internal code to be easily testable</li>
 <li><strong>Dependency injection</strong>: Use constructor injection for dependencies</li>
 <li><strong>Error handling</strong>: Implement robust error handling according to API contracts</li>
@@ -431,9 +431,10 @@ the dependencies and integration points between modules.</p>
         APP_K9["`**:app-k9mail**&lt;br&gt;K-9 Mail`"]
     end
 
-    subgraph COMMON[App Common Module]
+    subgraph COMPOSITION[Composition Modules]
         direction TB
-        COMMON_APP["`**:app-common**&lt;br&gt;Integration Code`"]
+        APP_COMPOSITION["`**:app-composition**&lt;br&gt;KMP Bindings`"]
+        COMMON_APP["`**:app-common**&lt;br&gt;Android and Legacy Integration`"]
     end
 
     subgraph FEATURE[Feature Modules]
@@ -459,10 +460,11 @@ the dependencies and integration points between modules.</p>
 
     APP_K9 --&gt; |depends on| COMMON_APP
     APP_TB --&gt; |depends on| COMMON_APP
-    COMMON_APP --&gt; |integrates| FEATURE1
-    COMMON_APP --&gt; |injects| FEATURE2
+    COMMON_APP --&gt; APP_COMPOSITION
+    APP_COMPOSITION --&gt; |integrates| FEATURE1
+    APP_COMPOSITION --&gt; |injects| FEATURE2
     FEATURE2 --&gt; FEATURE1
-    COMMON_APP --&gt; |integrates| FEATURE3
+    APP_COMPOSITION --&gt; |integrates| FEATURE3
     APP_K9 --&gt; |integrates| FEATURE_K9
     APP_TB --&gt; |integrates| FEATURE_TB
     FEATURE1 --&gt; |uses| CORE1
@@ -488,8 +490,8 @@ the dependencies and integration points between modules.</p>
 
     class APP app
     class APP_K9,APP_TB app_module
-    class COMMON common
-    class COMMON_APP common_module
+    class COMPOSITION common
+    class APP_COMPOSITION,COMMON_APP common_module
     class FEATURE feature
     class FEATURE1,FEATURE2,FEATURE3 feature_module
     class FEATURE_K9 featureK9
@@ -502,8 +504,9 @@ the dependencies and integration points between modules.</p>
 
 <h3 id="module-interaction-patterns"><a class="header" href="#module-interaction-patterns">Module Interaction Patterns</a></h3>
 <ul>
-<li><strong>App Modules</strong>: Depend on the App Common module for shared functionality and selectively integrate feature modules</li>
-<li><strong>App Common</strong>: Integrates various feature modules to provide a cohesive application</li>
+<li><strong>App Modules</strong>: Depend on application composition and selectively integrate app-specific feature modules</li>
+<li><strong>App Composition</strong>: Binds shared KMP feature and core implementations</li>
+<li><strong>App Common</strong>: Adds Android integration and legacy bridges</li>
 <li><strong>Feature Modules</strong>: Use core modules and libraries for their implementation, may depend on other feature API modules</li>
 <li><strong>App-Specific Features</strong>: Some features are integrated directly by specific apps (K-9 Mail or Thunderbird)</li>
 </ul>
@@ -520,18 +523,18 @@ the dependencies and integration points between modules.</p>
 <ul>
 <li>Other modules must only declare dependencies on <code>:feature:*:api</code> or <code>:core:*:api</code> of other areas.</li>
 <li>Depending on <code>:feature:*:internal</code> or <code>:core:*:internal</code> from a different area is prohibited.</li>
-<li>Binding of contracts to implementations happens in central composition modules: <code>:app-common</code>, <code>:app-k9mail</code>, and <code>:app-thunderbird</code>.</li>
+<li>Binding of contracts to implementations happens in central composition modules: <code>:app-composition</code>, <code>:app-common</code>, <code>:app-k9mail</code>, and <code>:app-thunderbird</code>.</li>
 </ul>
 </li>
 <li><strong>Feature Integration</strong>:
 <ul>
-<li>Features should be integrated through the App Common module, which acts as a central hub</li>
+<li>Shared KMP bindings belong in <code>:app-composition</code>; Android and legacy integration belongs in <code>:app-common</code></li>
 <li>Direct dependencies between feature internal modules should be avoided, or limited to API modules</li>
 </ul>
 </li>
 <li><strong>Dependency Direction</strong>:
 <ul>
-<li>Dependencies should flow from app modules to common, then to features, and finally to core and libraries</li>
+<li>Dependencies should flow from app modules through composition to features, core, and libraries</li>
 <li>Higher-level modules should depend on lower-level modules, not vice versa</li>
 </ul>
 </li>
@@ -582,7 +585,7 @@ guidelines on when to create new modules and how to structure them.</p>
 <li><strong>Small Size</strong>: The functionality is small and simple</li>
 <li><strong>Single Responsibility</strong>: The functionality represents a single responsibility</li>
 </ol>
-<footer id="last-change">Last change: <time datetime="2026-09-29">2026-09-29</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/0e1137f">0e1137f</a></footer>
+<footer id="last-change">Last change: <time datetime="2026-10-01">2026-10-01</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/0927fce">0927fce</a></footer>
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
