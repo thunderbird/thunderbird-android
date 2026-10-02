@@ -59,6 +59,9 @@
     <string name="delete_action">Delete</string>
     <string name="archive_action">Archive</string>
     <string name="spam_action">Spam</string>
+    <string name="mark_as_read_action">Mark as read</string>
+    <string name="mark_as_unread_action">Mark unread</string>
+    <string name="toggle_unread_action">Mark as read/unread</string>
     <string name="forward_action">Forward</string>
     <string name="forward_as_attachment_action">Forward as attachment</string>
     <string name="edit_as_new_message_action">Edit as new message</string>
@@ -82,7 +85,6 @@
     <string name="account_settings_action">Account settings</string>
     <string name="remove_account_action">Remove account</string>
 
-    <string name="mark_as_read_action">Mark as read</string>
     <string name="send_alternate_action">Share</string>
     <string name="send_alternate_chooser_title">Choose sender</string>
 
@@ -108,7 +110,6 @@
     <string name="message_view_theme_action_dark">Switch to dark theme</string>
     <string name="message_view_theme_action_light">Switch to light theme</string>
 
-    <string name="mark_as_unread_action">Mark unread</string>
     <string name="read_receipt">Read receipt</string>
     <string name="read_receipt_enabled">Will request read receipt</string>
     <string name="read_receipt_disabled">Will not request read receipt</string>
@@ -901,7 +902,7 @@
     <string name="global_settings_colorize_missing_contact_pictures_summary">Colorize missing contact pictures</string>
 
     <string name="global_settings_messageview_visible_refile_actions_title">Visible message actions</string>
-    <string name="global_settings_messageview_visible_refile_actions_summary">Show selected actions in the message view menu</string>
+    <string name="global_settings_messageview_visible_refile_actions_summary">Show selected actions in the message view toolbar</string>
 
     <string name="loading_attachment">Loading attachment…</string>
     <string name="fetching_attachment_dialog_title_send">Sending message</string>
