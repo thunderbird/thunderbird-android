@@ -1,6 +1,7 @@
 package net.thunderbird.feature.navigation.drawer.dropdown.domain.usecase
 
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 import net.thunderbird.core.android.account.AccountRemovedListener
 import net.thunderbird.core.android.account.AccountsChangeListener
 import net.thunderbird.core.android.account.LegacyAccountDto
@@ -16,7 +17,7 @@ internal class FakeLegacyAccountDtoManager(
     }
 
     override fun getAccountsFlow(): Flow<List<LegacyAccountDto>> {
-        TODO("Not yet implemented")
+        return flowOf(accounts)
     }
 
     override fun getById(accountId: AccountId): LegacyAccountDto? {
