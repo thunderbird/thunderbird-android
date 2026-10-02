@@ -323,7 +323,7 @@ class DefaultFolderDetailsRepositoryTest {
         SetPushForFolderUseCase(
             messageStoreManager,
         ).invoke(
-            accountUuid = accountId.value.toString(),
+            accountUuid = accountId,
             folderId = inboxFolderDetails?.folder?.id ?: 0L,
             enabled = true,
         )
@@ -359,7 +359,7 @@ class DefaultFolderDetailsRepositoryTest {
 
         // Test
         val folderList = testSubject.invoke(
-            accountUuid = accountId.value.toString(),
+            accountUuid = accountId,
             folderType = K9FolderType.REGULAR
         )
         assertThat(folderList).isNotEmpty()
@@ -385,7 +385,7 @@ class DefaultFolderDetailsRepositoryTest {
 
         // Test
         val folderList = testSubject.invoke(
-            accountUuid = accountId.value.toString(),
+            accountUuid = accountId,
             folderType = K9FolderType.REGULAR
         )
         assertThat(folderList).isNotEmpty()
