@@ -38,28 +38,20 @@ This branch represents the stable version of Thunderbird. It is tested and suita
 
 ## Sample Release Timeline
 
-|           Milestone           |  Details  |  Date  |
-|-------------------------------|-----------|--------|
-| TfA 14.0a1 starts             |           | Aug 28 |
-| TfA 12.0                      |           | Sep 1  |
-| TfA 13.0b1                    |           | Sep 1  |
-| TfA 13.0bX                    | If needed | Sep 8  |
-| TfA 12.1                      | If needed | Sep 15 |
-| TfA 13.0bX                    | If needed | Sep 15 |
-| TfA 14.0a1 soft freeze starts |           | Sep 18 |
-| TfA 13.0bX                    | If needed | Sep 22 |
-| TfA merge 13.0 beta->release  |           | Sep 22 |
-| TfA merge 14.0 main->beta     |           | Sep 25 |
-| TfA 15.0a1 starts             |           | Sep 25 |
-| TfA 13.0                      |           | Sep 29 |
-| TfA 14.0b1                    |           | Sep 29 |
-
-## Soft Freeze
-
-A week long soft freeze occurs for the `main` branch prior to merging into the `beta` branch. During this time:
-
-- Risky code should not land
-- Disabled feature flags should not be enabled
+|          Milestone           |  Details  |  Date  |
+|------------------------------|-----------|--------|
+| TfA 14.0a1 starts            |           | Aug 28 |
+| TfA 12.0                     |           | Sep 1  |
+| TfA 13.0b1                   |           | Sep 1  |
+| TfA 13.0bX                   | If needed | Sep 8  |
+| TfA 12.1                     | If needed | Sep 15 |
+| TfA 13.0bX                   | If needed | Sep 15 |
+| TfA 13.0bX                   | If needed | Sep 22 |
+| TfA merge 13.0 beta->release |           | Sep 22 |
+| TfA merge 14.0 main->beta    |           | Sep 25 |
+| TfA 15.0a1 starts            |           | Sep 25 |
+| TfA 13.0                     |           | Sep 29 |
+| TfA 14.0b1                   |           | Sep 29 |
 
 ## Feature Flags
 

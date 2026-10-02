@@ -28,20 +28,13 @@ Do these as part of regular development:
 
 ## Before main → beta (developer responsibilities)
 
-> [!NOTE]
-> A one-week [Soft Freeze](../release/RELEASE.md#soft-freeze) occurs before merging `main` into `beta`.
-
-During soft freeze:
-- Avoid landing risky code changes
-- Do not enable feature flags that are currently disabled
-
 Goal: Changes on `main` are safe to expose to a broader audience.
 
 - Feature flags
   - Ensure flags match the [rules for beta](../release/RELEASE.md#feature-flags)
     - New features are disabled by default unless explicitly approved for beta
     - Not-ready features must be disabled
-  - Prepare and merge a PR on `main` with necessary flag changes (before soft freeze starts)
+  - Prepare and merge a PR on `main` with necessary flag changes
 - Translations
   - Ensure translation updates needed for your features are merged to `main`
   - If no Weblate PR is pending, trigger one and help review it (fix conflicts if needed)
