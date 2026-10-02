@@ -12,18 +12,24 @@ import assertk.assertions.isFalse
 import assertk.assertions.isInstanceOf
 import assertk.assertions.isTrue
 import assertk.assertions.prop
+import com.eygraber.uri.Uri
 import com.fsck.k9.K9RobolectricTest
 import com.fsck.k9.Preferences
 import java.util.UUID
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
+import net.thunderbird.feature.account.avatar.AvatarImageRepository
+import net.thunderbird.feature.account.storage.profile.AvatarDto
+import net.thunderbird.feature.account.storage.profile.AvatarTypeDto
 import org.junit.Before
 import org.junit.Test
+import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.never
 import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
+import org.mockito.kotlin.whenever
 
 class SettingsImporterTest : K9RobolectricTest() {
     private val unifiedInboxConfigurator = mock<UnifiedInboxConfigurator>()
@@ -339,4 +345,176 @@ class SettingsImporterTest : K9RobolectricTest() {
             settingsImporter.getImportStreamContents(inputStream)
         }.isInstanceOf<SettingsImportExportException>()
     }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun `importSettings() should import avatar image`() = runTest(UnconfinedTestDispatcher()) {
+        val tinyAvatar =
+            "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=="
+        val newAvatarUri = Uri.parse("file:///data/account_avatars/imported.png")
+        whenever { get<AvatarImageRepository>().update(any(), any()) }.thenReturn(newAvatarUri)
+
+        val accountUuid = UUID.randomUUID().toString()
+        val inputStream = avatarAccountXml(
+            accountUuid = accountUuid,
+            settingsValues = """<value key="avatarType">IMAGE</value>""",
+            avatarImageElement = "<avatar-image>$tinyAvatar</avatar-image>",
+        ).byteInputStream()
+
+        val results = settingsImporter.importSettings(inputStream, globalSettings = false, listOf(accountUuid))
+
+        assertThat(results.erroneousAccounts).isEmpty()
+        assertThat(results.importedAccounts).hasSize(1)
+
+        val account = importedAccount(results)
+        assertThat(account.avatar.avatarType).isEqualTo(AvatarTypeDto.IMAGE)
+        assertThat(account.avatar.avatarImageUri).isEqualTo(newAvatarUri.toString())
+    }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun `importSettings() should keep placeholder uri for image avatar without image`() =
+        runTest(UnconfinedTestDispatcher()) {
+            stubAvatarDecoding()
+
+            val accountUuid = UUID.randomUUID().toString()
+            val inputStream = avatarAccountXml(
+                accountUuid = accountUuid,
+                settingsValues = """
+                    <value key="avatarType">IMAGE</value>
+                    <value key="avatarImageUri">${AvatarDto.PLACEHOLDER_IMAGE_URI}</value>
+                """.trimIndent(),
+            ).byteInputStream()
+
+            val results = settingsImporter.importSettings(inputStream, globalSettings = false, listOf(accountUuid))
+
+            assertThat(results.erroneousAccounts).isEmpty()
+            assertThat(results.importedAccounts).hasSize(1)
+
+            val account = importedAccount(results)
+            assertThat(account.avatar.avatarType).isEqualTo(AvatarTypeDto.IMAGE)
+            assertThat(account.avatar.avatarImageUri).isEqualTo(AvatarDto.PLACEHOLDER_IMAGE_URI)
+        }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun `importSettings() should not set avatar uri for image avatar with null uri`() =
+        runTest(UnconfinedTestDispatcher()) {
+            stubAvatarDecoding()
+
+            val accountUuid = UUID.randomUUID().toString()
+            val inputStream = avatarAccountXml(
+                accountUuid = accountUuid,
+                settingsValues = """<value key="avatarType">IMAGE</value>""",
+            ).byteInputStream()
+
+            val results = settingsImporter.importSettings(inputStream, globalSettings = false, listOf(accountUuid))
+
+            assertThat(results.erroneousAccounts).isEmpty()
+            assertThat(results.importedAccounts).hasSize(1)
+
+            val account = importedAccount(results)
+            assertThat(account.avatar.avatarType).isEqualTo(AvatarTypeDto.IMAGE)
+            assertThat(account.avatar.avatarImageUri).isEqualTo(null)
+        }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun `importSettings() should not decode avatar image for monogram avatar`() =
+        runTest(UnconfinedTestDispatcher()) {
+            stubAvatarDecoding()
+
+            val accountUuid = UUID.randomUUID().toString()
+            val inputStream = avatarAccountXml(
+                accountUuid = accountUuid,
+                settingsValues = """
+                    <value key="avatarType">MONOGRAM</value>
+                    <value key="avatarMonogram">AB</value>
+                """.trimIndent(),
+            ).byteInputStream()
+
+            val results = settingsImporter.importSettings(inputStream, globalSettings = false, listOf(accountUuid))
+
+            assertThat(results.erroneousAccounts).isEmpty()
+            assertThat(results.importedAccounts).hasSize(1)
+
+            val account = importedAccount(results)
+            assertThat(account.avatar.avatarType).isEqualTo(AvatarTypeDto.MONOGRAM)
+            assertThat(account.avatar.avatarMonogram).isEqualTo("AB")
+            assertThat(account.avatar.avatarImageUri).isEqualTo(null)
+        }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun `importSettings() should not decode avatar image for icon avatar`() =
+        runTest(UnconfinedTestDispatcher()) {
+            stubAvatarDecoding()
+
+            val accountUuid = UUID.randomUUID().toString()
+            val inputStream = avatarAccountXml(
+                accountUuid = accountUuid,
+                settingsValues = """
+                    <value key="avatarType">ICON</value>
+                    <value key="avatarIconName">star</value>
+                """.trimIndent(),
+            ).byteInputStream()
+
+            val results = settingsImporter.importSettings(inputStream, globalSettings = false, listOf(accountUuid))
+
+            assertThat(results.erroneousAccounts).isEmpty()
+            assertThat(results.importedAccounts).hasSize(1)
+
+            val account = importedAccount(results)
+            assertThat(account.avatar.avatarType).isEqualTo(AvatarTypeDto.ICON)
+            assertThat(account.avatar.avatarIconName).isEqualTo("star")
+            assertThat(account.avatar.avatarImageUri).isEqualTo(null)
+        }
+
+    /**
+     * Stubs avatar decoding so that if it were (wrongly) triggered, the resulting uri would differ from the
+     * expected value, making the test fail instead of silently passing.
+     */
+    private fun stubAvatarDecoding() {
+        val decodedUri = Uri.parse("file:///data/account_avatars/should_not_be_used.png")
+        whenever { get<AvatarImageRepository>().update(any(), any()) }.thenReturn(decodedUri)
+    }
+
+    private fun importedAccount(results: ImportResults) =
+        Preferences.getPreferences().getAccount(results.importedAccounts.first().imported.uuid)!!
+
+    private fun avatarAccountXml(
+        accountUuid: String,
+        settingsValues: String,
+        avatarImageElement: String = "",
+    ): String =
+        """
+        <k9settings format="1" version="${Settings.VERSION}">
+          <accounts>
+            <account uuid="$accountUuid">
+              <name>Account</name>
+              <incoming-server type="IMAP">
+                <connection-security>SSL_TLS_REQUIRED</connection-security>
+                <username>user@gmail.com</username>
+                <authentication-type>PLAIN</authentication-type>
+                <host>imap.gmail.com</host>
+              </incoming-server>
+              <outgoing-server type="SMTP">
+                <connection-security>SSL_TLS_REQUIRED</connection-security>
+                <username>user@gmail.com</username>
+                <authentication-type>PLAIN</authentication-type>
+                <host>smtp.gmail.com</host>
+              </outgoing-server>
+              <settings>
+                $settingsValues
+              </settings>
+              <identities>
+                <identity>
+                  <email>user@gmail.com</email>
+                </identity>
+              </identities>
+              $avatarImageElement
+            </account>
+          </accounts>
+        </k9settings>
+        """.trimIndent()
 }

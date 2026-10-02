@@ -31,6 +31,7 @@ import net.thunderbird.feature.account.settings.R
 import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.ValidateAccountNameError
 import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.ValidateMonogramError
 import net.thunderbird.feature.account.settings.impl.domain.usecase.FakeMonogramCreator
+import net.thunderbird.feature.account.storage.profile.AvatarDto
 
 internal class GeneralSettingsBuilderTest {
 
@@ -485,7 +486,7 @@ internal class GeneralSettingsBuilderTest {
         val icon = segmented.options.first { it.id == "avatar_icon" }.value as Avatar.Icon
 
         assertThat(monogram.value).isEqualTo(monogramCreator.create("Thunderbird", null))
-        assertThat(image.uri).isEqualTo("avatar_placeholder_uri")
+        assertThat(image.uri).isEqualTo(AvatarDto.PLACEHOLDER_IMAGE_URI)
         assertThat(icon.name).isEqualTo(iconCatalog.defaultIcon.id)
     }
 

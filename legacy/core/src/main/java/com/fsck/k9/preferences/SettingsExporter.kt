@@ -19,8 +19,13 @@ import net.thunderbird.feature.account.storage.legacy.LegacyAccountStorageHandle
 import net.thunderbird.feature.account.storage.legacy.LegacyAccountStorageHandler.Companion.IDENTITY_EMAIL_KEY
 import net.thunderbird.feature.account.storage.legacy.LegacyAccountStorageHandler.Companion.IDENTITY_NAME_KEY
 import net.thunderbird.feature.mail.folder.api.data.repository.FolderQueryRepository
+import net.thunderbird.feature.account.storage.profile.AvatarTypeDto
 import net.thunderbird.legacy.logging.Log
 import org.xmlpull.v1.XmlSerializer
+import androidx.core.net.toUri
+import android.util.Base64
+import java.io.IOException
+import net.thunderbird.feature.account.storage.profile.AvatarDto
 
 class SettingsExporter(
     private val contentResolver: ContentResolver,
@@ -246,6 +251,7 @@ class SettingsExporter(
         writeFolderNameSettings(account, folderQueryRepository, serializer)
 
         serializer.endTag(null, SETTINGS_ELEMENT)
+        writeAvatarImage(account,serializer)
 
         if (identities.isNotEmpty()) {
             serializer.startTag(null, IDENTITIES_ELEMENT)
@@ -298,6 +304,35 @@ class SettingsExporter(
         }
     }
 
+    private fun writeAvatarImage(
+        account: LegacyAccountDto,
+        serializer: XmlSerializer
+    ){
+        val avatar = account.avatar
+        val uriString = avatar.avatarImageUri
+
+        if (avatar.avatarType != AvatarTypeDto.IMAGE ||
+            uriString == null ||
+            uriString == AvatarDto.PLACEHOLDER_IMAGE_URI
+            ){
+            return
+        }
+        val uri = uriString.toUri()
+
+        val bytes = try {
+            contentResolver.openInputStream(uri)?.use { input ->
+                input.readBytes()
+            }
+        } catch (e: IOException) {
+            Log.w(e ,"Avatar image could not be exported")
+            null
+        }?: return
+
+        val encoded = Base64.encodeToString(bytes, Base64.NO_WRAP)
+        serializer.startTag(null, AVATAR_IMAGE_ELEMENT)
+        serializer.text(encoded)
+        serializer.endTag(null, AVATAR_IMAGE_ELEMENT)
+    }
     private suspend fun writeFolderNameSettings(
         account: LegacyAccountDto,
         folderQueryRepository: FolderQueryRepository,
@@ -547,6 +582,8 @@ class SettingsExporter(
         const val NAME_ELEMENT = "name"
         const val EMAIL_ELEMENT = "email"
         const val DESCRIPTION_ELEMENT = "description"
+
+        const val AVATAR_IMAGE_ELEMENT = "avatar-image"
 
         private val FOLDER_NAME_KEYS = setOf(
             "autoExpandFolderName",
