@@ -5,6 +5,14 @@ This makes your work easier to review, track, and maintain for everyone involved
 
 ## ✍️ Commit Message Format
 
+> [!IMPORTANT]
+> **Enforced in CI:**
+> - the PR title **and every commit subject** must match this format (checked by the [PR Sentinel workflow](https://github.com/thunderbird/thunderbird-android/blob/main/.github/workflows/pr-sentinel.yml)).
+> - The `<description>` must be 70 characters or fewer.
+>
+> See [Automated PR checks (PR Sentinel)](https://github.com/thunderbird/thunderbird-android/blob/main/docs/contributing/contribution-workflow.md#-automated-pr-checks-pr-sentinel)
+> for more details.
+
 ```git
 <type>(<scope>): <description>
 
@@ -17,7 +25,7 @@ Components:
 
 - `<type>`: The [type of change](#-commit-types) being made (e.g., feat, fix, docs).
 - `<scope>` **(optional)**: The [scope](#optional-scope) indicates the area of the codebase affected by the change (e.g., auth, ui).
-- `<description>`: Short description of the change (50 characters or less)
+- `<description>`: Short description of the change (70 characters or less)
 - `<body>` **(optional)**: Explain what changed and why, include context if helpful.
 - `<footer(s)>` **(optional)**: Include issue references, breaking changes, etc.
 
@@ -63,20 +71,21 @@ Fixes #123
 The **scope** is optional but recommended for clarity, especially for large changes or or when multiple areas of the
 codebase are involved.
 
-|   Scope    |   Use for...   |                 Example                  |
-|------------|----------------|------------------------------------------|
-| `auth`     | Authentication | `feat(auth): add login functionality`    |
-| `settings` | User settings  | `feat(settings): add dark mode toggle`   |
-| `build`    | Build system   | `fix(build): improve build performance`  |
-| `ui`       | UI/theme       | `refactor(ui): split theme into modules` |
-| `deps`     | Dependencies   | `chore(deps): bump Kotlin to 2.0.0`      |
+|   Scope    |    Use for...    |                 Example                  |
+|------------|------------------|------------------------------------------|
+| `auth`     | Authentication   | `feat(auth): add login functionality`    |
+| `settings` | User settings    | `feat(settings): add dark mode toggle`   |
+| `build`    | Build system     | `fix(build): improve build performance`  |
+| `ci`       | CI configuration | `chore(ci): add PR Sentinel workflow`    |
+| `ui`       | UI/theme         | `refactor(ui): split theme into modules` |
+| `deps`     | Dependencies     | `chore(deps): bump Kotlin to 2.0.0`      |
 
 ## 🧠 Best Practices
 
 ### 1. One Commit, One Purpose
 
 - ✅ Each commit should represent a single logical change or addition to the codebase.
-- ❌ Don’t mix unrelated changes together (e.g., fixing a bug and updating docs, or changing a style and )
+- ❌ Don’t mix unrelated changes together (e.g., fixing a bug and updating docs, or changing a style and
   adding a feature).
 
 ### 2. Keep It Manageable
