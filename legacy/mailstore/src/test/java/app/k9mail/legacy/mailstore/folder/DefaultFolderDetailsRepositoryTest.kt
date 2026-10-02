@@ -9,13 +9,10 @@ import app.k9mail.legacy.mailstore.MoreMessages
 import app.k9mail.legacy.mailstore.domain.GetFolderIdsForTypeUseCase
 import app.k9mail.legacy.mailstore.domain.SetPushForFolderUseCase
 import assertk.assertThat
-import assertk.assertions.first
-import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
 import assertk.assertions.isNotEmpty
 import assertk.assertions.isNull
-import assertk.assertions.isNullOrEmpty
 import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ConnectionSecurity
 import com.fsck.k9.mail.FolderType as K9FolderType
@@ -323,7 +320,7 @@ class DefaultFolderDetailsRepositoryTest {
         SetPushForFolderUseCase(
             messageStoreManager,
         ).invoke(
-            accountUuid = accountId.value.toString(),
+            accountUuid = accountId,
             folderId = inboxFolderDetails?.folder?.id ?: 0L,
             enabled = true,
         )
@@ -359,7 +356,7 @@ class DefaultFolderDetailsRepositoryTest {
 
         // Test
         val folderList = testSubject.invoke(
-            accountUuid = accountId.value.toString(),
+            accountUuid = accountId,
             folderType = K9FolderType.REGULAR
         )
         assertThat(folderList).isNotEmpty()
@@ -385,7 +382,7 @@ class DefaultFolderDetailsRepositoryTest {
 
         // Test
         val folderList = testSubject.invoke(
-            accountUuid = accountId.value.toString(),
+            accountUuid = accountId,
             folderType = K9FolderType.REGULAR
         )
         assertThat(folderList).isNotEmpty()

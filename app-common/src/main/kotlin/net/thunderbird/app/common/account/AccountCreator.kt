@@ -26,9 +26,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.common.mail.Protocols
-import net.thunderbird.feature.account.AccountId
 import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.featureflag.keys.GeneratedFeatureFlagKey
+import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.avatar.AvatarMonogramCreator
 import net.thunderbird.feature.account.storage.profile.AvatarDto
 import net.thunderbird.feature.account.storage.profile.AvatarTypeDto
@@ -117,10 +117,10 @@ internal class AccountCreator(
                 // The AccountCreator is only called when not importing settings.
                 // We can update inbox push here by default, as it's always a new account.
                 getFolderIdsForTypeUseCase(
-                    newAccount.uuid,
+                    newAccount.id,
                     FolderType.INBOX,
                 ).firstOrNull()?.let { inboxFolderId ->
-                    setPushForFolderUseCase(accountUuid = newAccount.uuid, folderId = inboxFolderId, enabled = true)
+                    setPushForFolderUseCase(accountUuid = newAccount.id, folderId = inboxFolderId, enabled = true)
                 }
             }
 
