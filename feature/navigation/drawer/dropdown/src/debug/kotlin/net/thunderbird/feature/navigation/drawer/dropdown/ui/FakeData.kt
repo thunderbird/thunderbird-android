@@ -5,9 +5,11 @@ import androidx.compose.ui.graphics.toArgb
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
+import net.thunderbird.account.fake.FakeAccountData.ACCOUNT_ID
 import net.thunderbird.account.fake.FakeAccountData.ACCOUNT_ID_RAW
 import net.thunderbird.core.android.account.Identity
 import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.account.avatar.Avatar
 import net.thunderbird.feature.mail.folder.FolderType
 import net.thunderbird.feature.mail.folder.api.Folder
@@ -25,7 +27,7 @@ internal object FakeData {
     const val EMAIL_ADDRESS = "test@example.com"
 
     val ACCOUNT = LegacyAccountDto(
-        uuid = ACCOUNT_ID_RAW,
+        id = ACCOUNT_ID,
     ).apply {
         identities = ArrayList()
 
@@ -155,7 +157,7 @@ internal object FakeData {
     fun createAccountList(): PersistentList<MailDisplayAccount> {
         return persistentListOf(
             MailDisplayAccount(
-                id = "account1",
+                id = "1",
                 name = "job@example.com",
                 email = "job@example.com",
                 color = Color.Green.toArgb(),
@@ -166,7 +168,7 @@ internal object FakeData {
                 hasAutoExpandFolder = false,
             ),
             MailDisplayAccount(
-                id = "account2",
+                id = "2",
                 name = "Jodie Doe",
                 email = "jodie@example.com",
                 color = Color.Red.toArgb(),
@@ -177,7 +179,7 @@ internal object FakeData {
                 hasAutoExpandFolder = false,
             ),
             MailDisplayAccount(
-                id = "account3",
+                id = "3",
                 name = "John Doe",
                 email = "john@example.com",
                 color = Color.Cyan.toArgb(),

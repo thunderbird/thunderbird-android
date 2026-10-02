@@ -340,7 +340,7 @@ class MessageDetailsFragment : ToolbarBottomSheetDialogFragment() {
         val intent = Intent(context, MessageCompose::class.java).apply {
             action = Intent.ACTION_SEND
             putExtra(Intent.EXTRA_EMAIL, arrayOf(address.toString()))
-            putExtra(MessageCompose.EXTRA_ACCOUNT, messageReference.accountUuid)
+            putExtra(MessageCompose.EXTRA_ACCOUNT, messageReference.accountId.toString())
         }
 
         dismissAllowingStateLoss()

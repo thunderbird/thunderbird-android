@@ -15,31 +15,33 @@ import assertk.assertions.isInstanceOf
 import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ServerSettings
 import kotlinx.coroutines.test.runTest
+import net.thunderbird.feature.account.AccountId
+import net.thunderbird.feature.account.AccountIdFactory
 import org.junit.Test
 
 class SaveServerSettingsTest {
 
     @Test
     fun `should get account state and update incoming server settings`() = runTest {
-        var recordedAccountUuid: String? = null
+        var recordedAccountId: AccountId? = null
         var recordedIsIncoming: Boolean? = null
         var recordedServerSettings: ServerSettings? = null
         var recordedAuthorizationState: AuthorizationState? = null
         val testSubject = SaveServerSettings(
             getAccountState = { _ -> ACCOUNT_STATE },
-            serverSettingsUpdater = { accountUuid, isIncoming, serverSettings, authorizationState ->
-                recordedAccountUuid = accountUuid
+            serverSettingsUpdater = { accountId, isIncoming, serverSettings, authorizationState ->
+                recordedAccountId = accountId
                 recordedIsIncoming = isIncoming
                 recordedServerSettings = serverSettings
                 recordedAuthorizationState = authorizationState
 
-                AccountUpdaterResult.Success(accountUuid)
+                AccountUpdaterResult.Success(accountId)
             },
         )
 
-        testSubject.execute(ACCOUNT_UUID, isIncoming = true)
+        testSubject.execute(ACCOUNT_ID, isIncoming = true)
 
-        assertThat(recordedAccountUuid).isEqualTo(ACCOUNT_UUID)
+        assertThat(recordedAccountId).isEqualTo(ACCOUNT_ID)
         assertThat(recordedIsIncoming).isEqualTo(true)
         assertThat(recordedServerSettings).isEqualTo(INCOMING_SERVER_SETTINGS)
         assertThat(recordedAuthorizationState).isEqualTo(AUTHORIZATION_STATE)
@@ -55,32 +57,32 @@ class SaveServerSettingsTest {
         )
 
         assertFailure {
-            testSubject.execute(ACCOUNT_UUID, isIncoming = true)
+            testSubject.execute(ACCOUNT_ID, isIncoming = true)
         }.isInstanceOf<IllegalStateException>()
             .hasMessage("Server settings not found")
     }
 
     @Test
     fun `should get account state and update outgoing server settings`() = runTest {
-        var recordedAccountUuid: String? = null
+        var recordedAccountId: AccountId? = null
         var recordedIsIncoming: Boolean? = null
         var recordedServerSettings: ServerSettings? = null
         var recordedAuthorizationState: AuthorizationState? = null
         val testSubject = SaveServerSettings(
             getAccountState = { _ -> ACCOUNT_STATE },
-            serverSettingsUpdater = { accountUuid, isIncoming, serverSettings, authorizationState ->
-                recordedAccountUuid = accountUuid
+            serverSettingsUpdater = { accountId, isIncoming, serverSettings, authorizationState ->
+                recordedAccountId = accountId
                 recordedIsIncoming = isIncoming
                 recordedServerSettings = serverSettings
                 recordedAuthorizationState = authorizationState
 
-                AccountUpdaterResult.Success(accountUuid)
+                AccountUpdaterResult.Success(accountId)
             },
         )
 
-        testSubject.execute(ACCOUNT_UUID, isIncoming = false)
+        testSubject.execute(ACCOUNT_ID, isIncoming = false)
 
-        assertThat(recordedAccountUuid).isEqualTo(ACCOUNT_UUID)
+        assertThat(recordedAccountId).isEqualTo(ACCOUNT_ID)
         assertThat(recordedIsIncoming).isEqualTo(false)
         assertThat(recordedServerSettings).isEqualTo(OUTGOING_SERVER_SETTINGS)
         assertThat(recordedAuthorizationState).isEqualTo(AUTHORIZATION_STATE)
@@ -96,7 +98,7 @@ class SaveServerSettingsTest {
         )
 
         assertFailure {
-            testSubject.execute(ACCOUNT_UUID, isIncoming = false)
+            testSubject.execute(ACCOUNT_ID, isIncoming = false)
         }.isInstanceOf<IllegalStateException>()
             .hasMessage("Server settings not found")
     }
@@ -107,19 +109,19 @@ class SaveServerSettingsTest {
             getAccountState = { _ -> ACCOUNT_STATE },
             serverSettingsUpdater = { _, _, _, _ ->
                 AccountUpdaterResult.Failure(
-                    AccountUpdaterFailure.AccountNotFound(ACCOUNT_UUID),
+                    AccountUpdaterFailure.AccountNotFound(ACCOUNT_ID),
                 )
             },
         )
 
         assertFailure {
-            testSubject.execute(ACCOUNT_UUID, isIncoming = true)
+            testSubject.execute(ACCOUNT_ID, isIncoming = true)
         }.isInstanceOf<IllegalStateException>()
             .hasMessage("Server settings update failed")
     }
 
     private companion object {
-        const val ACCOUNT_UUID = "accountUuid"
+        val ACCOUNT_ID = AccountIdFactory.create()
         const val EMAIL_ADDRESS = "test@example.com"
         val INCOMING_SERVER_SETTINGS = ServerSettings(
             type = "imap",
@@ -157,7 +159,7 @@ class SaveServerSettingsTest {
         )
 
         val ACCOUNT_STATE = AccountState(
-            uuid = ACCOUNT_UUID,
+            id = ACCOUNT_ID,
             emailAddress = EMAIL_ADDRESS,
             incomingServerSettings = INCOMING_SERVER_SETTINGS,
             outgoingServerSettings = OUTGOING_SERVER_SETTINGS,

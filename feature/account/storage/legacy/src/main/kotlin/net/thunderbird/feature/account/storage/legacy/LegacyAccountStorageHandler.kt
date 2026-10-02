@@ -317,9 +317,9 @@ class LegacyAccountStorageHandler(
 
         profileDtoStorageHandler.save(data, storage, editor)
 
-        if (!storage.getStringOrDefault("accountUuids", "").contains(data.uuid)) {
+        if (!storage.getStringOrDefault("accountUuids", "").contains(data.id.toString())) {
             var accountUuids = storage.getStringOrDefault("accountUuids", "")
-            accountUuids += (if (accountUuids.isNotEmpty()) "," else "") + data.uuid
+            accountUuids += (if (accountUuids.isNotEmpty()) "," else "") + data.id.toString()
             editor.putString("accountUuids", accountUuids)
         }
 
@@ -429,7 +429,7 @@ class LegacyAccountStorageHandler(
     @Synchronized
     override fun delete(data: LegacyAccountDto, storage: Storage, editor: StorageEditor) {
         val keyGen = AccountKeyGenerator(data.id)
-        val accountUuid = data.uuid
+        val accountUuid = data.id.toString()
 
         profileDtoStorageHandler.delete(data, storage, editor)
 

@@ -18,6 +18,8 @@ import net.thunderbird.core.android.testing.MockHelper.mockBuilder
 import net.thunderbird.core.android.testing.RobolectricTest
 import net.thunderbird.core.preference.notification.NotificationPreference
 import net.thunderbird.core.preference.notification.NotificationPreferenceManager
+import net.thunderbird.feature.account.AccountIdFactory
+import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.mockito.kotlin.any
@@ -27,6 +29,7 @@ import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
 
 class SingleMessageNotificationCreatorTest : RobolectricTest() {
+    private val accountId = AccountIdFactory.create()
     private val notificationPreferenceManager = FakeNotificationPreferenceManager()
     private val resourceProvider = TestAvatarNotificationResourceProvider()
     private val notification = mock<Notification>()
@@ -108,7 +111,7 @@ class SingleMessageNotificationCreatorTest : RobolectricTest() {
 
     private fun createBaseNotificationData(): BaseNotificationData {
         return BaseNotificationData(
-            account = LegacyAccountDto("00000000-0000-0000-0000-000000000000"),
+            account = LegacyAccountDto(accountId),
             accountName = "Account name",
             groupKey = "group",
             color = 0,
@@ -128,7 +131,7 @@ class SingleMessageNotificationCreatorTest : RobolectricTest() {
             isSilent = true,
             timestamp = 9000,
             content = NotificationContent(
-                messageReference = MessageReference("account", 1, "uid"),
+                messageReference = MessageReference(accountId, 1, "uid"),
                 sender = Address("alice@example.com", "Alice"),
                 subject = "Subject",
                 preview = "Preview",

@@ -6,6 +6,7 @@ import androidx.core.net.toUri
 import app.k9mail.feature.account.edit.navigation.AccountEditRoute
 import app.k9mail.feature.account.setup.navigation.AccountSetupRoute
 import app.k9mail.feature.onboarding.main.navigation.OnboardingRoute
+import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.settings.api.AccountSettingsRoute
 import net.thunderbird.feature.debug.settings.navigation.SecretDebugSettingsRoute
 import net.thunderbird.feature.funding.api.FundingRoute
@@ -16,36 +17,36 @@ sealed class FeatureLauncherTarget(
     val deepLinkUri: Uri,
     val flags: Int? = null,
 ) {
-    data class AccountEditIncomingSettings(val accountUuid: String) : FeatureLauncherTarget(
-        deepLinkUri = AccountEditRoute.IncomingServerSettings(accountUuid).route().toUri(),
+    data class AccountEditIncomingSettings(val accountId: AccountId) : FeatureLauncherTarget(
+        deepLinkUri = AccountEditRoute.IncomingServerSettings(accountId.toString()).route().toUri(),
     )
 
-    data class AccountEditOutgoingSettings(val accountUuid: String) : FeatureLauncherTarget(
-        deepLinkUri = AccountEditRoute.OutgoingServerSettings(accountUuid).route().toUri(),
+    data class AccountEditOutgoingSettings(val accountId: AccountId) : FeatureLauncherTarget(
+        deepLinkUri = AccountEditRoute.OutgoingServerSettings(accountId.toString()).route().toUri(),
     )
 
     data object AccountSetup : FeatureLauncherTarget(
         deepLinkUri = AccountSetupRoute.AccountSetup().route().toUri(),
     )
 
-    data class AccountSettings(val accountUuid: String) : FeatureLauncherTarget(
-        deepLinkUri = AccountSettingsRoute.GeneralSettings(accountUuid).route().toUri(),
+    data class AccountSettings(val accountId: AccountId) : FeatureLauncherTarget(
+        deepLinkUri = AccountSettingsRoute.GeneralSettings(accountId.toString()).route().toUri(),
     )
 
-    data class AccountReadingMailSettings(val accountUuid: String) : FeatureLauncherTarget(
-        deepLinkUri = AccountSettingsRoute.ReadingMailSettings(accountUuid).route().toUri(),
+    data class AccountReadingMailSettings(val accountId: AccountId) : FeatureLauncherTarget(
+        deepLinkUri = AccountSettingsRoute.ReadingMailSettings(accountId.toString()).route().toUri(),
     )
 
-    data class AccountFetchingMailSettings(val accountUuid: String) : FeatureLauncherTarget(
-        deepLinkUri = AccountSettingsRoute.FetchingMailSettings(accountUuid).route().toUri(),
+    data class AccountFetchingMailSettings(val accountId: AccountId) : FeatureLauncherTarget(
+        deepLinkUri = AccountSettingsRoute.FetchingMailSettings(accountId.toString()).route().toUri(),
     )
 
-    data class AccountAdvancedFetchingMailSettings(val accountUuid: String) : FeatureLauncherTarget(
-        deepLinkUri = AccountSettingsRoute.AdvancedFetchingMailSettings(accountUuid).route().toUri(),
+    data class AccountAdvancedFetchingMailSettings(val accountId: AccountId) : FeatureLauncherTarget(
+        deepLinkUri = AccountSettingsRoute.AdvancedFetchingMailSettings(accountId.toString()).route().toUri(),
     )
 
-    data class AccountSearchSettings(val accountUuid: String) : FeatureLauncherTarget(
-        deepLinkUri = AccountSettingsRoute.SearchSettings(accountUuid).route().toUri(),
+    data class AccountSearchSettings(val accountId: AccountId) : FeatureLauncherTarget(
+        deepLinkUri = AccountSettingsRoute.SearchSettings(accountId.toString()).route().toUri(),
     )
 
     data object Funding : FeatureLauncherTarget(

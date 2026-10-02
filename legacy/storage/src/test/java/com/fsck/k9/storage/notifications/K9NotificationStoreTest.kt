@@ -14,6 +14,7 @@ import com.fsck.k9.storage.messages.createLockableDatabaseMock
 import com.fsck.k9.storage.messages.createMessage
 import net.thunderbird.legacy.logging.Log
 import net.thunderbird.core.logging.testing.TestLogger
+import net.thunderbird.feature.account.AccountIdFactory
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -122,6 +123,6 @@ class K9NotificationStoreTest : RobolectricTest() {
     }
 
     private fun createMessageReference(uid: String): MessageReference {
-        return MessageReference(accountUuid = "00000000-0000-4000-0000-000000000000", FOLDER_ID, uid)
+        return MessageReference(accountId = AccountIdFactory.of("00000000-0000-4000-0000-000000000000"), FOLDER_ID, uid)
     }
 }

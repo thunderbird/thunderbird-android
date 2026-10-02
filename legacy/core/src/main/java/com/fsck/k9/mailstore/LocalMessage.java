@@ -22,6 +22,8 @@ import com.fsck.k9.mail.message.MessageHeaderParser;
 import com.fsck.k9.mailstore.LockableDatabase.DbCallback;
 import app.k9mail.legacy.message.extractors.PreviewResult.PreviewType;
 import net.thunderbird.core.android.account.LegacyAccountDto;
+import net.thunderbird.feature.account.AccountId;
+import net.thunderbird.feature.account.AccountIdFactory;
 import net.thunderbird.legacy.logging.Log;
 import net.thunderbird.core.preference.GeneralSettingsManager;
 import net.thunderbird.feature.mail.message.list.LocalMessageUidPrefixProvider;
@@ -383,9 +385,9 @@ public class LocalMessage extends MimeMessage {
 
     public MessageReference makeMessageReference() {
         if (messageReference == null) {
-            String accountUuid = getFolder().getAccountUuid();
+            AccountId accountId = getFolder().getAccountId();
             long folderId = getFolder().getDatabaseId();
-            messageReference = new MessageReference(accountUuid, folderId, mUid);
+            messageReference = new MessageReference(accountId, folderId, mUid);
         }
         return messageReference;
     }
@@ -459,6 +461,6 @@ public class LocalMessage extends MimeMessage {
     }
 
     private String getAccountUuid() {
-        return getAccount().getUuid();
+        return getAccount().getId().toString();
     }
 }

@@ -13,6 +13,8 @@ import assertk.assertions.isEqualTo
 import assertk.assertions.isTrue
 import assertk.assertions.prop
 import net.thunderbird.core.logging.testing.TestLogger
+import net.thunderbird.feature.account.AccountId
+import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.notification.api.ui.action.NotificationAction
 import net.thunderbird.feature.notification.testing.fake.FakeNotification
 import org.junit.Test
@@ -33,6 +35,7 @@ class DefaultNotificationActionIntentCreatorTest {
     @Test
     fun `accept should return true for any type of notification action`() {
         // Arrange
+        val accountId: AccountId = AccountIdFactory.create()
         val multipleActions = listOf(
             NotificationAction.Tap(),
             NotificationAction.Reply,
@@ -40,8 +43,8 @@ class DefaultNotificationActionIntentCreatorTest {
             NotificationAction.Delete,
             NotificationAction.MarkAsSpam,
             NotificationAction.Archive,
-            NotificationAction.UpdateIncomingServerSettings("uuid", 1),
-            NotificationAction.UpdateOutgoingServerSettings("uuid", 1),
+            NotificationAction.UpdateIncomingServerSettings(accountId, 1),
+            NotificationAction.UpdateOutgoingServerSettings(accountId, 1),
             NotificationAction.Retry,
             NotificationAction.CustomAction(label = "Custom Action 1"),
             NotificationAction.CustomAction(label = "Custom Action 2"),

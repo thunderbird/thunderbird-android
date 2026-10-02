@@ -19,9 +19,9 @@ class MemorizingMessagingListener extends SimpleMessagingListener {
         while (memIt.hasNext()) {
             Entry<String, Memory> memoryEntry = memIt.next();
 
-            String uuidForMemory = memoryEntry.getValue().account.getUuid();
+            String uuidForMemory = memoryEntry.getValue().account.getId().toString();
 
-            if (uuidForMemory.equals(account.getUuid())) {
+            if (uuidForMemory.equals(account.getId())) {
                 memIt.remove();
             }
         }
@@ -103,7 +103,7 @@ class MemorizingMessagingListener extends SimpleMessagingListener {
     }
 
     private static String getMemoryKey(LegacyAccountDto account, long folderId) {
-        return account.getUuid() + ":" + folderId;
+        return account.getId() + ":" + folderId;
     }
 
     private enum MemorizingState { STARTED, FINISHED, FAILED }

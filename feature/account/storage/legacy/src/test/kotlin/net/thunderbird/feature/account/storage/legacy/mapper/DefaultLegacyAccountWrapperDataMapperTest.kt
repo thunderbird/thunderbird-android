@@ -6,6 +6,7 @@ import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ConnectionSecurity
 import com.fsck.k9.mail.ServerSettings
 import kotlin.test.Test
+import net.thunderbird.account.fake.FakeAccountData.ACCOUNT_ID
 import net.thunderbird.account.fake.FakeAccountData.ACCOUNT_ID_RAW
 import net.thunderbird.core.android.account.DeletePolicy
 import net.thunderbird.core.android.account.Expunge
@@ -52,7 +53,6 @@ class DefaultLegacyAccountWrapperDataMapperTest {
 
         // assert
         assertThat(result.id).isEqualTo(AccountIdFactory.of(ACCOUNT_ID_RAW))
-        assertThat(result.uuid).isEqualTo(ACCOUNT_ID_RAW)
         assertThat(result.isSensitiveDebugLoggingEnabled).isEqualTo(defaultIsSensitiveDebugLoggingEnabled)
         assertThat(result.identities).isEqualTo(defaultIdentities)
         assertThat(result.name).isEqualTo("displayName")
@@ -185,7 +185,7 @@ class DefaultLegacyAccountWrapperDataMapperTest {
         @Suppress("LongMethod")
         fun createAccount(): LegacyAccountDto {
             return LegacyAccountDto(
-                uuid = ACCOUNT_ID_RAW,
+                id = ACCOUNT_ID,
                 isSensitiveDebugLoggingEnabled = defaultIsSensitiveDebugLoggingEnabled,
             ).apply {
                 identities = defaultIdentities

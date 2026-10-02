@@ -9,6 +9,7 @@ import com.fsck.k9.mail.Address
 import net.thunderbird.core.android.account.Identity
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.preference.LockScreenNotificationVisibility
+import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.notification.NotificationLight
 import net.thunderbird.feature.notification.NotificationVibration
 import net.thunderbird.feature.notification.VibratePattern
@@ -244,7 +245,7 @@ class BaseNotificationDataCreatorTest {
     }
 
     private fun createAccount(): LegacyAccountDto {
-        return LegacyAccountDto("00000000-0000-4000-0000-000000000000").apply {
+        return LegacyAccountDto(AccountIdFactory.create()).apply {
             name = "account name"
             replaceIdentities(listOf(Identity()))
         }

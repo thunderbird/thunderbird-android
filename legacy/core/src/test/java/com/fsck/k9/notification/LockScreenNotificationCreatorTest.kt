@@ -5,6 +5,7 @@ import androidx.test.core.app.ApplicationProvider
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.testing.MockHelper.mockBuilder
 import net.thunderbird.core.android.testing.RobolectricTest
+import net.thunderbird.feature.account.AccountIdFactory
 import org.junit.Test
 import org.mockito.Mockito.verify
 import org.mockito.kotlin.any
@@ -12,7 +13,7 @@ import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 
 class LockScreenNotificationCreatorTest : RobolectricTest() {
-    private val account = LegacyAccountDto("00000000-0000-0000-0000-000000000000")
+    private val account = LegacyAccountDto(AccountIdFactory.create())
     private val resourceProvider = TestNotificationResourceProvider()
     private val builder = createFakeNotificationBuilder()
     private val publicBuilder = createFakeNotificationBuilder()

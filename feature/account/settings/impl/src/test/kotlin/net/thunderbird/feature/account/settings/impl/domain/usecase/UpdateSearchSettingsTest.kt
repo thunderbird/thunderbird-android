@@ -30,7 +30,7 @@ internal class UpdateSearchSettingsTest {
         val accountId = AccountIdFactory.create()
 
         val repository = object : LegacyAccountRepository {
-            override fun getById(id: AccountId): Flow<LegacyAccount?> = emptyFlow()
+            override fun observeById(id: AccountId): Flow<LegacyAccount?> = emptyFlow()
             override suspend fun update(account: LegacyAccount) = Unit
         }
 
@@ -53,7 +53,7 @@ internal class UpdateSearchSettingsTest {
         val existing = createLegacyAccount(accountId)
 
         val repository = object : LegacyAccountRepository {
-            override fun getById(id: AccountId) = flowOf(existing)
+            override fun observeById(id: AccountId) = flowOf(existing)
 
             override suspend fun update(account: LegacyAccount) {
                 updatedAccount = account
@@ -90,7 +90,7 @@ internal class UpdateSearchSettingsTest {
         val existing = createLegacyAccount(accountId)
 
         val repository = object : LegacyAccountRepository {
-            override fun getById(id: AccountId) = flowOf(existing)
+            override fun observeById(id: AccountId) = flowOf(existing)
 
             override suspend fun update(account: LegacyAccount) {
                 updatedAccount = account

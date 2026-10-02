@@ -53,7 +53,7 @@ internal class GetDisplayAccounts(
                     val displayAccounts = messageCountsList.mapIndexed { index, messageCounts ->
                         val account = accounts[index]
                         MailDisplayAccount(
-                            id = account.uuid,
+                            id = account.id.toString(),
                             name = account.displayName,
                             email = account.email,
                             color = account.chipColor,
@@ -81,16 +81,16 @@ internal class GetDisplayAccounts(
         ) {
             flowOf(associateWith { false })
         } else {
-            val uuids = map { it.uuid }
+            val ids = map { it.id }
             notificationStream
                 .notifications
                 .map { notifications ->
                     notifications
-                        .filter { it is AuthenticationErrorNotification && it.accountUuid in uuids }
-                        .associateBy { it.accountUuid }
+                        .filter { it is AuthenticationErrorNotification && it.accountId in ids }
+                        .associateBy { it.accountId }
                 }
                 .map { notifications ->
-                    associateWith { account -> notifications[account.uuid] != null }
+                    associateWith { account -> notifications[account.id] != null }
                 }
         }
     }
@@ -114,7 +114,7 @@ internal class GetDisplayAccounts(
                     send(messageCountsProvider.getMessageCounts(account))
                 }
             }
-            messageListRepository.addListener(account.uuid, listener)
+            messageListRepository.addListener(account.id, listener)
 
             awaitClose {
                 messageListRepository.removeListener(listener)

@@ -7,13 +7,16 @@ import assertk.assertions.isEqualTo
 import assertk.assertions.isNull
 import com.fsck.k9.helper.ReplyToParser
 import com.fsck.k9.mail.testing.message.buildMessage
+import kotlin.test.Test
 import net.thunderbird.core.android.account.Identity
 import net.thunderbird.core.android.account.LegacyAccountDto
-import org.junit.Test
+import net.thunderbird.feature.account.AccountIdFactory
 
 private const val IDENTITY_EMAIL_ADDRESS = "myself@domain.example"
 
 class LegacyReplyActionStrategyTest {
+
+    private val accountId = AccountIdFactory.create()
     private val account = createAccount()
     private val replyActionStrategy = LegacyReplyActionStrategy(ReplyToParser())
 
@@ -108,7 +111,7 @@ class LegacyReplyActionStrategyTest {
     }
 
     private fun createAccount(): LegacyAccountDto {
-        return LegacyAccountDto("00000000-0000-4000-0000-000000000000").apply {
+        return LegacyAccountDto(accountId).apply {
             identities += Identity(name = "Myself", email = IDENTITY_EMAIL_ADDRESS)
         }
     }

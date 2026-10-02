@@ -22,6 +22,7 @@ import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import net.thunderbird.components.ui.testing.coroutines.MainDispatcherHelper
 import net.thunderbird.core.validation.input.NumberInputField
 import net.thunderbird.core.validation.input.StringInputField
+import net.thunderbird.feature.account.AccountIdFactory
 
 class ModifyOutgoingServerSettingsViewModelTest {
 
@@ -40,9 +41,9 @@ class ModifyOutgoingServerSettingsViewModelTest {
 
     @Test
     fun `should load account state from use case`() = runMviTest {
-        val accountUuid = "accountUuid"
+        val accountId = AccountIdFactory.create()
         val accountState = AccountState(
-            uuid = "accountUuid",
+            id = accountId,
             emailAddress = "test@example.com",
             outgoingServerSettings = ServerSettings(
                 "smtp",
@@ -57,7 +58,7 @@ class ModifyOutgoingServerSettingsViewModelTest {
             ),
         )
         val testSubject = ModifyOutgoingServerSettingsViewModel(
-            accountUuid = accountUuid,
+            accountId = accountId,
             accountStateLoader = { _ ->
                 delay(50)
                 accountState

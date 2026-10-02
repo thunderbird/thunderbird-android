@@ -237,7 +237,7 @@ class DefaultSpecialFolderUpdater(
     )
 
     private fun getAccountById(accountId: AccountId): LegacyAccount {
-        return accountManager.getByIdSync(accountId) ?: error("Account not found: $accountId")
+        return accountManager.getById(accountId) ?: error("Account not found: $accountId")
     }
 
     private fun updateAccount(account: LegacyAccount) {

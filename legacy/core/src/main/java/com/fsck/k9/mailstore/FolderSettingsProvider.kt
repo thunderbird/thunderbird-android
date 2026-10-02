@@ -32,7 +32,7 @@ class FolderSettingsProvider(
     }
 
     private fun getAccountById(accountId: AccountId) =
-        accountManager.getByIdSync(accountId)
+        accountManager.getById(accountId)
             ?: error("Account not found: $accountId")
 
     private fun removeImportedFolderSettings(prefix: String) {

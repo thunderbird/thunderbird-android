@@ -30,6 +30,7 @@ import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.account.ShowPictures
 import net.thunderbird.core.featureflag.FeatureFlagResult
 import net.thunderbird.core.preference.storage.Storage
+import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.mail.folder.api.SpecialFolderSelection
 import net.thunderbird.feature.notification.NotificationLight
 import net.thunderbird.feature.notification.NotificationSettings
@@ -48,7 +49,7 @@ class DefaultAccountDefaultsProviderTest {
             on { defaultIdentityDescription() } doReturn "Default Identity"
         }
         val account = LegacyAccountDto(
-            uuid = "cf728064-077d-4369-a0c7-7c2b21693d9b",
+            id = AccountIdFactory.create(),
             isSensitiveDebugLoggingEnabled = { false },
         )
         val identities = listOf(
@@ -145,13 +146,13 @@ class DefaultAccountDefaultsProviderTest {
             on { defaultIdentityDescription() } doReturn "Default Identity"
         }
         val account = LegacyAccountDto(
-            uuid = "cf728064-077d-4369-a0c7-7c2b21693d9b",
+            id = AccountIdFactory.create(),
             isSensitiveDebugLoggingEnabled = { false },
         )
         val storage = mock<Storage> {
-            on { contains("${account.uuid}.notifyNewMail") } doReturn false
-            on { getBoolean("${account.uuid}.notifyNewMail", false) } doReturn false
-            on { getBoolean("${account.uuid}.notifySelfNewMail", false) } doReturn false
+            on { contains("${account.id}.notifyNewMail") } doReturn false
+            on { getBoolean("${account.id}.notifyNewMail", false) } doReturn false
+            on { getBoolean("${account.id}.notifySelfNewMail", false) } doReturn false
         }
         val testSubject = DefaultAccountDefaultsProvider(
             resourceProvider = resourceProvider,
@@ -175,13 +176,13 @@ class DefaultAccountDefaultsProviderTest {
             on { defaultIdentityDescription() } doReturn "Default Identity"
         }
         val account = LegacyAccountDto(
-            uuid = "cf728064-077d-4369-a0c7-7c2b21693d9b",
+            id = AccountIdFactory.create(),
             isSensitiveDebugLoggingEnabled = { false },
         )
         val storage = mock<Storage> {
-            on { contains("${account.uuid}.notifyNewMail") } doReturn false
-            on { getBoolean("${account.uuid}.notifyNewMail", false) } doReturn false
-            on { getBoolean("${account.uuid}.notifySelfNewMail", false) } doReturn false
+            on { contains("${account.id}.notifyNewMail") } doReturn false
+            on { getBoolean("${account.id}.notifyNewMail", false) } doReturn false
+            on { getBoolean("${account.id}.notifySelfNewMail", false) } doReturn false
         }
         val testSubject = DefaultAccountDefaultsProvider(
             resourceProvider = resourceProvider,
@@ -206,13 +207,13 @@ class DefaultAccountDefaultsProviderTest {
             on { defaultIdentityDescription() } doReturn "Default Identity"
         }
         val account = LegacyAccountDto(
-            uuid = "cf728064-077d-4369-a0c7-7c2b21693d9b",
+            id = AccountIdFactory.create(),
             isSensitiveDebugLoggingEnabled = { false },
         )
         val storage = mock<Storage> {
-            on { contains("${account.uuid}.notifyNewMail") } doReturn true
-            on { getBoolean("${account.uuid}.notifyNewMail", false) } doReturn false
-            on { getBoolean("${account.uuid}.notifySelfNewMail", false) } doReturn false
+            on { contains("${account.id}.notifyNewMail") } doReturn true
+            on { getBoolean("${account.id}.notifyNewMail", false) } doReturn false
+            on { getBoolean("${account.id}.notifySelfNewMail", false) } doReturn false
         }
         val testSubject = DefaultAccountDefaultsProvider(
             resourceProvider = resourceProvider,
@@ -237,13 +238,13 @@ class DefaultAccountDefaultsProviderTest {
             on { defaultIdentityDescription() } doReturn "Default Identity"
         }
         val account = LegacyAccountDto(
-            uuid = "cf728064-077d-4369-a0c7-7c2b21693d9b",
+            id = AccountIdFactory.create(),
             isSensitiveDebugLoggingEnabled = { false },
         )
         val storage = mock<Storage> {
-            on { contains("${account.uuid}.notifyNewMail") } doReturn false
-            on { getBoolean("${account.uuid}.notifyNewMail", false) } doReturn false
-            on { getBoolean("${account.uuid}.notifySelfNewMail", false) } doReturn false
+            on { contains("${account.id}.notifyNewMail") } doReturn false
+            on { getBoolean("${account.id}.notifyNewMail", false) } doReturn false
+            on { getBoolean("${account.id}.notifySelfNewMail", false) } doReturn false
         }
         val testSubject = DefaultAccountDefaultsProvider(
             resourceProvider = resourceProvider,

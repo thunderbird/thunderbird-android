@@ -4,17 +4,17 @@ import app.k9mail.legacy.di.DI
 import app.k9mail.legacy.mailstore.MessageListRepository
 import kotlin.collections.set
 import net.thunderbird.core.common.mail.Flag
+import net.thunderbird.feature.account.AccountId
 
 typealias MessageId = Long
 typealias ThreadId = Long
 typealias FolderId = Long
 typealias FlagValue = Boolean
-typealias AccountUuid = String
 
 /**
  * Cache to bridge the time needed to write (user-initiated) changes to the database.
  */
-class MessageListCache private constructor(private val accountUuid: String) {
+class MessageListCache private constructor(private val accountId: AccountId) {
     private val messageCache = mutableMapOf<MessageId, MutableMap<Flag, FlagValue>>()
     private val threadCache = mutableMapOf<ThreadId, MutableMap<Flag, FlagValue>>()
     private val hiddenMessageCache = mutableMapOf<MessageId, FolderId>()
@@ -133,16 +133,16 @@ class MessageListCache private constructor(private val accountUuid: String) {
 
     private fun notifyChange() {
         val messageListRepository = DI.get<MessageListRepository>()
-        messageListRepository.notifyMessageListChanged(accountUuid)
+        messageListRepository.notifyMessageListChanged(accountId)
     }
 
     companion object {
-        private val instances = mutableMapOf<AccountUuid, MessageListCache>()
+        private val instances = mutableMapOf<AccountId, MessageListCache>()
 
         @JvmStatic
         @Synchronized
-        fun getCache(accountUuid: String): MessageListCache {
-            return instances.getOrPut(accountUuid) { MessageListCache(accountUuid) }
+        fun getCache(accountId: AccountId): MessageListCache {
+            return instances.getOrPut(accountId) { MessageListCache(accountId) }
         }
     }
 }

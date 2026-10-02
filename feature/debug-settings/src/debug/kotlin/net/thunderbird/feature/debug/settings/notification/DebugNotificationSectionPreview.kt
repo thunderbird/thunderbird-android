@@ -13,6 +13,8 @@ import kotlin.uuid.Uuid
 import kotlinx.collections.immutable.toPersistentList
 import net.thunderbird.components.ui.bolt.PreviewWithThemeLightDark
 import net.thunderbird.components.ui.bolt.theme.BoltTheme
+import net.thunderbird.feature.account.AccountId
+import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.mail.account.api.BaseAccount
 import net.thunderbird.feature.notification.api.content.MailNotification
 
@@ -24,7 +26,7 @@ private fun DebugNotificationSectionPreview() {
         val accounts = remember {
             List(size = 10) {
                 object : BaseAccount {
-                    override val uuid: String = Uuid.random().toString()
+                    override val id: AccountId = AccountIdFactory.create()
                     override val name: String? = "Account $it"
                     override val email: String = "account-$it@mail.com"
                 }
@@ -54,7 +56,7 @@ private fun PreviewSingleMailNotification() {
         val accounts = remember {
             List(size = 10) {
                 object : BaseAccount {
-                    override val uuid: String = Uuid.random().toString()
+                    override val id: AccountId = AccountIdFactory.create()
                     override val name: String? = "Account $it"
                     override val email: String = "account-$it@mail.com"
                 }

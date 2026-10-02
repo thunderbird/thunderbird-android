@@ -12,6 +12,7 @@ import assertk.assertions.isNotNull
 import assertk.assertions.isNull
 import com.fsck.k9.helper.ContactNameProvider
 import com.fsck.k9.mail.Address
+import net.thunderbird.account.fake.FakeAccountData.ACCOUNT_ID
 import net.thunderbird.account.fake.FakeAccountData.ACCOUNT_ID_RAW
 import net.thunderbird.core.android.account.Identity
 import net.thunderbird.core.android.account.LegacyAccountDto
@@ -34,7 +35,7 @@ class MessageDetailsParticipantFormatterTest : RobolectricTest() {
         }
     }
 
-    private val account = LegacyAccountDto(ACCOUNT_ID_RAW).apply {
+    private val account = LegacyAccountDto(ACCOUNT_ID).apply {
         identities += Identity(name = IDENTITY_NAME, email = IDENTITY_ADDRESS)
     }
 
@@ -64,7 +65,7 @@ class MessageDetailsParticipantFormatterTest : RobolectricTest() {
 
     @Test
     fun `identity address with multiple identities`() {
-        val account = LegacyAccountDto(ACCOUNT_ID_RAW).apply {
+        val account = LegacyAccountDto(ACCOUNT_ID).apply {
             identities += Identity(name = IDENTITY_NAME, email = IDENTITY_ADDRESS)
             identities += Identity(
                 name = "Another identity",
@@ -83,7 +84,7 @@ class MessageDetailsParticipantFormatterTest : RobolectricTest() {
 
     @Test
     fun `identity without a display name`() {
-        val account = LegacyAccountDto(ACCOUNT_ID_RAW).apply {
+        val account = LegacyAccountDto(ACCOUNT_ID).apply {
             identities += Identity(name = null, email = IDENTITY_ADDRESS)
         }
 
@@ -98,7 +99,7 @@ class MessageDetailsParticipantFormatterTest : RobolectricTest() {
 
     @Test
     fun `identity and address without a display name`() {
-        val account = LegacyAccountDto(ACCOUNT_ID_RAW).apply {
+        val account = LegacyAccountDto(ACCOUNT_ID).apply {
             identities += Identity(name = null, email = IDENTITY_ADDRESS)
             identities += Identity(
                 name = "Another identity",

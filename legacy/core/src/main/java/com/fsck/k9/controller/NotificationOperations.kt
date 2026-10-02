@@ -2,11 +2,13 @@ package com.fsck.k9.controller
 
 import app.k9mail.legacy.mailstore.MessageStoreManager
 import com.fsck.k9.notification.NotificationController
+import com.fsck.k9.search.getAccounts
 import com.fsck.k9.search.isNewMessages
 import com.fsck.k9.search.isSingleFolder
 import com.fsck.k9.search.isUnifiedFolders
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.account.LegacyAccountDtoManager
+import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.search.legacy.LocalMessageSearch
 
 internal class NotificationOperations(
@@ -58,6 +60,8 @@ internal class NotificationOperations(
     }
 
     private fun LocalMessageSearch.firstAccount(): LegacyAccountDto? {
-        return accountManager.getAccount(accountUuids.first())
+        return accountUuids.firstOrNull()?.let {
+            accountManager.getById(AccountIdFactory.of(it))
+        }
     }
 }

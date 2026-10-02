@@ -20,7 +20,7 @@ object NotificationActionIntents {
     fun createMarkMessageAsReadIntent(context: Context, messageReference: MessageReference): Intent {
         return Intent(context, NotificationActionService::class.java).apply {
             action = ACTION_MARK_AS_READ
-            putExtra(EXTRA_ACCOUNT_UUID, messageReference.accountUuid)
+            putExtra(EXTRA_ACCOUNT_UUID, messageReference.accountId.toString())
             putExtra(EXTRA_MESSAGE_REFERENCES, arrayListOf(messageReference.toIdentityString()))
         }
     }
@@ -43,7 +43,7 @@ object NotificationActionIntents {
     fun createDismissMessageIntent(context: Context, messageReference: MessageReference): Intent {
         return Intent(context, NotificationActionService::class.java).apply {
             action = ACTION_DISMISS
-            putExtra(EXTRA_ACCOUNT_UUID, messageReference.accountUuid)
+            putExtra(EXTRA_ACCOUNT_UUID, messageReference.accountId.toString())
             putExtra(EXTRA_MESSAGE_REFERENCE, messageReference.toIdentityString())
         }
     }
@@ -51,14 +51,14 @@ object NotificationActionIntents {
     fun createDismissAllMessagesIntent(context: Context, account: LegacyAccountDto): Intent {
         return Intent(context, NotificationActionService::class.java).apply {
             action = ACTION_DISMISS
-            putExtra(EXTRA_ACCOUNT_UUID, account.uuid)
+            putExtra(EXTRA_ACCOUNT_UUID, account.id.toString())
         }
     }
 
     fun createDeleteMessageIntent(context: Context, messageReference: MessageReference): Intent {
         return Intent(context, NotificationActionService::class.java).apply {
             action = ACTION_DELETE
-            putExtra(EXTRA_ACCOUNT_UUID, messageReference.accountUuid)
+            putExtra(EXTRA_ACCOUNT_UUID, messageReference.accountId.toString())
             putExtra(EXTRA_MESSAGE_REFERENCES, arrayListOf(messageReference.toIdentityString()))
         }
     }
@@ -81,7 +81,7 @@ object NotificationActionIntents {
     fun createArchiveMessageIntent(context: Context, messageReference: MessageReference): Intent {
         return Intent(context, NotificationActionService::class.java).apply {
             action = ACTION_ARCHIVE
-            putExtra(EXTRA_ACCOUNT_UUID, messageReference.accountUuid)
+            putExtra(EXTRA_ACCOUNT_UUID, messageReference.accountId.toString())
             putExtra(EXTRA_MESSAGE_REFERENCES, arrayListOf(messageReference.toIdentityString()))
         }
     }
@@ -93,7 +93,7 @@ object NotificationActionIntents {
     ): Intent {
         return Intent(context, NotificationActionService::class.java).apply {
             action = ACTION_ARCHIVE
-            putExtra(EXTRA_ACCOUNT_UUID, account.uuid)
+            putExtra(EXTRA_ACCOUNT_UUID, account.id.toString())
             putExtra(
                 EXTRA_MESSAGE_REFERENCES,
                 MessageReferenceHelper.toMessageReferenceStringList(messageReferences),
@@ -104,7 +104,7 @@ object NotificationActionIntents {
     fun createMarkMessageAsSpamIntent(context: Context, messageReference: MessageReference): Intent {
         return Intent(context, NotificationActionService::class.java).apply {
             action = ACTION_SPAM
-            putExtra(EXTRA_ACCOUNT_UUID, messageReference.accountUuid)
+            putExtra(EXTRA_ACCOUNT_UUID, messageReference.accountId.toString())
             putExtra(EXTRA_MESSAGE_REFERENCE, messageReference.toIdentityString())
         }
     }
@@ -112,7 +112,7 @@ object NotificationActionIntents {
     fun createMarkMessageAsStarIntent(context: Context, messageReference: MessageReference): Intent {
         return Intent(context, NotificationActionService::class.java).apply {
             action = ACTION_STAR
-            putExtra(EXTRA_ACCOUNT_UUID, messageReference.accountUuid)
+            putExtra(EXTRA_ACCOUNT_UUID, messageReference.accountId.toString())
             putExtra(EXTRA_MESSAGE_REFERENCES, arrayListOf(messageReference.toIdentityString()))
         }
     }

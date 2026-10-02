@@ -18,6 +18,8 @@ import app.k9mail.legacy.di.DI;
 import com.fsck.k9.helper.MimeTypeUtil;
 import com.fsck.k9.mailstore.LocalStoreProvider;
 import net.thunderbird.core.android.account.LegacyAccountDto;
+import net.thunderbird.feature.account.AccountId;
+import net.thunderbird.feature.account.AccountIdFactory;
 import net.thunderbird.legacy.logging.Log;
 import com.fsck.k9.Preferences;
 import net.thunderbird.core.common.exception.MessagingException;
@@ -64,20 +66,26 @@ public class AttachmentProvider extends ContentProvider {
     @Override
     public String getType(@NonNull Uri uri) {
         List<String> segments = uri.getPathSegments();
-        String accountUuid = segments.get(0);
+        AccountId accountId = parseAccountId(segments);
+        if (accountId == null || segments.size() < 2) {
+            return MimeTypeUtil.DEFAULT_ATTACHMENT_MIME_TYPE;
+        }
         String id = segments.get(1);
         String mimeType = (segments.size() < 3) ? null : segments.get(2);
 
-        return getType(accountUuid, id, mimeType);
+        return getType(accountId, id, mimeType);
     }
 
     @Override
     public ParcelFileDescriptor openFile(@NonNull Uri uri, @NonNull String mode) throws FileNotFoundException {
         List<String> segments = uri.getPathSegments();
-        String accountUuid = segments.get(0);
+        AccountId accountId = parseAccountId(segments);
+        if (accountId == null || segments.size() < 2) {
+            throw new FileNotFoundException("Attachment missing or cannot be opened!");
+        }
         String attachmentId = segments.get(1);
 
-        ParcelFileDescriptor parcelFileDescriptor = openAttachment(accountUuid, attachmentId);
+        ParcelFileDescriptor parcelFileDescriptor = openAttachment(accountId, attachmentId);
         if (parcelFileDescriptor == null) {
             throw new FileNotFoundException("Attachment missing or cannot be opened!");
         }
@@ -90,12 +98,15 @@ public class AttachmentProvider extends ContentProvider {
         String[] columnNames = (projection == null) ? DEFAULT_PROJECTION : projection;
 
         List<String> segments = uri.getPathSegments();
-        String accountUuid = segments.get(0);
+        AccountId accountId = parseAccountId(segments);
+        if (accountId == null || segments.size() < 2) {
+            return null;
+        }
         String id = segments.get(1);
 
         final AttachmentInfo attachmentInfo;
         try {
-            final LegacyAccountDto account = Preferences.getPreferences().getAccount(accountUuid);
+            final LegacyAccountDto account = Preferences.getPreferences().getById(accountId);
             attachmentInfo = DI.get(LocalStoreProvider.class).getInstance(account).getAttachmentInfo(id);
         } catch (MessagingException e) {
             Log.e(e, "Unable to retrieve attachment info from local store for ID: %s", id);
@@ -140,9 +151,22 @@ public class AttachmentProvider extends ContentProvider {
         throw new UnsupportedOperationException();
     }
 
-    private String getType(String accountUuid, String id, String mimeType) {
+    @Nullable
+    private AccountId parseAccountId(List<String> segments) {
+        if (segments.isEmpty()) {
+            return null;
+        }
+
+        try {
+            return AccountIdFactory.INSTANCE.of(segments.get(0));
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
+    }
+
+    private String getType(AccountId accountId, String id, String mimeType) {
         String type;
-        final LegacyAccountDto account = Preferences.getPreferences().getAccount(accountUuid);
+        final LegacyAccountDto account = Preferences.getPreferences().getById(accountId);
 
         try {
             final LocalStore localStore = DI.get(LocalStoreProvider.class).getInstance(account);
@@ -162,9 +186,9 @@ public class AttachmentProvider extends ContentProvider {
     }
 
     @Nullable
-    private ParcelFileDescriptor openAttachment(String accountUuid, String attachmentId) {
+    private ParcelFileDescriptor openAttachment(AccountId accountId, String attachmentId) {
         try {
-            OpenPgpDataSource openPgpDataSource = getAttachmentDataSource(accountUuid, attachmentId);
+            OpenPgpDataSource openPgpDataSource = getAttachmentDataSource(accountId, attachmentId);
             if (openPgpDataSource == null) {
                 Log.e("Error getting data source for attachment (part doesn't exist?)");
                 return null;
@@ -180,8 +204,8 @@ public class AttachmentProvider extends ContentProvider {
     }
 
     @Nullable
-    private OpenPgpDataSource getAttachmentDataSource(String accountUuid, String attachmentId) throws MessagingException {
-        final LegacyAccountDto account = Preferences.getPreferences().getAccount(accountUuid);
+    private OpenPgpDataSource getAttachmentDataSource(AccountId accountId, String attachmentId) throws MessagingException {
+        final LegacyAccountDto account = Preferences.getPreferences().getById(accountId);
         LocalStore localStore = DI.get(LocalStoreProvider.class).getInstance(account);
         return localStore.getAttachmentDataSource(attachmentId);
     }

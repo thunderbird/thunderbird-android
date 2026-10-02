@@ -18,6 +18,7 @@ import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.featureflag.FeatureFlagResult
 import net.thunderbird.core.logging.LogLevel
 import net.thunderbird.core.logging.testing.TestLogger
+import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.notification.api.NotificationSeverity
 import net.thunderbird.feature.notification.api.command.outcome.CommandNotCreated
 import net.thunderbird.feature.notification.api.command.outcome.Success
@@ -134,7 +135,7 @@ class DefaultNotificationSenderTest {
             inAppNotificationNotifier = inAppNotifier,
         )
         val notification = object : AppNotification() {
-            override val accountUuid: String? get() = ""
+            override val accountId: AccountId? = null
             override val title: String = ""
             override val contentText: String? = null
             override val severity: NotificationSeverity = NotificationSeverity.Critical

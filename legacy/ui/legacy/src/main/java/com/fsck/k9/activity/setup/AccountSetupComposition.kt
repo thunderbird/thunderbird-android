@@ -37,6 +37,7 @@ import net.thunderbird.components.ui.bolt.template.Scaffold
 import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.core.ui.contract.mvi.observe
 import net.thunderbird.core.ui.theme.api.FeatureThemeProvider
+import net.thunderbird.feature.account.AccountId
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -74,10 +75,10 @@ class AccountSetupComposition : BaseActivity() {
     companion object {
         private const val EXTRA_ACCOUNT = "account"
 
-        fun actionEditCompositionSettings(context: Activity, accountUuid: String?) {
+        fun actionEditCompositionSettings(context: Activity, accountId: AccountId) {
             val intent = Intent(context, AccountSetupComposition::class.java)
             intent.setAction(Intent.ACTION_EDIT)
-            intent.putExtra(EXTRA_ACCOUNT, accountUuid)
+            intent.putExtra(EXTRA_ACCOUNT, accountId.toString())
             context.startActivity(intent)
         }
     }

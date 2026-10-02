@@ -22,6 +22,7 @@ import net.thunderbird.core.preference.network.NetworkSettings
 import net.thunderbird.core.preference.notification.NotificationPreference
 import net.thunderbird.core.preference.privacy.PrivacySettings
 import net.thunderbird.core.testing.TestClock
+import net.thunderbird.feature.account.AccountIdFactory
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -36,6 +37,9 @@ private val TIMESTAMP = 0L
 
 @OptIn(ExperimentalTime::class)
 class SummaryNotificationDataCreatorTest {
+
+    private val accountId = AccountIdFactory.create()
+
     private val account = createAccount()
     private val testClock = TestClock()
     private var generalSettings = GeneralSettings(
@@ -324,13 +328,13 @@ class SummaryNotificationDataCreatorTest {
     }
 
     private fun createAccount(): LegacyAccountDto {
-        return LegacyAccountDto("00000000-0000-0000-0000-000000000000").apply {
+        return LegacyAccountDto(AccountIdFactory.create()).apply {
             accountNumber = 42
         }
     }
 
     private fun createNotificationContent() = NotificationContent(
-        messageReference = MessageReference("irrelevant", 1, "irrelevant"),
+        messageReference = MessageReference(accountId, 1, "irrelevant"),
         sender = Address("irrelevant", "irrelevant"),
         subject = "irrelevant",
         preview = "irrelevant",

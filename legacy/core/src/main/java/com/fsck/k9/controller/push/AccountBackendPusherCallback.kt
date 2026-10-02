@@ -17,12 +17,12 @@ class AccountBackendPusherCallback(
     private val logger: Logger,
 ) : BackendPusherCallback {
     override fun onPushEvent(folderServerId: String) {
-        val account = accountManager.getAccount(accountId.toString())
+        val account = accountManager.getById(accountId)
         messagingController.synchronizeMailboxBlocking(account, folderServerId)
     }
 
     override fun onPushError(exception: Exception) {
-        val account = accountManager.getAccount(accountId.toString())
+        val account = accountManager.getById(accountId)
         messagingController.handleException(account, exception)
     }
 

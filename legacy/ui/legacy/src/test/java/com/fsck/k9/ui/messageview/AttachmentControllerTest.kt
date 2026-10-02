@@ -32,6 +32,7 @@ import net.thunderbird.legacy.logging.Log
 import net.thunderbird.core.logging.testing.TestLogger
 import net.thunderbird.core.preference.GeneralSettings
 import net.thunderbird.core.preference.GeneralSettingsManager
+import net.thunderbird.feature.account.AccountIdFactory
 import org.junit.After
 import org.junit.Assert.assertArrayEquals
 import org.junit.Before
@@ -218,7 +219,7 @@ class AttachmentControllerTest : RobolectricTest() {
             listener: MessagingListener,
         ) {
             val localPart = part as? LocalPart
-            val account = LegacyAccountDto("00000000-0000-4000-0000-000000000000")
+            val account = LegacyAccountDto(AccountIdFactory.create())
             listener.loadAttachmentFinished(account, localPart?.message, part)
         }
     }

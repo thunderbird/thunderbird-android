@@ -30,7 +30,7 @@ class DefaultStartupRouter(
 
     private fun deleteIncompleteAccounts(accounts: List<LegacyAccount>) {
         accounts.filter { !it.isFinishedSetup }.forEach {
-            accountRemover.removeAccountAsync(it.uuid)
+            accountRemover.removeAccountAsync(it.id)
         }
     }
 }

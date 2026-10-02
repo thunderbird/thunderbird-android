@@ -34,6 +34,7 @@ import net.thunderbird.core.preference.network.NetworkSettings
 import net.thunderbird.core.preference.notification.NotificationPreference
 import net.thunderbird.core.preference.privacy.PrivacySettings
 import net.thunderbird.core.testing.TestClock
+import net.thunderbird.feature.account.AccountIdFactory
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -45,7 +46,6 @@ import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.stubbing
 
-private const val ACCOUNT_UUID = "00000000-0000-4000-0000-000000000000"
 private const val ACCOUNT_NAME = "Personal"
 private const val ACCOUNT_COLOR = 0xFF112233L.toInt()
 private const val FOLDER_ID = 42L
@@ -53,6 +53,7 @@ private const val TIMESTAMP = 23L
 
 @OptIn(ExperimentalTime::class)
 class NewMailNotificationManagerTest {
+    private val accountId = AccountIdFactory.create()
     private val mockedNotificationMessages = mutableListOf<NotificationMessage>()
     private val account = createAccount()
     private val notificationContentCreator = mock<NotificationContentCreator>()
@@ -422,7 +423,7 @@ class NewMailNotificationManagerTest {
     }
 
     private fun createAccount(): LegacyAccountDto {
-        return LegacyAccountDto(ACCOUNT_UUID).apply {
+        return LegacyAccountDto(accountId).apply {
             name = ACCOUNT_NAME
             chipColor = ACCOUNT_COLOR
         }
@@ -505,7 +506,7 @@ class NewMailNotificationManagerTest {
     }
 
     private fun createMessageReference(messageUid: String): MessageReference {
-        return MessageReference(ACCOUNT_UUID, FOLDER_ID, messageUid)
+        return MessageReference(accountId, FOLDER_ID, messageUid)
     }
 
     private fun createLocalStoreProvider(): LocalStoreProvider {

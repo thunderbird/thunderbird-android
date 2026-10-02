@@ -32,14 +32,14 @@ class UpdateServerSettingsNotificationActionIntentCreator(
             is NotificationAction.UpdateIncomingServerSettings -> {
                 action.accountNumber to FeatureLauncherActivity.getIntent(
                     context = context,
-                    target = FeatureLauncherTarget.AccountEditIncomingSettings(action.accountUuid),
+                    target = FeatureLauncherTarget.AccountEditIncomingSettings(action.accountId),
                 )
             }
 
             is NotificationAction.UpdateOutgoingServerSettings -> {
                 action.accountNumber to FeatureLauncherActivity.getIntent(
                     context = context,
-                    target = FeatureLauncherTarget.AccountEditOutgoingSettings(action.accountUuid),
+                    target = FeatureLauncherTarget.AccountEditOutgoingSettings(action.accountId),
                 )
             }
 

@@ -13,6 +13,7 @@ import kotlinx.coroutines.withContext
 import net.thunderbird.components.core.outcome.fold
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.logging.Logger
+import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.mail.folder.api.data.repository.FolderQueryRepository
 import net.thunderbird.feature.search.legacy.LocalMessageSearch
 import net.thunderbird.feature.search.legacy.SearchAccount
@@ -68,8 +69,10 @@ class UnreadWidgetDataProvider(
         else -> throw AssertionError("SearchAccount expected")
     }
 
+    @Suppress("ReturnCount")
     private suspend fun loadAccountData(configuration: UnreadWidgetConfiguration): UnreadWidgetData? {
-        val account = preferences.getAccount(configuration.accountUuid) ?: return null
+        val accountId = runCatching { AccountIdFactory.of(configuration.accountUuid) }.getOrNull() ?: return null
+        val account = preferences.getById(accountId) ?: return null
         val title = account.displayName
         val unreadCount = withContext(Dispatchers.IO) {
             messageCountsProvider.getMessageCounts(account).unread
@@ -87,7 +90,8 @@ class UnreadWidgetDataProvider(
     @Suppress("ReturnCount")
     private suspend fun loadFolderData(configuration: UnreadWidgetConfiguration): UnreadWidgetData? {
         val accountUuid = configuration.accountUuid
-        val account = preferences.getAccount(accountUuid) ?: return null
+        val accountId = runCatching { AccountIdFactory.of(accountUuid) }.getOrNull() ?: return null
+        val account = preferences.getById(accountId) ?: return null
         val folderId = configuration.folderId ?: return null
 
         val accountName = account.displayName
@@ -125,7 +129,7 @@ class UnreadWidgetDataProvider(
     private fun getClickIntentForFolder(account: LegacyAccountDto, folderId: Long): Intent {
         val search = LocalMessageSearch()
         search.addAllowedFolder(folderId)
-        search.addAccountUuid(account.uuid)
+        search.addAccountUuid(account.id.toString())
 
         val clickIntent = MessageHomeActivity.intentDisplaySearch(context, search, false, true, true)
         clickIntent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)

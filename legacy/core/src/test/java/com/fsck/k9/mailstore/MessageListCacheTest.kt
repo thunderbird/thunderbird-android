@@ -10,6 +10,7 @@ import assertk.assertions.isSameInstanceAs
 import assertk.assertions.isTrue
 import java.util.UUID
 import net.thunderbird.core.common.mail.Flag
+import net.thunderbird.feature.account.AccountIdFactory
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -23,6 +24,10 @@ private const val MESSAGE_ID = 1L
 private const val FOLDER_ID = 2L
 
 class MessageListCacheTest {
+
+    private val accountId = AccountIdFactory.create()
+    private val accountIdOther = AccountIdFactory.create()
+
     private val localFolder = mock<LocalFolder> {
         on { databaseId } doReturn FOLDER_ID
     }
@@ -32,7 +37,7 @@ class MessageListCacheTest {
         on { folder } doReturn localFolder
     }
 
-    private val cache = MessageListCache.getCache(UUID.randomUUID().toString())
+    private val cache = MessageListCache.getCache(accountId)
 
     @Before
     fun setUp() {
@@ -52,18 +57,18 @@ class MessageListCacheTest {
 
     @Test
     fun `getCache() returns different cache for each UUID`() {
-        val cache = MessageListCache.getCache("u001")
+        val cache = MessageListCache.getCache(accountId)
 
-        val cache2 = MessageListCache.getCache("u002")
+        val cache2 = MessageListCache.getCache(accountIdOther)
 
         assertThat(cache2).isNotSameInstanceAs(cache)
     }
 
     @Test
     fun `getCache() returns same cache for the same UUID`() {
-        val cache = MessageListCache.getCache("u001")
+        val cache = MessageListCache.getCache(accountId)
 
-        val cache2 = MessageListCache.getCache("u001")
+        val cache2 = MessageListCache.getCache(accountId)
 
         assertThat(cache2).isSameInstanceAs(cache)
     }

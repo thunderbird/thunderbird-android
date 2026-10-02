@@ -16,7 +16,7 @@ internal class UpdateSearchSettings(
         accountId: AccountId,
         command: UpdateSearchSettingsCommand,
     ): Outcome<Unit, AccountSettingsDomainContract.AccountSettingError> {
-        return repository.getById(accountId).firstOrNull()?.let { account: LegacyAccount ->
+        return repository.observeById(accountId).firstOrNull()?.let { account: LegacyAccount ->
             when (command) {
                 is UpdateSearchSettingsCommand.UpdateServerSearchLimit -> {
                     repository.update(account.copy(remoteSearchNumResults = command.value))

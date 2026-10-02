@@ -6,9 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import app.k9mail.legacy.di.DI;
 import app.k9mail.legacy.mailstore.MoreMessages;
-import com.fsck.k9.K9;
 import app.k9mail.legacy.message.controller.MessageReference;
 import com.fsck.k9.helper.FileHelper;
 import com.fsck.k9.helper.Utility;
@@ -35,6 +33,7 @@ import com.fsck.k9.message.extractors.AttachmentInfoExtractor;
 
 import net.thunderbird.core.android.account.LegacyAccountDto;
 import net.thunderbird.core.preference.GeneralSettingsManager;
+import net.thunderbird.feature.account.AccountId;
 import net.thunderbird.feature.mail.message.list.LocalMessageUidPrefixProvider;
 import org.apache.commons.io.IOUtils;
 import org.apache.james.mime4j.util.MimeUtil;
@@ -130,9 +129,9 @@ public class LocalFolder {
         return databaseId;
     }
 
-    public String getAccountUuid()
+    public AccountId getAccountId()
     {
-        return getAccount().getUuid();
+        return getAccount().getId();
     }
 
     public boolean getSignatureUse() {
@@ -415,11 +414,11 @@ public class LocalFolder {
 
             String parentMimeType = parentPart.getMimeType();
             if (MimeUtility.isMultipart(parentMimeType)) {
-                BodyPart bodyPart = new LocalBodyPart(getAccountUuid(), message, id, size);
+                BodyPart bodyPart = new LocalBodyPart(getAccountId().toString(), message, id, size);
                 ((Multipart) parentPart.getBody()).addBodyPart(bodyPart);
                 part = bodyPart;
             } else if (MimeUtility.isMessage(parentMimeType)) {
-                Message innerMessage = new LocalMimeMessage(getAccountUuid(), message, id);
+                Message innerMessage = new LocalMimeMessage(getAccountId().toString(), message, id);
                 parentPart.setBody(innerMessage);
                 part = innerMessage;
             } else {
@@ -587,12 +586,12 @@ public class LocalFolder {
             throws MessagingException {
         open();
 
-        String accountUuid = getAccountUuid();
+        AccountId accountId = getAccountId();
         long folderId = getDatabaseId();
 
         List<LocalMessage> messages = new ArrayList<>();
         for (MessageReference messageReference : messageReferences) {
-            if (!accountUuid.equals(messageReference.getAccountUuid())) {
+            if (!accountId.equals(messageReference.getAccountId())) {
                 throw new IllegalArgumentException("all message references must belong to this Account!");
             }
             if (folderId != messageReference.getFolderId()) {

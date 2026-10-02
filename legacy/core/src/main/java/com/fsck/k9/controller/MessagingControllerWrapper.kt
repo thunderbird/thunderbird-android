@@ -23,11 +23,11 @@ class MessagingControllerWrapper(
 ) {
 
     private fun getAccountDtoOrThrow(id: AccountId): LegacyAccountDto {
-        return accountManager.getAccount(id.toString()) ?: error("Account not found: $id")
+        return accountManager.getById(id) ?: error("Account not found: $id")
     }
 
     private fun getAccountDtoOrNull(id: AccountId): LegacyAccountDto? {
-        return accountManager.getAccount(id.toString())
+        return accountManager.getById(id)
     }
 
     fun loadMoreMessages(id: AccountId, folderId: Long) {
@@ -51,14 +51,14 @@ class MessagingControllerWrapper(
     }
 
     fun searchRemoteMessages(
-        id: AccountId,
+        accountId: AccountId,
         folderId: Long,
         query: String?,
         requiredFlags: Set<Flag>?,
         forbiddenFlags: Set<Flag>?,
         listener: MessagingListener,
     ): Future<*>? = messagingController.searchRemoteMessages(
-        id.toString(),
+        accountId,
         folderId,
         query,
         requiredFlags,

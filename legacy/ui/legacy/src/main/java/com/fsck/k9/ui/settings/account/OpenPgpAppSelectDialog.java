@@ -29,6 +29,7 @@ import com.fsck.k9.ui.R;
 import com.fsck.k9.ui.base.BaseActivity;
 import com.fsck.k9.ui.base.ThemeType;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import net.thunderbird.feature.account.AccountIdFactory;
 import org.openintents.openpgp.util.OpenPgpApi;
 import org.openintents.openpgp.util.OpenPgpProviderUtil;
 import net.thunderbird.legacy.logging.Log;
@@ -52,7 +53,7 @@ public class OpenPgpAppSelectDialog extends BaseActivity {
 
     public static void startOpenPgpChooserActivity(Context context, LegacyAccountDto account) {
         Intent i = new Intent(context, OpenPgpAppSelectDialog.class);
-        i.putExtra(EXTRA_ACCOUNT, account.getUuid());
+        i.putExtra(EXTRA_ACCOUNT, account.getId().toString());
         context.startActivity(i);
     }
 
@@ -65,7 +66,7 @@ public class OpenPgpAppSelectDialog extends BaseActivity {
         super.onCreate(savedInstanceState);
 
         String accountUuid = getIntent().getStringExtra(EXTRA_ACCOUNT);
-        account = Preferences.getPreferences().getAccount(accountUuid);
+        account = Preferences.getPreferences().getById(AccountIdFactory.INSTANCE.of(accountUuid));
     }
 
     @Override

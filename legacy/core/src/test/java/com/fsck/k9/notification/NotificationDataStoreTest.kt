@@ -16,14 +16,17 @@ import com.fsck.k9.mail.Address
 import kotlin.test.assertNotNull
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.testing.RobolectricTest
+import net.thunderbird.feature.account.AccountIdFactory
 import org.junit.Test
 
-private const val ACCOUNT_UUID = "1-2-3"
 private const val ACCOUNT_NUMBER = 23
 private const val FOLDER_ID = 42L
 private const val TIMESTAMP = 0L
 
 class NotificationDataStoreTest : RobolectricTest() {
+
+    private val accountId = AccountIdFactory.create()
+
     private val account = createAccount()
     private val notificationDataStore = NotificationDataStore()
 
@@ -231,13 +234,13 @@ class NotificationDataStoreTest : RobolectricTest() {
     }
 
     private fun createAccount(): LegacyAccountDto {
-        return LegacyAccountDto("00000000-0000-4000-0000-000000000000").apply {
+        return LegacyAccountDto(accountId).apply {
             accountNumber = ACCOUNT_NUMBER
         }
     }
 
     private fun createMessageReference(uid: String): MessageReference {
-        return MessageReference(ACCOUNT_UUID, FOLDER_ID, uid)
+        return MessageReference(accountId, FOLDER_ID, uid)
     }
 
     private fun createNotificationContent(uid: String): NotificationContent {

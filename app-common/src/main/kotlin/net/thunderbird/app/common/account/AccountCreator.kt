@@ -23,6 +23,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.common.mail.Protocols
+import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.avatar.AvatarMonogramCreator
 import net.thunderbird.feature.account.storage.profile.AvatarDto
 import net.thunderbird.feature.account.storage.profile.AvatarTypeDto
@@ -54,8 +55,8 @@ internal class AccountCreator(
         }
     }
 
-    private suspend fun create(account: Account): String {
-        val newAccount = preferences.newAccount(account.uuid)
+    private suspend fun create(account: Account): AccountId {
+        val newAccount = preferences.newAccount(account.id)
 
         newAccount.email = account.emailAddress
 
@@ -107,7 +108,7 @@ internal class AccountCreator(
             messagingController.checkMail(newAccount, false, true, false, null)
         }
 
-        return newAccount.uuid
+        return newAccount.id
     }
 
     /**

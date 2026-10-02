@@ -58,7 +58,7 @@ class PushController internal constructor(
     private var initializationStarted = false
     private val pushers = mutableMapOf<String, AccountPushController>()
 
-    private val pushEnabledCollectorJobs = mutableMapOf<String, Job>()
+    private val pushEnabledCollectorJobs = mutableMapOf<AccountId, Job>()
 
     private val autoSyncListener = AutoSyncListener(::onAutoSyncChanged)
     private val connectivityChangeListener = object : ConnectivityChangeListener {
@@ -186,7 +186,7 @@ class PushController internal constructor(
         } else {
             realPushAccounts
         }
-        val pushAccountUuids = pushAccounts.map { it.uuid }
+        val pushAccountUuids = pushAccounts.map { it.id.toString() }
 
         val arePushersActive = synchronized(lock) {
             val currentPushAccountUuids = pushers.keys
@@ -314,22 +314,22 @@ class PushController internal constructor(
     private fun updatePushEnabledListeners(accounts: Set<LegacyAccountDto>) {
         synchronized(lock) {
             // Stop listening to push enabled changes in accounts we no longer monitor
-            val accountUuids = accounts.mapToSet { it.uuid }
+            val accountIds = accounts.mapToSet { it.id }
             val iterator = pushEnabledCollectorJobs.iterator()
             while (iterator.hasNext()) {
-                val (accountUuid, collectorJob) = iterator.next()
-                if (accountUuid !in accountUuids) {
-                    Log.v("..Stopping to listen for push enabled changes in account: %s", accountUuid)
+                val (accountId, collectorJob) = iterator.next()
+                if (accountId !in accountIds) {
+                    Log.v("..Stopping to listen for push enabled changes in account: %s", accountId)
                     iterator.remove()
                     collectorJob.cancel()
                 }
             }
 
             // Start "push enabled" state collector jobs for new accounts to monitor
-            val newAccounts = accounts.filterNot { account -> pushEnabledCollectorJobs.containsKey(account.uuid) }
+            val newAccounts = accounts.filterNot { account -> pushEnabledCollectorJobs.containsKey(account.id) }
             for (account in newAccounts) {
-                pushEnabledCollectorJobs[account.uuid] = coroutineScope.launch(coroutineDispatcher) {
-                    Log.v("..Starting to listen for push enabled changes in account: %s", account.uuid)
+                pushEnabledCollectorJobs[account.id] = coroutineScope.launch(coroutineDispatcher) {
+                    Log.v("..Starting to listen for push enabled changes in account: %s", account.id)
                     pushFolderTrackingRepository.observeEnabled(account.id)
                         .collect {
                             updatePushers()

@@ -26,7 +26,7 @@ class K9MessageStoreFactory(
             val folderNameSanitizer = FolderNameSanitizer(lockableDatabase = localStore.database)
             folderNameSanitizer.removeGmailPrefixFromFolders()
         }
-        val storageFilesProvider = storageFilesProviderFactory.createStorageFilesProvider(account.uuid)
+        val storageFilesProvider = storageFilesProviderFactory.createStorageFilesProvider(account.id.toString())
         val messageStore = K9MessageStore(
             localStore.database,
             storageFilesProvider,

@@ -10,6 +10,7 @@ import app.k9mail.legacy.message.controller.SimpleMessagingListener
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import kotlinx.coroutines.test.runTest
+import net.thunderbird.account.fake.FakeAccountData.ACCOUNT_ID
 import net.thunderbird.account.fake.FakeAccountData.ACCOUNT_ID_RAW
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.account.LegacyAccountDtoManager
@@ -27,7 +28,7 @@ private const val STARRED_COUNT = 3
 
 class DefaultMessageCountsProviderTest {
 
-    private val account = LegacyAccountDto(ACCOUNT_ID_RAW)
+    private val account = LegacyAccountDto(ACCOUNT_ID)
     private val accountManager = mock<LegacyAccountDtoManager> {
         on { getAccounts() } doReturn listOf(account)
     }
@@ -97,7 +98,7 @@ class DefaultMessageCountsProviderTest {
             outboxFolderManager = FakeOutboxFolderManager(),
         )
         val search = LocalMessageSearch().apply {
-            addAccountUuid(account.uuid)
+            addAccountUuid(account.id.toString())
         }
 
         testSubject.getMessageCountsFlow(search).test {

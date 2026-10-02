@@ -14,6 +14,7 @@ import assertk.assertions.isInstanceOf
 import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ServerSettings
 import kotlinx.coroutines.test.runTest
+import net.thunderbird.feature.account.AccountIdFactory
 import org.junit.Test
 
 class LoadAccountStateTest {
@@ -28,7 +29,7 @@ class LoadAccountStateTest {
             accountStateRepository = accountStateRepository,
         )
 
-        val result = testSubject.execute(ACCOUNT_UUID)
+        val result = testSubject.execute(ACCOUNT_ID)
 
         assertThat(result).isEqualTo(ACCOUNT_STATE)
         assertThat(accountStateRepository.getState()).isEqualTo(ACCOUNT_STATE)
@@ -42,13 +43,13 @@ class LoadAccountStateTest {
         )
 
         assertFailure {
-            testSubject.execute(ACCOUNT_UUID)
+            testSubject.execute(ACCOUNT_ID)
         }.isInstanceOf<IllegalStateException>()
-            .hasMessage("Account state for $ACCOUNT_UUID not found")
+            .hasMessage("Account state for $ACCOUNT_ID not found")
     }
 
     private companion object {
-        const val ACCOUNT_UUID = "accountUuid"
+        val ACCOUNT_ID = AccountIdFactory.create()
         const val EMAIL_ADDRESS = "test@example.com"
         val INCOMING_SERVER_SETTINGS = ServerSettings(
             type = "imap",
@@ -86,7 +87,7 @@ class LoadAccountStateTest {
         )
 
         val ACCOUNT_STATE = AccountState(
-            uuid = ACCOUNT_UUID,
+            id = ACCOUNT_ID,
             emailAddress = EMAIL_ADDRESS,
             incomingServerSettings = INCOMING_SERVER_SETTINGS,
             outgoingServerSettings = OUTGOING_SERVER_SETTINGS,

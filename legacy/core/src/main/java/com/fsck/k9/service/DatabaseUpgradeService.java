@@ -16,6 +16,7 @@ import com.fsck.k9.mail.power.PowerManager;
 import com.fsck.k9.mail.power.WakeLock;
 import com.fsck.k9.mailstore.LocalStoreProvider;
 import net.thunderbird.core.android.account.LegacyAccountDto;
+import net.thunderbird.feature.account.AccountId;
 import net.thunderbird.legacy.logging.Log;
 
 /**
@@ -96,7 +97,7 @@ public class DatabaseUpgradeService extends Service {
 
     private LocalBroadcastManager mLocalBroadcastManager;
 
-    private String mAccountUuid;
+    private AccountId mAccountId;
     private int mProgress;
     private int mProgressEnd;
 
@@ -127,7 +128,7 @@ public class DatabaseUpgradeService extends Service {
         } else {
             // We're already running, so don't start the upgrade process again. But send the current
             // progress via broadcast.
-            sendProgressBroadcast(mAccountUuid, mProgress, mProgressEnd);
+            sendProgressBroadcast(mAccountId, mProgress, mProgressEnd);
         }
 
         return START_STICKY;
@@ -185,9 +186,9 @@ public class DatabaseUpgradeService extends Service {
         mProgress = 0;
 
         for (LegacyAccountDto account : accounts) {
-            mAccountUuid = account.getUuid();
+            mAccountId = account.getId();
 
-            sendProgressBroadcast(mAccountUuid, mProgress, mProgressEnd);
+            sendProgressBroadcast(mAccountId, mProgress, mProgressEnd);
 
             try {
                 // Account.getLocalStore() is blocking and will upgrade the database if necessary
@@ -203,10 +204,10 @@ public class DatabaseUpgradeService extends Service {
         sendUpgradeCompleteBroadcast();
     }
 
-    private void sendProgressBroadcast(String accountUuid, int progress, int progressEnd) {
+    private void sendProgressBroadcast(AccountId accountId, int progress, int progressEnd) {
         Intent intent = new Intent();
         intent.setAction(ACTION_UPGRADE_PROGRESS);
-        intent.putExtra(EXTRA_ACCOUNT_UUID, accountUuid);
+        intent.putExtra(EXTRA_ACCOUNT_UUID, accountId.toString());
         intent.putExtra(EXTRA_PROGRESS, progress);
         intent.putExtra(EXTRA_PROGRESS_END, progressEnd);
 

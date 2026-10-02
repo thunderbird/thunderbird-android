@@ -76,7 +76,7 @@ class LegacyProfileDtoStorageHandlerTest {
 
     // Arrange methods
     private fun createAccount(accountId: AccountId): LegacyAccountDto {
-        return LegacyAccountDto(accountId.toString()).apply {
+        return LegacyAccountDto(accountId).apply {
             name = NAME
             chipColor = COLOR
             avatar = AvatarDto(

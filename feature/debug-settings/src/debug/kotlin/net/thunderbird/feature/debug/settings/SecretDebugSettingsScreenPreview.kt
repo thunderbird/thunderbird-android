@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.flowOf
 import net.thunderbird.components.ui.bolt.PreviewWithThemesLightDark
 import net.thunderbird.core.common.resources.StringsResourceManager
+import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.debug.settings.navigation.SecretDebugSettingsRoute
 import net.thunderbird.feature.debug.settings.notification.DebugNotificationSectionViewModel
 import net.thunderbird.feature.mail.account.api.AccountManager
@@ -44,8 +45,8 @@ private fun SecretDebugSettingsScreenPreview() {
                 accountManager = object : AccountManager<BaseAccount> {
                     override fun getAccounts(): List<BaseAccount> = listOf()
                     override fun getAccountsFlow(): Flow<List<BaseAccount>> = flowOf(listOf())
-                    override fun getAccount(accountUuid: String): BaseAccount? = null
-                    override fun getAccountFlow(accountUuid: String): Flow<BaseAccount?> = flowOf(null)
+                    override fun getById(accountId: AccountId): BaseAccount? = null
+                    override fun observeById(accountId: AccountId): Flow<BaseAccount?> = flowOf(null)
                     override fun moveAccount(
                         account: BaseAccount,
                         newPosition: Int,

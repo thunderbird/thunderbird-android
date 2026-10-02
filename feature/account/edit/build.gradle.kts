@@ -21,6 +21,7 @@ dependencies {
 
     implementation(projects.mail.common)
 
+    implementation(projects.feature.account.api)
     implementation(projects.feature.account.common)
     implementation(projects.feature.account.oauth)
     implementation(projects.feature.account.server.settings)

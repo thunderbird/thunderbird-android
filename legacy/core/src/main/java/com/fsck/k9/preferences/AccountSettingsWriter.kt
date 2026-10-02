@@ -10,6 +10,8 @@ import kotlin.time.ExperimentalTime
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.storage.StorageEditor
+import net.thunderbird.feature.account.AccountId
+import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.account.storage.legacy.LegacyAccountStorageHandler.Companion.ACCOUNT_DESCRIPTION_KEY
 import net.thunderbird.feature.account.storage.legacy.LegacyAccountStorageHandler.Companion.INCOMING_SERVER_SETTINGS_KEY
 import net.thunderbird.feature.account.storage.legacy.LegacyAccountStorageHandler.Companion.OUTGOING_SERVER_SETTINGS_KEY
@@ -34,15 +36,15 @@ constructor(
         val editor = preferences.createStorageEditor()
 
         val originalAccountName = account.name!!
-        val originalAccountUuid = account.uuid
-        val originalAccount = AccountDescription(originalAccountName, originalAccountUuid)
+        val originalAccountId = AccountIdFactory.of(account.uuid)
+        val originalAccount = AccountDescription(originalAccountName, originalAccountId.toString())
 
-        val accountUuid = getUniqueAccountUuid(originalAccountUuid)
+        val accountId = getUniqueAccountId(originalAccountId)
         val accountName = getUniqueAccountName(originalAccountName)
-        val writtenAccount = AccountDescription(accountName, accountUuid)
+        val writtenAccount = AccountDescription(accountName, accountId.toString())
 
         editor.putStringWithLogging(
-            "$accountUuid.$ACCOUNT_DESCRIPTION_KEY",
+            "$accountId.$ACCOUNT_DESCRIPTION_KEY",
             accountName,
             generalSettingsManager.getConfig().debugging.isDebugLoggingEnabled,
             generalSettingsManager.getConfig().debugging.isSensitiveLoggingEnabled,
@@ -53,7 +55,7 @@ constructor(
 
         for ((accountKey, value) in stringSettings) {
             editor.putStringWithLogging(
-                "$accountUuid.$accountKey",
+                "$accountId.$accountKey",
                 value,
                 generalSettingsManager.getConfig().debugging.isDebugLoggingEnabled,
                 generalSettingsManager.getConfig().debugging.isSensitiveLoggingEnabled,
@@ -62,7 +64,7 @@ constructor(
 
         val newAccountNumber = preferences.generateAccountNumber().toString()
         editor.putStringWithLogging(
-            "$accountUuid.accountNumber",
+            "$accountId.accountNumber",
             newAccountNumber,
             generalSettingsManager.getConfig().debugging.isDebugLoggingEnabled,
             generalSettingsManager.getConfig().debugging.isSensitiveLoggingEnabled,
@@ -74,7 +76,7 @@ constructor(
         @OptIn(ExperimentalTime::class)
         val messageNotificationChannelVersion = clock.now().epochSeconds.toString()
         editor.putStringWithLogging(
-            key = "$accountUuid.messagesNotificationChannelVersion",
+            key = "$accountId.messagesNotificationChannelVersion",
             value = messageNotificationChannelVersion,
             isDebugLoggingEnabled = generalSettingsManager.getConfig().debugging.isDebugLoggingEnabled,
             isSensitiveDebugLoggingEnabled = generalSettingsManager.getConfig().debugging.isSensitiveLoggingEnabled,
@@ -82,19 +84,19 @@ constructor(
 
         serverSettingsWriter.writeServerSettings(
             editor,
-            key = "$accountUuid.$INCOMING_SERVER_SETTINGS_KEY",
+            key = "$accountId.$INCOMING_SERVER_SETTINGS_KEY",
             server = account.incoming,
         )
         serverSettingsWriter.writeServerSettings(
             editor,
-            key = "$accountUuid.$OUTGOING_SERVER_SETTINGS_KEY",
+            key = "$accountId.$OUTGOING_SERVER_SETTINGS_KEY",
             server = account.outgoing,
         )
 
-        writeIdentities(editor, accountUuid, account.identities)
-        writeFolders(editor, accountUuid, account.folders)
+        writeIdentities(editor, accountId, account.identities)
+        writeFolders(editor, accountId, account.folders)
 
-        updateAccountUuids(editor, accountUuid)
+        updateAccountUuids(editor, accountId.toString())
 
         if (!editor.commit()) {
             error("Failed to commit account settings")
@@ -103,7 +105,7 @@ constructor(
         // Reload accounts so the new account can be picked up by Preferences.getAccount()
         preferences.loadAccounts()
 
-        val appAccount = preferences.getAccount(accountUuid) ?: error("Failed to load account: $accountUuid")
+        val appAccount = preferences.getById(accountId) ?: error("Failed to load account: $accountId")
         localFoldersCreator.createSpecialLocalFolders(appAccount)
 
         Core.setServicesEnabled(context)
@@ -128,27 +130,26 @@ constructor(
 
     private fun writeIdentities(
         editor: StorageEditor,
-        accountUuid: String,
+        accountId: AccountId,
         identities: List<ValidatedSettings.Identity>,
     ) {
         for ((index, identity) in identities.withIndex()) {
-            identitySettingsWriter.write(editor, accountUuid, index, identity)
+            identitySettingsWriter.write(editor, accountId.toString(), index, identity)
         }
     }
 
-    private fun writeFolders(editor: StorageEditor, accountUuid: String, folders: List<ValidatedSettings.Folder>) {
+    private fun writeFolders(editor: StorageEditor, accountId: AccountId, folders: List<ValidatedSettings.Folder>) {
         for (folder in folders) {
-            folderSettingsWriter.write(editor, accountUuid, folder)
+            folderSettingsWriter.write(editor, accountId.toString(), folder)
         }
     }
 
-    private fun getUniqueAccountUuid(accountUuid: String): String {
-        val existingAccount = preferences.getAccount(accountUuid)
+    private fun getUniqueAccountId(accountId: AccountId): AccountId {
+        val existingAccount = preferences.getById(accountId)
         return if (existingAccount != null) {
-            // An account with this UUID already exists. So generate a new UUID.
-            UUID.randomUUID().toString()
+            AccountIdFactory.create()
         } else {
-            accountUuid
+            accountId
         }
     }
 

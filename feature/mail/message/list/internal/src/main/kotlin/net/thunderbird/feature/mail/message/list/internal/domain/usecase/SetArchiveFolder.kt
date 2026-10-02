@@ -28,7 +28,7 @@ internal class SetArchiveFolder(
         folder: RemoteFolder,
     ): Outcome<SetAccountFolderOutcome.Success, SetAccountFolderOutcome.Error> {
         val account = withContext(ioDispatcher) {
-            accountManager.getById(accountId).firstOrNull()
+            accountManager.observeById(accountId).firstOrNull()
         } ?: return Outcome.Failure(SetAccountFolderOutcome.Error.AccountNotFound)
 
         val backend = backendStorageFactory.createBackendStorage(accountId)

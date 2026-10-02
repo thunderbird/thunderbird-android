@@ -64,7 +64,7 @@ class NotificationController internal constructor(
     fun addNewMailNotification(account: LegacyAccountDto, message: LocalMessage, silent: Boolean) {
         Log.v(
             "Creating notification for message %s:%s:%s",
-            message.account.uuid,
+            message.account.id,
             message.folder.databaseId,
             message.uid,
         )
@@ -84,13 +84,13 @@ class NotificationController internal constructor(
         account: LegacyAccountDto,
         selector: (List<MessageReference>) -> List<MessageReference>,
     ) {
-        Log.v("Removing some notifications for account %s", account.uuid)
+        Log.v("Removing some notifications for account %s", account.id)
 
         newMailNotificationController.removeNewMailNotifications(account, clearNewMessageState = false, selector)
     }
 
     fun clearNewMailNotifications(account: LegacyAccountDto, clearNewMessageState: Boolean) {
-        Log.v("Removing all notifications for account %s", account.uuid)
+        Log.v("Removing all notifications for account %s", account.id)
 
         newMailNotificationController.clearNewMailNotifications(account, clearNewMessageState)
     }

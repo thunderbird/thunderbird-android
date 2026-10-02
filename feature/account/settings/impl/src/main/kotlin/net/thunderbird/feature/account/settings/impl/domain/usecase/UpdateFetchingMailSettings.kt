@@ -19,7 +19,7 @@ internal class UpdateFetchingMailSettings(
         accountId: AccountId,
         command: Command,
     ): Outcome<Unit, AccountSettingsDomainContract.AccountSettingError> {
-        val account = repository.getById(accountId)
+        val account = repository.observeById(accountId)
             .firstOrNull()
             ?: return Outcome.failure(
                 AccountSettingsDomainContract.AccountSettingError.NotFound(

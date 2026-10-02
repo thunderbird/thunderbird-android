@@ -3,6 +3,7 @@ package com.fsck.k9
 import com.fsck.k9.mail.ssl.LocalKeyStore
 import java.security.cert.CertificateException
 import java.security.cert.X509Certificate
+import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.mail.mailserver.MailServerDirection
 
@@ -48,7 +49,7 @@ class LocalKeyStoreManager(
      * Examine the settings for the account and attempt to delete (possibly non-existent)
      * certificates for the incoming and outgoing servers.
      */
-    fun deleteCertificates(account: LegacyAccountDto) {
+    fun deleteCertificates(account: LegacyAccount) {
         account.incomingServerSettings.let { serverSettings ->
             localKeyStore.deleteCertificate(serverSettings.host, serverSettings.port)
         }

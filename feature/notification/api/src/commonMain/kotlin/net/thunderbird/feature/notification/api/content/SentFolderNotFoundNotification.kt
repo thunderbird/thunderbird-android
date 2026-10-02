@@ -1,5 +1,6 @@
 package net.thunderbird.feature.notification.api.content
 
+import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.notification.api.NotificationSeverity
 import net.thunderbird.feature.notification.api.ui.action.NotificationAction
 import net.thunderbird.feature.notification.api.ui.icon.NotificationIcon
@@ -23,13 +24,13 @@ import org.jetbrains.compose.resources.getString
  */
 @ConsistentCopyVisibility
 data class SentFolderNotFoundNotification internal constructor(
-    override val accountUuid: String,
+    override val accountId: AccountId,
     override val title: String,
 ) : AppNotification(), InAppNotification {
     override val contentText: String = title
     override val severity: NotificationSeverity = NotificationSeverity.Warning
     override val icon: NotificationIcon get() = NotificationIcons.SentFolderNotFound
-    override val actions: Set<NotificationAction> = setOf(NotificationAction.AssignSentFolder(accountUuid))
+    override val actions: Set<NotificationAction> = setOf(NotificationAction.AssignSentFolder(accountId))
     override val inAppNotificationStyle: InAppNotificationStyle
         get() = inAppNotificationStyle { bannerGlobal(priority = NotificationPriority.Max) }
 }
@@ -42,12 +43,12 @@ internal expect val NotificationIcons.SentFolderNotFound: NotificationIcon
 /**
  * Factory function to create a [SentFolderNotFoundNotification].
  *
- * @param accountUuid The unique identifier of the account for which the 'Sent' folder is missing.
+ * @param accountId The [AccountId] of the account for which the 'Sent' folder is missing.
  * @return A new instance of [SentFolderNotFoundNotification] with the title loaded from string resources.
  */
 suspend fun SentFolderNotFoundNotification(
-    accountUuid: String,
+    accountId: AccountId,
 ): SentFolderNotFoundNotification = SentFolderNotFoundNotification(
-    accountUuid = accountUuid,
+    accountId = accountId,
     title = getString(Res.string.sent_folder_not_found_title),
 )

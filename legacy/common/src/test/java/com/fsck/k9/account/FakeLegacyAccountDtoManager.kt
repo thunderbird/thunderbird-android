@@ -5,9 +5,10 @@ import net.thunderbird.core.android.account.AccountRemovedListener
 import net.thunderbird.core.android.account.AccountsChangeListener
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.account.LegacyAccountDtoManager
+import net.thunderbird.feature.account.AccountId
 
 class FakeLegacyAccountDtoManager(
-    private val accounts: MutableMap<String, LegacyAccountDto> = mutableMapOf(),
+    private val accounts: MutableMap<AccountId, LegacyAccountDto> = mutableMapOf(),
     private val isFailureOnSave: Boolean = false,
 ) : LegacyAccountDtoManager {
 
@@ -17,9 +18,9 @@ class FakeLegacyAccountDtoManager(
         TODO("Not yet implemented")
     }
 
-    override fun getAccount(accountUuid: String): LegacyAccountDto? = accounts[accountUuid]
+    override fun getById(accountId: AccountId): LegacyAccountDto? = accounts[accountId]
 
-    override fun getAccountFlow(accountUuid: String): Flow<LegacyAccountDto> {
+    override fun observeById(accountId: AccountId): Flow<LegacyAccountDto> {
         TODO("Not yet implemented")
     }
 
@@ -44,6 +45,6 @@ class FakeLegacyAccountDtoManager(
         if (isFailureOnSave) {
             throw Exception("FakeAccountManager.saveAccount() failed")
         }
-        accounts[account.uuid] = account
+        accounts[account.id] = account
     }
 }

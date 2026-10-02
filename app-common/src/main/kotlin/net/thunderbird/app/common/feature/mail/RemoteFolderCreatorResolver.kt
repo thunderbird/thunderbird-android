@@ -16,7 +16,7 @@ class RemoteFolderCreatorResolver(
     private val imapFactory: ImapRemoteFolderCreatorFactory,
 ) : RemoteFolderCreator.Factory {
     override suspend fun create(accountId: AccountId): RemoteFolderCreator {
-        val account = accountManager.getById(accountId).firstOrNull()
+        val account = accountManager.observeById(accountId).firstOrNull()
             ?: error("Account not found: $accountId")
 
         return when (account.incomingServerSettings.type) {

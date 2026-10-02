@@ -8,6 +8,7 @@ import app.k9mail.feature.account.server.certificate.ui.ServerCertificateErrorCo
 import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSettingsContract
 import app.k9mail.feature.account.server.settings.ui.outgoing.OutgoingServerSettingsContract
 import app.k9mail.feature.account.server.validation.ui.ServerValidationContract
+import net.thunderbird.feature.account.AccountId
 import org.junit.Test
 import org.koin.core.annotation.KoinExperimentalAPI
 import org.koin.test.KoinTest
@@ -20,6 +21,7 @@ class AccountEditModuleKtTest : KoinTest {
     fun `should have a valid di module`() {
         featureAccountEditModule.verify(
             extraTypes = listOf(
+                AccountId::class,
                 Context::class,
                 AccountState::class,
                 Class.forName("net.openid.appauth.AppAuthConfiguration").kotlin,

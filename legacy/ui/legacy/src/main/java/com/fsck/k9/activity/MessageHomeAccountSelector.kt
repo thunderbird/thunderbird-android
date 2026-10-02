@@ -2,6 +2,7 @@ package com.fsck.k9.activity
 
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.account.LegacyAccountDtoManager
+import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.search.legacy.LocalMessageSearch
 
 internal fun LocalMessageSearch.resolveAccount(
@@ -12,7 +13,7 @@ internal fun LocalMessageSearch.resolveAccount(
         null
     } else {
         accountUuids.singleOrNull()
-            ?.let { accountManager.getAccount(it) }
+            ?.let { accountManager.getById(AccountIdFactory.of(it)) }
             ?: currentAccount
     }
 }

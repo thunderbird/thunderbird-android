@@ -23,7 +23,7 @@ class AccountAuthStateStorage(
     }
 
     private fun getAccountById(accountId: AccountId): LegacyAccount {
-        return accountManager.getByIdSync(accountId)
+        return accountManager.getById(accountId)
             ?: error("Account not found: $accountId")
     }
 }
