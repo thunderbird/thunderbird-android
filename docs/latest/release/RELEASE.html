@@ -37,7 +37,7 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-9f093b94.js";
+            window.path_to_searchindex_js = "../searchindex-4cc1b1ad.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../toc-0f8055a0.js"></script>
@@ -354,14 +354,7 @@ On the latter, code that was in beta goes to release, where the general populati
 <li>You will let them know when the merge is complete and main is re-opened</li>
 </ul>
 </li>
-<li>Clone thunderbird-android into three working directories:
-<ul>
-<li><code>merge_beta</code> - where you’ll perform the merge; check out the <code>beta</code> branch</li>
-<li><code>orig_main</code> - reference copy on the <code>main</code> branch</li>
-<li><code>orig_beta</code> - reference copy on the <code>beta</code> branch</li>
-</ul>
-</li>
-<li>From <code>merge_beta</code>, run <code>scripts/ci/merges/do_merge.sh beta</code></li>
+<li>Run <code>scripts/ci/merges/do_merge.sh beta</code></li>
 <li>Handle merge conflicts if there are any:
 <ul>
 <li>See conflicting files with <code>git status</code></li>
@@ -369,18 +362,14 @@ On the latter, code that was in beta goes to release, where the general populati
 <li>Fix conflicts</li>
 <li><code>git add &lt;file&gt;</code> each fixed file</li>
 <li>When all files have been fixed and added, run <code>git merge --continue</code></li>
-<li>Tip: use the <code>orig_main</code> and <code>orig_beta</code> repos to diff conflicting files, e.g. <code>vimdiff "${orig_main}/${f}" "${orig_beta}/${f}"</code></li>
+<li>Tip: use the <code>origin/main</code> and <code>origin/beta</code> branches to diff conflicting files, e.g. <code>git diff origin/main origin/beta &lt;file&gt;</code></li>
 </ul>
 </li>
 <li>Review merge results and ensure correctness:
 <ul>
 <li>Review the changes to <code>app-thunderbird/build.gradle.kts</code>, <code>app-k9mail/build.gradle.kts</code>, and release note files</li>
 <li>Diff the merge commit with <code>git diff HEAD~1 HEAD --name-only</code> and sanity check the files that changed</li>
-<li>Diff main vs the new beta with <code>diff -Naur --exclude=".git" --exclude="images" "${orig_main}" "${merge_beta}"</code>
-<ul>
-<li>Note: Ensure the metadata symlink is the same on each repo to ensure proper diff</li>
-</ul>
-</li>
+<li>Diff main vs the new beta with <code>git diff origin/main</code> or <code>git difftool -d origin/main</code> (recommended if you have the tooling set up for it)</li>
 </ul>
 </li>
 <li>Push the merge (<code>git push</code>)</li>
@@ -391,7 +380,7 @@ On the latter, code that was in beta goes to release, where the general populati
 <li>There should always be 3 milestones open (main, beta, release)</li>
 </ul>
 </li>
-<li>Submit a pull request that increments the version name in main (e.g. https://github.com/thunderbird/thunderbird-android/pull/11034)</li>
+<li>Submit a pull request that increments the version name in main (e.g. <a href="https://github.com/thunderbird/thunderbird-android/pull/11034">https://github.com/thunderbird/thunderbird-android/pull/11034</a>)</li>
 <li>Once the version increment is merged into main, unlock the branch</li>
 <li>Send a message to the #tb-mobile-dev:mozilla.org channel to notify of merge completion and that main is re-opened for the new version (e.g. 21.0)</li>
 </ol>
@@ -403,14 +392,7 @@ On the latter, code that was in beta goes to release, where the general populati
 <li>You will let them know when the merge is complete</li>
 </ul>
 </li>
-<li>Clone thunderbird-android into three working directories:
-<ul>
-<li><code>merge_release</code> - where you’ll perform the merge; check out the <code>release</code> branch</li>
-<li><code>orig_beta</code> - reference copy on the <code>beta</code> branch</li>
-<li><code>orig_release</code> - reference copy on the <code>release</code> branch</li>
-</ul>
-</li>
-<li>From <code>merge_release</code>, run <code>scripts/ci/merges/do_merge.sh release</code></li>
+<li>Run <code>scripts/ci/merges/do_merge.sh release</code></li>
 <li>Handle merge conflicts if there are any:
 <ul>
 <li>See conflicting files with <code>git status</code></li>
@@ -418,7 +400,7 @@ On the latter, code that was in beta goes to release, where the general populati
 <li>Fix conflicts</li>
 <li><code>git add &lt;file&gt;</code> each fixed file</li>
 <li>When all files have been fixed and added, run <code>git merge --continue</code></li>
-<li>Tip: use the <code>orig_beta</code> and <code>orig_release</code> repos to diff conflicting files, e.g. <code>vimdiff "${orig_beta}/${f}" "${orig_release}/${f}"</code></li>
+<li>Tip: use the <code>origin/beta</code> and <code>origin/release</code> branches to diff conflicting files, e.g. <code>git diff origin/beta origin/release &lt;file&gt;</code></li>
 </ul>
 </li>
 <li>Review merge results and ensure correctness:
@@ -426,11 +408,7 @@ On the latter, code that was in beta goes to release, where the general populati
 <li>Review the changes to <code>app-thunderbird/build.gradle.kts</code>, <code>app-k9mail/build.gradle.kts</code>, and release note files</li>
 <li>Ensure <code>app-k9mail/src/main/res/raw/changelog_master.xml</code> does not include any beta notes</li>
 <li>Diff the merge commit with <code>git diff HEAD~1 HEAD --name-only</code> and sanity check the files that changed</li>
-<li>Diff beta vs the new release with <code>diff -Naur --exclude=".git" --exclude="images" "${orig_beta}" "${merge_release}"</code>
-<ul>
-<li>Note: Ensure the metadata symlink is the same on each repo to ensure proper diff</li>
-</ul>
-</li>
+<li>Diff beta vs the new release with <code>git diff origin/beta</code> or <code>git difftool -d origin/beta</code> (recommended if you have the tooling set up for it)</li>
 </ul>
 </li>
 <li>Push the merge (<code>git push</code>)</li>
@@ -459,55 +437,50 @@ Daily builds are scheduled with the <a href="https://github.com/thunderbird/thun
 <ol>
 <li>Perform merge or uplifts. Each release is the result of either a merge or uplift</li>
 <li>Draft release notes at <a href="https://github.com/thunderbird/thunderbird-notes">thunderbird-notes</a></li>
-<li>Trigger build via the <a href="https://github.com/thunderbird/thunderbird-android/actions/workflows/shippable_builds.yml">Shippable Build &amp; Signing</a> action</li>
-</ol>
+<li>Trigger build via the <a href="https://github.com/thunderbird/thunderbird-android/actions/workflows/shippable_builds.yml">Shippable Build &amp; Signing</a> action
 <ul>
 <li>Release notes must be landed to <code>prod</code> before triggering <a href="https://github.com/thunderbird/thunderbird-android/actions/workflows/shippable_builds.yml">Shippable Build &amp; Signing</a>, or the build will fail</li>
 </ul>
-<ol start="4">
-<li>Review the build results by reviewing the action summary and the git commits resulting from the build</li>
-</ol>
+</li>
+<li>Review the build results by reviewing the action summary and the git commits resulting from the build
 <ul>
 <li>Make sure the version code is incremented properly and not wildly off</li>
 <li>Ensure the commits are correct</li>
 <li>Ensure the symlink <code>app-metadata</code> points to the right product at this commit</li>
 </ul>
-<ol start="5">
-<li>Test the build in the internal testing track</li>
-</ol>
+</li>
+<li>Test the build in the internal testing track
 <ul>
 <li>Release versions should be thoroughly tested with the test plan in Testrail</li>
 <li>Beta versions only require a basic smoke test to ensure it installs</li>
 </ul>
-<ol start="6">
-<li>Document contributors on Thunderbird and K-9 GitHub releases page</li>
-</ol>
+</li>
+<li>Document contributors on Thunderbird and K-9 GitHub releases page
 <ul>
 <li>Contributors can be compiled from the GitHub release notes template that can be generated when editing a release</li>
 </ul>
-<ol start="7">
-<li>Promote TfA and K-9 releases to production track in Play Store</li>
-</ol>
+</li>
+<li>Promote TfA and K-9 releases to production track in Play Store
 <ul>
 <li>Set rollout to a low rate (generally 10-30%)</li>
 <li>Betas are only released for TfA. K-9 beta users are advised to use Thunderbird</li>
 </ul>
-<ol start="8">
-<li>Wait for Play Store review to complete</li>
-</ol>
+</li>
+<li>Wait for Play Store review to complete
 <ul>
 <li>Release versions of TfA and K-9 have managed publishing enabled. Once the review has completed you need to publish the release</li>
 <li>Beta versions of TfA do not have managed publishing enabled. It will be available once Google has reviewed, even on a weekend</li>
 </ul>
-<ol start="9">
+</li>
 <li>Update F-Droid to new TfA and K-9 releases by sending a pull request to <a href="https://gitlab.com/fdroid/fdroiddata">fdroiddata</a></li>
 <li>Send community updates to Matrix channels, and beta or planning mailing lists as needed</li>
-<li>Approximately 24 hours after initial release to production, assess the following before updating rollout to a higher rate:</li>
-</ol>
+<li>Approximately 24 hours after initial release to production, assess the following before updating rollout to a higher rate:
 <ul>
 <li>Crash rates, GitHub issues, install base, and reviews</li>
 </ul>
-<footer id="last-change">Last change: <time datetime="2026-10-01">2026-10-01</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/0927fce">0927fce</a></footer>
+</li>
+</ol>
+<footer id="last-change">Last change: <time datetime="2026-10-02">2026-10-02</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/eda41c1">eda41c1</a></footer>
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
