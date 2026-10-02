@@ -3,9 +3,9 @@ package net.thunderbird.feature.notification.impl.dismisser
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
+import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.components.core.outcome.Outcome
 import net.thunderbird.core.featureflag.FeatureFlagProvider
-import net.thunderbird.core.logging.Logger
 import net.thunderbird.feature.notification.api.NotificationId
 import net.thunderbird.feature.notification.api.NotificationRegistry
 import net.thunderbird.feature.notification.api.command.NotificationCommand
@@ -62,7 +62,7 @@ class DefaultNotificationDismisser internal constructor(
                 .ifEmpty {
                     val message = "The notification is present in the registrar; " +
                         "however no commands where found to execute for notification $notification"
-                    logger.warn { message }
+                    logger.warn(TAG) { message }
                     emit(Outcome.failure(CommandNotCreated(message)))
                     emptyList()
                 }

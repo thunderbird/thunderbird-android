@@ -1,7 +1,7 @@
 package net.thunderbird.feature.mail.message.list.internal.ui.state.sideeffect
 
 import kotlinx.coroutines.CoroutineScope
-import net.thunderbird.core.logging.Logger
+import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.mail.message.list.domain.DomainContract
 import net.thunderbird.feature.mail.message.list.ui.effect.MessageListEffect

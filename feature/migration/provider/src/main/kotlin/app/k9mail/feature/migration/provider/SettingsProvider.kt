@@ -20,6 +20,8 @@ import okio.ByteString.Companion.toByteString
 import org.koin.android.ext.android.inject
 import org.koin.core.component.KoinComponent
 
+private const val TAG = "SettingsProvider"
+
 /**
  * A `ContentProvider` that makes settings available to another app.
  *
@@ -41,7 +43,7 @@ class SettingsProvider : ContentProvider(), KoinComponent {
 
     override fun openFile(uri: Uri, mode: String): ParcelFileDescriptor? {
         if (!isTrustedCaller()) {
-            Log.d("Caller must be in the allowlist")
+            Log.d(TAG, "Caller must be in the allowlist")
             return null
         }
 
@@ -130,16 +132,16 @@ class SettingsProvider : ContentProvider(), KoinComponent {
         }
 
         if (callerSignature == null) {
-            Log.v("Couldn't retrieve caller signature")
+            Log.v(TAG, "Couldn't retrieve caller signature")
             return false
         }
 
         val callerSignatureHash = callerSignature.toByteArray().toByteString().sha256().hex()
         val result = callerSignatureHash in expectedHashes
         if (result) {
-            Log.d("Caller %s signature fingerprint matches %s", callerPackage, callerSignatureHash)
+            Log.d(TAG, "Caller %s signature fingerprint matches %s", callerPackage, callerSignatureHash)
         } else {
-            Log.d("Failed! Signature mismatch for calling package %s (%s)", callerPackage, callerSignatureHash)
+            Log.d(TAG, "Failed! Signature mismatch for calling package %s (%s)", callerPackage, callerSignatureHash)
         }
 
         return result

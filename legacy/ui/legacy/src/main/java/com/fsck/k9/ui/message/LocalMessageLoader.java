@@ -13,6 +13,8 @@ import com.fsck.k9.mailstore.LocalMessage;
 
 
 public class LocalMessageLoader extends AsyncTaskLoader<LocalMessage> {
+    private static final String TAG = "LocalMessageLoader";
+
     private final MessagingController controller;
     private final LegacyAccountDto account;
     private final MessageReference messageReference;
@@ -54,7 +56,7 @@ public class LocalMessageLoader extends AsyncTaskLoader<LocalMessage> {
                 return loadMessageFromDatabase();
             }
         } catch (Exception e) {
-            Log.e(e, "Error while loading message from database");
+            Log.e(TAG, e, "Error while loading message from database");
             return null;
         }
     }

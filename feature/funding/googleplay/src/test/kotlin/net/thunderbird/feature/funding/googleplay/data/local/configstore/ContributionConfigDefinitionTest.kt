@@ -4,8 +4,8 @@ import assertk.assertThat
 import assertk.assertions.containsExactly
 import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
+import net.thunderbird.components.core.logging.testing.TestLogger
 import net.thunderbird.core.configstore.ConfigId
-import net.thunderbird.core.logging.testing.TestLogger
 import org.junit.Test
 
 class ContributionConfigDefinitionTest {

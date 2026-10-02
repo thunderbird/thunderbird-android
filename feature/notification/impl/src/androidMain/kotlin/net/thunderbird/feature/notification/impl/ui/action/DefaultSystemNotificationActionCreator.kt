@@ -1,6 +1,6 @@
 package net.thunderbird.feature.notification.impl.ui.action
 
-import net.thunderbird.core.logging.Logger
+import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.feature.notification.api.content.Notification
 import net.thunderbird.feature.notification.api.content.SystemNotification
 import net.thunderbird.feature.notification.api.ui.action.NotificationAction

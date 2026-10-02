@@ -5,9 +5,9 @@ import kotlin.time.Clock
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 import kotlin.time.Instant
+import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.core.common.extension.mapOrDefault
 import net.thunderbird.core.common.state.StateMachine
-import net.thunderbird.core.logging.Logger
 
 internal const val MAX_COLLECTION_SIZE_PRINT_THRESHOLD = 5
 private const val TAG = "StatePrettyPrinter"

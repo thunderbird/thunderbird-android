@@ -59,6 +59,8 @@ import static com.fsck.k9.FontSizes.FONT_DEFAULT;
 public class RecipientSelectView extends TokenCompleteTextView<Recipient> implements LoaderCallbacks<List<Recipient>>,
     AlternateRecipientListener {
 
+    private static final String TAG = "RecipientSelectView";
+
     private static final int MINIMUM_LENGTH_FOR_FILTERING = 2;
 
     private static final String ARG_QUERY = "query";
@@ -493,7 +495,7 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         List<Recipient> currentRecipients = getObjects();
         int indexOfRecipient = currentRecipients.indexOf(recipientToReplace);
         if (indexOfRecipient == -1) {
-            Log.e("Tried to refresh invalid view token!");
+            Log.e(TAG, "Tried to refresh invalid view token!");
             return;
         }
         Recipient currentRecipient = currentRecipients.get(indexOfRecipient);
@@ -504,7 +506,7 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
 
         View recipientTokenView = getTokenViewForRecipient(currentRecipient);
         if (recipientTokenView == null) {
-            Log.e("Tried to refresh invalid view token!");
+            Log.e(TAG, "Tried to refresh invalid view token!");
             return;
         }
 

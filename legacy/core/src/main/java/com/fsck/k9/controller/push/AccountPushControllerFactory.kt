@@ -3,7 +3,7 @@ package com.fsck.k9.controller.push
 import com.fsck.k9.backend.BackendManager
 import com.fsck.k9.controller.MessagingController
 import net.thunderbird.core.android.account.LegacyAccountDtoManager
-import net.thunderbird.core.logging.Logger
+import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.mail.folder.api.data.repository.PushFolderTrackingRepository
 import net.thunderbird.feature.mail.folder.api.data.repository.PushFoldersQueryRepository

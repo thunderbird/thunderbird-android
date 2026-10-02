@@ -9,6 +9,8 @@ import net.thunderbird.legacy.logging.Log
 import net.thunderbird.core.preference.notification.NotificationPreferenceManager
 import androidx.core.app.NotificationCompat.Builder as NotificationBuilder
 
+private const val TAG = "SingleMessageNotificationCreator"
+
 internal class SingleMessageNotificationCreator(
     private val notificationHelper: NotificationHelper,
     private val actionCreator: NotificationActionCreator,
@@ -50,6 +52,7 @@ internal class SingleMessageNotificationCreator(
 
         if (isGroupSummary) {
             Log.v(
+                TAG,
                 "Creating single summary notification (silent=%b): %s",
                 singleNotificationData.isSilent,
                 notification,

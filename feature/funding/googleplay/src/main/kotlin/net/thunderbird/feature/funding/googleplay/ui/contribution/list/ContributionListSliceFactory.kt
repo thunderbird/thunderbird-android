@@ -1,7 +1,7 @@
 package net.thunderbird.feature.funding.googleplay.ui.contribution.list
 
 import kotlinx.coroutines.CoroutineScope
-import net.thunderbird.core.logging.Logger
+import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract
 
 internal class ContributionListSliceFactory(

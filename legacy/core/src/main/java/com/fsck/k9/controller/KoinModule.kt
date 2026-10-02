@@ -12,7 +12,7 @@ import com.fsck.k9.mailstore.SpecialLocalFoldersCreator
 import com.fsck.k9.notification.NotificationController
 import com.fsck.k9.notification.NotificationStrategy
 import net.thunderbird.core.featureflag.FeatureFlagProvider
-import net.thunderbird.core.logging.Logger
+import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.feature.mail.folder.api.OutboxFolderManager
 import net.thunderbird.feature.mail.message.list.LocalDeleteOperationDecider
 import net.thunderbird.feature.mail.message.list.LocalMessageUidPrefixProvider

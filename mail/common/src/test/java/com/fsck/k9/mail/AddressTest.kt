@@ -8,7 +8,7 @@ import assertk.assertions.isNull
 import assertk.assertions.isTrue
 import com.fsck.k9.mail.Address.Companion.parse
 import com.fsck.k9.mail.Address.Companion.quoteString
-import net.thunderbird.core.logging.testing.TestLogger
+import net.thunderbird.components.core.logging.testing.TestLogger
 import net.thunderbird.legacy.logging.Log
 import org.junit.Before
 import org.junit.Test

@@ -15,6 +15,8 @@ import java.util.Locale;
 import static com.fsck.k9.mail.internet.JisSupport.SHIFT_JIS;
 
 public class CharsetSupport {
+    private static final String TAG = "CharsetSupport";
+
     private static final String DEFAULT_CHARSET = "US-ASCII";
 
     /**
@@ -83,7 +85,7 @@ public class CharsetSupport {
             }
 
             if (charset.matches(rule[0])) {
-                Log.e("I don't know how to deal with the charset %s. Falling back to %s", charset, rule[1]);
+                Log.e(TAG, "I don't know how to deal with the charset %s. Falling back to %s", charset, rule[1]);
                 charset = rule[1];
                 try {
                     supported = Charset.isSupported(charset);

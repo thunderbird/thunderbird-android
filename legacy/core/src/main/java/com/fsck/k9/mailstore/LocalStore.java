@@ -66,6 +66,8 @@ import net.thunderbird.legacy.logging.Log;
  * </pre>
  */
 public class LocalStore {
+    private static final String TAG = "LocalStore";
+
     static final String[] EMPTY_STRING_ARRAY = new String[0];
     static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
 
@@ -362,7 +364,7 @@ public class LocalStore {
                 ((!TextUtils.isEmpty(where)) ? " AND (" + where + ")" : "") +
                 " ORDER BY date DESC";
 
-        Log.d("Query = %s", sqlQuery);
+        Log.d(TAG, "Query = %s", sqlQuery);
 
         return getMessages(null, sqlQuery, selectionArgs);
     }
@@ -405,7 +407,7 @@ public class LocalStore {
                         messages.add(message);
                     }
                 } catch (Exception e) {
-                    Log.d(e, "Got an exception");
+                    Log.d(TAG, e, "Got an exception");
                 } finally {
                     Utility.closeQuietly(cursor);
                 }

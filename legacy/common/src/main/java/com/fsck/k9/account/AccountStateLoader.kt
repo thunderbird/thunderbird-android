@@ -14,6 +14,8 @@ import net.thunderbird.core.common.mail.Protocols
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.legacy.logging.Log
 
+private const val TAG = "AccountStateLoader"
+
 class AccountStateLoader(
     private val accountManager: LegacyAccountDtoManager,
     private val coroutineDispatcher: CoroutineDispatcher = Dispatchers.IO,
@@ -26,7 +28,7 @@ class AccountStateLoader(
                 load(accountId)
             }
         } catch (e: Exception) {
-            Log.e(e, "Error while loading account")
+            Log.e(TAG, e, "Error while loading account")
 
             null
         }

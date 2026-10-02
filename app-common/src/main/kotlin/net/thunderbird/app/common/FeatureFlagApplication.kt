@@ -12,6 +12,8 @@ import net.thunderbird.core.featureflag.provider.evaluator.MultiFeatureFlagProvi
 import net.thunderbird.core.featureflag.provider.initializeFeatureFlags
 import org.koin.android.ext.android.inject
 
+private const val TAG = "FeatureFlagApplication"
+
 abstract class FeatureFlagApplication : BaseApplication() {
     protected abstract val appName: String
     protected abstract val appVersion: String
@@ -21,7 +23,7 @@ abstract class FeatureFlagApplication : BaseApplication() {
     private val featureFlagScope = CoroutineScope(
         SupervisorJob() + Dispatchers.Main +
             CoroutineExceptionHandler { _, throwable ->
-                logger.error(throwable = throwable) { "[feature-flag] Failed to initialize Feature flags" }
+                logger.error(tag = TAG, throwable = throwable) { "[feature-flag] Failed to initialize Feature flags" }
             },
     )
 

@@ -18,6 +18,8 @@ import net.thunderbird.core.common.mail.Protocols
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.legacy.logging.Log
 
+private const val TAG = "AccountServerSettingsUpdater"
+
 class AccountServerSettingsUpdater(
     private val accountManager: LegacyAccountDtoManager,
     private val coroutineDispatcher: CoroutineDispatcher = Dispatchers.IO,
@@ -35,7 +37,7 @@ class AccountServerSettingsUpdater(
                 updateSettings(accountId, isIncoming, serverSettings, authorizationState)
             }
         } catch (error: Exception) {
-            Log.e(error, "Error while updating account server settings with UUID %s", accountId)
+            Log.e(TAG, error, "Error while updating account server settings with UUID %s", accountId)
 
             AccountUpdaterResult.Failure(AccountUpdaterFailure.UnknownError(error))
         }

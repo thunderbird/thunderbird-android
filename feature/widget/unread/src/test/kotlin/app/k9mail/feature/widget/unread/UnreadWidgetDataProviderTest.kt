@@ -12,9 +12,9 @@ import com.fsck.k9.Preferences
 import com.fsck.k9.ui.messagelist.DefaultFolderProvider
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.test.runTest
+import net.thunderbird.components.core.logging.testing.TestLogger
 import net.thunderbird.components.core.outcome.Outcome
 import net.thunderbird.core.android.account.LegacyAccountDto
-import net.thunderbird.core.logging.testing.TestLogger
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.mail.folder.FolderType

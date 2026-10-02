@@ -30,6 +30,8 @@ import net.thunderbird.feature.account.storage.profile.AvatarTypeDto
 import net.thunderbird.feature.mail.folder.api.SpecialFolderSelection
 import net.thunderbird.legacy.logging.Log
 
+private const val TAG = "AccountCreator"
+
 // TODO Move to feature/account/setup
 @Suppress("LongParameterList")
 internal class AccountCreator(
@@ -49,7 +51,7 @@ internal class AccountCreator(
         return try {
             withContext(coroutineDispatcher) { AccountCreatorResult.Success(create(account)) }
         } catch (e: Exception) {
-            Log.e(e, "Error while creating new account")
+            Log.e(TAG, e, "Error while creating new account")
 
             AccountCreatorResult.Error(e.message ?: "Unknown create account error")
         }

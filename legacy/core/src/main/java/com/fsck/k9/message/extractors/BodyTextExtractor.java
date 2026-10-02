@@ -13,6 +13,8 @@ import com.fsck.k9.message.html.HtmlConverter;
 
 //TODO: Get rid of this class and use MessageViewInfoExtractor instead
 public class BodyTextExtractor {
+    private static final String TAG = "BodyTextExtractor";
+
     /** Fetch the body text from a messagePart in the desired messagePart format. This method handles
      * conversions between formats (html to text and vice versa) if necessary.
      */
@@ -23,13 +25,13 @@ public class BodyTextExtractor {
             // HTML takes precedence, then text.
             part = MimeUtility.findFirstPartByMimeType(messagePart, "text/html");
             if (part != null) {
-                Log.d("getBodyTextFromMessage: HTML requested, HTML found.");
+                Log.d(TAG, "getBodyTextFromMessage: HTML requested, HTML found.");
                 return getTextFromPartOrEmpty(part);
             }
 
             part = MimeUtility.findFirstPartByMimeType(messagePart, "text/plain");
             if (part != null) {
-                Log.d("getBodyTextFromMessage: HTML requested, text found.");
+                Log.d(TAG, "getBodyTextFromMessage: HTML requested, text found.");
                 String text = getTextFromPartOrEmpty(part);
                 return HtmlConverter.textToHtml(text);
             }
@@ -37,13 +39,13 @@ public class BodyTextExtractor {
             // Text takes precedence, then html.
             part = MimeUtility.findFirstPartByMimeType(messagePart, "text/plain");
             if (part != null) {
-                Log.d("getBodyTextFromMessage: Text requested, text found.");
+                Log.d(TAG, "getBodyTextFromMessage: Text requested, text found.");
                 return getTextFromPartOrEmpty(part);
             }
 
             part = MimeUtility.findFirstPartByMimeType(messagePart, "text/html");
             if (part != null) {
-                Log.d("getBodyTextFromMessage: Text requested, HTML found.");
+                Log.d(TAG, "getBodyTextFromMessage: Text requested, HTML found.");
                 String text = getTextFromPartOrEmpty(part);
                 return HtmlConverter.htmlToText(text);
             }

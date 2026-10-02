@@ -28,13 +28,13 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.io.decodeFromSource
+import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.core.featureflag.data.RemoteCatalogException.Code
 import net.thunderbird.core.featureflag.data.configstore.FeatureFlagConfigStore
 import net.thunderbird.core.featureflag.data.configstore.RemoteCatalogCacheMetadata
 import net.thunderbird.core.featureflag.data.configstore.safeUpdate
 import net.thunderbird.core.featureflag.model.FeatureFlagCatalog
 import net.thunderbird.core.file.FileSystemManager
-import net.thunderbird.core.logging.Logger
 
 @OptIn(ExperimentalSerializationApi::class)
 class RemoteFeatureFlagCatalogDataSource(
@@ -73,23 +73,27 @@ class RemoteFeatureFlagCatalogDataSource(
             result
         } catch (e: RemoteCatalogException) {
             when (e.code) {
-                Code.RemoteCatalogUserDisabled -> logger.debug(throwable = e) {
+                Code.RemoteCatalogUserDisabled -> logger.debug(tag = TAG, throwable = e) {
                     "$LOG_PREFIX Skipping remote catalog; user disabled."
                 }
 
-                Code.CantWriteCacheFile -> logger.debug(throwable = e) { "$LOG_PREFIX Failed to write cache file." }
+                Code.CantWriteCacheFile -> logger.debug(tag = TAG, throwable = e) {
+                    "$LOG_PREFIX Failed to write cache file."
+                }
 
-                Code.CantReadCacheFile -> logger.debug(throwable = e) { "$LOG_PREFIX Failed to read cache file." }
+                Code.CantReadCacheFile -> logger.debug(tag = TAG, throwable = e) {
+                    "$LOG_PREFIX Failed to read cache file."
+                }
             }
             null
         } catch (e: JsonConvertException) {
-            logger.error(throwable = e) { "$LOG_PREFIX Failed to convert JSON to FeatureFlagCatalog" }
+            logger.error(tag = TAG, throwable = e) { "$LOG_PREFIX Failed to convert JSON to FeatureFlagCatalog" }
             null
         } catch (e: SerializationException) {
-            logger.error(throwable = e) { "$LOG_PREFIX Failed to convert JSON to FeatureFlagCatalog" }
+            logger.error(tag = TAG, throwable = e) { "$LOG_PREFIX Failed to convert JSON to FeatureFlagCatalog" }
             null
         } catch (e: IOException) {
-            logger.error(throwable = e) { "$LOG_PREFIX Failed to fetch Feature Flag Remote Catalog" }
+            logger.error(tag = TAG, throwable = e) { "$LOG_PREFIX Failed to fetch Feature Flag Remote Catalog" }
             null
         }
     }
@@ -101,17 +105,17 @@ class RemoteFeatureFlagCatalogDataSource(
      * @throws RemoteCatalogException when the response status is not a success.
      */
     private suspend fun HttpClient.fetchCacheMetadata(url: String): RemoteCatalogCacheMetadata? {
-        logger.verbose { "$LOG_PREFIX Fetching cache metadata" }
+        logger.verbose(TAG) { "$LOG_PREFIX Fetching cache metadata" }
         val response = head(url)
         return if (response.status == HttpStatusCode.OK) {
-            logger.verbose { "$LOG_PREFIX Cache read with success. Response = $response" }
+            logger.verbose(TAG) { "$LOG_PREFIX Cache read with success. Response = $response" }
             RemoteCatalogCacheMetadata(
                 eTag = response.headers["ETag"],
                 lastModified = response.headers["Last-Modified"],
                 contentLength = response.headers["Content-Length"]?.toLongOrNull(),
             )
         } else {
-            logger.warn {
+            logger.warn(TAG) {
                 "$LOG_PREFIX HEAD request to '$url' returned status ${response.status}"
             }
             null
@@ -120,7 +124,7 @@ class RemoteFeatureFlagCatalogDataSource(
 
     private suspend fun downloadAndCache(url: String, cacheMetadata: RemoteCatalogCacheMetadata?): FeatureFlagCatalog =
         withContext(ioDispatcher) {
-            logger.verbose { "$LOG_PREFIX Starting Remote Feature Flag catalog download" }
+            logger.verbose(TAG) { "$LOG_PREFIX Starting Remote Feature Flag catalog download" }
             val response = httpClient.get(urlString = url)
 
             val channel = response.bodyAsChannel()
@@ -134,14 +138,14 @@ class RemoteFeatureFlagCatalogDataSource(
                 buffer.write(source = chunk, startIndex = 0, endIndex = read)
                 totalRead += read
                 val progress = if (contentLength == 0) 0.0 else totalRead / contentLength.toDouble()
-                logger.debug { "$LOG_PREFIX Downloading $progress%" }
+                logger.debug(TAG) { "$LOG_PREFIX Downloading $progress%" }
             }
 
             val fileBuffer = buffer.copy()
-            logger.verbose { "$LOG_PREFIX Caching Remote Feature Flag catalog at $cacheFileUri" }
+            logger.verbose(TAG) { "$LOG_PREFIX Caching Remote Feature Flag catalog at $cacheFileUri" }
             val sink = fileSystemManager.openSink(uri = cacheFileUri)
             if (sink == null) {
-                logger.warn {
+                logger.warn(TAG) {
                     "$LOG_PREFIX Can't write the remote catalog cache. Sink could not be opened."
                 }
                 throw RemoteCatalogException(code = Code.CantWriteCacheFile)
@@ -150,7 +154,7 @@ class RemoteFeatureFlagCatalogDataSource(
                 sink.write(fileBuffer, fileBuffer.size)
             }
 
-            logger.verbose { "$LOG_PREFIX Caching remote catalog metadata" }
+            logger.verbose(TAG) { "$LOG_PREFIX Caching remote catalog metadata" }
             configStore.safeUpdate { config ->
                 config.copy(
                     remoteCatalogConfig = config.remoteCatalogConfig.copy(
@@ -164,16 +168,17 @@ class RemoteFeatureFlagCatalogDataSource(
         }
 
     private suspend fun readFromCache(): FeatureFlagCatalog = withContext(ioDispatcher) {
-        logger.verbose { "$LOG_PREFIX Reading Remote Feature Flag catalog from cache at $cacheFileUri" }
+        logger.verbose(TAG) { "$LOG_PREFIX Reading Remote Feature Flag catalog from cache at $cacheFileUri" }
         val source = fileSystemManager.openSource(cacheFileUri)
         if (source == null) {
-            logger.warn { "$LOG_PREFIX Can't read cached remote feature flag catalog." }
+            logger.warn(TAG) { "$LOG_PREFIX Can't read cached remote feature flag catalog." }
             throw RemoteCatalogException(code = Code.CantReadCacheFile)
         }
         json.decodeFromSource<FeatureFlagCatalog>(source.buffered())
     }
 
     companion object {
+        private const val TAG = "RemoteFeatureFlagCatalogDataSource"
         private const val LOG_PREFIX = "[feature-flag][remote-data-sourece]"
     }
 }

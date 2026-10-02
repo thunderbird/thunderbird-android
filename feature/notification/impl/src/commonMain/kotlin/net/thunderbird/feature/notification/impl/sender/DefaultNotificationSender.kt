@@ -2,9 +2,9 @@ package net.thunderbird.feature.notification.impl.sender
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.components.core.outcome.Outcome
 import net.thunderbird.core.featureflag.FeatureFlagProvider
-import net.thunderbird.core.logging.Logger
 import net.thunderbird.feature.notification.api.command.NotificationCommand
 import net.thunderbird.feature.notification.api.command.outcome.CommandNotCreated
 import net.thunderbird.feature.notification.api.command.outcome.NotificationCommandOutcome
@@ -15,6 +15,8 @@ import net.thunderbird.feature.notification.api.receiver.NotificationNotifier
 import net.thunderbird.feature.notification.api.sender.NotificationSender
 import net.thunderbird.feature.notification.impl.command.DisplayInAppNotificationCommand
 import net.thunderbird.feature.notification.impl.command.DisplaySystemNotificationCommand
+
+private const val TAG = "DefaultNotificationSender"
 
 /**
  * Responsible for sending notifications by creating and executing the appropriate commands.
@@ -40,7 +42,7 @@ class DefaultNotificationSender internal constructor(
         commands
             .ifEmpty {
                 val message = "No commands to execute for notification $notification"
-                logger.warn { message }
+                logger.warn(TAG) { message }
                 emit(Outcome.failure(CommandNotCreated(message)))
                 emptyList()
             }

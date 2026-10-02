@@ -19,7 +19,7 @@ import com.fsck.k9.mailstore.MigrationsHelper
 import net.thunderbird.core.android.account.Expunge
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.common.mail.Protocols
-import net.thunderbird.core.logging.Logger
+import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.legacy.logging.Log
 import okio.IOException
 import org.intellij.lang.annotations.Language

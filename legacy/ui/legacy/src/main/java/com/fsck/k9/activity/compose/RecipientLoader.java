@@ -35,6 +35,8 @@ import static java.lang.String.CASE_INSENSITIVE_ORDER;
 
 
 public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
+    private static final String TAG = "RecipientLoader";
+
     /*
      * Indexes of the fields in the projection. This must match the order in {@link #PROJECTION}.
      */
@@ -234,7 +236,7 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
                 return;
             }
         } catch (Exception e) {
-            Log.e(e, "Couldn't obtain recipients from crypto provider!");
+            Log.e(TAG, e, "Couldn't obtain recipients from crypto provider!");
             return;
         }
 

@@ -9,6 +9,8 @@ import net.thunderbird.legacy.logging.Log
 import android.os.PowerManager as SystemPowerManager
 import android.os.PowerManager.WakeLock as SystemWakeLock
 
+private const val TAG = "AndroidPowerManager"
+
 internal class AndroidPowerManager(private val systemPowerManager: SystemPowerManager) : PowerManager {
     override fun newWakeLock(tag: String): WakeLock {
         return AndroidWakeLock(SystemPowerManager.PARTIAL_WAKE_LOCK, tag)
@@ -25,7 +27,7 @@ internal class AndroidPowerManager(private val systemPowerManager: SystemPowerMa
         private var timeout: Long? = null
 
         init {
-            Log.v("AndroidWakeLock for tag %s / id %d: Create", tag, id)
+            Log.v(TAG, "AndroidWakeLock for tag %s / id %d: Create", tag, id)
         }
 
         override fun acquire(timeout: Long) {
@@ -33,7 +35,7 @@ internal class AndroidPowerManager(private val systemPowerManager: SystemPowerMa
                 wakeLock.acquire(timeout)
             }
 
-            Log.v("AndroidWakeLock for tag %s / id %d for %d ms: acquired", tag, id, timeout)
+            Log.v(TAG, "AndroidWakeLock for tag %s / id %d for %d ms: acquired", tag, id, timeout)
 
             if (startTime == null) {
                 startTime = SystemClock.elapsedRealtime()
@@ -48,7 +50,7 @@ internal class AndroidPowerManager(private val systemPowerManager: SystemPowerMa
                 wakeLock.acquire()
             }
 
-            Log.v("AndroidWakeLock for tag %s / id %d: acquired with no timeout.", tag, id)
+            Log.v(TAG, "AndroidWakeLock for tag %s / id %d: acquired with no timeout.", tag, id)
 
             if (startTime == null) {
                 startTime = SystemClock.elapsedRealtime()
@@ -69,6 +71,7 @@ internal class AndroidPowerManager(private val systemPowerManager: SystemPowerMa
                 val endTime = SystemClock.elapsedRealtime()
 
                 Log.v(
+                    TAG,
                     "AndroidWakeLock for tag %s / id %d: releasing after %d ms, timeout = %d ms",
                     tag,
                     id,
@@ -76,7 +79,7 @@ internal class AndroidPowerManager(private val systemPowerManager: SystemPowerMa
                     timeout,
                 )
             } else {
-                Log.v("AndroidWakeLock for tag %s / id %d, timeout = %d ms: releasing", tag, id, timeout)
+                Log.v(TAG, "AndroidWakeLock for tag %s / id %d, timeout = %d ms: releasing", tag, id, timeout)
             }
 
             synchronized(wakeLock) {

@@ -16,6 +16,8 @@ import static com.fsck.k9.mail.K9MailLib.DEBUG_PROTOCOL_IMAP;
 
 
 class ImapResponseParser {
+    private static final String TAG = "ImapResponseParser";
+
     private PeekableInputStream inputStream;
     private ImapResponse response;
     private Exception exception;
@@ -95,11 +97,11 @@ class ImapResponseParser {
             response = readResponse();
 
             if (K9MailLib.isDebug() && DEBUG_PROTOCOL_IMAP) {
-                Log.v("%s<<<%s", logId, response);
+                Log.v(TAG, "%s<<<%s", logId, response);
             }
 
             if (response.getTag() != null && !response.getTag().equalsIgnoreCase(tag)) {
-                Log.w("After sending tag %s, got tag response from previous command %s for %s", tag, response, logId);
+                Log.w(TAG, "After sending tag %s, got tag response from previous command %s for %s", tag, response, logId);
 
                 Iterator<ImapResponse> responseIterator = responses.iterator();
 

@@ -17,6 +17,8 @@ import kotlinx.coroutines.withContext
 import net.thunderbird.core.android.account.LegacyAccountDtoManager
 import net.thunderbird.legacy.logging.Log
 
+private const val TAG = "SettingsExportViewModel"
+
 private typealias AccountUuid = String
 private typealias AccountNumber = Int
 
@@ -146,7 +148,7 @@ class SettingsExportViewModel(
                     showSuccessText()
                 }
             } catch (e: Exception) {
-                Log.e(e, "Error writing settings file")
+                Log.e(TAG, e, "Error writing settings file")
 
                 updateUiModel {
                     showFailureText()

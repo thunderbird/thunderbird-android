@@ -19,9 +19,9 @@ import kotlinx.coroutines.flow.flatMapConcat
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runTest
+import net.thunderbird.components.core.logging.Logger
+import net.thunderbird.components.core.logging.testing.TestLogger
 import net.thunderbird.core.common.state.sideeffect.StateSideEffectHandler
-import net.thunderbird.core.logging.Logger
-import net.thunderbird.core.logging.testing.TestLogger
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.account.UnifiedAccountId

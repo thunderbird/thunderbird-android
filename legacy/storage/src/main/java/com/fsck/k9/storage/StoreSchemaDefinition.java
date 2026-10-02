@@ -12,6 +12,8 @@ import net.thunderbird.legacy.logging.Log;
 
 
 class StoreSchemaDefinition implements SchemaDefinition {
+    private static final String TAG = "StoreSchemaDefinition";
+
     static final int DB_VERSION = 91;
 
     private final MigrationsHelper migrationsHelper;
@@ -35,14 +37,14 @@ class StoreSchemaDefinition implements SchemaDefinition {
                 throw new Error("Exception while upgrading database", e);
             }
 
-            Log.e(e, "Exception while upgrading database. Resetting the DB to v0");
+            Log.e(TAG, e, "Exception while upgrading database. Resetting the DB to v0");
             db.setVersion(0);
             upgradeDatabase(db);
         }
     }
 
     private void upgradeDatabase(final SQLiteDatabase db) {
-        Log.i("Upgrading database from version %d to version %d", db.getVersion(), DB_VERSION);
+        Log.i(TAG, "Upgrading database from version %d to version %d", db.getVersion(), DB_VERSION);
 
         db.beginTransaction();
         try {
