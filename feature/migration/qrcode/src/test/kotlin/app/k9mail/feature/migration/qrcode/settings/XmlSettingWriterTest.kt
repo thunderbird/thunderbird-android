@@ -9,6 +9,9 @@ import net.thunderbird.core.android.account.DeletePolicy
 import net.thunderbird.core.common.mail.toUserEmailAddress
 import net.thunderbird.core.common.net.toHostname
 import net.thunderbird.core.common.net.toPort
+import net.thunderbird.core.featureflag.FeatureFlagKey
+import net.thunderbird.core.featureflag.FeatureFlagProvider
+import net.thunderbird.core.featureflag.FeatureFlagResult
 import okio.Buffer
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
@@ -17,6 +20,7 @@ import org.robolectric.RobolectricTestRunner
 class XmlSettingWriterTest {
     private val xmlSettingsWriter = XmlSettingWriter(
         uuidGenerator = { "test-uuid" },
+        featureFlagProvider = FakeFeatureFlagProvider(),
     )
 
     @Test
@@ -198,4 +202,9 @@ class XmlSettingWriterTest {
             </k9settings>
             """.trimIndent()
     }
+}
+
+private class FakeFeatureFlagProvider : FeatureFlagProvider {
+    // Disabled as the test is primarily concerned with the XML based UI
+    override fun provide(key: FeatureFlagKey): FeatureFlagResult = FeatureFlagResult.Enabled
 }
