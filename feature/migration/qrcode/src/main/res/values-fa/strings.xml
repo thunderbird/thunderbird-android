@@ -6,4 +6,5 @@
     <string name="migration_qrcode_scanning_progress">%1$s از %2$s پوییده</string>
     <string name="migration_qrcode_done_button_text">انجام شد</string>
     <string name="migration_qrcode_scanning_instructions">کد QR ارائه شده از Thunderbird Desktop را دنبال کنید</string>
+    <string name="migration_qrcode_unsupported_code">کد QR شناسایی شد، اما حاوی داده‌های نامعتبر یا پشتیبانی نشده است.</string>
 </resources>
