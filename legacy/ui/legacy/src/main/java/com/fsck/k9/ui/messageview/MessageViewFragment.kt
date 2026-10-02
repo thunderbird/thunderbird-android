@@ -333,8 +333,8 @@ class MessageViewFragment :
     private fun loadMessage(messageReference: MessageReference) {
         Log.d("MessageViewFragment displaying message %s", messageReference)
 
-        account = accountManager.getAccount(messageReference.accountUuid)
-            ?: error("Account ${messageReference.accountUuid} not found")
+        account = accountManager.getById(messageReference.accountId)
+            ?: error("Account ${messageReference.accountId} not found")
 
         messageLoaderHelper.asyncStartOrResumeLoadingMessage(messageReference, null)
 
@@ -758,7 +758,7 @@ class MessageViewFragment :
 
         chooseFolderForMoveLauncher.launch(
             input = ChooseFolderResultContract.Input(
-                accountUuid = account.uuid,
+                accountId = account.id,
                 currentFolderId = messageReference.folderId,
                 scrollToFolderId = account.lastSelectedFolderId,
                 messageReference = messageReference,
@@ -777,7 +777,7 @@ class MessageViewFragment :
 
         chooseFolderForCopyLauncher.launch(
             input = ChooseFolderResultContract.Input(
-                accountUuid = account.uuid,
+                accountId = account.id,
                 currentFolderId = messageReference.folderId,
                 scrollToFolderId = account.lastSelectedFolderId,
                 messageReference = messageReference,
@@ -1087,7 +1087,7 @@ class MessageViewFragment :
                 Intent(requireContext(), MessageCompose::class.java).apply {
                     action = Intent.ACTION_VIEW
                     data = unsubscribeUri.uri
-                    putExtra(MessageCompose.EXTRA_ACCOUNT, messageReference.accountUuid)
+                    putExtra(MessageCompose.EXTRA_ACCOUNT, messageReference.accountId.toString())
                 }
             }
 
@@ -1145,7 +1145,7 @@ class MessageViewFragment :
         }
 
         override fun showCryptoConfigDialog() {
-            AccountSettingsActivity.startCryptoSettings(requireActivity(), account.uuid)
+            AccountSettingsActivity.startCryptoSettings(requireActivity(), account.id.toString())
         }
     }
 

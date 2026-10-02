@@ -19,6 +19,8 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.account.LegacyAccountDtoManager
+import net.thunderbird.feature.account.AccountId
+import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.mail.folder.api.Folder
 import net.thunderbird.feature.mail.folder.FolderType
 import net.thunderbird.feature.mail.folder.api.OutboxFolderManager
@@ -48,7 +50,7 @@ class DefaultDisplayFolderRepository(
         outboxFolderId: Long,
         includeHiddenFolders: Boolean,
     ): List<DisplayFolder> {
-        val messageStore = messageStoreManager.getMessageStore(account.uuid)
+        val messageStore = messageStoreManager.getMessageStore(account.id)
         return messageStore.getDisplayFolders(
             includeHiddenFolders = includeHiddenFolders,
             outboxFolderId = outboxFolderId,
@@ -73,7 +75,7 @@ class DefaultDisplayFolderRepository(
         account: LegacyAccountDto,
         includeHiddenFolders: Boolean,
     ): Flow<List<DisplayFolder>> {
-        val messageStore = messageStoreManager.getMessageStore(account.uuid)
+        val messageStore = messageStoreManager.getMessageStore(account.id)
 
         return callbackFlow {
             val outboxFolderId = outboxFolderManager.getOutboxFolderId(account.id)
@@ -81,7 +83,7 @@ class DefaultDisplayFolderRepository(
 
             val folderStatusChangedListener = object : SimpleMessagingListener() {
                 override fun folderStatusChanged(statusChangedAccount: LegacyAccountDto, folderId: Long) {
-                    if (statusChangedAccount.uuid == account.uuid) {
+                    if (statusChangedAccount.id == account.id) {
                         trySendBlocking(getDisplayFolders(account, outboxFolderId, includeHiddenFolders))
                     }
                 }
@@ -104,8 +106,8 @@ class DefaultDisplayFolderRepository(
             .flowOn(ioDispatcher)
     }
 
-    override fun getDisplayFoldersFlow(accountUuid: String): Flow<List<DisplayFolder>> {
-        val account = accountManager.getAccount(accountUuid) ?: error("Account not found: $accountUuid")
+    override fun getDisplayFoldersFlow(accountId: String): Flow<List<DisplayFolder>> {
+        val account = accountManager.getById(AccountIdFactory.of(accountId)) ?: error("Account not found: $accountId")
         return getDisplayFoldersFlow(account, includeHiddenFolders = false)
     }
 

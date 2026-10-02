@@ -1,6 +1,7 @@
 package net.thunderbird.feature.navigation.drawer.dropdown.domain
 
 import kotlinx.coroutines.flow.Flow
+import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.navigation.drawer.api.NavigationDrawerExternalContract.DrawerConfig
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayAccount
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayFolder
@@ -35,7 +36,7 @@ internal interface DomainContract {
          * Synchronize the given account uuid.
          */
         fun interface SyncAccount {
-            operator fun invoke(accountUuid: String): Flow<Result<Unit>>
+            operator fun invoke(accountId: AccountId): Flow<Result<Unit>>
         }
 
         /**

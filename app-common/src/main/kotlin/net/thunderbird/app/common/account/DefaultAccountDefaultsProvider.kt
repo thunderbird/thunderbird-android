@@ -43,9 +43,9 @@ internal class DefaultAccountDefaultsProvider(
     }
 
     override fun applyOverwrites(account: LegacyAccountDto, storage: Storage) = with(account) {
-        if (storage.contains("${account.uuid}.notifyNewMail")) {
-            isNotifyNewMail = storage.getBoolean("${account.uuid}.notifyNewMail", false)
-            isNotifySelfNewMail = storage.getBoolean("${account.uuid}.notifySelfNewMail", true)
+        if (storage.contains("${account.id}.notifyNewMail")) {
+            isNotifyNewMail = storage.getBoolean("${account.id}.notifyNewMail", false)
+            isNotifySelfNewMail = storage.getBoolean("${account.id}.notifySelfNewMail", true)
         } else {
             isNotifyNewMail = featureFlagProvider.provide(
                 GeneratedFeatureFlagKey.EMAIL_NOTIFICATION_DEFAULT,

@@ -56,7 +56,7 @@ class CreateArchiveFolderTest {
                 .prop("folderName") { it.folderName }
                 .isEqualTo(folderName)
 
-            assertThat(accountManager.getByIdCalls).isEmpty()
+            assertThat(accountManager.getByIdFlowCalls).isEmpty()
 
             awaitComplete()
         }
@@ -81,7 +81,7 @@ class CreateArchiveFolderTest {
                     .prop("error") { it.error }
                     .isEqualTo(CreateArchiveFolderOutcome.Error.AccountNotFound)
 
-                assertThat(accountManager.getByIdCalls).containsExactly(AccountIdFactory.of(accountUuid))
+                assertThat(accountManager.getByIdFlowCalls).containsExactly(AccountIdFactory.of(accountUuid))
                 awaitComplete()
             }
         }
@@ -298,7 +298,7 @@ class CreateArchiveFolderTest {
                 .prop("data") { it.data }
                 .isEqualTo(CreateArchiveFolderOutcome.Success.Created)
 
-            assertThat(accountManager.getByIdCalls).containsExactly(AccountIdFactory.of(accountUuid))
+            assertThat(accountManager.getByIdFlowCalls).containsExactly(AccountIdFactory.of(accountUuid))
             assertThat(backendStorageFactory.backendFolderUpdater.createFoldersCalls)
                 .containsExactly(createExpectedFolderInfo(folderName))
 

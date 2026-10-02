@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.flowOn
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.account.LegacyAccountDtoManager
+import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.DomainContract.UseCase
 
 internal class SyncAccount(
@@ -18,7 +19,7 @@ internal class SyncAccount(
     private val messagingController: MessagingControllerMailChecker,
     private val coroutineContext: CoroutineContext = Dispatchers.IO,
 ) : UseCase.SyncAccount {
-    override fun invoke(accountUuid: String): Flow<Result<Unit>> = callbackFlow {
+    override fun invoke(accountId: AccountId): Flow<Result<Unit>> = callbackFlow {
         val listener = object : SimpleMessagingListener() {
             override fun checkMailFinished(context: Context?, account: LegacyAccountDto?) {
                 trySend(Result.success(Unit))
@@ -26,7 +27,7 @@ internal class SyncAccount(
             }
         }
 
-        val account = accountManager.getAccount(accountUuid)
+        val account = accountManager.getById(accountId)
 
         messagingController.checkMail(
             account = account,

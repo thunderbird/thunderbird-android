@@ -6,6 +6,7 @@ import assertk.assertions.containsNoDuplicates
 import assertk.assertions.doesNotContain
 import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
+import net.thunderbird.account.fake.FakeAccountData.ACCOUNT_ID
 import net.thunderbird.account.fake.FakeAccountData.ACCOUNT_ID_RAW
 import net.thunderbird.core.android.account.LegacyAccountDto
 import org.junit.Test
@@ -119,7 +120,7 @@ class NotificationIdsTest {
     }
 
     private fun createAccount(accountNumber: Int): LegacyAccountDto {
-        return LegacyAccountDto(ACCOUNT_ID_RAW).apply {
+        return LegacyAccountDto(ACCOUNT_ID).apply {
             this.accountNumber = accountNumber
         }
     }

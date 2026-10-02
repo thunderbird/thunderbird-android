@@ -44,16 +44,16 @@ internal class MessageListLoader(
     }
 
     private fun loadMessageListForAccount(account: LegacyAccount, config: MessageListConfig): List<MessageListItem> {
-        val accountUuid = account.uuid
+        val accountId = account.id
         val sortOrder = buildSortOrder(config)
         val mapper = MessageListItemMapper(messageHelper, account, messageListPreferencesManager, outboxFolderManager)
 
         return if (config.showingThreadedList) {
             val (selection, selectionArgs) = buildSelection(config)
-            messageListRepository.getThreadedMessages(accountUuid, selection, selectionArgs, sortOrder, mapper)
+            messageListRepository.getThreadedMessages(accountId, selection, selectionArgs, sortOrder, mapper)
         } else {
             val (selection, selectionArgs) = buildSelection(config)
-            messageListRepository.getMessages(accountUuid, selection, selectionArgs, sortOrder, mapper)
+            messageListRepository.getMessages(accountId, selection, selectionArgs, sortOrder, mapper)
         }
     }
 

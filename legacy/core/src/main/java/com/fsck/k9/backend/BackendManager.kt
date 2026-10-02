@@ -13,7 +13,7 @@ class BackendManager(
     private val backendFactories: Map<String, BackendFactory>,
     private val accountManager: LegacyAccountManager,
 ) {
-    private val backendCache = mutableMapOf<String, BackendContainer>()
+    private val backendCache = mutableMapOf<AccountId, BackendContainer>()
     private val listeners = CopyOnWriteArraySet<BackendChangedListener>()
 
     // TODO remove this once Java callers have been converted to Kotlin
@@ -23,14 +23,14 @@ class BackendManager(
 
     fun getBackend(accountId: AccountId): Backend {
         val newBackend = synchronized(backendCache) {
-            val container = backendCache[accountId.toString()]
+            val container = backendCache[accountId]
             val account = getAccountById(accountId)
             if (container != null && isBackendStillValid(container, account)) {
                 return container.backend
             }
 
             createBackend(account).also { backend ->
-                backendCache[account.uuid] = BackendContainer(
+                backendCache[account.id] = BackendContainer(
                     backend,
                     account.incomingServerSettings,
                     account.outgoingServerSettings,
@@ -44,7 +44,7 @@ class BackendManager(
     }
 
     private fun getAccountById(accountId: AccountId): LegacyAccount {
-        return accountManager.getByIdSync(accountId)
+        return accountManager.getById(accountId)
             ?: error("Account not found: $accountId")
     }
 
@@ -55,7 +55,7 @@ class BackendManager(
 
     fun removeBackend(accountId: AccountId) {
         synchronized(backendCache) {
-            backendCache.remove(accountId.toString())
+            backendCache.remove(accountId)
         }
 
         notifyListeners(accountId)

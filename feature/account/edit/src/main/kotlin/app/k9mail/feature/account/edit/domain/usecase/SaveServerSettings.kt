@@ -6,32 +6,33 @@ import app.k9mail.feature.account.edit.AccountEditExternalContract.AccountServer
 import app.k9mail.feature.account.edit.AccountEditExternalContract.AccountUpdaterResult
 import app.k9mail.feature.account.edit.domain.AccountEditDomainContract.UseCase
 import com.fsck.k9.mail.ServerSettings
+import net.thunderbird.feature.account.AccountId
 
 class SaveServerSettings(
     private val getAccountState: UseCase.GetAccountState,
     private val serverSettingsUpdater: AccountServerSettingsUpdater,
 ) : UseCase.SaveServerSettings {
-    override suspend fun execute(accountUuid: String, isIncoming: Boolean) {
-        val accountState = getAccountState.execute(accountUuid)
+    override suspend fun execute(accountId: AccountId, isIncoming: Boolean) {
+        val accountState = getAccountState.execute(accountId)
 
         val serverSettings = accountState.getServerSettings(isIncoming)
         val authorizationState = accountState.authorizationState
 
         if (serverSettings != null) {
-            updateServerSettings(accountUuid, isIncoming, serverSettings, authorizationState)
+            updateServerSettings(accountId, isIncoming, serverSettings, authorizationState)
         } else {
             error("Server settings not found")
         }
     }
 
     private suspend fun updateServerSettings(
-        accountUuid: String,
+        accountId: AccountId,
         isIncoming: Boolean,
         serverSettings: ServerSettings,
         authorizationState: AuthorizationState?,
     ) {
         val result = serverSettingsUpdater.updateServerSettings(
-            accountUuid = accountUuid,
+            accountId = accountId,
             isIncoming = isIncoming,
             serverSettings = serverSettings,
             authorizationState = authorizationState,

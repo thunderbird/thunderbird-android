@@ -55,7 +55,7 @@ class MessageListLoader(
     }
 
     private fun loadMessageListForAccount(account: LegacyAccount, config: MessageListConfig): List<MessageListItem> {
-        val accountUuid = account.uuid
+        val accountId = account.id
         val threadId = getThreadId(config.search)
         val sortOrder = buildSortOrder(config)
         val mapper = MessageListItemMapper(
@@ -71,17 +71,17 @@ class MessageListLoader(
 
         return when {
             threadId != null -> {
-                messageListRepository.getThread(accountUuid, threadId, sortOrder, mapper)
+                messageListRepository.getThread(accountId, threadId, sortOrder, mapper)
             }
 
             config.showingThreadedList -> {
                 val (selection, selectionArgs) = buildSelection(account, config)
-                messageListRepository.getThreadedMessages(accountUuid, selection, selectionArgs, sortOrder, mapper)
+                messageListRepository.getThreadedMessages(accountId, selection, selectionArgs, sortOrder, mapper)
             }
 
             else -> {
                 val (selection, selectionArgs) = buildSelection(account, config)
-                messageListRepository.getMessages(accountUuid, selection, selectionArgs, sortOrder, mapper)
+                messageListRepository.getMessages(accountId, selection, selectionArgs, sortOrder, mapper)
             }
         }
     }
@@ -91,7 +91,7 @@ class MessageListLoader(
         val queryArgs = mutableListOf<String>()
 
         val activeMessage = config.activeMessage
-        val selectActive = activeMessage != null && activeMessage.accountUuid == account.uuid
+        val selectActive = activeMessage != null && activeMessage.accountId == account.id
         if (selectActive && activeMessage != null) {
             query.append("(${MessageColumns.UID} = ? AND ${MessageColumns.FOLDER_ID} = ?) OR (")
             queryArgs.add(activeMessage.uid)

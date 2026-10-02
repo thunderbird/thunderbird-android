@@ -120,7 +120,7 @@ internal class DefaultLegacyAccountDataMapper : LegacyAccountDataMapper {
     @Suppress("LongMethod")
     override fun toDto(domain: LegacyAccount): LegacyAccountDto {
         return LegacyAccountDto(
-            uuid = domain.uuid,
+            id = domain.id,
             isSensitiveDebugLoggingEnabled = domain.isSensitiveDebugLoggingEnabled,
         ).apply {
             identities = domain.identities.toMutableList()

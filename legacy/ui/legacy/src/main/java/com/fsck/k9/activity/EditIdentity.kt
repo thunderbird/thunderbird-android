@@ -21,6 +21,7 @@ import com.google.android.material.checkbox.MaterialCheckBox
 import kotlinx.coroutines.flow.update
 import net.thunderbird.core.android.account.Identity
 import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.feature.account.AccountIdFactory
 import org.koin.android.ext.android.inject
 
 class EditIdentity : BaseActivity() {
@@ -50,7 +51,8 @@ class EditIdentity : BaseActivity() {
 
         identityIndex = intent.getIntExtra(EXTRA_IDENTITY_INDEX, -1)
         val accountUuid = intent.getStringExtra(EXTRA_ACCOUNT) ?: error("Missing account UUID")
-        account = Preferences.getPreferences().getAccount(accountUuid) ?: error("Couldn't find account")
+        account = Preferences.getPreferences().getById(AccountIdFactory.of(accountUuid))
+            ?: error("Couldn't find account")
 
         identity = when {
             savedInstanceState != null -> {

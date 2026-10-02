@@ -29,9 +29,11 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.parcelize.Parcelize
 import net.thunderbird.core.logging.Logger
+import net.thunderbird.feature.account.AccountIdFactory
 
 private typealias AccountUuid = String
 private typealias AccountNumber = Int
+
 private const val TAG = "SettingsImportViewModel"
 
 internal class SettingsImportViewModel(
@@ -332,7 +334,11 @@ internal class SettingsImportViewModel(
         viewModelScope.launch(backgroundDispatcher) {
             withContext(NonCancellable) {
                 with(result) {
-                    accountActivator.enableAccount(accountUuid, incomingServerPassword, outgoingServerPassword)
+                    accountActivator.enableAccount(
+                        AccountIdFactory.of(accountUuid),
+                        incomingServerPassword,
+                        outgoingServerPassword,
+                    )
                 }
             }
         }
@@ -349,7 +355,7 @@ internal class SettingsImportViewModel(
 
             viewModelScope.launch(backgroundDispatcher) {
                 withContext(NonCancellable) {
-                    accountActivator.enableAccount(accountUuid)
+                    accountActivator.enableAccount(AccountIdFactory.of(accountUuid))
                 }
             }
         }

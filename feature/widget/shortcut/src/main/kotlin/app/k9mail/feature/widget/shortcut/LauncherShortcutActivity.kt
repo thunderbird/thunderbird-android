@@ -11,6 +11,7 @@ import androidx.core.content.pm.ShortcutManagerCompat
 import androidx.core.graphics.drawable.IconCompat
 import com.fsck.k9.activity.AccountList
 import com.fsck.k9.activity.MessageHomeActivity
+import com.fsck.k9.activity.MessageHomeActivity.Companion.shortcutIntent
 import net.thunderbird.feature.mail.account.api.BaseAccount
 import net.thunderbird.feature.search.legacy.SearchAccount
 import app.k9mail.core.ui.legacy.theme2.common.R as CommonR
@@ -27,21 +28,38 @@ class LauncherShortcutActivity : AccountList() {
         }
     }
 
-    override fun onAccountSelected(account: BaseAccount) {
-        val shortcutIntent = if (account is SearchAccount) {
-            MessageHomeActivity.shortcutIntent(this, account.id)
+    override fun onAccountSelected(account: Any) {
+        val resultIntent = if (account is SearchAccount) {
+            createSearchAccountIntent(account)
+        } else if (account is BaseAccount) {
+            createResultIntentForAccount(account)
         } else {
-            MessageHomeActivity.shortcutIntentForAccount(this, account.uuid)
+            finish()
+            return
         }
-
-        val displayName = account.name ?: account.email
-        val iconResId = theme.resolveDrawableResourceId(CommonR.attr.appLogo)
-        val shortcutId = account.uuid
-
-        val resultIntent = createResultIntent(displayName, iconResId, shortcutIntent, shortcutId)
 
         setResult(RESULT_OK, resultIntent)
         finish()
+    }
+
+    private fun createSearchAccountIntent(account: SearchAccount): Intent {
+        val shortcutIntent = MessageHomeActivity.shortcutIntent(this, account.id)
+
+        val displayName = account.name
+        val iconResId = theme.resolveDrawableResourceId(CommonR.attr.appLogo)
+        val shortcutId = account.uuid
+
+        return createResultIntent(displayName, iconResId, shortcutIntent, shortcutId)
+    }
+
+    private fun createResultIntentForAccount(account: BaseAccount): Intent {
+        val shortcutIntent = MessageHomeActivity.shortcutIntentForAccount(this, account.id.toString())
+
+        val displayName = account.name ?: account.email
+        val iconResId = theme.resolveDrawableResourceId(CommonR.attr.appLogo)
+        val shortcutId = account.id.toString()
+
+        return createResultIntent(displayName, iconResId, shortcutIntent, shortcutId)
     }
 
     private fun createResultIntent(

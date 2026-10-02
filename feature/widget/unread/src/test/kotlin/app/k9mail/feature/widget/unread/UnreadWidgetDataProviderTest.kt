@@ -16,6 +16,7 @@ import net.thunderbird.components.core.outcome.Outcome
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.logging.testing.TestLogger
 import net.thunderbird.feature.account.AccountId
+import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.mail.folder.FolderType
 import net.thunderbird.feature.mail.folder.api.Folder
 import net.thunderbird.feature.mail.folder.api.FolderServerId
@@ -86,7 +87,7 @@ class UnreadWidgetDataProviderTest : AutoCloseKoinTest() {
     fun regularSearch() = runTest {
         val configuration = UnreadWidgetConfiguration(
             appWidgetId = 3,
-            accountUuid = ACCOUNT_UUID,
+            accountUuid = ACCOUNT_ID.toString(),
             folderId = null,
         )
 
@@ -102,7 +103,7 @@ class UnreadWidgetDataProviderTest : AutoCloseKoinTest() {
     fun folder() = runTest {
         val configuration = UnreadWidgetConfiguration(
             appWidgetId = 4,
-            accountUuid = ACCOUNT_UUID,
+            accountUuid = ACCOUNT_ID.toString(),
             folderId = FOLDER_ID,
         )
 
@@ -128,12 +129,12 @@ class UnreadWidgetDataProviderTest : AutoCloseKoinTest() {
     }
 
     private fun createAccount(): LegacyAccountDto = mock {
-        on { uuid } doReturn ACCOUNT_UUID
+        on { id } doReturn ACCOUNT_ID
         on { displayName } doReturn ACCOUNT_NAME
     }
 
     private fun createPreferences(): Preferences = mock {
-        on { getAccount(ACCOUNT_UUID) } doReturn account
+        on { getById(ACCOUNT_ID) } doReturn account
     }
 
     private fun createMessageCountsProvider() = object : MessageCountsProvider {
@@ -191,7 +192,7 @@ class UnreadWidgetDataProviderTest : AutoCloseKoinTest() {
     }
 
     companion object {
-        const val ACCOUNT_UUID = "00000000-0000-0000-0000-000000000000"
+        val ACCOUNT_ID = AccountIdFactory.create()
         const val ACCOUNT_NAME = "Test account"
         const val FOLDER_ID = 23L
         const val SEARCH_ACCOUNT_UNREAD_COUNT = 1

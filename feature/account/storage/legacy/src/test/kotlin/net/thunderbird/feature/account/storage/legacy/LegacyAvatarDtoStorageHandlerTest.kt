@@ -68,7 +68,7 @@ class LegacyAvatarDtoStorageHandlerTest {
 
     // Arrange methods
     private fun createAccount(accountId: AccountId): LegacyAccountDto {
-        return LegacyAccountDto(accountId.toString()).apply {
+        return LegacyAccountDto(accountId).apply {
             name = "Test Account"
             chipColor = 0x0099CC // Default color
             avatar = AvatarDto(

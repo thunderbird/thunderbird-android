@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.launch
 import net.thunderbird.core.android.account.LegacyAccountDtoManager
+import net.thunderbird.feature.account.AccountIdFactory
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -35,7 +36,7 @@ class OAuthFlowActivity : BaseActivity() {
         setTitle(R.string.settings_import_oauth_sign_in)
 
         val accountUUid = intent.getStringExtra(EXTRA_ACCOUNT_UUID) ?: error("Missing account UUID")
-        val account = accountManager.getAccount(accountUUid) ?: error("Account not found")
+        val account = accountManager.getById(AccountIdFactory.of(accountUUid)) ?: error("Account not found")
 
         errorText = findViewById(R.id.error_text)
         signInProgress = findViewById(R.id.sign_in_progress)

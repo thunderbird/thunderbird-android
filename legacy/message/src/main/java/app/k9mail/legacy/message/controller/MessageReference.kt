@@ -2,9 +2,11 @@ package app.k9mail.legacy.message.controller
 
 import com.fsck.k9.mail.filter.Base64
 import java.util.StringTokenizer
+import net.thunderbird.feature.account.AccountId
+import net.thunderbird.feature.account.AccountIdFactory
 
 data class MessageReference(
-    val accountUuid: String,
+    val accountId: AccountId,
     val folderId: Long,
     val uid: String,
 ) {
@@ -12,7 +14,7 @@ data class MessageReference(
         return buildString {
             append(IDENTITY_VERSION_2)
             append(IDENTITY_SEPARATOR)
-            append(Base64.encode(accountUuid))
+            append(Base64.encode(accountId.toString()))
             append(IDENTITY_SEPARATOR)
             append(Base64.encode(folderId.toString()))
             append(IDENTITY_SEPARATOR)
@@ -20,8 +22,8 @@ data class MessageReference(
         }
     }
 
-    fun equals(accountUuid: String, folderId: Long, uid: String): Boolean {
-        return this.accountUuid == accountUuid && this.folderId == folderId && this.uid == uid
+    fun equals(accountId: AccountId, folderId: Long, uid: String): Boolean {
+        return this.accountId == accountId && this.folderId == folderId && this.uid == uid
     }
 
     fun withModifiedUid(newUid: String): MessageReference {
@@ -44,10 +46,11 @@ data class MessageReference(
                 return null
             }
 
-            val accountUuid = Base64.decode(tokens.nextToken())
+            val accountId = runCatching { AccountIdFactory.of(Base64.decode(tokens.nextToken())) }
+                .getOrNull() ?: return null
             val folderId = Base64.decode(tokens.nextToken()).toLong()
             val uid = Base64.decode(tokens.nextToken())
-            return MessageReference(accountUuid, folderId, uid)
+            return MessageReference(accountId, folderId, uid)
         }
     }
 }

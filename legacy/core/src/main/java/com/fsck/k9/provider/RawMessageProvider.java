@@ -27,6 +27,7 @@ import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.mailstore.LocalStoreProvider;
 import net.thunderbird.core.android.account.LegacyAccountDto;
+import net.thunderbird.feature.account.AccountId;
 import org.openintents.openpgp.util.OpenPgpApi.OpenPgpDataSource;
 import net.thunderbird.legacy.logging.Log;
 
@@ -169,13 +170,13 @@ public class RawMessageProvider extends ContentProvider {
     }
 
     private LocalMessage loadMessage(MessageReference messageReference) {
-        String accountUuid = messageReference.getAccountUuid();
+        AccountId accountId = messageReference.getAccountId();
         long folderId = messageReference.getFolderId();
         String uid = messageReference.getUid();
 
-        LegacyAccountDto account = Preferences.getPreferences().getAccount(accountUuid);
+        LegacyAccountDto account = Preferences.getPreferences().getById(accountId);
         if (account == null) {
-            Log.w("Account not found: %s", accountUuid);
+            Log.w("Account not found: %s", accountId);
             return null;
         }
 

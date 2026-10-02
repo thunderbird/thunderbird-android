@@ -20,9 +20,12 @@ import net.thunderbird.core.preference.interaction.InteractionSettings
 import net.thunderbird.core.preference.interaction.InteractionSettingsPreferenceManager
 import net.thunderbird.core.preference.notification.NotificationPreference
 import net.thunderbird.core.preference.notification.NotificationPreferenceManager
+import net.thunderbird.feature.account.AccountIdFactory
 import org.junit.Test
 
 class SingleMessageNotificationDataCreatorTest {
+
+    private val accountId = AccountIdFactory.create()
     private val account = createAccount()
     private val fakeInteractionPreferences = FakeInteractionSettingsPreferenceManager()
     private val fakeNotificationPreferences = FakeNotificationPreferenceManager()
@@ -250,13 +253,13 @@ class SingleMessageNotificationDataCreatorTest {
     }
 
     private fun createAccount(): LegacyAccountDto {
-        return LegacyAccountDto("00000000-0000-0000-0000-000000000000").apply {
+        return LegacyAccountDto(accountId).apply {
             accountNumber = 42
         }
     }
 
     private fun createNotificationContent() = NotificationContent(
-        messageReference = MessageReference("irrelevant", 1, "irrelevant"),
+        messageReference = MessageReference(accountId, 1, "irrelevant"),
         sender = Address("irrelevant", "irrelevant"),
         subject = "irrelevant",
         preview = "irrelevant",

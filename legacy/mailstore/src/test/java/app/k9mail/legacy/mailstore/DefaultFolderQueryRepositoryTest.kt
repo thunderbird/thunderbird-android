@@ -15,6 +15,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
+import net.thunderbird.account.fake.FakeAccountData.ACCOUNT_ID
 import net.thunderbird.account.fake.FakeAccountData.ACCOUNT_ID_OTHER_RAW
 import net.thunderbird.account.fake.FakeAccountData.ACCOUNT_ID_RAW
 import net.thunderbird.components.core.outcome.Outcome
@@ -48,7 +49,7 @@ private const val REGULAR_FOLDER_ID = 42L
 class DefaultFolderQueryRepositoryTest {
     private val accountId = AccountIdFactory.of(ACCOUNT_ID_RAW)
     private val account = createLegacyAccount(accountId)
-    private val accountDto = LegacyAccountDto(ACCOUNT_ID_RAW)
+    private val accountDto = LegacyAccountDto(ACCOUNT_ID)
     private val messageStore = mock<ListenableMessageStore>()
     private val accountManager = FakeFolderQueryLegacyAccountManager(accounts = listOf(account))
     private val outboxFolderManager = FakeOutboxFolderManager(outboxFolderId = OUTBOX_FOLDER_ID)
@@ -303,7 +304,7 @@ class DefaultFolderQueryRepositoryTest {
         return MessageStoreManager(
             accountManager = FakeFolderQueryLegacyAccountDtoManager(accounts = accounts),
             messageStoreFactory = FakeFolderQueryMessageStoreFactory(
-                messageStoresByUuid = accountDto?.let { mapOf(it.uuid to messageStore) } ?: emptyMap(),
+                messageStoresByIds = accountDto?.let { mapOf(it.id to messageStore) } ?: emptyMap(),
             ),
         )
     }
@@ -377,14 +378,12 @@ private class FakeFolderQueryLegacyAccountManager(
     private val accounts: List<LegacyAccount> = emptyList(),
 ) : LegacyAccountManager {
     override fun getAll(): Flow<List<LegacyAccount>> = flowOf(accounts)
-    override fun getById(id: AccountId): Flow<LegacyAccount?> = flowOf(accounts.find { it.id == id })
     override suspend fun update(account: LegacyAccount) = error("Not implemented")
-    override fun getByIdSync(id: AccountId): LegacyAccount? = accounts.find { it.id == id }
     override fun updateSync(account: LegacyAccount) = error("Not implemented")
     override fun getAccounts(): List<LegacyAccount> = accounts
     override fun getAccountsFlow(): Flow<List<LegacyAccount>> = flowOf(accounts)
-    override fun getAccount(accountUuid: String): LegacyAccount? = accounts.find { it.uuid == accountUuid }
-    override fun getAccountFlow(accountUuid: String): Flow<LegacyAccount?> = flowOf(getAccount(accountUuid))
+    override fun getById(accountId: AccountId): LegacyAccount? = accounts.find { it.id == accountId }
+    override fun observeById(accountId: AccountId): Flow<LegacyAccount?> = flowOf(getById(accountId))
     override fun moveAccount(account: LegacyAccount, newPosition: Int) = error("Not implemented")
     override fun saveAccount(account: LegacyAccount) = error("Not implemented")
 }
@@ -392,12 +391,12 @@ private class FakeFolderQueryLegacyAccountManager(
 private class FakeFolderQueryLegacyAccountDtoManager(
     accounts: List<LegacyAccountDto> = emptyList(),
 ) : LegacyAccountDtoManager {
-    private val accountsByUuid = accounts.associateBy { it.uuid }
+    private val accountsByUuid = accounts.associateBy { it.id }
 
     override fun getAccounts(): List<LegacyAccountDto> = accountsByUuid.values.toList()
     override fun getAccountsFlow(): Flow<List<LegacyAccountDto>> = flowOf(getAccounts())
-    override fun getAccount(accountUuid: String): LegacyAccountDto? = accountsByUuid[accountUuid]
-    override fun getAccountFlow(accountUuid: String): Flow<LegacyAccountDto?> = flowOf(getAccount(accountUuid))
+    override fun getById(accountId: AccountId): LegacyAccountDto? = accountsByUuid[accountId]
+    override fun observeById(accountId: AccountId): Flow<LegacyAccountDto?> = flowOf(getById(accountId))
     override fun addAccountRemovedListener(listener: AccountRemovedListener) = Unit
     override fun moveAccount(account: LegacyAccountDto, newPosition: Int) = Unit
     override fun addOnAccountsChangeListener(accountsChangeListener: AccountsChangeListener) = Unit
@@ -406,9 +405,9 @@ private class FakeFolderQueryLegacyAccountDtoManager(
 }
 
 private class FakeFolderQueryMessageStoreFactory(
-    private val messageStoresByUuid: Map<String, ListenableMessageStore>,
+    private val messageStoresByIds: Map<AccountId, ListenableMessageStore>,
 ) : MessageStoreFactory {
-    override fun create(account: LegacyAccountDto): ListenableMessageStore = messageStoresByUuid.getValue(account.uuid)
+    override fun create(account: LegacyAccountDto): ListenableMessageStore = messageStoresByIds.getValue(account.id)
 }
 
 private class FakeOutboxFolderManager(

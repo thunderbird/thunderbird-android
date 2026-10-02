@@ -11,6 +11,7 @@ import com.fsck.k9.storage.messages.readFolders
 import com.fsck.k9.storage.messages.readMessages
 import kotlin.test.Test
 import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.feature.account.AccountIdFactory
 import org.junit.After
 import org.junit.runner.RunWith
 import org.mockito.kotlin.doReturn
@@ -70,7 +71,7 @@ class MigrationTo91Test {
 
     private fun createAccount(): LegacyAccountDto {
         return mock {
-            on { uuid } doReturn ACCOUNT_UUID
+            on { id } doReturn AccountIdFactory.of(ACCOUNT_UUID)
         }
     }
 
