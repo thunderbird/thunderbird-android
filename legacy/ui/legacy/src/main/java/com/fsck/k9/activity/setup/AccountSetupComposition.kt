@@ -75,10 +75,10 @@ class AccountSetupComposition : BaseActivity() {
     companion object {
         private const val EXTRA_ACCOUNT = "account"
 
-        fun actionEditCompositionSettings(context: Activity, accountId: AccountId) {
+        fun actionEditCompositionSettings(context: Activity, accountId: String) {
             val intent = Intent(context, AccountSetupComposition::class.java)
             intent.setAction(Intent.ACTION_EDIT)
-            intent.putExtra(EXTRA_ACCOUNT, accountId.toString())
+            intent.putExtra(EXTRA_ACCOUNT, accountId)
             context.startActivity(intent)
         }
     }
