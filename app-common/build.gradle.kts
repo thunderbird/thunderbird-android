@@ -64,6 +64,8 @@ dependencies {
     implementation(libs.androidx.work.runtime)
     implementation(libs.androidx.lifecycle.process)
 
+    implementation(libs.okio)
+
     testImplementation(projects.feature.account.fake)
     testImplementation(projects.core.testing)
     testImplementation(projects.core.android.testing)
