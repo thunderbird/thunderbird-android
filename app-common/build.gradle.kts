@@ -23,6 +23,7 @@ dependencies {
 
     implementation(projects.legacy.core)
     implementation(projects.legacy.ui.base)
+    implementation(projects.legacy.storage)
     implementation(projects.core.android.account)
     implementation(projects.core.android.common)
 
@@ -63,6 +64,8 @@ dependencies {
     implementation(libs.androidx.core.splashscreen)
     implementation(libs.androidx.work.runtime)
     implementation(libs.androidx.lifecycle.process)
+
+    implementation(libs.okio)
 
     testImplementation(projects.feature.account.fake)
     testImplementation(projects.core.testing)
