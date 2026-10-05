@@ -178,25 +178,19 @@ def render_notes(
     schema_dir = Path(__file__).resolve().parents[2] / "schemas"
     release_schema = load_schema(schema_dir / "changelog-release.schema.json")
     index_schema = load_schema(schema_dir / "changelog-index.schema.json")
-    index = load_existing_index(output_dir)
-    releases = []
-    for release_info in yaml_content["release"]["releases"]:
-        release = extract_release(release_info["version"], int(versioncode), application, yaml_content)
-        validate_json(release, release_schema, f"Release {release['version']}")
-        index = update_index(index, release, to_resource_name(release["version"]))
-        releases.append(release)
+    release = extract_release(version, int(versioncode), application, yaml_content)
+    validate_json(release, release_schema, f"Release {version}")
+    index = update_index(load_existing_index(output_dir), release, to_resource_name(version))
     validate_json(index, index_schema, "Changelog index")
 
     if print_only:
-        for release in releases:
-            print(f"\n==={output_dir / (to_resource_name(release['version']) + '.json')}===")
-            print(release)
+        print(f"\n==={output_dir / (to_resource_name(version) + '.json')}===")
+        print(release)
         print(f"\n==={output_dir / 'changelog_index.json'}===")
         print(index)
     else:
         output_dir.mkdir(parents=True, exist_ok=True)
-        for release in releases:
-            write_release_file(release, output_dir)
+        write_release_file(release, output_dir)
         write_index_file(index, output_dir)
 
     return 0
