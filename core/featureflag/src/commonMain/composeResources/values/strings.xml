@@ -10,4 +10,15 @@
     <string name="feature_flag_modified_indicator" translatable="false">*</string>
     <string name="feature_flag_overridden">overridden; </string>
     <string name="feature_flag_default_value">default value: %1$s</string>
+    <string name="feature_flag_remote_location">Fetching from remote url:</string>
+    <string name="feature_flag_local_location">Fetching from local Feature Flag catalog</string>
+    <string name="feature_flag_runtime_overrides">Fetching from runtime overrides</string>
+    <string name="remote_feature_flag_screen_top_bar_title">Remote Feature Flags configuration</string>
+    <string name="remote_feature_flag_screen_enabled_title">Remote feature flag enabled</string>
+    <string name="remote_feature_flag_screen_enabled_description">When disabled, the app will never reach the endpoint and will always use the feature flag catalog delivered together with the app.</string>
+    <string name="remote_feature_flag_screen_enabled_flags">Enabled Flags:</string>
+    <string name="remote_feature_flag_screen_catalog_location">Feature Flag catalog location:</string>
+    <string name="remote_feature_flag_screen_no_flags_found">No remote feature flag was found.</string>
+    <string name="remote_feature_flag_screen_load_failed">Could not load the feature flag configuration. Showing default values.</string>
+    <string name="remote_feature_flag_screen_update_failed">Could not save your change. Please try again.</string>
 </resources>

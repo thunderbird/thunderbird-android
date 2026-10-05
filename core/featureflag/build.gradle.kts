@@ -33,6 +33,8 @@ kotlin {
         val commonJvmMain = getByName("commonJvmMain")
         commonMain.dependencies {
             api(projects.core.configstore.api)
+            implementation(projects.core.ui.navigation)
+            implementation(projects.core.ui.contract)
             implementation(projects.core.file)
             implementation(projects.core.logging.api)
             implementation(libs.ktor.client.core)
@@ -44,6 +46,7 @@ kotlin {
         }
         commonTest.dependencies {
             implementation(libs.ktor.client.mock)
+            implementation(libs.tb.mobile.components.ui.testing)
             implementation(projects.core.configstore.testing)
             implementation(projects.core.logging.testing)
         }

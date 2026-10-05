@@ -1,14 +1,18 @@
 package net.thunderbird.core.featureflag.domain.usecase
 
+import assertk.assertFailure
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import assertk.assertions.isInstanceOf
 import kotlin.test.Test
 import kotlin.uuid.Uuid
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
+import kotlinx.io.IOException
 import net.thunderbird.components.core.outcome.Outcome
 import net.thunderbird.core.featureflag.data.configstore.FeatureFlagConfigData
 import net.thunderbird.core.featureflag.data.configstore.RemoteCatalogConfig
+import net.thunderbird.core.featureflag.domain.RemoteFeatureFlagDomainContract.UpdateRemoteFeatureFlagAvailability
 import net.thunderbird.core.featureflag.model.RemoteCatalogFetchFrequency
 
 class DefaultUpdateRemoteFeatureFlagAvailabilityTest {
@@ -80,6 +84,32 @@ class DefaultUpdateRemoteFeatureFlagAvailabilityTest {
                 remoteCatalogConfig = FeatureFlagConfigData.DEFAULT.remoteCatalogConfig.copy(enabled = false),
             ),
         )
+    }
+
+    @Test
+    fun `invoke should return ConfigUpdateFailed when the config cannot be persisted`() = runTest {
+        // Arrange
+        val error = IOException("disk full")
+        val configStore = FakeFeatureFlagConfigStore(updateFailure = error)
+        val testSubject = DefaultUpdateRemoteFeatureFlagAvailability(configStore)
+
+        // Act
+        val result = testSubject(enabled = false)
+
+        // Assert
+        assertThat(result).isEqualTo(
+            Outcome.failure(UpdateRemoteFeatureFlagAvailability.Failure.ConfigUpdateFailed(cause = error)),
+        )
+    }
+
+    @Test
+    fun `invoke should rethrow errors that are not storage failures`() = runTest {
+        // Arrange
+        val configStore = FakeFeatureFlagConfigStore(updateFailure = IllegalStateException("unexpected"))
+        val testSubject = DefaultUpdateRemoteFeatureFlagAvailability(configStore)
+
+        // Act & Assert
+        assertFailure { testSubject(enabled = false) }.isInstanceOf<IllegalStateException>()
     }
 
     private fun configWithRemoteCatalog(enabled: Boolean) = FeatureFlagConfigData(

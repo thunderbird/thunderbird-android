@@ -9,6 +9,7 @@ android {
 
 dependencies {
     api(projects.feature.changelog.api)
+    implementation(projects.core.featureflag)
     implementation(projects.legacy.ui.base)
 
     implementation(projects.feature.onboarding.main)

@@ -16,6 +16,7 @@ import io.ktor.http.HttpMethod
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.headersOf
 import io.ktor.serialization.kotlinx.json.json
+import io.ktor.util.network.UnresolvedAddressException
 import kotlin.test.Test
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -26,6 +27,7 @@ import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import kotlinx.io.Buffer
+import kotlinx.io.IOException
 import kotlinx.io.RawSink
 import kotlinx.io.RawSource
 import kotlinx.serialization.json.Json
@@ -127,9 +129,146 @@ class RemoteFeatureFlagCatalogDataSourceTest {
             assertThat(engine.downloadCount).isEqualTo(1)
         }
 
+    @Test
+    fun `load should read the cached catalog when the cache metadata did not change`() =
+        runTest(UnconfinedTestDispatcher()) {
+            // Arrange
+            val configStore = FakeFeatureFlagConfigStore(remoteCatalogEnabled = true)
+            val fileSystemManager = FakeFileSystemManager()
+            createTestSubject(
+                configStore = configStore,
+                engine = FakeRemoteCatalogEngine(),
+                fileSystemManager = fileSystemManager,
+            ).load()
+            val engine = FakeRemoteCatalogEngine()
+            val testSubject = createTestSubject(
+                configStore = configStore,
+                engine = engine,
+                fileSystemManager = fileSystemManager,
+            )
+
+            // Act
+            val catalog = testSubject.load()
+
+            // Assert
+            assertThat(catalog).isNotNull().prop(FeatureFlagCatalog::version).isEqualTo(CATALOG_VERSION)
+            assertThat(engine.downloadCount).isEqualTo(0)
+        }
+
+    @Test
+    fun `load should read the cached catalog when the cache metadata request fails`() =
+        runTest(UnconfinedTestDispatcher()) {
+            // Arrange
+            val configStore = FakeFeatureFlagConfigStore(remoteCatalogEnabled = true)
+            val fileSystemManager = FakeFileSystemManager()
+            createTestSubject(
+                configStore = configStore,
+                engine = FakeRemoteCatalogEngine(),
+                fileSystemManager = fileSystemManager,
+            ).load()
+            val engine = FakeRemoteCatalogEngine(headFailure = IOException("connection reset"))
+            val testSubject = createTestSubject(
+                configStore = configStore,
+                engine = engine,
+                fileSystemManager = fileSystemManager,
+            )
+
+            // Act
+            val catalog = testSubject.load()
+
+            // Assert
+            assertThat(catalog).isNotNull().prop(FeatureFlagCatalog::version).isEqualTo(CATALOG_VERSION)
+            assertThat(engine.downloadCount).isEqualTo(0)
+        }
+
+    @Test
+    fun `load should read the cached catalog when offline`() =
+        runTest(UnconfinedTestDispatcher()) {
+            // Arrange
+            val configStore = FakeFeatureFlagConfigStore(remoteCatalogEnabled = true)
+            val fileSystemManager = FakeFileSystemManager()
+            createTestSubject(
+                configStore = configStore,
+                engine = FakeRemoteCatalogEngine(),
+                fileSystemManager = fileSystemManager,
+            ).load()
+            val engine = FakeRemoteCatalogEngine(
+                headFailure = UnresolvedAddressException(),
+                getFailure = UnresolvedAddressException(),
+            )
+            val testSubject = createTestSubject(
+                configStore = configStore,
+                engine = engine,
+                fileSystemManager = fileSystemManager,
+            )
+
+            // Act
+            val catalog = testSubject.load()
+
+            // Assert
+            assertThat(catalog).isNotNull().prop(FeatureFlagCatalog::version).isEqualTo(CATALOG_VERSION)
+            assertThat(engine.downloadCount).isEqualTo(0)
+        }
+
+    @Test
+    fun `load should download the catalog when the cache metadata request fails and no cache metadata exists`() =
+        runTest(UnconfinedTestDispatcher()) {
+            // Arrange
+            val engine = FakeRemoteCatalogEngine(headFailure = IOException("connection reset"))
+            val testSubject = createTestSubject(
+                configStore = FakeFeatureFlagConfigStore(remoteCatalogEnabled = true),
+                engine = engine,
+            )
+
+            // Act
+            val catalog = testSubject.load()
+
+            // Assert
+            assertThat(catalog).isNotNull().prop(FeatureFlagCatalog::version).isEqualTo(CATALOG_VERSION)
+            assertThat(engine.downloadCount).isEqualTo(1)
+        }
+
+    @Test
+    fun `load should return null when offline and no cache metadata exists`() =
+        runTest(UnconfinedTestDispatcher()) {
+            // Arrange
+            val engine = FakeRemoteCatalogEngine(
+                headFailure = UnresolvedAddressException(),
+                getFailure = UnresolvedAddressException(),
+            )
+            val testSubject = createTestSubject(
+                configStore = FakeFeatureFlagConfigStore(remoteCatalogEnabled = true),
+                engine = engine,
+            )
+
+            // Act
+            val catalog = testSubject.load()
+
+            // Assert
+            assertThat(catalog).isNull()
+        }
+
+    @Test
+    fun `load should return null when the download fails and no cache metadata exists`() =
+        runTest(UnconfinedTestDispatcher()) {
+            // Arrange
+            val engine = FakeRemoteCatalogEngine(getFailure = IOException("connection reset"))
+            val testSubject = createTestSubject(
+                configStore = FakeFeatureFlagConfigStore(remoteCatalogEnabled = true),
+                engine = engine,
+            )
+
+            // Act
+            val catalog = testSubject.load()
+
+            // Assert
+            assertThat(catalog).isNull()
+        }
+
     private fun TestScope.createTestSubject(
         configStore: FeatureFlagConfigStore,
         engine: FakeRemoteCatalogEngine,
+        fileSystemManager: FileSystemManager = FakeFileSystemManager(),
     ): RemoteFeatureFlagCatalogDataSource {
         val json = Json {
             serializersModule = SerializersModule {
@@ -147,7 +286,7 @@ class RemoteFeatureFlagCatalogDataSourceTest {
             cacheFileUri = Uri.parse(CACHE_FILE_URI),
             logger = TestLogger(),
             configStore = configStore,
-            fileSystemManager = FakeFileSystemManager(),
+            fileSystemManager = fileSystemManager,
             json = json,
             httpClient = HttpClient(engine.mockEngine) {
                 install(ContentNegotiation) {
@@ -165,17 +304,21 @@ class RemoteFeatureFlagCatalogDataSourceTest {
     }
 }
 
-/**
- * Serves the remote catalog, answering `HEAD` with cache metadata and `GET` with the catalog body,
- * and counts the downloads so tests can assert the catalog is not fetched more than needed.
- */
-private class FakeRemoteCatalogEngine {
+private class FakeRemoteCatalogEngine(
+    private val headFailure: Throwable? = null,
+    private val getFailure: Throwable? = null,
+) {
     var downloadCount: Int = 0
         private set
 
     val mockEngine = MockEngine { request ->
-        if (request.method == HttpMethod.Get) {
-            downloadCount++
+        when (request.method) {
+            HttpMethod.Head -> headFailure?.let { throw it }
+
+            HttpMethod.Get -> {
+                getFailure?.let { throw it }
+                downloadCount++
+            }
         }
         respond(
             content = CATALOG_BODY,

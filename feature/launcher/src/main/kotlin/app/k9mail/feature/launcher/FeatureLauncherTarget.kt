@@ -6,6 +6,7 @@ import androidx.core.net.toUri
 import app.k9mail.feature.account.edit.navigation.AccountEditRoute
 import app.k9mail.feature.account.setup.navigation.AccountSetupRoute
 import app.k9mail.feature.onboarding.main.navigation.OnboardingRoute
+import net.thunderbird.core.featureflag.navigation.RemoteFeatureFlagRoute
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.settings.api.AccountSettingsRoute
 import net.thunderbird.feature.debug.settings.navigation.SecretDebugSettingsRoute
@@ -69,4 +70,6 @@ sealed class FeatureLauncherTarget(
     data object SecretDebugSettingsFeatureFlag : FeatureLauncherTarget(
         deepLinkUri = SecretDebugSettingsRoute(tab = SecretDebugSettingsRoute.Tab.FeatureFlag).route().toUri(),
     )
+
+    data object RemoteFeatureFlag : FeatureLauncherTarget(deepLinkUri = RemoteFeatureFlagRoute.route().toUri())
 }

@@ -90,6 +90,7 @@ val featureFlagModule = module {
             logger = get(),
             configStore = get(),
             featureFlagProvider = get(),
+            remoteDataSource = get(named(InjectQualifier.Remote)),
         )
     }
     single<RemoteFeatureFlagDomainContract.UpdateRemoteFeatureFlagAvailability> {
@@ -97,7 +98,7 @@ val featureFlagModule = module {
             get(),
         )
     }
-    single<RemoteFeatureFlagNavigation> { DefaultRemoteFeatureFlagNavigation() }
+    single<RemoteFeatureFlagNavigation> { DefaultRemoteFeatureFlagNavigation(platformConfigProvider = get()) }
     viewModel<RemoteFeatureFlagUiContract.ViewModel> {
         RemoteFeatureFlagViewModel(get(), get())
     }

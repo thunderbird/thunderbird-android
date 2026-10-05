@@ -13,6 +13,8 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceCategory
 import androidx.preference.PreferenceScreen
 import androidx.work.WorkInfo
+import app.k9mail.feature.launcher.FeatureLauncherActivity
+import app.k9mail.feature.launcher.FeatureLauncherTarget
 import app.k9mail.feature.telemetry.api.TelemetryManager
 import com.fsck.k9.job.K9JobManager
 import com.fsck.k9.ui.BuildConfig
@@ -83,6 +85,14 @@ class GeneralSettingsFragment : PreferenceFragmentCompat() {
         findPreference<Preference>("notification_actions_settings")?.onPreferenceClickListener =
             Preference.OnPreferenceClickListener {
                 context?.let { NotificationActionsSettingsActivity.start(it) }
+                true
+            }
+        findPreference<Preference>("remote_feature_flag")?.onPreferenceClickListener =
+            Preference.OnPreferenceClickListener {
+                FeatureLauncherActivity.launch(
+                    context = requireContext(),
+                    target = FeatureLauncherTarget.RemoteFeatureFlag,
+                )
                 true
             }
 

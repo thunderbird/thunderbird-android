@@ -12,6 +12,7 @@ import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentLength
 import io.ktor.serialization.JsonConvertException
 import io.ktor.serialization.kotlinx.json.json
+import io.ktor.util.network.UnresolvedAddressException
 import io.ktor.utils.io.readAvailable
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -77,8 +78,15 @@ class RemoteFeatureFlagCatalogDataSource(
             catalog.value ?: try {
                 val config = configStore.config.first()
                 val remoteCatalogConfig = config.remoteCatalogConfig
-                val cacheMetadata = httpClient.fetchCacheMetadata(url)
-                val result = if (remoteCatalogConfig.cacheMetadata != cacheMetadata) {
+                val currentMetadata = remoteCatalogConfig.cacheMetadata
+                val cacheMetadata = httpClient.fetchCacheMetadata(
+                    url = url,
+                    currentMetadata = currentMetadata,
+                )
+                val result = if (
+                    (currentMetadata == null && cacheMetadata == null) ||
+                    currentMetadata != cacheMetadata
+                ) {
                     downloadAndCache(url, cacheMetadata)
                 } else {
                     readFromCache()
@@ -97,6 +105,11 @@ class RemoteFeatureFlagCatalogDataSource(
             } catch (e: SerializationException) {
                 logger.error(throwable = e) { "$LOG_PREFIX Failed to convert JSON to FeatureFlagCatalog" }
                 null
+            } catch (e: UnresolvedAddressException) {
+                logger.error(throwable = e) {
+                    "$LOG_PREFIX Failed to fetch Feature Flag Remote Catalog; likely no internet connection."
+                }
+                null
             } catch (e: IOException) {
                 logger.error(throwable = e) { "$LOG_PREFIX Failed to fetch Feature Flag Remote Catalog" }
                 null
@@ -110,10 +123,13 @@ class RemoteFeatureFlagCatalogDataSource(
      *
      * @throws RemoteCatalogException when the response status is not a success.
      */
-    private suspend fun HttpClient.fetchCacheMetadata(url: String): RemoteCatalogCacheMetadata? {
+    private suspend fun HttpClient.fetchCacheMetadata(
+        url: String,
+        currentMetadata: RemoteCatalogCacheMetadata?,
+    ): RemoteCatalogCacheMetadata? = try {
         logger.verbose { "$LOG_PREFIX Fetching cache metadata" }
         val response = head(url)
-        return if (response.status == HttpStatusCode.OK) {
+        if (response.status == HttpStatusCode.OK) {
             logger.verbose { "$LOG_PREFIX Cache read with success. Response = $response" }
             RemoteCatalogCacheMetadata(
                 eTag = response.headers["ETag"],
@@ -126,6 +142,17 @@ class RemoteFeatureFlagCatalogDataSource(
             }
             null
         }
+    } catch (e: UnresolvedAddressException) {
+        logger.error(throwable = e) {
+            "$LOG_PREFIX Failed to request Remote Catalog metadata; likely no internet connection. " +
+                "Using current cached metadata if exists."
+        }
+        currentMetadata
+    } catch (e: IOException) {
+        logger.error(throwable = e) {
+            "$LOG_PREFIX Failed to request Remote Catalog metadata. Using current cached metadata if exists"
+        }
+        currentMetadata
     }
 
     private suspend fun downloadAndCache(url: String, cacheMetadata: RemoteCatalogCacheMetadata?): FeatureFlagCatalog =
