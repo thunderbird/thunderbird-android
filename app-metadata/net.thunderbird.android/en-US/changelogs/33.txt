@@ -1,0 +1,17 @@
+Thunderbird version 24.0
+
+New:
+- Signatures support HTML
+- Reply offers Reply or Reply All
+
+Changed:
+- Long account names fit in two lines
+
+Fixed:
+- Compose selection invisible in light theme
+- Status icons unreadable when selecting messages
+- Recipient expander failed to collapse after edit
+- Camera attachments could crash the app
+- Save All saved each attachment with same file content
+- HTML signatures could disappear after rotation
+- Edit as new used wrong identity for queued mail
