@@ -1,0 +1,94 @@
+{
+  "schemaVersion": 1,
+  "version": "25.0b1",
+  "versioncode": 61,
+  "date": "2026-10-05",
+  "notes": [
+    {
+      "type": "new",
+      "text": "New funding appeal helps keep Thunderbird alive!",
+      "source": "thunderbird-notes",
+      "issues": [
+        11526,
+        11547,
+        11580,
+        11588,
+        11615,
+        11620
+      ]
+    },
+    {
+      "type": "new",
+      "text": "Feature flags can be updated remotely without requiring an app update",
+      "source": "thunderbird-notes",
+      "issues": [
+        11456
+      ]
+    },
+    {
+      "type": "fixed",
+      "text": "Deleted email notifications could reappear or remain in the notification shade",
+      "source": "thunderbird-notes",
+      "issues": [
+        10936
+      ]
+    },
+    {
+      "type": "fixed",
+      "text": "HTML signature text could disappear after rotating the screen",
+      "source": "thunderbird-notes",
+      "issues": [
+        11528,
+        11555
+      ]
+    },
+    {
+      "type": "fixed",
+      "text": "Some HTML drafts hid attachments while editing and could permanently lose them on save",
+      "source": "thunderbird-notes",
+      "issues": [
+        954
+      ]
+    },
+    {
+      "type": "fixed",
+      "text": "Add to contacts crashed the app when no Contacts app was installed",
+      "source": "thunderbird-notes",
+      "issues": [
+        11548
+      ]
+    },
+    {
+      "type": "fixed",
+      "text": "Sending large PGP-encrypted attachments showed no progress during encryption",
+      "source": "thunderbird-notes",
+      "issues": [
+        5763
+      ]
+    },
+    {
+      "type": "fixed",
+      "text": "Account drawer behaved inconsistently when reselecting an account or tapping its icon",
+      "source": "thunderbird-notes",
+      "issues": [
+        11461
+      ]
+    },
+    {
+      "type": "fixed",
+      "text": "Account drawer controls blocked accounts and folders on small displays",
+      "source": "thunderbird-notes",
+      "issues": [
+        11476
+      ]
+    },
+    {
+      "type": "fixed",
+      "text": "Sort menu indicator (bullet point) was duplicated each time the menu was opened",
+      "source": "thunderbird-notes",
+      "issues": [
+        11274
+      ]
+    }
+  ]
+}
