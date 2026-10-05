@@ -95,10 +95,12 @@ internal abstract class BaseLocalFeatureFlagCatalogDataSourceTest {
                     "display_in_app_notifications" to true,
                     "use_notification_sender_for_system_notifications" to true,
                     "message_view_action_export_eml" to true,
+                    "push_enabled_on_inbox_by_default" to true,
                 )
                 key("daily").containsOnly(
                     "display_in_app_notifications" to true,
                     "message_view_action_export_eml" to true,
+                    "push_enabled_on_inbox_by_default" to true,
                 )
                 key("beta").containsOnly("display_in_app_notifications" to true)
                 key("release").isEmpty()
@@ -108,6 +110,7 @@ internal abstract class BaseLocalFeatureFlagCatalogDataSourceTest {
                     "display_in_app_notifications" to true,
                     "use_notification_sender_for_system_notifications" to true,
                     "message_view_action_export_eml" to true,
+                    "push_enabled_on_inbox_by_default" to true,
                 )
                 key("release").isEmpty()
             }
@@ -156,8 +159,8 @@ internal abstract class BaseLocalFeatureFlagCatalogDataSourceTest {
     )
 
     private companion object {
-        const val CATALOG_VERSION = "2026-07-30.1"
-        const val CATALOG_FLAG_COUNT = 12
+        const val CATALOG_VERSION = "2026-10-01.1"
+        const val CATALOG_FLAG_COUNT = 13
         const val MALFORMED_CATALOG_ERROR_MESSAGE =
             "Unexpected JSON token at offset 42: Expected quotation mark '\"', but had '}' instead"
     }
