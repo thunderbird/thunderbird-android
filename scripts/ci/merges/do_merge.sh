@@ -44,7 +44,7 @@ git pull
 git config merge.ours.driver true
 git config merge.merge_gradle.driver "python3 scripts/ci/merges/merge_gradle.py %A %B"
 set +e
-git merge "origin/${from_branch}"
+git merge --no-commit "origin/${from_branch}"
 ret=$?
 set +x
 
@@ -78,6 +78,10 @@ fi
 
 echo
 if [ "$ret" -eq 0 ]; then
+  if ! git merge --continue; then
+    echo "Merge could not be committed. Review the staged changes and run: git merge --continue"
+    exit 1
+  fi
   echo "Merge succeeded. Next steps:"
   echo "1) Review merge results and ensure correctness"
   echo "2) Ensure feature flags are following the rules"
