@@ -86,8 +86,8 @@ def validate_json(
 def load_release_notes(version: str, notesrepo: str, notesbranch: str) -> dict:
     filename = f"{version}.yml"
     directory = "android_release"
-    if "0b" in version:
-        filename = f"{version[:-1]}eta.yml"
+    if re.search(r"0b\d+$", version):
+        filename = f"{re.sub(r'b\d+$', 'beta', version)}.yml"
         directory = "android_beta"
 
     repo_path = Path(notesrepo).expanduser()
@@ -206,13 +206,24 @@ def update_index(index: dict, release_data: dict, resource_name: str) -> dict:
         if r["version"] != release_data["version"]
     ]
     releases.append(create_index_entry(release_data, resource_name))
-    releases.sort(key=lambda r: r["date"], reverse=True)
+    # Keep release families together even when an older version was published later.
+    # Tokenize numbers to avoid lexicographic ordering (e.g. b10 before b9).
+    # A final release follows its prereleases (5.200 > 5.200-RC2).
+    def version_key(entry):
+        parts = re.findall(r"\d+|[a-zA-Z]+", entry["version"])
+        return tuple(
+            (1, int(part)) if part.isdigit() else (0, part.lower())
+            for part in parts
+        ) + ((1, 0),)
+
+    releases.sort(key=version_key, reverse=True)
     index["releases"] = releases
     return index
 
 def write_index_file(index: dict, output_dir: Path) -> None:
     with (output_dir / "changelog_index.json").open("w", encoding="utf-8") as f:
         json.dump(index, f, indent=2, ensure_ascii=False)
+        f.write("\n")
 
 def main():
     parser = argparse.ArgumentParser()
@@ -255,32 +266,26 @@ def main():
         args.branch,
     )
 
-    release_data = extract_release(
-        args.version,
-        args.versioncode,
-        application,
-        yaml_content,
-    )
-    print(release_data)
-
-    validate_json(
-        release_data,
-        release_schema,
-        f"Release {args.version}",
-    )
-
-    resource_name = write_release_file(release_data, output_dir)
-
     index = load_existing_index(output_dir)
-    index = update_index(index, release_data, resource_name)
+    releases = []
+    versions = {release["version"] for release in yaml_content["release"]["releases"]}
+    if args.version not in versions:
+        raise ValueError(f"Version '{args.version}' not found")
+    for release_info in yaml_content["release"]["releases"]:
+        version = release_info["version"]
+        release_data = extract_release(version, args.versioncode, application, yaml_content)
+        validate_json(release_data, release_schema, f"Release {version}")
+        resource_name = to_resource_name(version)
+        index = update_index(index, release_data, resource_name)
+        releases.append(release_data)
 
     validate_json(index, index_schema, "Changelog index")
 
+    for release_data in releases:
+        write_release_file(release_data, output_dir)
     write_index_file(index, output_dir)
 
-    print(
-        f"Generated {resource_name}.json and updated changelog_index.json"
-    )
+    print(f"Generated {len(releases)} release files and updated changelog_index.json")
 
 if __name__ == "__main__":
     main()
