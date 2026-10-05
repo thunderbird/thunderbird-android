@@ -43,6 +43,7 @@ kotlin {
             implementation(libs.ktor.client.cio)
         }
         commonTest.dependencies {
+            implementation(libs.ktor.client.mock)
             implementation(projects.core.configstore.testing)
             implementation(projects.core.logging.testing)
         }

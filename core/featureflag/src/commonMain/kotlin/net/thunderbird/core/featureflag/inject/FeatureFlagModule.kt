@@ -56,6 +56,7 @@ val featureFlagModule = module {
     }
     single {
         RemoteCatalogFeatureFlagProvider(
+            configStore = get(),
             dataSource = get(named(InjectQualifier.Remote)),
             logger = get(),
         )

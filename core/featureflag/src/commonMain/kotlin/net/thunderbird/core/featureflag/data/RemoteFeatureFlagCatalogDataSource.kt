@@ -15,11 +15,17 @@ import io.ktor.serialization.kotlinx.json.json
 import io.ktor.utils.io.readAvailable
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.mapNotNull
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import kotlinx.io.Buffer
 import kotlinx.io.IOException
@@ -52,45 +58,49 @@ class RemoteFeatureFlagCatalogDataSource(
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : FeatureFlagCatalogDataSource {
     private val catalog = MutableStateFlow<FeatureFlagCatalog?>(null)
+    private val loadMutex = Mutex()
 
-    override fun observe(): Flow<FeatureFlagCatalog> = catalog.mapNotNull { it }
-
-    override suspend fun load(): FeatureFlagCatalog? {
-        return catalog.value ?: try {
-            val config = configStore.config.first()
-            val remoteCatalogConfig = config.remoteCatalogConfig
-            if (!remoteCatalogConfig.enabled) {
-                throw RemoteCatalogException(code = Code.RemoteCatalogUserDisabled)
+    @OptIn(ExperimentalCoroutinesApi::class)
+    override fun observe(): Flow<FeatureFlagCatalog?> = configStore.config
+        .map { config -> config.remoteCatalogConfig.enabled }
+        .distinctUntilChanged()
+        .flatMapLatest { enabled ->
+            if (enabled) {
+                load()
             }
+            catalog
+        }
+        .flowOn(ioDispatcher)
 
-            val cacheMetadata = httpClient.fetchCacheMetadata(url)
-            val result = if (remoteCatalogConfig.cacheMetadata != cacheMetadata) {
-                downloadAndCache(url, cacheMetadata)
-            } else {
-                readFromCache()
-            }
-            catalog.update { result }
-            result
-        } catch (e: RemoteCatalogException) {
-            when (e.code) {
-                Code.RemoteCatalogUserDisabled -> logger.debug(throwable = e) {
-                    "$LOG_PREFIX Skipping remote catalog; user disabled."
+    override suspend fun load(): FeatureFlagCatalog? = withContext(ioDispatcher) {
+        loadMutex.withLock {
+            catalog.value ?: try {
+                val config = configStore.config.first()
+                val remoteCatalogConfig = config.remoteCatalogConfig
+                val cacheMetadata = httpClient.fetchCacheMetadata(url)
+                val result = if (remoteCatalogConfig.cacheMetadata != cacheMetadata) {
+                    downloadAndCache(url, cacheMetadata)
+                } else {
+                    readFromCache()
                 }
-
-                Code.CantWriteCacheFile -> logger.debug(throwable = e) { "$LOG_PREFIX Failed to write cache file." }
-
-                Code.CantReadCacheFile -> logger.debug(throwable = e) { "$LOG_PREFIX Failed to read cache file." }
+                catalog.update { result }
+                result
+            } catch (e: RemoteCatalogException) {
+                when (e.code) {
+                    Code.CantWriteCacheFile -> logger.debug(throwable = e) { "$LOG_PREFIX Failed to write cache file." }
+                    Code.CantReadCacheFile -> logger.debug(throwable = e) { "$LOG_PREFIX Failed to read cache file." }
+                }
+                null
+            } catch (e: JsonConvertException) {
+                logger.error(throwable = e) { "$LOG_PREFIX Failed to convert JSON to FeatureFlagCatalog" }
+                null
+            } catch (e: SerializationException) {
+                logger.error(throwable = e) { "$LOG_PREFIX Failed to convert JSON to FeatureFlagCatalog" }
+                null
+            } catch (e: IOException) {
+                logger.error(throwable = e) { "$LOG_PREFIX Failed to fetch Feature Flag Remote Catalog" }
+                null
             }
-            null
-        } catch (e: JsonConvertException) {
-            logger.error(throwable = e) { "$LOG_PREFIX Failed to convert JSON to FeatureFlagCatalog" }
-            null
-        } catch (e: SerializationException) {
-            logger.error(throwable = e) { "$LOG_PREFIX Failed to convert JSON to FeatureFlagCatalog" }
-            null
-        } catch (e: IOException) {
-            logger.error(throwable = e) { "$LOG_PREFIX Failed to fetch Feature Flag Remote Catalog" }
-            null
         }
     }
 
