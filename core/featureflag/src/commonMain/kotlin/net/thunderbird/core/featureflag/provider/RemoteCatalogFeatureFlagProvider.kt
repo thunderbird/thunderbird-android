@@ -22,6 +22,7 @@ class RemoteCatalogFeatureFlagProvider(
     dataSource = dataSource,
     providerName = "remote_catalog",
     logger = logger,
+    scope = scope,
 ) {
 
     private val config = configStore

@@ -245,6 +245,7 @@ class BundledCatalogFeatureFlagProviderTest {
     ): BundledCatalogFeatureFlagProvider = BundledCatalogFeatureFlagProvider(
         dataSource = dataSource,
         logger = TestLogger(),
+        scope = backgroundScope,
     )
 
     private companion object {

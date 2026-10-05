@@ -5,9 +5,15 @@ import kotlinx.serialization.modules.SerializersModule
 import net.thunderbird.core.configstore.ConfigId
 import net.thunderbird.core.featureflag.data.configstore.DefaultFeatureFlagConfigStore
 import net.thunderbird.core.featureflag.data.configstore.FeatureFlagConfigStore
+import net.thunderbird.core.featureflag.domain.RemoteFeatureFlagDomainContract
+import net.thunderbird.core.featureflag.domain.RemoteFeatureFlagDomainContract.FetchEnabledFeatureFlags
+import net.thunderbird.core.featureflag.domain.usecase.DefaultFetchEnabledFeatureFlags
+import net.thunderbird.core.featureflag.domain.usecase.DefaultUpdateRemoteFeatureFlagAvailability
 import net.thunderbird.core.featureflag.inject.qualifier.FEATURE_FLAG_JSON_QUALIFIER
 import net.thunderbird.core.featureflag.inject.qualifier.InjectQualifier
 import net.thunderbird.core.featureflag.model.FlagRegistryOverride
+import net.thunderbird.core.featureflag.navigation.DefaultRemoteFeatureFlagNavigation
+import net.thunderbird.core.featureflag.navigation.RemoteFeatureFlagNavigation
 import net.thunderbird.core.featureflag.provider.BundledCatalogFeatureFlagProvider
 import net.thunderbird.core.featureflag.provider.BundledFeatureFlagDefaults
 import net.thunderbird.core.featureflag.provider.CatalogFeatureFlagProvider
@@ -17,7 +23,10 @@ import net.thunderbird.core.featureflag.provider.evaluator.MultiFeatureFlagProvi
 import net.thunderbird.core.featureflag.serialization.DefaultFeatureFlagCatalogJsonParser
 import net.thunderbird.core.featureflag.serialization.FeatureFlagCatalogJsonParser
 import net.thunderbird.core.featureflag.serialization.FlagRegistryOverrideSerializer
+import net.thunderbird.core.featureflag.ui.RemoteFeatureFlagUiContract
+import net.thunderbird.core.featureflag.ui.RemoteFeatureFlagViewModel
 import org.koin.core.module.Module
+import org.koin.core.module.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
@@ -75,6 +84,22 @@ val featureFlagModule = module {
             },
             logger = get(),
         )
+    }
+    single<FetchEnabledFeatureFlags> {
+        DefaultFetchEnabledFeatureFlags(
+            logger = get(),
+            configStore = get(),
+            featureFlagProvider = get(),
+        )
+    }
+    single<RemoteFeatureFlagDomainContract.UpdateRemoteFeatureFlagAvailability> {
+        DefaultUpdateRemoteFeatureFlagAvailability(
+            get(),
+        )
+    }
+    single<RemoteFeatureFlagNavigation> { DefaultRemoteFeatureFlagNavigation() }
+    viewModel<RemoteFeatureFlagUiContract.ViewModel> {
+        RemoteFeatureFlagViewModel(get(), get())
     }
     includes(platformFeatureFlagModule)
 }
