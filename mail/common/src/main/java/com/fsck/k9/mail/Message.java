@@ -6,11 +6,14 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
+import androidx.annotation.Nullable;
 import net.thunderbird.core.common.mail.Flag;
 import com.fsck.k9.mail.filter.CountingOutputStream;
 import com.fsck.k9.mail.filter.EOLConvertingOutputStream;
+import net.thunderbird.feature.account.AccountId;
 import net.thunderbird.legacy.logging.Log;
 import org.jetbrains.annotations.NotNull;
 import net.thunderbird.core.common.exception.MessagingException;
@@ -29,6 +32,8 @@ public abstract class Message implements Part, Body {
     private Set<Flag> mFlags = EnumSet.noneOf(Flag.class);
 
     private Date mInternalDate;
+    @Nullable
+    private AccountId accountId;
 
     public boolean olderThan(Date earliestDate) {
         if (earliestDate == null) {
@@ -151,6 +156,15 @@ public abstract class Message implements Part, Body {
 
     public boolean isSet(Flag flag) {
         return mFlags.contains(flag);
+    }
+
+    public void setAccountId(AccountId accountId) {
+        this.accountId = Objects.requireNonNull(accountId, "The accountId parameter must not be null");
+    }
+
+    @Nullable
+    public AccountId getAccountId() {
+        return accountId;
     }
 
 
