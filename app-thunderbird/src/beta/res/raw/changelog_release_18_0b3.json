@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "version": "18.0b3",
+  "versioncode": 48,
+  "date": "2026-03-31",
+  "notes": [
+    {
+      "type": "fixed",
+      "text": "Fixed: Crash occurred when retrieving images from large messages",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "version": "8.0b1",
+  "versioncode": 4,
+  "date": "2024-09-30",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "First public beta of Thunderbird for Android 8.0, based on K-9 Mail.",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Updated subject encryption",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Removed outdated folder settings",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Improved maintainability",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Added domain validation for email input",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed TalkBack and crypto dialog crashes",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "New Material 3 navigation & updated colors",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Migrate settings from K-9 or Thunderbird",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

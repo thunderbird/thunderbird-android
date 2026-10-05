@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "version": "15.0b1",
+  "versioncode": 35,
+  "date": "2025-11-17",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Add avatar to message list content",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Enable in-app notifications for beta",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "In-app error notification improvements",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Default sync interval has been changed from 60 minutes to 15 minutes",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Introduce warning in Message Compose screen when no sent folder is detected",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Add confirmation dialog for sending a message without a sent folder",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Use application icon in push notification messages",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "'Colorize contact pictures' default changed unexpectedly from true to false",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Displaying IMAP password in plain text did not prompt for authentication",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Sync debug logger did not write any logs",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

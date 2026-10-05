@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "version": "22.0b2",
+  "versioncode": 57,
+  "date": "2026-07-27",
+  "notes": [
+    {
+      "type": "fixed",
+      "text": "Fixed: Could not empty the Trash folder using the Empty Trash action",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

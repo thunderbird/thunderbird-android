@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "version": "11.0b2",
+  "versioncode": 15,
+  "date": "2025-05-13",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "System navigation bar did not correctly blend with message content",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "\"New Mail Notifications\" setting did not persist",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Trailing whitespace in recipient fields caused \"Incomplete input\" error",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Navigation drawer \"Show Unified inbox\" setting did not work",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Application could crash after deleting accounts and continuing to use the app",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

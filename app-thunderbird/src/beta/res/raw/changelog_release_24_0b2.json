@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "version": "24.0b2",
+  "versioncode": 60,
+  "date": "2026-09-14",
+  "notes": [
+    {
+      "type": "fixed",
+      "text": "Fixed: Attachment filenames with non-ASCII characters were incorrectly decoded and saved",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed: HTML signature text could disappear after rotating the screen",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

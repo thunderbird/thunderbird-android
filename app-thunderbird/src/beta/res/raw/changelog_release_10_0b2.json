@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "version": "10.0b2",
+  "versioncode": 13,
+  "date": "2025-04-29",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Restrict displaying message search results to internal and system usages",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

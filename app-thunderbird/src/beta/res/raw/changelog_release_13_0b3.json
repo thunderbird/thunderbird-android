@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "version": "13.0b3",
+  "versioncode": 29,
+  "date": "2025-09-22",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Updating to 13.0b2 offline with IMAP prefix caused migration failure and data loss",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "App crashed on startup when no folders were available after data loss",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

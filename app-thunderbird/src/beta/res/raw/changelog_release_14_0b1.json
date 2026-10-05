@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "version": "14.0b1",
+  "versioncode": 32,
+  "date": "2025-10-20",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "'Auto-fit messages' display setting did not persist",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Edge-to-edge regressed moving/copying message with 3-button navigation",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Unified Account was displayed when there was only one account",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Swiping message left or right with slight downward motion aborted prematurely",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Crash occurred when setting archive folder via swipe after it was set to None",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Outlook SMTP failed to authenticate for enterprise or educational accounts",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Gmail folder prefixes appeared after refreshing folder list",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "During account setup, 'Your Name' field was mislabeled as 'Display Name'",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Quiet time preferences were ignored",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

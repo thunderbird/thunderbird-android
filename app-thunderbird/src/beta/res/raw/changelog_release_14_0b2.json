@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "version": "14.0b2",
+  "versioncode": 33,
+  "date": "2025-10-22",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Messages could not be fetched in 14.0b1",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

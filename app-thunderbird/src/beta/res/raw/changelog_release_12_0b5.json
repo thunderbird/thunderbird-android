@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "version": "12.0b5",
+  "versioncode": 23,
+  "date": "2025-08-04",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Crash occurred when attempting to access account general settings",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

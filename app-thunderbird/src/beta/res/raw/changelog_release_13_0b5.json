@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "version": "13.0b5",
+  "versioncode": 31,
+  "date": "2025-10-13",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Reverted word-wrapping change that broke HTML and table rendering",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Application crashed when opening placeholder folder",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}
