@@ -6,7 +6,7 @@
 
 app-k9mail/build.gradle.kts merge=merge_gradle
 app-thunderbird/build.gradle.kts merge=merge_gradle
-# Changelog histories are branch-owned; keep the destination's files during uplifts.
+# Changelog histories are branch-owned. Keep the destination's files during merges.
 app-thunderbird/src/daily/res/raw/changelog_index.json merge=ours
 app-thunderbird/src/daily/res/raw/changelog_release_*.json merge=ours
 app-thunderbird/src/beta/res/raw/changelog_index.json merge=ours
