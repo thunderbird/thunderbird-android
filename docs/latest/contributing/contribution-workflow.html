@@ -37,7 +37,7 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-1d1c4533.js";
+            window.path_to_searchindex_js = "../searchindex-14c3c5b8.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../toc-0f8055a0.js"></script>
@@ -366,9 +366,12 @@ git push origin your-branch-name
 </ul>
 </li>
 <li>Select your fork and branch as the source</li>
+<li>Make sure your <a href="https://github.com/thunderbird/thunderbird-android/blob/main/docs/contributing-workflow.md#pull-request-description">Pull Request Description</a>
+is compliant with our guidelines</li>
 <li>Click <strong>Create pull request</strong></li>
 </ol>
 <h3 id="pull-request-description"><a class="header" href="#pull-request-description">Pull Request Description</a></h3>
+<p>Before start writing the description, read the Pull Request template that will be prompted for you.</p>
 <p>Write a clear and concise description for your pull request:</p>
 <ol>
 <li>Reference the issue number (e.g., “Fixes #123”, “Resolves #456”)</li>
@@ -377,10 +380,34 @@ git push origin your-branch-name
 <li>Include screenshots or videos for UI changes</li>
 <li>Mention any related issues or pull requests</li>
 </ol>
-<p>Example:</p>
+<h4 id="mandatory-fields"><a class="header" href="#mandatory-fields">Mandatory fields</a></h4>
+<p>When writing your Pull Request Description, you must fill all the mandatory fields:</p>
+<ul>
+<li><strong>Linked Issue/Ticket</strong>
+<ul>
+<li>Must use closing keywords, e.g. Closes, Fixes, Resolves, etc. See <a href="https://docs.github.com/en/issues/tracking-your-work-with-issues/using-issues/linking-a-pull-request-to-an-issue#linking-a-pull-request-to-an-issue-using-a-keyword">Linking a pull request to an issue using a keyword</a>
+for available keywords.</li>
+</ul>
+</li>
+<li><strong>Description</strong></li>
+<li><strong>AI Disclosure</strong>
+<ul>
+<li>Must check at least one of the checkboxes</li>
+</ul>
+</li>
+<li><strong>Contribution Checklist</strong>
+<ul>
+<li>Must follow all the instructions of the checklist and then mark as completed by checking all.</li>
+</ul>
+</li>
+</ul>
+<p>An automated PR Sentinel will be checking if you are following the requirements and will flag the PR if not.
+See <a href="https://github.com/thunderbird/thunderbird-android/blob/main/docs/contributing/contribution-workflow.md#-automated-pr-checks-pr-sentinel">Automated PR checks (PR Sentinel)</a>
+for more details.</p>
+<h4 id="example"><a class="header" href="#example">Example</a></h4>
 <pre><code class="language-markdown">## Contribution Summary
 
-Linked Issue/Ticket: #123
+Linked Issue/Ticket: Closes #123
 RFC / Technical Design (if applicable):
 
 #### Description
@@ -390,9 +417,9 @@ This PR adds email validation to the login form. It:
 - Shows error messages for invalid emails
 - Adds unit tests for the validation logic
 
-#### Screen Shots
+#### Screenshots
 
-[Screenshot of error message]
+[Screenshot of the error message]
 
 #### Testing
 
@@ -400,6 +427,26 @@ This PR adds email validation to the login form. It:
 2. Verify that an error message appears
 3. Enter a valid email
 4. Verify that the error message disappears
+
+## AI Disclosure
+
+Select **one** of the following (mandatory)
+
+- [x] This contribution does not include any changes created or assisted by AI.
+- [ ] This contribution includes changes assisted by AI.
+- [ ] This contribution includes changes created by AI.
+
+## Contribution Checklist
+
+- [x] I have read, and I affirm that my contribution adheres to [Mozilla’s Community Participation Guidelines](https://www.mozilla.org/en-US/about/governance/policies/participation/)
+- [x] This contribution is in Kotlin where possible
+- [x] This contribution does not use merge commits
+- [x] This contribution adheres to the existing codestyle (run `gradlew spotlessCheck` to check and `gradlew spotlessApply` to format your source code; will be checked by CI).
+- [x] This contribution does not break existing unit tests (run `gradlew testDebugUnitTest`; will be checked by CI).
+- [x] This contribution includes tests for any new functionality, and maintains tests for any updated functionality.
+- [x] This contribution adheres to our [Engineering process](https://github.com/thunderbird/thunderbird-android/tree/main/docs/engineering) (RFC/Technical Design/ADR)
+- [x] This PR has a descriptive title and body that accurately outlines all changes made, and contains a reference to any issues that it fixes (e.g. _Closes #XXX_ or _Fixes #XXX_).
+
 </code></pre>
 <h2 id="-code-review-process"><a class="header" href="#-code-review-process">👀 Code Review Process</a></h2>
 <p>After submitting your pull request:</p>
@@ -412,6 +459,22 @@ This PR adds email validation to the login form. It:
 <li>Once approved, a maintainer will merge your pull request.</li>
 </ol>
 <p>👉 For expectations and etiquette, see <a href="code-review-guide.html">Code Review Guide</a>.</p>
+<h3 id="-automated-pr-checks-pr-sentinel"><a class="header" href="#-automated-pr-checks-pr-sentinel">🤖 Automated PR checks (PR Sentinel)</a></h3>
+<p>Every PR is validated automatically to verify if the PR is ready for review. To be reviewable it must have:</p>
+<ol>
+<li>A <strong>linked issue</strong> in the description (e.g. <code>Closes #123</code>).</li>
+<li>A <strong>Conventional Commit title</strong> (see the <a href="git-commit-guide.html">Git Commit Guide</a>).</li>
+<li><strong>Conventional Commit messages</strong> on every commit, with <strong>no <code>Co-authored-by:</code> trailers</strong>.</li>
+<li>A completed <strong>AI Disclosure</strong> section (exactly one option selected).</li>
+<li><strong>No merge commits</strong> — rebase onto the base branch instead of merging.</li>
+</ol>
+<p>When something is missing, PR Sentinel posts a single comment listing it and labels the PR
+<code>pr-sentinel: needs updates</code>. If it stays unresolved, the bot posts a closing warning after <strong>1 day</strong>
+and <strong>auto-closes the PR after 3 days</strong>.</p>
+<p>Push a fix (or edit the description), and the comment is removed, the <code>pr-sentinel: needs updates</code>
+label is swapped for <strong><code>pr-sentinel: ready for review</code></strong>, and the check turns green.</p>
+<p><strong>Draft PRs are skipped</strong> until marked ready for review, and <strong>bot PRs</strong> (Dependabot, Renovate, …) are exempt.
+Everyone else — <strong>including maintainers and members</strong> — must comply.</p>
 <h2 id="-keeping-your-fork-updated"><a class="header" href="#-keeping-your-fork-updated">🔄 Keeping Your Fork Updated</a></h2>
 <p>To keep your fork in sync with the main repository:</p>
 <pre><code class="language-bash"># Fetch changes from the upstream repository
@@ -496,7 +559,7 @@ git push --force-with-lease origin fix-issue-123
 <li>Thank others for their help and feedback.</li>
 </ul>
 <p>👉 See <a href="code-review-guide.html">Code review guide</a> for more details.</p>
-<footer id="last-change">Last change: <time datetime="2026-10-02">2026-10-02</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/c982bbf">c982bbf</a></footer>
+<footer id="last-change">Last change: <time datetime="2026-10-05">2026-10-05</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/d52aa73">d52aa73</a></footer>
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">

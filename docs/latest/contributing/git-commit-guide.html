@@ -37,7 +37,7 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-1d1c4533.js";
+            window.path_to_searchindex_js = "../searchindex-14c3c5b8.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../toc-0f8055a0.js"></script>
@@ -183,6 +183,16 @@
 <p>Use <a href="https://www.conventionalcommits.org/">Conventional Commits</a> to write consistent and meaningful commit messages.
 This makes your work easier to review, track, and maintain for everyone involved in the project.</p>
 <h2 id="-commit-message-format"><a class="header" href="#-commit-message-format">✍️ Commit Message Format</a></h2>
+<blockquote class="blockquote-tag blockquote-tag-important">
+<p class="blockquote-tag-title"><svg viewbox="0 0 16 16" width="18" height="18"><path d="M0 1.75C0 .784.784 0 1.75 0h12.5C15.216 0 16 .784 16 1.75v9.5A1.75 1.75 0 0 1 14.25 13H8.06l-2.573 2.573A1.458 1.458 0 0 1 3 14.543V13H1.75A1.75 1.75 0 0 1 0 11.25Zm1.75-.25a.25.25 0 0 0-.25.25v9.5c0 .138.112.25.25.25h2a.75.75 0 0 1 .75.75v2.19l2.72-2.72a.749.749 0 0 1 .53-.22h6.5a.25.25 0 0 0 .25-.25v-9.5a.25.25 0 0 0-.25-.25Zm7 2.25v2.5a.75.75 0 0 1-1.5 0v-2.5a.75.75 0 0 1 1.5 0ZM9 9a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"></path></svg>Important</p>
+<p><strong>Enforced in CI:</strong></p>
+<ul>
+<li>the PR title <strong>and every commit subject</strong> must match this format (checked by the <a href="https://github.com/thunderbird/thunderbird-android/blob/main/.github/workflows/pr-sentinel.yml">PR Sentinel workflow</a>).</li>
+<li>The <code>&lt;description&gt;</code> must be 70 characters or fewer.</li>
+</ul>
+<p>See <a href="https://github.com/thunderbird/thunderbird-android/blob/main/docs/contributing/contribution-workflow.md#-automated-pr-checks-pr-sentinel">Automated PR checks (PR Sentinel)</a>
+for more details.</p>
+</blockquote>
 <pre><code class="language-git">&lt;type&gt;(&lt;scope&gt;): &lt;description&gt;
 
 &lt;body&gt;
@@ -193,7 +203,7 @@ This makes your work easier to review, track, and maintain for everyone involved
 <ul>
 <li><code>&lt;type&gt;</code>: The <a href="#-commit-types">type of change</a> being made (e.g., feat, fix, docs).</li>
 <li><code>&lt;scope&gt;</code> <strong>(optional)</strong>: The <a href="#optional-scope">scope</a> indicates the area of the codebase affected by the change (e.g., auth, ui).</li>
-<li><code>&lt;description&gt;</code>: Short description of the change (50 characters or less)</li>
+<li><code>&lt;description&gt;</code>: Short description of the change (70 characters or less)</li>
 <li><code>&lt;body&gt;</code> <strong>(optional)</strong>: Explain what changed and why, include context if helpful.</li>
 <li><code>&lt;footer(s)&gt;</code> <strong>(optional)</strong>: Include issue references, breaking changes, etc.</li>
 </ul>
@@ -241,6 +251,7 @@ codebase are involved.</p>
 <tr><td><code>auth</code></td><td>Authentication</td><td><code>feat(auth): add login functionality</code></td></tr>
 <tr><td><code>settings</code></td><td>User settings</td><td><code>feat(settings): add dark mode toggle</code></td></tr>
 <tr><td><code>build</code></td><td>Build system</td><td><code>fix(build): improve build performance</code></td></tr>
+<tr><td><code>ci</code></td><td>CI configuration</td><td><code>chore(ci): add PR Sentinel workflow</code></td></tr>
 <tr><td><code>ui</code></td><td>UI/theme</td><td><code>refactor(ui): split theme into modules</code></td></tr>
 <tr><td><code>deps</code></td><td>Dependencies</td><td><code>chore(deps): bump Kotlin to 2.0.0</code></td></tr>
 </tbody>
@@ -250,7 +261,7 @@ codebase are involved.</p>
 <h3 id="1-one-commit-one-purpose"><a class="header" href="#1-one-commit-one-purpose">1. One Commit, One Purpose</a></h3>
 <ul>
 <li>✅ Each commit should represent a single logical change or addition to the codebase.</li>
-<li>❌ Don’t mix unrelated changes together (e.g., fixing a bug and updating docs, or changing a style and )
+<li>❌ Don’t mix unrelated changes together (e.g., fixing a bug and updating docs, or changing a style and
 adding a feature).</li>
 </ul>
 <h3 id="2-keep-it-manageable"><a class="header" href="#2-keep-it-manageable">2. Keep It Manageable</a></h3>
@@ -278,7 +289,7 @@ adding a feature).</li>
 <li>Make each commit purposeful and self-contained.</li>
 <li>Write commits that make collaboration and future development easier for everyone—including you.</li>
 </ul>
-<footer id="last-change">Last change: <time datetime="2026-10-02">2026-10-02</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/c982bbf">c982bbf</a></footer>
+<footer id="last-change">Last change: <time datetime="2026-10-05">2026-10-05</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/d52aa73">d52aa73</a></footer>
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
