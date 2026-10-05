@@ -13,6 +13,8 @@ import java.util.List;
 
 
 public final class MailTo {
+    private static final String TAG = "MailTo";
+
     private static final String MAILTO_SCHEME = "mailto";
     private static final String TO = "to";
     private static final String IN_REPLY_TO = "in-reply-to";
@@ -79,7 +81,7 @@ public final class MailTo {
                 List<String> inReplyToMessageIds = MessageIdParser.parseList(inReplyTo);
                 inReplyToMessageId = inReplyToMessageIds.get(0);
             } catch (MimeHeaderParserException e) {
-                Log.w(e, "Ignoring invalid in-reply-to value within the mailto: link.");
+                Log.w(TAG, e, "Ignoring invalid in-reply-to value within the mailto: link.");
             }
         }
 

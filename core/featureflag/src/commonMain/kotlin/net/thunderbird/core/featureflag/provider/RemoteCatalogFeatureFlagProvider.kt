@@ -1,8 +1,9 @@
 package net.thunderbird.core.featureflag.provider
 
+import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.core.featureflag.data.FeatureFlagCatalogDataSource
 import net.thunderbird.core.featureflag.model.FeatureFlagCatalog
-import net.thunderbird.core.logging.Logger
+private const val TAG = "RemoteCatalogFeatureFlagProvider"
 
 class RemoteCatalogFeatureFlagProvider(
     dataSource: FeatureFlagCatalogDataSource,
@@ -16,7 +17,7 @@ class RemoteCatalogFeatureFlagProvider(
     override suspend fun loadCatalog(): FeatureFlagCatalog? {
         val catalog = dataSource.load()
         if (catalog == null) {
-            logger.warn { "$logPrefix Remote catalog is not available." }
+            logger.warn(TAG) { "$logPrefix Remote catalog is not available." }
         }
         return catalog
     }

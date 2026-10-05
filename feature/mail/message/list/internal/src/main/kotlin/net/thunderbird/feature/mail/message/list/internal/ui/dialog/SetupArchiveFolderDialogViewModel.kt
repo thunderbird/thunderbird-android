@@ -6,10 +6,10 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.components.core.outcome.handle
 import net.thunderbird.components.core.outcome.handleAsync
 import net.thunderbird.core.common.resources.StringsResourceManager
-import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.update
 import net.thunderbird.feature.account.AccountId
@@ -22,6 +22,8 @@ import net.thunderbird.feature.mail.message.list.ui.dialog.SetupArchiveFolderDia
 import net.thunderbird.feature.mail.message.list.ui.dialog.SetupArchiveFolderDialogContract.Event
 import net.thunderbird.feature.mail.message.list.ui.dialog.SetupArchiveFolderDialogContract.State
 import net.thunderbird.feature.mail.message.list.ui.dialog.SetupArchiveFolderDialogContract.ViewModel
+
+private const val TAG = "SetupArchiveFolderDialogViewModel"
 
 internal class SetupArchiveFolderDialogViewModel(
     private val accountId: AccountId,
@@ -188,7 +190,7 @@ internal class SetupArchiveFolderDialogViewModel(
                         else -> state
                     }
                 }
-                logger.debug { "Folder created" }
+                logger.debug(TAG) { "Folder created" }
             }
 
             CreateArchiveFolderOutcome.Success.Created -> {
@@ -206,7 +208,7 @@ internal class SetupArchiveFolderDialogViewModel(
                 delay(100.milliseconds)
                 updateState { State.Closed() }
                 emitEffect(Effect.DismissDialog)
-                logger.debug { "Sync finished" }
+                logger.debug(TAG) { "Sync finished" }
             }
 
             is CreateArchiveFolderOutcome.Success.SyncStarted -> {
@@ -221,7 +223,7 @@ internal class SetupArchiveFolderDialogViewModel(
                         else -> state
                     }
                 }
-                logger.debug { "Started sync for ${event.serverId}" }
+                logger.debug(TAG) { "Started sync for ${event.serverId}" }
             }
 
             CreateArchiveFolderOutcome.Success.UpdatingSpecialFolders ->
@@ -246,7 +248,7 @@ internal class SetupArchiveFolderDialogViewModel(
                     R.string.setup_archive_folder_create_archive_folder_account_not_found,
                     accountId,
                 ).also {
-                    logger.error { it }
+                    logger.error(TAG) { it }
                 }
 
             is CreateArchiveFolderOutcome.Error.SyncError.Failed ->
@@ -256,6 +258,7 @@ internal class SetupArchiveFolderDialogViewModel(
                     error.message,
                 ).also {
                     logger.error(
+                        tag = TAG,
                         throwable = error.exception,
                         message = { it },
                     )
@@ -265,7 +268,7 @@ internal class SetupArchiveFolderDialogViewModel(
                 R.string.setup_archive_folder_unhandled_error,
                 error.throwable.message,
             ).also {
-                logger.error(throwable = error.throwable, message = { it })
+                logger.error(tag = TAG, throwable = error.throwable, message = { it })
             }
 
             is CreateArchiveFolderOutcome.Error.InvalidFolderName -> when {

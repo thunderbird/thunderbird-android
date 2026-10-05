@@ -26,6 +26,8 @@ import org.apache.commons.io.IOUtils;
  * @see FileFactory
  */
 public class DeferredFileBody implements RawDataBody, SizeAware {
+    private static final String TAG = "DeferredFileBody";
+
     public static final int DEFAULT_MEMORY_BACKED_THRESHOLD = 1024 * 8;
 
 
@@ -69,11 +71,11 @@ public class DeferredFileBody implements RawDataBody, SizeAware {
     public InputStream getInputStream() throws MessagingException {
         try {
             if (file != null) {
-                Log.d("Decrypted data is file-backed.");
+                Log.d(TAG, "Decrypted data is file-backed.");
                 return new BufferedInputStream(new FileInputStream(file));
             }
             if (data != null) {
-                Log.d("Decrypted data is memory-backed.");
+                Log.d(TAG, "Decrypted data is memory-backed.");
                 return new ByteArrayInputStream(data);
             }
 
@@ -110,7 +112,7 @@ public class DeferredFileBody implements RawDataBody, SizeAware {
             throw new IllegalStateException("Data must be fully written before it can be read!");
         }
 
-        Log.d("Writing body to file for attachment access");
+        Log.d(TAG, "Writing body to file for attachment access");
 
         file = fileFactory.createFile();
         FileOutputStream fos = new FileOutputStream(file);

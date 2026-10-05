@@ -9,6 +9,8 @@ import com.fsck.k9.preferences.Settings.InvalidSettingValueException
 import java.io.InputStream
 import net.thunderbird.legacy.logging.Log
 
+private const val TAG = "SettingsImporter"
+
 @Suppress("LongParameterList")
 class SettingsImporter internal constructor(
     private val settingsFileParser: SettingsFileParser,
@@ -95,11 +97,11 @@ class SettingsImporter internal constructor(
                     val importResult = importAccount(contents.contentVersion, account)
                     importedAccounts.add(importResult)
                 } catch (e: InvalidSettingValueException) {
-                    Log.e(e, "Encountered invalid setting while importing account \"%s\"", account.name)
+                    Log.e(TAG, e, "Encountered invalid setting while importing account \"%s\"", account.name)
 
                     erroneousAccounts.add(AccountDescription(account.name!!, account.uuid))
                 } catch (e: Exception) {
-                    Log.e(e, "Exception while importing account \"%s\"", account.name)
+                    Log.e(TAG, e, "Exception while importing account \"%s\"", account.name)
 
                     erroneousAccounts.add(AccountDescription(account.name!!, account.uuid))
                 }
@@ -123,13 +125,13 @@ class SettingsImporter internal constructor(
         importAccountUuids: List<String>,
     ): SettingsFile.Contents {
         if (importGeneralSettings && contents.globalSettings == null) {
-            Log.w("Was asked to import global settings but none found.")
+            Log.w(TAG, "Was asked to import global settings but none found.")
         }
 
         val accountUuids = contents.accounts.mapCollectionToSet { it.uuid }
         for (importAccountUuid in importAccountUuids) {
             if (importAccountUuid !in accountUuids) {
-                Log.w("Was asked to import account %s. But this account wasn't found.", importAccountUuid)
+                Log.w(TAG, "Was asked to import account %s. But this account wasn't found.", importAccountUuid)
             }
         }
 
@@ -148,7 +150,7 @@ class SettingsImporter internal constructor(
 
             generalSettingsWriter.write(currentSettings)
         } catch (e: Exception) {
-            Log.e(e, "Exception while importing general settings")
+            Log.e(TAG, e, "Exception while importing general settings")
             false
         }
     }

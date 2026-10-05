@@ -50,8 +50,8 @@ kotlin {
             implementation(libs.jetbrains.compose.components.resources)
             implementation(libs.jetbrains.compose.components.ui.preview)
 
+            implementation(libs.bundles.shared.tmc.components)
             if (!isComponentsBuild) {
-                implementation(libs.bundles.shared.tfa.components)
                 implementation(libs.tb.mobile.components.ui.bolt)
             }
         }
@@ -60,6 +60,7 @@ kotlin {
             implementation(libs.bundles.shared.kmp.common.test)
             implementation(libs.bundles.shared.kmp.compose.common.test)
 
+            implementation(libs.bundles.shared.tmc.components.test)
             if (!isComponentsBuild) {
                 implementation(libs.tb.mobile.components.ui.testing)
             }

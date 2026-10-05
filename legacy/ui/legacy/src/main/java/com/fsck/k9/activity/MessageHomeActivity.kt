@@ -63,7 +63,7 @@ import net.thunderbird.core.android.account.LegacyAccountDtoManager
 import net.thunderbird.core.android.common.startup.DatabaseUpgradeInterceptor
 import net.thunderbird.core.featureflag.keys.GeneratedFeatureFlagKey
 import net.thunderbird.core.featureflag.provider.evaluator.MultiFeatureFlagProviderEvaluator
-import net.thunderbird.core.logging.Logger
+import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.SplitViewMode
 import net.thunderbird.core.preference.interaction.PostMarkAsUnreadNavigation
@@ -509,7 +509,7 @@ open class MessageHomeActivity :
             if (accountUuid != null) {
                 val account = accountManager.getById(AccountIdFactory.of(accountUuid))
                 if (account == null) {
-                    Log.d("Account %s not found.", accountUuid)
+                    Log.d(TAG, "Account %s not found.", accountUuid)
                     return LaunchData(createDefaultLocalSearch())
                 }
 
@@ -620,7 +620,7 @@ open class MessageHomeActivity :
             }
 
             return if (search == null) {
-                Log.e("No search data found in intent extras.")
+                Log.e(TAG, "No search data found in intent extras.")
                 LaunchData(createDefaultLocalSearch())
             } else {
                 LaunchData(search = search, account = account, noThreading = noThreading)
@@ -776,7 +776,7 @@ open class MessageHomeActivity :
 
     private fun launchManageFoldersScreen() {
         if (account == null) {
-            Log.e("Tried to open \"Manage folders\", but no account selected!")
+            Log.e(TAG, "Tried to open \"Manage folders\", but no account selected!")
             return
         }
 
@@ -1063,7 +1063,7 @@ open class MessageHomeActivity :
         // Swallow these events too to avoid the audible notification of a volume change
         if (generalSettingsManager.getConfig().interaction.useVolumeKeysForNavigation) {
             if (keyCode == KeyEvent.KEYCODE_VOLUME_UP || keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
-                Log.v("Swallowed key up.")
+                Log.v(TAG, "Swallowed key up.")
                 return true
             }
         }

@@ -3,11 +3,11 @@ package net.thunderbird.feature.mail.message.list.internal.ui.state.machine
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 import kotlinx.coroutines.CoroutineScope
+import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.core.common.action.SwipeActions
 import net.thunderbird.core.common.state.StateMachine
 import net.thunderbird.core.common.state.builder.stateMachine
 import net.thunderbird.core.common.state.sideeffect.StateSideEffectHandler
-import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.preference.debugging.DebuggingSettingsPreferenceManager
 import net.thunderbird.feature.mail.message.list.ui.effect.MessageListEffect
 import net.thunderbird.feature.mail.message.list.ui.event.MessageListEvent

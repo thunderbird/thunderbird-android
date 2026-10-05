@@ -10,10 +10,9 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import net.thunderbird.components.core.logging.Logger
+import net.thunderbird.components.core.logging.LoggingControl
 import net.thunderbird.core.common.appConfig.PlatformConfigProvider
-import net.thunderbird.core.logging.LogLevel
-import net.thunderbird.core.logging.LogLevelManager
-import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.preference.PreferenceChangeBroker
 import net.thunderbird.core.preference.PreferenceChangeSubscriber
 import net.thunderbird.core.preference.PreferenceScope
@@ -27,7 +26,7 @@ class DefaultDebuggingSettingsPreferenceManager(
     private val logger: Logger,
     private val storagePersister: StoragePersister,
     private val storageEditor: StorageEditor,
-    private val logLevelManager: LogLevelManager,
+    private val loggingControl: LoggingControl,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
     private var scope: CoroutineScope = CoroutineScope(SupervisorJob()),
     private val platformConfigProvider: PlatformConfigProvider,
@@ -48,7 +47,7 @@ class DefaultDebuggingSettingsPreferenceManager(
     override fun save(config: DebuggingSettings) {
         logger.debug(TAG) { "save() called with: config = $config" }
         writeConfig(config)
-        configState.update { config.also(::updateDebugLogLevel) }
+        configState.update { config.also(::updateLoggingEnabled) }
     }
 
     private fun loadConfig(): DebuggingSettings = DebuggingSettings(
@@ -64,7 +63,7 @@ class DefaultDebuggingSettingsPreferenceManager(
             key = DebugSettingKey.EnableSensitiveLogging.value,
             defValue = DEBUGGING_SETTINGS_DEFAULT_SENSITIVE_LOGGING_ENABLED,
         ),
-    ).also(::updateDebugLogLevel)
+    ).also(::updateLoggingEnabled)
 
     private fun writeConfig(config: DebuggingSettings) {
         logger.debug(TAG) { "writeConfig() called with: config = $config" }
@@ -80,12 +79,8 @@ class DefaultDebuggingSettingsPreferenceManager(
         }
     }
 
-    private fun updateDebugLogLevel(config: DebuggingSettings) {
-        if (config.isDebugLoggingEnabled) {
-            logLevelManager.override(LogLevel.VERBOSE)
-        } else {
-            logLevelManager.restoreDefault()
-        }
+    private fun updateLoggingEnabled(config: DebuggingSettings) {
+        loggingControl.setEnabled(config.isDebugLoggingEnabled)
     }
 
     override fun receive(scope: PreferenceScope) {

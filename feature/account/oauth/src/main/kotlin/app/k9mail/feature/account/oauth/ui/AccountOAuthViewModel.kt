@@ -14,8 +14,10 @@ import app.k9mail.feature.account.oauth.ui.AccountOAuthContract.Event
 import app.k9mail.feature.account.oauth.ui.AccountOAuthContract.State
 import app.k9mail.feature.account.oauth.ui.AccountOAuthContract.ViewModel
 import kotlinx.coroutines.launch
-import net.thunderbird.core.logging.Logger
+import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.core.ui.contract.mvi.BaseViewModel
+
+private const val TAG = "AccountOAuthViewModel"
 
 class AccountOAuthViewModel(
     initialState: State = State(),
@@ -51,7 +53,7 @@ class AccountOAuthViewModel(
                 emailAddress = state.value.emailAddress,
             )
         } catch (e: ActivityNotFoundException) {
-            logger.error(throwable = e) { "Failed to launch custom tabs. Browser is not available." }
+            logger.error(tag = TAG, throwable = e) { "Failed to launch custom tabs. Browser is not available." }
             AuthorizationIntentResult.BrowserNotAvailable
         }
 

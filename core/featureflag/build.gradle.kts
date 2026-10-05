@@ -34,7 +34,6 @@ kotlin {
         commonMain.dependencies {
             api(projects.core.configstore.api)
             implementation(projects.core.file)
-            implementation(projects.core.logging.api)
             implementation(libs.ktor.client.core)
             implementation(libs.ktor.client.content.negotiation)
             implementation(libs.ktor.serialization.json)
@@ -44,7 +43,6 @@ kotlin {
         }
         commonTest.dependencies {
             implementation(projects.core.configstore.testing)
-            implementation(projects.core.logging.testing)
         }
         androidHostTest.dependencies {
             implementation(libs.robolectric)

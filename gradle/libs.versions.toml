@@ -66,6 +66,7 @@ dependencyGuardPlugin = "0.5.0"
 detektPlugin = "2.0.0-alpha.6"
 detektPluginCompose = "0.6.6"
 fastAdapter = "5.7.0"
+fileKit = "0.14.2"
 forkhandlesBom = "2.25.6.0"
 glide = "4.16.0"
 gradle = "9.6.1"
@@ -228,6 +229,7 @@ diff-utils = { module = "io.github.java-diff-utils:java-diff-utils", version.ref
 fastadapter = { module = "com.mikepenz:fastadapter", version.ref = "fastAdapter" }
 fastadapter-extensions-drag = { module = "com.mikepenz:fastadapter-extensions-drag", version.ref = "fastAdapter" }
 fastadapter-extensions-utils = { module = "com.mikepenz:fastadapter-extensions-utils", version.ref = "fastAdapter" }
+filekit-core = { module = "io.github.vinceglb:filekit-core", version.ref = "fileKit" }
 forkhandles-bom = { module = "dev.forkhandles:forkhandles-bom", version.ref = "forkhandlesBom" }
 forkhandles-fabrikate4k = { module = "dev.forkhandles:fabrikate4k" }
 glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
@@ -315,6 +317,9 @@ robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectr
 safeContentResolver = { module = "de.cketti.safecontentresolver:safe-content-resolver-v21", version.ref = "safeContentResolver" }
 searchPreference = { module = "com.github.ByteHamster:SearchPreference", version.ref = "searchPreference" }
 tb-mobile-components-core-outcome = { module = "net.thunderbird.components.core:outcome", version.ref = "tbMobileComponents" }
+tb-mobile-components-core-logging-core = { module = "net.thunderbird.components.core.logging:core", version.ref = "tbMobileComponents" }
+tb-mobile-components-core-logging-file = { module = "net.thunderbird.components.core.logging:file", version.ref = "tbMobileComponents" }
+tb-mobile-components-core-logging-testing = { module = "net.thunderbird.components.core.logging:testing", version.ref = "tbMobileComponents" }
 tb-mobile-components-ui-bolt = { module = "net.thunderbird.components.ui.bolt:bolt", version.ref = "tbMobileComponents" }
 tb-mobile-components-ui-testing = { module = "net.thunderbird.components.ui:testing", version.ref = "tbMobileComponents" }
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
@@ -324,8 +329,12 @@ xmlpull = { module = "com.github.cketti:xmlpull-extracted-from-android", version
 zxing = { module = "com.google.zxing:core", version.ref = "zxing" }
 
 [bundles]
-shared-tfa-components = [
+shared-tmc-components = [
   "tb-mobile-components-core-outcome",
+  "tb-mobile-components-core-logging-core",
+]
+shared-tmc-components-test = [
+  "tb-mobile-components-core-logging-testing",
 ]
 
 shared-kmp-common = [

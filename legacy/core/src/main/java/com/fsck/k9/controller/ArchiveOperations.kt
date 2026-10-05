@@ -10,6 +10,8 @@ import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.featureflag.keys.GeneratedFeatureFlagKey
 import net.thunderbird.legacy.logging.Log
 
+private const val TAG = "ArchiveOperations"
+
 internal class ArchiveOperations(
     private val messagingController: MessagingController,
     private val featureFlagProvider: FeatureFlagProvider,
@@ -44,11 +46,11 @@ internal class ArchiveOperations(
             val sourceFolderId = messageFolder.databaseId
             when (val archiveFolderId = account.archiveFolderId) {
                 null -> {
-                    Log.v("No archive folder configured for account %s", account)
+                    Log.v(TAG, "No archive folder configured for account %s", account)
                 }
 
                 sourceFolderId -> {
-                    Log.v("Skipping messages already in archive folder")
+                    Log.v(TAG, "Skipping messages already in archive folder")
                 }
 
                 else -> {

@@ -19,6 +19,8 @@ import net.thunderbird.components.core.outcome.Outcome
 import net.thunderbird.core.ui.contract.mvi.BaseViewModel
 import net.thunderbird.legacy.logging.Log
 
+private const val TAG = "SpecialFoldersViewModel"
+
 class SpecialFoldersViewModel(
     private val formUiModel: SpecialFoldersContract.FormUiModel,
     private val getSpecialFolderOptions: UseCase.GetSpecialFolderOptions,
@@ -88,7 +90,7 @@ class SpecialFoldersViewModel(
         return try {
             getSpecialFolderOptions()
         } catch (exception: FolderFetcherException) {
-            Log.e(exception, "Error while loading special folders")
+            Log.e(TAG, exception, "Error while loading special folders")
             updateState { state ->
                 state.copy(
                     isLoading = false,

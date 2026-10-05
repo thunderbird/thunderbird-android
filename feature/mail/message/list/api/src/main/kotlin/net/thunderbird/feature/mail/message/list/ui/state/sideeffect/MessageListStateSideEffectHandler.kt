@@ -1,7 +1,7 @@
 package net.thunderbird.feature.mail.message.list.ui.state.sideeffect
 
+import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.core.common.state.sideeffect.StateSideEffectHandler
-import net.thunderbird.core.logging.Logger
 import net.thunderbird.feature.mail.message.list.ui.effect.MessageListEffect
 import net.thunderbird.feature.mail.message.list.ui.event.MessageListEvent
 import net.thunderbird.feature.mail.message.list.ui.state.MessageListState

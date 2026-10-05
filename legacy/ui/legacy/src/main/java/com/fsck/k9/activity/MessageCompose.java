@@ -176,6 +176,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
     OnOpenPgpInlineChangeListener, OnOpenPgpSignOnlyChangeListener, MessageBuilder.Callback,
     AttachmentPresenter.AttachmentsChangedListener, OnOpenPgpDisableListener {
 
+    private static final String TAG = "MessageCompose";
     private static final int DIALOG_SAVE_OR_DISCARD_DRAFT_MESSAGE = 1;
     private static final int DIALOG_CONFIRM_DISCARD_ON_BACK = 2;
 
@@ -523,7 +524,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
                 this.action = Action.EDIT_DRAFT;
             } else {
                 // This shouldn't happen
-                Log.w("MessageCompose was started with an unsupported action");
+                Log.w(TAG, "MessageCompose was started with an unsupported action");
                 this.action = Action.COMPOSE;
             }
         }
@@ -696,7 +697,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
                         final Throwable throwable = failure instanceof CommandExecutionFailed<?>
                             ? ((CommandExecutionFailed<?>) failure).getThrowable()
                             : null;
-                        Log.e(throwable, "Failed to send in-app notification. Failure = " + failure);
+                        Log.e(TAG, throwable, "Failed to send in-app notification. Failure = " + failure);
                         return Unit.INSTANCE;
                     });
             });
@@ -718,7 +719,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
                             final Throwable throwable = failure instanceof CommandExecutionFailed<?>
                                 ? ((CommandExecutionFailed<?>) failure).getThrowable()
                                 : null;
-                            Log.e(throwable, "Failed to dismiss in-app notification. Failure = " + failure);
+                            Log.e(TAG, throwable, "Failed to dismiss in-app notification. Failure = " + failure);
                             return Unit.INSTANCE;
                         }
                     );
@@ -827,7 +828,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
 
         ComposeCryptoStatus cryptoStatus = recipientPresenter.getCurrentCachedCryptoStatus();
         if (cryptoStatus == null) {
-            Log.w("Couldn't retrieve crypto status; not creating MessageBuilder!");
+            Log.w(TAG, "Couldn't retrieve crypto status; not creating MessageBuilder!");
             return null;
         }
 
@@ -1034,7 +1035,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
             if ((requestCode & REQUEST_MASK_MESSAGE_BUILDER) == REQUEST_MASK_MESSAGE_BUILDER) {
                 requestCode ^= REQUEST_MASK_MESSAGE_BUILDER;
                 if (currentMessageBuilder == null) {
-                    Log.e("Got a message builder activity result for no message builder, " +
+                    Log.e(TAG, "Got a message builder activity result for no message builder, " +
                             "this is an illegal state!");
                     return;
                 }
@@ -1092,7 +1093,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
 
     private void onAccountChosen(LegacyAccountDto account, Identity identity) {
         if (!this.account.equals(account)) {
-            Log.v("Switching account from %s to %s", this.account, account);
+            Log.v(TAG, "Switching account from %s to %s", this.account, account);
 
             // on draft edit, make sure we don't keep previous message UID
             if (action == Action.EDIT_DRAFT) {
@@ -1110,11 +1111,11 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
                 // actual account switch
                 this.account = account;
 
-                Log.v("Account switch, saving new draft in new account");
+                Log.v(TAG, "Account switch, saving new draft in new account");
                 checkToSaveDraftImplicitly();
 
                 if (previousDraftId != null) {
-                    Log.v("Account switch, deleting draft from previous account: %d", previousDraftId);
+                    Log.v(TAG, "Account switch, deleting draft from previous account: %d", previousDraftId);
 
                     messagingController.deleteDraft(previousAccount, previousDraftId);
                 }
@@ -1530,7 +1531,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
                     break;
                 }
                 default: {
-                    Log.w("processSourceMessage() called with unsupported action");
+                    Log.w(TAG, "processSourceMessage() called with unsupported action");
                     break;
                 }
             }
@@ -1539,7 +1540,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
              * Let the user continue composing their message even if we have a problem processing
              * the source message. Log it as an error, though.
              */
-            Log.e(e, "Error while processing source message: ");
+            Log.e(TAG, e, "Error while processing source message: ");
         } finally {
             relatedMessageProcessed = true;
             changesMadeSinceLastSave = false;
@@ -1581,7 +1582,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
             }
 
         } else {
-            Log.d("could not get Message-ID.");
+            Log.d(TAG, "could not get Message-ID.");
         }
 
         // Quote the message and setup the UI.
@@ -1611,7 +1612,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
             repliedToMessageId = message.getMessageId();
             referencedMessageIds = repliedToMessageId;
         } else {
-            Log.d("could not get Message-ID.");
+            Log.d(TAG, "could not get Message-ID.");
         }
 
         // Quote the message and setup the UI.
@@ -1732,6 +1733,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
     }
 
     static class SendMessageTask extends AsyncTask<Void, Void, Void> {
+
         final MessagingController messagingController;
         final Preferences preferences;
         final LegacyAccountDto account;
@@ -1764,7 +1766,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
                 contacts.markAsContacted(message.getRecipients(RecipientType.BCC));
                 addFlagToReferencedMessage();
             } catch (Exception e) {
-                Log.e(e, "Failed to mark contact as contacted.");
+                Log.e(TAG, e, "Failed to mark contact as contacted.");
             }
 
             messagingController.sendMessage(account, message, plaintextSubject, null);
@@ -1786,7 +1788,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
                 long folderId = messageReference.getFolderId();
                 String sourceMessageUid = messageReference.getUid();
 
-                Log.d("Setting referenced message (%d, %s) flag to %s", folderId, sourceMessageUid, flag);
+                Log.d(TAG, "Setting referenced message (%d, %s) flag to %s", folderId, sourceMessageUid, flag);
 
                 messagingController.setFlag(account, folderId, sourceMessageUid, flag, true);
             }
@@ -1895,7 +1897,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
     @Override
     public void onMessageBuildException(MessagingException me) {
         dismissEncryptedMessageProgressIndicator();
-        Log.e(me, "Error sending message");
+        Log.e(TAG, me, "Error sending message");
         Toast.makeText(MessageCompose.this,
                 getString(R.string.send_failed_reason, me.getLocalizedMessage()), Toast.LENGTH_LONG).show();
         sendMessageHasBeenTriggered = false;
@@ -1910,7 +1912,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
         try {
             OpenPgpIntentStarter.startIntentSenderForResult(this, pendingIntent.getIntentSender(), requestCode);
         } catch (SendIntentException e) {
-            Log.e(e, "Error starting pending intent from builder!");
+            Log.e(TAG, e, "Error starting pending intent from builder!");
         }
     }
 
@@ -1919,7 +1921,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
         try {
             OpenPgpIntentStarter.startIntentSenderForResult(this, pendingIntent.getIntentSender(), requestCode);
         } catch (SendIntentException e) {
-            Log.e(e, "Error starting pending intent from builder!");
+            Log.e(TAG, e, "Error starting pending intent from builder!");
         }
     }
 
@@ -1936,7 +1938,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
             } catch (MessagingException e) {
                 // Hm, if we couldn't populate the UI after source reprocessing, let's just delete it?
                 quotedMessagePresenter.showOrHideQuotedText(QuotedTextMode.HIDE);
-                Log.e(e, "Could not re-process source message; deleting quoted text to be safe.");
+                Log.e(TAG, e, "Could not re-process source message; deleting quoted text to be safe.");
             }
             updateMessageFormat();
         } else {
@@ -2002,7 +2004,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
                 requestCode |= REQUEST_MASK_LOADER_HELPER;
                 OpenPgpIntentStarter.startIntentSenderForResult(MessageCompose.this, intentSender, requestCode);
             } catch (SendIntentException e) {
-                Log.e(e, "Irrecoverable error calling PendingIntent!");
+                Log.e(TAG, e, "Irrecoverable error calling PendingIntent!");
             }
 
             return true;
@@ -2047,7 +2049,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
 
         final List<LegacyAccountDto> accounts = preferences.getAccounts();
         if (accounts.isEmpty()) {
-            Log.w("Can't initialize in-app notifications. No accounts were found.");
+            Log.w(TAG, "Can't initialize in-app notifications. No accounts were found.");
             return;
         }
         final FragmentManager fragmentManager = getSupportFragmentManager();

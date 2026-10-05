@@ -34,6 +34,8 @@ import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.account.storage.legacy.AccountDtoStorageHandler
 import org.koin.java.KoinJavaComponent.inject
 
+private const val TAG = "Preferences"
+
 @Suppress("MaxLineLength", "TooManyFunctions")
 class Preferences internal constructor(
     private val storagePersister: StoragePersister,
@@ -251,7 +253,7 @@ class Preferences internal constructor(
             try {
                 localStoreProvider.getInstance(account).resetVisibleLimits(account.displayCount)
             } catch (e: MessagingException) {
-                Log.e(e, "Failed to load LocalStore!")
+                Log.e(TAG, e, "Failed to load LocalStore!")
             }
         }
         account.resetChangeMarkers()

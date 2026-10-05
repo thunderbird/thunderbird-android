@@ -28,6 +28,8 @@ import net.thunderbird.core.common.mail.Flag
 import net.thunderbird.legacy.logging.Log
 import net.thunderbird.protocols.imap.folder.attributeName
 
+private const val TAG = "RealImapFolder"
+
 internal class RealImapFolder(
     private val internalImapStore: InternalImapStore,
     private val connectionManager: ImapConnectionManager,
@@ -161,7 +163,7 @@ internal class RealImapFolder(
         } catch (ioe: IOException) {
             throw ioExceptionHandler(connection, ioe)
         } catch (me: MessagingException) {
-            Log.e(me, "Unable to open connection for %s", logId)
+            Log.e(TAG, me, "Unable to open connection for %s", logId)
             throw me
         }
     }
@@ -198,7 +200,7 @@ internal class RealImapFolder(
         synchronized(this) {
             // If we are mid-search and we get a close request, we gotta trash the connection.
             if (inSearch && connection != null) {
-                Log.i("IMAP search was aborted, shutting down connection.")
+                Log.i(TAG, "IMAP search was aborted, shutting down connection.")
                 connection!!.close()
             } else {
                 connectionManager.releaseConnection(connection)
@@ -273,7 +275,7 @@ internal class RealImapFolder(
             val responses = connection.executeSimpleCommand(command)
             responses.any { ImapResponseParser.equalsIgnoreCase(it[0], Responses.OK) }
         } catch (e: NegativeImapResponseException) {
-            Log.e(e, "Unable to create folder %s for %s", serverId, logId)
+            Log.e(TAG, e, "Unable to create folder %s for %s", serverId, logId)
             false
         } catch (ioe: IOException) {
             throw ioExceptionHandler(this.connection, ioe)
@@ -643,7 +645,7 @@ internal class RealImapFolder(
                         val message = messageMap[uid]
                         if (message == null) {
                             if (K9MailLib.isDebug()) {
-                                Log.d("Do not have message in messageMap for UID %s for %s", uid, logId)
+                                Log.d(TAG, "Do not have message in messageMap for UID %s for %s", uid, logId)
                             }
                             handleUntaggedResponse(response)
                             continue
@@ -716,7 +718,7 @@ internal class RealImapFolder(
                     val uid = fetchList.getKeyedString("UID")
                     if (message.uid != uid) {
                         if (K9MailLib.isDebug()) {
-                            Log.d("Did not ask for UID %s for %s", uid, logId)
+                            Log.d(TAG, "Did not ask for UID %s for %s", uid, logId)
                         }
                         handleUntaggedResponse(response)
                         continue
@@ -810,7 +812,7 @@ internal class RealImapFolder(
                     parseBodyStructure(bs, message, "TEXT")
                 } catch (e: MessagingException) {
                     if (K9MailLib.isDebug()) {
-                        Log.d(e, "Error handling message for %s", logId)
+                        Log.d(TAG, e, "Error handling message for %s", logId)
                     }
                     message.body = null
                 }
@@ -849,7 +851,7 @@ internal class RealImapFolder(
             if ("UIDNEXT".equals(key, ignoreCase = true)) {
                 uidNext = bracketed.getLong(1)
                 if (K9MailLib.isDebug()) {
-                    Log.d("Got UidNext = %s for %s", uidNext, logId)
+                    Log.d(TAG, "Got UidNext = %s for %s", uidNext, logId)
                 }
             }
         }
@@ -863,7 +865,7 @@ internal class RealImapFolder(
             if (ImapResponseParser.equalsIgnoreCase(response[1], "EXISTS")) {
                 messageCount = response.getNumber(0)
                 if (K9MailLib.isDebug()) {
-                    Log.d("Got untagged EXISTS with value %d for %s", messageCount, logId)
+                    Log.d(TAG, "Got untagged EXISTS with value %d for %s", messageCount, logId)
                 }
             }
 
@@ -872,7 +874,7 @@ internal class RealImapFolder(
             if (ImapResponseParser.equalsIgnoreCase(response[1], "EXPUNGE") && messageCount > 0) {
                 messageCount--
                 if (K9MailLib.isDebug()) {
-                    Log.d("Got untagged EXPUNGE with messageCount %d for %s", messageCount, logId)
+                    Log.d(TAG, "Got untagged EXPUNGE with messageCount %d for %s", messageCount, logId)
                 }
             }
         }
@@ -1086,7 +1088,7 @@ internal class RealImapFolder(
                 val messageId = extractMessageId(message)
                 val newUid = messageId?.let { getUidFromMessageId(it) }
                 if (K9MailLib.isDebug()) {
-                    Log.d("Got UID %s for message for %s", newUid, logId)
+                    Log.d(TAG, "Got UID %s for message for %s", newUid, logId)
                 }
 
                 newUid?.let {
@@ -1110,7 +1112,7 @@ internal class RealImapFolder(
     @Throws(MessagingException::class)
     override fun getUidFromMessageId(messageId: String): String? {
         if (K9MailLib.isDebug()) {
-            Log.d("Looking for UID for message with message-id %s for %s", messageId, logId)
+            Log.d(TAG, "Looking for UID for message with message-id %s for %s", messageId, logId)
         }
 
         val command = String.format("UID SEARCH HEADER MESSAGE-ID %s", ImapUtility.encodeString(messageId))
@@ -1181,7 +1183,7 @@ internal class RealImapFolder(
             } else if (fullExpungeFallback) {
                 executeSimpleCommand("EXPUNGE")
             } else {
-                Log.v("Server doesn't support expunging individual messages: %s", uids)
+                Log.v(TAG, "Server doesn't support expunging individual messages: %s", uids)
             }
         } catch (ioe: IOException) {
             throw ioExceptionHandler(connection, ioe)
@@ -1236,7 +1238,7 @@ internal class RealImapFolder(
     }
 
     private fun ioExceptionHandler(connection: ImapConnection?, ioe: IOException): MessagingException {
-        Log.e(ioe, "IOException for %s", logId)
+        Log.e(TAG, ioe, "IOException for %s", logId)
         connection?.close()
         close()
         return MessagingException("IO Error", ioe)

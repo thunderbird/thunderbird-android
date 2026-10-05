@@ -9,8 +9,6 @@ android {
 dependencies {
     api(projects.core.common)
 
-    implementation(projects.core.logging.api)
-
     testImplementation(projects.core.testing)
     testImplementation(libs.robolectric)
 }

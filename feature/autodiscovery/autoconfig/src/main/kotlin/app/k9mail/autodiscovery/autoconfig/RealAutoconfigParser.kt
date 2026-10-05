@@ -24,6 +24,8 @@ import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserException
 import org.xmlpull.v1.XmlPullParserFactory
 
+private const val TAG = "RealAutoconfigParser"
+
 private typealias ServerSettingsFactory<T> = (
     hostname: Hostname,
     port: Port,
@@ -164,7 +166,7 @@ private class ClientConfigParser(
     ): T? {
         val type = pullParser.getAttributeValue(null, "type")
         if (type != protocolType) {
-            Log.d("Unsupported '%s[type]' value: '%s'", pullParser.name, type)
+            Log.d(TAG, "Unsupported '%s[type]' value: '%s'", pullParser.name, type)
             skipElement()
             return null
         }
@@ -237,7 +239,7 @@ private class ClientConfigParser(
             "password-encrypted" -> PasswordEncrypted
 
             else -> {
-                Log.d("Ignoring unknown 'authentication' value '$this'")
+                Log.d(TAG, "Ignoring unknown 'authentication' value '$this'")
                 null
             }
         }
@@ -291,7 +293,7 @@ private class ClientConfigParser(
     }
 
     private fun skipElement() {
-        Log.d("Skipping element '%s'", pullParser.name)
+        Log.d(TAG, "Skipping element '%s'", pullParser.name)
         readElement { /* Do nothing */ }
     }
 

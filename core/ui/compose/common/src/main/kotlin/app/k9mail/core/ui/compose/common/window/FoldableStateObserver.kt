@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
-import net.thunderbird.core.logging.Logger
+import net.thunderbird.components.core.logging.Logger
 
 /**
  * Observes the foldable state of a device using Jetpack WindowManager.

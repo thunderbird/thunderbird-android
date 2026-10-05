@@ -7,7 +7,6 @@ android {
 }
 
 dependencies {
-    implementation(projects.core.logging.api)
     implementation(projects.core.preference.api)
     implementation(projects.core.preference.impl)
 

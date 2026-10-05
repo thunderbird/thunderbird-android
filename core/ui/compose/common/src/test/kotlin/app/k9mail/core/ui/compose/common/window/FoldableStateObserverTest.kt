@@ -7,8 +7,8 @@ import androidx.lifecycle.LifecycleRegistry
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNotEmpty
+import net.thunderbird.components.core.logging.testing.TestLogger
 import net.thunderbird.core.android.testing.RobolectricTest
-import net.thunderbird.core.logging.testing.TestLogger
 import org.junit.Before
 import org.junit.Test
 import org.robolectric.Robolectric

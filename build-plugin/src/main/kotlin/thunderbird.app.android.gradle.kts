@@ -77,8 +77,10 @@ dependencies {
     implementation(platform(libs.koin.bom))
 
     implementation(libs.bundles.shared.android.app)
+    implementation(libs.bundles.shared.tmc.components)
 
     testImplementation(libs.bundles.shared.android.app.test)
+    testImplementation(libs.bundles.shared.tmc.components.test)
 }
 
 tasks.register("testsOnCi") {

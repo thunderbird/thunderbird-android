@@ -13,6 +13,8 @@ import org.openintents.openpgp.OpenPgpApiManager
 import org.openintents.openpgp.OpenPgpApiManager.OpenPgpApiManagerCallback
 import org.openintents.openpgp.OpenPgpApiManager.OpenPgpProviderError
 
+private const val TAG = "AutocryptKeyTransferPresenter"
+
 class AutocryptKeyTransferPresenter internal constructor(
     lifecycleOwner: LifecycleOwner,
     private val openPgpApiManager: OpenPgpApiManager,
@@ -102,7 +104,7 @@ class AutocryptKeyTransferPresenter internal constructor(
             }
 
             is AutocryptSetupTransferResult.Failure -> {
-                Log.e(result.exception, "Error sending setup message")
+                Log.e(TAG, result.exception, "Error sending setup message")
                 view.setLoadingStateSendingFailed()
                 view.sceneSendError()
             }
