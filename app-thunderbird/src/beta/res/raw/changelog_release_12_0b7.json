@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "version": "12.0b7",
+  "versioncode": 25,
+  "date": "2025-08-18",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Edge-to-edge support regressed various screens when using 3-button navigation",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

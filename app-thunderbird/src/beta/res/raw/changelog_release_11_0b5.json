@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "version": "11.0b5",
+  "versioncode": 18,
+  "date": "2025-07-03",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "TalkBack did not clearly announce contact picture tap action",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "IMAP push could fail after losing and regaining network connection",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Fastmail OAuth expired quickly, causing frequent login prompts",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Some providers blocked SMTP connections when HELO hostname was 127.0.0.1",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

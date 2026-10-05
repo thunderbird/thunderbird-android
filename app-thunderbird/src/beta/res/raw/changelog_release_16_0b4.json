@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "version": "16.0b4",
+  "versioncode": 41,
+  "date": "2026-01-20",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "OAuth SMTP authentication failed with some Microsoft servers",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

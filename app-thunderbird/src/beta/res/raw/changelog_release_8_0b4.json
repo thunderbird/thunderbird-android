@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "version": "8.0b4",
+  "versioncode": 7,
+  "date": "2024-10-21",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Monthly financial contributions are now possible—try it today!",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Accounts shown by default for better access to settings",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Added Norsk Nynorsk translations",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Added unread count to new folder drawer",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Improved first-time user experience for importing settings",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Shortened headers to prevent wrapping",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Correct saving of 'Bcc all messages' setting",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Better QR code import instructions",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "version": "21.0b2",
+  "versioncode": 55,
+  "date": "2026-06-29",
+  "notes": [
+    {
+      "type": "fixed",
+      "text": "Fixed: Manage Folders opened the wrong account instead of the selected account",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed: Application crashed when attempting to change account color",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

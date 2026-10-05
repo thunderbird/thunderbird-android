@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "version": "16.0b2",
+  "versioncode": 38,
+  "date": "2025-12-10",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Application crashed at startup",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Fix various edge-to-edge issues throughout the app",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

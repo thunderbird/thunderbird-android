@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "version": "17.0b4",
+  "versioncode": 45,
+  "date": "2026-02-24",
+  "notes": [
+    {
+      "type": "fixed",
+      "text": "Fixed: Application navigation and account switching could crash",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

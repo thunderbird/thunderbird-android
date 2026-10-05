@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "version": "18.0b2",
+  "versioncode": 47,
+  "date": "2026-03-18",
+  "notes": [
+    {
+      "type": "fixed",
+      "text": "Fixed: Crash occurred when attaching attachment",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

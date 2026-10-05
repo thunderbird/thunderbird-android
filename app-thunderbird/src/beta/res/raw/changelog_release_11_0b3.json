@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "version": "11.0b3",
+  "versioncode": 16,
+  "date": "2025-06-10",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Sharing multiple selected images from gallery only selected last image",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Account drawer could crash when folder was selected",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Application could crash when fetching emails",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

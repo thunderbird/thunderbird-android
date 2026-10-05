@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "version": "10.0b1",
+  "versioncode": 12,
+  "date": "2025-03-19",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Account setup prefills server field automatically",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Add a menu enty to empty the Spam folder",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Provide Slovak translation",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Update Gmail OAuth client IDs to Thunderbird for Android",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Preserve the <s> tag when sanitizing HTML content",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Messages and star counts in the drawer update instantly",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "The drawer remembers the state of hide accounts",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Restart PushService after app update",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

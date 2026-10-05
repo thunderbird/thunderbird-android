@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "version": "16.0b1",
+  "versioncode": 37,
+  "date": "2025-12-08",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Enable Memory Tagging Extension on MTE-capable devices to improve memory safety",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Add setting to control default folder expansion behavior",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Add the ability to switch between text/plain and text/html display",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Switching folders required an excessive number of clicks",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Fix various edge-to-edge issues throughout the app",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}
