@@ -48,12 +48,32 @@ git merge "origin/${from_branch}"
 ret=$?
 set +x
 
-if [ "${from_branch}" = "beta" ]; then
-  if [ -e "app-thunderbird/src/beta/res/raw/changelog_master.xml" ]; then
-    set -ex
-    git rm --force app-thunderbird/src/beta/res/raw/changelog_master.xml
-    set +ex
+# The merge driver only handles files that exist on both sides and conflict.
+# Restore branch-owned JSON from the destination for additions and deletions too.
+if [ "$ret" -eq 0 ] || [ -f "$(git rev-parse --git-path MERGE_HEAD)" ]; then
+  if [ "${into_branch}" = "beta" ]; then
+    changelog_dirs=(app-thunderbird/src/daily/res/raw app-thunderbird/src/beta/res/raw \
+      app-k9mail/src/release/res/raw)
+  else
+    changelog_dirs=(app-thunderbird/src/daily/res/raw app-thunderbird/src/beta/res/raw \
+      app-thunderbird/src/release/res/raw app-k9mail/src/release/res/raw)
   fi
+  for dir in "${changelog_dirs[@]}"; do
+    # HEAD is the destination before the merge. Reset the entire changelog set,
+    # including new upstream files; the merge driver alone cannot stop additions.
+    git ls-files --cached --others --exclude-standard -- "$dir" | while IFS= read -r file; do
+      case "$file" in "$dir/changelog_index.json"|"$dir"/changelog_release_*.json) ;; *) continue ;; esac
+      if ! git cat-file -e "HEAD:$file" 2>/dev/null; then
+        git rm -f --ignore-unmatch -- "$file"
+        rm -f -- "$file"
+      fi
+    done
+    git ls-tree -r --name-only HEAD -- "$dir" | while IFS= read -r file; do
+      case "$file" in "$dir/changelog_index.json"|"$dir"/changelog_release_*.json) ;; *) continue ;; esac
+      git show "HEAD:$file" > "$file"
+      git add "$file"
+    done
+  done
 fi
 
 echo
