@@ -104,7 +104,7 @@ class ChangelogTest(unittest.TestCase):
             self.assertTrue((output / 'changelog_release_25_0b2.json').read_bytes().endswith(b'\n'))
             self.assertTrue((output / 'changelog_index.json').read_bytes().endswith(b'\n'))
 
-    def test_main_generates_each_beta_release_and_updates_index(self):
+    def test_main_generates_only_requested_beta_release(self):
         notes = {
             'release': {'releases': [
                 {'version': '25.0b1', 'release_date': '2026-10-01'},
@@ -121,10 +121,19 @@ class ChangelogTest(unittest.TestCase):
             output.mkdir(parents=True)
             (root / 'schemas').symlink_to(REPO_ROOT / 'schemas', target_is_directory=True)
             existing_index = {'schemaVersion': 1, 'releases': [
-                {'version': '24.0b2', 'versioncode': 60, 'date': '2026-09-14',
-                 'resourceName': 'changelog_release_24_0b2'},
+                {'version': '25.0b1', 'versioncode': 60, 'date': '2026-10-01',
+                 'resourceName': 'changelog_release_25_0b1'},
             ]}
             (output / 'changelog_index.json').write_text(json.dumps(existing_index))
+            previous_release = output / 'changelog_release_25_0b1.json'
+            previous_data = {
+                'schemaVersion': 1,
+                'version': '25.0b1',
+                'versioncode': 60,
+                'date': '2026-10-01',
+                'notes': [{'type': 'new', 'text': 'First beta'}],
+            }
+            previous_release.write_text(json.dumps(previous_data) + '\n')
             with patch.object(generator, '__file__', str(root / 'scripts/changelog/generate_changelog_json.py')), \
                     patch.object(generator, 'load_release_notes', return_value=notes), \
                     patch('sys.argv', ['generate_changelog_json.py', 'net.thunderbird.android.beta',
@@ -133,15 +142,14 @@ class ChangelogTest(unittest.TestCase):
 
             index = json.loads((output / 'changelog_index.json').read_text())
             self.assertEqual([entry['version'] for entry in index['releases']],
-                             ['25.0b2', '25.0b1', '24.0b2'])
-            self.assertEqual([entry['versioncode'] for entry in index['releases'][:2]], [61, 61])
-            first = json.loads((output / 'changelog_release_25_0b1.json').read_text())
+                             ['25.0b2', '25.0b1'])
+            self.assertEqual([entry['versioncode'] for entry in index['releases']], [61, 60])
+            self.assertEqual(index['releases'][1], existing_index['releases'][0])
+            self.assertEqual(json.loads(previous_release.read_text()), previous_data)
             second = json.loads((output / 'changelog_release_25_0b2.json').read_text())
-            self.assertEqual([note['text'] for note in first['notes']], ['First beta'])
             self.assertEqual([note['text'] for note in second['notes']], ['Second beta'])
             self.assertEqual(second['notes'][0]['issues'], [123])
             self.assertTrue((output / 'changelog_index.json').read_bytes().endswith(b'\n'))
-            self.assertTrue((output / 'changelog_release_25_0b1.json').read_bytes().endswith(b'\n'))
             self.assertTrue((output / 'changelog_release_25_0b2.json').read_bytes().endswith(b'\n'))
 
 

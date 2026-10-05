@@ -266,26 +266,16 @@ def main():
         args.branch,
     )
 
-    index = load_existing_index(output_dir)
-    releases = []
-    versions = {release["version"] for release in yaml_content["release"]["releases"]}
-    if args.version not in versions:
-        raise ValueError(f"Version '{args.version}' not found")
-    for release_info in yaml_content["release"]["releases"]:
-        version = release_info["version"]
-        release_data = extract_release(version, args.versioncode, application, yaml_content)
-        validate_json(release_data, release_schema, f"Release {version}")
-        resource_name = to_resource_name(version)
-        index = update_index(index, release_data, resource_name)
-        releases.append(release_data)
-
+    release_data = extract_release(args.version, args.versioncode, application, yaml_content)
+    validate_json(release_data, release_schema, f"Release {args.version}")
+    resource_name = to_resource_name(args.version)
+    index = update_index(load_existing_index(output_dir), release_data, resource_name)
     validate_json(index, index_schema, "Changelog index")
 
-    for release_data in releases:
-        write_release_file(release_data, output_dir)
+    write_release_file(release_data, output_dir)
     write_index_file(index, output_dir)
 
-    print(f"Generated {len(releases)} release files and updated changelog_index.json")
+    print(f"Generated {resource_name}.json and updated changelog_index.json")
 
 if __name__ == "__main__":
     main()
