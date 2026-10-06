@@ -401,6 +401,7 @@
     <string name="archive_folder_label">Archive folder</string>
     <string name="spam_folder_label">Spam folder</string>
 
+    <string name="account_setup_visibility_and_syncing">Visibility &amp; syncing</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">Show only subscribed folders</string>
     <string name="account_setup_auto_select_folder">Auto-select folder</string>
 

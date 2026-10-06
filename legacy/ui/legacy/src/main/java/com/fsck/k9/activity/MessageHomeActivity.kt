@@ -713,7 +713,6 @@ open class MessageHomeActivity :
             openAddAccount = { launchAddAccountScreen() },
             openFolder = { accountId, folderId -> openFolder(accountId, folderId) },
             openUnifiedFolder = { openUnifiedFolders() },
-            openManageFolders = { launchManageFoldersScreen() },
             openSettings = { SettingsActivity.launch(this) },
             createDrawerListener = { createDrawerListener() },
         )
@@ -772,15 +771,6 @@ open class MessageHomeActivity :
             false,
             false,
         )
-    }
-
-    private fun launchManageFoldersScreen() {
-        if (account == null) {
-            Log.e("Tried to open \"Manage folders\", but no account selected!")
-            return
-        }
-
-        ManageFoldersActivity.launch(this, account!!)
     }
 
     private fun launchAddAccountScreen() {
