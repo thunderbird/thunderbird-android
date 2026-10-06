@@ -379,10 +379,10 @@
     <string name="account_settings_message_age_label">Sincronizza messaggi da</string>
     <string name="account_settings_message_age_any">qualsiasi data (senza limite)</string>
     <string name="account_settings_message_age_0">oggi</string>
-    <string name="account_settings_message_age_1">ultimi 2 giorni</string>
-    <string name="account_settings_message_age_2">ultimi 3 giorni</string>
-    <string name="account_settings_message_age_7">ultima settimana</string>
-    <string name="account_settings_message_age_14">ultime 2 settimane</string>
+    <string name="account_settings_message_age_1">gli ultimi 2 giorni</string>
+    <string name="account_settings_message_age_2">gli ultimi 3 giorni</string>
+    <string name="account_settings_message_age_7">l\'ultima settimana</string>
+    <string name="account_settings_message_age_14">le ultime 2 settimane</string>
     <string name="account_settings_message_age_21">ultime 3 settimane</string>
     <string name="account_settings_message_age_1_month">ultimo mese</string>
     <string name="account_settings_message_age_2_months">ultimi 2 mesi</string>
