@@ -62,4 +62,17 @@
     <string name="account_settings_message_age_label">Sincronizza messaggi da</string>
     <string name="account_settings_message_age_any">qualsiasi data (senza limite)</string>
     <string name="account_settings_message_age_0">oggi</string>
+    <string name="account_settings_options_mail_check_frequency_never">Mai</string>
+    <string name="account_settings_options_mail_check_frequency_15min">Ogni 15 minuti</string>
+    <string name="account_settings_options_mail_check_frequency_30min">Ogni 30 minuti</string>
+    <string name="account_settings_options_mail_check_frequency_1hour">Ogni ora</string>
+    <string name="account_settings_options_mail_check_frequency_2hour">Ogni 2 ore</string>
+    <string name="account_settings_options_mail_check_frequency_3hour">Ogni 3 ore</string>
+    <string name="account_settings_options_mail_check_frequency_6hour">Ogni 6 ore</string>
+    <string name="account_settings_options_mail_check_frequency_12hour">Ogni 12 ore</string>
+    <string name="account_settings_options_mail_check_frequency_24hour">Ogni 24 ore</string>
+    <string name="account_settings_message_age_1">gli ultimi 2 giorni</string>
+    <string name="account_settings_message_age_2">gli ultimi 3 giorni</string>
+    <string name="account_settings_message_age_7">l\'ultima settimana</string>
+    <string name="account_settings_message_age_14">le ultime 2 settimane</string>
 </resources>
