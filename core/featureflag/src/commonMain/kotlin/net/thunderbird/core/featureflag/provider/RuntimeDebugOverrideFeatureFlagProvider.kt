@@ -4,11 +4,14 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import net.thunderbird.core.featureflag.FeatureFlagKey
 import net.thunderbird.core.featureflag.data.configstore.FeatureFlagConfigData
 import net.thunderbird.core.featureflag.data.configstore.FeatureFlagConfigStore
@@ -29,7 +32,10 @@ class RuntimeDebugOverrideFeatureFlagProvider(
 ) : BaseCatalogFeatureFlagProvider(
     providerName = "runtime_catalog",
     logger = logger,
+    scope = scope,
 ) {
+    private val forcedResolvedFlags = MutableStateFlow<FlagOverrides?>(null)
+
     /** The current debug overrides (flag key -> enabled), observable by the debug settings UI. */
     val data: StateFlow<FeatureFlagConfigData> = configStore
         .config
@@ -37,7 +43,7 @@ class RuntimeDebugOverrideFeatureFlagProvider(
             logger.verbose { "$logPrefix runtime override data update: $data" }
             // Keeps flag evaluation in sync with the persisted overrides, so a toggle takes effect
             // without recreating the provider.
-            resolvedFlags = data.overrides
+            forcedResolvedFlags.update { data.overrides }
         }
         .stateIn(
             scope = scope,
@@ -45,8 +51,16 @@ class RuntimeDebugOverrideFeatureFlagProvider(
             initialValue = FeatureFlagConfigData.DEFAULT,
         )
 
-    override var resolvedFlags: FlagOverrides = data.value.overrides
     val overrides: Flow<FlagOverrides> = data.map { it.overrides }
+
+    override val resolvedFlags: StateFlow<FlagOverrides> =
+        combine(overrides, forcedResolvedFlags) { overrides, forced ->
+            overrides + forced.orEmpty()
+        }.stateIn(
+            scope = scope,
+            started = SharingStarted.Eagerly,
+            initialValue = emptyMap(),
+        )
 
     override suspend fun initialize(initialContext: FeatureFlagContext) {
         super.initialize(initialContext)
@@ -84,7 +98,7 @@ class RuntimeDebugOverrideFeatureFlagProvider(
     override fun toString(): String {
         return """
             |feature-flag provider '${metadata.name}':
-            |   resolvedFlags = $resolvedFlags,
+            |   resolvedFlags = ${resolvedFlags()},
         """.trimMargin()
     }
 }

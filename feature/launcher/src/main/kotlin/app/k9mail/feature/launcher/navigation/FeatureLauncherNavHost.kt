@@ -13,6 +13,7 @@ import app.k9mail.feature.account.setup.navigation.AccountSetupRoute
 import app.k9mail.feature.launcher.FeatureLauncherExternalContract.MessageListLauncher
 import app.k9mail.feature.onboarding.main.navigation.OnboardingNavigation
 import app.k9mail.feature.onboarding.main.navigation.OnboardingRoute
+import net.thunderbird.core.featureflag.navigation.RemoteFeatureFlagNavigation
 import net.thunderbird.feature.account.settings.api.AccountSettingsNavigation
 import net.thunderbird.feature.debug.settings.navigation.SecretDebugSettingsNavigation
 import net.thunderbird.feature.debug.settings.navigation.SecretDebugSettingsRoute
@@ -37,6 +38,7 @@ fun FeatureLauncherNavHost(
     secretDebugSettingsNavigation: SecretDebugSettingsNavigation = koinInject(),
     thundermailNavigation: ThundermailNavigation = koinInject(),
     changelogNavigation: ChangelogNavigation = koinInject(),
+    remoteFeatureFlagNavigation: RemoteFeatureFlagNavigation = koinInject(),
 ) {
     val activity = LocalActivity.current as ComponentActivity
 
@@ -125,6 +127,16 @@ fun FeatureLauncherNavHost(
                     SecretDebugSettingsRoute.Tab.Notification -> onBack()
                     SecretDebugSettingsRoute.Tab.FeatureFlag -> messageListLauncher.launch(accountUuid = null)
                 }
+            },
+        )
+
+        remoteFeatureFlagNavigation.registerRoutes(
+            navGraphBuilder = this,
+            onBack = onBack,
+            onFinish = { route ->
+                navController.navigate(
+                    route = SecretDebugSettingsRoute(tab = SecretDebugSettingsRoute.Tab.FeatureFlag),
+                )
             },
         )
     }
