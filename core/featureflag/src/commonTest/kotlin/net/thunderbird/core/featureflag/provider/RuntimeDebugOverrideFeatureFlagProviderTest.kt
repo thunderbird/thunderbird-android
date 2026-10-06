@@ -3,12 +3,14 @@ package net.thunderbird.core.featureflag.provider
 import app.cash.turbine.test
 import assertk.assertThat
 import assertk.assertions.containsExactly
+import assertk.assertions.containsExactlyInAnyOrder
 import assertk.assertions.containsOnly
 import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
 import kotlin.test.Test
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,9 +26,14 @@ import net.thunderbird.core.featureflag.data.configstore.FeatureFlagConfigStore
 import net.thunderbird.core.featureflag.keys.GeneratedFeatureFlagKey.ARCHIVE_MARKS_AS_READ
 import net.thunderbird.core.featureflag.keys.GeneratedFeatureFlagKey.DISPLAY_IN_APP_NOTIFICATIONS
 import net.thunderbird.core.featureflag.keys.GeneratedFeatureFlagKey.MESSAGE_VIEW_ACTION_EXPORT_EML
+import net.thunderbird.core.featureflag.model.EmptyAppVariantOverride
+import net.thunderbird.core.featureflag.model.FeatureFlagCatalog
 import net.thunderbird.core.featureflag.model.FlagOverrides
+import net.thunderbird.core.featureflag.model.FlagRegistry
+import net.thunderbird.core.featureflag.model.FlagRegistryOverride
 import net.thunderbird.core.featureflag.provider.context.FeatureFlagContext
 import net.thunderbird.core.featureflag.provider.context.ImmutableFeatureFlagContext
+import net.thunderbird.core.featureflag.provider.evaluator.DefaultMultiFeatureFlagProviderEvaluator
 import net.thunderbird.core.logging.testing.TestLogger
 
 @OptIn(ExperimentalCoroutinesApi::class, ExperimentalUuidApi::class)
@@ -210,6 +217,60 @@ class RuntimeDebugOverrideFeatureFlagProviderTest {
         )
     }
 
+    @Test
+    fun `provide should take precedence over lower priority providers in the evaluator`() =
+        runTest(UnconfinedTestDispatcher()) {
+            // Arrange
+            val testSubject = createTestSubject(FakeFeatureFlagConfigStore())
+            val bundled = FakeResolvedCatalogFeatureFlagProvider(scope = backgroundScope).apply {
+                resolveFlags(mapOf(MESSAGE_VIEW_ACTION_EXPORT_EML.key to true, ARCHIVE_MARKS_AS_READ.key to false))
+            }
+            val evaluator = DefaultMultiFeatureFlagProviderEvaluator(
+                providers = listOf(testSubject, bundled),
+                logger = TestLogger(),
+                scope = backgroundScope,
+            )
+
+            // Act
+            testSubject.setOverride(key = MESSAGE_VIEW_ACTION_EXPORT_EML, enabled = false)
+            testSubject.setOverride(key = ARCHIVE_MARKS_AS_READ, enabled = true)
+
+            // Assert
+            assertThat(evaluator.provide(MESSAGE_VIEW_ACTION_EXPORT_EML)).isEqualTo(FeatureFlagResult.Disabled)
+            assertThat(evaluator.provide(ARCHIVE_MARKS_AS_READ)).isEqualTo(FeatureFlagResult.Enabled)
+        }
+
+    @Test
+    fun `enabledFlags should reflect the overrides over lower priority providers in the evaluator`() =
+        runTest(UnconfinedTestDispatcher()) {
+            // Arrange
+            val testSubject = createTestSubject(FakeFeatureFlagConfigStore())
+            val bundled = FakeResolvedCatalogFeatureFlagProvider(scope = backgroundScope).apply {
+                resolveFlags(
+                    mapOf(
+                        MESSAGE_VIEW_ACTION_EXPORT_EML.key to true,
+                        ARCHIVE_MARKS_AS_READ.key to false,
+                        DISPLAY_IN_APP_NOTIFICATIONS.key to true,
+                    ),
+                )
+            }
+            val evaluator = DefaultMultiFeatureFlagProviderEvaluator(
+                providers = listOf(testSubject, bundled),
+                logger = TestLogger(),
+                scope = backgroundScope,
+            )
+
+            evaluator.enabledFlags.test {
+                // Act
+                testSubject.setOverride(key = MESSAGE_VIEW_ACTION_EXPORT_EML, enabled = false)
+                testSubject.setOverride(key = ARCHIVE_MARKS_AS_READ, enabled = true)
+
+                // Assert
+                assertThat(expectMostRecentItem())
+                    .containsExactlyInAnyOrder(ARCHIVE_MARKS_AS_READ, DISPLAY_IN_APP_NOTIFICATIONS)
+            }
+        }
+
     private suspend fun TestScope.createTestSubject(
         configStore: FeatureFlagConfigStore,
     ): RuntimeDebugOverrideFeatureFlagProvider = RuntimeDebugOverrideFeatureFlagProvider(
@@ -249,4 +310,25 @@ private class FakeFeatureFlagConfigStore(
     override suspend fun clear() {
         state.value = FeatureFlagConfigData.DEFAULT
     }
+}
+
+/**
+ * A lower priority [BaseCatalogFeatureFlagProvider] whose resolved flags are set directly by the
+ * test, standing in for the bundled catalog in the evaluation chain.
+ */
+private class FakeResolvedCatalogFeatureFlagProvider(
+    scope: CoroutineScope,
+) : BaseCatalogFeatureFlagProvider(providerName = "fake_bundled_catalog", logger = TestLogger(), scope = scope) {
+    fun resolveFlags(flags: FlagOverrides) {
+        resolve(
+            context = null,
+            catalog = FeatureFlagCatalog(
+                version = "test-version",
+                flags = flags.map { (key, default) -> FlagRegistry(key = key, default = default) },
+                overrides = FlagRegistryOverride(k9 = EmptyAppVariantOverride, thunderbird = EmptyAppVariantOverride),
+            ),
+        )
+    }
+
+    override fun toString(): String = "fake resolved feature-flag provider '${metadata.name}'"
 }

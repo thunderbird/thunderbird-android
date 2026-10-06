@@ -1,18 +1,21 @@
 package net.thunderbird.core.featureflag.provider.evaluator
 
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import net.thunderbird.core.featureflag.FeatureFlagKey
 import net.thunderbird.core.featureflag.FeatureFlagResult
+import net.thunderbird.core.featureflag.keys.GeneratedFeatureFlagKey
 import net.thunderbird.core.featureflag.provider.BaseCatalogFeatureFlagProvider
 import net.thunderbird.core.featureflag.provider.BundledCatalogFeatureFlagProvider
 import net.thunderbird.core.featureflag.provider.CatalogFeatureFlagProvider
-import net.thunderbird.core.featureflag.provider.CatalogProviderMetadata
-import net.thunderbird.core.featureflag.provider.ProviderMetadata
 import net.thunderbird.core.featureflag.provider.context.FeatureFlagContext
 import net.thunderbird.core.logging.Logger
 
@@ -20,6 +23,7 @@ import net.thunderbird.core.logging.Logger
  * Feature flag provider that coordinates multiple catalog providers and supports initialization with context.
  */
 interface MultiFeatureFlagProviderEvaluator : CatalogFeatureFlagProvider {
+    val enabledFlags: StateFlow<List<FeatureFlagKey>>
 
     /**
      * Initializes the feature flag provider with the given context and loads the catalog.
@@ -32,14 +36,13 @@ interface MultiFeatureFlagProviderEvaluator : CatalogFeatureFlagProvider {
 internal class DefaultMultiFeatureFlagProviderEvaluator(
     private val providers: List<CatalogFeatureFlagProvider>,
     private val logger: Logger,
-    mainDispatcher: CoroutineDispatcher = Dispatchers.Main,
+    scope: CoroutineScope = CoroutineScope(Dispatchers.Main),
 ) : BaseCatalogFeatureFlagProvider(
     providerName = "multi_provider",
     logger = logger,
+    scope = scope,
 ),
     MultiFeatureFlagProviderEvaluator {
-    private val scope: CoroutineScope = CoroutineScope(mainDispatcher)
-    override val metadata: ProviderMetadata = CatalogProviderMetadata(name = "multi_provider")
 
     init {
         scope.launch {
@@ -62,6 +65,27 @@ internal class DefaultMultiFeatureFlagProviderEvaluator(
                 }
         }
     }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    override val enabledFlags: StateFlow<List<FeatureFlagKey>> = combine(
+        providers.filterIsInstance<BaseCatalogFeatureFlagProvider>().map { it.resolvedFlags },
+    ) { flags ->
+        // Providers are ordered from highest to lowest priority, so merge them in reverse to let
+        // higher priority values (including `false`) win, matching the first-match order of [provide].
+        flags
+            .reversed()
+            .fold(emptyMap<String, Boolean>()) { merged, providerFlags -> merged + providerFlags }
+            .filterValues { it }
+    }
+        .onEach { logger.verbose { "[feature-flag][1] provider: $it" } }
+        .map { enabledFlagOverrides ->
+            enabledFlagOverrides.keys.mapNotNull { key -> GeneratedFeatureFlagKey.entries.find { it.key == key } }
+        }
+        .stateIn(
+            scope = scope,
+            started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 10000L),
+            initialValue = emptyList(),
+        )
 
     override fun provide(key: FeatureFlagKey): FeatureFlagResult {
         for (provider in providers) {

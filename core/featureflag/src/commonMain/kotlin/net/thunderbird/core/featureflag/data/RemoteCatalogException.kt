@@ -8,7 +8,6 @@ class RemoteCatalogException(
     override val cause: Throwable? = null,
 ) : IOException(message, cause) {
     enum class Code {
-        RemoteCatalogUserDisabled,
         CantWriteCacheFile,
         CantReadCacheFile,
     }
