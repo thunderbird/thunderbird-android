@@ -122,8 +122,7 @@ internal class AttachmentResolver(
     ): File? {
         val partBody = body ?: return null.also {
             logger.warn {
-                "$LOG_ID attachment part has no body (content not downloaded yet). " +
-                    "internalUri will be null. part = $this"
+                "$LOG_ID attachment part has no body (content not downloaded yet). internalUri will be null."
             }
         }
         val localPart = this as? LocalPart
