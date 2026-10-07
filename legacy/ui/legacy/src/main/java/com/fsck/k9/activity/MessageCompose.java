@@ -988,7 +988,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
 
     private void onDiscard() {
         if (draftMessageId != null) {
-            messagingController.deleteDraft(account, draftMessageId);
+            messagingController.deleteDraftBlocking(account, draftMessageId);
         }
         internalMessageHandler.sendEmptyMessage(MSG_DISCARDED_DRAFT);
         finishWithoutChanges();
@@ -1116,7 +1116,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
                 if (previousDraftId != null) {
                     Log.v("Account switch, deleting draft from previous account: %d", previousDraftId);
 
-                    messagingController.deleteDraft(previousAccount, previousDraftId);
+                    messagingController.deleteDraftBlocking(previousAccount, previousDraftId);
                 }
             } else {
                 this.account = account;
@@ -1767,10 +1767,10 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
                 Log.e(e, "Failed to mark contact as contacted.");
             }
 
-            messagingController.sendMessage(account, message, plaintextSubject, null);
+            messagingController.sendMessageBlocking(account, message, plaintextSubject, null);
             if (draftId != null) {
                 // TODO set draft id to invalid in MessageCompose!
-                messagingController.deleteDraftSkippingTrashFolder(account, draftId);
+                messagingController.deleteDraftSkippingTrashFolderBlocking(account, draftId);
             }
 
             return null;
@@ -1782,13 +1782,14 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
         private void addFlagToReferencedMessage() {
             if (messageReference != null && flag != null) {
                 AccountId accountId = messageReference.getAccountId();
-                LegacyAccountDto account = preferences.getById(accountId);
+                LegacyAccountDto account = Objects.requireNonNull(
+                    preferences.getById(accountId), String.format("Could not find account with id '%s'", accountId));
                 long folderId = messageReference.getFolderId();
                 String sourceMessageUid = messageReference.getUid();
 
                 Log.d("Setting referenced message (%d, %s) flag to %s", folderId, sourceMessageUid, flag);
 
-                messagingController.setFlag(account, folderId, sourceMessageUid, flag, true);
+                messagingController.setFlagBlocking(account, folderId, sourceMessageUid, flag, true);
             }
         }
     }

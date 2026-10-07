@@ -7,10 +7,10 @@ import app.k9mail.legacy.message.controller.MessageReference
 import com.fsck.k9.Preferences
 import com.fsck.k9.controller.MessageReferenceHelper
 import com.fsck.k9.controller.MessagingController
-import kotlin.getValue
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.common.mail.Flag
 import net.thunderbird.core.logging.Logger
@@ -43,7 +43,7 @@ class NotificationActionService : Service() {
         }
     }
 
-    private fun handleCommand(intent: Intent) {
+    private suspend fun handleCommand(intent: Intent) {
         val rawId = intent.getStringExtra(EXTRA_ACCOUNT_UUID)
         val accountId = rawId?.let { rawId ->
             try {
@@ -89,11 +89,14 @@ class NotificationActionService : Service() {
         for (messageReference in messageReferences) {
             val folderId = messageReference.folderId
             val uid = messageReference.uid
-            messagingController.setFlag(account, folderId, uid, Flag.SEEN, true)
+            // runBlocking preserves the synchronous behaviour of the former Java MessagingController.
+            runBlocking {
+                messagingController.setFlag(account, folderId, uid, Flag.SEEN, true)
+            }
         }
     }
 
-    private fun deleteMessages(intent: Intent) {
+    private suspend fun deleteMessages(intent: Intent) {
         logger.info { "NotificationActionService deleting messages" }
 
         val messageReferenceStrings = intent.getStringArrayListExtra(EXTRA_MESSAGE_REFERENCES)
@@ -102,7 +105,7 @@ class NotificationActionService : Service() {
         messagingController.deleteMessages(messageReferences)
     }
 
-    private fun archiveMessages(intent: Intent) {
+    private suspend fun archiveMessages(intent: Intent) {
         logger.info { "NotificationActionService archiving messages" }
 
         val messageReferenceStrings = intent.getStringArrayListExtra(EXTRA_MESSAGE_REFERENCES)
@@ -111,7 +114,7 @@ class NotificationActionService : Service() {
         messagingController.archiveMessages(messageReferences)
     }
 
-    private fun markMessageAsSpam(intent: Intent, account: LegacyAccountDto) {
+    private suspend fun markMessageAsSpam(intent: Intent, account: LegacyAccountDto) {
         logger.info { "NotificationActionService moving messages to spam for account: ${account.id}" }
 
         val messageReferenceString = intent.getStringExtra(EXTRA_MESSAGE_REFERENCE)
@@ -143,7 +146,10 @@ class NotificationActionService : Service() {
         for (messageReference in messageReferences) {
             val folderId = messageReference.folderId
             val uid = messageReference.uid
-            messagingController.setFlag(account, folderId, uid, Flag.FLAGGED, true)
+            // runBlocking preserves the synchronous behaviour of the former Java MessagingController.
+            runBlocking {
+                messagingController.setFlag(account, folderId, uid, Flag.FLAGGED, true)
+            }
         }
     }
 

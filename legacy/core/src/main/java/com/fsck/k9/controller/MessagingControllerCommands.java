@@ -63,7 +63,7 @@ public class MessagingControllerCommands {
 
         @Override
         public void execute(MessagingController controller, LegacyAccountDto account) throws MessagingException {
-            controller.processPendingMoveOrCopy(this, account);
+            controller.processPendingMoveOrCopyBlocking(this, account);
         }
     }
 
@@ -91,7 +91,7 @@ public class MessagingControllerCommands {
 
         @Override
         public void execute(MessagingController controller, LegacyAccountDto account) throws MessagingException {
-            controller.processPendingMoveAndRead(this, account);
+            controller.processPendingMoveAndReadBlocking(this, account);
         }
     }
 
@@ -107,7 +107,7 @@ public class MessagingControllerCommands {
 
         @Override
         public void execute(MessagingController controller, LegacyAccountDto account) throws MessagingException {
-            controller.processPendingEmptySpam(account);
+            controller.processPendingEmptySpamBlocking(account);
         }
     }
 
@@ -123,7 +123,7 @@ public class MessagingControllerCommands {
 
         @Override
         public void execute(MessagingController controller, LegacyAccountDto account) throws MessagingException {
-            controller.processPendingEmptyTrash(account);
+            controller.processPendingEmptyTrashBlocking(account);
         }
     }
 
@@ -154,7 +154,7 @@ public class MessagingControllerCommands {
 
         @Override
         public void execute(MessagingController controller, LegacyAccountDto account) throws MessagingException {
-            controller.processPendingSetFlag(this, account);
+            controller.processPendingSetFlagBlocking(this, account);
         }
     }
 
@@ -180,7 +180,7 @@ public class MessagingControllerCommands {
 
         @Override
         public void execute(MessagingController controller, LegacyAccountDto account) throws MessagingException {
-            controller.processPendingAppend(this, account);
+            controller.processPendingAppendBlocking(this, account);
         }
     }
 
@@ -207,7 +207,7 @@ public class MessagingControllerCommands {
 
         @Override
         public void execute(MessagingController controller, LegacyAccountDto account) throws MessagingException {
-            controller.processPendingReplace(this, account);
+            controller.processPendingReplaceBlocking(this, account);
         }
     }
 
@@ -230,7 +230,7 @@ public class MessagingControllerCommands {
 
         @Override
         public void execute(MessagingController controller, LegacyAccountDto account) throws MessagingException {
-            controller.processPendingMarkAllAsRead(this, account);
+            controller.processPendingMarkAllAsReadBlocking(this, account);
         }
     }
 
@@ -256,7 +256,7 @@ public class MessagingControllerCommands {
 
         @Override
         public void execute(MessagingController controller, LegacyAccountDto account) throws MessagingException {
-            controller.processPendingDelete(this, account);
+            controller.processPendingDeleteBlocking(this, account);
         }
     }
 
@@ -279,7 +279,7 @@ public class MessagingControllerCommands {
 
         @Override
         public void execute(MessagingController controller, LegacyAccountDto account) throws MessagingException {
-            controller.processPendingExpunge(this, account);
+            controller.processPendingExpungeBlocking(this, account);
         }
     }
 }

@@ -70,10 +70,6 @@ import androidx.lifecycle.setViewTreeLifecycleOwner
 import androidx.savedstate.SavedStateRegistryOwner
 import androidx.savedstate.setViewTreeSavedStateRegistryOwner
 import app.k9mail.core.android.common.contact.ContactRepository
-import net.thunderbird.components.ui.bolt.atom.DividerHorizontal
-import net.thunderbird.components.ui.bolt.atom.Surface
-import net.thunderbird.components.ui.bolt.atom.text.TextBodyLarge
-import net.thunderbird.components.ui.bolt.atom.text.TextLabelMedium
 import app.k9mail.feature.launcher.FeatureLauncherActivity
 import app.k9mail.feature.launcher.FeatureLauncherTarget
 import app.k9mail.legacy.message.controller.MessageReference
@@ -125,7 +121,17 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import net.jcip.annotations.GuardedBy
+import net.thunderbird.components.core.outcome.Outcome
+import net.thunderbird.components.ui.bolt.atom.ClickableSurface
+import net.thunderbird.components.ui.bolt.atom.DividerHorizontal
+import net.thunderbird.components.ui.bolt.atom.Surface
+import net.thunderbird.components.ui.bolt.atom.icon.Icon
+import net.thunderbird.components.ui.bolt.atom.icon.Icons
+import net.thunderbird.components.ui.bolt.atom.text.TextBodyLarge
+import net.thunderbird.components.ui.bolt.atom.text.TextLabelMedium
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.core.android.account.Expunge
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.LegacyAccountDto
@@ -134,17 +140,11 @@ import net.thunderbird.core.android.network.ConnectivityManager
 import net.thunderbird.core.common.exception.MessagingException
 import net.thunderbird.core.common.mail.Flag
 import net.thunderbird.core.logging.Logger
-import net.thunderbird.components.core.outcome.Outcome
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.interaction.InteractionSettings
-import net.thunderbird.components.ui.bolt.atom.ClickableSurface
-import net.thunderbird.components.ui.bolt.atom.icon.Icon
-import net.thunderbird.components.ui.bolt.atom.icon.Icons
-import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.core.ui.contract.mvi.observeWithoutEffect
 import net.thunderbird.core.ui.theme.api.FeatureThemeProvider
 import net.thunderbird.feature.account.AccountId
-import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.account.UnifiedAccountId
 import net.thunderbird.feature.account.avatar.AvatarMonogramCreator
 import net.thunderbird.feature.changelog.internal.RecentChangesViewModel
@@ -233,14 +233,18 @@ class MessageListFragment :
 
     private val chooseFolderForMoveLauncher: ActivityResultLauncher<ChooseFolderResultContract.Input> =
         registerForActivityResult(ChooseFolderResultContract(ChooseFolderActivity.Action.MOVE)) { result ->
-            handleChooseFolderResult(result) { folderId, messages ->
-                move(messages, folderId)
+            lifecycleScope.launch {
+                handleChooseFolderResult(result) { folderId, messages ->
+                    move(messages, folderId)
+                }
             }
         }
     private val chooseFolderForCopyLauncher: ActivityResultLauncher<ChooseFolderResultContract.Input> =
         registerForActivityResult(ChooseFolderResultContract(ChooseFolderActivity.Action.COPY)) { result ->
-            handleChooseFolderResult(result) { folderId, messages ->
-                copy(messages, folderId)
+            lifecycleScope.launch {
+                handleChooseFolderResult(result) { folderId, messages ->
+                    copy(messages, folderId)
+                }
             }
         }
 
@@ -902,7 +906,7 @@ class MessageListFragment :
         changeSort(nextSortType)
     }
 
-    private fun onDelete(messages: List<MessageReference>) {
+    private suspend fun onDelete(messages: List<MessageReference>) {
         if (interactionSettings.isConfirmDelete) {
             // remember the message selection for #onCreateDialog(int)
             activeMessages = messages
@@ -912,7 +916,7 @@ class MessageListFragment :
         }
     }
 
-    private fun onDeleteConfirmed(messages: List<MessageReference>) {
+    private suspend fun onDeleteConfirmed(messages: List<MessageReference>) {
         if (showingThreadedList) {
             messagingController.deleteThreads(messages)
         } else {
@@ -1453,9 +1457,9 @@ class MessageListFragment :
         }
     }
 
-    private fun handleChooseFolderResult(
+    private suspend fun handleChooseFolderResult(
         result: ChooseFolderResultContract.Result?,
-        action: (Long, List<MessageReference>) -> Unit,
+        action: suspend (Long, List<MessageReference>) -> Unit,
     ) {
         if (result == null) return
 
@@ -1483,11 +1487,11 @@ class MessageListFragment :
         )
     }
 
-    private fun onArchive(message: MessageReference) {
+    private suspend fun onArchive(message: MessageReference) {
         onArchive(listOf(message))
     }
 
-    private fun onArchive(messages: List<MessageReference>) {
+    private suspend fun onArchive(messages: List<MessageReference>) {
         if (!checkCopyOrMovePossible(messages, FolderOperation.MOVE)) return
 
         if (showingThreadedList) {
@@ -1503,7 +1507,7 @@ class MessageListFragment :
         return messages.groupBy { accountManager.getById(it.accountId)!! }
     }
 
-    private fun onSpam(messages: List<MessageReference>) {
+    private suspend fun onSpam(messages: List<MessageReference>) {
         if (interactionSettings.isConfirmSpam) {
             // remember the message selection for #onCreateDialog(int)
             activeMessages = messages
@@ -1513,7 +1517,7 @@ class MessageListFragment :
         }
     }
 
-    private fun onSpamConfirmed(messages: List<MessageReference>) {
+    private suspend fun onSpamConfirmed(messages: List<MessageReference>) {
         for ((account, messagesInAccount) in groupMessagesByAccount(messages)) {
             account.spamFolderId?.let { spamFolderId ->
                 move(messagesInAccount, spamFolderId)
@@ -1552,15 +1556,19 @@ class MessageListFragment :
         return true
     }
 
-    private fun copy(messages: List<MessageReference>, folderId: Long) {
+    private suspend fun copy(messages: List<MessageReference>, folderId: Long) {
         copyOrMove(messages, folderId, FolderOperation.COPY)
     }
 
-    private fun move(messages: List<MessageReference>, folderId: Long) {
+    private suspend fun move(messages: List<MessageReference>, folderId: Long) {
         copyOrMove(messages, folderId, FolderOperation.MOVE)
     }
 
-    private fun copyOrMove(messages: List<MessageReference>, destinationFolderId: Long, operation: FolderOperation) {
+    private suspend fun copyOrMove(
+        messages: List<MessageReference>,
+        destinationFolderId: Long,
+        operation: FolderOperation,
+    ) {
         if (!checkCopyOrMovePossible(messages, operation)) return
 
         val folderMap = messages.asSequence()
@@ -1624,12 +1632,14 @@ class MessageListFragment :
     override fun doPositiveClick(dialogId: Int) {
         when (dialogId) {
             R.id.dialog_confirm_spam -> {
-                onSpamConfirmed(activeMessages!!)
+                // runBlocking preserves the synchronous behaviour of the former Java MessagingController.
+                runBlocking { onSpamConfirmed(activeMessages!!) }
                 activeMessages = null
             }
 
             R.id.dialog_confirm_delete -> {
-                onDeleteConfirmed(activeMessages!!)
+                // runBlocking preserves the synchronous behaviour of the former Java MessagingController.
+                runBlocking { onDeleteConfirmed(activeMessages!!) }
                 activeMessage = null
                 // TODO(#10775): trigger event to clean the active message from the state.
             }
@@ -1725,7 +1735,7 @@ class MessageListFragment :
             .filter { it.selected }
             .mapNotNull { MessageReference.parse(it.messageReference) }
 
-    override fun onDelete() {
+    override suspend fun onDelete() {
         focusedMessageReference?.let { message ->
             onDelete(listOf(message))
         }
@@ -1755,7 +1765,7 @@ class MessageListFragment :
         }
     }
 
-    override fun onArchive() {
+    override suspend fun onArchive() {
         focusedMessageReference?.let { message ->
             onArchive(message)
         }
@@ -1924,7 +1934,9 @@ class MessageListFragment :
 
     private fun markAllAsRead() {
         if (isMarkAllAsReadSupported) {
-            account?.id?.let { messagingController.markAllMessagesRead(it, currentFolder!!.databaseId) }
+            lifecycleScope.launch {
+                account?.id?.let { messagingController.markAllMessagesRead(it, currentFolder!!.databaseId) }
+            }
         }
     }
 
@@ -2248,7 +2260,8 @@ class MessageListFragment :
 
             val endSelectionMode = when (item.itemId) {
                 R.id.delete -> {
-                    onDelete(selectedMessages)
+                    // runBlocking preserves the synchronous behaviour of the former Java MessagingController.
+                    runBlocking { onDelete(selectedMessages) }
                     true
                 }
 
@@ -2278,13 +2291,15 @@ class MessageListFragment :
                 }
 
                 R.id.archive -> {
-                    onArchive(selectedMessages)
+                    // runBlocking preserves the synchronous behaviour of the former Java MessagingController.
+                    runBlocking { onArchive(selectedMessages) }
                     // TODO: Only finish action mode if all messages have been moved.
                     true
                 }
 
                 R.id.spam -> {
-                    onSpam(selectedMessages)
+                    // runBlocking preserves the synchronous behaviour of the former Java MessagingController.
+                    runBlocking { onSpam(selectedMessages) }
                     // TODO: Only finish action mode if all messages have been moved.
                     true
                 }

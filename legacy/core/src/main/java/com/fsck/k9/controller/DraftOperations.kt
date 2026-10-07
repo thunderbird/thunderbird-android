@@ -24,7 +24,7 @@ internal class DraftOperations(
     private val localMessageUidPrefixProvider: LocalMessageUidPrefixProvider,
 ) {
 
-    fun saveDraft(
+    suspend fun saveDraft(
         account: LegacyAccountDto,
         message: Message,
         existingDraftId: Long?,
@@ -46,7 +46,7 @@ internal class DraftOperations(
         }
     }
 
-    private fun saveAndUploadDraft(
+    private suspend fun saveAndUploadDraft(
         account: LegacyAccountDto,
         message: Message,
         folderId: Long,
@@ -97,7 +97,7 @@ internal class DraftOperations(
         return messageStore.saveLocalMessage(folderId, messageData, existingDraftId)
     }
 
-    fun processPendingReplace(command: PendingReplace, account: LegacyAccountDto) {
+    suspend fun processPendingReplace(command: PendingReplace, account: LegacyAccountDto) {
         val localStore = messagingController.getLocalStoreOrThrow(account)
         val localFolder = localStore.getFolder(command.folderId)
         localFolder.open()
@@ -152,7 +152,7 @@ internal class DraftOperations(
         }
     }
 
-    private fun deleteMessage(backend: Backend, localFolder: LocalFolder, messageId: Long) {
+    private suspend fun deleteMessage(backend: Backend, localFolder: LocalFolder, messageId: Long) {
         val messageServerId = localFolder.getMessageUidById(messageId) ?: run {
             Log.i("Couldn't find local copy of message [ID: %d] to be deleted. Skipping delete.", messageId)
             return

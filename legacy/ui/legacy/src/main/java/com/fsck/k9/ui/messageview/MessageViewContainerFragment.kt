@@ -200,7 +200,7 @@ class MessageViewContainerFragment : Fragment() {
         messageViewFragment.onMove()
     }
 
-    fun onArchive() {
+    suspend fun onArchive() {
         messageViewFragment.onArchive()
     }
 
@@ -224,7 +224,7 @@ class MessageViewContainerFragment : Fragment() {
         messageViewFragment.onReply()
     }
 
-    fun onDelete() {
+    suspend fun onDelete() {
         messageViewFragment.onDelete()
     }
 
