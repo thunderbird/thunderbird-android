@@ -29,7 +29,7 @@ public class SaveMessageTask extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected Void doInBackground(Void... params) {
-        Long messageId = messagingController.saveDraft(account, message, existingDraftId, plaintextSubject);
+        Long messageId = messagingController.saveDraftBlocking(account, message, existingDraftId, plaintextSubject);
 
         android.os.Message msg = android.os.Message.obtain(handler, MessageCompose.MSG_SAVED_DRAFT, messageId);
         handler.sendMessage(msg);

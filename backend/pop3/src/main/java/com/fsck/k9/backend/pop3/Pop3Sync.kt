@@ -14,8 +14,14 @@ import com.fsck.k9.mail.store.pop3.Pop3Store
 import java.lang.Exception
 import java.util.ArrayList
 import java.util.Date
-import java.util.HashMap
 import java.util.concurrent.atomic.AtomicInteger
+import kotlin.collections.HashMap
+import kotlin.collections.Map
+import kotlin.collections.MutableList
+import kotlin.collections.MutableMap
+import kotlin.collections.Set
+import kotlin.collections.mutableListOf
+import kotlin.collections.set
 import kotlinx.coroutines.runBlocking
 import net.thunderbird.core.common.exception.MessagingException
 import net.thunderbird.core.common.exception.rootCauseMessage
@@ -31,7 +37,7 @@ internal class Pop3Sync(
     private val remoteStore: Pop3Store,
 ) {
 
-    fun sync(folder: String, syncConfig: SyncConfig, listener: SyncListener) {
+    suspend fun sync(folder: String, syncConfig: SyncConfig, listener: SyncListener) {
         synchronizeMailboxSynchronous(folder, syncConfig, listener)
     }
 
@@ -42,7 +48,7 @@ internal class Pop3Sync(
         "CyclomaticComplexMethod",
         "NestedBlockDepth",
     )
-    fun synchronizeMailboxSynchronous(folder: String, syncConfig: SyncConfig, listener: SyncListener) {
+    suspend fun synchronizeMailboxSynchronous(folder: String, syncConfig: SyncConfig, listener: SyncListener) {
         var remoteFolder: Pop3Folder? = null
 
         Log.i(TAG, "Synchronizing folder %s:%s", accountName, folder)
@@ -263,7 +269,7 @@ internal class Pop3Sync(
 
     @Suppress("TooGenericExceptionCaught", "LongMethod")
     @Throws(MessagingException::class)
-    private fun downloadMessages(
+    private suspend fun downloadMessages(
         syncConfig: SyncConfig,
         remoteFolder: Pop3Folder,
         backendFolder: BackendFolder,
@@ -433,13 +439,13 @@ internal class Pop3Sync(
                     } else {
                         backendFolder.saveMessage(message, MessageDownloadState.PARTIAL)
                     }
+                    val isOldMessage = isOldMessage(backendFolder, message)
+                    listener.syncNewMessage(
+                        folderServerId = folder,
+                        messageServerId = messageServerId,
+                        isOldMessage = isOldMessage,
+                    )
                 }
-                val isOldMessage = isOldMessage(backendFolder, message)
-                listener.syncNewMessage(
-                    folderServerId = folder,
-                    messageServerId = messageServerId,
-                    isOldMessage = isOldMessage,
-                )
             }
             return
         }
@@ -505,7 +511,10 @@ internal class Pop3Sync(
 
                         // TODO: This might be the source of poll count errors in the UI.
                         // Is todo always the same as ofTotal
-                        listener.syncProgress(folderServerId = folder, completed = progress.get(), total = todo)
+                        // runBlocking preserves the synchronous behaviour of the former Java MessagingController.
+                        runBlocking {
+                            listener.syncProgress(folderServerId = folder, completed = progress.get(), total = todo)
+                        }
                         return@MessageRetrievalListener
                     }
 
@@ -569,14 +578,17 @@ internal class Pop3Sync(
                     )
 
                     // Update the listener with what we've found
-                    listener.syncProgress(folderServerId = folder, completed = progress.get(), total = todo)
+                    // runBlocking preserves the synchronous behaviour of the former Java MessagingController.
+                    runBlocking {
+                        listener.syncProgress(folderServerId = folder, completed = progress.get(), total = todo)
 
-                    val isOldMessage = isOldMessage(backendFolder, message)
-                    listener.syncNewMessage(
-                        folderServerId = folder,
-                        messageServerId = messageServerId,
-                        isOldMessage = isOldMessage,
-                    )
+                        val isOldMessage = isOldMessage(backendFolder, message)
+                        listener.syncNewMessage(
+                            folderServerId = folder,
+                            messageServerId = messageServerId,
+                            isOldMessage = isOldMessage,
+                        )
+                    }
                 } catch (e: Exception) {
                     Log.e(TAG, e, "SYNC: fetch small messages")
                 }
@@ -593,7 +605,7 @@ internal class Pop3Sync(
 
     @Suppress("LongParameterList")
     @Throws(MessagingException::class)
-    private fun downloadLargeMessages(
+    private suspend fun downloadLargeMessages(
         syncConfig: SyncConfig,
         remoteFolder: Pop3Folder,
         backendFolder: BackendFolder,

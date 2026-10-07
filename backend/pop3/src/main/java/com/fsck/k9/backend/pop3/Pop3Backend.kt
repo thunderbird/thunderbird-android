@@ -40,7 +40,7 @@ class Pop3Backend(
         return null
     }
 
-    override fun sync(folderServerId: String, syncConfig: SyncConfig, listener: SyncListener) {
+    override suspend fun sync(folderServerId: String, syncConfig: SyncConfig, listener: SyncListener) {
         pop3Sync.sync(folderServerId, syncConfig, listener)
     }
 
