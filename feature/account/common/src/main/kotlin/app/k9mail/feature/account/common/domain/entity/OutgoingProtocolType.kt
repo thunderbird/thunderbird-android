@@ -13,6 +13,10 @@ enum class OutgoingProtocolType(
         val DEFAULT = SMTP
 
         fun all() = entries.toImmutableList()
+
+        fun fromNameOrNull(name: String): OutgoingProtocolType? {
+            return entries.find { it.defaultName == name }
+        }
     }
 }
 

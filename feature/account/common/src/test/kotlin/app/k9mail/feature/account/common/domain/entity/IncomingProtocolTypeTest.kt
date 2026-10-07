@@ -2,6 +2,7 @@ package app.k9mail.feature.account.common.domain.entity
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import assertk.assertions.isNull
 import kotlin.test.assertFailsWith
 import org.junit.Test
 
@@ -26,6 +27,20 @@ class IncomingProtocolTypeTest {
     @Test
     fun `fromName should throw IllegalArgumentException`() {
         assertFailsWith<IllegalArgumentException> { IncomingProtocolType.fromName("unknown") }
+    }
+
+    @Test
+    fun `fromNameOrNull should return right protocol type`() {
+        val protocolType = IncomingProtocolType.fromNameOrNull("pop3")
+
+        assertThat(protocolType).isEqualTo(IncomingProtocolType.POP3)
+    }
+
+    @Test
+    fun `fromNameOrNull should return null for unknown protocol name`() {
+        val protocolType = IncomingProtocolType.fromNameOrNull("unknown")
+
+        assertThat(protocolType).isNull()
     }
 
     @Test
