@@ -2,6 +2,7 @@ package app.k9mail.feature.account.common.domain.entity
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import assertk.assertions.isNull
 import org.junit.Test
 
 class OutgoingProtocolTypeTest {
@@ -13,6 +14,20 @@ class OutgoingProtocolTypeTest {
         assertThat(protocolTypes).isEqualTo(
             OutgoingProtocolType.entries,
         )
+    }
+
+    @Test
+    fun `fromNameOrNull should return right protocol type`() {
+        val protocolType = OutgoingProtocolType.fromNameOrNull("smtp")
+
+        assertThat(protocolType).isEqualTo(OutgoingProtocolType.SMTP)
+    }
+
+    @Test
+    fun `fromNameOrNull should return null for unknown protocol name`() {
+        val protocolType = OutgoingProtocolType.fromNameOrNull("unknown")
+
+        assertThat(protocolType).isNull()
     }
 
     @Test
