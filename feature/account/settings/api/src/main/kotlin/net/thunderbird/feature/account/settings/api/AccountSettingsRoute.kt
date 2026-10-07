@@ -28,6 +28,17 @@ sealed interface AccountSettingsRoute : Route {
     }
 
     @Serializable
+    data class SyncAndNotificationSettings(val accountId: String) : AccountSettingsRoute {
+        override val basePath: String = BASE_PATH
+
+        override fun route(): String = "$basePath/$accountId"
+
+        companion object {
+            const val BASE_PATH = "$ACCOUNT_SETTINGS_BASE_PATH/sync_and_notifications"
+        }
+    }
+
+    @Serializable
     data class FetchingMailSettings(val accountId: String) : AccountSettingsRoute {
         override val basePath: String = BASE_PATH
 

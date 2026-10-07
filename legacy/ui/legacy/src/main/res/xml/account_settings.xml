@@ -22,6 +22,12 @@
 
     <Preference
         android:icon="@drawable/ic_sync"
+        android:key="sync_and_notifications"
+        android:title="@string/account_settings_sync_and_notifications"
+        />
+
+    <Preference
+        android:icon="@drawable/ic_sync"
         android:key="fetching_mail"
         android:title="@string/account_settings_sync"
         />
