@@ -497,6 +497,10 @@
 
     <string name="account_settings_general_title">General settings</string>
     <string name="account_settings_reading_mail">Reading mail</string>
+    <string name="account_settings_sync_and_notifications">Sync &amp; notifications</string>
+    <string name="account_settings_folder_sync_and_push">Folder sync &amp; push</string>
+    <string name="account_settings_fetching_and_data_limits">Fetching &amp; data limits</string>
+    <string name="account_settings_folder_visibility">Folder visibility</string>
     <string name="account_settings_sync">Fetching mail</string>
     <string name="account_settings_folders">Folders</string>
     <string name="account_settings_quote_prefix_label">Quoted text prefix</string>
