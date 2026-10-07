@@ -50,6 +50,7 @@ val qrCodeModule = module {
     factory {
         XmlSettingWriter(
             uuidGenerator = get(),
+            featureFlagProvider = get(),
         )
     }
 }

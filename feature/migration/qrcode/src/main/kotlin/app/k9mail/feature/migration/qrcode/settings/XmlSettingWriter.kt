@@ -8,6 +8,11 @@ import app.k9mail.feature.migration.qrcode.domain.entity.AccountData.OutgoingSer
 import app.k9mail.feature.migration.qrcode.domain.entity.AccountData.OutgoingServerGroup
 import java.io.OutputStream
 import net.thunderbird.core.android.account.DeletePolicy
+import net.thunderbird.core.featureflag.FeatureFlagProvider
+import net.thunderbird.core.featureflag.keys.GeneratedFeatureFlagKey
+import net.thunderbird.feature.mail.folder.FolderType
+import net.thunderbird.feature.mail.folder.api.Folder
+import net.thunderbird.feature.mail.folder.api.FolderDetails
 import org.xmlpull.v1.XmlSerializer
 
 // TODO: This duplicates much of the code in SettingsExporter. Add an abstraction layer for the input data, so we can
@@ -15,6 +20,7 @@ import org.xmlpull.v1.XmlSerializer
 @Suppress("TooManyFunctions")
 internal class XmlSettingWriter(
     private val uuidGenerator: UuidGenerator,
+    private val featureFlagProvider: FeatureFlagProvider,
 ) {
     fun writeSettings(outputStream: OutputStream, accounts: List<Account>) {
         val serializer = Xml.newSerializer()
@@ -61,6 +67,30 @@ internal class XmlSettingWriter(
         writeSettings(account)
         writeIncomingServer(account.incomingServer)
         writeOutgoingServers(account.outgoingServerGroups)
+
+        // Only write a default inbox with push enabled on IMAP accounts
+        featureFlagProvider.provide(GeneratedFeatureFlagKey.PUSH_ENABLED_ON_INBOX_BY_DEFAULT)
+            .onEnabled {
+                if (account.incomingServer.protocol.mapToSettingsString() == "IMAP") {
+                    val folders = listOf(
+                        FolderDetails(
+                            folder = Folder(
+                                id = 0, // Unused in import file
+                                name = "INBOX",
+                                type = FolderType.INBOX, // Unused in import file
+                                isLocalOnly = false, // Unused in import file
+                            ),
+                            isInTopGroup = false,
+                            isIntegrate = false,
+                            isSyncEnabled = true,
+                            isVisible = true,
+                            isNotificationsEnabled = true,
+                            isPushEnabled = true,
+                        ),
+                    )
+                    writeFolders(folders)
+                }
+            }
 
         endTag(null, ACCOUNT_ELEMENT)
     }
@@ -139,6 +169,28 @@ internal class XmlSettingWriter(
         endTag(null, IDENTITY_ELEMENT)
     }
 
+    private fun XmlSerializer.writeFolders(folders: List<FolderDetails>) {
+        startTag(null, FOLDERS_ELEMENT)
+        for (folderDetails in folders) {
+            writeFolder(folderDetails)
+        }
+        endTag(null, FOLDERS_ELEMENT)
+    }
+
+    private fun XmlSerializer.writeFolder(folderDetails: FolderDetails) {
+        startTag(null, FOLDER_ELEMENT)
+        attribute(null, NAME_ELEMENT, folderDetails.folder.name)
+
+        writeKeyValue(INTEGRATE_ATTRIBUTE, folderDetails.isIntegrate.toString())
+        writeKeyValue(IN_TOP_GROUP_ATTRIBUTE, folderDetails.isInTopGroup.toString())
+        writeKeyValue(SYNC_ENABLED_ATTRIBUTE, folderDetails.isSyncEnabled.toString())
+        writeKeyValue(VISIBLE_ATTRIBUTE, folderDetails.isVisible.toString())
+        writeKeyValue(NOTIFICATIONS_ENABLED_ATTRIBUTE, folderDetails.isNotificationsEnabled.toString())
+        writeKeyValue(PUSH_ENABLED_ATTRIBUTE, folderDetails.isPushEnabled.toString())
+
+        endTag(null, FOLDER_ELEMENT)
+    }
+
     private fun XmlSerializer.writeElement(elementName: String, value: String) {
         startTag(null, elementName)
         text(value)
@@ -173,6 +225,14 @@ internal class XmlSettingWriter(
         private const val IDENTITY_ELEMENT = "identity"
         private const val NAME_ELEMENT = "name"
         private const val EMAIL_ELEMENT = "email"
+        private const val FOLDERS_ELEMENT = "folders"
+        private const val FOLDER_ELEMENT = "folder"
+        private const val INTEGRATE_ATTRIBUTE = "integrate"
+        private const val IN_TOP_GROUP_ATTRIBUTE = "inTopGroup"
+        private const val SYNC_ENABLED_ATTRIBUTE = "syncEnabled"
+        private const val VISIBLE_ATTRIBUTE = "visible"
+        private const val NOTIFICATIONS_ENABLED_ATTRIBUTE = "notificationsEnabled"
+        private const val PUSH_ENABLED_ATTRIBUTE = "pushEnabled"
     }
 }
 
