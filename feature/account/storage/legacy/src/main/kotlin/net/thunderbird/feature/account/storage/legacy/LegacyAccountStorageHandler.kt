@@ -5,12 +5,13 @@ import net.thunderbird.core.android.account.DeletePolicy
 import net.thunderbird.core.android.account.Expunge
 import net.thunderbird.core.android.account.FolderMode
 import net.thunderbird.core.android.account.Identity
-import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.MessageFormat
 import net.thunderbird.core.android.account.QuoteStyle
 import net.thunderbird.core.android.account.ShowPictures
 import net.thunderbird.core.android.account.SortType
 import net.thunderbird.core.logging.Logger
+import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.storage.Storage
 import net.thunderbird.core.preference.storage.StorageEditor
 import net.thunderbird.core.preference.storage.getEnumOrDefault
@@ -26,236 +27,251 @@ import net.thunderbird.feature.notification.VibratePattern
 class LegacyAccountStorageHandler(
     private val serverSettingsDtoSerializer: ServerSettingsDtoSerializer,
     private val profileDtoStorageHandler: ProfileDtoStorageHandler,
+    private val generalSettingsManager: GeneralSettingsManager,
     private val logger: Logger,
-) : AccountDtoStorageHandler {
+) : AccountStorageHandler {
 
     @Suppress("LongMethod", "MagicNumber")
     @Synchronized
-    override fun load(data: LegacyAccountDto, storage: Storage) {
-        val keyGen = AccountKeyGenerator(data.id)
+    override fun load(accountId: AccountId, storage: Storage): LegacyAccount {
+        val keyGen = AccountKeyGenerator(accountId)
 
-        profileDtoStorageHandler.load(data, storage)
+        val profileDto = profileDtoStorageHandler.load(accountId, storage)
+        val identities = loadIdentities(accountId, storage)
+        val email = identities.firstOrNull()?.email.orEmpty()
+        val senderName = identities.firstOrNull()?.name
 
-        with(data) {
+        val displayCountRaw = storage.getInt(
+            keyGen.create("displayCount"),
+            AccountDefaultsProvider.DEFAULT_VISIBLE_LIMIT,
+        )
+        val displayCount = if (displayCountRaw < 0) AccountDefaultsProvider.DEFAULT_VISIBLE_LIMIT else displayCountRaw
+
+        val draftsFolderId = storage.getStringOrNull(keyGen.create("draftsFolderId"))?.toLongOrNull()
+        val draftsFolderSelection = getEnumStringPref<SpecialFolderSelection>(
+            storage,
+            keyGen.create("draftsFolderSelection"),
+            SpecialFolderSelection.AUTOMATIC,
+        )
+
+        val sentFolderId = storage.getStringOrNull(keyGen.create("sentFolderId"))?.toLongOrNull()
+        val sentFolderSelection = getEnumStringPref<SpecialFolderSelection>(
+            storage,
+            keyGen.create("sentFolderSelection"),
+            SpecialFolderSelection.AUTOMATIC,
+        )
+
+        val trashFolderId = storage.getStringOrNull(keyGen.create("trashFolderId"))?.toLongOrNull()
+        val trashFolderSelection = getEnumStringPref<SpecialFolderSelection>(
+            storage,
+            keyGen.create("trashFolderSelection"),
+            SpecialFolderSelection.AUTOMATIC,
+        )
+
+        val archiveFolderId = storage.getStringOrNull(keyGen.create("archiveFolderId"))?.toLongOrNull()
+        val archiveFolderSelection = getEnumStringPref<SpecialFolderSelection>(
+            storage,
+            keyGen.create("archiveFolderSelection"),
+            SpecialFolderSelection.AUTOMATIC,
+        )
+
+        val spamFolderId = storage.getStringOrNull(keyGen.create("spamFolderId"))?.toLongOrNull()
+        val spamFolderSelection = getEnumStringPref<SpecialFolderSelection>(
+            storage,
+            keyGen.create("spamFolderSelection"),
+            SpecialFolderSelection.AUTOMATIC,
+        )
+
+        val sortType = getEnumStringPref<SortType>(storage, keyGen.create("sortTypeEnum"), SortType.SORT_DATE)
+        val sortAscending = SortType.entries.mapNotNull { type ->
+            val key = keyGen.create("sortAscending.${type.name}")
+            if (storage.contains(key)) type to storage.getBoolean(key, type.isDefaultAscending) else null
+        }.toMap().toMutableMap()
+        sortAscending[sortType] = storage.getBoolean(
+            keyGen.create("sortAscending"),
+            sortAscending[sortType] ?: sortType.isDefaultAscending,
+        )
+
+        val isMessageFormatAuto = storage.getBoolean(
+            keyGen.create("messageFormatAuto"),
+            AccountDefaultsProvider.DEFAULT_MESSAGE_FORMAT_AUTO,
+        )
+        var messageFormat = getEnumStringPref(
+            storage,
+            keyGen.create("messageFormat"),
+            AccountDefaultsProvider.DEFAULT_MESSAGE_FORMAT,
+        )
+        if (isMessageFormatAuto && messageFormat == MessageFormat.TEXT) {
+            messageFormat = MessageFormat.AUTO
+        }
+
+        val isFinishedSetup = storage.getBoolean(keyGen.create("isFinishedSetup"), true)
+
+        return LegacyAccount(
+            id = accountId,
+            name = profileDto.name.takeIf { it.isNotEmpty() },
+            email = email,
+            senderName = senderName,
+            isSensitiveDebugLoggingEnabled = { generalSettingsManager.getConfig().debugging.isSensitiveLoggingEnabled },
+            profile = profileDto,
             incomingServerSettings = serverSettingsDtoSerializer.deserialize(
                 storage.getStringOrDefault(keyGen.create(INCOMING_SERVER_SETTINGS_KEY), ""),
-            )
+            ),
             outgoingServerSettings = serverSettingsDtoSerializer.deserialize(
                 storage.getStringOrDefault(keyGen.create(OUTGOING_SERVER_SETTINGS_KEY), ""),
-            )
-            oAuthState = storage.getStringOrNull(keyGen.create("oAuthState"))
-            alwaysBcc = storage.getStringOrNull(keyGen.create("alwaysBcc")) ?: alwaysBcc
+            ),
+            oAuthState = storage.getStringOrNull(keyGen.create("oAuthState")),
+            alwaysBcc = storage.getStringOrNull(keyGen.create("alwaysBcc")),
             automaticCheckIntervalMinutes = storage.getInt(
                 keyGen.create("automaticCheckIntervalMinutes"),
-                AccountDefaultsProvider.Companion.DEFAULT_SYNC_INTERVAL,
-            )
-            idleRefreshMinutes = storage.getInt(keyGen.create("idleRefreshMinutes"), 24)
-            displayCount = storage.getInt(
-                keyGen.create("displayCount"),
-                AccountDefaultsProvider.Companion.DEFAULT_VISIBLE_LIMIT,
-            )
-            if (displayCount < 0) {
-                displayCount = AccountDefaultsProvider.Companion.DEFAULT_VISIBLE_LIMIT
-            }
-            isNotifyNewMail = storage.getBoolean(keyGen.create("notifyNewMail"), false)
+                AccountDefaultsProvider.DEFAULT_SYNC_INTERVAL,
+            ),
+            idleRefreshMinutes = storage.getInt(keyGen.create("idleRefreshMinutes"), 24),
+            displayCount = displayCount,
+            isNotifyNewMail = storage.getBoolean(keyGen.create("notifyNewMail"), false),
             folderNotifyNewMailMode = getEnumStringPref<FolderMode>(
                 storage,
                 keyGen.create("folderNotifyNewMailMode"),
                 FolderMode.ALL,
-            )
-            isNotifySelfNewMail = storage.getBoolean(keyGen.create("notifySelfNewMail"), true)
-            isNotifyContactsMailOnly = storage.getBoolean(keyGen.create("notifyContactsMailOnly"), false)
-            isIgnoreChatMessages = storage.getBoolean(keyGen.create("ignoreChatMessages"), false)
-            isNotifySync = storage.getBoolean(keyGen.create("notifyMailCheck"), false)
-            messagesNotificationChannelVersion = storage.getInt(keyGen.create("messagesNotificationChannelVersion"), 0)
-            deletePolicy = DeletePolicy.Companion.fromInt(
+            ),
+            isNotifySelfNewMail = storage.getBoolean(keyGen.create("notifySelfNewMail"), true),
+            isNotifyContactsMailOnly = storage.getBoolean(keyGen.create("notifyContactsMailOnly"), false),
+            isIgnoreChatMessages = storage.getBoolean(keyGen.create("ignoreChatMessages"), false),
+            isNotifySync = storage.getBoolean(keyGen.create("notifyMailCheck"), false),
+            messagesNotificationChannelVersion = storage.getInt(keyGen.create("messagesNotificationChannelVersion"), 0),
+            deletePolicy = DeletePolicy.fromInt(
                 storage.getInt(
                     keyGen.create("deletePolicy"),
                     DeletePolicy.NEVER.setting,
                 ),
-            )
-            legacyInboxFolder = storage.getStringOrNull(keyGen.create("inboxFolderName"))
-            importedDraftsFolder = storage.getStringOrNull(keyGen.create("draftsFolderName"))
-            importedSentFolder = storage.getStringOrNull(keyGen.create("sentFolderName"))
-            importedTrashFolder = storage.getStringOrNull(keyGen.create("trashFolderName"))
-            importedArchiveFolder = storage.getStringOrNull(keyGen.create("archiveFolderName"))
-            importedSpamFolder = storage.getStringOrNull(keyGen.create("spamFolderName"))
-
-            inboxFolderId = storage.getStringOrNull(keyGen.create("inboxFolderId"))?.toLongOrNull()
-
-            val draftsFolderId = storage.getStringOrNull(keyGen.create("draftsFolderId"))?.toLongOrNull()
-            val draftsFolderSelection = getEnumStringPref<SpecialFolderSelection>(
-                storage,
-                keyGen.create("draftsFolderSelection"),
-                SpecialFolderSelection.AUTOMATIC,
-            )
-            setDraftsFolderId(draftsFolderId, draftsFolderSelection)
-
-            val sentFolderId = storage.getStringOrNull(keyGen.create("sentFolderId"))?.toLongOrNull()
-            val sentFolderSelection = getEnumStringPref<SpecialFolderSelection>(
-                storage,
-                keyGen.create("sentFolderSelection"),
-                SpecialFolderSelection.AUTOMATIC,
-            )
-            setSentFolderId(sentFolderId, sentFolderSelection)
-
-            val trashFolderId = storage.getStringOrNull(keyGen.create("trashFolderId"))?.toLongOrNull()
-            val trashFolderSelection = getEnumStringPref<SpecialFolderSelection>(
-                storage,
-                keyGen.create("trashFolderSelection"),
-                SpecialFolderSelection.AUTOMATIC,
-            )
-            setTrashFolderId(trashFolderId, trashFolderSelection)
-
-            val archiveFolderId = storage.getStringOrNull(keyGen.create("archiveFolderId"))?.toLongOrNull()
-            val archiveFolderSelection = getEnumStringPref<SpecialFolderSelection>(
-                storage,
-                keyGen.create("archiveFolderSelection"),
-                SpecialFolderSelection.AUTOMATIC,
-            )
-            setArchiveFolderId(archiveFolderId, archiveFolderSelection)
-
-            val spamFolderId = storage.getStringOrNull(keyGen.create("spamFolderId"))?.toLongOrNull()
-            val spamFolderSelection = getEnumStringPref<SpecialFolderSelection>(
-                storage,
-                keyGen.create("spamFolderSelection"),
-                SpecialFolderSelection.AUTOMATIC,
-            )
-            setSpamFolderId(spamFolderId, spamFolderSelection)
-
-            autoExpandFolderId = storage.getStringOrNull(keyGen.create("autoExpandFolderId"))?.toLongOrNull()
-
-            expungePolicy = getEnumStringPref(storage, keyGen.create("expungePolicy"), Expunge.EXPUNGE_IMMEDIATELY)
-            isSyncRemoteDeletions = storage.getBoolean(keyGen.create("syncRemoteDeletions"), true)
-
-            maxPushFolders = storage.getInt(keyGen.create("maxPushFolders"), 10)
-            isSubscribedFoldersOnly = storage.getBoolean(keyGen.create("subscribedFoldersOnly"), false)
-            maximumPolledMessageAge = storage.getInt(keyGen.create("maximumPolledMessageAge"), -1)
+            ),
+            legacyInboxFolder = storage.getStringOrNull(keyGen.create("inboxFolderName")),
+            importedDraftsFolder = storage.getStringOrNull(keyGen.create("draftsFolderName")),
+            importedSentFolder = storage.getStringOrNull(keyGen.create("sentFolderName")),
+            importedTrashFolder = storage.getStringOrNull(keyGen.create("trashFolderName")),
+            importedArchiveFolder = storage.getStringOrNull(keyGen.create("archiveFolderName")),
+            importedSpamFolder = storage.getStringOrNull(keyGen.create("spamFolderName")),
+            inboxFolderId = storage.getStringOrNull(keyGen.create("inboxFolderId"))?.toLongOrNull(),
+            draftsFolderId = draftsFolderId,
+            draftsFolderSelection = draftsFolderSelection,
+            sentFolderId = sentFolderId,
+            sentFolderSelection = sentFolderSelection,
+            trashFolderId = trashFolderId,
+            trashFolderSelection = trashFolderSelection,
+            archiveFolderId = archiveFolderId,
+            archiveFolderSelection = archiveFolderSelection,
+            spamFolderId = spamFolderId,
+            spamFolderSelection = spamFolderSelection,
+            autoExpandFolderId = storage.getStringOrNull(keyGen.create("autoExpandFolderId"))?.toLongOrNull(),
+            expungePolicy = getEnumStringPref(storage, keyGen.create("expungePolicy"), Expunge.EXPUNGE_IMMEDIATELY),
+            isSyncRemoteDeletions = storage.getBoolean(keyGen.create("syncRemoteDeletions"), true),
+            maxPushFolders = storage.getInt(keyGen.create("maxPushFolders"), 10),
+            isSubscribedFoldersOnly = storage.getBoolean(keyGen.create("subscribedFoldersOnly"), false),
+            maximumPolledMessageAge = storage.getInt(keyGen.create("maximumPolledMessageAge"), -1),
             maximumAutoDownloadMessageSize = storage.getInt(
                 keyGen.create("maximumAutoDownloadMessageSize"),
-                AccountDefaultsProvider.Companion.DEFAULT_MAXIMUM_AUTO_DOWNLOAD_MESSAGE_SIZE,
-            )
-            messageFormat = getEnumStringPref(
-                storage,
-                keyGen.create("messageFormat"),
-                AccountDefaultsProvider.Companion.DEFAULT_MESSAGE_FORMAT,
-            )
-            val messageFormatAuto = storage.getBoolean(
-                keyGen.create("messageFormatAuto"),
-                AccountDefaultsProvider.Companion.DEFAULT_MESSAGE_FORMAT_AUTO,
-            )
-            if (messageFormatAuto && messageFormat == MessageFormat.TEXT) {
-                messageFormat = MessageFormat.AUTO
-            }
+                AccountDefaultsProvider.DEFAULT_MAXIMUM_AUTO_DOWNLOAD_MESSAGE_SIZE,
+            ),
+            messageFormat = messageFormat,
+            isMessageFormatAuto = messageFormat == MessageFormat.AUTO,
             isMessageReadReceipt = storage.getBoolean(
                 keyGen.create("messageReadReceipt"),
-                AccountDefaultsProvider.Companion.DEFAULT_MESSAGE_READ_RECEIPT,
-            )
+                AccountDefaultsProvider.DEFAULT_MESSAGE_READ_RECEIPT,
+            ),
             quoteStyle = getEnumStringPref<QuoteStyle>(
                 storage,
                 keyGen.create("quoteStyle"),
-                AccountDefaultsProvider.Companion.DEFAULT_QUOTE_STYLE,
-            )
+                AccountDefaultsProvider.DEFAULT_QUOTE_STYLE,
+            ),
             quotePrefix = storage.getStringOrDefault(
                 keyGen.create("quotePrefix"),
-                AccountDefaultsProvider.Companion.DEFAULT_QUOTE_PREFIX,
-            )
+                AccountDefaultsProvider.DEFAULT_QUOTE_PREFIX,
+            ),
             isDefaultQuotedTextShown = storage.getBoolean(
                 keyGen.create("defaultQuotedTextShown"),
-                AccountDefaultsProvider.Companion.DEFAULT_QUOTED_TEXT_SHOWN,
-            )
+                AccountDefaultsProvider.DEFAULT_QUOTED_TEXT_SHOWN,
+            ),
             isReplyAfterQuote = storage.getBoolean(
                 keyGen.create("replyAfterQuote"),
-                AccountDefaultsProvider.Companion.DEFAULT_REPLY_AFTER_QUOTE,
-            )
+                AccountDefaultsProvider.DEFAULT_REPLY_AFTER_QUOTE,
+            ),
             isStripSignature = storage.getBoolean(
                 keyGen.create("stripSignature"),
-                AccountDefaultsProvider.Companion.DEFAULT_STRIP_SIGNATURE,
-            )
-            useCompression = storage.getBoolean(keyGen.create("useCompression"), true)
-            isSendClientInfoEnabled = storage.getBoolean(keyGen.create("sendClientInfo"), true)
-
-            importedAutoExpandFolder = storage.getStringOrNull(keyGen.create("autoExpandFolderName"))
-
+                AccountDefaultsProvider.DEFAULT_STRIP_SIGNATURE,
+            ),
+            useCompression = storage.getBoolean(keyGen.create("useCompression"), true),
+            isSendClientInfoEnabled = storage.getBoolean(keyGen.create("sendClientInfo"), true),
+            importedAutoExpandFolder = storage.getStringOrNull(keyGen.create("autoExpandFolderName")),
             accountNumber = storage.getInt(
                 keyGen.create("accountNumber"),
-                AccountDefaultsProvider.Companion.UNASSIGNED_ACCOUNT_NUMBER,
-            )
-
-            sortType = getEnumStringPref<SortType>(storage, keyGen.create("sortTypeEnum"), SortType.SORT_DATE)
-
-            setSortAscending(sortType, storage.getBoolean(keyGen.create("sortAscending"), false))
-
-            showPictures =
-                getEnumStringPref<ShowPictures>(storage, keyGen.create("showPicturesEnum"), ShowPictures.NEVER)
-
-            updateNotificationSettings {
-                NotificationSettings(
-                    isRingEnabled = storage.getBoolean(keyGen.create("ring"), true),
-                    ringtone = storage.getStringOrDefault(
-                        keyGen.create("ringtone"),
-                        AccountDefaultsProvider.Companion.DEFAULT_RINGTONE_URI,
-                    ),
-                    light = getEnumStringPref(
-                        storage,
-                        keyGen.create("notificationLight"),
-                        NotificationLight.Disabled,
-                    ),
-                    vibration = NotificationVibration(
-                        isEnabled = storage.getBoolean(keyGen.create("vibrate"), false),
-                        pattern = VibratePattern.Companion.deserialize(
-                            storage.getInt(
-                                keyGen.create("vibratePattern"),
-                                0,
-                            ),
+                AccountDefaultsProvider.UNASSIGNED_ACCOUNT_NUMBER,
+            ),
+            sortType = sortType,
+            sortAscending = sortAscending,
+            showPictures = getEnumStringPref<ShowPictures>(
+                storage,
+                keyGen.create("showPicturesEnum"),
+                ShowPictures.NEVER,
+            ),
+            notificationSettings = NotificationSettings(
+                isRingEnabled = storage.getBoolean(keyGen.create("ring"), true),
+                ringtone = storage.getStringOrDefault(
+                    keyGen.create("ringtone"),
+                    AccountDefaultsProvider.DEFAULT_RINGTONE_URI,
+                ),
+                light = getEnumStringPref(
+                    storage,
+                    keyGen.create("notificationLight"),
+                    NotificationLight.Disabled,
+                ),
+                vibration = NotificationVibration(
+                    isEnabled = storage.getBoolean(keyGen.create("vibrate"), false),
+                    pattern = VibratePattern.deserialize(
+                        storage.getInt(
+                            keyGen.create("vibratePattern"),
+                            0,
                         ),
-                        repeatCount = storage.getInt(keyGen.create("vibrateTimes"), 5),
                     ),
-                )
-            }
-
-            folderDisplayMode =
-                getEnumStringPref<FolderMode>(storage, keyGen.create("folderDisplayMode"), FolderMode.NOT_SECOND_CLASS)
-
-            folderSyncMode =
-                getEnumStringPref<FolderMode>(storage, keyGen.create("folderSyncMode"), FolderMode.FIRST_CLASS)
-
-            folderPushMode = getEnumStringPref<FolderMode>(storage, keyGen.create("folderPushMode"), FolderMode.NONE)
-
-            isSignatureBeforeQuotedText = storage.getBoolean(keyGen.create("signatureBeforeQuotedText"), false)
-            replaceIdentities(loadIdentities(data.id, storage))
-
-            openPgpProvider = storage.getStringOrDefault(keyGen.create("openPgpProvider"), "")
-            openPgpKey = storage.getLong(keyGen.create("cryptoKey"), AccountDefaultsProvider.Companion.NO_OPENPGP_KEY)
-            isOpenPgpHideSignOnly = storage.getBoolean(keyGen.create("openPgpHideSignOnly"), true)
-            isOpenPgpEncryptSubject = storage.getBoolean(keyGen.create("openPgpEncryptSubject"), true)
-            isOpenPgpEncryptAllDrafts = storage.getBoolean(keyGen.create("openPgpEncryptAllDrafts"), true)
-            autocryptPreferEncryptMutual = storage.getBoolean(keyGen.create("autocryptMutualMode"), false)
-            isRemoteSearchFullText = storage.getBoolean(keyGen.create("remoteSearchFullText"), false)
-            remoteSearchNumResults =
-                storage.getInt(
-                    keyGen.create("remoteSearchNumResults"),
-                    AccountDefaultsProvider.Companion.DEFAULT_REMOTE_SEARCH_NUM_RESULTS,
-                )
-            isUploadSentMessages = storage.getBoolean(keyGen.create("uploadSentMessages"), true)
-
-            isMarkMessageAsReadOnView = storage.getBoolean(keyGen.create("markMessageAsReadOnView"), true)
-            isMarkMessageAsReadOnDelete = storage.getBoolean(keyGen.create("markMessageAsReadOnDelete"), true)
-            isAlwaysShowCcBcc = storage.getBoolean(keyGen.create("alwaysShowCcBcc"), false)
-            lastSyncTime = storage.getLong(keyGen.create("lastSyncTime"), 0L)
-            lastFolderListRefreshTime = storage.getLong(keyGen.create("lastFolderListRefreshTime"), 0L)
-
-            shouldMigrateToOAuth = storage.getBoolean(keyGen.create("migrateToOAuth"), false)
+                    repeatCount = storage.getInt(keyGen.create("vibrateTimes"), 5),
+                ),
+            ),
+            folderDisplayMode = getEnumStringPref<FolderMode>(
+                storage,
+                keyGen.create("folderDisplayMode"),
+                FolderMode.NOT_SECOND_CLASS,
+            ),
+            folderSyncMode = getEnumStringPref<FolderMode>(
+                storage,
+                keyGen.create("folderSyncMode"),
+                FolderMode.FIRST_CLASS,
+            ),
+            folderPushMode = getEnumStringPref<FolderMode>(storage, keyGen.create("folderPushMode"), FolderMode.NONE),
+            isSignatureBeforeQuotedText = storage.getBoolean(keyGen.create("signatureBeforeQuotedText"), false),
+            identities = identities,
+            openPgpProvider = storage.getStringOrDefault(keyGen.create("openPgpProvider"), ""),
+            openPgpKey = storage.getLong(keyGen.create("cryptoKey"), AccountDefaultsProvider.NO_OPENPGP_KEY),
+            isOpenPgpHideSignOnly = storage.getBoolean(keyGen.create("openPgpHideSignOnly"), true),
+            isOpenPgpEncryptSubject = storage.getBoolean(keyGen.create("openPgpEncryptSubject"), true),
+            isOpenPgpEncryptAllDrafts = storage.getBoolean(keyGen.create("openPgpEncryptAllDrafts"), true),
+            autocryptPreferEncryptMutual = storage.getBoolean(keyGen.create("autocryptMutualMode"), false),
+            isRemoteSearchFullText = storage.getBoolean(keyGen.create("remoteSearchFullText"), false),
+            remoteSearchNumResults = storage.getInt(
+                keyGen.create("remoteSearchNumResults"),
+                AccountDefaultsProvider.DEFAULT_REMOTE_SEARCH_NUM_RESULTS,
+            ),
+            isUploadSentMessages = storage.getBoolean(keyGen.create("uploadSentMessages"), true),
+            isMarkMessageAsReadOnView = storage.getBoolean(keyGen.create("markMessageAsReadOnView"), true),
+            isMarkMessageAsReadOnDelete = storage.getBoolean(keyGen.create("markMessageAsReadOnDelete"), true),
+            isAlwaysShowCcBcc = storage.getBoolean(keyGen.create("alwaysShowCcBcc"), false),
+            lastSyncTime = storage.getLong(keyGen.create("lastSyncTime"), 0L),
+            lastFolderListRefreshTime = storage.getLong(keyGen.create("lastFolderListRefreshTime"), 0L),
+            shouldMigrateToOAuth = storage.getBoolean(keyGen.create("migrateToOAuth"), false),
             folderPathDelimiter = storage.getStringOrDefault(
                 key = keyGen.create(FOLDER_PATH_DELIMITER_KEY),
                 defValue = FOLDER_DEFAULT_PATH_DELIMITER,
-            )
-
-            val isFinishedSetup = storage.getBoolean(keyGen.create("isFinishedSetup"), true)
-            if (isFinishedSetup) markSetupFinished()
-
-            resetChangeMarkers()
-        }
+            ),
+            isFinishedSetup = isFinishedSetup,
+        )
     }
 
     @Synchronized
@@ -312,10 +328,10 @@ class LegacyAccountStorageHandler(
 
     @Suppress("LongMethod")
     @Synchronized
-    override fun save(data: LegacyAccountDto, storage: Storage, editor: StorageEditor) {
+    override fun save(data: LegacyAccount, storage: Storage, editor: StorageEditor) {
         val keyGen = AccountKeyGenerator(data.id)
 
-        profileDtoStorageHandler.save(data, storage, editor)
+        profileDtoStorageHandler.save(data.profile, storage, editor)
 
         if (!storage.getStringOrDefault("accountUuids", "").contains(data.id.toString())) {
             var accountUuids = storage.getStringOrDefault("accountUuids", "")
@@ -366,7 +382,11 @@ class LegacyAccountStorageHandler(
             editor.putString(keyGen.create("autoExpandFolderId"), autoExpandFolderId?.toString())
             editor.putInt(keyGen.create("accountNumber"), accountNumber)
             editor.putString(keyGen.create("sortTypeEnum"), sortType.name)
-            editor.putBoolean(keyGen.create("sortAscending"), isSortAscending(sortType))
+            editor.putBoolean(keyGen.create("sortAscending"), sortAscending[sortType] ?: sortType.isDefaultAscending)
+            SortType.entries.forEach { type ->
+                val key = keyGen.create("sortAscending.${type.name}")
+                sortAscending[type]?.let { editor.putBoolean(key, it) } ?: editor.remove(key)
+            }
             editor.putString(keyGen.create("showPicturesEnum"), showPictures.name)
             editor.putString(keyGen.create("folderDisplayMode"), folderDisplayMode.name)
             editor.putString(keyGen.create("folderSyncMode"), folderSyncMode.name)
@@ -378,16 +398,7 @@ class LegacyAccountStorageHandler(
             editor.putBoolean(keyGen.create("subscribedFoldersOnly"), isSubscribedFoldersOnly)
             editor.putInt(keyGen.create("maximumPolledMessageAge"), maximumPolledMessageAge)
             editor.putInt(keyGen.create("maximumAutoDownloadMessageSize"), maximumAutoDownloadMessageSize)
-            val messageFormatAuto = if (MessageFormat.AUTO == messageFormat) {
-                // saving MessageFormat.AUTO as is to the database will cause downgrades to crash on
-                // startup, so we save as MessageFormat.TEXT instead with a separate flag for auto.
-                editor.putString(keyGen.create("messageFormat"), MessageFormat.TEXT.name)
-                true
-            } else {
-                editor.putString(keyGen.create("messageFormat"), messageFormat.name)
-                false
-            }
-            editor.putBoolean(keyGen.create("messageFormatAuto"), messageFormatAuto)
+            editor.putString(keyGen.create("messageFormat"), messageFormat.name)
             editor.putBoolean(keyGen.create("messageReadReceipt"), isMessageReadReceipt)
             editor.putString(keyGen.create("quoteStyle"), quoteStyle.name)
             editor.putString(keyGen.create("quotePrefix"), quotePrefix)
@@ -425,13 +436,11 @@ class LegacyAccountStorageHandler(
         saveIdentities(data, storage, editor)
     }
 
-    @Suppress("LongMethod")
     @Synchronized
-    override fun delete(data: LegacyAccountDto, storage: Storage, editor: StorageEditor) {
-        val keyGen = AccountKeyGenerator(data.id)
-        val accountUuid = data.id.toString()
+    override fun delete(accountId: AccountId, storage: Storage, editor: StorageEditor) {
+        val accountUuid = accountId.toString()
 
-        profileDtoStorageHandler.delete(data, storage, editor)
+        profileDtoStorageHandler.delete(accountId, storage, editor)
 
         // Get the list of account UUIDs
         val uuids = storage
@@ -454,103 +463,18 @@ class LegacyAccountStorageHandler(
             editor.putString("accountUuids", accountUuids)
         }
 
-        editor.remove(keyGen.create("oAuthState"))
-        editor.remove(keyGen.create(INCOMING_SERVER_SETTINGS_KEY))
-        editor.remove(keyGen.create(OUTGOING_SERVER_SETTINGS_KEY))
-        editor.remove(keyGen.create("description"))
-        editor.remove(keyGen.create("email"))
-        editor.remove(keyGen.create("alwaysBcc"))
-        editor.remove(keyGen.create("automaticCheckIntervalMinutes"))
-        editor.remove(keyGen.create("idleRefreshMinutes"))
-        editor.remove(keyGen.create("lastAutomaticCheckTime"))
-        editor.remove(keyGen.create("notifyNewMail"))
-        editor.remove(keyGen.create("notifySelfNewMail"))
-        editor.remove(keyGen.create("ignoreChatMessages"))
-        editor.remove(keyGen.create("messagesNotificationChannelVersion"))
-        editor.remove(keyGen.create("deletePolicy"))
-        editor.remove(keyGen.create("draftsFolderName"))
-        editor.remove(keyGen.create("sentFolderName"))
-        editor.remove(keyGen.create("trashFolderName"))
-        editor.remove(keyGen.create("archiveFolderName"))
-        editor.remove(keyGen.create("spamFolderName"))
-        editor.remove(keyGen.create("archiveFolderSelection"))
-        editor.remove(keyGen.create("draftsFolderSelection"))
-        editor.remove(keyGen.create("sentFolderSelection"))
-        editor.remove(keyGen.create("spamFolderSelection"))
-        editor.remove(keyGen.create("trashFolderSelection"))
-        editor.remove(keyGen.create("autoExpandFolderName"))
-        editor.remove(keyGen.create("accountNumber"))
-        editor.remove(keyGen.create("vibrate"))
-        editor.remove(keyGen.create("vibratePattern"))
-        editor.remove(keyGen.create("vibrateTimes"))
-        editor.remove(keyGen.create("ring"))
-        editor.remove(keyGen.create("ringtone"))
-        editor.remove(keyGen.create("folderDisplayMode"))
-        editor.remove(keyGen.create("folderSyncMode"))
-        editor.remove(keyGen.create("folderPushMode"))
-        editor.remove(keyGen.create("signatureBeforeQuotedText"))
-        editor.remove(keyGen.create("expungePolicy"))
-        editor.remove(keyGen.create("syncRemoteDeletions"))
-        editor.remove(keyGen.create("maxPushFolders"))
-        editor.remove(keyGen.create("notificationLight"))
-        editor.remove(keyGen.create("subscribedFoldersOnly"))
-        editor.remove(keyGen.create("maximumPolledMessageAge"))
-        editor.remove(keyGen.create("maximumAutoDownloadMessageSize"))
-        editor.remove(keyGen.create("messageFormatAuto"))
-        editor.remove(keyGen.create("quoteStyle"))
-        editor.remove(keyGen.create("quotePrefix"))
-        editor.remove(keyGen.create("sortTypeEnum"))
-        editor.remove(keyGen.create("sortAscending"))
-        editor.remove(keyGen.create("showPicturesEnum"))
-        editor.remove(keyGen.create("replyAfterQuote"))
-        editor.remove(keyGen.create("stripSignature"))
-        editor.remove(keyGen.create("cryptoApp")) // this is no longer set, but cleans up legacy values
-        editor.remove(keyGen.create("cryptoAutoSignature"))
-        editor.remove(keyGen.create("cryptoAutoEncrypt"))
-        editor.remove(keyGen.create("cryptoApp"))
-        editor.remove(keyGen.create("cryptoKey"))
-        editor.remove(keyGen.create("cryptoSupportSignOnly"))
-        editor.remove(keyGen.create("openPgpProvider"))
-        editor.remove(keyGen.create("openPgpHideSignOnly"))
-        editor.remove(keyGen.create("openPgpEncryptSubject"))
-        editor.remove(keyGen.create("openPgpEncryptAllDrafts"))
-        editor.remove(keyGen.create("autocryptMutualMode"))
-        editor.remove(keyGen.create("enabled"))
-        editor.remove(keyGen.create("markMessageAsReadOnView"))
-        editor.remove(keyGen.create("markMessageAsReadOnDelete"))
-        editor.remove(keyGen.create("alwaysShowCcBcc"))
-        editor.remove(keyGen.create("remoteSearchFullText"))
-        editor.remove(keyGen.create("remoteSearchNumResults"))
-        editor.remove(keyGen.create("uploadSentMessages"))
-        editor.remove(keyGen.create("defaultQuotedTextShown"))
-        editor.remove(keyGen.create("displayCount"))
-        editor.remove(keyGen.create("inboxFolderName"))
-        editor.remove(keyGen.create("messageFormat"))
-        editor.remove(keyGen.create("messageReadReceipt"))
-        editor.remove(keyGen.create("notifyMailCheck"))
-        editor.remove(keyGen.create("inboxFolderId"))
-        editor.remove(keyGen.create("outboxFolderId"))
-        editor.remove(keyGen.create("draftsFolderId"))
-        editor.remove(keyGen.create("sentFolderId"))
-        editor.remove(keyGen.create("trashFolderId"))
-        editor.remove(keyGen.create("archiveFolderId"))
-        editor.remove(keyGen.create("spamFolderId"))
-        editor.remove(keyGen.create("autoExpandFolderId"))
-        editor.remove(keyGen.create("lastSyncTime"))
-        editor.remove(keyGen.create("lastFolderListRefreshTime"))
-        editor.remove(keyGen.create("isFinishedSetup"))
-        editor.remove(keyGen.create("useCompression"))
-        editor.remove(keyGen.create("sendClientInfo"))
-        editor.remove(keyGen.create("migrateToOAuth"))
-        editor.remove(keyGen.create(FOLDER_PATH_DELIMITER_KEY))
-
-        deleteIdentities(data, storage, editor)
-        // TODO: Remove preference settings that may exist for individual folders in the account.
+        // Remove all preference keys for this account
+        val prefix = "$accountId."
+        for (key in storage.getAll().keys) {
+            if (key.startsWith(prefix)) {
+                editor.remove(key)
+            }
+        }
     }
 
     @Synchronized
-    private fun saveIdentities(data: LegacyAccountDto, storage: Storage, editor: StorageEditor) {
-        deleteIdentities(data, storage, editor)
+    private fun saveIdentities(data: LegacyAccount, storage: Storage, editor: StorageEditor) {
+        deleteIdentities(data.id, storage, editor)
         var ident = 0
         val keyGen = AccountKeyGenerator(data.id)
 
@@ -569,8 +493,8 @@ class LegacyAccountStorageHandler(
     }
 
     @Synchronized
-    private fun deleteIdentities(data: LegacyAccountDto, storage: Storage, editor: StorageEditor) {
-        val keyGen = AccountKeyGenerator(data.id)
+    private fun deleteIdentities(accountId: AccountId, storage: Storage, editor: StorageEditor) {
+        val keyGen = AccountKeyGenerator(accountId)
 
         var identityIndex = 0
         var gotOne: Boolean

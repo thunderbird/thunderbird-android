@@ -114,7 +114,7 @@ internal class CreateArchiveFolder(
                 selection = SpecialFolderSelection.MANUAL,
             )
             specialFolderUpdater.updateSpecialFolders()
-            accountManager.saveAccount(account)
+            accountManager.updateSync(account)
         }
         emit(Outcome.success(CreateArchiveFolderOutcome.Success.Created))
     }

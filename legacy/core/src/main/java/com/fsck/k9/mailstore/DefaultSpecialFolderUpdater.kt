@@ -7,7 +7,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import net.thunderbird.components.core.outcome.handleAsync
 import net.thunderbird.core.android.account.LegacyAccount
-import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.core.common.mail.Protocols
 import net.thunderbird.core.logging.Logger
@@ -21,7 +20,7 @@ import net.thunderbird.feature.mail.folder.api.data.repository.PartialUpdatableF
 import net.thunderbird.feature.mail.folder.api.data.repository.RemoteFolderQueryRepository
 
 /**
- * Updates special folders in [LegacyAccountDto] if they are marked as [SpecialFolderSelection.AUTOMATIC] or if they
+ * Updates special folders in [LegacyAccount] if they are marked as [SpecialFolderSelection.AUTOMATIC] or if they
  * are marked as [SpecialFolderSelection.MANUAL] but have been deleted from the server.
  */
 // TODO: Find a better way to deal with local-only special folders
@@ -237,7 +236,7 @@ class DefaultSpecialFolderUpdater(
     )
 
     private fun getAccountById(accountId: AccountId): LegacyAccount {
-        return accountManager.getById(accountId) ?: error("Account not found: $accountId")
+        return accountManager.findById(accountId) ?: error("Account not found: $accountId")
     }
 
     private fun updateAccount(account: LegacyAccount) {

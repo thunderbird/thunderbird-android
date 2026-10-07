@@ -8,8 +8,6 @@ import app.k9mail.feature.launcher.FeatureLauncherTarget.AccountSetup
 import app.k9mail.legacy.di.DI
 import app.k9mail.legacy.message.controller.MessageReference
 import com.fsck.k9.activity.MessageCompose
-import net.thunderbird.core.android.account.LegacyAccount
-import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.usecase.GetDefaultAccountId
 
@@ -19,16 +17,6 @@ object MessageActions {
      * will be used. If there is no default account set, user will be sent to AccountSetup
      * activity.
      */
-    @JvmStatic
-    fun actionCompose(context: Context, account: LegacyAccount? = null) {
-        actionCompose(context, account?.id)
-    }
-
-    @JvmStatic
-    fun actionCompose(context: Context, account: LegacyAccountDto?) {
-        actionCompose(context, account?.id)
-    }
-
     @JvmStatic
     fun actionCompose(context: Context, accountId: AccountId? = null) {
         val getDefaultAccountId = DI.get<GetDefaultAccountId>()

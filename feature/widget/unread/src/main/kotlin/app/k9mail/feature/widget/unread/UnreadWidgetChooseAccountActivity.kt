@@ -14,7 +14,7 @@ class UnreadWidgetChooseAccountActivity : AccountList() {
 
     override fun onAccountSelected(account: Any) {
         val accountUuid = when (account) {
-            is SearchAccount -> account.id
+            is SearchAccount -> account.id.toString()
             is BaseAccount -> account.id.toString()
             else -> error("Unknown account type: $account")
         }

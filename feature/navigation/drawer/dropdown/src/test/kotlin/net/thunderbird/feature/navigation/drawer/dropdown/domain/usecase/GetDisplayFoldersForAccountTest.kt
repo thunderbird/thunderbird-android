@@ -7,10 +7,10 @@ import kotlin.test.Test
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
-import net.thunderbird.account.fake.FakeAccountData.ACCOUNT_ID_RAW
+import net.thunderbird.account.fake.FakeAccountData.ACCOUNT_ID
+import net.thunderbird.feature.account.UnifiedAccountId
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayFolder
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.MailDisplayFolder
-import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.UnifiedDisplayAccount
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.UnifiedDisplayFolder
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.UnifiedDisplayFolderType
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.FakeData
@@ -20,7 +20,7 @@ internal class GetDisplayFoldersForAccountTest {
 
     @Test
     fun `should return account folders when account id is regular`() = runTest {
-        val accountId = ACCOUNT_ID_RAW
+        val accountId = ACCOUNT_ID
         val legacyDisplayFolderFlow = MutableStateFlow(LEGACY_DISPLAY_FOLDERS)
         val displayFolderRepository = FakeDisplayFolderRepository(legacyDisplayFolderFlow)
         val unifiedFolderFlow = MutableStateFlow(DISPLAY_UNIFIED_FOLDER)
@@ -37,7 +37,7 @@ internal class GetDisplayFoldersForAccountTest {
 
     @Test
     fun `should return unifed account folders when account id is unified`() = runTest {
-        val accountId = UnifiedDisplayAccount.UNIFIED_ACCOUNT_ID
+        val accountId = UnifiedAccountId
         val legacyDisplayFolderFlow = MutableStateFlow(LEGACY_DISPLAY_FOLDERS)
         val displayFolderRepository = FakeDisplayFolderRepository(legacyDisplayFolderFlow)
         val unifiedFolderFlow = MutableStateFlow(DISPLAY_UNIFIED_FOLDER)
@@ -54,7 +54,7 @@ internal class GetDisplayFoldersForAccountTest {
 
     @Test
     fun `should only emit new list when account folders emit new items`() = runTest {
-        val accountId = ACCOUNT_ID_RAW
+        val accountId = ACCOUNT_ID
         val legacyDisplayFolderFlow = MutableStateFlow(LEGACY_DISPLAY_FOLDERS)
         val displayFolderRepository = FakeDisplayFolderRepository(legacyDisplayFolderFlow)
         val unifiedFolderFlow = MutableStateFlow(DISPLAY_UNIFIED_FOLDER)
@@ -77,7 +77,7 @@ internal class GetDisplayFoldersForAccountTest {
 
     @Test
     fun `should only emit new list when unified account folders emit new items`() = runTest {
-        val accountId = UnifiedDisplayAccount.UNIFIED_ACCOUNT_ID
+        val accountId = UnifiedAccountId
         val legacyDisplayFolderFlow = MutableStateFlow(LEGACY_DISPLAY_FOLDERS)
         val displayFolderRepository = FakeDisplayFolderRepository(legacyDisplayFolderFlow)
         val unifiedFolderFlow = MutableStateFlow(DISPLAY_UNIFIED_FOLDER)
@@ -130,14 +130,14 @@ internal class GetDisplayFoldersForAccountTest {
         )
 
         val DISPLAY_UNIFIED_FOLDER = UnifiedDisplayFolder(
-            id = "unified_inbox",
+            folderId = "unified_inbox",
             unifiedType = UnifiedDisplayFolderType.INBOX,
             unreadMessageCount = 2,
             starredMessageCount = 2,
         )
 
         val DISPLAY_UNIFIED_FOLDER_2 = UnifiedDisplayFolder(
-            id = "unified_inbox",
+            folderId = "unified_inbox",
             unifiedType = UnifiedDisplayFolderType.INBOX,
             unreadMessageCount = 3,
             starredMessageCount = 3,
@@ -147,7 +147,7 @@ internal class GetDisplayFoldersForAccountTest {
 
         val DISPLAY_ACCOUNT_FOLDERS = listOf<DisplayFolder>(
             MailDisplayFolder(
-                accountId = ACCOUNT_ID_RAW,
+                accountId = ACCOUNT_ID,
                 folder = FakeData.FOLDER,
                 isInTopGroup = false,
                 unreadMessageCount = 0,
@@ -155,7 +155,7 @@ internal class GetDisplayFoldersForAccountTest {
                 pathDelimiter = "/",
             ),
             MailDisplayFolder(
-                accountId = ACCOUNT_ID_RAW,
+                accountId = ACCOUNT_ID,
                 folder = FakeData.FOLDER.copy(
                     id = 2,
                     name = "Folder 2",
@@ -168,7 +168,7 @@ internal class GetDisplayFoldersForAccountTest {
         )
 
         val DISPLAY_ACCOUNT_FOLDERS_2 = DISPLAY_ACCOUNT_FOLDERS + MailDisplayFolder(
-            accountId = ACCOUNT_ID_RAW,
+            accountId = ACCOUNT_ID,
             folder = FakeData.FOLDER.copy(
                 id = 3,
                 name = "Folder 3",

@@ -20,13 +20,13 @@ import net.thunderbird.core.preference.PreferenceScope
 import net.thunderbird.core.preference.storage.Storage
 import net.thunderbird.core.preference.storage.StorageEditor
 import net.thunderbird.core.preference.storage.StoragePersister
+import net.thunderbird.core.preference.storage.StorageProvider
 
 private const val TAG = "DefaultDebuggingSettingsPreferenceManager"
 
 class DefaultDebuggingSettingsPreferenceManager(
     private val logger: Logger,
-    private val storagePersister: StoragePersister,
-    private val storageEditor: StorageEditor,
+    private val storageProvider: StorageProvider,
     private val logLevelManager: LogLevelManager,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
     private var scope: CoroutineScope = CoroutineScope(SupervisorJob()),
@@ -40,7 +40,7 @@ class DefaultDebuggingSettingsPreferenceManager(
     private val configState: MutableStateFlow<DebuggingSettings> = MutableStateFlow(value = loadConfig())
     private val mutex = Mutex()
     private val storage: Storage
-        get() = storagePersister.loadValues()
+        get() = storageProvider.loadLatestStorage()
 
     override fun getConfig(): DebuggingSettings = configState.value
     override fun getConfigFlow(): Flow<DebuggingSettings> = configState
@@ -70,6 +70,7 @@ class DefaultDebuggingSettingsPreferenceManager(
         logger.debug(TAG) { "writeConfig() called with: config = $config" }
         scope.launch(ioDispatcher) {
             mutex.withLock {
+                val storageEditor = storageProvider.createStorageEditor()
                 storageEditor.putBoolean(DebugSettingKey.EnableDebugLogging.value, config.isDebugLoggingEnabled)
                 storageEditor.putBoolean(DebugSettingKey.EnableSyncDebugLogging.value, config.isSyncLoggingEnabled)
                 storageEditor.putBoolean(DebugSettingKey.EnableSensitiveLogging.value, config.isSensitiveLoggingEnabled)

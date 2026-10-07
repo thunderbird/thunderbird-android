@@ -1,7 +1,7 @@
 package com.fsck.k9.notification
 
 import app.k9mail.legacy.message.controller.MessageReference
-import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.core.preference.LockScreenNotificationVisibility
 import net.thunderbird.feature.account.AccountId
 
@@ -14,22 +14,27 @@ internal const val MAX_NUMBER_OF_NEW_MESSAGE_NOTIFICATIONS = 9
  * those are called active notifications. The rest are called inactive notifications. When an active notification is
  * removed, the latest inactive notification is promoted to an active notification.
  */
-internal class NotificationDataStore {
+internal class NotificationDataStore(
+    private val accountManager: LegacyAccountManager,
+    private val notificationIdRegistry: AccountNotificationIdRegistry,
+) {
     private val notificationDataMap = mutableMapOf<AccountId, NotificationData>()
 
     @Synchronized
-    fun isAccountInitialized(account: LegacyAccountDto): Boolean {
-        return notificationDataMap[account.id] != null
+    fun isAccountInitialized(accountId: AccountId): Boolean {
+        return notificationDataMap[accountId] != null
     }
 
     @Synchronized
     fun initializeAccount(
-        account: LegacyAccountDto,
+        accountId: AccountId,
         activeNotifications: List<NotificationHolder>,
         inactiveNotifications: List<InactiveNotificationHolder>,
         lockScreenNotificationVisibility: LockScreenNotificationVisibility,
     ): NotificationData {
         require(activeNotifications.size <= MAX_NUMBER_OF_NEW_MESSAGE_NOTIFICATIONS)
+        val account = accountManager.findById(accountId)
+            ?: throw IllegalArgumentException("Account not found: $accountId")
 
         return NotificationData(
             account,
@@ -37,17 +42,17 @@ internal class NotificationDataStore {
             inactiveNotifications,
             lockScreenNotificationVisibility,
         ).also { notificationData ->
-            notificationDataMap[account.id] = notificationData
+            notificationDataMap[accountId] = notificationData
         }
     }
 
     @Synchronized
     fun addNotification(
-        account: LegacyAccountDto,
+        accountId: AccountId,
         content: NotificationContent,
         timestamp: Long,
     ): AddNotificationResult? {
-        val notificationData = getNotificationData(account)
+        val notificationData = getNotificationData(accountId)
         val messageReference = content.messageReference
 
         val activeNotification = notificationData.activeNotifications.firstOrNull { notificationHolder ->
@@ -70,7 +75,7 @@ internal class NotificationDataStore {
             val newNotificationData = notificationData.copy(
                 activeNotifications = newActiveNotifications,
             )
-            notificationDataMap[account.id] = newNotificationData
+            notificationDataMap[accountId] = newNotificationData
 
             AddNotificationResult.newNotification(newNotificationData, operations, notificationHolder)
         } else if (inactiveNotification != null) {
@@ -81,7 +86,7 @@ internal class NotificationDataStore {
             val newNotificationData = notificationData.copy(
                 inactiveNotifications = newInactiveNotifications,
             )
-            notificationDataMap[account.id] = newNotificationData
+            notificationDataMap[accountId] = newNotificationData
 
             null
         } else if (notificationData.isMaxNumberOfActiveNotificationsReached) {
@@ -100,7 +105,7 @@ internal class NotificationDataStore {
                 activeNotifications = listOf(notificationHolder) + notificationData.activeNotifications.dropLast(1),
                 inactiveNotifications = listOf(inactiveNotificationHolder) + notificationData.inactiveNotifications,
             )
-            notificationDataMap[account.id] = newNotificationData
+            notificationDataMap[accountId] = newNotificationData
 
             AddNotificationResult.replaceNotification(newNotificationData, operations, notificationHolder)
         } else {
@@ -114,7 +119,7 @@ internal class NotificationDataStore {
             val newNotificationData = notificationData.copy(
                 activeNotifications = listOf(notificationHolder) + notificationData.activeNotifications,
             )
-            notificationDataMap[account.id] = newNotificationData
+            notificationDataMap[accountId] = newNotificationData
 
             AddNotificationResult.newNotification(newNotificationData, operations, notificationHolder)
         }
@@ -123,10 +128,10 @@ internal class NotificationDataStore {
     @Suppress("LongMethod", "ReturnCount")
     @Synchronized
     fun removeNotifications(
-        account: LegacyAccountDto,
+        accountId: AccountId,
         selector: (List<MessageReference>) -> List<MessageReference>,
     ): RemoveNotificationsResult? {
-        var notificationData = getNotificationData(account)
+        var notificationData = getNotificationData(accountId)
         if (notificationData.isEmpty()) return null
 
         val removeMessageReferences = selector.invoke(notificationData.messageReferences)
@@ -193,7 +198,7 @@ internal class NotificationDataStore {
             }
         }
 
-        notificationDataMap[account.id] = notificationData
+        notificationDataMap[accountId] = notificationData
 
         return if (operations.isEmpty()) {
             null
@@ -208,13 +213,16 @@ internal class NotificationDataStore {
     }
 
     @Synchronized
-    fun clearNotifications(account: LegacyAccountDto) {
-        notificationDataMap.remove(account.id)
+    fun clearNotifications(accountId: AccountId) {
+        notificationDataMap.remove(accountId)
     }
 
-    private fun getNotificationData(account: LegacyAccountDto): NotificationData {
-        return notificationDataMap[account.id] ?: NotificationData.create(account).also { notificationData ->
-            notificationDataMap[account.id] = notificationData
+    private fun getNotificationData(accountId: AccountId): NotificationData {
+        return notificationDataMap.getOrPut(accountId) {
+            val account = accountManager.findById(accountId)
+                ?: throw IllegalArgumentException("Account not found")
+
+            NotificationData.create(account)
         }
     }
 
@@ -224,7 +232,11 @@ internal class NotificationDataStore {
     private fun NotificationData.getNewNotificationId(): Int {
         val notificationIdsInUse = activeNotifications.map { it.notificationId }.toSet()
         for (index in 0 until MAX_NUMBER_OF_NEW_MESSAGE_NOTIFICATIONS) {
-            val notificationId = NotificationIds.getSingleMessageNotificationId(account, index)
+            val notificationId = notificationIdRegistry.getOrAllocate(
+                account.id,
+                AccountNotificationKind.SingleMessage,
+                index,
+            )
             if (notificationId !in notificationIdsInUse) {
                 return notificationId
             }

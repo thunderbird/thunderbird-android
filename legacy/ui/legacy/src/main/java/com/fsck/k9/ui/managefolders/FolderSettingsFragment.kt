@@ -16,6 +16,7 @@ import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmen
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.livedata.observeNotNull
 import com.takisoft.preferencex.PreferenceFragmentCompat
+import net.thunderbird.feature.account.AccountIdFactory
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import com.fsck.k9.ui.base.R as BaseR
@@ -57,10 +58,11 @@ class FolderSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFra
         )
 
         val arguments = arguments ?: error("Arguments missing")
-        val accountUuid = arguments.getString(EXTRA_ACCOUNT) ?: error("Missing argument '$EXTRA_ACCOUNT'")
+        val accountIdRaw = arguments.getString(EXTRA_ACCOUNT) ?: error("Missing argument '$EXTRA_ACCOUNT'")
+        val accountId = AccountIdFactory.of(accountIdRaw)
         val folderId = arguments.getLong(EXTRA_FOLDER_ID)
 
-        viewModel.getFolderSettingsLiveData(accountUuid, folderId)
+        viewModel.getFolderSettingsLiveData(accountId, folderId)
             .observeNotNull(viewLifecycleOwner) { folderSettingsResult ->
                 when (folderSettingsResult) {
                     is FolderNotFound -> navigateBack()

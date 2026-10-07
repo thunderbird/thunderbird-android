@@ -6,6 +6,9 @@ import assertk.assertions.isFalse
 import assertk.assertions.isNull
 import assertk.assertions.isTrue
 import com.fsck.k9.CoreResourceProvider
+import com.fsck.k9.mail.AuthType
+import com.fsck.k9.mail.ConnectionSecurity
+import com.fsck.k9.mail.ServerSettings
 import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.DEFAULT_MAXIMUM_AUTO_DOWNLOAD_MESSAGE_SIZE
 import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.DEFAULT_MESSAGE_FORMAT
 import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.DEFAULT_MESSAGE_FORMAT_AUTO
@@ -26,11 +29,14 @@ import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.UN
 import net.thunderbird.core.android.account.Expunge
 import net.thunderbird.core.android.account.FolderMode
 import net.thunderbird.core.android.account.Identity
-import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.ShowPictures
 import net.thunderbird.core.featureflag.FeatureFlagResult
 import net.thunderbird.core.preference.storage.Storage
 import net.thunderbird.feature.account.AccountIdFactory
+import net.thunderbird.feature.account.storage.profile.AvatarDto
+import net.thunderbird.feature.account.storage.profile.AvatarTypeDto
+import net.thunderbird.feature.account.storage.profile.ProfileDto
 import net.thunderbird.feature.mail.folder.api.SpecialFolderSelection
 import net.thunderbird.feature.notification.NotificationLight
 import net.thunderbird.feature.notification.NotificationSettings
@@ -48,10 +54,7 @@ class DefaultAccountDefaultsProviderTest {
         val resourceProvider = mock<CoreResourceProvider> {
             on { defaultIdentityDescription() } doReturn "Default Identity"
         }
-        val account = LegacyAccountDto(
-            id = AccountIdFactory.create(),
-            isSensitiveDebugLoggingEnabled = { false },
-        )
+        val account = createFakeAccount()
         val identities = listOf(
             Identity(
                 signatureUse = false,
@@ -73,70 +76,69 @@ class DefaultAccountDefaultsProviderTest {
         )
 
         // act
-        testSubject.applyDefaults(account)
+        val defaultedAccount = testSubject.applyDefaults(account)
 
         // assert
-        assertThat(account.automaticCheckIntervalMinutes).isEqualTo(DEFAULT_SYNC_INTERVAL)
-        assertThat(account.idleRefreshMinutes).isEqualTo(24)
-        assertThat(account.displayCount).isEqualTo(DEFAULT_VISIBLE_LIMIT)
-        assertThat(account.accountNumber).isEqualTo(UNASSIGNED_ACCOUNT_NUMBER)
-        assertThat(account.isNotifyNewMail).isTrue()
-        assertThat(account.folderNotifyNewMailMode).isEqualTo(FolderMode.ALL)
-        assertThat(account.isNotifySync).isFalse()
-        assertThat(account.isNotifySelfNewMail).isTrue()
-        assertThat(account.isNotifyContactsMailOnly).isFalse()
-        assertThat(account.isIgnoreChatMessages).isFalse()
-        assertThat(account.messagesNotificationChannelVersion).isEqualTo(0)
-        assertThat(account.folderDisplayMode).isEqualTo(FolderMode.NOT_SECOND_CLASS)
-        assertThat(account.folderSyncMode).isEqualTo(FolderMode.FIRST_CLASS)
-        assertThat(account.folderPushMode).isEqualTo(FolderMode.NONE)
-        assertThat(account.sortType).isEqualTo(DEFAULT_SORT_TYPE)
-        assertThat(account.isSortAscending(DEFAULT_SORT_TYPE)).isEqualTo(DEFAULT_SORT_ASCENDING)
-        assertThat(account.showPictures).isEqualTo(ShowPictures.NEVER)
-        assertThat(account.isSignatureBeforeQuotedText).isFalse()
-        assertThat(account.expungePolicy).isEqualTo(Expunge.EXPUNGE_IMMEDIATELY)
-        assertThat(account.importedAutoExpandFolder).isNull()
-        assertThat(account.legacyInboxFolder).isNull()
-        assertThat(account.maxPushFolders).isEqualTo(10)
-        assertThat(account.isSubscribedFoldersOnly).isFalse()
-        assertThat(account.maximumPolledMessageAge).isEqualTo(-1)
-        assertThat(account.maximumAutoDownloadMessageSize).isEqualTo(DEFAULT_MAXIMUM_AUTO_DOWNLOAD_MESSAGE_SIZE)
-        assertThat(account.messageFormat).isEqualTo(DEFAULT_MESSAGE_FORMAT)
-        assertThat(account.isMessageFormatAuto).isEqualTo(DEFAULT_MESSAGE_FORMAT_AUTO)
-        assertThat(account.isMessageReadReceipt).isEqualTo(DEFAULT_MESSAGE_READ_RECEIPT)
-        assertThat(account.quoteStyle).isEqualTo(DEFAULT_QUOTE_STYLE)
-        assertThat(account.quotePrefix).isEqualTo(DEFAULT_QUOTE_PREFIX)
-        assertThat(account.isDefaultQuotedTextShown).isEqualTo(DEFAULT_QUOTED_TEXT_SHOWN)
-        assertThat(account.isReplyAfterQuote).isEqualTo(DEFAULT_REPLY_AFTER_QUOTE)
-        assertThat(account.isStripSignature).isEqualTo(DEFAULT_STRIP_SIGNATURE)
-        assertThat(account.isSyncRemoteDeletions).isTrue()
-        assertThat(account.openPgpKey).isEqualTo(NO_OPENPGP_KEY)
-        assertThat(account.isRemoteSearchFullText).isFalse()
-        assertThat(account.remoteSearchNumResults).isEqualTo(DEFAULT_REMOTE_SEARCH_NUM_RESULTS)
-        assertThat(account.isUploadSentMessages).isTrue()
-        assertThat(account.isMarkMessageAsReadOnView).isTrue()
-        assertThat(account.isMarkMessageAsReadOnDelete).isTrue()
-        assertThat(account.isAlwaysShowCcBcc).isFalse()
-        assertThat(account.lastSyncTime).isEqualTo(0L)
-        assertThat(account.lastFolderListRefreshTime).isEqualTo(0L)
+        assertThat(defaultedAccount.automaticCheckIntervalMinutes).isEqualTo(DEFAULT_SYNC_INTERVAL)
+        assertThat(defaultedAccount.idleRefreshMinutes).isEqualTo(24)
+        assertThat(defaultedAccount.displayCount).isEqualTo(DEFAULT_VISIBLE_LIMIT)
+        assertThat(defaultedAccount.accountNumber).isEqualTo(UNASSIGNED_ACCOUNT_NUMBER)
+        assertThat(defaultedAccount.isNotifyNewMail).isTrue()
+        assertThat(defaultedAccount.folderNotifyNewMailMode).isEqualTo(FolderMode.ALL)
+        assertThat(defaultedAccount.isNotifySync).isFalse()
+        assertThat(defaultedAccount.isNotifySelfNewMail).isTrue()
+        assertThat(defaultedAccount.isNotifyContactsMailOnly).isFalse()
+        assertThat(defaultedAccount.isIgnoreChatMessages).isFalse()
+        assertThat(defaultedAccount.messagesNotificationChannelVersion).isEqualTo(0)
+        assertThat(defaultedAccount.folderDisplayMode).isEqualTo(FolderMode.NOT_SECOND_CLASS)
+        assertThat(defaultedAccount.folderSyncMode).isEqualTo(FolderMode.FIRST_CLASS)
+        assertThat(defaultedAccount.folderPushMode).isEqualTo(FolderMode.NONE)
+        assertThat(defaultedAccount.sortType).isEqualTo(DEFAULT_SORT_TYPE)
+        assertThat(defaultedAccount.sortAscending[DEFAULT_SORT_TYPE]).isEqualTo(DEFAULT_SORT_ASCENDING)
+        assertThat(defaultedAccount.showPictures).isEqualTo(ShowPictures.NEVER)
+        assertThat(defaultedAccount.isSignatureBeforeQuotedText).isFalse()
+        assertThat(defaultedAccount.expungePolicy).isEqualTo(Expunge.EXPUNGE_IMMEDIATELY)
+        assertThat(defaultedAccount.importedAutoExpandFolder).isNull()
+        assertThat(defaultedAccount.legacyInboxFolder).isNull()
+        assertThat(defaultedAccount.maxPushFolders).isEqualTo(10)
+        assertThat(defaultedAccount.isSubscribedFoldersOnly).isFalse()
+        assertThat(defaultedAccount.maximumPolledMessageAge).isEqualTo(-1)
+        assertThat(defaultedAccount.maximumAutoDownloadMessageSize)
+            .isEqualTo(DEFAULT_MAXIMUM_AUTO_DOWNLOAD_MESSAGE_SIZE)
+        assertThat(defaultedAccount.messageFormat).isEqualTo(DEFAULT_MESSAGE_FORMAT)
+        assertThat(defaultedAccount.isMessageFormatAuto).isEqualTo(DEFAULT_MESSAGE_FORMAT_AUTO)
+        assertThat(defaultedAccount.isMessageReadReceipt).isEqualTo(DEFAULT_MESSAGE_READ_RECEIPT)
+        assertThat(defaultedAccount.quoteStyle).isEqualTo(DEFAULT_QUOTE_STYLE)
+        assertThat(defaultedAccount.quotePrefix).isEqualTo(DEFAULT_QUOTE_PREFIX)
+        assertThat(defaultedAccount.isDefaultQuotedTextShown).isEqualTo(DEFAULT_QUOTED_TEXT_SHOWN)
+        assertThat(defaultedAccount.isReplyAfterQuote).isEqualTo(DEFAULT_REPLY_AFTER_QUOTE)
+        assertThat(defaultedAccount.isStripSignature).isEqualTo(DEFAULT_STRIP_SIGNATURE)
+        assertThat(defaultedAccount.isSyncRemoteDeletions).isTrue()
+        assertThat(defaultedAccount.openPgpKey).isEqualTo(NO_OPENPGP_KEY)
+        assertThat(defaultedAccount.isRemoteSearchFullText).isFalse()
+        assertThat(defaultedAccount.remoteSearchNumResults).isEqualTo(DEFAULT_REMOTE_SEARCH_NUM_RESULTS)
+        assertThat(defaultedAccount.isUploadSentMessages).isTrue()
+        assertThat(defaultedAccount.isMarkMessageAsReadOnView).isTrue()
+        assertThat(defaultedAccount.isMarkMessageAsReadOnDelete).isTrue()
+        assertThat(defaultedAccount.isAlwaysShowCcBcc).isFalse()
+        assertThat(defaultedAccount.lastSyncTime).isEqualTo(0L)
+        assertThat(defaultedAccount.lastFolderListRefreshTime).isEqualTo(0L)
 
-        assertThat(account.archiveFolderId).isNull()
-        assertThat(account.archiveFolderSelection).isEqualTo(SpecialFolderSelection.AUTOMATIC)
-        assertThat(account.draftsFolderId).isNull()
-        assertThat(account.draftsFolderSelection).isEqualTo(SpecialFolderSelection.AUTOMATIC)
-        assertThat(account.sentFolderId).isNull()
-        assertThat(account.sentFolderSelection).isEqualTo(SpecialFolderSelection.AUTOMATIC)
-        assertThat(account.spamFolderId).isNull()
-        assertThat(account.spamFolderSelection).isEqualTo(SpecialFolderSelection.AUTOMATIC)
-        assertThat(account.trashFolderId).isNull()
-        assertThat(account.trashFolderSelection).isEqualTo(SpecialFolderSelection.AUTOMATIC)
-        assertThat(account.archiveFolderId).isNull()
-        assertThat(account.archiveFolderSelection).isEqualTo(SpecialFolderSelection.AUTOMATIC)
+        assertThat(defaultedAccount.archiveFolderId).isNull()
+        assertThat(defaultedAccount.archiveFolderSelection).isEqualTo(SpecialFolderSelection.AUTOMATIC)
+        assertThat(defaultedAccount.draftsFolderId).isNull()
+        assertThat(defaultedAccount.draftsFolderSelection).isEqualTo(SpecialFolderSelection.AUTOMATIC)
+        assertThat(defaultedAccount.sentFolderId).isNull()
+        assertThat(defaultedAccount.sentFolderSelection).isEqualTo(SpecialFolderSelection.AUTOMATIC)
+        assertThat(defaultedAccount.spamFolderId).isNull()
+        assertThat(defaultedAccount.spamFolderSelection).isEqualTo(SpecialFolderSelection.AUTOMATIC)
+        assertThat(defaultedAccount.trashFolderId).isNull()
+        assertThat(defaultedAccount.trashFolderSelection).isEqualTo(SpecialFolderSelection.AUTOMATIC)
 
-        assertThat(account.identities).isEqualTo(identities)
-        assertThat(account.notificationSettings).isEqualTo(notificationSettings)
+        assertThat(defaultedAccount.identities).isEqualTo(identities)
+        assertThat(defaultedAccount.notificationSettings).isEqualTo(notificationSettings)
 
-        assertThat(account.isChangedVisibleLimits).isFalse()
+        assertThat(defaultedAccount.isChangedVisibleLimits).isFalse()
     }
 
     @Test
@@ -145,10 +147,7 @@ class DefaultAccountDefaultsProviderTest {
         val resourceProvider = mock<CoreResourceProvider> {
             on { defaultIdentityDescription() } doReturn "Default Identity"
         }
-        val account = LegacyAccountDto(
-            id = AccountIdFactory.create(),
-            isSensitiveDebugLoggingEnabled = { false },
-        )
+        val account = createFakeAccount()
         val storage = mock<Storage> {
             on { contains("${account.id}.notifyNewMail") } doReturn false
             on { getBoolean("${account.id}.notifyNewMail", false) } doReturn false
@@ -162,11 +161,11 @@ class DefaultAccountDefaultsProviderTest {
         )
 
         // act
-        testSubject.applyOverwrites(account, storage)
+        val patchedAccount = testSubject.applyOverwrites(account, storage)
 
         // assert
-        assertThat(account.isNotifyNewMail).isFalse()
-        assertThat(account.isNotifySelfNewMail).isFalse()
+        assertThat(patchedAccount.isNotifyNewMail).isFalse()
+        assertThat(patchedAccount.isNotifySelfNewMail).isFalse()
     }
 
     @Test
@@ -175,10 +174,7 @@ class DefaultAccountDefaultsProviderTest {
         val resourceProvider = mock<CoreResourceProvider> {
             on { defaultIdentityDescription() } doReturn "Default Identity"
         }
-        val account = LegacyAccountDto(
-            id = AccountIdFactory.create(),
-            isSensitiveDebugLoggingEnabled = { false },
-        )
+        val account = createFakeAccount()
         val storage = mock<Storage> {
             on { contains("${account.id}.notifyNewMail") } doReturn false
             on { getBoolean("${account.id}.notifyNewMail", false) } doReturn false
@@ -192,11 +188,11 @@ class DefaultAccountDefaultsProviderTest {
         )
 
         // act
-        testSubject.applyOverwrites(account, storage)
+        val patchedAccount = testSubject.applyOverwrites(account, storage)
 
         // assert
-        assertThat(account.isNotifyNewMail).isTrue()
-        assertThat(account.isNotifySelfNewMail).isTrue()
+        assertThat(patchedAccount.isNotifyNewMail).isTrue()
+        assertThat(patchedAccount.isNotifySelfNewMail).isTrue()
     }
 
     @Suppress("MaxLineLength")
@@ -206,10 +202,7 @@ class DefaultAccountDefaultsProviderTest {
         val resourceProvider = mock<CoreResourceProvider> {
             on { defaultIdentityDescription() } doReturn "Default Identity"
         }
-        val account = LegacyAccountDto(
-            id = AccountIdFactory.create(),
-            isSensitiveDebugLoggingEnabled = { false },
-        )
+        val account = createFakeAccount()
         val storage = mock<Storage> {
             on { contains("${account.id}.notifyNewMail") } doReturn true
             on { getBoolean("${account.id}.notifyNewMail", false) } doReturn false
@@ -223,11 +216,11 @@ class DefaultAccountDefaultsProviderTest {
         )
 
         // act
-        testSubject.applyOverwrites(account, storage)
+        val patchedAccount = testSubject.applyOverwrites(account, storage)
 
         // assert
-        assertThat(account.isNotifyNewMail).isFalse()
-        assertThat(account.isNotifySelfNewMail).isFalse()
+        assertThat(patchedAccount.isNotifyNewMail).isFalse()
+        assertThat(patchedAccount.isNotifySelfNewMail).isFalse()
     }
 
     @Suppress("MaxLineLength")
@@ -237,10 +230,7 @@ class DefaultAccountDefaultsProviderTest {
         val resourceProvider = mock<CoreResourceProvider> {
             on { defaultIdentityDescription() } doReturn "Default Identity"
         }
-        val account = LegacyAccountDto(
-            id = AccountIdFactory.create(),
-            isSensitiveDebugLoggingEnabled = { false },
-        )
+        val account = createFakeAccount()
         val storage = mock<Storage> {
             on { contains("${account.id}.notifyNewMail") } doReturn false
             on { getBoolean("${account.id}.notifyNewMail", false) } doReturn false
@@ -254,10 +244,58 @@ class DefaultAccountDefaultsProviderTest {
         )
 
         // act
-        testSubject.applyOverwrites(account, storage)
+        val patchedAccount = testSubject.applyOverwrites(account, storage)
 
         // assert
-        assertThat(account.isNotifyNewMail).isTrue()
-        assertThat(account.isNotifySelfNewMail).isTrue()
+        assertThat(patchedAccount.isNotifyNewMail).isTrue()
+        assertThat(patchedAccount.isNotifySelfNewMail).isTrue()
+    }
+
+    private fun createFakeAccount(): LegacyAccount {
+        val accountId = AccountIdFactory.create()
+        return LegacyAccount(
+            id = accountId,
+            name = "name",
+            email = "user@example.com",
+            profile = ProfileDto(
+                id = accountId,
+                name = "name",
+                color = -1,
+                avatar = AvatarDto(
+                    id = accountId,
+                    avatarType = AvatarTypeDto.MONOGRAM,
+                    avatarMonogram = "NA",
+                    avatarImageUri = null,
+                    avatarIconName = null,
+                ),
+            ),
+            incomingServerSettings = ServerSettings(
+                type = "imap",
+                host = "host",
+                port = 993,
+                connectionSecurity = ConnectionSecurity.SSL_TLS_REQUIRED,
+                authenticationType = AuthType.PLAIN,
+                username = "user",
+                password = "pass",
+                clientCertificateAlias = null,
+            ),
+            outgoingServerSettings = ServerSettings(
+                type = "smtp",
+                host = "host",
+                port = 465,
+                connectionSecurity = ConnectionSecurity.SSL_TLS_REQUIRED,
+                authenticationType = AuthType.PLAIN,
+                username = "user",
+                password = "pass",
+                clientCertificateAlias = null,
+            ),
+            identities = listOf(
+                Identity(
+                    signatureUse = false,
+                    signature = null,
+                    description = "Default Identity",
+                ),
+            ),
+        )
     }
 }

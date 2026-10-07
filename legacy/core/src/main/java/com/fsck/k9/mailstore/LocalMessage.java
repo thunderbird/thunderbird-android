@@ -13,6 +13,7 @@ import androidx.annotation.VisibleForTesting;
 import app.k9mail.legacy.message.controller.MessageReference;
 import com.fsck.k9.core.BuildConfig;
 import com.fsck.k9.mail.Address;
+import net.thunderbird.core.android.account.LegacyAccount;
 import net.thunderbird.core.common.mail.Flag;
 import net.thunderbird.core.common.exception.MessagingException;
 import com.fsck.k9.mail.MimeType;
@@ -21,7 +22,6 @@ import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.message.MessageHeaderParser;
 import com.fsck.k9.mailstore.LockableDatabase.DbCallback;
 import app.k9mail.legacy.message.extractors.PreviewResult.PreviewType;
-import net.thunderbird.core.android.account.LegacyAccountDto;
 import net.thunderbird.feature.account.AccountId;
 import net.thunderbird.legacy.logging.Log;
 import net.thunderbird.core.preference.GeneralSettingsManager;
@@ -378,8 +378,8 @@ public class LocalMessage extends MimeMessage {
         return rootId;
     }
 
-    public LegacyAccountDto getAccount() {
-        return localStore.getAccount();
+    public AccountId getAccountId() {
+        return localStore.getAccountId();
     }
 
     public MessageReference makeMessageReference() {
@@ -459,8 +459,4 @@ public class LocalMessage extends MimeMessage {
         return result;
     }
 
-    @Override
-    public AccountId getAccountId() {
-        return getAccount().getId();
-    }
 }

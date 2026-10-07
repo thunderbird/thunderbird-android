@@ -9,18 +9,15 @@ import androidx.core.content.IntentCompat
 import androidx.core.os.BundleCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import com.fsck.k9.EmailAddressValidator
-import com.fsck.k9.Preferences
 import com.fsck.k9.activity.account.identity.LegacyIdentitySignatureWebViewConfigurator
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.BaseActivity
 import com.google.android.material.checkbox.MaterialCheckBox
-import kotlinx.coroutines.flow.update
 import net.thunderbird.core.android.account.Identity
-import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.feature.account.AccountIdFactory
 import org.koin.android.ext.android.inject
 
@@ -28,7 +25,9 @@ class EditIdentity : BaseActivity() {
     private val emailAddressValidator: EmailAddressValidator by inject()
     private val legacyIdentitySignatureWebViewConfigurator: LegacyIdentitySignatureWebViewConfigurator by inject()
 
-    private lateinit var account: LegacyAccountDto
+    private val accountManager: LegacyAccountManager by inject()
+
+    private lateinit var account: LegacyAccount
     private lateinit var identity: Identity
 
     private lateinit var description: EditText
@@ -51,7 +50,7 @@ class EditIdentity : BaseActivity() {
 
         identityIndex = intent.getIntExtra(EXTRA_IDENTITY_INDEX, -1)
         val accountUuid = intent.getStringExtra(EXTRA_ACCOUNT) ?: error("Missing account UUID")
-        account = Preferences.getPreferences().getById(AccountIdFactory.of(accountUuid))
+        account = accountManager.findById(AccountIdFactory.of(accountUuid))
             ?: error("Couldn't find account")
 
         identity = when {
@@ -141,7 +140,7 @@ class EditIdentity : BaseActivity() {
             replyTo = replyTo.text.toString().trim().takeUnless { it.isBlank() },
         )
 
-        val identities = account.identities
+        val identities = account.identities.toMutableList()
         if (identityIndex == -1) {
             identities.add(identity)
         } else {
@@ -149,7 +148,7 @@ class EditIdentity : BaseActivity() {
             identities.add(identityIndex, identity)
         }
 
-        Preferences.getPreferences().saveAccount(account)
+        accountManager.updateSync(account.copy(identities = identities))
 
         finish()
     }

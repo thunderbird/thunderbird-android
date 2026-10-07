@@ -118,6 +118,12 @@ class AccountColorPickerTest {
     }
 
     private companion object {
+        val ACCOUNT_ID_1 = AccountIdFactory.create()
+        val ACCOUNT_ID_2 = AccountIdFactory.create()
+        val ACCOUNT_ID_3 = AccountIdFactory.create()
+        val ACCOUNT_ID_4 = AccountIdFactory.create()
+        val ACCOUNT_ID_5 = AccountIdFactory.create()
+
         const val COLOR_RED = 0xFF0000
         const val COLOR_GREEN = 0x00FF00
         const val COLOR_BLUE = 0x0000FF
@@ -129,37 +135,52 @@ class AccountColorPickerTest {
         )
 
         val ACCOUNT_PROFILE_RED_1 = AccountProfile(
-            id = AccountIdFactory.create(),
+            id = ACCOUNT_ID_1,
             name = "Account Red 1",
             color = COLOR_RED,
-            avatar = Avatar.Icon(name = "icon1"),
+            avatar = Avatar.Icon(
+                id = ACCOUNT_ID_1,
+                name = "icon1",
+            ),
         )
         val ACCOUNT_PROFILE_RED_2 = AccountProfile(
-            id = AccountIdFactory.create(),
+            id = ACCOUNT_ID_2,
             name = "Account Red 2",
             color = COLOR_RED,
-            avatar = Avatar.Icon(name = "icon4"),
+            avatar = Avatar.Icon(
+                id = ACCOUNT_ID_2,
+                name = "icon4",
+            ),
         )
 
         val ACCOUNT_PROFILE_GREEN_1 = AccountProfile(
-            id = AccountIdFactory.create(),
+            id = ACCOUNT_ID_3,
             name = "Account Green 1",
             color = COLOR_GREEN,
-            avatar = Avatar.Icon(name = "icon2"),
+            avatar = Avatar.Icon(
+                id = ACCOUNT_ID_3,
+                name = "icon2",
+            ),
         )
 
         val ACCOUNT_PROFILE_GREEN_2 = AccountProfile(
-            id = AccountIdFactory.create(),
+            id = ACCOUNT_ID_4,
             name = "Account Green 2",
             color = COLOR_GREEN,
-            avatar = Avatar.Icon(name = "icon5"),
+            avatar = Avatar.Icon(
+                id = ACCOUNT_ID_4,
+                name = "icon5",
+            ),
         )
 
         val ACCOUNT_PROFILE_BLUE_1 = AccountProfile(
-            id = AccountIdFactory.create(),
+            id = ACCOUNT_ID_5,
             name = "Account Blue 1",
             color = COLOR_BLUE,
-            avatar = Avatar.Icon(name = "icon3"),
+            avatar = Avatar.Icon(
+                id = ACCOUNT_ID_5,
+                name = "icon3",
+            ),
         )
     }
 }

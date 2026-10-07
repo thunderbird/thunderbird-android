@@ -91,6 +91,7 @@ include(
 
 include(
     ":feature:account:api",
+    ":feature:account:internal",
     ":feature:account:avatar:api",
     ":feature:account:avatar:impl",
     ":feature:account:core",

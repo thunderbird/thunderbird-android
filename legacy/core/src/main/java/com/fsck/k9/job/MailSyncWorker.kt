@@ -4,20 +4,19 @@ import android.content.ContentResolver
 import android.content.Context
 import androidx.work.Worker
 import androidx.work.WorkerParameters
-import com.fsck.k9.Preferences
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.mail.AuthType
-import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.legacy.logging.Log
 import net.thunderbird.core.preference.BackgroundOps
 import net.thunderbird.core.preference.GeneralSettingsManager
-import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.AccountIdFactory
 
 // IMPORTANT: Update K9WorkerFactory when moving this class and the FQCN no longer starts with "com.fsck.k9".
 class MailSyncWorker(
     private val messagingController: MessagingController,
-    private val preferences: Preferences,
+    private val accountManager: LegacyAccountManager,
     private val generalSettingsManager: GeneralSettingsManager,
     context: Context,
     parameters: WorkerParameters,
@@ -34,7 +33,7 @@ class MailSyncWorker(
             return Result.success()
         }
 
-        val account = preferences.getById(accountId)
+        val account = accountManager.findById(accountId)
         if (account == null) {
             Log.e("Account %s not found. Can't perform mail sync.", accountId)
             return Result.failure()
@@ -55,7 +54,7 @@ class MailSyncWorker(
             return Result.success()
         }
 
-        val success = messagingController.performPeriodicMailSync(account)
+        val success = messagingController.performPeriodicMailSync(accountId)
 
         return if (success) Result.success() else Result.retry()
     }
@@ -68,7 +67,7 @@ class MailSyncWorker(
         }
     }
 
-    private val LegacyAccountDto.isPeriodicMailSyncDisabled
+    private val LegacyAccount.isPeriodicMailSyncDisabled
         get() = automaticCheckIntervalMinutes <= 0
 
     companion object {

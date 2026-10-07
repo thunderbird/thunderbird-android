@@ -2,8 +2,8 @@ package app.k9mail.feature.widget.unread
 
 import app.k9mail.legacy.message.controller.SimpleMessagingListener
 import com.fsck.k9.mail.Message
-import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.logging.Logger
+import net.thunderbird.feature.account.AccountId
 
 private const val TAG = "UnreadWidgetUpdateListener"
 
@@ -22,18 +22,18 @@ class UnreadWidgetUpdateListener(
     }
 
     override fun synchronizeMailboxRemovedMessage(
-        account: LegacyAccountDto,
+        accountId: AccountId,
         folderServerId: String,
         messageServerId: String,
     ) {
         updateUnreadWidget()
     }
 
-    override fun synchronizeMailboxNewMessage(account: LegacyAccountDto, folderServerId: String, message: Message) {
+    override fun synchronizeMailboxNewMessage(accountId: AccountId, folderServerId: String, message: Message) {
         updateUnreadWidget()
     }
 
-    override fun folderStatusChanged(account: LegacyAccountDto, folderId: Long) {
+    override fun folderStatusChanged(accountId: AccountId, folderId: Long) {
         updateUnreadWidget()
     }
 }

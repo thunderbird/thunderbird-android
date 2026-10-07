@@ -3,6 +3,7 @@ package net.thunderbird.feature.navigation.drawer.dropdown.ui
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import net.thunderbird.core.ui.contract.mvi.observe
+import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.navigation.drawer.dropdown.FolderDrawerState
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.DrawerContract.Effect
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.DrawerContract.Event
@@ -13,8 +14,8 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 internal fun DrawerView(
     drawerState: FolderDrawerState,
-    openAccount: (accountId: String) -> Unit,
-    openFolder: (accountId: String, folderId: Long) -> Unit,
+    openAccount: (accountId: AccountId) -> Unit,
+    openFolder: (accountId: AccountId, folderId: Long) -> Unit,
     openUnifiedFolder: () -> Unit,
     openManageFolders: () -> Unit,
     openSettings: () -> Unit,
@@ -43,8 +44,8 @@ internal fun DrawerView(
         }
     }
 
-    LaunchedEffect(drawerState.selectedAccountUuid) {
-        dispatch(Event.SelectAccount(drawerState.selectedAccountUuid))
+    LaunchedEffect(drawerState.selectedAccountId) {
+        dispatch(Event.SelectAccount(drawerState.selectedAccountId))
     }
 
     LaunchedEffect(drawerState.selectedFolderId) {

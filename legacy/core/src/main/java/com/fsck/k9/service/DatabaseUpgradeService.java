@@ -11,11 +11,11 @@ import android.os.IBinder;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import app.k9mail.legacy.di.DI;
 import com.fsck.k9.K9;
-import com.fsck.k9.Preferences;
 import com.fsck.k9.mail.power.PowerManager;
 import com.fsck.k9.mail.power.WakeLock;
 import com.fsck.k9.mailstore.LocalStoreProvider;
-import net.thunderbird.core.android.account.LegacyAccountDto;
+import net.thunderbird.core.android.account.LegacyAccount;
+import net.thunderbird.core.android.account.LegacyAccountManager;
 import net.thunderbird.feature.account.AccountId;
 import net.thunderbird.legacy.logging.Log;
 
@@ -179,20 +179,21 @@ public class DatabaseUpgradeService extends Service {
      * Upgrade the accounts' databases.
      */
     private void upgradeDatabases() {
-        Preferences preferences = Preferences.getPreferences();
+        LegacyAccountManager legacyAccountManager = DI.get(LegacyAccountManager.class);
 
-        List<LegacyAccountDto> accounts = preferences.getAccounts();
+        List<LegacyAccount> accounts = legacyAccountManager.findAll();
+
         mProgressEnd = accounts.size();
         mProgress = 0;
 
-        for (LegacyAccountDto account : accounts) {
+        for (LegacyAccount account : accounts) {
             mAccountId = account.getId();
 
             sendProgressBroadcast(mAccountId, mProgress, mProgressEnd);
 
             try {
                 // Account.getLocalStore() is blocking and will upgrade the database if necessary
-                DI.get(LocalStoreProvider.class).getInstance(account);
+                DI.get(LocalStoreProvider.class).getInstance(account.getId());
             } catch (Exception e) {
                 Log.e(e, "Error while upgrading database");
             }

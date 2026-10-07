@@ -306,7 +306,10 @@ class LoadFolderInformationSideEffectTest : BaseSideEffectHandlerTest() {
                         id = accountId,
                         name = "Test",
                         color = expectedColor,
-                        avatar = Avatar.Monogram("T"),
+                        avatar = Avatar.Monogram(
+                            id = accountId,
+                            value = "T",
+                        ),
                     ),
                 ),
             ),
@@ -485,7 +488,10 @@ class LoadFolderInformationSideEffectTest : BaseSideEffectHandlerTest() {
             id = accountId,
             name = "Test $accountId",
             color = color.toArgb(),
-            avatar = Avatar.Monogram("T"),
+            avatar = Avatar.Monogram(
+                id = accountId,
+                value = "T",
+            ),
         )
 
     private class FakeAccountProfileRepository(

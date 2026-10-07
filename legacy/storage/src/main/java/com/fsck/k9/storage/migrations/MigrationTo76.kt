@@ -4,7 +4,7 @@ import android.content.ContentValues
 import android.database.sqlite.SQLiteDatabase
 import app.k9mail.core.android.common.database.map
 import com.fsck.k9.mailstore.MigrationsHelper
-import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.common.mail.Protocols
 import net.thunderbird.legacy.logging.Log
 
@@ -27,26 +27,26 @@ import net.thunderbird.legacy.logging.Log
  */
 internal class MigrationTo76(private val db: SQLiteDatabase, private val migrationsHelper: MigrationsHelper) {
     fun cleanUpSpecialLocalFolders() {
-        val account = migrationsHelper.account
+        var account = migrationsHelper.account
 
         if (account.isPop3()) {
             Log.v("Cleaning up Drafts folder")
             val draftsFolderId = account.draftsFolderId ?: createFolder("Drafts", "Drafts", DRAFTS_FOLDER_TYPE)
             moveMessages(DRAFTS_FOLDER_TYPE, draftsFolderId)
-            account.draftsFolderId = draftsFolderId
+            account = account.copy(draftsFolderId = draftsFolderId)
 
             Log.v("Cleaning up Sent folder")
             val sentFolderId = account.sentFolderId ?: createFolder("Sent", "Sent", SENT_FOLDER_TYPE)
             moveMessages(SENT_FOLDER_TYPE, sentFolderId)
-            account.sentFolderId = sentFolderId
+            account = account.copy(sentFolderId = sentFolderId)
 
             Log.v("Cleaning up Trash folder")
             val trashFolderId = account.trashFolderId ?: createFolder("Trash", "Trash", TRASH_FOLDER_TYPE)
             moveMessages(TRASH_FOLDER_TYPE, trashFolderId)
-            account.trashFolderId = trashFolderId
+            account = account.copy(trashFolderId = trashFolderId)
         }
 
-        migrationsHelper.saveAccount()
+        migrationsHelper.saveAccount(account)
     }
 
     private fun createFolder(name: String, serverId: String, type: String): Long {
@@ -108,7 +108,7 @@ internal class MigrationTo76(private val db: SQLiteDatabase, private val migrati
         db.delete("folders", "id = ?", arrayOf(folderId.toString()))
     }
 
-    private fun LegacyAccountDto.isPop3() = incomingServerSettings.type == Protocols.POP3
+    private fun LegacyAccount.isPop3() = incomingServerSettings.type == Protocols.POP3
 
     companion object {
         private const val DRAFTS_FOLDER_TYPE = "drafts"

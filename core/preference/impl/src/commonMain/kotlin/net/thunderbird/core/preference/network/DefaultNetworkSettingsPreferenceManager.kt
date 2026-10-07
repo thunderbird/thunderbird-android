@@ -17,6 +17,7 @@ import net.thunderbird.core.preference.PreferenceScope
 import net.thunderbird.core.preference.storage.Storage
 import net.thunderbird.core.preference.storage.StorageEditor
 import net.thunderbird.core.preference.storage.StoragePersister
+import net.thunderbird.core.preference.storage.StorageProvider
 import net.thunderbird.core.preference.storage.getEnumOrDefault
 import net.thunderbird.core.preference.storage.putEnum
 
@@ -24,8 +25,7 @@ private const val TAG = "DefaultNetworkSettingsPreferenceManager"
 
 class DefaultNetworkSettingsPreferenceManager(
     private val logger: Logger,
-    private val storagePersister: StoragePersister,
-    private val storageEditor: StorageEditor,
+    private val storageProvider: StorageProvider,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
     private var scope: CoroutineScope = CoroutineScope(SupervisorJob()),
     preferenceChangeBroker: PreferenceChangeBroker,
@@ -37,7 +37,7 @@ class DefaultNetworkSettingsPreferenceManager(
     private val configState: MutableStateFlow<NetworkSettings> = MutableStateFlow(value = loadConfig())
     private val mutex = Mutex()
     private val storage: Storage
-        get() = storagePersister.loadValues()
+        get() = storageProvider.loadLatestStorage()
 
     override fun getConfig(): NetworkSettings = configState.value
     override fun getConfigFlow(): Flow<NetworkSettings> = configState
@@ -59,6 +59,7 @@ class DefaultNetworkSettingsPreferenceManager(
         logger.debug(TAG) { "writeConfig() called with: config = $config" }
         scope.launch(ioDispatcher) {
             mutex.withLock {
+                val storageEditor = storageProvider.createStorageEditor()
                 storageEditor.putEnum(NetworkSettingKey.BackgroundOperations.value, config.backgroundOps)
                 storageEditor.commit().also { commited ->
                     logger.verbose(TAG) { "writeConfig: storageEditor.commit() resulted in: $commited" }

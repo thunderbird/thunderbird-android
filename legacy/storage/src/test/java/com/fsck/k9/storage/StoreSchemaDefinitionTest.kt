@@ -18,15 +18,18 @@ import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ConnectionSecurity
 import com.fsck.k9.mail.ServerSettings
 import com.fsck.k9.mailstore.MigrationsHelper
+import com.fsck.k9.storage.migrations.FakeMigrationsHelper
 import net.thunderbird.core.android.account.FolderMode
-import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.android.account.Identity
+import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.logging.testing.TestLogger
 import net.thunderbird.feature.account.AccountIdFactory
+import net.thunderbird.feature.account.storage.profile.AvatarDto
+import net.thunderbird.feature.account.storage.profile.AvatarTypeDto
+import net.thunderbird.feature.account.storage.profile.ProfileDto
 import net.thunderbird.legacy.logging.Log
 import org.junit.Before
 import org.junit.Test
-import org.mockito.kotlin.doReturn
-import org.mockito.kotlin.mock
 import org.robolectric.shadows.ShadowLog
 
 class StoreSchemaDefinitionTest : RobolectricTest() {
@@ -381,30 +384,26 @@ class StoreSchemaDefinitionTest : RobolectricTest() {
 
     private fun createStoreSchemaDefinition(): StoreSchemaDefinition {
         val account = createAccount()
-        val migrationsHelper = object : MigrationsHelper {
-            override fun getAccount(): LegacyAccountDto {
-                return account
-            }
-
-            override fun saveAccount() {
-                // Do nothing
-            }
-        }
+        val migrationsHelper = FakeMigrationsHelper(account)
 
         return StoreSchemaDefinition(migrationsHelper)
     }
 
-    private fun createAccount(): LegacyAccountDto {
-        return mock<LegacyAccountDto> {
-            on { id } doReturn AccountIdFactory.of(ACCOUNT_UUID)
-            on { legacyInboxFolder } doReturn "Inbox"
-            on { importedTrashFolder } doReturn "Trash"
-            on { importedDraftsFolder } doReturn "Drafts"
-            on { importedSpamFolder } doReturn "Spam"
-            on { importedSentFolder } doReturn "Sent"
-            on { importedArchiveFolder } doReturn null
-
-            on { incomingServerSettings } doReturn ServerSettings(
+    private fun createAccount(): LegacyAccount {
+        val accountId = AccountIdFactory.of(ACCOUNT_UUID)
+        val avatar = AvatarDto(
+            id = accountId,
+            avatarType = AvatarTypeDto.MONOGRAM,
+            avatarMonogram = null,
+            avatarImageUri = null,
+            avatarIconName = null,
+        )
+        return LegacyAccount(
+            id = accountId,
+            name = "Account",
+            email = "account@example.org",
+            profile = ProfileDto(id = accountId, name = "Account", color = 0, avatar = avatar),
+            incomingServerSettings = ServerSettings(
                 type = "dummy",
                 host = "",
                 port = -1,
@@ -413,13 +412,28 @@ class StoreSchemaDefinitionTest : RobolectricTest() {
                 username = "",
                 password = "",
                 clientCertificateAlias = null,
-            )
-
-            on { folderNotifyNewMailMode } doReturn FolderMode.ALL
-            on { folderPushMode } doReturn FolderMode.ALL
-            on { folderSyncMode } doReturn FolderMode.ALL
-            on { folderDisplayMode } doReturn FolderMode.ALL
-        }
+            ),
+            outgoingServerSettings = ServerSettings(
+                type = "dummy",
+                host = "",
+                port = -1,
+                connectionSecurity = ConnectionSecurity.NONE,
+                authenticationType = AuthType.PLAIN,
+                username = "",
+                password = "",
+                clientCertificateAlias = null,
+            ),
+            identities = listOf(Identity(email = "account@example.org")),
+            legacyInboxFolder = "Inbox",
+            importedTrashFolder = "Trash",
+            importedDraftsFolder = "Drafts",
+            importedSpamFolder = "Spam",
+            importedSentFolder = "Sent",
+            folderNotifyNewMailMode = FolderMode.ALL,
+            folderPushMode = FolderMode.ALL,
+            folderSyncMode = FolderMode.ALL,
+            folderDisplayMode = FolderMode.ALL,
+        )
     }
 
     private fun createNewDatabase(): SQLiteDatabase {

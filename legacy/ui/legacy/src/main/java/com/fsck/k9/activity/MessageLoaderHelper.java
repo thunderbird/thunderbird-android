@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Parcelable;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.UiThread;
@@ -15,13 +16,14 @@ import androidx.fragment.app.FragmentManager;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.app.LoaderManager.LoaderCallbacks;
 import androidx.loader.content.Loader;
-import com.fsck.k9.Preferences;
 import com.fsck.k9.autocrypt.AutocryptOperations;
 import app.k9mail.legacy.message.controller.MessageReference;
 import com.fsck.k9.controller.MessagingController;
 import app.k9mail.legacy.message.controller.MessagingListener;
 import app.k9mail.legacy.message.controller.SimpleMessagingListener;
 import com.fsck.k9.helper.RetainFragment;
+import net.thunderbird.core.android.account.LegacyAccount;
+import net.thunderbird.core.android.account.LegacyAccountManager;
 import net.thunderbird.core.common.mail.Flag;
 import net.thunderbird.core.common.exception.MessagingException;
 import com.fsck.k9.mailstore.LocalMessage;
@@ -33,43 +35,35 @@ import com.fsck.k9.ui.crypto.MessageCryptoHelper;
 import com.fsck.k9.ui.crypto.OpenPgpApiFactory;
 import com.fsck.k9.ui.message.LocalMessageExtractorLoader;
 import com.fsck.k9.ui.message.LocalMessageLoader;
-import net.thunderbird.core.android.account.LegacyAccountDto;
+import net.thunderbird.feature.account.AccountId;
 import org.openintents.openpgp.OpenPgpDecryptionResult;
 import net.thunderbird.legacy.logging.Log;
 
 
-/** This class is responsible for loading a message start to finish, and
- * retaining or reloading the loading state on configuration changes.
- *
- * In particular, it takes care of the following:
- *  - load raw message data from the database, using LocalMessageLoader
- *  - download partial message content if it is missing using MessagingController
- *  - apply crypto operations if applicable, using MessageCryptoHelper
- *  - extract MessageViewInfo from the message and crypto data using DecodeMessageLoader
- *  - download complete message content for partially downloaded messages if requested
- *
- * No state is retained in this object itself. Instead, state is stored in the
- * message loaders and the MessageCryptoHelper which is stored in a
- * RetainFragment. The public interface is intended for use by an Activity or
- * Fragment, which should construct a new instance of this class in onCreate,
- * then call asyncStartOrResumeLoadingMessage to start or resume loading the
- * message, receiving callbacks when it is loaded.
- *
- * When the Activity or Fragment is ultimately destroyed, it should call
- * onDestroy, which stops loading and deletes all state kept in loaders and
- * fragments by this object. If it is only destroyed for a configuration
- * change, it should call onDestroyChangingConfigurations, which cancels any
- * further callbacks from this object but retains the loading state to resume
- * from at the next call to asyncStartOrResumeLoadingMessage.
- *
- * If the message is already loaded, a call to asyncStartOrResumeLoadingMessage
- * will typically load by starting the decode message loader, retrieving the
- * already cached LocalMessage. This message will be passed to the retained
- * CryptoMessageHelper instance, returning the already cached
- * MessageCryptoAnnotations. These two objects will be checked against the
- * retained DecodeMessageLoader, returning the final result. At each
- * intermediate step, the input of the respective loaders will be checked for
- * consistency, reloading if there is a mismatch.
+/**
+ * This class is responsible for loading a message start to finish, and retaining or reloading the loading state on
+ * configuration changes.
+ * <p>
+ * In particular, it takes care of the following: - load raw message data from the database, using LocalMessageLoader -
+ * download partial message content if it is missing using MessagingController - apply crypto operations if applicable,
+ * using MessageCryptoHelper - extract MessageViewInfo from the message and crypto data using DecodeMessageLoader -
+ * download complete message content for partially downloaded messages if requested
+ * <p>
+ * No state is retained in this object itself. Instead, state is stored in the message loaders and the
+ * MessageCryptoHelper which is stored in a RetainFragment. The public interface is intended for use by an Activity or
+ * Fragment, which should construct a new instance of this class in onCreate, then call asyncStartOrResumeLoadingMessage
+ * to start or resume loading the message, receiving callbacks when it is loaded.
+ * <p>
+ * When the Activity or Fragment is ultimately destroyed, it should call onDestroy, which stops loading and deletes all
+ * state kept in loaders and fragments by this object. If it is only destroyed for a configuration change, it should
+ * call onDestroyChangingConfigurations, which cancels any further callbacks from this object but retains the loading
+ * state to resume from at the next call to asyncStartOrResumeLoadingMessage.
+ * <p>
+ * If the message is already loaded, a call to asyncStartOrResumeLoadingMessage will typically load by starting the
+ * decode message loader, retrieving the already cached LocalMessage. This message will be passed to the retained
+ * CryptoMessageHelper instance, returning the already cached MessageCryptoAnnotations. These two objects will be
+ * checked against the retained DecodeMessageLoader, returning the final result. At each intermediate step, the input of
+ * the respective loaders will be checked for consistency, reloading if there is a mismatch.
  *
  */
 public class MessageLoaderHelper {
@@ -89,7 +83,7 @@ public class MessageLoaderHelper {
     // transient state
     private boolean onlyLoadMetadata;
     private MessageReference messageReference;
-    private LegacyAccountDto account;
+    private LegacyAccount account;
 
     private LocalMessage localMessage;
     private MessageCryptoAnnotations messageCryptoAnnotations;
@@ -97,14 +91,23 @@ public class MessageLoaderHelper {
 
     private MessageCryptoHelper messageCryptoHelper;
 
+    private LegacyAccountManager accountManager;
 
-    public MessageLoaderHelper(Context context, LoaderManager loaderManager, FragmentManager fragmentManager,
-            @NonNull MessageLoaderCallbacks callback, MessageViewInfoExtractor messageViewInfoExtractor) {
+
+    public MessageLoaderHelper(
+        Context context,
+        LoaderManager loaderManager,
+        FragmentManager fragmentManager,
+        @NonNull MessageLoaderCallbacks callback,
+        MessageViewInfoExtractor messageViewInfoExtractor,
+        LegacyAccountManager accountManager
+    ) {
         this.context = context;
         this.loaderManager = loaderManager;
         this.fragmentManager = fragmentManager;
         this.callback = callback;
         this.messageViewInfoExtractor = messageViewInfoExtractor;
+        this.accountManager = accountManager;
     }
 
 
@@ -114,7 +117,7 @@ public class MessageLoaderHelper {
     public void asyncStartOrResumeLoadingMessage(MessageReference messageReference, Parcelable cachedDecryptionResult) {
         onlyLoadMetadata = false;
         this.messageReference = messageReference;
-        this.account = Preferences.getPreferences().getById(messageReference.getAccountId());
+        this.account = accountManager.findById(messageReference.getAccountId());
 
         if (cachedDecryptionResult != null) {
             if (cachedDecryptionResult instanceof OpenPgpDecryptionResult) {
@@ -131,7 +134,7 @@ public class MessageLoaderHelper {
     public void asyncStartOrResumeLoadingMessageMetadata(MessageReference messageReference) {
         onlyLoadMetadata = true;
         this.messageReference = messageReference;
-        this.account = Preferences.getPreferences().getById(messageReference.getAccountId());
+        this.account = accountManager.findById(messageReference.getAccountId());
 
         startOrResumeLocalMessageLoader();
     }
@@ -160,7 +163,9 @@ public class MessageLoaderHelper {
         }
     }
 
-    /** Cancels all loading processes, prevents future callbacks, and destroys all loading state. */
+    /**
+     * Cancels all loading processes, prevents future callbacks, and destroys all loading state.
+     */
     @UiThread
     public void onDestroy() {
         if (messageCryptoHelper != null) {
@@ -173,8 +178,10 @@ public class MessageLoaderHelper {
         loaderManager = null;
     }
 
-    /** Prevents future callbacks, but retains loading state to pick up from in a call to
-     * asyncStartOrResumeLoadingMessage in a new instance of this class. */
+    /**
+     * Prevents future callbacks, but retains loading state to pick up from in a call to
+     * asyncStartOrResumeLoadingMessage in a new instance of this class.
+     */
     @UiThread
     public void onDestroyChangingConfigurations() {
         cancelAndClearDecodeLoader();
@@ -204,7 +211,7 @@ public class MessageLoaderHelper {
 
     private void startOrResumeLocalMessageLoader() {
         LocalMessageLoader loader =
-                (LocalMessageLoader) loaderManager.<LocalMessage>getLoader(LOCAL_MESSAGE_LOADER_ID);
+            (LocalMessageLoader) loaderManager.<LocalMessage>getLoader(LOCAL_MESSAGE_LOADER_ID);
         boolean isLoaderStale = (loader == null) || !loader.isCreatedFor(messageReference);
 
         if (isLoaderStale) {
@@ -235,7 +242,8 @@ public class MessageLoaderHelper {
         }
 
         if (onlyLoadMetadata) {
-            MessageViewInfo messageViewInfo = MessageViewInfo.createForMetadataOnly(localMessage, !downloadedCompletely);
+            MessageViewInfo messageViewInfo =
+                MessageViewInfo.createForMetadataOnly(localMessage, !downloadedCompletely);
             onDecodeMessageFinished(messageViewInfo);
             return;
         }
@@ -268,7 +276,7 @@ public class MessageLoaderHelper {
             }
 
             MessagingController messagingController = MessagingController.getInstance(context);
-            return new LocalMessageLoader(context, messagingController, account, messageReference, onlyLoadMetadata);
+            return new LocalMessageLoader(context, messagingController, account.getId(), messageReference, onlyLoadMetadata);
         }
 
         @Override
@@ -308,11 +316,11 @@ public class MessageLoaderHelper {
         }
         if (messageCryptoHelper == null || !messageCryptoHelper.isConfiguredForOpenPgpProvider(openPgpProvider)) {
             messageCryptoHelper = new MessageCryptoHelper(
-                    context, new OpenPgpApiFactory(), AutocryptOperations.getInstance(), openPgpProvider);
+                context, new OpenPgpApiFactory(), AutocryptOperations.getInstance(), openPgpProvider);
             retainCryptoHelperFragment.setData(messageCryptoHelper);
         }
         messageCryptoHelper.asyncStartOrResumeProcessingMessage(
-                localMessage, messageCryptoCallback, cachedDecryptionResult, !account.isOpenPgpHideSignOnly());
+            localMessage, messageCryptoCallback, cachedDecryptionResult, !account.isOpenPgpHideSignOnly());
     }
 
     private void cancelAndClearCryptoOperation() {
@@ -370,7 +378,7 @@ public class MessageLoaderHelper {
 
     private void startOrResumeDecodeMessage() {
         LocalMessageExtractorLoader loader =
-                (LocalMessageExtractorLoader) loaderManager.<MessageViewInfo>getLoader(DECODE_MESSAGE_LOADER_ID);
+            (LocalMessageExtractorLoader) loaderManager.<MessageViewInfo>getLoader(DECODE_MESSAGE_LOADER_ID);
         boolean isLoaderStale = (loader == null) || !loader.isCreatedFor(localMessage, messageCryptoAnnotations);
 
         if (isLoaderStale) {
@@ -422,8 +430,13 @@ public class MessageLoaderHelper {
             if (id != DECODE_MESSAGE_LOADER_ID) {
                 throw new IllegalStateException("loader id must be message decoder id");
             }
-            return new LocalMessageExtractorLoader(context, localMessage, messageCryptoAnnotations,
-                    messageViewInfoExtractor);
+            return new LocalMessageExtractorLoader(
+                context,
+                accountManager,
+                localMessage,
+                messageCryptoAnnotations,
+                messageViewInfoExtractor
+            );
         }
 
         @Override
@@ -456,10 +469,10 @@ public class MessageLoaderHelper {
     private void startDownloadingMessageBody(boolean downloadComplete) {
         if (downloadComplete) {
             MessagingController.getInstance(context).loadMessageRemote(
-                    account, messageReference.getFolderId(), messageReference.getUid(), downloadMessageListener);
+                account.getId(), messageReference.getFolderId(), messageReference.getUid(), downloadMessageListener);
         } else {
             MessagingController.getInstance(context).loadMessageRemotePartial(
-                    account, messageReference.getFolderId(), messageReference.getUid(), downloadMessageListener);
+                account.getId(), messageReference.getFolderId(), messageReference.getUid(), downloadMessageListener);
         }
     }
 
@@ -489,9 +502,9 @@ public class MessageLoaderHelper {
 
     MessagingListener downloadMessageListener = new SimpleMessagingListener() {
         @Override
-        public void loadMessageRemoteFinished(final LegacyAccountDto account, final long folderId, final String uid) {
+        public void loadMessageRemoteFinished(final AccountId accountId, final long folderId, final String uid) {
             handler.post(() -> {
-                if (!messageReference.equals(account.getId(), folderId, uid)) {
+                if (!messageReference.equals(accountId, folderId, uid)) {
                     return;
                 }
                 onMessageDownloadFinished();
@@ -499,7 +512,7 @@ public class MessageLoaderHelper {
         }
 
         @Override
-        public void loadMessageRemoteFailed(LegacyAccountDto account, long folderId, String uid, final Throwable t) {
+        public void loadMessageRemoteFailed(final AccountId accountId, long folderId, String uid, final Throwable t) {
             handler.post(new Runnable() {
                 @Override
                 public void run() {
@@ -514,9 +527,11 @@ public class MessageLoaderHelper {
 
     public interface MessageLoaderCallbacks {
         void onMessageDataLoadFinished(LocalMessage message);
+
         void onMessageDataLoadFailed();
 
         void onMessageViewInfoLoadFinished(MessageViewInfo messageViewInfo);
+
         void onMessageViewInfoLoadFailed(MessageViewInfo messageViewInfo);
 
         void setLoadingProgress(int current, int max);
@@ -524,6 +539,7 @@ public class MessageLoaderHelper {
         boolean startIntentSenderForMessageLoaderHelper(IntentSender intentSender, int requestCode);
 
         void onDownloadErrorMessageNotFound();
+
         void onDownloadErrorNetworkError();
     }
 

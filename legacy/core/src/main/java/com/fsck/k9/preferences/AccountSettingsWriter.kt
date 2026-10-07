@@ -2,14 +2,14 @@ package com.fsck.k9.preferences
 
 import android.content.Context
 import com.fsck.k9.Core
-import com.fsck.k9.Preferences
 import com.fsck.k9.mailstore.SpecialLocalFoldersCreator
-import java.util.UUID
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
-import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.storage.StorageEditor
+import net.thunderbird.core.preference.storage.StorageProvider
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.account.storage.legacy.LegacyAccountStorageHandler.Companion.ACCOUNT_DESCRIPTION_KEY
@@ -17,10 +17,20 @@ import net.thunderbird.feature.account.storage.legacy.LegacyAccountStorageHandle
 import net.thunderbird.feature.account.storage.legacy.LegacyAccountStorageHandler.Companion.OUTGOING_SERVER_SETTINGS_KEY
 import net.thunderbird.feature.account.storage.legacy.serializer.ServerSettingsDtoSerializer
 
+/**
+ * Responsible for writing imported or validated account settings directly into preference storage.
+ *
+ * Used during settings import and account creation workflows to:
+ * - Generate unique account identifiers and account display names
+ * - Write account, server, identity, and folder configuration keys to preference storage
+ * - Assign unique notification channel versions and account numbers
+ * - Initialize special local folders for newly created/imported accounts
+ */
 internal class AccountSettingsWriter
 @OptIn(ExperimentalTime::class)
 constructor(
-    private val preferences: Preferences,
+    private val accountManager: LegacyAccountManager,
+    private val storageProvider: StorageProvider,
     private val localFoldersCreator: SpecialLocalFoldersCreator,
     private val clock: Clock,
     private val generalSettingsManager: GeneralSettingsManager,
@@ -33,7 +43,7 @@ constructor(
 
     @Suppress("LongMethod")
     suspend fun write(account: ValidatedSettings.Account): Pair<AccountDescription, AccountDescription> {
-        val editor = preferences.createStorageEditor()
+        val editor = storageProvider.createStorageEditor()
 
         val originalAccountName = account.name!!
         val originalAccountId = AccountIdFactory.of(account.uuid)
@@ -62,10 +72,9 @@ constructor(
             )
         }
 
-        val newAccountNumber = preferences.generateAccountNumber().toString()
         editor.putStringWithLogging(
             "$accountId.accountNumber",
-            newAccountNumber,
+            findNewAccountNumber().toString(),
             generalSettingsManager.getConfig().debugging.isDebugLoggingEnabled,
             generalSettingsManager.getConfig().debugging.isSensitiveLoggingEnabled,
         )
@@ -102,19 +111,24 @@ constructor(
             error("Failed to commit account settings")
         }
 
-        // Reload accounts so the new account can be picked up by Preferences.getAccount()
-        preferences.loadAccounts()
+        // Reload accounts so the new account can be picked up
+        accountManager.findAll()
 
-        val appAccount = preferences.getById(accountId) ?: error("Failed to load account: $accountId")
-        localFoldersCreator.createSpecialLocalFolders(appAccount)
+        val appAccount = accountManager.findById(accountId) ?: error("Failed to load account: $accountId")
+        localFoldersCreator.createSpecialLocalFolders(appAccount.id)
 
         Core.setServicesEnabled(context)
 
         return originalAccount to writtenAccount
     }
 
+    private fun findNewAccountNumber(): Int {
+        val accounts = accountManager.findAll()
+        return accounts.maxOfOrNull { it.accountNumber }?.plus(1) ?: 0
+    }
+
     private fun updateAccountUuids(editor: StorageEditor, accountUuid: String) {
-        val oldAccountUuids = preferences.storage.getStringOrDefault("accountUuids", "")
+        val oldAccountUuids = storageProvider.storage.getStringOrDefault("accountUuids", "")
             .split(',')
             .dropLastWhile { it.isEmpty() }
         val newAccountUuids = oldAccountUuids + accountUuid
@@ -145,7 +159,7 @@ constructor(
     }
 
     private fun getUniqueAccountId(accountId: AccountId): AccountId {
-        val existingAccount = preferences.getById(accountId)
+        val existingAccount = accountManager.findById(accountId)
         return if (existingAccount != null) {
             AccountIdFactory.create()
         } else {
@@ -154,7 +168,7 @@ constructor(
     }
 
     private fun getUniqueAccountName(accountName: String): String {
-        val accounts = preferences.getAccounts()
+        val accounts = accountManager.findAll()
         if (!isAccountNameUsed(accountName, accounts)) {
             return accountName
         }
@@ -171,7 +185,7 @@ constructor(
         error("Unexpected exit")
     }
 
-    private fun isAccountNameUsed(name: String?, accounts: List<LegacyAccountDto>): Boolean {
-        return accounts.any { it.displayName == name }
+    private fun isAccountNameUsed(name: String?, accounts: List<LegacyAccount>): Boolean {
+        return accounts.any { it.profile.name == name }
     }
 }

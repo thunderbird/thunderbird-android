@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import net.thunderbird.components.ui.bolt.PreviewWithThemes
+import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.account.avatar.Avatar
 
 @Composable
@@ -14,7 +15,10 @@ internal fun GeneralSettingsProfileViewPreview() {
             name = "Name",
             email = "demo@example.com",
             color = Color.Green,
-            avatar = Avatar.Monogram("N"),
+            avatar = Avatar.Monogram(
+                id = AccountIdFactory.create(),
+                value = "N",
+            ),
         )
     }
 }
@@ -29,7 +33,10 @@ internal fun GeneralSettingsProfileViewWithLongTextPreview() {
                 "nisi ut aliquip ex ea commodo consequat.",
             email = "verylongemailaddress@exampledomainwithaverylongname.com",
             color = Color.Green,
-            avatar = Avatar.Monogram("L"),
+            avatar = Avatar.Monogram(
+                id = AccountIdFactory.create(),
+                value = "L",
+            ),
         )
     }
 }

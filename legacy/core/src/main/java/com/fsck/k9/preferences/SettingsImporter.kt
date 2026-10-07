@@ -177,7 +177,7 @@ class SettingsImporter internal constructor(
         val outgoing = currentAccount.outgoing
         val outgoingServerName = outgoing.settings[HOST] as? String
         val outgoingAuthenticationType = outgoing.settings[AUTHENTICATION_TYPE] as String
-        val outgoingUsername = outgoing.settings[USERNAME] as String
+        val outgoingUsername = outgoing.settings[USERNAME] as? String ?: ""
         val outgoingPassword = outgoing.settings[PASSWORD] as? String
         val outgoingPasswordNeeded =
             outgoingAuthenticationType != "EXTERNAL" &&

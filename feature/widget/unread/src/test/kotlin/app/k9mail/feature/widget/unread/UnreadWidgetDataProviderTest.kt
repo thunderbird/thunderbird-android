@@ -8,15 +8,19 @@ import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNull
 import com.fsck.k9.CoreResourceProvider
-import com.fsck.k9.Preferences
 import com.fsck.k9.ui.messagelist.DefaultFolderProvider
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.test.runTest
 import net.thunderbird.components.core.outcome.Outcome
-import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.core.logging.testing.TestLogger
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.AccountIdFactory
+import net.thunderbird.feature.account.UnifiedAccountId
+import net.thunderbird.feature.account.storage.profile.AvatarDto
+import net.thunderbird.feature.account.storage.profile.AvatarTypeDto
+import net.thunderbird.feature.account.storage.profile.ProfileDto
 import net.thunderbird.feature.mail.folder.FolderType
 import net.thunderbird.feature.mail.folder.api.Folder
 import net.thunderbird.feature.mail.folder.api.FolderServerId
@@ -38,8 +42,10 @@ import org.robolectric.RuntimeEnvironment
 @RunWith(RobolectricTestRunner::class)
 class UnreadWidgetDataProviderTest : AutoCloseKoinTest() {
     private val context: Context = RuntimeEnvironment.getApplication()
-    private val account = createAccount()
-    private val preferences = createPreferences()
+
+    private val accountId = AccountIdFactory.create()
+    private val account = createAccount(accountId)
+    private val accountManager = createAccountManager()
     private val messageCountsProvider = createMessageCountsProvider()
     private val defaultFolderStrategy = createDefaultFolderStrategy()
     private val folderQueryRepository = createFolderQueryRepository()
@@ -47,7 +53,7 @@ class UnreadWidgetDataProviderTest : AutoCloseKoinTest() {
     private val coreResourceProvider = createCoreResourceProvider()
     private val provider = UnreadWidgetDataProvider(
         context,
-        preferences,
+        accountManager,
         messageCountsProvider,
         defaultFolderStrategy,
         folderQueryRepository,
@@ -71,7 +77,7 @@ class UnreadWidgetDataProviderTest : AutoCloseKoinTest() {
     fun unifiedFoldersSearch() = runTest {
         val configuration = UnreadWidgetConfiguration(
             appWidgetId = 1,
-            accountUuid = SearchAccount.UNIFIED_FOLDERS,
+            accountId = UnifiedAccountId,
             folderId = null,
         )
 
@@ -87,7 +93,7 @@ class UnreadWidgetDataProviderTest : AutoCloseKoinTest() {
     fun regularSearch() = runTest {
         val configuration = UnreadWidgetConfiguration(
             appWidgetId = 3,
-            accountUuid = ACCOUNT_ID.toString(),
+            accountId = ACCOUNT_ID,
             folderId = null,
         )
 
@@ -103,7 +109,7 @@ class UnreadWidgetDataProviderTest : AutoCloseKoinTest() {
     fun folder() = runTest {
         val configuration = UnreadWidgetConfiguration(
             appWidgetId = 4,
-            accountUuid = ACCOUNT_ID.toString(),
+            accountId = ACCOUNT_ID,
             folderId = FOLDER_ID,
         )
 
@@ -117,9 +123,10 @@ class UnreadWidgetDataProviderTest : AutoCloseKoinTest() {
 
     @Test
     fun nonExistentAccount_shouldReturnNull() = runTest {
+        val nonExistentAccountId = AccountIdFactory.create()
         val configuration = UnreadWidgetConfiguration(
             appWidgetId = 3,
-            accountUuid = "invalid",
+            accountId = nonExistentAccountId,
             folderId = null,
         )
 
@@ -128,17 +135,29 @@ class UnreadWidgetDataProviderTest : AutoCloseKoinTest() {
         assertThat(widgetData).isNull()
     }
 
-    private fun createAccount(): LegacyAccountDto = mock {
-        on { id } doReturn ACCOUNT_ID
-        on { displayName } doReturn ACCOUNT_NAME
+    private fun createAccount(accountId: AccountId): LegacyAccount = mock {
+        on { id } doReturn accountId
+        on { name } doReturn ACCOUNT_NAME
+        on { profile } doReturn ProfileDto(
+            id = accountId,
+            name = ACCOUNT_NAME,
+            color = 0,
+            avatar = AvatarDto(
+                id = accountId,
+                avatarType = AvatarTypeDto.MONOGRAM,
+                avatarMonogram = "A",
+                avatarImageUri = null,
+                avatarIconName = null,
+            ),
+        )
     }
 
-    private fun createPreferences(): Preferences = mock {
-        on { getById(ACCOUNT_ID) } doReturn account
+    private fun createAccountManager(): LegacyAccountManager = mock {
+        on { findById(ACCOUNT_ID) } doReturn account
     }
 
     private fun createMessageCountsProvider() = object : MessageCountsProvider {
-        override fun getMessageCounts(account: LegacyAccountDto): MessageCounts {
+        override fun getMessageCounts(accountId: AccountId): MessageCounts {
             return MessageCounts(unread = ACCOUNT_UNREAD_COUNT, starred = 0)
         }
 
@@ -154,13 +173,13 @@ class UnreadWidgetDataProviderTest : AutoCloseKoinTest() {
             throw UnsupportedOperationException()
         }
 
-        override fun getUnreadMessageCount(account: LegacyAccountDto, folderId: Long): Int {
+        override fun getUnreadMessageCount(accountId: AccountId, folderId: Long): Int {
             return FOLDER_UNREAD_COUNT
         }
     }
 
     private fun createDefaultFolderStrategy(): DefaultFolderProvider = mock {
-        on { getDefaultFolder(account) } doReturn FOLDER_ID
+        on { getDefaultFolder(accountId) } doReturn FOLDER_ID
     }
 
     private fun createFolderQueryRepository(): FolderQueryRepository = object : FolderQueryRepository {

@@ -35,7 +35,7 @@ val jobModule = module {
     factory { (parameters: WorkerParameters) ->
         MailSyncWorker(
             messagingController = get(),
-            preferences = get(),
+            accountManager = get(),
             context = get(),
             generalSettingsManager = get(),
             parameters = parameters,

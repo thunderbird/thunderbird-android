@@ -1,6 +1,6 @@
 package com.fsck.k9.preferences
 
-import net.thunderbird.core.android.account.LegacyAccountDtoManager
+import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.update
 
@@ -11,11 +11,11 @@ import net.thunderbird.core.preference.update
  * - For all other cases → no change is made.
  */
 class UnifiedInboxConfigurator(
-    private val accountManager: LegacyAccountDtoManager,
+    private val accountManager: LegacyAccountManager,
     private val generalSettingsManager: GeneralSettingsManager,
 ) {
     fun configureUnifiedInbox() {
-        when (accountManager.getAccounts().size) {
+        when (accountManager.findAll().size) {
             1 -> updateUnifiedInbox(false)
             2 -> updateUnifiedInbox(true)
             else -> Unit

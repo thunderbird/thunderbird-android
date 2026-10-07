@@ -76,7 +76,7 @@ internal fun FolderListItem(
                     },
                 )
             },
-            selected = selectedFolderId == displayFolder.id,
+            selected = selectedFolderId == displayFolder.folderId,
             onClick = {
                 when (displayFolder) {
                     is MailDisplayFolder if displayFolder.accountId == null -> isExpanded.value = !isExpanded.value

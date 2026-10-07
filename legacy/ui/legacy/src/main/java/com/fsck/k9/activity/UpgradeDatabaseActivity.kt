@@ -146,7 +146,7 @@ class UpgradeDatabaseActivity : BaseActivity() {
                     DatabaseUpgradeService.EXTRA_ACCOUNT_UUID,
                 ) ?: error("Missing Intent extra '${DatabaseUpgradeService.EXTRA_ACCOUNT_UUID}'")
 
-                val account = accountManager.getById(AccountIdFactory.of(accountUuid))
+                val account = accountManager.findById(AccountIdFactory.of(accountUuid))
 
                 if (account != null) {
                     val upgradeStatus = getString(R.string.upgrade_database_format, account.profile.name)

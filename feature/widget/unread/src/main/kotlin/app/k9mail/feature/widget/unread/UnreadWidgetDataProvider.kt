@@ -5,15 +5,16 @@ import android.content.Intent
 import app.k9mail.legacy.message.controller.MessageCountsProvider
 import app.k9mail.legacy.ui.folder.FolderNameFormatter
 import com.fsck.k9.CoreResourceProvider
-import com.fsck.k9.Preferences
 import com.fsck.k9.activity.MessageHomeActivity
 import com.fsck.k9.ui.messagelist.DefaultFolderProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import net.thunderbird.components.core.outcome.fold
-import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.core.logging.Logger
-import net.thunderbird.feature.account.AccountIdFactory
+import net.thunderbird.feature.account.AccountId
+import net.thunderbird.feature.account.UnifiedAccountId
 import net.thunderbird.feature.mail.folder.api.data.repository.FolderQueryRepository
 import net.thunderbird.feature.search.legacy.LocalMessageSearch
 import net.thunderbird.feature.search.legacy.SearchAccount
@@ -23,7 +24,7 @@ private const val TAG = "UnreadWidgetDataProvider"
 @Suppress("LongParameterList")
 class UnreadWidgetDataProvider(
     private val context: Context,
-    private val preferences: Preferences,
+    private val accountManager: LegacyAccountManager,
     private val messageCountsProvider: MessageCountsProvider,
     private val defaultFolderProvider: DefaultFolderProvider,
     private val folderQueryRepository: FolderQueryRepository,
@@ -34,7 +35,7 @@ class UnreadWidgetDataProvider(
     suspend fun loadUnreadWidgetData(
         configuration: UnreadWidgetConfiguration,
     ): UnreadWidgetData? = with(configuration) {
-        if (SearchAccount.UNIFIED_FOLDERS == accountUuid) {
+        if (UnifiedAccountId == accountId) {
             loadUnifiedFoldersData(configuration)
         } else if (folderId != null) {
             loadFolderData(configuration)
@@ -44,7 +45,7 @@ class UnreadWidgetDataProvider(
     }
 
     private suspend fun loadUnifiedFoldersData(configuration: UnreadWidgetConfiguration): UnreadWidgetData {
-        val searchAccount = getUnifiedFoldersSearch(configuration.accountUuid)
+        val searchAccount = getUnifiedFoldersSearch(configuration.accountId)
         val title = searchAccount.name
         val unreadCount = withContext(Dispatchers.IO) {
             messageCountsProvider.getMessageCounts(searchAccount).unread
@@ -60,8 +61,8 @@ class UnreadWidgetDataProvider(
         return UnreadWidgetData(configuration, title, unreadCount, clickIntent)
     }
 
-    private fun getUnifiedFoldersSearch(accountUuid: String): SearchAccount = when (accountUuid) {
-        SearchAccount.UNIFIED_FOLDERS -> SearchAccount.createUnifiedFoldersSearch(
+    private fun getUnifiedFoldersSearch(accountId: AccountId): SearchAccount = when (accountId) {
+        UnifiedAccountId -> SearchAccount.createUnifiedInboxSearch(
             title = coreResourceProvider.searchUnifiedFoldersTitle(),
             detail = coreResourceProvider.searchUnifiedFoldersDetail(),
         )
@@ -71,43 +72,42 @@ class UnreadWidgetDataProvider(
 
     @Suppress("ReturnCount")
     private suspend fun loadAccountData(configuration: UnreadWidgetConfiguration): UnreadWidgetData? {
-        val accountId = runCatching { AccountIdFactory.of(configuration.accountUuid) }.getOrNull() ?: return null
-        val account = preferences.getById(accountId) ?: return null
-        val title = account.displayName
+        val accountId = configuration.accountId
+        val account = accountManager.findById(configuration.accountId) ?: return null
+        val title = account.profile.name
         val unreadCount = withContext(Dispatchers.IO) {
-            messageCountsProvider.getMessageCounts(account).unread
+            messageCountsProvider.getMessageCounts(accountId).unread
         }
-        val clickIntent = getClickIntentForAccount(account)
+        val clickIntent = getClickIntentForAccount(accountId)
 
         return UnreadWidgetData(configuration, title, unreadCount, clickIntent)
     }
 
-    private fun getClickIntentForAccount(account: LegacyAccountDto): Intent {
-        val folderId = defaultFolderProvider.getDefaultFolder(account)
-        return getClickIntentForFolder(account, folderId)
+    private fun getClickIntentForAccount(accountId: AccountId): Intent {
+        val folderId = defaultFolderProvider.getDefaultFolder(accountId)
+        return getClickIntentForFolder(accountId, folderId)
     }
 
     @Suppress("ReturnCount")
     private suspend fun loadFolderData(configuration: UnreadWidgetConfiguration): UnreadWidgetData? {
-        val accountUuid = configuration.accountUuid
-        val accountId = runCatching { AccountIdFactory.of(accountUuid) }.getOrNull() ?: return null
-        val account = preferences.getById(accountId) ?: return null
+        val accountId = configuration.accountId
+        val account = accountManager.findById(accountId) ?: return null
         val folderId = configuration.folderId ?: return null
 
-        val accountName = account.displayName
+        val accountName = account.profile.name
         val folderDisplayName = getFolderDisplayName(account, folderId)
         val title = context.getString(R.string.unread_widget_title, accountName, folderDisplayName)
 
         val unreadCount = withContext(Dispatchers.IO) {
-            messageCountsProvider.getUnreadMessageCount(account, folderId)
+            messageCountsProvider.getUnreadMessageCount(accountId, folderId)
         }
 
-        val clickIntent = getClickIntentForFolder(account, folderId)
+        val clickIntent = getClickIntentForFolder(accountId, folderId)
 
         return UnreadWidgetData(configuration, title, unreadCount, clickIntent)
     }
 
-    private suspend fun getFolderDisplayName(account: LegacyAccountDto, folderId: Long): String {
+    private suspend fun getFolderDisplayName(account: LegacyAccount, folderId: Long): String {
         val folder = folderQueryRepository.findById(account.id, folderId)
             .fold(
                 onSuccess = { it },
@@ -121,15 +121,15 @@ class UnreadWidgetDataProvider(
         return if (folder != null) {
             folderNameFormatter.displayName(folder)
         } else {
-            logger.error(TAG) { "Error loading folder for account ${account.id}, folder ID: $folderId" }
+            logger.error(TAG) { "Error loading type for account ${account.id}, type ID: $folderId" }
             ""
         }
     }
 
-    private fun getClickIntentForFolder(account: LegacyAccountDto, folderId: Long): Intent {
+    private fun getClickIntentForFolder(accountId: AccountId, folderId: Long): Intent {
         val search = LocalMessageSearch()
         search.addAllowedFolder(folderId)
-        search.addAccountUuid(account.id.toString())
+        search.addAccountId(accountId)
 
         val clickIntent = MessageHomeActivity.intentDisplaySearch(context, search, false, true, true)
         clickIntent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)

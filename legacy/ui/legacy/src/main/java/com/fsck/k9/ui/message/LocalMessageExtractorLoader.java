@@ -10,21 +10,30 @@ import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.MessageCryptoAnnotations;
 import com.fsck.k9.mailstore.MessageViewInfo;
 import com.fsck.k9.mailstore.MessageViewInfoExtractor;
+import net.thunderbird.core.android.account.LegacyAccount;
+import net.thunderbird.core.android.account.LegacyAccountManager;
 import net.thunderbird.legacy.logging.Log;
 
 
 public class LocalMessageExtractorLoader extends AsyncTaskLoader<MessageViewInfo> {
     private final MessageViewInfoExtractor messageViewInfoExtractor;
 
+    private LegacyAccountManager accountManager;
 
     private final LocalMessage message;
     private MessageViewInfo messageViewInfo;
     @Nullable
     private MessageCryptoAnnotations annotations;
 
-    public LocalMessageExtractorLoader(Context context, LocalMessage message,
-            @Nullable MessageCryptoAnnotations annotations, MessageViewInfoExtractor messageViewInfoExtractor) {
+    public LocalMessageExtractorLoader(
+        Context context,
+        LegacyAccountManager accountManager,
+        LocalMessage message,
+        @Nullable MessageCryptoAnnotations annotations,
+        MessageViewInfoExtractor messageViewInfoExtractor
+    ) {
         super(context);
+        this.accountManager = accountManager;
         this.message = message;
         this.annotations = annotations;
         this.messageViewInfoExtractor = messageViewInfoExtractor;
@@ -51,7 +60,9 @@ public class LocalMessageExtractorLoader extends AsyncTaskLoader<MessageViewInfo
     @WorkerThread
     public MessageViewInfo loadInBackground() {
         try {
-            return messageViewInfoExtractor.extractMessageForView(message, annotations, message.getAccount().isOpenPgpProviderConfigured());
+            LegacyAccount account = accountManager.findById(message.getAccountId());
+            boolean isOpenPgpProviderConfigured = account != null && account.isOpenPgpProviderConfigured();
+            return messageViewInfoExtractor.extractMessageForView(message, annotations, isOpenPgpProviderConfigured);
         } catch (Exception e) {
             Log.e(e, "Error while decoding message");
             return null;

@@ -104,13 +104,19 @@ class DefaultAccountProfileRepositoryTest {
             id = PROFILE_ID_1,
             name = "Profile 1",
             color = 0xFF0000,
-            avatar = Avatar.Icon(name = "icon-1"),
+            avatar = Avatar.Icon(
+                id = PROFILE_ID_1,
+                name = "icon-1",
+            ),
         )
         val PROFILE_2 = AccountProfile(
             id = PROFILE_ID_2,
             name = "Profile 2",
             color = 0x00FF00,
-            avatar = Avatar.Monogram(value = "AB"),
+            avatar = Avatar.Monogram(
+                id = PROFILE_ID_2,
+                value = "AB",
+            ),
         )
     }
 }

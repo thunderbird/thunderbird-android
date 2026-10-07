@@ -4,7 +4,7 @@ import android.app.PendingIntent
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationCompat.WearableExtender
 import com.fsck.k9.notification.NotificationChannelManager.ChannelType
-import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.feature.account.AccountId
 import net.thunderbird.legacy.logging.Log
 import androidx.core.app.NotificationCompat.Builder as NotificationBuilder
 
@@ -45,13 +45,17 @@ internal class SummaryNotificationCreator(
         baseNotificationData: BaseNotificationData,
         notificationData: SummaryInboxNotificationData,
     ) {
-        val account = baseNotificationData.account
+        val accountId = baseNotificationData.accountId
         val accountName = baseNotificationData.accountName
         val newMessagesCount = baseNotificationData.newMessagesCount
         val title = resourceProvider.newMessagesTitle(newMessagesCount)
         val summary = buildInboxSummaryText(accountName, notificationData)
 
-        val notification = notificationHelper.createNotificationBuilder(account, ChannelType.MESSAGES)
+        val notification = notificationHelper.createNotificationBuilder(
+            accountId,
+            ChannelType.MESSAGES,
+            baseNotificationData.messagesNotificationChannelVersion,
+        )
             .setCategory(NotificationCompat.CATEGORY_EMAIL)
             .setGroup(baseNotificationData.groupKey)
             .setGroupSummary(true)
@@ -64,16 +68,16 @@ internal class SummaryNotificationCreator(
             .setContentTitle(title)
             .setSubText(accountName)
             .setInboxStyle(title, summary, notificationData.content)
-            .setContentIntent(createViewIntent(account, notificationData))
-            .setDeleteIntent(actionCreator.createDismissAllMessagesPendingIntent(account))
-            .setDeviceActions(account, notificationData)
-            .setWearActions(account, notificationData)
+            .setContentIntent(createViewIntent(accountId, notificationData))
+            .setDeleteIntent(actionCreator.createDismissAllMessagesPendingIntent(accountId))
+            .setDeviceActions(accountId, notificationData)
+            .setWearActions(accountId, notificationData)
             .setAppearance(notificationData.isSilent, baseNotificationData.appearance)
             .setLockScreenNotification(baseNotificationData)
             .build()
 
         Log.v("Creating inbox-style summary notification (silent=%b): %s", notificationData.isSilent, notification)
-        notificationHelper.notify(account, notificationData.notificationId, notification)
+        notificationHelper.notify(accountId, notificationData.notificationId, notification)
     }
 
     private fun buildInboxSummaryText(accountName: String, notificationData: SummaryInboxNotificationData): String {
@@ -101,59 +105,59 @@ internal class SummaryNotificationCreator(
     }
 
     private fun createViewIntent(
-        account: LegacyAccountDto,
+        accountId: AccountId,
         notificationData: SummaryInboxNotificationData,
     ): PendingIntent {
-        return actionCreator.createViewMessagesPendingIntent(account, notificationData.messageReferences)
+        return actionCreator.createViewMessagesPendingIntent(accountId, notificationData.messageReferences)
     }
 
     private fun NotificationBuilder.setDeviceActions(
-        account: LegacyAccountDto,
+        accountId: AccountId,
         notificationData: SummaryInboxNotificationData,
     ) = apply {
         for (action in notificationData.actions) {
             when (action) {
-                SummaryNotificationAction.MarkAsRead -> addMarkAllAsReadAction(account, notificationData)
-                SummaryNotificationAction.Delete -> addDeleteAllAction(account, notificationData)
+                SummaryNotificationAction.MarkAsRead -> addMarkAllAsReadAction(accountId, notificationData)
+                SummaryNotificationAction.Delete -> addDeleteAllAction(accountId, notificationData)
             }
         }
     }
 
     private fun NotificationBuilder.addMarkAllAsReadAction(
-        account: LegacyAccountDto,
+        accountId: AccountId,
         notificationData: SummaryInboxNotificationData,
     ) {
         val icon = resourceProvider.iconMarkAsRead
         val title = resourceProvider.actionMarkAsRead()
         val messageReferences = notificationData.messageReferences
-        val markAllAsReadPendingIntent = actionCreator.createMarkAllAsReadPendingIntent(account, messageReferences)
+        val markAllAsReadPendingIntent = actionCreator.createMarkAllAsReadPendingIntent(accountId, messageReferences)
 
         addAction(icon, title, markAllAsReadPendingIntent)
     }
 
     private fun NotificationBuilder.addDeleteAllAction(
-        account: LegacyAccountDto,
+        accountId: AccountId,
         notificationData: SummaryInboxNotificationData,
     ) {
         val icon = resourceProvider.iconDelete
         val title = resourceProvider.actionDelete()
         val messageReferences = notificationData.messageReferences
-        val action = actionCreator.createDeleteAllPendingIntent(account, messageReferences)
+        val action = actionCreator.createDeleteAllPendingIntent(accountId, messageReferences)
 
         addAction(icon, title, action)
     }
 
     @Suppress("NestedBlockDepth")
     private fun NotificationBuilder.setWearActions(
-        account: LegacyAccountDto,
+        accountId: AccountId,
         notificationData: SummaryInboxNotificationData,
     ) = apply {
         val wearableExtender = WearableExtender().apply {
             for (action in notificationData.wearActions) {
                 when (action) {
-                    SummaryWearNotificationAction.MarkAsRead -> addMarkAllAsReadAction(account, notificationData)
-                    SummaryWearNotificationAction.Delete -> addDeleteAllAction(account, notificationData)
-                    SummaryWearNotificationAction.Archive -> addArchiveAllAction(account, notificationData)
+                    SummaryWearNotificationAction.MarkAsRead -> addMarkAllAsReadAction(accountId, notificationData)
+                    SummaryWearNotificationAction.Delete -> addDeleteAllAction(accountId, notificationData)
+                    SummaryWearNotificationAction.Archive -> addArchiveAllAction(accountId, notificationData)
                 }
             }
         }
@@ -162,39 +166,39 @@ internal class SummaryNotificationCreator(
     }
 
     private fun WearableExtender.addMarkAllAsReadAction(
-        account: LegacyAccountDto,
+        accountId: AccountId,
         notificationData: SummaryInboxNotificationData,
     ) {
         val icon = resourceProvider.wearIconMarkAsRead
         val title = resourceProvider.actionMarkAllAsRead()
         val messageReferences = notificationData.messageReferences
-        val action = actionCreator.createMarkAllAsReadPendingIntent(account, messageReferences)
+        val action = actionCreator.createMarkAllAsReadPendingIntent(accountId, messageReferences)
         val markAsReadAction = NotificationCompat.Action.Builder(icon, title, action).build()
 
         addAction(markAsReadAction)
     }
 
     private fun WearableExtender.addDeleteAllAction(
-        account: LegacyAccountDto,
+        accountId: AccountId,
         notificationData: SummaryInboxNotificationData,
     ) {
         val icon = resourceProvider.wearIconDelete
         val title = resourceProvider.actionDeleteAll()
         val messageReferences = notificationData.messageReferences
-        val action = actionCreator.createDeleteAllPendingIntent(account, messageReferences)
+        val action = actionCreator.createDeleteAllPendingIntent(accountId, messageReferences)
         val deleteAction = NotificationCompat.Action.Builder(icon, title, action).build()
 
         addAction(deleteAction)
     }
 
     private fun WearableExtender.addArchiveAllAction(
-        account: LegacyAccountDto,
+        accountId: AccountId,
         notificationData: SummaryInboxNotificationData,
     ) {
         val icon = resourceProvider.wearIconArchive
         val title = resourceProvider.actionArchiveAll()
         val messageReferences = notificationData.messageReferences
-        val action = actionCreator.createArchiveAllPendingIntent(account, messageReferences)
+        val action = actionCreator.createArchiveAllPendingIntent(accountId, messageReferences)
         val archiveAction = NotificationCompat.Action.Builder(icon, title, action).build()
 
         addAction(archiveAction)

@@ -1,8 +1,8 @@
 package net.thunderbird.app.common.feature.account
 
+import app.k9mail.legacy.mailstore.MessageStoreManager
 import com.fsck.k9.Core
 import com.fsck.k9.LocalKeyStoreManager
-import com.fsck.k9.Preferences
 import com.fsck.k9.backend.BackendManager
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.mailstore.LocalStoreProvider
@@ -12,6 +12,7 @@ import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.core.logging.Logger
 import net.thunderbird.feature.account.AccountId
+import net.thunderbird.feature.account.AccountRepository
 import net.thunderbird.feature.account.avatar.AvatarImageRepository
 
 /**
@@ -23,16 +24,16 @@ class AccountRemover(
     private val backendManager: BackendManager,
     private val localKeyStoreManager: LocalKeyStoreManager,
     private val accountManager: LegacyAccountManager,
-    private val preferences: Preferences,
+    private val accountRepository: AccountRepository,
     private val unifiedInboxConfigurator: UnifiedInboxConfigurator,
     private val avatarImageRepository: AvatarImageRepository,
+    private val messageStoreManager: MessageStoreManager,
     private val logger: Logger,
 ) {
 
     fun removeAccount(accountId: AccountId) {
-        val account = accountManager.getById(accountId)
-        val legacyAccount = preferences.getById(accountId)
-        if (account == null || legacyAccount == null) {
+        val account = accountManager.findById(accountId)
+        if (account == null) {
             logger.warn { "Can't remove account with UUID $accountId because it doesn't exist." }
             return
         }
@@ -40,11 +41,12 @@ class AccountRemover(
         logger.verbose { "Removing account '$accountId'…" }
 
         removeAvatar(accountId)
-        removeLocalStore(account)
-        messagingController.deleteAccount(legacyAccount)
+        removeLocalStore(accountId)
+        messageStoreManager.removeMessageStore(accountId)
+        messagingController.deleteAccount(accountId)
         removeBackend(accountId)
 
-        preferences.deleteAccount(legacyAccount)
+        accountRepository.delete(accountId)
 
         removeCertificates(account)
         Core.setServicesEnabled()
@@ -65,15 +67,15 @@ class AccountRemover(
     }
 
     @Suppress("TooGenericExceptionCaught")
-    private fun removeLocalStore(account: LegacyAccount) {
+    private fun removeLocalStore(accountId: AccountId) {
         try {
-            val localStore = localStoreProvider.getInstanceByLegacyAccount(account)
-            localStore.delete()
+            val localStore = localStoreProvider.getInstance(accountId)
+            localStore?.delete()
         } catch (e: Exception) {
-            logger.error(throwable = e) { "Error removing message database for account $account" }
+            logger.error(throwable = e) { "Error removing message database for account $accountId" }
         }
 
-        localStoreProvider.removeInstance(account.id)
+        localStoreProvider.removeInstance(accountId)
     }
 
     @Suppress("TooGenericExceptionCaught")

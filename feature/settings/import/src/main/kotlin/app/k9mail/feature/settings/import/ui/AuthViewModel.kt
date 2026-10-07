@@ -26,8 +26,8 @@ import net.openid.appauth.AuthState
 import net.openid.appauth.AuthorizationException
 import net.openid.appauth.AuthorizationResponse
 import net.openid.appauth.AuthorizationService
-import net.thunderbird.core.android.account.LegacyAccountDto
-import net.thunderbird.core.android.account.LegacyAccountDtoManager
+import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.core.logging.Logger
 
 private const val KEY_AUTHORIZATION = "app.k9mail_auth"
@@ -36,14 +36,14 @@ private const val TAG = "AuthViewModel"
 @Suppress("TooManyFunctions")
 internal class AuthViewModel(
     application: Application,
-    private val accountManager: LegacyAccountDtoManager,
+    private val accountManager: LegacyAccountManager,
     private val getOAuthRequestIntent: GetOAuthRequestIntent,
     private val logger: Logger,
 ) : AndroidViewModel(application) {
     private var authService: AuthorizationService? = null
     private val authState = AuthState()
 
-    private var account: LegacyAccountDto? = null
+    private var account: LegacyAccount? = null
 
     private lateinit var resultObserver: AppAuthResultObserver
 
@@ -55,7 +55,7 @@ internal class AuthViewModel(
         return authService ?: AuthorizationService(getApplication()).also { authService = it }
     }
 
-    fun init(activityResultRegistry: ActivityResultRegistry, lifecycle: Lifecycle, account: LegacyAccountDto) {
+    fun init(activityResultRegistry: ActivityResultRegistry, lifecycle: Lifecycle, account: LegacyAccount) {
         this.account = account
         resultObserver = AppAuthResultObserver(activityResultRegistry)
         lifecycle.addObserver(resultObserver)
@@ -65,7 +65,7 @@ internal class AuthViewModel(
         _uiState.update { AuthFlowState.Idle }
     }
 
-    fun isUsingGoogle(account: LegacyAccountDto): Boolean {
+    fun isUsingGoogle(account: LegacyAccount): Boolean {
         return GoogleOAuthHelper.isGoogle(account.incomingServerSettings.host)
     }
 
@@ -82,7 +82,7 @@ internal class AuthViewModel(
         }
     }
 
-    private suspend fun startLogin(account: LegacyAccountDto) {
+    private suspend fun startLogin(account: LegacyAccount) {
         val authRequestIntentResult = withContext(Dispatchers.IO) {
             getOAuthRequestIntent.execute(account.incomingServerSettings.host, account.email)
         }
@@ -128,10 +128,11 @@ internal class AuthViewModel(
                 authState.update(tokenResponse, authorizationException)
 
                 val account = account!!
-                account.oAuthState = authState.jsonSerializeString()
+
+                val newAuthState = authState.jsonSerializeString()
 
                 viewModelScope.launch(Dispatchers.IO) {
-                    accountManager.saveAccount(account)
+                    accountManager.update(account.copy(oAuthState = newAuthState))
                 }
 
                 if (authorizationException != null) {

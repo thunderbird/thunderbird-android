@@ -3,7 +3,6 @@ package com.fsck.k9.preferences
 import android.content.ContentResolver
 import android.net.Uri
 import android.util.Xml
-import com.fsck.k9.Preferences
 import com.fsck.k9.notification.NotificationSettingsUpdater
 import com.fsck.k9.preferences.ServerTypeConverter.fromServerSettingsType
 import com.fsck.k9.preferences.Settings.InvalidSettingValueException
@@ -13,7 +12,9 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 import net.thunderbird.components.core.outcome.fold
-import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountManager
+import net.thunderbird.core.preference.storage.StorageProvider
 import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.account.storage.legacy.LegacyAccountStorageHandler.Companion.ACCOUNT_DESCRIPTION_KEY
 import net.thunderbird.feature.account.storage.legacy.LegacyAccountStorageHandler.Companion.IDENTITY_DESCRIPTION_KEY
@@ -25,7 +26,8 @@ import org.xmlpull.v1.XmlSerializer
 
 class SettingsExporter(
     private val contentResolver: ContentResolver,
-    private val preferences: Preferences,
+    private val accountManager: LegacyAccountManager,
+    private val storageProvider: StorageProvider,
     private val folderSettingsProvider: FolderSettingsProvider,
     private val folderQueryRepository: FolderQueryRepository,
     private val notificationSettingsUpdater: NotificationSettingsUpdater,
@@ -66,7 +68,7 @@ class SettingsExporter(
 
             Log.i("Exporting preferences")
 
-            val storage = preferences.storage
+            val storage = storageProvider.storage
 
             val prefs: Map<String, Any> = storage.getAll().toSortedMap()
             if (includeGlobals) {
@@ -78,7 +80,7 @@ class SettingsExporter(
             serializer.startTag(null, ACCOUNTS_ELEMENT)
             for (accountUuid in accountUuids) {
                 val accountId = AccountIdFactory.of(accountUuid)
-                preferences.getById(accountId)?.let { account ->
+                accountManager.findById(accountId)?.let { account ->
                     writeAccount(serializer, account, prefs, includePasswords)
                 }
             }
@@ -128,7 +130,7 @@ class SettingsExporter(
     @Suppress("LongMethod", "CyclomaticComplexMethod", "NestedBlockDepth")
     private suspend fun writeAccount(
         serializer: XmlSerializer,
-        account: LegacyAccountDto,
+        account: LegacyAccount,
         prefs: Map<String, Any>,
         includePasswords: Boolean,
     ) {
@@ -276,7 +278,7 @@ class SettingsExporter(
         serializer: XmlSerializer,
         keyPart: String,
         valueString: String,
-        account: LegacyAccountDto,
+        account: LegacyAccount,
     ) {
         val versionedSetting = AccountSettingsDescriptions.SETTINGS[keyPart]
         if (versionedSetting != null) {
@@ -301,7 +303,7 @@ class SettingsExporter(
     }
 
     private suspend fun writeFolderNameSettings(
-        account: LegacyAccountDto,
+        account: LegacyAccount,
         folderQueryRepository: FolderQueryRepository,
         serializer: XmlSerializer,
     ) {

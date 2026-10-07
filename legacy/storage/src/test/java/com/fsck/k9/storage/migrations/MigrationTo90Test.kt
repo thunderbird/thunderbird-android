@@ -15,11 +15,10 @@ import com.fsck.k9.mail.ssl.TrustedSocketFactory
 import com.fsck.k9.mail.store.imap.ImapStore
 import com.fsck.k9.mail.store.imap.ImapStoreFactory
 import com.fsck.k9.mail.store.imap.ImapStoreSettings
-import com.fsck.k9.mailstore.MigrationsHelper
 import com.fsck.k9.storage.messages.createFolder
 import com.fsck.k9.storage.messages.readFolders
 import java.io.IOException
-import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.common.mail.Protocols
 import net.thunderbird.legacy.logging.Log
 import net.thunderbird.core.logging.testing.TestLogger
@@ -90,7 +89,7 @@ class MigrationTo90Test : KoinTest {
             autoDetectNamespace = false,
         )
         val account = createAccount(incomingServerSettings)
-        val migrationHelper = createMigrationsHelper(account)
+        val migrationHelper = FakeMigrationsHelper(account)
         val migration = MigrationTo90(
             db = database,
             migrationsHelper = migrationHelper,
@@ -127,7 +126,7 @@ class MigrationTo90Test : KoinTest {
         )
         val incomingServerSettings = createIncomingServerSettings()
         val account = createAccount(incomingServerSettings)
-        val migrationHelper = createMigrationsHelper(account)
+        val migrationHelper = FakeMigrationsHelper(account)
         val migration = MigrationTo90(
             db = database,
             migrationsHelper = migrationHelper,
@@ -165,7 +164,7 @@ class MigrationTo90Test : KoinTest {
             incomingServerSettings = incomingServerSettings,
             folderPathDelimiter = folderDelimiter,
         )
-        val migrationHelper = createMigrationsHelper(account)
+        val migrationHelper = FakeMigrationsHelper(account)
         val migration = MigrationTo90(
             db = database,
             migrationsHelper = migrationHelper,
@@ -207,7 +206,7 @@ class MigrationTo90Test : KoinTest {
             incomingServerSettings = incomingServerSettings,
             folderPathDelimiter = folderDelimiter,
         )
-        val migrationHelper = createMigrationsHelper(account)
+        val migrationHelper = FakeMigrationsHelper(account)
         val migration = MigrationTo90(
             db = database,
             migrationsHelper = migrationHelper,
@@ -244,7 +243,7 @@ class MigrationTo90Test : KoinTest {
             incomingServerSettings = incomingServerSettings,
             folderPathDelimiter = folderDelimiter,
         )
-        val migrationHelper = createMigrationsHelper(account)
+        val migrationHelper = FakeMigrationsHelper(account)
         val migration = MigrationTo90(
             db = database,
             migrationsHelper = migrationHelper,
@@ -271,7 +270,7 @@ class MigrationTo90Test : KoinTest {
             protocolType = Protocols.POP3,
         )
         val account = createAccount(incomingServerSettings)
-        val migrationHelper = createMigrationsHelper(account)
+        val migrationHelper = FakeMigrationsHelper(account)
         val spyDb = spy<SQLiteDatabase> { database }
         val migration = MigrationTo90(
             db = spyDb,
@@ -307,7 +306,7 @@ class MigrationTo90Test : KoinTest {
         )
         val incomingServerSettings = createIncomingServerSettings()
         val account = createAccount(incomingServerSettings)
-        val migrationHelper = createMigrationsHelper(account)
+        val migrationHelper = FakeMigrationsHelper(account)
         val dbSpy = spy<SQLiteDatabase> { database }
         val migration = MigrationTo90(
             db = dbSpy,
@@ -344,7 +343,7 @@ class MigrationTo90Test : KoinTest {
         )
         val incomingServerSettings = createIncomingServerSettings()
         val account = createAccount(incomingServerSettings)
-        val migrationHelper = createMigrationsHelper(account)
+        val migrationHelper = FakeMigrationsHelper(account)
         val dbSpy = spy<SQLiteDatabase> { database }
         val migration = MigrationTo90(
             db = dbSpy,
@@ -397,23 +396,11 @@ class MigrationTo90Test : KoinTest {
         incomingServerSettings: ServerSettings = createIncomingServerSettings(),
         oAuthState: String? = null,
         folderPathDelimiter: FolderPathDelimiter = FOLDER_DEFAULT_PATH_DELIMITER,
-    ): LegacyAccountDto {
+    ): LegacyAccount {
         return mock {
             on { this.incomingServerSettings } doReturn incomingServerSettings
             on { this.oAuthState } doReturn oAuthState
             on { this.folderPathDelimiter } doReturn folderPathDelimiter
-        }
-    }
-
-    private fun createMigrationsHelper(account: LegacyAccountDto): MigrationsHelper {
-        return object : MigrationsHelper {
-            override fun getAccount(): LegacyAccountDto {
-                return account
-            }
-
-            override fun saveAccount() {
-                throw UnsupportedOperationException("not implemented")
-            }
         }
     }
 

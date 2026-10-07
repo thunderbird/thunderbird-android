@@ -85,15 +85,18 @@ public class K9StoragePersister implements StoragePersister {
 
             StoragePersistOperations storagePersistOperations = new StoragePersistOperations(workingStorage, workingDb);
             workingDb.beginTransaction();
-            operationCallback.persist(storagePersistOperations);
-            storagePersistOperations.close();
-            workingDb.setTransactionSuccessful();
-
-            operationCallback.onPersistTransactionSuccess(workingStorage);
+            try {
+                operationCallback.persist(storagePersistOperations);
+                workingDb.setTransactionSuccessful();
+            } finally {
+                storagePersistOperations.close();
+                workingDb.endTransaction();
+            }
         } finally {
-            workingDb.endTransaction();
             workingDb.close();
         }
+
+        operationCallback.onPersistTransactionSuccess(workingStorage);
     }
 
     @NonNull

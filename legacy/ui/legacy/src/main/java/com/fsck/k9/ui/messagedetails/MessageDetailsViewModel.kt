@@ -27,8 +27,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import net.thunderbird.components.core.outcome.fold
-import net.thunderbird.core.android.account.LegacyAccountDto
-import net.thunderbird.core.android.account.LegacyAccountDtoManager
+import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.core.common.mail.toEmailAddressOrNull
 import net.thunderbird.feature.mail.folder.api.Folder
 import net.thunderbird.feature.mail.folder.api.data.repository.FolderQueryRepository
@@ -42,7 +42,7 @@ internal class MessageDetailsViewModel(
     private val contactRepository: ContactRepository,
     private val contactPermissionResolver: ContactPermissionResolver,
     private val clipboardManager: ClipboardManager,
-    private val accountManager: LegacyAccountDtoManager,
+    private val accountManager: LegacyAccountManager,
     private val participantFormatter: MessageDetailsParticipantFormatter,
     private val folderNameFormatter: FolderNameFormatter,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
@@ -77,7 +77,7 @@ internal class MessageDetailsViewModel(
     private fun loadData(messageReference: MessageReference) {
         viewModelScope.launch(ioDispatcher) {
             internalUiState.value = try {
-                val account = accountManager.getById(messageReference.accountId) ?: error("Account not found")
+                val account = accountManager.findById(messageReference.accountId) ?: error("Account not found")
                 val messageDetails = messageRepository.getMessageDetails(messageReference)
 
                 val folder = folderQueryRepository.findById(account.id, folderId = messageReference.folderId)
@@ -137,7 +137,7 @@ internal class MessageDetailsViewModel(
         )
     }
 
-    private fun List<Address>.toParticipants(account: LegacyAccountDto, isSender: Boolean): List<Participant> {
+    private fun List<Address>.toParticipants(account: LegacyAccount, isSender: Boolean): List<Participant> {
         return this.map { address ->
             val displayName = participantFormatter.getDisplayName(address, account, isSender)
             val emailAddress = address.address

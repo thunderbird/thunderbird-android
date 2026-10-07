@@ -23,6 +23,7 @@ import net.thunderbird.core.ui.setting.SettingDecoration
 import net.thunderbird.core.ui.setting.SettingValue
 import net.thunderbird.core.validation.input.IntegerInputField
 import net.thunderbird.core.validation.input.StringInputField
+import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.account.avatar.Avatar
 import net.thunderbird.feature.account.avatar.AvatarIcon
 import net.thunderbird.feature.account.avatar.AvatarIconCatalog
@@ -33,6 +34,8 @@ import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomai
 import net.thunderbird.feature.account.settings.impl.domain.usecase.FakeMonogramCreator
 
 internal class GeneralSettingsBuilderTest {
+
+    private val accountId = AccountIdFactory.create()
 
     private val resources = object : StringsResourceManager {
         override fun stringResource(resourceId: Int): String = "String for $resourceId"
@@ -89,7 +92,7 @@ internal class GeneralSettingsBuilderTest {
         )
 
         // Act
-        val settings = builder.build(state) {}
+        val settings = builder.build(accountId, state) {}
 
         // Assert
         assertThat(settings[0]).all {
@@ -124,7 +127,7 @@ internal class GeneralSettingsBuilderTest {
         )
 
         // Act
-        val settingsWith = builderEnabled.build(state) {}
+        val settingsWith = builderEnabled.build(accountId, state) {}
 
         // Assert
         assertThat(settingsWith).any {
@@ -143,7 +146,7 @@ internal class GeneralSettingsBuilderTest {
         )
 
         // Act
-        val settingsWithout = builderDisabled.build(state) {}
+        val settingsWithout = builderDisabled.build(accountId, state) {}
 
         // Assert
         assertThat(settingsWithout).none {
@@ -156,17 +159,17 @@ internal class GeneralSettingsBuilderTest {
     fun `avatar selection should match provided avatar or default to monogram`() {
         // Monogram
         assertSelectedAvatarOption(
-            avatar = Avatar.Monogram(value = "AB"),
+            avatar = Avatar.Monogram(id = accountId, value = "AB"),
             expectedOptionId = "avatar_monogram",
         )
         // Image
         assertSelectedAvatarOption(
-            avatar = Avatar.Image(uri = "uri"),
+            avatar = Avatar.Image(id = accountId, uri = "uri"),
             expectedOptionId = "avatar_image",
         )
         // Icon
         assertSelectedAvatarOption(
-            avatar = Avatar.Icon(name = "icon"),
+            avatar = Avatar.Icon(id = accountId, name = "icon"),
             expectedOptionId = "avatar_icon",
         )
         // Null defaults to monogram
@@ -190,11 +193,11 @@ internal class GeneralSettingsBuilderTest {
         val state = GeneralSettingsContract.State(
             name = StringInputField(value = "Thunderbird"),
             color = IntegerInputField(value = 0),
-            avatar = Avatar.Monogram("TB"),
+            avatar = Avatar.Monogram(id = accountId, value = "TB"),
         )
 
         // Act
-        val settings = builder.build(state) {}
+        val settings = builder.build(accountId, state) {}
 
         // Assert
         val monogramSetting = settings.firstOrNull { it.id == GeneralSettingId.AVATAR_MONOGRAM }
@@ -227,11 +230,11 @@ internal class GeneralSettingsBuilderTest {
         val state = GeneralSettingsContract.State(
             name = StringInputField(value = ""),
             color = IntegerInputField(value = 0),
-            avatar = Avatar.Monogram("TB"),
+            avatar = Avatar.Monogram(id = accountId, value = "TB"),
         )
 
         // Act
-        val settings = builder.build(state) {}
+        val settings = builder.build(accountId, state) {}
         val nameSetting = settings.first { it.id == GeneralSettingId.NAME } as SettingValue.Text
         val monogramSetting = settings.first { it.id == GeneralSettingId.AVATAR_MONOGRAM } as SettingValue.Text
 
@@ -264,7 +267,7 @@ internal class GeneralSettingsBuilderTest {
         )
 
         // Act
-        val settings = builder.build(state) {}
+        val settings = builder.build(accountId, state) {}
         val avatarSetting = settings.firstOrNull { it.id == GeneralSettingId.AVATAR_OPTIONS }
 
         // Assert
@@ -298,9 +301,9 @@ internal class GeneralSettingsBuilderTest {
         val stateIcon = GeneralSettingsContract.State(
             name = StringInputField(value = "Thunderbird"),
             color = IntegerInputField(value = 0),
-            avatar = Avatar.Icon(name = "star"),
+            avatar = Avatar.Icon(id = accountId, name = "star"),
         )
-        val settingsIcon = builderEnabled.build(stateIcon) {}
+        val settingsIcon = builderEnabled.build(accountId, stateIcon) {}
         assertThat(settingsIcon).any {
             it.isInstanceOf<SettingValue.IconList>()
             it.prop(Setting::id).isEqualTo(GeneralSettingId.AVATAR_ICON)
@@ -310,9 +313,9 @@ internal class GeneralSettingsBuilderTest {
         val stateMonogram = GeneralSettingsContract.State(
             name = StringInputField(value = "Thunderbird"),
             color = IntegerInputField(value = 0),
-            avatar = Avatar.Monogram("TB"),
+            avatar = Avatar.Monogram(id = accountId, value = "TB"),
         )
-        val settingsMonogram = builderEnabled.build(stateMonogram) {}
+        val settingsMonogram = builderEnabled.build(accountId, stateMonogram) {}
         assertThat(settingsMonogram).none {
             it.isInstanceOf<SettingValue.IconList>()
             it.prop(Setting::id).isEqualTo(GeneralSettingId.AVATAR_ICON)
@@ -327,7 +330,7 @@ internal class GeneralSettingsBuilderTest {
             validator = validator,
             iconCatalog = iconCatalog,
         )
-        val settingsDisabled = builderDisabled.build(stateIcon) {}
+        val settingsDisabled = builderDisabled.build(accountId, stateIcon) {}
         assertThat(settingsDisabled).none {
             it.isInstanceOf<SettingValue.SegmentedButton<*>>()
             it.prop(Setting::id).isEqualTo(GeneralSettingId.AVATAR_ICON)
@@ -348,11 +351,11 @@ internal class GeneralSettingsBuilderTest {
         val state = GeneralSettingsContract.State(
             name = StringInputField(value = "Thunderbird"),
             color = IntegerInputField(value = 0),
-            avatar = Avatar.Icon(name = iconCatalog.defaultIcon.id),
+            avatar = Avatar.Icon(id = accountId, name = iconCatalog.defaultIcon.id),
         )
 
         // Act
-        val settings = builder.build(state) {}
+        val settings = builder.build(accountId, state) {}
         val iconSetting = settings.first { it.id == GeneralSettingId.AVATAR_ICON } as SettingValue.IconList
 
         // Assert
@@ -373,11 +376,11 @@ internal class GeneralSettingsBuilderTest {
         val state = GeneralSettingsContract.State(
             name = StringInputField(value = "Thunderbird"),
             color = IntegerInputField(value = 0),
-            avatar = Avatar.Icon(name = "unknown"),
+            avatar = Avatar.Icon(id = accountId, name = "unknown"),
         )
 
         // Act
-        val settings = builder.build(state) {}
+        val settings = builder.build(accountId, state) {}
         val iconSetting = settings.firstOrNull { it.id == GeneralSettingId.AVATAR_ICON }
 
         // Assert
@@ -400,11 +403,11 @@ internal class GeneralSettingsBuilderTest {
         val state = GeneralSettingsContract.State(
             name = StringInputField(value = "Thunderbird"),
             color = IntegerInputField(value = 0),
-            avatar = Avatar.Icon(name = "star"),
+            avatar = Avatar.Icon(id = accountId, name = "star"),
         )
 
         // Act
-        val settings = builder.build(state) {}
+        val settings = builder.build(accountId, state) {}
         val iconSetting = settings.firstOrNull { it.id == GeneralSettingId.AVATAR_ICON }
 
         // Assert
@@ -427,11 +430,11 @@ internal class GeneralSettingsBuilderTest {
         val stateImage = GeneralSettingsContract.State(
             name = StringInputField(value = "Thunderbird"),
             color = IntegerInputField(value = 0),
-            avatar = Avatar.Image(uri = "content://picked/image.jpg"),
+            avatar = Avatar.Image(id = accountId, uri = "content://picked/image.jpg"),
         )
 
         // Act
-        val settingsEnabled = builderEnabled.build(stateImage) {}
+        val settingsEnabled = builderEnabled.build(accountId, stateImage) {}
 
         // Assert
         assertThat(settingsEnabled).any {
@@ -450,7 +453,7 @@ internal class GeneralSettingsBuilderTest {
         )
 
         // Act
-        val settingsDisabled = builderDisabled.build(stateImage) {}
+        val settingsDisabled = builderDisabled.build(accountId, stateImage) {}
 
         // Assert
         assertThat(settingsDisabled).none {
@@ -476,7 +479,7 @@ internal class GeneralSettingsBuilderTest {
         )
 
         // Act
-        val settings = builder.build(state) {}
+        val settings = builder.build(accountId, state) {}
         val segmented = settings.first { it.id == GeneralSettingId.AVATAR_OPTIONS } as SettingValue.SegmentedButton<*>
 
         // Assert defaults inside options

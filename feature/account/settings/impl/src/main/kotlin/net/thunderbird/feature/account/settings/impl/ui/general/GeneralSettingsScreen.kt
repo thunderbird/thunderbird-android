@@ -44,6 +44,7 @@ internal fun GeneralSettingsScreen(
     BackHandler(onBack = onBack)
 
     GeneralSettingsContent(
+        accountId = accountId,
         state = state.value,
         onEvent = { dispatch(it) },
         provider = provider,

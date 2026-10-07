@@ -4,6 +4,7 @@ import app.k9mail.legacy.mailstore.MessageListChangedListener
 import app.k9mail.legacy.mailstore.MessageListRepository
 import app.k9mail.legacy.message.controller.MessageCounts
 import app.k9mail.legacy.message.controller.MessageCountsProvider
+import kotlin.collections.toList
 import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -16,10 +17,11 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import net.thunderbird.core.android.account.LegacyAccountDto
-import net.thunderbird.core.android.account.LegacyAccountDtoManager
+import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.featureflag.keys.GeneratedFeatureFlagKey
+import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.storage.mapper.AvatarDataMapper
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.DomainContract.UseCase
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayAccount
@@ -29,7 +31,7 @@ import net.thunderbird.feature.notification.api.content.AuthenticationErrorNotif
 import net.thunderbird.feature.notification.api.receiver.InAppNotificationStream
 
 internal class GetDisplayAccounts(
-    private val accountManager: LegacyAccountDtoManager,
+    private val accountManager: LegacyAccountManager,
     private val messageCountsProvider: MessageCountsProvider,
     private val messageListRepository: MessageListRepository,
     private val notificationStream: InAppNotificationStream,
@@ -41,23 +43,23 @@ internal class GetDisplayAccounts(
     @OptIn(ExperimentalCoroutinesApi::class)
     override fun invoke(showUnifiedAccount: Boolean): Flow<List<DisplayAccount>> {
         return accountManager
-            .getAccountsFlow()
+            .observeAll()
             .flatMapLatest { accounts -> accounts.associateWithAuthErrorIndication() }
             .flatMapLatest { accountsMap ->
                 val accounts = accountsMap.keys.toList()
                 val messageCountsFlows: List<Flow<MessageCounts>> = accounts.map { account ->
-                    getMessageCountsFlow(account)
+                    getMessageCountsFlow(account.id)
                 }
 
                 combine(messageCountsFlows) { messageCountsList ->
                     val displayAccounts = messageCountsList.mapIndexed { index, messageCounts ->
                         val account = accounts[index]
                         MailDisplayAccount(
-                            id = account.id.toString(),
-                            name = account.displayName,
+                            id = account.id,
+                            name = account.profile.name,
                             email = account.email,
-                            color = account.chipColor,
-                            avatar = avatarMapper.toDomain(account.avatar),
+                            color = account.profile.color,
+                            avatar = avatarMapper.toDomain(account.profile.avatar),
                             unreadMessageCount = messageCounts.unread,
                             starredMessageCount = messageCounts.starred,
                             hasError = accountsMap[account] == true,
@@ -74,7 +76,7 @@ internal class GetDisplayAccounts(
             }
     }
 
-    private fun List<LegacyAccountDto>.associateWithAuthErrorIndication(): Flow<Map<LegacyAccountDto, Boolean>> {
+    private fun List<LegacyAccount>.associateWithAuthErrorIndication(): Flow<Map<LegacyAccount, Boolean>> {
         return if (
             featureFlagProvider.provide(GeneratedFeatureFlagKey.DISPLAY_IN_APP_NOTIFICATIONS)
                 .isDisabledOrUnavailable()
@@ -105,16 +107,16 @@ internal class GetDisplayAccounts(
         return listOf(unified) + accounts
     }
 
-    private fun getMessageCountsFlow(account: LegacyAccountDto): Flow<MessageCounts> {
+    private fun getMessageCountsFlow(accountId: AccountId): Flow<MessageCounts> {
         return callbackFlow {
-            send(messageCountsProvider.getMessageCounts(account))
+            send(messageCountsProvider.getMessageCounts(accountId))
 
             val listener = MessageListChangedListener {
                 launch {
-                    send(messageCountsProvider.getMessageCounts(account))
+                    send(messageCountsProvider.getMessageCounts(accountId))
                 }
             }
-            messageListRepository.addListener(account.id, listener)
+            messageListRepository.addListener(accountId, listener)
 
             awaitClose {
                 messageListRepository.removeListener(listener)

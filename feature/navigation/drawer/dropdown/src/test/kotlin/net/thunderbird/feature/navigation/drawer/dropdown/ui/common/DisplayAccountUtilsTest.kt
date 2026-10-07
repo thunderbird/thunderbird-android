@@ -3,6 +3,8 @@ package net.thunderbird.feature.navigation.drawer.dropdown.ui.common
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import kotlin.test.Test
+import net.thunderbird.feature.account.AccountIdFactory
+import net.thunderbird.feature.account.UnifiedAccountId
 import net.thunderbird.feature.account.avatar.Avatar
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.MailDisplayAccount
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.UnifiedDisplayAccount
@@ -22,15 +24,23 @@ class DisplayAccountUtilsTest {
         val avatar = getDisplayAccountAvatar(unified)
 
         // Assert
-        assertThat(avatar).isEqualTo(Avatar.Icon("group"))
+        assertThat(avatar).isEqualTo(
+            Avatar.Icon(
+                id = UnifiedAccountId,
+                name = "group",
+            ),
+        )
     }
 
     @Test
     fun `mail account returns its provided avatar`() {
         // Arrange
-        val providedAvatar = Avatar.Icon(name = "star")
+        val providedAvatar = Avatar.Icon(
+            id = AccountIdFactory.create(),
+            name = "star",
+        )
         val mail = MailDisplayAccount(
-            id = "id-1",
+            id = AccountIdFactory.create(),
             name = "Account",
             email = "user@example.com",
             color = 0x123456,

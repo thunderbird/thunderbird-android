@@ -22,11 +22,11 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.toSet
 import kotlinx.coroutines.launch
-import net.thunderbird.core.android.account.LegacyAccountDto
-import net.thunderbird.core.android.account.LegacyAccountDtoManager
 import net.thunderbird.core.android.network.ConnectivityChangeListener
 import net.thunderbird.core.android.network.ConnectivityManager
 import net.thunderbird.components.core.outcome.fold
+import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.core.preference.BackgroundOps
 import net.thunderbird.core.preference.BackgroundSync
 import net.thunderbird.core.preference.GeneralSettingsManager
@@ -40,7 +40,7 @@ import net.thunderbird.legacy.logging.Log
  */
 @Suppress("LongParameterList")
 class PushController internal constructor(
-    private val accountManager: LegacyAccountDtoManager,
+    private val accountManager: LegacyAccountManager,
     private val generalSettingsManager: GeneralSettingsManager,
     private val backendManager: BackendManager,
     private val pushServiceManager: PushServiceManager,
@@ -90,7 +90,7 @@ class PushController internal constructor(
         Log.v("PushController.disablePush()")
 
         coroutineScope.launch(coroutineDispatcher) {
-            for (account in accountManager.getAccounts()) {
+            for (account in accountManager.findAll()) {
                 pushFolderTrackingRepository.disable(account.id)
             }
         }
@@ -99,7 +99,14 @@ class PushController internal constructor(
     private fun initInBackground() {
         Log.v("PushController.initInBackground()")
 
-        accountManager.addOnAccountsChangeListener(::onAccountsChanged)
+        coroutineScope.launch {
+            accountManager.observeAll()
+                .distinctUntilChanged()
+                .collect { _ ->
+                    updatePushers()
+                }
+        }
+
         listenForBackgroundSyncChanges()
         backendManager.addListener(::onBackendChanged)
 
@@ -250,14 +257,14 @@ class PushController internal constructor(
         }
     }
 
-    private fun getPushCapableAccounts(): Set<LegacyAccountDto> {
-        return accountManager.getAccounts()
+    private fun getPushCapableAccounts(): Set<LegacyAccount> {
+        return accountManager.findAll()
             .asSequence()
             .filter { account -> backendManager.getBackend(account.id).isPushCapable }
             .toSet()
     }
 
-    private suspend fun getPushAccounts(): Set<LegacyAccountDto> {
+    private suspend fun getPushAccounts(): Set<LegacyAccount> {
         return getPushCapableAccounts()
             .asFlow()
             .filter { account ->
@@ -311,7 +318,7 @@ class PushController internal constructor(
         }
     }
 
-    private fun updatePushEnabledListeners(accounts: Set<LegacyAccountDto>) {
+    private fun updatePushEnabledListeners(accounts: Set<LegacyAccount>) {
         synchronized(lock) {
             // Stop listening to push enabled changes in accounts we no longer monitor
             val accountIds = accounts.mapToSet { it.id }

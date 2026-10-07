@@ -2,7 +2,6 @@ package com.fsck.k9.notification
 
 import androidx.core.app.NotificationCompat
 import androidx.test.core.app.ApplicationProvider
-import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.testing.MockHelper.mockBuilder
 import net.thunderbird.core.android.testing.RobolectricTest
 import net.thunderbird.feature.account.AccountIdFactory
@@ -13,7 +12,7 @@ import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 
 class LockScreenNotificationCreatorTest : RobolectricTest() {
-    private val account = LegacyAccountDto(AccountIdFactory.create())
+    private val accountId = AccountIdFactory.create()
     private val resourceProvider = TestNotificationResourceProvider()
     private val builder = createFakeNotificationBuilder()
     private val publicBuilder = createFakeNotificationBuilder()
@@ -91,7 +90,7 @@ class LockScreenNotificationCreatorTest : RobolectricTest() {
     private fun createFakeNotificationHelper(builder: NotificationCompat.Builder): NotificationHelper {
         return mock {
             on { getContext() } doReturn ApplicationProvider.getApplicationContext()
-            on { createNotificationBuilder(any(), any()) } doReturn builder
+            on { createNotificationBuilder(any(), any(), any()) } doReturn builder
         }
     }
 
@@ -101,8 +100,9 @@ class LockScreenNotificationCreatorTest : RobolectricTest() {
         newMessagesCount: Int = 0,
     ): BaseNotificationData {
         return BaseNotificationData(
-            account = account,
+            accountId = accountId,
             accountName = accountName,
+            messagesNotificationChannelVersion = 1,
             groupKey = "irrelevant",
             color = 0,
             newMessagesCount = newMessagesCount,
