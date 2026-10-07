@@ -975,4 +975,5 @@
     <string name="message_view_from_me_text">mnie</string>
     <string name="account_settings_signature_preview_empty">Tutaj pojawi się podgląd Twojego podpisu</string>
     <string name="error_no_contact_provider">Nie znaleziono aplikacji kontaktów. Zainstaluj aplikację kontaktów, aby dodać ten adres.</string>
+    <string name="remote_feature_flag_preferences">Flagi funkcji zdalnych</string>
 </resources>
