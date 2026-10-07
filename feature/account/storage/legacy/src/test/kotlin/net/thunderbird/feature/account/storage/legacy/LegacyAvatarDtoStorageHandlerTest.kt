@@ -6,7 +6,6 @@ import assertk.assertions.isEqualTo
 import kotlin.test.Test
 import net.thunderbird.account.fake.FakeAccountAvatarData
 import net.thunderbird.account.fake.FakeAccountData
-import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.storage.legacy.fake.FakeStorage
 import net.thunderbird.feature.account.storage.legacy.fake.FakeStorageEditor
@@ -19,28 +18,28 @@ class LegacyAvatarDtoStorageHandlerTest {
     @Test
     fun `load should populate avatar data from storage`() {
         // Arrange
-        val account = createAccount(accountId)
         val storage = createStorage(accountId)
 
         // Act
-        testSubject.load(account, storage)
+        val result = testSubject.load(accountId, storage)
 
         // Assert
-        assertThat(account.avatar.avatarType).isEqualTo(AVATAR_TYPE)
-        assertThat(account.avatar.avatarMonogram).isEqualTo(AVATAR_MONOGRAM)
-        assertThat(account.avatar.avatarImageUri).isEqualTo(AVATAR_IMAGE_URI)
-        assertThat(account.avatar.avatarIconName).isEqualTo(AVATAR_ICON_NAME)
+        assertThat(result.id).isEqualTo(accountId)
+        assertThat(result.avatarType).isEqualTo(AVATAR_TYPE)
+        assertThat(result.avatarMonogram).isEqualTo(AVATAR_MONOGRAM)
+        assertThat(result.avatarImageUri).isEqualTo(AVATAR_IMAGE_URI)
+        assertThat(result.avatarIconName).isEqualTo(AVATAR_ICON_NAME)
     }
 
     @Test
     fun `save should store avatar data to storage`() {
         // Arrange
-        val account = createAccount(accountId)
+        val avatarDto = createAvatarDto(accountId)
         val storage = FakeStorage()
         val editor = FakeStorageEditor()
 
         // Act
-        testSubject.save(account, storage, editor)
+        testSubject.save(avatarDto, storage, editor)
 
         // Assert
         assertThat(editor.values["$accountId.avatarType"]).isEqualTo(AVATAR_TYPE.name)
@@ -52,12 +51,11 @@ class LegacyAvatarDtoStorageHandlerTest {
     @Test
     fun `delete should remove avatar data from storage`() {
         // Arrange
-        val account = createAccount(accountId)
         val storage = FakeStorage()
         val editor = FakeStorageEditor()
 
         // Act
-        testSubject.delete(account, storage, editor)
+        testSubject.delete(accountId, storage, editor)
 
         // Assert
         assertThat(editor.removedKeys).contains("$accountId.avatarType")
@@ -66,18 +64,14 @@ class LegacyAvatarDtoStorageHandlerTest {
         assertThat(editor.removedKeys).contains("$accountId.avatarIconName")
     }
 
-    // Arrange methods
-    private fun createAccount(accountId: AccountId): LegacyAccountDto {
-        return LegacyAccountDto(accountId).apply {
-            name = "Test Account"
-            chipColor = 0x0099CC // Default color
-            avatar = AvatarDto(
-                avatarType = AVATAR_TYPE,
-                avatarMonogram = AVATAR_MONOGRAM,
-                avatarImageUri = AVATAR_IMAGE_URI,
-                avatarIconName = null,
-            )
-        }
+    private fun createAvatarDto(accountId: AccountId): AvatarDto {
+        return AvatarDto(
+            id = accountId,
+            avatarType = AVATAR_TYPE,
+            avatarMonogram = AVATAR_MONOGRAM,
+            avatarImageUri = AVATAR_IMAGE_URI,
+            avatarIconName = null,
+        )
     }
 
     private fun createStorage(accountId: AccountId): FakeStorage {

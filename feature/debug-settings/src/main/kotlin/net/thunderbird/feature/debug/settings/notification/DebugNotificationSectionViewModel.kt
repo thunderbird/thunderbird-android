@@ -14,7 +14,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import net.thunderbird.core.common.resources.StringsResourceManager
 import net.thunderbird.core.ui.contract.mvi.BaseViewModel
-import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.debug.settings.R
 import net.thunderbird.feature.debug.settings.notification.DebugNotificationSectionContract.Effect
 import net.thunderbird.feature.debug.settings.notification.DebugNotificationSectionContract.Event
@@ -46,7 +45,7 @@ internal class DebugNotificationSectionViewModel(
 
     init {
         viewModelScope.launch(ioDispatcher) {
-            val accounts = accountManager.getAccounts()
+            val accounts = accountManager.findAll()
             withContext(mainDispatcher) {
                 updateState {
                     val systemNotificationTypes = buildList {

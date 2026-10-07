@@ -39,7 +39,10 @@ internal fun getDisplayAccountName(account: DisplayAccount): String {
 internal fun getDisplayAccountAvatar(account: DisplayAccount): Avatar {
     return when (account) {
         is UnifiedDisplayAccount -> {
-            Avatar.Icon(name = "group")
+            Avatar.Icon(
+                id = account.id,
+                name = "group",
+            )
         }
 
         is MailDisplayAccount -> {

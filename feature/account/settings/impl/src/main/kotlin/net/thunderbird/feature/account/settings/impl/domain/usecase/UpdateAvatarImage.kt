@@ -33,7 +33,12 @@ internal class UpdateAvatarImage(
 
         return try {
             val storedUri = repository.update(accountId, imageUri)
-            Outcome.Success(Avatar.Image(uri = storedUri.toString()))
+            Outcome.Success(
+                Avatar.Image(
+                    id = accountId,
+                    uri = storedUri.toString(),
+                ),
+            )
         } catch (e: IOException) {
             Outcome.Failure(
                 error = AccountSettingError.StorageError("Failed to store avatar image"),

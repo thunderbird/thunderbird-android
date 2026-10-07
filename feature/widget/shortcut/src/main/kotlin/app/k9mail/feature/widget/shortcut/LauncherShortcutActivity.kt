@@ -13,6 +13,7 @@ import com.fsck.k9.activity.AccountList
 import com.fsck.k9.activity.MessageHomeActivity
 import com.fsck.k9.activity.MessageHomeActivity.Companion.shortcutIntent
 import net.thunderbird.feature.mail.account.api.BaseAccount
+import net.thunderbird.feature.mail.folder.FolderType
 import net.thunderbird.feature.search.legacy.SearchAccount
 import app.k9mail.core.ui.legacy.theme2.common.R as CommonR
 
@@ -43,11 +44,11 @@ class LauncherShortcutActivity : AccountList() {
     }
 
     private fun createSearchAccountIntent(account: SearchAccount): Intent {
-        val shortcutIntent = MessageHomeActivity.shortcutIntent(this, account.id)
+        val shortcutIntent = MessageHomeActivity.shortcutIntent(this, account.id, FolderType.INBOX)
 
         val displayName = account.name
         val iconResId = theme.resolveDrawableResourceId(CommonR.attr.appLogo)
-        val shortcutId = account.uuid
+        val shortcutId = account.id.toString()
 
         return createResultIntent(displayName, iconResId, shortcutIntent, shortcutId)
     }

@@ -6,6 +6,7 @@ import assertk.assertThat
 import assertk.assertions.contains
 import assertk.assertions.containsOnly
 import assertk.assertions.isEmpty
+import assertk.assertions.isEqualTo
 import assertk.assertions.isSameInstanceAs
 import assertk.assertions.isTrue
 import com.fsck.k9.preferences.K9StoragePersister.StoragePersistOperationCallback
@@ -55,6 +56,20 @@ class StoragePersisterTest : K9RobolectricTest() {
         val values = storagePersister.loadValues().getAll()
 
         assertThat(values).containsOnly("x" to "y")
+    }
+
+    @Test
+    fun doInTransaction_successCallbackCanReadCommittedValues() {
+        val operationCallback = prepareCallback(
+            persistOp = { ops -> ops.put("accountUuids", "test-account") },
+            onSuccess = {
+                val committedValues = storagePersister.loadValues()
+                assertThat(committedValues.getStringOrNull("accountUuids"))
+                    .isEqualTo("test-account")
+            },
+        )
+
+        storagePersister.doInTransaction(operationCallback)
     }
 
     @Test

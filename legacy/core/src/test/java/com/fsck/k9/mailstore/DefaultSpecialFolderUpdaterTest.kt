@@ -75,7 +75,7 @@ class DefaultSpecialFolderUpdaterTest {
         subject.updateSpecialFoldersSync()
 
         // Assert
-        val updatedAccount = accountManager.getById(accountId)!!
+        val updatedAccount = accountManager.findById(accountId)!!
         assertThat(updatedAccount.inboxFolderId).isEqualTo(1L)
         assertThat(updatedAccount.draftsFolderId).isEqualTo(2L)
         assertThat(updatedAccount.sentFolderId).isEqualTo(3L)
@@ -96,7 +96,7 @@ class DefaultSpecialFolderUpdaterTest {
         testDispatcher.scheduler.advanceUntilIdle()
 
         // Assert
-        val updatedAccount = accountManager.getById(accountId)!!
+        val updatedAccount = accountManager.findById(accountId)!!
         assertThat(updatedAccount.inboxFolderId).isEqualTo(1L)
         assertThat(updatedAccount.draftsFolderId).isEqualTo(2L)
     }
@@ -117,7 +117,7 @@ class DefaultSpecialFolderUpdaterTest {
         subject.updateSpecialFoldersSync()
 
         // Assert
-        val updatedAccount = accountManager.getById(accountId)!!
+        val updatedAccount = accountManager.findById(accountId)!!
         assertThat(updatedAccount.draftsFolderId).isEqualTo(10L)
         assertThat(updatedAccount.importedDraftsFolder).isNull()
     }
@@ -139,7 +139,7 @@ class DefaultSpecialFolderUpdaterTest {
         subject.updateSpecialFoldersSync()
 
         // Assert
-        val updatedAccount = accountManager.getById(accountId)!!
+        val updatedAccount = accountManager.findById(accountId)!!
         assertThat(updatedAccount.draftsFolderId).isEqualTo(2L)
         assertThat(updatedAccount.draftsFolderSelection).isEqualTo(SpecialFolderSelection.AUTOMATIC)
     }
@@ -160,7 +160,7 @@ class DefaultSpecialFolderUpdaterTest {
         subject.updateSpecialFoldersSync()
 
         // Assert
-        val updatedAccount = accountManager.getById(accountId)!!
+        val updatedAccount = accountManager.findById(accountId)!!
         assertThat(updatedAccount.inboxFolderId).isEqualTo(1L)
         assertThat(updatedAccount.draftsFolderId).isNull()
     }
@@ -170,7 +170,13 @@ class DefaultSpecialFolderUpdaterTest {
             id = id,
             name = "name",
             color = 0,
-            avatar = AvatarDto(AvatarTypeDto.MONOGRAM, "A", null, null),
+            avatar = AvatarDto(
+                id = id,
+                avatarType = AvatarTypeDto.MONOGRAM,
+                avatarMonogram = "A",
+                avatarImageUri = null,
+                avatarIconName = null,
+            ),
         )
         val incoming = ServerSettings(
             type = Protocols.IMAP,
@@ -232,18 +238,16 @@ class DefaultSpecialFolderUpdaterTest {
     ) : LegacyAccountManager {
         private val accounts = initialAccounts.toMutableList()
 
-        override fun getAll(): Flow<List<LegacyAccount>> = throw UnsupportedOperationException()
+        override fun observeAll(): Flow<List<LegacyAccount>> = throw UnsupportedOperationException()
         override suspend fun update(account: LegacyAccount) = updateSync(account)
         override fun updateSync(account: LegacyAccount) {
             accounts.removeIf { it.id == account.id }
             accounts.add(account)
         }
 
-        override fun getAccounts(): List<LegacyAccount> = accounts
-        override fun getAccountsFlow(): Flow<List<LegacyAccount>> = throw UnsupportedOperationException()
-        override fun getById(accountId: AccountId): LegacyAccount? = accounts.find { it.id == accountId }
-        override fun observeById(accountId: AccountId): Flow<LegacyAccount?> = flowOf(getById(accountId))
-        override fun moveAccount(account: LegacyAccount, newPosition: Int) = Unit
-        override fun saveAccount(account: LegacyAccount) = updateSync(account)
+        override fun findAll(): List<LegacyAccount> = accounts
+        override fun findById(accountId: AccountId): LegacyAccount? = accounts.find { it.id == accountId }
+        override fun observeById(accountId: AccountId): Flow<LegacyAccount?> = flowOf(findById(accountId))
+        override fun moveAccount(accountId: AccountId, newPosition: Int) = Unit
     }
 }

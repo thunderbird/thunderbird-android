@@ -43,16 +43,13 @@ private fun SecretDebugSettingsScreenPreview() {
                     override fun stringResource(resourceId: Int, vararg formatArgs: Any?): String = "fake"
                 },
                 accountManager = object : AccountManager<BaseAccount> {
-                    override fun getAccounts(): List<BaseAccount> = listOf()
-                    override fun getAccountsFlow(): Flow<List<BaseAccount>> = flowOf(listOf())
-                    override fun getById(accountId: AccountId): BaseAccount? = null
+                    override fun findAll(): List<BaseAccount> = listOf()
+                    override fun observeAll(): Flow<List<BaseAccount>> = flowOf(listOf())
+                    override fun findById(accountId: AccountId): BaseAccount? = null
                     override fun observeById(accountId: AccountId): Flow<BaseAccount?> = flowOf(null)
-                    override fun moveAccount(
-                        account: BaseAccount,
-                        newPosition: Int,
-                    ) = Unit
-
-                    override fun saveAccount(account: BaseAccount) = Unit
+                    override fun moveAccount(accountId: AccountId, newPosition: Int) = Unit
+                    override suspend fun update(account: BaseAccount) = Unit
+                    override fun updateSync(account: BaseAccount) = Unit
                 },
                 notificationSender = { _: Notification -> error("not implemented") },
                 inAppNotificationStream = get(),

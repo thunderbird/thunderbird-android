@@ -5,11 +5,12 @@ import assertk.assertions.isEqualTo
 import assertk.assertions.isNotNull
 import assertk.assertions.isNull
 import com.fsck.k9.K9RobolectricTest
-import com.fsck.k9.Preferences
 import java.io.ByteArrayOutputStream
 import kotlinx.coroutines.test.runTest
 import net.thunderbird.feature.mail.folder.api.data.repository.FolderQueryRepository
 import kotlinx.coroutines.runBlocking
+import net.thunderbird.core.android.account.LegacyAccountManager
+import net.thunderbird.core.preference.storage.StorageProvider
 import org.jdom2.Document
 import org.jdom2.input.SAXBuilder
 import org.junit.Test
@@ -19,12 +20,14 @@ import org.robolectric.RuntimeEnvironment
 
 class SettingsExporterTest : K9RobolectricTest() {
     private val contentResolver = RuntimeEnvironment.getApplication().contentResolver
-    private val preferences: Preferences by inject()
+    private val storageProvider: StorageProvider by inject()
+    private val accountManager: LegacyAccountManager by inject()
     private val folderSettingsProvider: FolderSettingsProvider by inject()
     private val folderQueryRepository: FolderQueryRepository by inject()
     private val settingsExporter = SettingsExporter(
         contentResolver,
-        preferences,
+        accountManager,
+        storageProvider,
         folderSettingsProvider,
         folderQueryRepository,
         notificationSettingsUpdater = mock(),

@@ -10,7 +10,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.BaseActivity
 import com.fsck.k9.ui.base.extensions.findNavController
-import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.feature.account.AccountId
 
 class ManageFoldersActivity : BaseActivity() {
     private lateinit var navController: NavController
@@ -50,9 +50,9 @@ class ManageFoldersActivity : BaseActivity() {
         private const val EXTRA_ACCOUNT = "account"
 
         @JvmStatic
-        fun launch(activity: Activity, account: LegacyAccountDto) {
+        fun launch(activity: Activity, accountId: AccountId) {
             val intent = Intent(activity, ManageFoldersActivity::class.java).apply {
-                putExtra(EXTRA_ACCOUNT, account.id.toString())
+                putExtra(EXTRA_ACCOUNT, accountId.toString())
             }
             activity.startActivity(intent)
         }

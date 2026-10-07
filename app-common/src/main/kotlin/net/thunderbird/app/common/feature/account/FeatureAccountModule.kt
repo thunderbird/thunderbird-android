@@ -1,8 +1,12 @@
 package net.thunderbird.app.common.feature.account
 
 import androidx.work.WorkerParameters
+import net.thunderbird.app.common.account.data.DefaultLegacyAccountManager
+import net.thunderbird.app.common.feature.account.usecase.DefaultDeleteAccount
 import net.thunderbird.app.common.feature.account.usecase.DefaultGetDefaultAccountId
+import net.thunderbird.feature.account.AccountRepository
 import net.thunderbird.feature.account.settings.api.BackgroundAccountRemover
+import net.thunderbird.feature.account.usecase.DeleteAccount
 import net.thunderbird.feature.account.usecase.GetDefaultAccountId
 import org.koin.dsl.module
 
@@ -13,6 +17,18 @@ internal val appCommonFeatureAccountModule = module {
         )
     }
 
+    factory<DeleteAccount> {
+        DefaultDeleteAccount(
+            accountRepository = get(),
+        )
+    }
+
+    factory<AccountRepository> {
+        DefaultAccountRepository(
+            accountManager = get<DefaultLegacyAccountManager>(),
+        )
+    }
+
     factory {
         AccountRemover(
             localStoreProvider = get(),
@@ -20,9 +36,10 @@ internal val appCommonFeatureAccountModule = module {
             backendManager = get(),
             localKeyStoreManager = get(),
             accountManager = get(),
-            preferences = get(),
+            accountRepository = get(),
             unifiedInboxConfigurator = get(),
             avatarImageRepository = get(),
+            messageStoreManager = get(),
             logger = get(),
         )
     }
@@ -35,6 +52,9 @@ internal val appCommonFeatureAccountModule = module {
         )
     }
     factory<BackgroundAccountRemover> {
-        DefaultBackgroundAccountRemover(get())
+        DefaultBackgroundAccountRemover(
+            context = get(),
+            accountManager = get(),
+        )
     }
 }

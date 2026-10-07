@@ -9,7 +9,12 @@ val messageListUiModule = module {
     includes(navigationDropDownDrawerModule)
 
     viewModel { MessageListViewModel(messageListLiveDataFactory = get(), logger = get()) }
-    factory { DefaultFolderProvider(outboxFolderManager = get()) }
+    factory {
+        DefaultFolderProvider(
+            accountManager = get(),
+            outboxFolderManager = get(),
+        )
+    }
     factory {
         MessageListLoader(
             accountManager = get(),

@@ -7,33 +7,31 @@ import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.feature.account.AccountId
 
 internal open class FakeLegacyAccountManager(
-    private val accounts: List<LegacyAccount>,
+    accounts: List<LegacyAccount> = emptyList(),
 ) : LegacyAccountManager {
+    @get:JvmName("getMutableAccounts")
+    val accounts: MutableList<LegacyAccount> = accounts.toMutableList()
     val getByIdFlowCalls = mutableListOf<AccountId>()
     val savedAccounts = mutableListOf<LegacyAccount>()
 
-    override fun getAccounts(): List<LegacyAccount> = accounts
+    override fun findAll(): List<LegacyAccount> = accounts
 
-    override fun getAccountsFlow(): Flow<List<LegacyAccount>> = flowOf(accounts)
-
-    override fun getById(accountId: AccountId): LegacyAccount? = accounts.firstOrNull { it.id == accountId }
+    override fun findById(accountId: AccountId): LegacyAccount? = accounts.firstOrNull { it.id == accountId }
 
     override fun observeById(accountId: AccountId): Flow<LegacyAccount?> {
         getByIdFlowCalls += accountId
-        return flowOf(getById(accountId))
+        return flowOf(findById(accountId))
     }
 
-    override fun moveAccount(
-        account: LegacyAccount,
-        newPosition: Int,
-    ) = error("not implemented.")
+    override fun moveAccount(accountId: AccountId, newPosition: Int) {
+        TODO("Not yet implemented")
+    }
 
-    override fun saveAccount(account: LegacyAccount) {
+    override fun observeAll(): Flow<List<LegacyAccount>> = flowOf(findAll())
+
+    override suspend fun update(account: LegacyAccount) = updateSync(account)
+
+    override fun updateSync(account: LegacyAccount) {
         savedAccounts += account
     }
-    override fun getAll(): Flow<List<LegacyAccount>> = flowOf(getAccounts())
-
-    override suspend fun update(account: LegacyAccount) = saveAccount(account)
-
-    override fun updateSync(account: LegacyAccount) = saveAccount(account)
 }

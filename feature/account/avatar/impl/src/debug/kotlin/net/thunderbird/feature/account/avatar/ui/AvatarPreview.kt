@@ -1,6 +1,5 @@
 package net.thunderbird.feature.account.avatar.ui
 
-import android.media.Image
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -8,6 +7,7 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import app.k9mail.core.ui.compose.common.koin.koinPreview
 import net.thunderbird.components.ui.bolt.PreviewWithTheme
 import net.thunderbird.components.ui.bolt.atom.icon.Icons
+import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.account.avatar.Avatar
 import net.thunderbird.feature.account.avatar.AvatarIcon
 import net.thunderbird.feature.account.avatar.AvatarIconCatalog
@@ -17,7 +17,10 @@ import net.thunderbird.feature.account.avatar.AvatarIconCatalog
 internal fun AvatarPreview() {
     AvatarPreviewSetup {
         Avatar(
-            avatar = Avatar.Monogram("AB"),
+            avatar = Avatar.Monogram(
+                id = AccountIdFactory.create(),
+                value = "AB",
+            ),
             color = Color.Red,
             size = AvatarSize.MEDIUM,
         )
@@ -29,7 +32,10 @@ internal fun AvatarPreview() {
 internal fun AvatarSelectedPreview() {
     AvatarPreviewSetup {
         Avatar(
-            avatar = Avatar.Monogram("AB"),
+            avatar = Avatar.Monogram(
+                id = AccountIdFactory.create(),
+                value = "AB",
+            ),
             color = Color.Red,
             size = AvatarSize.MEDIUM,
             selected = true,
@@ -42,7 +48,10 @@ internal fun AvatarSelectedPreview() {
 internal fun AvatarIconPreview() {
     AvatarPreviewSetup {
         Avatar(
-            avatar = Avatar.Icon("person"),
+            avatar = Avatar.Icon(
+                id = AccountIdFactory.create(),
+                name = "person",
+            ),
             color = Color.Red,
             size = AvatarSize.MEDIUM,
         )
@@ -54,7 +63,10 @@ internal fun AvatarIconPreview() {
 internal fun AvatarIconLargePreview() {
     AvatarPreviewSetup {
         Avatar(
-            avatar = Avatar.Icon("person"),
+            avatar = Avatar.Icon(
+                id = AccountIdFactory.create(),
+                name = "person",
+            ),
             color = Color.Red,
             size = AvatarSize.LARGE,
         )
@@ -66,7 +78,10 @@ internal fun AvatarIconLargePreview() {
 internal fun AvatarImagePreview() {
     AvatarPreviewSetup {
         Avatar(
-            avatar = Avatar.Image(""),
+            avatar = Avatar.Image(
+                id = AccountIdFactory.create(),
+                uri = "",
+            ),
             color = Color.Red,
             size = AvatarSize.MEDIUM,
         )
@@ -78,7 +93,10 @@ internal fun AvatarImagePreview() {
 internal fun AvatarImageLargePreview() {
     AvatarPreviewSetup {
         Avatar(
-            avatar = Avatar.Image(""),
+            avatar = Avatar.Image(
+                id = AccountIdFactory.create(),
+                uri = "",
+            ),
             color = Color.Red,
             size = AvatarSize.LARGE,
         )

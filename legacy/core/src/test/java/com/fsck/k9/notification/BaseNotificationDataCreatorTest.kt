@@ -4,13 +4,16 @@ import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
 import assertk.assertions.isNotNull
-import assertk.assertions.isSameInstanceAs
+import com.fsck.k9.FakeLegacyAccount
 import com.fsck.k9.mail.Address
-import net.thunderbird.core.android.account.Identity
-import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.preference.LockScreenNotificationVisibility
 import net.thunderbird.feature.account.AccountIdFactory
+import net.thunderbird.feature.account.storage.profile.AvatarDto
+import net.thunderbird.feature.account.storage.profile.AvatarTypeDto
+import net.thunderbird.feature.account.storage.profile.ProfileDto
 import net.thunderbird.feature.notification.NotificationLight
+import net.thunderbird.feature.notification.NotificationSettings
 import net.thunderbird.feature.notification.NotificationVibration
 import net.thunderbird.feature.notification.VibratePattern
 import org.junit.Test
@@ -21,21 +24,21 @@ class BaseNotificationDataCreatorTest {
     private val notificationDataCreator = BaseNotificationDataCreator()
 
     @Test
-    fun `account instance`() {
+    fun `account id`() {
         val notificationData = createNotificationData(
             lockScreenNotificationVisibility = LockScreenNotificationVisibility.MESSAGE_COUNT,
         )
 
         val result = notificationDataCreator.createBaseNotificationData(notificationData)
 
-        assertThat(result.account).isSameInstanceAs(account)
+        assertThat(result.accountId).isEqualTo(account.id)
     }
 
     @Test
     fun `account name from name property`() {
-        account.name = "name"
-        account.email = "irrelevant@k9mail.example"
+        val account = createAccount(name = "name", email = "irrelevant@k9mail.example")
         val notificationData = createNotificationData(
+            account = account,
             lockScreenNotificationVisibility = LockScreenNotificationVisibility.MESSAGE_COUNT,
         )
 
@@ -46,9 +49,9 @@ class BaseNotificationDataCreatorTest {
 
     @Test
     fun `account name is blank`() {
-        account.name = ""
-        account.email = "test@k9mail.example"
+        val account = createAccount(name = "", email = "test@k9mail.example")
         val notificationData = createNotificationData(
+            account = account,
             lockScreenNotificationVisibility = LockScreenNotificationVisibility.MESSAGE_COUNT,
         )
 
@@ -59,9 +62,9 @@ class BaseNotificationDataCreatorTest {
 
     @Test
     fun `account name is null`() {
-        account.name = null
-        account.email = "test@k9mail.example"
+        val account = createAccount(name = null, email = "test@k9mail.example")
         val notificationData = createNotificationData(
+            account = account,
             lockScreenNotificationVisibility = LockScreenNotificationVisibility.MESSAGE_COUNT,
         )
 
@@ -72,8 +75,9 @@ class BaseNotificationDataCreatorTest {
 
     @Test
     fun `group key`() {
-        account.accountNumber = 42
+        val account = createAccount(accountNumber = 42)
         val notificationData = createNotificationData(
+            account = account,
             lockScreenNotificationVisibility = LockScreenNotificationVisibility.MESSAGE_COUNT,
         )
 
@@ -84,8 +88,9 @@ class BaseNotificationDataCreatorTest {
 
     @Test
     fun `notification color`() {
-        account.chipColor = 0xFF0000
+        val account = createAccount(color = 0xFF0000)
         val notificationData = createNotificationData(
+            account = account,
             lockScreenNotificationVisibility = LockScreenNotificationVisibility.MESSAGE_COUNT,
         )
 
@@ -167,8 +172,11 @@ class BaseNotificationDataCreatorTest {
 
     @Test
     fun ringtone() {
-        account.updateNotificationSettings { it.copy(ringtone = "content://ringtone/1") }
+        val account = this.account.copy(
+            notificationSettings = this.account.notificationSettings.copy(ringtone = "content://ringtone/1"),
+        )
         val notificationData = createNotificationData(
+            account = account,
             lockScreenNotificationVisibility = LockScreenNotificationVisibility.MESSAGE_COUNT,
         )
 
@@ -179,16 +187,17 @@ class BaseNotificationDataCreatorTest {
 
     @Test
     fun `vibration pattern`() {
-        account.updateNotificationSettings {
-            it.copy(
+        val account = this.account.copy(
+            notificationSettings = this.account.notificationSettings.copy(
                 vibration = NotificationVibration(
                     isEnabled = true,
                     pattern = VibratePattern.Pattern3,
                     repeatCount = 2,
                 ),
-            )
-        }
+            ),
+        )
         val notificationData = createNotificationData(
+            account = account,
             lockScreenNotificationVisibility = LockScreenNotificationVisibility.MESSAGE_COUNT,
         )
 
@@ -205,12 +214,13 @@ class BaseNotificationDataCreatorTest {
 
     @Test
     fun `led color`() {
-        account.updateNotificationSettings {
-            it.copy(
+        val account = this.account.copy(
+            notificationSettings = this.account.notificationSettings.copy(
                 light = NotificationLight.Green,
-            )
-        }
+            ),
+        )
         val notificationData = createNotificationData(
+            account = account,
             lockScreenNotificationVisibility = LockScreenNotificationVisibility.MESSAGE_COUNT,
         )
 
@@ -220,6 +230,7 @@ class BaseNotificationDataCreatorTest {
     }
 
     private fun createNotificationData(
+        account: LegacyAccount = this.account,
         senders: List<String> = emptyList(),
         lockScreenNotificationVisibility: LockScreenNotificationVisibility,
     ): NotificationData {
@@ -244,10 +255,32 @@ class BaseNotificationDataCreatorTest {
         )
     }
 
-    private fun createAccount(): LegacyAccountDto {
-        return LegacyAccountDto(AccountIdFactory.create()).apply {
-            name = "account name"
-            replaceIdentities(listOf(Identity()))
-        }
+    private fun createAccount(
+        name: String? = "account name",
+        email: String = "test@k9mail.example",
+        accountNumber: Int = 1,
+        color: Int = -1,
+        notificationSettings: NotificationSettings = NotificationSettings(),
+    ): LegacyAccount {
+        val id = AccountIdFactory.create()
+        return FakeLegacyAccount.ACCOUNT.copy(
+            id = id,
+            name = name,
+            email = email,
+            accountNumber = accountNumber,
+            profile = ProfileDto(
+                id = id,
+                name = name ?: "",
+                color = color,
+                avatar = AvatarDto(
+                    id = id,
+                    avatarType = AvatarTypeDto.MONOGRAM,
+                    avatarMonogram = "AN",
+                    avatarImageUri = null,
+                    avatarIconName = null,
+                ),
+            ),
+            notificationSettings = notificationSettings,
+        )
     }
 }

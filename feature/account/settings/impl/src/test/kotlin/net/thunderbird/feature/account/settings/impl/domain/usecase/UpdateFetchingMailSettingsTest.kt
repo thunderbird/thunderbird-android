@@ -41,6 +41,7 @@ internal class UpdateFetchingMailSettingsTest {
                 name = "Test Account",
                 color = 0xFF0000,
                 avatar = AvatarDto(
+                    id = id,
                     avatarType = AvatarTypeDto.ICON,
                     avatarMonogram = null,
                     avatarImageUri = null,

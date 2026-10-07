@@ -15,7 +15,7 @@ internal class DefaultAccountProfileLocalDataSource(
 ) : AccountProfileLocalDataSource {
 
     override fun getAll(): Flow<List<AccountProfile>> {
-        return accountManager.getAll()
+        return accountManager.observeAll()
             .map { accounts ->
                 accounts.map { dto ->
                     dataMapper.toDomain(dto.profile)

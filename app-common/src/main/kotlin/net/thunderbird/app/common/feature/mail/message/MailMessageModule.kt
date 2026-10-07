@@ -52,7 +52,6 @@ internal val mailMessageModule = module {
     single<MessageQueryRepository> {
         DefaultMessageQueryRepository(
             logger = get(),
-            accountManager = get(),
             localStoreProvider = get(),
         )
     }

@@ -13,39 +13,50 @@ import assertk.assertions.isInstanceOf
 import assertk.assertions.isTrue
 import assertk.assertions.prop
 import com.fsck.k9.K9RobolectricTest
-import com.fsck.k9.Preferences
+import com.fsck.k9.account.FakeStorageBackedAccountManager
 import java.util.UUID
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
+import net.thunderbird.core.android.account.AccountDefaultsProvider
+import net.thunderbird.core.android.account.LegacyAccountManager
+import net.thunderbird.core.preference.storage.StorageProvider
+import net.thunderbird.feature.account.storage.legacy.AccountStorageHandler
 import org.junit.Before
 import org.junit.Test
+import org.koin.core.context.loadKoinModules
+import org.koin.dsl.module
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.never
 import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 
 class SettingsImporterTest : K9RobolectricTest() {
+    private val accountManagerModule = module {
+        single<LegacyAccountManager> {
+            FakeStorageBackedAccountManager(
+                storageProvider = get<StorageProvider>(),
+                accountStorageHandler = get<AccountStorageHandler>(),
+                accountDefaultsProvider = get<AccountDefaultsProvider>(),
+            )
+        }
+    }
     private val unifiedInboxConfigurator = mock<UnifiedInboxConfigurator>()
-    private val settingsImporter = SettingsImporter(
-        settingsFileParser = get(),
-        generalSettingsValidator = get(),
-        accountSettingsValidator = get(),
-        generalSettingsUpgrader = get(),
-        accountSettingsWriter = get(),
-        accountSettingsUpgrader = get(),
-        generalSettingsWriter = get(),
-        unifiedInboxConfigurator = unifiedInboxConfigurator,
-    )
+    private lateinit var settingsImporter: SettingsImporter
 
     @Before
-    fun before() {
-        deletePreExistingAccounts()
-    }
-
-    private fun deletePreExistingAccounts() {
-        val preferences = Preferences.getPreferences()
-        preferences.clearAccounts()
+    fun setUp() {
+        loadKoinModules(accountManagerModule)
+        settingsImporter = SettingsImporter(
+            settingsFileParser = get(),
+            generalSettingsValidator = get(),
+            accountSettingsValidator = get(),
+            generalSettingsUpgrader = get(),
+            accountSettingsWriter = get(),
+            accountSettingsUpgrader = get(),
+            generalSettingsWriter = get(),
+            unifiedInboxConfigurator = unifiedInboxConfigurator,
+        )
     }
 
     @Test

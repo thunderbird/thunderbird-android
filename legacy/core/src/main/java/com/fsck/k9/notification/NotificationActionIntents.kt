@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.Intent
 import app.k9mail.legacy.message.controller.MessageReference
 import com.fsck.k9.controller.MessageReferenceHelper
-import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.feature.account.AccountId
 
 internal const val ACTION_MARK_AS_READ = "ACTION_MARK_AS_READ"
 internal const val ACTION_DELETE = "ACTION_DELETE"
@@ -27,12 +27,12 @@ object NotificationActionIntents {
 
     fun createMarkAllAsReadIntent(
         context: Context,
-        accountUuid: String,
+        accountId: AccountId,
         messageReferences: List<MessageReference>,
     ): Intent {
         return Intent(context, NotificationActionService::class.java).apply {
             action = ACTION_MARK_AS_READ
-            putExtra(EXTRA_ACCOUNT_UUID, accountUuid)
+            putExtra(EXTRA_ACCOUNT_UUID, accountId.toString())
             putExtra(
                 EXTRA_MESSAGE_REFERENCES,
                 MessageReferenceHelper.toMessageReferenceStringList(messageReferences),
@@ -48,10 +48,10 @@ object NotificationActionIntents {
         }
     }
 
-    fun createDismissAllMessagesIntent(context: Context, account: LegacyAccountDto): Intent {
+    fun createDismissAllMessagesIntent(context: Context, accountId: AccountId): Intent {
         return Intent(context, NotificationActionService::class.java).apply {
             action = ACTION_DISMISS
-            putExtra(EXTRA_ACCOUNT_UUID, account.id.toString())
+            putExtra(EXTRA_ACCOUNT_UUID, accountId.toString())
         }
     }
 
@@ -65,12 +65,12 @@ object NotificationActionIntents {
 
     fun createDeleteAllMessagesIntent(
         context: Context,
-        accountUuid: String,
+        accountId: AccountId,
         messageReferences: List<MessageReference>,
     ): Intent {
         return Intent(context, NotificationActionService::class.java).apply {
             action = ACTION_DELETE
-            putExtra(EXTRA_ACCOUNT_UUID, accountUuid)
+            putExtra(EXTRA_ACCOUNT_UUID, accountId.toString())
             putExtra(
                 EXTRA_MESSAGE_REFERENCES,
                 MessageReferenceHelper.toMessageReferenceStringList(messageReferences),
@@ -88,12 +88,12 @@ object NotificationActionIntents {
 
     fun createArchiveAllIntent(
         context: Context,
-        account: LegacyAccountDto,
+        accountId: AccountId,
         messageReferences: List<MessageReference>,
     ): Intent {
         return Intent(context, NotificationActionService::class.java).apply {
             action = ACTION_ARCHIVE
-            putExtra(EXTRA_ACCOUNT_UUID, account.id.toString())
+            putExtra(EXTRA_ACCOUNT_UUID, accountId.toString())
             putExtra(
                 EXTRA_MESSAGE_REFERENCES,
                 MessageReferenceHelper.toMessageReferenceStringList(messageReferences),

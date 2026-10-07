@@ -13,6 +13,7 @@ import net.thunderbird.core.ui.setting.Setting
 import net.thunderbird.core.ui.setting.SettingDecoration
 import net.thunderbird.core.ui.setting.SettingValue
 import net.thunderbird.core.ui.setting.Settings
+import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.avatar.Avatar
 import net.thunderbird.feature.account.avatar.AvatarIcon
 import net.thunderbird.feature.account.avatar.AvatarIconCatalog
@@ -38,6 +39,7 @@ internal class GeneralSettingsBuilder(
 ) : GeneralSettingsContract.SettingsBuilder {
 
     override fun build(
+        accountId: AccountId,
         state: State,
         onEvent: (Event) -> Unit,
     ): Settings {
@@ -46,11 +48,15 @@ internal class GeneralSettingsBuilder(
         settings += profile(
             name = state.name.value,
             color = Color(state.color.value ?: 0),
-            avatar = state.avatar ?: Avatar.Icon(name = iconCatalog.defaultIcon.id),
+            avatar = state.avatar ?: Avatar.Icon(
+                id = accountId,
+                name = iconCatalog.defaultIcon.id,
+            ),
         )
 
         if (featureFlagProvider.provide(GeneratedFeatureFlagKey.ENABLE_AVATAR_CUSTOMIZATION).isEnabled()) {
             settings += avatar(
+                accountId = accountId,
                 name = state.name.value,
                 avatar = state.avatar,
             )
@@ -94,10 +100,11 @@ internal class GeneralSettingsBuilder(
     }
 
     private fun avatar(
+        accountId: AccountId,
         name: String,
         avatar: Avatar?,
     ): Setting {
-        val options = avatarOptions(avatar = avatar, name = name)
+        val options = avatarOptions(accountId = accountId, avatar = avatar, name = name)
         val selected = selectAvatarOption(avatar = avatar, options = options)
         return SettingValue.SegmentedButton(
             id = GeneralSettingId.AVATAR_OPTIONS,
@@ -206,6 +213,7 @@ internal class GeneralSettingsBuilder(
     }
 
     private fun avatarOptions(
+        accountId: AccountId,
         avatar: Avatar?,
         name: String,
     ): ImmutableList<SettingValue.SegmentedButton.SegmentedButtonOption<Avatar>> =
@@ -214,6 +222,7 @@ internal class GeneralSettingsBuilder(
                 id = AVATAR_MONOGRAM_ID,
                 title = { resources.stringResource(R.string.account_settings_general_avatar_option_monogram) },
                 value = (avatar as? Avatar.Monogram) ?: Avatar.Monogram(
+                    id = accountId,
                     value = monogramCreator.create(name, null),
                 ),
             ),
@@ -221,6 +230,7 @@ internal class GeneralSettingsBuilder(
                 id = AVATAR_IMAGE_ID,
                 title = { resources.stringResource(R.string.account_settings_general_avatar_option_image) },
                 value = (avatar as? Avatar.Image) ?: Avatar.Image(
+                    id = accountId,
                     uri = "avatar_placeholder_uri",
                 ),
             ),
@@ -228,6 +238,7 @@ internal class GeneralSettingsBuilder(
                 id = AVATAR_ICON_ID,
                 title = { resources.stringResource(R.string.account_settings_general_avatar_option_icon) },
                 value = (avatar as? Avatar.Icon) ?: Avatar.Icon(
+                    id = accountId,
                     name = iconCatalog.defaultIcon.id,
                 ),
             ),

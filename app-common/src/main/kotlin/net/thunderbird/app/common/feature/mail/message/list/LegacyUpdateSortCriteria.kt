@@ -40,7 +40,7 @@ class LegacyUpdateSortCriteria(
         val (primary, secondary) = sortCriteria
         val (primarySortType, primarySortAscending) = primary.toDomainSortType()
         val secondaryCriteria = secondary?.toDomainSortType()
-        val account = withContext(ioDispatcher) { accountManager.getById(accountId) }
+        val account = withContext(ioDispatcher) { accountManager.findById(accountId) }
         if (account == null) {
             logger.error(TAG) { "updateAccountSortCriteria: Could not find any account with id $accountId" }
             return Outcome.failure(UpdateSortCriteriaOutcome.Error.AccountNotFound(accountId))
@@ -60,7 +60,7 @@ class LegacyUpdateSortCriteria(
         )
         withContext(ioDispatcher) {
             logger.debug(TAG) { "updateAccountSortCriteria: saving account with id $accountId" }
-            accountManager.saveAccount(updatedAccount)
+            accountManager.updateSync(updatedAccount)
         }
         return Outcome.success(UpdateSortCriteriaOutcome.Success)
     }

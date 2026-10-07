@@ -1,39 +1,38 @@
 package net.thunderbird.feature.account.storage.legacy
 
-import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.preference.storage.Storage
 import net.thunderbird.core.preference.storage.StorageEditor
 import net.thunderbird.core.preference.storage.getEnumOrDefault
 import net.thunderbird.core.preference.storage.putEnum
+import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.storage.profile.AvatarDto
 import net.thunderbird.feature.account.storage.profile.AvatarTypeDto
 
 class LegacyAvatarDtoStorageHandler : AvatarDtoStorageHandler {
 
     override fun load(
-        data: LegacyAccountDto,
+        accountId: AccountId,
         storage: Storage,
-    ) {
-        val keyGen = AccountKeyGenerator(data.id)
+    ): AvatarDto {
+        val keyGen = AccountKeyGenerator(accountId)
 
-        with(data) {
-            avatar = AvatarDto(
-                avatarType = storage.getEnumOrDefault(keyGen.create(KEY_AVATAR_TYPE), AvatarTypeDto.MONOGRAM),
-                avatarMonogram = storage.getStringOrNull(keyGen.create(KEY_AVATAR_MONOGRAM)),
-                avatarImageUri = storage.getStringOrNull(keyGen.create(KEY_AVATAR_IMAGE_URI)),
-                avatarIconName = storage.getStringOrNull(keyGen.create(KEY_AVATAR_ICON_NAME)),
-            )
-        }
+        return AvatarDto(
+            id = accountId,
+            avatarType = storage.getEnumOrDefault(keyGen.create(KEY_AVATAR_TYPE), AvatarTypeDto.MONOGRAM),
+            avatarMonogram = storage.getStringOrNull(keyGen.create(KEY_AVATAR_MONOGRAM)),
+            avatarImageUri = storage.getStringOrNull(keyGen.create(KEY_AVATAR_IMAGE_URI)),
+            avatarIconName = storage.getStringOrNull(keyGen.create(KEY_AVATAR_ICON_NAME)),
+        )
     }
 
     override fun save(
-        data: LegacyAccountDto,
+        data: AvatarDto,
         storage: Storage,
         editor: StorageEditor,
     ) {
         val keyGen = AccountKeyGenerator(data.id)
 
-        with(data.avatar) {
+        with(data) {
             editor.putEnum(keyGen.create(KEY_AVATAR_TYPE), avatarType)
             editor.putString(keyGen.create(KEY_AVATAR_MONOGRAM), avatarMonogram)
             editor.putString(keyGen.create(KEY_AVATAR_IMAGE_URI), avatarImageUri)
@@ -42,11 +41,11 @@ class LegacyAvatarDtoStorageHandler : AvatarDtoStorageHandler {
     }
 
     override fun delete(
-        data: LegacyAccountDto,
+        accountId: AccountId,
         storage: Storage,
         editor: StorageEditor,
     ) {
-        val keyGen = AccountKeyGenerator(data.id)
+        val keyGen = AccountKeyGenerator(accountId)
 
         editor.remove(keyGen.create(KEY_AVATAR_TYPE))
         editor.remove(keyGen.create(KEY_AVATAR_MONOGRAM))

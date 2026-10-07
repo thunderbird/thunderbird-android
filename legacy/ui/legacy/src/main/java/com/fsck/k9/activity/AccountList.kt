@@ -11,13 +11,13 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.fsck.k9.CoreResourceProvider
-import com.fsck.k9.Preferences.Companion.getPreferences
 import com.fsck.k9.ui.R
 import com.google.android.material.textview.MaterialTextView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.feature.mail.account.api.BaseAccount
 import net.thunderbird.feature.search.legacy.SearchAccount
@@ -34,6 +34,8 @@ abstract class AccountList : BaseListActivity(), OnItemClickListener {
     private val coreResourceProvider: CoreResourceProvider by inject()
 
     private val generalSettingsManager: GeneralSettingsManager by inject()
+
+    private val accountManager: LegacyAccountManager by inject()
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,7 +64,7 @@ abstract class AccountList : BaseListActivity(), OnItemClickListener {
      */
     private suspend fun loadAccounts() {
         val accounts = withContext(Dispatchers.IO) {
-            getPreferences().getAccounts()
+            accountManager.findAll()
         }
 
         populateListView(accounts)
@@ -74,11 +76,11 @@ abstract class AccountList : BaseListActivity(), OnItemClickListener {
      * @param realAccounts
      * An array of accounts to display.
      */
-    private fun populateListView(realAccounts: List<LegacyAccountDto>) {
+    private fun populateListView(realAccounts: List<LegacyAccount>) {
         val accounts: MutableList<Any> = ArrayList()
 
         if (generalSettingsManager.getConfig().display.inboxSettings.isShowUnifiedInbox) {
-            val unifiedInboxAccount = SearchAccount.createUnifiedFoldersSearch(
+            val unifiedInboxAccount = SearchAccount.createUnifiedInboxSearch(
                 title = coreResourceProvider.searchUnifiedFoldersTitle(),
                 detail = coreResourceProvider.searchUnifiedFoldersDetail(),
             )
@@ -122,8 +124,8 @@ abstract class AccountList : BaseListActivity(), OnItemClickListener {
                 error("Unknown account type: $account")
             }
 
-            if (account is LegacyAccountDto) {
-                holder.chip.setBackgroundColor(account.chipColor)
+            if (account is LegacyAccount) {
+                holder.chip.setBackgroundColor(account.profile.color)
             } else {
                 holder.chip.setBackgroundColor(
                     ResourcesCompat.getColor(

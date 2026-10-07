@@ -28,6 +28,7 @@ fun FakeLegacyAccount(
         name = name,
         color = -1,
         avatar = AvatarDto(
+            id = id,
             avatarType = AvatarTypeDto.MONOGRAM,
             avatarMonogram = "FA",
             avatarImageUri = null,

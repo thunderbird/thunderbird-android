@@ -7,12 +7,10 @@ import net.thunderbird.account.fake.FakeAccountData
 import net.thunderbird.core.android.account.DeletePolicy
 import net.thunderbird.core.android.account.Identity
 import net.thunderbird.core.android.account.LegacyAccount
-import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.common.mail.Protocols
 import net.thunderbird.feature.account.storage.profile.AvatarDto
 import net.thunderbird.feature.account.storage.profile.AvatarTypeDto
 import net.thunderbird.feature.account.storage.profile.ProfileDto
-import net.thunderbird.feature.mail.account.api.BaseAccount
 
 object FakeData {
     val legacyAccount = LegacyAccount(
@@ -23,6 +21,7 @@ object FakeData {
             name = "user@example.com",
             color = 0,
             avatar = AvatarDto(
+                id = FakeAccountData.ACCOUNT_ID,
                 avatarType = AvatarTypeDto.MONOGRAM,
                 avatarMonogram = "us",
                 avatarImageUri = null,

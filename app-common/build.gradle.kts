@@ -18,6 +18,7 @@ dependencies {
     api(projects.legacy.ui.legacy)
 
     api(projects.feature.account.core)
+    api(projects.feature.account.internal)
     api(projects.feature.launcher)
     api(projects.feature.navigation.drawer.api)
 

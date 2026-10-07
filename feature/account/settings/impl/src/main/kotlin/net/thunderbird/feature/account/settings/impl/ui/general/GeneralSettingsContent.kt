@@ -8,6 +8,7 @@ import net.thunderbird.core.ui.setting.Setting
 import net.thunderbird.core.ui.setting.SettingValue
 import net.thunderbird.core.ui.setting.SettingValue.SegmentedButton.SegmentedButtonOption
 import net.thunderbird.core.ui.setting.SettingViewProvider
+import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.avatar.Avatar
 import net.thunderbird.feature.account.settings.R
 import net.thunderbird.feature.account.settings.impl.ui.general.GeneralSettingsContract.Event
@@ -16,6 +17,7 @@ import net.thunderbird.feature.account.settings.impl.ui.general.GeneralSettingsC
 
 @Composable
 internal fun GeneralSettingsContent(
+    accountId: AccountId,
     state: State,
     onEvent: (Event) -> Unit,
     provider: SettingViewProvider,
@@ -23,36 +25,41 @@ internal fun GeneralSettingsContent(
     modifier: Modifier = Modifier,
 ) {
     val settings = remember(state, builder, onEvent) {
-        builder.build(state = state, onEvent = onEvent)
+        builder.build(
+            accountId = accountId,
+            state = state,
+            onEvent = onEvent,
+        )
     }
 
     provider.SettingView(
         title = stringResource(R.string.account_settings_general_title),
         subtitle = state.subtitle,
         settings = settings,
-        onSettingValueChange = { setting -> handleSettingChange(setting, onEvent) },
+        onSettingValueChange = { setting -> handleSettingChange(accountId, setting, onEvent) },
         onBack = { onEvent(Event.OnBackPressed) },
         modifier = modifier,
     )
 }
 
 private fun handleSettingChange(
+    accountId: AccountId,
     setting: Setting,
     onEvent: (Event) -> Unit,
 ) {
     when (setting) {
-        is SettingValue.Text -> handleTextChange(setting, onEvent)
+        is SettingValue.Text -> handleTextChange(accountId, setting, onEvent)
         is SettingValue.Color -> handleColorChange(setting, onEvent)
         is SettingValue.SegmentedButton<*> -> handleSegmentedChange(setting, onEvent)
-        is SettingValue.IconList -> handleIconListChange(setting, onEvent)
+        is SettingValue.IconList -> handleIconListChange(accountId, setting, onEvent)
         else -> Unit
     }
 }
 
-private fun handleTextChange(setting: SettingValue.Text, onEvent: (Event) -> Unit) {
+private fun handleTextChange(accountId: AccountId, setting: SettingValue.Text, onEvent: (Event) -> Unit) {
     when (setting.id) {
         GeneralSettingId.NAME -> onEvent(Event.OnNameChange(setting.value))
-        GeneralSettingId.AVATAR_MONOGRAM -> onEvent(Event.OnAvatarChange(Avatar.Monogram(setting.value)))
+        GeneralSettingId.AVATAR_MONOGRAM -> onEvent(Event.OnAvatarChange(Avatar.Monogram(accountId, setting.value)))
         else -> Unit
     }
 }
@@ -81,12 +88,23 @@ private fun handleSegmentedChange(setting: SettingValue.SegmentedButton<*>, onEv
     }
 }
 
-private fun handleIconListChange(setting: SettingValue.IconList, onEvent: (Event) -> Unit) {
+private fun handleIconListChange(
+    accountId: AccountId,
+    setting: SettingValue.IconList,
+    onEvent: (Event) -> Unit,
+) {
     when (setting.id) {
         GeneralSettingId.AVATAR_ICON -> {
             val iconOption = setting.icons.firstOrNull { it == setting.value }
             if (iconOption != null) {
-                onEvent(Event.OnAvatarChange(Avatar.Icon(iconOption.id)))
+                onEvent(
+                    Event.OnAvatarChange(
+                        Avatar.Icon(
+                            id = accountId,
+                            name = iconOption.id,
+                        ),
+                    ),
+                )
             }
         }
 

@@ -390,7 +390,7 @@ class AttachmentResolverTest : RobolectricTest() {
         val file = File.createTempFile("attachment", null, context.cacheDir).apply {
             writeBytes(ByteArray(size = 5))
         }
-        val part = LocalBodyPart(ACCOUNT_UUID, null, PART_ID, 100L).apply {
+        val part = LocalBodyPart(ACCOUNT_ID, null, PART_ID, 100L).apply {
             setHeader(MimeHeader.HEADER_CONTENT_DISPOSITION, "attachment; size=200")
         }
 
@@ -404,7 +404,7 @@ class AttachmentResolverTest : RobolectricTest() {
     @Test
     fun `resolveAttachmentSize should use the LocalPart size when there is no copied file`() {
         // Arrange
-        val part = LocalBodyPart(ACCOUNT_UUID, null, PART_ID, 100L).apply {
+        val part = LocalBodyPart(ACCOUNT_ID, null, PART_ID, 100L).apply {
             setHeader(MimeHeader.HEADER_CONTENT_DISPOSITION, "attachment; size=200")
         }
 
@@ -655,7 +655,7 @@ class AttachmentResolverTest : RobolectricTest() {
         transform { MimeUtility.getHeaderParameter(it.selector(), parameterName) }
 
     private fun buildLocalPart(partId: Long, content: ByteArray): LocalBodyPart =
-        LocalBodyPart(ACCOUNT_UUID, null, partId, content.size.toLong()).apply {
+        LocalBodyPart(ACCOUNT_ID, null, partId, content.size.toLong()).apply {
             MimeMessageHelper.setBody(this, BinaryMemoryBody(content, "8bit"))
         }
 
@@ -670,7 +670,7 @@ class AttachmentResolverTest : RobolectricTest() {
         }
 
     private fun buildFileBackedLocalPart(partId: Long, file: File): LocalBodyPart =
-        LocalBodyPart(ACCOUNT_UUID, null, partId, file.length()).apply {
+        LocalBodyPart(ACCOUNT_ID, null, partId, file.length()).apply {
             MimeMessageHelper.setBody(this, FileBackedBody(file, "8bit"))
         }
 

@@ -1,6 +1,9 @@
 package net.thunderbird.core.android.account
 
+import com.fsck.k9.mail.Address
 import com.fsck.k9.mail.ServerSettings
+import java.util.Calendar
+import java.util.Date
 import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.NO_OPENPGP_KEY
 import net.thunderbird.core.common.mail.Protocols
 import net.thunderbird.feature.account.Account
@@ -14,6 +17,7 @@ import net.thunderbird.feature.notification.NotificationSettings
 /**
  * This class is used to store the account data in a way that is safe to pass between threads.
  */
+@Suppress("TooManyFunctions")
 data class LegacyAccount(
     val isSensitiveDebugLoggingEnabled: () -> Boolean = { false },
 
@@ -62,6 +66,14 @@ data class LegacyAccount(
     val folderDisplayMode: FolderMode = FolderMode.NOT_SECOND_CLASS,
     val folderSyncMode: FolderMode = FolderMode.FIRST_CLASS,
     val folderPushMode: FolderMode = FolderMode.NONE,
+    /**
+     * Unique integer identifier for this account (0, 1, 2, ...).
+     *
+     * Used internally for:
+     * - Android system Notification IDs
+     * - Android [android.app.PendingIntent] request codes
+     * - Widget item ID generation
+     */
     val accountNumber: Int = 0,
     val isNotifySync: Boolean = false,
     val sortType: SortType = SortType.SORT_DATE,
@@ -105,13 +117,17 @@ data class LegacyAccount(
     val lastSelectedFolderId: Long? = null,
     val identities: List<Identity>,
     val notificationSettings: NotificationSettings = NotificationSettings(),
-    val senderName: String? = identities[0].name,
-    val signatureUse: Boolean = identities[0].signatureUse,
-    val signature: String? = identities[0].signature,
-    val signatureIsHtml: Boolean = identities[0].signatureIsHtml,
+    val senderName: String? = identities.firstOrNull()?.name,
+    val signatureUse: Boolean = identities.firstOrNull()?.signatureUse ?: false,
+    val signature: String? = identities.firstOrNull()?.signature,
+    val signatureIsHtml: Boolean = identities.firstOrNull()?.signatureIsHtml ?: false,
     val shouldMigrateToOAuth: Boolean = false,
     val folderPathDelimiter: FolderPathDelimiter = "/",
 ) : Account, BaseAccount {
+
+    fun isSortAscending(sortType: SortType): Boolean {
+        return sortAscending[sortType] ?: sortType.isDefaultAscending
+    }
 
     fun hasDraftsFolder(): Boolean {
         return draftsFolderId != null
@@ -143,4 +159,114 @@ data class LegacyAccount(
 
     fun isIncomingServerPop3(): Boolean =
         incomingServerSettings.type == Protocols.POP3
+
+    fun isAnIdentity(addresses: Array<Address>?): Boolean {
+        if (addresses == null) return false
+
+        return addresses.any { address -> isAnIdentity(address) }
+    }
+
+    fun isAnIdentity(address: Address): Boolean {
+        return findIdentity(address) != null
+    }
+
+    @Synchronized
+    fun findIdentity(address: Address): Identity? {
+        // Prefer to match by email and name.
+        // Fall back to email only if no identity's name matches (e.g. a renamed identity).
+        return identities.find { identity ->
+            identity.email.equals(address.address, ignoreCase = true) &&
+                identity.name.equals(address.personal, ignoreCase = true)
+        } ?: identities.find { identity ->
+            identity.email.equals(address.address, ignoreCase = true)
+        }
+    }
+
+    @Synchronized
+    fun getIdentity(index: Int): Identity {
+        if (index !in identities.indices) error("Identity with index $index not found")
+
+        return identities[index]
+    }
+
+    @Suppress("MagicNumber")
+    fun getEarliestPollDate(): Date? {
+        val age = maximumPolledMessageAge.takeIf { it >= 0 } ?: return null
+
+        val now = Calendar.getInstance()
+        now[Calendar.HOUR_OF_DAY] = 0
+        now[Calendar.MINUTE] = 0
+        now[Calendar.SECOND] = 0
+        now[Calendar.MILLISECOND] = 0
+
+        if (age < 28) {
+            now.add(Calendar.DATE, age * -1)
+        } else {
+            when (age) {
+                28 -> now.add(Calendar.MONTH, -1)
+                56 -> now.add(Calendar.MONTH, -2)
+                84 -> now.add(Calendar.MONTH, -3)
+                168 -> now.add(Calendar.MONTH, -6)
+                365 -> now.add(Calendar.YEAR, -1)
+            }
+        }
+
+        return now.time
+    }
+
+    // FIXME Java interop code, remove once MessagingController is converted to Kotlin
+    fun updateOpenPgpProvider(openPgpProvider: String?): LegacyAccount {
+        return this.copy(
+            openPgpProvider = openPgpProvider,
+        )
+    }
+
+    // FIXME Java interop code, remove once MessagingController is converted to Kotlin
+    fun updateIdentities(identities: List<Identity>): LegacyAccount {
+        return this.copy(
+            identities = identities,
+        )
+    }
+
+    // FIXME Java interop code, remove once MessagingController is converted to Kotlin
+    fun updateLastSyncTime(syncTime: Long): LegacyAccount {
+        return this.copy(
+            lastSyncTime = syncTime,
+        )
+    }
+
+    // FIXME Java interop code, remove once MessagingController is converted to Kotlin
+    fun updateIncomingServerSettings(incomingServerSettings: ServerSettings): LegacyAccount {
+        return this.copy(
+            incomingServerSettings = incomingServerSettings,
+        )
+    }
+
+    // FIXME Java interop code, remove once MessagingController is converted to Kotlin
+    fun updateOutgoingServerSettings(outgoingServerSettings: ServerSettings): LegacyAccount {
+        return this.copy(
+            outgoingServerSettings = outgoingServerSettings,
+        )
+    }
+
+    // FIXME Java interop code, remove once MessagingController is converted to Kotlin
+    fun updateShouldMigrateToOAuth(shouldMigrateToOAuth: Boolean): LegacyAccount {
+        return this.copy(
+            shouldMigrateToOAuth = shouldMigrateToOAuth,
+        )
+    }
+
+    // FIXME Java interop code, remove once MessagingController is converted to Kotlin
+    fun updateFolderDelimiter(folderPathDelimiter: FolderPathDelimiter): LegacyAccount {
+        return this.copy(
+            folderPathDelimiter = folderPathDelimiter,
+        )
+    }
+
+    // FIXME Java interop code, remove once MessagingController is converted to Kotlin
+    fun updateLastFolderListRefreshTime(lastFolderListRefreshTime: Long): LegacyAccount {
+        return this.copy(
+            lastFolderListRefreshTime = lastFolderListRefreshTime,
+        )
+    }
 }

@@ -65,6 +65,7 @@ private val fakeMessageListItem = MessageListItem(
             name = "Name",
             color = 0xFF0000FF.toInt(),
             avatar = AvatarDto(
+                id = accountId,
                 avatarType = AvatarTypeDto.MONOGRAM,
                 avatarMonogram = "AB",
                 avatarImageUri = null,

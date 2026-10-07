@@ -7,9 +7,11 @@ import com.fsck.k9.core.BuildConfig
 import com.fsck.k9.job.K9JobManager
 import com.fsck.k9.mail.internet.BinaryTempFileBody
 import com.fsck.k9.notification.NotificationController
+import kotlin.getValue
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import net.thunderbird.core.android.account.LegacyAccountManager
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import org.koin.core.qualifier.named
@@ -19,7 +21,8 @@ object Core : KoinComponent {
     private val appConfig: AppConfig by inject()
     private val jobManager: K9JobManager by inject()
     private val appCoroutineScope: CoroutineScope by inject(named("AppCoroutineScope"))
-    private val preferences: Preferences by inject()
+
+    private val accountManager: LegacyAccountManager by inject()
     private val notificationController: NotificationController by inject()
 
     /**
@@ -49,7 +52,7 @@ object Core : KoinComponent {
     @JvmStatic
     fun setServicesEnabled(context: Context) {
         val appContext = context.applicationContext
-        val acctLength = Preferences.getPreferences().getAccounts().size
+        val acctLength = accountManager.findAll().size
         val enable = acctLength > 0
 
         setServicesEnabled(appContext, enable)
@@ -86,8 +89,8 @@ object Core : KoinComponent {
 
     private fun restoreNotifications() {
         appCoroutineScope.launch(Dispatchers.IO) {
-            val accounts = preferences.getAccounts()
-            notificationController.restoreNewMailNotifications(accounts)
+            val accountIds = accountManager.findAll().map { it.id }
+            notificationController.restoreNewMailNotifications(accountIds)
         }
     }
 }

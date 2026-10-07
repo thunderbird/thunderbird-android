@@ -18,9 +18,9 @@ internal class FakeLegacyAccountManager(
     )
     private val accounts: StateFlow<List<LegacyAccount>> = accountsState
 
-    override fun getAll(): Flow<List<LegacyAccount>> = accounts
+    override fun observeAll(): Flow<List<LegacyAccount>> = accounts
 
-    override fun getById(accountId: AccountId): LegacyAccount? {
+    override fun findById(accountId: AccountId): LegacyAccount? {
         return accounts.value.find { it.id == accountId }
     }
 
@@ -28,6 +28,8 @@ internal class FakeLegacyAccountManager(
         .map { list ->
             list.find { it.id == accountId }
         }
+
+    override fun moveAccount(accountId: AccountId, newPosition: Int) = Unit
 
     override suspend fun update(account: LegacyAccount) {
         accountsState.update { currentList ->
@@ -47,19 +49,7 @@ internal class FakeLegacyAccountManager(
         }
     }
 
-    override fun getAccounts(): List<LegacyAccount> {
+    override fun findAll(): List<LegacyAccount> {
         return accounts.value
-    }
-
-    override fun getAccountsFlow(): Flow<List<LegacyAccount>> {
-        return accounts
-    }
-
-    override fun moveAccount(account: LegacyAccount, newPosition: Int) {
-        TODO("Not yet implemented")
-    }
-
-    override fun saveAccount(account: LegacyAccount) {
-        TODO("Not yet implemented")
     }
 }

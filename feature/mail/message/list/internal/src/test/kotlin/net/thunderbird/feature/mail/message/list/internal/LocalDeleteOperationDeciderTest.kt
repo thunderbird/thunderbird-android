@@ -3,46 +3,69 @@ package net.thunderbird.feature.mail.message.list.internal
 import assertk.assertThat
 import assertk.assertions.isFalse
 import assertk.assertions.isTrue
-import java.util.UUID
+import kotlin.test.BeforeTest
 import kotlin.test.Test
-import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.feature.account.AccountIdFactory
+import net.thunderbird.feature.mail.message.list.internal.fakes.FakeLegacyAccount
+import net.thunderbird.feature.mail.message.list.internal.fakes.FakeLegacyAccountManager
 
 class LocalDeleteOperationDeciderTest {
-    private val localDeleteOperationDecider = DefaultLocalDeleteOperationDecider()
-    private val account = LegacyAccountDto(AccountIdFactory.create()).apply {
-        spamFolderId = SPAM_FOLDER_ID
-        trashFolderId = TRASH_FOLDER_ID
+
+    private val accountId = AccountIdFactory.create()
+    private val accountManager = FakeLegacyAccountManager(mutableListOf())
+    private val localDeleteOperationDecider = DefaultLocalDeleteOperationDecider(accountManager)
+
+    @BeforeTest
+    fun setup() {
+        accountManager.accounts.clear()
     }
 
     @Test
     fun `delete message from trash folder`() {
-        val result = localDeleteOperationDecider.isDeleteImmediately(account, TRASH_FOLDER_ID)
+        val account = createAccount(trashFolderId = TRASH_FOLDER_ID, spamFolderId = SPAM_FOLDER_ID)
+        accountManager.accounts.add(account)
+
+        val result = localDeleteOperationDecider.isDeleteImmediately(accountId, TRASH_FOLDER_ID)
 
         assertThat(result).isTrue()
     }
 
     @Test
     fun `delete message from spam folder`() {
-        val result = localDeleteOperationDecider.isDeleteImmediately(account, SPAM_FOLDER_ID)
+        val account = createAccount(trashFolderId = TRASH_FOLDER_ID, spamFolderId = SPAM_FOLDER_ID)
+        accountManager.accounts.add(account)
+
+        val result = localDeleteOperationDecider.isDeleteImmediately(accountId, SPAM_FOLDER_ID)
 
         assertThat(result).isTrue()
     }
 
     @Test
     fun `delete message from regular folder`() {
-        val result = localDeleteOperationDecider.isDeleteImmediately(account, REGULAR_FOLDER_ID)
+        val account = createAccount(trashFolderId = TRASH_FOLDER_ID, spamFolderId = SPAM_FOLDER_ID)
+        accountManager.accounts.add(account)
+
+        val result = localDeleteOperationDecider.isDeleteImmediately(accountId, REGULAR_FOLDER_ID)
 
         assertThat(result).isFalse()
     }
 
     @Test
     fun `delete message from regular folder without trash folder configured`() {
-        account.trashFolderId = null
+        val account = createAccount(trashFolderId = null, spamFolderId = SPAM_FOLDER_ID)
+        accountManager.accounts.add(account)
 
-        val result = localDeleteOperationDecider.isDeleteImmediately(account, REGULAR_FOLDER_ID)
+        val result = localDeleteOperationDecider.isDeleteImmediately(accountId, REGULAR_FOLDER_ID)
 
         assertThat(result).isTrue()
+    }
+
+    private fun createAccount(trashFolderId: Long?, spamFolderId: Long?): LegacyAccount {
+        return FakeLegacyAccount(id = accountId).copy(
+            trashFolderId = trashFolderId,
+            spamFolderId = spamFolderId,
+        )
     }
 
     companion object {
