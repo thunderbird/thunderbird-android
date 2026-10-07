@@ -101,6 +101,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
 
         initializeGeneralSettings()
         initializeReadingMail()
+        initializeSyncAndNotifications()
         initializeFetchingMail()
         initializeSendingMail()
         initializeSearch()
@@ -179,6 +180,16 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
             FeatureLauncherActivity.launch(
                 context = requireActivity(),
                 target = FeatureLauncherTarget.AccountReadingMailSettings(accountId),
+                launcher = launcherForActivityResult,
+            )
+        }
+    }
+
+    private fun initializeSyncAndNotifications() {
+        findPreference<Preference>(PREFERENCE_SYNC_AND_NOTIFICATIONS)?.onClick {
+            FeatureLauncherActivity.launch(
+                context = requireActivity(),
+                target = FeatureLauncherTarget.AccountSyncAndNotifications(accountId),
                 launcher = launcherForActivityResult,
             )
         }
@@ -519,6 +530,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         private const val PREFERENCE_GENERAL = "general"
 
         private const val PREFERENCE_READING_MAIL = "reading_mail"
+        private const val PREFERENCE_SYNC_AND_NOTIFICATIONS = "sync_and_notifications"
         private const val PREFERENCE_FETCHING_MAIL = "fetching_mail"
 
         private const val PREFERENCE_SENDING_MAIL = "composing"
