@@ -3,8 +3,13 @@ package net.thunderbird.feature.search.legacy.serialization
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNotNull
+import assertk.assertions.isNull
 import kotlin.text.Charsets
+import net.thunderbird.feature.account.AccountIdFactory
+import net.thunderbird.feature.mail.folder.FolderType
 import net.thunderbird.feature.search.legacy.LocalMessageSearch
+import net.thunderbird.feature.search.legacy.LocalMessageSearchType
+import net.thunderbird.feature.search.legacy.UnifiedFolderSelection
 import net.thunderbird.feature.search.legacy.api.MessageSearchField
 import net.thunderbird.feature.search.legacy.api.SearchAttribute
 import org.junit.Test
@@ -34,7 +39,8 @@ class LocalMessageSearchSerializerTest {
 
         // Assert
         assertThat(result).isNotNull()
-        assertThat(result.id).isEqualTo("")
+        assertThat(result.id).isNull()
+        assertThat(result.type).isEqualTo(LocalMessageSearchType.Account)
         assertThat(result.isManualSearch).isEqualTo(false)
     }
 
@@ -50,21 +56,93 @@ class LocalMessageSearchSerializerTest {
         // Assert
         assertThat(result.id).isEqualTo(search.id)
         assertThat(result.isManualSearch).isEqualTo(search.isManualSearch)
-        assertThat(result.accountUuids).isEqualTo(search.accountUuids)
+        assertThat(result.accountIds).isEqualTo(search.accountIds)
     }
 
     @Test
-    fun `should round-trip serialize and deserialize search with account uuid`() {
+    fun `should round-trip serialize and deserialize search with account id`() {
         // Arrange
         val search = LocalMessageSearch()
-        search.addAccountUuid("test-account-uuid")
+        search.addAccountId(AccountIdFactory.create())
 
         // Act
         val bytes = LocalMessageSearchSerializer.serialize(search)
         val result = LocalMessageSearchSerializer.deserialize(bytes)
 
         // Assert
-        assertThat(result.accountUuids).isEqualTo(search.accountUuids)
+        assertThat(result.accountIds).isEqualTo(search.accountIds)
+    }
+
+    @Test
+    fun `should round-trip serialize and deserialize new messages search type`() {
+        // Arrange
+        val accountId = AccountIdFactory.create()
+        val search = LocalMessageSearch().apply {
+            id = accountId
+            type = LocalMessageSearchType.NewMessages
+        }
+
+        // Act
+        val bytes = LocalMessageSearchSerializer.serialize(search)
+        val result = LocalMessageSearchSerializer.deserialize(bytes)
+
+        // Assert
+        assertThat(result.id).isEqualTo(accountId)
+        assertThat(result.type).isEqualTo(LocalMessageSearchType.NewMessages)
+    }
+
+    @Test
+    fun `should round-trip serialize and deserialize unified search type`() {
+        // Arrange
+        val search = LocalMessageSearch().apply {
+            type = LocalMessageSearchType.Unified(UnifiedFolderSelection.Special(FolderType.INBOX))
+        }
+
+        // Act
+        val bytes = LocalMessageSearchSerializer.serialize(search)
+        val result = LocalMessageSearchSerializer.deserialize(bytes)
+
+        // Assert
+        assertThat(result.type).isEqualTo(
+            LocalMessageSearchType.Unified(UnifiedFolderSelection.Special(FolderType.INBOX)),
+        )
+    }
+
+    @Test
+    fun `should deserialize search without type as account type`() {
+        // Arrange
+        val bytes = "{}".toByteArray(Charsets.UTF_8)
+
+        // Act
+        val result = LocalMessageSearchSerializer.deserialize(bytes)
+
+        // Assert
+        assertThat(result.type).isEqualTo(LocalMessageSearchType.Account)
+    }
+
+    @Test
+    fun `should deserialize search with unknown type as account type`() {
+        // Arrange
+        val bytes = """{"type":{"type":"default"}}""".toByteArray(Charsets.UTF_8)
+
+        // Act
+        val result = LocalMessageSearchSerializer.deserialize(bytes)
+
+        // Assert
+        assertThat(result.type).isEqualTo(LocalMessageSearchType.Account)
+    }
+
+    @Test
+    fun `should deserialize search with unknown unified folder selection as account type`() {
+        // Arrange
+        val bytes = """{"type":{"type":"unified","folder":{"type":"custom","id":"1"}}}"""
+            .toByteArray(Charsets.UTF_8)
+
+        // Act
+        val result = LocalMessageSearchSerializer.deserialize(bytes)
+
+        // Assert
+        assertThat(result.type).isEqualTo(LocalMessageSearchType.Account)
     }
 
     @Test

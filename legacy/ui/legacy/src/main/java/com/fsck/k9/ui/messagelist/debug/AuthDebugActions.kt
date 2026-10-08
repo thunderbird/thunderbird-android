@@ -24,7 +24,7 @@ class AuthDebugActions(
     }
 
     fun invalidateAccessTokenLocal(accountId: AccountId): Outcome<Unit, Error> {
-        val account = accountManager.getById(accountId)
+        val account = accountManager.findById(accountId)
 
         return when {
             account == null -> Outcome.failure(Error.AccountNotFound)
@@ -34,7 +34,7 @@ class AuthDebugActions(
                     override fun getAuthorizationState(): String? = account.oAuthState
                     override fun updateAuthorizationState(authorizationState: String?) {
                         val updated = account.copy(oAuthState = authorizationState)
-                        accountManager.saveAccount(updated)
+                        accountManager.updateSync(updated)
                     }
                 }
                 val provider = oAuth2TokenProviderFactory.create(storage)
@@ -45,7 +45,7 @@ class AuthDebugActions(
     }
 
     fun invalidateAccessTokenServer(accountId: AccountId): Outcome<Unit, Error> {
-        val account = accountManager.getById(accountId)
+        val account = accountManager.findById(accountId)
         return when {
             account == null -> Outcome.failure(Error.AccountNotFound)
             account.oAuthState == null -> Outcome.failure(Error.NoOAuthState)
@@ -60,18 +60,18 @@ class AuthDebugActions(
                 }
 
                 val updated = account.copy(oAuthState = modified)
-                accountManager.saveAccount(updated)
+                accountManager.updateSync(updated)
                 Outcome.success(Unit)
             }
         }
     }
 
     fun forceAuthFailure(accountId: AccountId): Outcome<Unit, Error> {
-        val account: LegacyAccount = accountManager.getById(accountId)
+        val account: LegacyAccount = accountManager.findById(accountId)
             ?: return Outcome.failure(Error.AccountNotFound)
         // Clear OAuth state to force immediate authentication failure
         val updated = account.copy(oAuthState = null)
-        accountManager.saveAccount(updated)
+        accountManager.updateSync(updated)
         return Outcome.success(Unit)
     }
 }

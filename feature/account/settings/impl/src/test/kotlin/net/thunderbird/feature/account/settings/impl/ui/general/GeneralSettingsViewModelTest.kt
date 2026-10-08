@@ -66,7 +66,10 @@ class GeneralSettingsViewModelTest {
             id = accountId,
             name = "John",
             color = 0xFF0000,
-            avatar = Avatar.Monogram("J"),
+            avatar = Avatar.Monogram(
+                id = accountId,
+                value = "J",
+            ),
         )
 
         generalSettingsRobot(accountId, initialState, profile) {
@@ -122,7 +125,10 @@ class GeneralSettingsViewModelTest {
         )
 
         generalSettingsRobot(accountId, initialState) {
-            val newAvatar = Avatar.Monogram("A")
+            val newAvatar = Avatar.Monogram(
+                id = accountId,
+                value = "A",
+            )
             changeAvatar(newAvatar)
             verifyLastCommand(UpdateGeneralSettingCommand.UpdateAvatar(newAvatar))
         }
@@ -150,7 +156,14 @@ class GeneralSettingsViewModelTest {
 
         generalSettingsRobot(accountId, initialState) {
             pickAvatarImage(Uri.parse("file:///picked/image.jpg"))
-            verifyLastCommand(UpdateGeneralSettingCommand.UpdateAvatar(Avatar.Image(uri = "uri")))
+            verifyLastCommand(
+                UpdateGeneralSettingCommand.UpdateAvatar(
+                    Avatar.Image(
+                        id = accountId,
+                        uri = "uri",
+                    ),
+                ),
+            )
         }
     }
 }
@@ -195,8 +208,13 @@ private class GeneralSettingsRobot(
                 lastCommand = command
                 Outcome.success(Unit)
             },
-            updateAvatarImage = { _, _ ->
-                Outcome.success(Avatar.Image(uri = "uri"))
+            updateAvatarImage = { accountId, _ ->
+                Outcome.success(
+                    Avatar.Image(
+                        id = accountId,
+                        uri = "uri",
+                    ),
+                )
             },
             logger = TestLogger(),
             initialState = initialState,

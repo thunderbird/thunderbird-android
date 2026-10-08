@@ -2,36 +2,38 @@ package com.fsck.k9.notification
 
 import android.os.Build
 import androidx.annotation.RequiresApi
-import com.fsck.k9.Preferences
-import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountManager
+import net.thunderbird.feature.notification.NotificationSettings
 import net.thunderbird.feature.account.AccountIdFactory
 
 /**
  * Update accounts with notification settings read from their "Messages" `NotificationChannel`.
  */
 class NotificationSettingsUpdater(
-    private val preferences: Preferences,
     private val notificationChannelManager: NotificationChannelManager,
     private val notificationConfigurationConverter: NotificationConfigurationConverter,
+    private val accountManager: LegacyAccountManager,
 ) {
     fun updateNotificationSettings(accountUuids: Collection<String>) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return
 
         accountUuids
-            .mapNotNull { accountUuid -> preferences.getById(AccountIdFactory.of(accountUuid)) }
+            .mapNotNull { accountUuid -> accountManager.findById(AccountIdFactory.of(accountUuid)) }
             .forEach { account ->
-                updateNotificationSettings(account)
-                preferences.saveAccount(account)
+                val notificationSettings = updateNotificationSettings(account)
+                if (notificationSettings != null && notificationSettings != account.notificationSettings) {
+                    accountManager.updateSync(account.copy(notificationSettings = notificationSettings))
+                }
             }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun updateNotificationSettings(account: LegacyAccountDto) {
-        val notificationConfiguration = notificationChannelManager.getNotificationConfiguration(account)
-        val notificationSettings = notificationConfigurationConverter.convert(account, notificationConfiguration)
-
-        if (notificationSettings != account.notificationSettings) {
-            account.updateNotificationSettings { notificationSettings }
-        }
+    fun updateNotificationSettings(account: LegacyAccount): NotificationSettings? {
+        val notificationConfiguration = notificationChannelManager.getNotificationConfiguration(
+            account.id,
+            account.messagesNotificationChannelVersion,
+        )
+        return notificationConfigurationConverter.convert(account, notificationConfiguration)
     }
 }

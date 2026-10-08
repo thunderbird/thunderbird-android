@@ -5,9 +5,11 @@ import android.app.PendingIntent
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.test.core.app.ApplicationProvider
+import com.fsck.k9.FakeLegacyAccount
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
-import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.core.android.testing.MockHelper.mockBuilder
 import net.thunderbird.core.android.testing.RobolectricTest
 import net.thunderbird.core.preference.GeneralSettings
@@ -16,6 +18,10 @@ import net.thunderbird.core.preference.network.NetworkSettings
 import net.thunderbird.core.preference.notification.NotificationPreference
 import net.thunderbird.core.preference.privacy.PrivacySettings
 import net.thunderbird.core.testing.TestClock
+import net.thunderbird.feature.account.AccountIdFactory
+import net.thunderbird.feature.account.storage.profile.AvatarDto
+import net.thunderbird.feature.account.storage.profile.AvatarTypeDto
+import net.thunderbird.feature.account.storage.profile.ProfileDto
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -32,8 +38,11 @@ private const val INCOMING = true
 private const val OUTGOING = false
 private const val ACCOUNT_NUMBER = 1
 private const val ACCOUNT_NAME = "TestAccount"
+private const val INCOMING_NOTIFICATION_ID = 101
+private const val OUTGOING_NOTIFICATION_ID = 102
 
 class AuthenticationErrorNotificationControllerTest : RobolectricTest() {
+
     private val resourceProvider = TestNotificationResourceProvider()
     private val notification = mock<Notification>()
     private val lockScreenNotification = mock<Notification>()
@@ -45,7 +54,38 @@ class AuthenticationErrorNotificationControllerTest : RobolectricTest() {
         builder,
         lockScreenNotificationBuilder,
     )
-    private val account = createFakeAccount()
+
+    private val accountId = AccountIdFactory.create()
+    private val account = FakeLegacyAccount.ACCOUNT.copy(
+        id = accountId,
+        accountNumber = ACCOUNT_NUMBER,
+        profile = ProfileDto(
+            id = accountId,
+            name = ACCOUNT_NAME,
+            color = -1,
+            avatar = AvatarDto(
+                id = accountId,
+                avatarType = AvatarTypeDto.MONOGRAM,
+                avatarMonogram = "TA",
+                avatarImageUri = null,
+                avatarIconName = null,
+            ),
+        ),
+    )
+
+    private val accountManager = mock<LegacyAccountManager> {
+        on { findById(accountId) } doReturn account
+    }
+
+    private val notificationIdRegistry = mock<AccountNotificationIdRegistry> {
+        on {
+            getOrAllocate(accountId, AccountNotificationKind.AuthenticationErrorIncoming)
+        } doReturn INCOMING_NOTIFICATION_ID
+        on {
+            getOrAllocate(accountId, AccountNotificationKind.AuthenticationErrorOutgoing)
+        } doReturn OUTGOING_NOTIFICATION_ID
+    }
+
     private val controller = TestAuthenticationErrorNotificationController()
     private val contentIntent = mock<PendingIntent>()
 
@@ -68,40 +108,32 @@ class AuthenticationErrorNotificationControllerTest : RobolectricTest() {
 
     @Test
     fun showAuthenticationErrorNotification_withIncomingServer_shouldCreateNotification() {
-        val notificationId = NotificationIds.getAuthenticationErrorNotificationId(account, INCOMING)
+        controller.showAuthenticationErrorNotification(account.id, INCOMING)
 
-        controller.showAuthenticationErrorNotification(account, INCOMING)
-
-        verify(notificationHelper).notify(notificationId, notification)
+        verify(notificationHelper).notify(INCOMING_NOTIFICATION_ID, notification)
         assertAuthenticationErrorNotificationContents()
     }
 
     @Test
     fun clearAuthenticationErrorNotification_withIncomingServer_shouldCancelNotification() {
-        val notificationId = NotificationIds.getAuthenticationErrorNotificationId(account, INCOMING)
+        controller.clearAuthenticationErrorNotification(account.id, INCOMING)
 
-        controller.clearAuthenticationErrorNotification(account, INCOMING)
-
-        verify(notificationManager).cancel(notificationId)
+        verify(notificationManager).cancel(INCOMING_NOTIFICATION_ID)
     }
 
     @Test
     fun showAuthenticationErrorNotification_withOutgoingServer_shouldCreateNotification() {
-        val notificationId = NotificationIds.getAuthenticationErrorNotificationId(account, OUTGOING)
+        controller.showAuthenticationErrorNotification(account.id, OUTGOING)
 
-        controller.showAuthenticationErrorNotification(account, OUTGOING)
-
-        verify(notificationHelper).notify(notificationId, notification)
+        verify(notificationHelper).notify(OUTGOING_NOTIFICATION_ID, notification)
         assertAuthenticationErrorNotificationContents()
     }
 
     @Test
     fun clearAuthenticationErrorNotification_withOutgoingServer_shouldCancelNotification() {
-        val notificationId = NotificationIds.getAuthenticationErrorNotificationId(account, OUTGOING)
+        controller.clearAuthenticationErrorNotification(account.id, OUTGOING)
 
-        controller.clearAuthenticationErrorNotification(account, OUTGOING)
-
-        verify(notificationManager).cancel(notificationId)
+        verify(notificationManager).cancel(OUTGOING_NOTIFICATION_ID)
     }
 
     private fun assertAuthenticationErrorNotificationContents() {
@@ -130,23 +162,25 @@ class AuthenticationErrorNotificationControllerTest : RobolectricTest() {
         return mock {
             on { getContext() } doReturn ApplicationProvider.getApplicationContext()
             on { getNotificationManager() } doReturn notificationManager
-            on { createNotificationBuilder(any(), any()) }.doReturn(notificationBuilder, lockScreenNotificationBuilder)
-        }
-    }
-
-    private fun createFakeAccount(): LegacyAccountDto {
-        return mock {
-            on { accountNumber } doReturn ACCOUNT_NUMBER
-            on { displayName } doReturn ACCOUNT_NAME
+            on {
+                createNotificationBuilder(
+                    any(),
+                    any(),
+                    any(),
+                )
+            }.doReturn(
+                notificationBuilder,
+                lockScreenNotificationBuilder,
+            )
         }
     }
 
     internal inner class TestAuthenticationErrorNotificationController :
         AuthenticationErrorNotificationController(
-            notificationHelper,
-            mock(),
-            resourceProvider,
-            mock {
+            notificationHelper = notificationHelper,
+            actionCreator = mock(),
+            resourceProvider = resourceProvider,
+            generalSettingsManager = mock {
                 on { getSettings() } doReturn GeneralSettings(
                     network = NetworkSettings(),
                     display = DisplaySettings(),
@@ -155,9 +189,11 @@ class AuthenticationErrorNotificationControllerTest : RobolectricTest() {
                     platformConfigProvider = FakePlatformConfigProvider(),
                 )
             },
+            accountManager = accountManager,
+            notificationIdRegistry = notificationIdRegistry,
         ) {
 
-        override fun createContentIntent(account: LegacyAccountDto, incoming: Boolean): PendingIntent {
+        override fun createContentIntent(account: LegacyAccount, incoming: Boolean): PendingIntent {
             return contentIntent
         }
     }

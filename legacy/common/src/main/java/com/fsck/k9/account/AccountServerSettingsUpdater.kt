@@ -13,13 +13,13 @@ import com.fsck.k9.mail.store.imap.ImapStoreSettings.pathPrefix
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import net.thunderbird.core.android.account.LegacyAccountDtoManager
+import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.core.common.mail.Protocols
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.legacy.logging.Log
 
 class AccountServerSettingsUpdater(
-    private val accountManager: LegacyAccountDtoManager,
+    private val accountManager: LegacyAccountManager,
     private val coroutineDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : AccountEditExternalContract.AccountServerSettingsUpdater {
 
@@ -47,30 +47,37 @@ class AccountServerSettingsUpdater(
         serverSettings: ServerSettings,
         authorizationState: AuthorizationState?,
     ): AccountUpdaterResult {
-        val account = accountManager.getById(accountId) ?: return AccountUpdaterResult.Failure(
+        val account = accountManager.findById(accountId) ?: return AccountUpdaterResult.Failure(
             AccountUpdaterFailure.AccountNotFound(accountId),
         )
 
-        if (isIncoming) {
+        val updatedAccount = if (isIncoming) {
             if (serverSettings.type == Protocols.IMAP) {
-                account.useCompression = serverSettings.isUseCompression
-                account.isSendClientInfoEnabled = serverSettings.isSendClientInfo
-                account.incomingServerSettings = serverSettings.copy(
-                    extra = ImapStoreSettings.createExtra(
-                        autoDetectNamespace = serverSettings.autoDetectNamespace,
-                        pathPrefix = serverSettings.pathPrefix,
+                account.copy(
+                    useCompression = serverSettings.isUseCompression,
+                    isSendClientInfoEnabled = serverSettings.isSendClientInfo,
+                    incomingServerSettings = serverSettings.copy(
+                        extra = ImapStoreSettings.createExtra(
+                            autoDetectNamespace = serverSettings.autoDetectNamespace,
+                            pathPrefix = serverSettings.pathPrefix,
+                        ),
                     ),
+                    oAuthState = authorizationState?.value ?: account.oAuthState,
                 )
             } else {
-                account.incomingServerSettings = serverSettings
+                account.copy(
+                    incomingServerSettings = serverSettings,
+                    oAuthState = authorizationState?.value ?: account.oAuthState,
+                )
             }
         } else {
-            account.outgoingServerSettings = serverSettings
+            account.copy(
+                outgoingServerSettings = serverSettings,
+                oAuthState = authorizationState?.value ?: account.oAuthState,
+            )
         }
 
-        account.oAuthState = authorizationState?.value
-
-        accountManager.saveAccount(account)
+        accountManager.updateSync(updatedAccount)
 
         return AccountUpdaterResult.Success(accountId)
     }

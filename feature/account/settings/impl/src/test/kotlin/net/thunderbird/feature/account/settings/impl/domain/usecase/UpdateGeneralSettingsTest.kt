@@ -23,7 +23,10 @@ class UpdateGeneralSettingsTest {
             id = accountId,
             name = "Test Account",
             color = 0xFF0000,
-            avatar = Avatar.Icon(name = "star"),
+            avatar = Avatar.Icon(
+                id = accountId,
+                name = "star",
+            ),
         )
         val newName = "Updated Account Name"
         val command = UpdateGeneralSettingCommand.UpdateName(newName)
@@ -50,7 +53,10 @@ class UpdateGeneralSettingsTest {
             id = accountId,
             name = "Test Account",
             color = 0xFF0000,
-            avatar = Avatar.Icon(name = "star"),
+            avatar = Avatar.Icon(
+                id = accountId,
+                name = "star",
+            ),
         )
         val newName = "Updated Account Name"
         val newColor = 0x00FF00
@@ -101,9 +107,15 @@ class UpdateGeneralSettingsTest {
             id = accountId,
             name = "Test Account",
             color = 0xFF0000,
-            avatar = Avatar.Icon(name = "star"),
+            avatar = Avatar.Icon(
+                id = accountId,
+                name = "star",
+            ),
         )
-        val imageAvatar = Avatar.Image(uri = "avatar://uri")
+        val imageAvatar = Avatar.Image(
+            id = accountId,
+            uri = "avatar://uri",
+        )
         val repository = FakeAccountProfileRepository(initialAccountProfile = accountProfile)
         val testSubject = UpdateGeneralSettings(repository)
 
@@ -121,7 +133,10 @@ class UpdateGeneralSettingsTest {
     fun `should emit NotFound when updating avatar for non-existing account`() = runTest {
         // Arrange
         val accountId = AccountIdFactory.create()
-        val imageAvatar = Avatar.Image(uri = "avatar://uri")
+        val imageAvatar = Avatar.Image(
+            id = accountId,
+            uri = "avatar://uri",
+        )
         val repository = FakeAccountProfileRepository()
         val testSubject = UpdateGeneralSettings(repository)
 

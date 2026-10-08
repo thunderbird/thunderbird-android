@@ -40,7 +40,7 @@ internal class ServerSettingsWriter(
         val port = validatedSettings[PORT] as Int
         val connectionSecurity = ConnectionSecurity.valueOf(validatedSettings[CONNECTION_SECURITY] as String)
         val authenticationType = AuthType.valueOf(validatedSettings[AUTHENTICATION_TYPE] as String)
-        val username = validatedSettings[USERNAME] as String
+        val username = (validatedSettings[USERNAME] as? String) ?: ""
         val rawPassword = validatedSettings[PASSWORD] as? String
         val password = if (authenticationType == AuthType.XOAUTH2) "" else rawPassword
         val clientCertificateAlias = validatedSettings[CLIENT_CERTIFICATE_ALIAS] as? String

@@ -1,6 +1,8 @@
 package net.thunderbird.feature.search.legacy
 
 import kotlinx.serialization.Serializable
+import net.thunderbird.feature.account.AccountId
+import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.search.legacy.api.MessageSearchField
 import net.thunderbird.feature.search.legacy.api.MessageSearchSpecification
 import net.thunderbird.feature.search.legacy.api.SearchAttribute
@@ -20,11 +22,14 @@ import net.thunderbird.feature.search.legacy.api.SearchCondition
 @Serializable
 @Suppress("TooManyFunctions")
 class LocalMessageSearch : MessageSearchSpecification {
-    var id: String = ""
+    var id: AccountId? = null
+
+    @Serializable(with = LocalMessageSearchTypeSerializer::class)
+    var type: LocalMessageSearchType = LocalMessageSearchType.Account
     var isManualSearch: Boolean = false
 
     // since the uuid isn't in the message table it's not in the tree neither
-    private val accountUuidSet: MutableSet<String> = HashSet()
+    private val accountIdSet: MutableSet<AccountId> = HashSet()
     private var conditionsRoot: SearchConditionTreeNode? = null
 
     /**
@@ -39,10 +44,10 @@ class LocalMessageSearch : MessageSearchSpecification {
      * Add a new account to the search. When no accounts are
      * added manually we search all accounts on the device.
      *
-     * @param uuid Uuid of the account to be added.
+     * @param accountId [AccountId] of the account to be added.
      */
-    fun addAccountUuid(uuid: String) {
-        accountUuidSet.add(uuid)
+    fun addAccountId(accountId: AccountId) {
+        accountIdSet.add(accountId)
     }
 
     /**
@@ -175,15 +180,22 @@ class LocalMessageSearch : MessageSearchSpecification {
      * Returns all the account uuids that this search will try to match against. Might be an empty array, in which
      * case all accounts should be included in the search.
      */
-    override val accountUuids: Set<String>
-        get() = accountUuidSet.toSet()
+    override val accountIds: Set<AccountId>
+        get() = accountIdSet.toSet()
+
+    /**
+     * Retrieves the first account ID from the set of account IDs.
+     *
+     * @return The first [AccountId] from the set of account IDs.
+     */
+    fun getFirstAccountId(): AccountId = accountIdSet.first()
 
     /**
      * Returns whether or not to search all accounts.
      *
      * @return `true` if all accounts should be searched.
      */
-    fun searchAllAccounts(): Boolean = accountUuidSet.isEmpty()
+    fun searchAllAccounts(): Boolean = accountIdSet.isEmpty()
 
     /**
      * Get the condition tree.
@@ -198,8 +210,9 @@ class LocalMessageSearch : MessageSearchSpecification {
     override fun toString(): String = buildString {
         append("LocalSearch(")
         append("id='").append(id).append("', ")
+        append("type=").append(type).append(", ")
         append("isManualSearch=").append(isManualSearch).append(", ")
-        append("accountUuidSet=").append(accountUuidSet).append(", ")
+        append("accountUuidSet=").append(accountIdSet).append(", ")
         append("conditionsRoot=").append(conditionsRoot).append(", ")
         append("leafSet=").append(leafSet)
         append(")")

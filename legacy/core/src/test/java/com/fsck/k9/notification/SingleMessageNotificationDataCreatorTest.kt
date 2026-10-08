@@ -9,11 +9,13 @@ import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
 import assertk.assertions.isFalse
 import assertk.assertions.isTrue
+import com.fsck.k9.FakeLegacyAccount
 import com.fsck.k9.mail.Address
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
-import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.core.preference.LockScreenNotificationVisibility
 import net.thunderbird.core.preference.NotificationQuickDelete
 import net.thunderbird.core.preference.interaction.InteractionSettings
@@ -22,16 +24,25 @@ import net.thunderbird.core.preference.notification.NotificationPreference
 import net.thunderbird.core.preference.notification.NotificationPreferenceManager
 import net.thunderbird.feature.account.AccountIdFactory
 import org.junit.Test
+import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.stubbing
 
 class SingleMessageNotificationDataCreatorTest {
 
     private val accountId = AccountIdFactory.create()
     private val account = createAccount()
+    private val accountManager = mock<LegacyAccountManager> {
+        on { findById(accountId) } doReturn account
+    }
+    private val notificationIdRegistry = DefaultAccountNotificationIdRegistry(accountManager)
     private val fakeInteractionPreferences = FakeInteractionSettingsPreferenceManager()
     private val fakeNotificationPreferences = FakeNotificationPreferenceManager()
     private val notificationDataCreator = SingleMessageNotificationDataCreator(
         interactionPreferences = fakeInteractionPreferences,
         notificationPreference = fakeNotificationPreferences,
+        accountManager = accountManager,
+        notificationIdRegistry = notificationIdRegistry,
     )
 
     @Test
@@ -39,7 +50,7 @@ class SingleMessageNotificationDataCreatorTest {
         val content = createNotificationContent()
 
         val result = notificationDataCreator.createSingleNotificationData(
-            account = account,
+            accountId = accountId,
             notificationId = 23,
             content = content,
             timestamp = 9000,
@@ -65,7 +76,7 @@ class SingleMessageNotificationDataCreatorTest {
         )
 
         assertThat(result.singleNotificationData.notificationId).isEqualTo(
-            NotificationIds.getNewMailSummaryNotificationId(account),
+            NotificationIds.getNewMailSummaryNotificationId(account.accountNumber),
         )
         assertThat(result.singleNotificationData.isSilent).isFalse()
         assertThat(result.singleNotificationData.timestamp).isEqualTo(9000)
@@ -78,7 +89,7 @@ class SingleMessageNotificationDataCreatorTest {
         val content = createNotificationContent()
 
         val result = notificationDataCreator.createSingleNotificationData(
-            account = account,
+            accountId = accountId,
             notificationId = 0,
             content = content,
             timestamp = 0,
@@ -98,7 +109,7 @@ class SingleMessageNotificationDataCreatorTest {
         val content = createNotificationContent()
 
         val result = notificationDataCreator.createSingleNotificationData(
-            account = account,
+            accountId = accountId,
             notificationId = 0,
             content = content,
             timestamp = 0,
@@ -116,7 +127,7 @@ class SingleMessageNotificationDataCreatorTest {
         val content = createNotificationContent()
 
         val result = notificationDataCreator.createSingleNotificationData(
-            account = account,
+            accountId = accountId,
             notificationId = 0,
             content = content,
             timestamp = 0,
@@ -133,7 +144,7 @@ class SingleMessageNotificationDataCreatorTest {
         val content = createNotificationContent()
 
         val result = notificationDataCreator.createSingleNotificationData(
-            account = account,
+            accountId = accountId,
             notificationId = 0,
             content = content,
             timestamp = 0,
@@ -152,7 +163,7 @@ class SingleMessageNotificationDataCreatorTest {
         val content = createNotificationContent()
 
         val result = notificationDataCreator.createSingleNotificationData(
-            account = account,
+            accountId = accountId,
             notificationId = 0,
             content = content,
             timestamp = 0,
@@ -164,11 +175,14 @@ class SingleMessageNotificationDataCreatorTest {
 
     @Test
     fun `archive action with archive folder`() {
-        account.archiveFolderId = 1
+        val accountWithArchive = account.copy(archiveFolderId = 1L)
+        stubbing(accountManager) {
+            on { findById(accountId) } doReturn accountWithArchive
+        }
         val content = createNotificationContent()
 
         val result = notificationDataCreator.createSingleNotificationData(
-            account = account,
+            accountId = accountId,
             notificationId = 0,
             content = content,
             timestamp = 0,
@@ -180,11 +194,14 @@ class SingleMessageNotificationDataCreatorTest {
 
     @Test
     fun `archive action without archive folder`() {
-        account.archiveFolderId = null
+        val accountWithoutArchive = account.copy(archiveFolderId = null)
+        stubbing(accountManager) {
+            on { findById(accountId) } doReturn accountWithoutArchive
+        }
         val content = createNotificationContent()
 
         val result = notificationDataCreator.createSingleNotificationData(
-            account = account,
+            accountId = accountId,
             notificationId = 0,
             content = content,
             timestamp = 0,
@@ -196,12 +213,15 @@ class SingleMessageNotificationDataCreatorTest {
 
     @Test
     fun `spam action with spam folder and without spam confirmation`() {
-        account.spamFolderId = 1
+        val accountWithSpam = account.copy(spamFolderId = 1L)
+        stubbing(accountManager) {
+            on { findById(accountId) } doReturn accountWithSpam
+        }
         fakeInteractionPreferences.setConfirmSpam(false)
         val content = createNotificationContent()
 
         val result = notificationDataCreator.createSingleNotificationData(
-            account = account,
+            accountId = accountId,
             notificationId = 0,
             content = content,
             timestamp = 0,
@@ -213,12 +233,15 @@ class SingleMessageNotificationDataCreatorTest {
 
     @Test
     fun `spam action with spam folder and with spam confirmation`() {
-        account.spamFolderId = 1
+        val accountWithSpam = account.copy(spamFolderId = 1L)
+        stubbing(accountManager) {
+            on { findById(accountId) } doReturn accountWithSpam
+        }
         fakeInteractionPreferences.setConfirmSpam(true)
         val content = createNotificationContent()
 
         val result = notificationDataCreator.createSingleNotificationData(
-            account = account,
+            accountId = accountId,
             notificationId = 0,
             content = content,
             timestamp = 0,
@@ -230,12 +253,15 @@ class SingleMessageNotificationDataCreatorTest {
 
     @Test
     fun `spam action without spam folder and without spam confirmation`() {
-        account.spamFolderId = null
+        val accountWithoutSpam = account.copy(spamFolderId = null)
+        stubbing(accountManager) {
+            on { findById(accountId) } doReturn accountWithoutSpam
+        }
         fakeInteractionPreferences.setConfirmSpam(false)
         val content = createNotificationContent()
 
         val result = notificationDataCreator.createSingleNotificationData(
-            account = account,
+            accountId = accountId,
             notificationId = 0,
             content = content,
             timestamp = 0,
@@ -252,10 +278,11 @@ class SingleMessageNotificationDataCreatorTest {
         )
     }
 
-    private fun createAccount(): LegacyAccountDto {
-        return LegacyAccountDto(accountId).apply {
-            accountNumber = 42
-        }
+    private fun createAccount(): LegacyAccount {
+        return FakeLegacyAccount.ACCOUNT.copy(
+            id = accountId,
+            accountNumber = 42,
+        )
     }
 
     private fun createNotificationContent() = NotificationContent(

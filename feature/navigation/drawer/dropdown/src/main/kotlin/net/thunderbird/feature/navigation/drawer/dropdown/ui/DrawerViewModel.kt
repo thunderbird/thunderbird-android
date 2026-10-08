@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import net.thunderbird.core.ui.contract.mvi.BaseViewModel
+import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.DomainContract.UseCase
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayAccount
@@ -105,7 +106,7 @@ internal class DrawerViewModel(
     private fun updateFolders(displayFolders: List<DisplayFolder>, rootFolder: DisplayTreeFolder) {
         // First try to find the folder in the flat list
         var selectedFolder = displayFolders.find {
-            it.id == state.value.selectedFolderId
+            it.folderId == state.value.selectedFolderId
         }
 
         // If not found, try to find it in the tree hierarchy
@@ -122,7 +123,7 @@ internal class DrawerViewModel(
             it.copy(
                 rootFolder = rootFolder,
                 folders = displayFolders.toImmutableList(),
-                selectedFolderId = selectedFolder?.id,
+                selectedFolderId = selectedFolder?.folderId,
                 selectedFolder = selectedFolder,
             )
         }
@@ -134,7 +135,7 @@ internal class DrawerViewModel(
     private fun findFolderById(treeFolder: DisplayTreeFolder, folderId: String?): DisplayFolder? {
         if (folderId == null) return null
 
-        return if (treeFolder.displayFolder?.id == folderId) {
+        return if (treeFolder.displayFolder?.folderId == folderId) {
             treeFolder.displayFolder
         } else {
             // Recursively search in children
@@ -191,7 +192,7 @@ internal class DrawerViewModel(
         }
     }
 
-    private fun selectAccount(accountId: String?) {
+    private fun selectAccount(accountId: AccountId?) {
         if (accountId != state.value.selectedAccountId) {
             viewModelScope.launch {
                 updateState {
@@ -212,7 +213,7 @@ internal class DrawerViewModel(
     private fun selectFolder(folderId: String?) {
         // Find the folder with the given ID
         val folder = folderId?.let {
-            state.value.folders.find { it.id == folderId }
+            state.value.folders.find { it.folderId == folderId }
                 // If not found, try to find it in the tree hierarchy
                 ?: findFolderById(state.value.rootFolder, folderId)
         }
@@ -254,8 +255,8 @@ internal class DrawerViewModel(
     }
 
     private fun openFolder(folder: DisplayFolder) {
-        // Update the selected folder ID in the state
-        selectFolder(folder.id)
+        // Update the selected type ID in the state
+        selectFolder(folder.folderId)
 
         if (folder is MailDisplayFolder) {
             if (folder.accountId != null) {
@@ -284,7 +285,7 @@ internal class DrawerViewModel(
                 it.copy(isLoading = true)
             }
 
-            state.value.selectedAccountId?.let { syncAccount(AccountIdFactory.of(it)).collect() }
+            state.value.selectedAccountId?.let { syncAccount(it).collect() }
 
             updateState {
                 it.copy(isLoading = false)

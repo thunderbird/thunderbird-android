@@ -1,27 +1,34 @@
 package com.fsck.k9.notification
 
-import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.core.common.notification.NotificationActionTokens
 import net.thunderbird.core.preference.NotificationQuickDelete
 import net.thunderbird.core.preference.interaction.InteractionSettingsPreferenceManager
 import net.thunderbird.core.preference.notification.NOTIFICATION_PREFERENCE_MAX_MESSAGE_ACTIONS_SHOWN
 import net.thunderbird.core.preference.notification.NotificationPreferenceManager
+import net.thunderbird.feature.account.AccountId
 
 internal class SingleMessageNotificationDataCreator(
     private val interactionPreferences: InteractionSettingsPreferenceManager,
     private val notificationPreference: NotificationPreferenceManager,
+    private val accountManager: LegacyAccountManager,
+    private val notificationIdRegistry: AccountNotificationIdRegistry,
 ) {
 
     private val interactionSettings get() = interactionPreferences.getConfig()
     private val notificationSettings get() = notificationPreference.getConfig()
 
     fun createSingleNotificationData(
-        account: LegacyAccountDto,
+        accountId: AccountId,
         notificationId: Int,
         content: NotificationContent,
         timestamp: Long,
         addLockScreenNotification: Boolean,
     ): SingleNotificationData {
+        val account = accountManager.findById(accountId)
+            ?: throw IllegalArgumentException("Account not found")
+
         return SingleNotificationData(
             notificationId = notificationId,
             isSilent = true,
@@ -40,7 +47,7 @@ internal class SingleMessageNotificationDataCreator(
     ): SummarySingleNotificationData {
         return SummarySingleNotificationData(
             SingleNotificationData(
-                notificationId = NotificationIds.getNewMailSummaryNotificationId(data.account),
+                notificationId = getNotificationId(data.account.id),
                 isSilent = silent,
                 timestamp = timestamp,
                 content = data.activeNotifications.first().content,
@@ -51,7 +58,10 @@ internal class SingleMessageNotificationDataCreator(
         )
     }
 
-    private fun createSingleNotificationActions(account: LegacyAccountDto): List<NotificationAction> {
+    private fun getNotificationId(accountId: AccountId) = notificationIdRegistry
+        .getOrAllocate(accountId, AccountNotificationKind.NewMailSummary)
+
+    private fun createSingleNotificationActions(account: LegacyAccount): List<NotificationAction> {
         val order = parseActionsOrder(notificationSettings.messageActionsOrder)
         val cutoff = notificationSettings.messageActionsCutoff.coerceIn(
             0,
@@ -68,7 +78,7 @@ internal class SingleMessageNotificationDataCreator(
         )
     }
 
-    private fun createSingleNotificationWearActions(account: LegacyAccountDto): List<WearNotificationAction> {
+    private fun createSingleNotificationWearActions(account: LegacyAccount): List<WearNotificationAction> {
         return buildList {
             add(WearNotificationAction.Reply)
             add(WearNotificationAction.MarkAsRead)
@@ -129,7 +139,7 @@ internal class SingleMessageNotificationDataCreator(
     }
 
     // We don't support confirming actions on Wear devices. So don't show the action when confirmation is enabled.
-    private fun isSpamActionAvailableForWear(account: LegacyAccountDto): Boolean {
+    private fun isSpamActionAvailableForWear(account: LegacyAccount): Boolean {
         return account.hasSpamFolder() && !interactionSettings.isConfirmSpam
     }
 }

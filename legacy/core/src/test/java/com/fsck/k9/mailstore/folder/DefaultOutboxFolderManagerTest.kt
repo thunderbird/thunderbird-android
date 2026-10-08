@@ -50,15 +50,13 @@ class DefaultOutboxFolderManagerTest {
     @Test
     fun `getOutboxFolderId should return cached value when available`() = runTest {
         // Arrange
-        val (accountId, account) = createAccountPair()
-        val accountManager = FakeLegacyAccountManager(initialAccounts = listOf(account))
-        val localStoreProvider = createLocalStoreProvider(account)
+        val accountId = AccountIdFactory.create()
+        val localStoreProvider = createLocalStoreProvider(accountId)
         val expectedFolderId = 123L
         val cache = TimeLimitedCache<AccountId, Long>()
         cache.set(accountId, expectedFolderId)
         val subject = DefaultOutboxFolderManager(
             logger = logger,
-            accountManager = accountManager,
             localStoreProvider = localStoreProvider,
             outboxFolderIdCache = cache,
             ioDispatcher = Dispatchers.Unconfined,
@@ -74,14 +72,12 @@ class DefaultOutboxFolderManagerTest {
     @Test
     fun `getOutboxFolderId should read from DB when not cached and folder exists`() = runTest {
         // Arrange
-        val (accountId, account) = createAccountPair()
-        val accountManager = FakeLegacyAccountManager(initialAccounts = listOf(account))
+        val accountId = AccountIdFactory.create()
+        val localStoreProvider = createLocalStoreProvider(accountId)
         val expectedId = 1L
-        val localStoreProvider = createLocalStoreProvider(account = account, folderId = expectedId)
         val cache = TimeLimitedCache<AccountId, Long>()
         val subject = DefaultOutboxFolderManager(
             logger = logger,
-            accountManager = accountManager,
             localStoreProvider = localStoreProvider,
             outboxFolderIdCache = cache,
             ioDispatcher = Dispatchers.Unconfined,
@@ -97,11 +93,9 @@ class DefaultOutboxFolderManagerTest {
     @Test
     fun `getOutboxFolderId should read from DB and refill cache when cached value expired`() = runTest {
         // Arrange
-        val (accountId, account) = createAccountPair()
-        val accountManager = FakeLegacyAccountManager(initialAccounts = listOf(account))
-
+        val accountId = AccountIdFactory.create()
         val expectedFolderId = 42L
-        val localStoreProvider = createLocalStoreProvider(account = account, folderId = expectedFolderId)
+        val localStoreProvider = createLocalStoreProvider(accountId, folderId = expectedFolderId)
         val fakeClock = FakeClock(nowInstant = Clock.System.now())
         val cache = TimeLimitedCache<AccountId, Long>(clock = fakeClock)
 
@@ -111,7 +105,6 @@ class DefaultOutboxFolderManagerTest {
 
         val subject = DefaultOutboxFolderManager(
             logger = logger,
-            accountManager = accountManager,
             localStoreProvider = localStoreProvider,
             outboxFolderIdCache = cache,
             ioDispatcher = Dispatchers.Unconfined,
@@ -128,21 +121,16 @@ class DefaultOutboxFolderManagerTest {
     @Test
     fun `getOutboxFolderId should create folder when not found and createIfMissing true`() = runTest {
         // Arrange
-        val (accountId, account) = createAccountPair()
-        val accountManager = FakeLegacyAccountManager(initialAccounts = listOf(account))
-        val cursor = mock<Cursor> {
-            on { moveToFirst() } doReturn false
-        }
         val expectedFolderId = 42L
+        val accountId = AccountIdFactory.create()
         val localStoreProvider = createLocalStoreProvider(
-            account = account,
+            accountId = accountId,
             folderId = expectedFolderId,
             moveToFirst = false,
         )
         val cache = TimeLimitedCache<AccountId, Long>()
         val subject = DefaultOutboxFolderManager(
             logger = logger,
-            accountManager = accountManager,
             localStoreProvider = localStoreProvider,
             outboxFolderIdCache = cache,
             ioDispatcher = Dispatchers.Unconfined,
@@ -158,19 +146,17 @@ class DefaultOutboxFolderManagerTest {
     @Test
     fun `createOutboxFolder should return Success when LocalStore creates folder`() = runTest {
         // Arrange
-        val (accountId, account) = createAccountPair()
-        val accountManager = FakeLegacyAccountManager(initialAccounts = listOf(account))
+        val accountId = AccountIdFactory.create()
         val expectedFolderId = 99L
         val localStore = mock<LocalStore> {
             on { createLocalFolder(any(), any(), any(), any()) } doReturn expectedFolderId
         }
         val localStoreProvider = mock<LocalStoreProvider> {
-            on { getInstanceByLegacyAccount(account) } doReturn localStore
+            on { getInstance(accountId) } doReturn localStore
         }
         val cache = TimeLimitedCache<AccountId, Long>()
         val subject = DefaultOutboxFolderManager(
             logger = logger,
-            accountManager = accountManager,
             localStoreProvider = localStoreProvider,
             outboxFolderIdCache = cache,
             ioDispatcher = Dispatchers.Unconfined,
@@ -188,18 +174,16 @@ class DefaultOutboxFolderManagerTest {
     @Test
     fun `createOutboxFolder should return Failure when LocalStore throws`() = runTest {
         // Arrange
-        val (accountId, account) = createAccountPair()
-        val accountManager = FakeLegacyAccountManager(initialAccounts = listOf(account))
+        val accountId = AccountIdFactory.create()
         val localStore = mock<LocalStore> {
             on { createLocalFolder(any(), any(), any(), any()) } doAnswer { throw MessagingException("boom") }
         }
         val localStoreProvider = mock<LocalStoreProvider> {
-            on { getInstanceByLegacyAccount(account) } doReturn localStore
+            on { getInstance(accountId) } doReturn localStore
         }
         val cache = TimeLimitedCache<AccountId, Long>()
         val subject = DefaultOutboxFolderManager(
             logger = logger,
-            accountManager = accountManager,
             localStoreProvider = localStoreProvider,
             outboxFolderIdCache = cache,
             ioDispatcher = Dispatchers.Unconfined,
@@ -215,14 +199,12 @@ class DefaultOutboxFolderManagerTest {
     @Test
     fun `hasPendingMessages should return true when DB count is greater than zero`() = runTest {
         // Arrange
-        val (accountId, account) = createAccountPair()
-        val accountManager = FakeLegacyAccountManager(initialAccounts = listOf(account))
+        val accountId = AccountIdFactory.create()
         val expectedCount = 123
-        val localStoreProvider = createLocalStoreProvider(account = account, count = expectedCount)
+        val localStoreProvider = createLocalStoreProvider(accountId = accountId, count = expectedCount)
         val cache = TimeLimitedCache<AccountId, Long>()
         val subject = DefaultOutboxFolderManager(
             logger = logger,
-            accountManager = accountManager,
             localStoreProvider = localStoreProvider,
             outboxFolderIdCache = cache,
             ioDispatcher = Dispatchers.Unconfined,
@@ -238,14 +220,12 @@ class DefaultOutboxFolderManagerTest {
     @Test
     fun `hasPendingMessages should return false when DB count is zero`() = runTest {
         // Arrange
-        val (accountId, account) = createAccountPair()
-        val accountManager = FakeLegacyAccountManager(initialAccounts = listOf(account))
+        val accountId = AccountIdFactory.create()
         val expectedCount = 0
-        val localStoreProvider = createLocalStoreProvider(account = account, count = expectedCount)
+        val localStoreProvider = createLocalStoreProvider(accountId = accountId, count = expectedCount)
         val cache = TimeLimitedCache<AccountId, Long>()
         val subject = DefaultOutboxFolderManager(
             logger = logger,
-            accountManager = accountManager,
             localStoreProvider = localStoreProvider,
             outboxFolderIdCache = cache,
             ioDispatcher = Dispatchers.Unconfined,
@@ -261,16 +241,14 @@ class DefaultOutboxFolderManagerTest {
     @Test
     fun `hasPendingMessages should return false when DB throws MessagingException`() = runTest {
         // Arrange
-        val (accountId, account) = createAccountPair()
-        val accountManager = FakeLegacyAccountManager(initialAccounts = listOf(account))
+        val accountId = AccountIdFactory.create()
         val localStoreProvider = createLocalStoreProvider(
-            account = account,
+            accountId = accountId,
             messagingException = MessagingException("db-fail"),
         )
         val cache = TimeLimitedCache<AccountId, Long>()
         val subject = DefaultOutboxFolderManager(
             logger = logger,
-            accountManager = accountManager,
             localStoreProvider = localStoreProvider,
             outboxFolderIdCache = cache,
             ioDispatcher = Dispatchers.Unconfined,
@@ -283,47 +261,8 @@ class DefaultOutboxFolderManagerTest {
         assertThat(result).isFalse()
     }
 
-    private fun createAccountPair(): Pair<AccountId, LegacyAccount> {
-        val accountId: AccountId = AccountIdFactory.of(Uuid.random().toString())
-        val profile = ProfileDto(
-            id = accountId,
-            name = "name",
-            color = 0,
-            avatar = AvatarDto(AvatarTypeDto.MONOGRAM, "A", null, null),
-        )
-        val incoming = ServerSettings(
-            type = "imap",
-            host = "example.com",
-            port = 993,
-            connectionSecurity = ConnectionSecurity.NONE,
-            authenticationType = AuthType.PLAIN,
-            username = "user",
-            password = "pass",
-            clientCertificateAlias = null,
-        )
-        val outgoing = ServerSettings(
-            type = "smtp",
-            host = "example.com",
-            port = 587,
-            connectionSecurity = ConnectionSecurity.NONE,
-            authenticationType = AuthType.PLAIN,
-            username = "user",
-            password = "pass",
-            clientCertificateAlias = null,
-        )
-        return accountId to LegacyAccount(
-            id = accountId,
-            name = "acc",
-            email = "user@example.com",
-            profile = profile,
-            incomingServerSettings = incoming,
-            outgoingServerSettings = outgoing,
-            identities = listOf(Identity(name = "n", email = "user@example.com")),
-        )
-    }
-
     private fun createLocalStoreProvider(
-        account: LegacyAccount,
+        accountId: AccountId,
         folderId: Long? = 1L,
         count: Int? = null,
         moveToFirst: Boolean = folderId != null || count != null,
@@ -356,48 +295,9 @@ class DefaultOutboxFolderManagerTest {
             }
         }
         val localStoreProvider = mock<LocalStoreProvider> {
-            on { getInstanceByLegacyAccount(account) } doReturn localStore
+            on { getInstance(accountId) } doReturn localStore
         }
         return localStoreProvider
-    }
-}
-
-private class FakeLegacyAccountManager(
-    initialAccounts: List<LegacyAccount> = emptyList(),
-) : LegacyAccountManager {
-    private val accountsState = MutableStateFlow(initialAccounts)
-
-    override fun getAll(): Flow<List<LegacyAccount>> = accountsState
-
-    override suspend fun update(account: LegacyAccount) {
-        accountsState.update { currentList ->
-            currentList.toMutableList().apply {
-                removeIf { it.id == account.id }
-                add(account)
-            }
-        }
-    }
-
-    override fun updateSync(account: LegacyAccount) {
-        // no-op for tests
-    }
-
-    override fun getAccounts(): List<LegacyAccount> = accountsState.value
-
-    override fun getAccountsFlow(): Flow<List<LegacyAccount>> = accountsState
-
-    override fun getById(accountId: AccountId): LegacyAccount? =
-        accountsState.value.find { it.id == accountId }
-
-    override fun observeById(accountId: AccountId): Flow<LegacyAccount?> =
-        accountsState.map { list -> list.find { it.id == accountId } }
-
-    override fun moveAccount(account: LegacyAccount, newPosition: Int) {
-        // no-op for tests
-    }
-
-    override fun saveAccount(account: LegacyAccount) {
-        // no-op for tests
     }
 }
 

@@ -4,15 +4,16 @@ import kotlinx.coroutines.flow.Flow
 import net.thunderbird.feature.account.AccountId
 
 interface AccountManager<TAccount : BaseAccount> {
+
     /**
      * Returns a list of all accounts.
      */
-    fun getAccounts(): List<TAccount>
+    fun findAll(): List<TAccount>
 
     /**
      * Returns a flow of all accounts.
      */
-    fun getAccountsFlow(): Flow<List<TAccount>>
+    fun observeAll(): Flow<List<TAccount>>
 
     /**
      * Returns the account with the specified [AccountId].
@@ -20,7 +21,7 @@ interface AccountManager<TAccount : BaseAccount> {
      * @param accountId The [AccountId] of the account.
      * @return The account with the specified [AccountId].
      */
-    fun getById(accountId: AccountId): TAccount?
+    fun findById(accountId: AccountId): TAccount?
 
     /**
      * Observe the account with the specified [AccountId].
@@ -31,17 +32,24 @@ interface AccountManager<TAccount : BaseAccount> {
     fun observeById(accountId: AccountId): Flow<TAccount?>
 
     /**
-     * Moves the specified [account] to the [newPosition].
+     * Moves the specified [AccountId] to the [newPosition].
      *
-     * @param account The account to move.
+     * @param accountId The [AccountId] of the account to move.
      * @param newPosition The new position of the account.
      */
-    fun moveAccount(account: TAccount, newPosition: Int)
+    fun moveAccount(accountId: AccountId, newPosition: Int)
 
     /**
-     * Saves the specified [account].
+     * Updates the specified [account].
      *
-     * @param account The account to save.
+     * @param account The account to update.
      */
-    fun saveAccount(account: TAccount)
+    suspend fun update(account: TAccount)
+
+    /**
+     * Updates the specified [account] synchronously.
+     *
+     * @param account The account to update.
+     */
+    fun updateSync(account: TAccount)
 }

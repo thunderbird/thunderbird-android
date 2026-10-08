@@ -2,11 +2,11 @@ package com.fsck.k9.ui.endtoend
 
 import android.app.PendingIntent
 import androidx.lifecycle.LifecycleOwner
-import com.fsck.k9.Preferences
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
-import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.legacy.logging.Log
 import org.openintents.openpgp.OpenPgpApiManager
@@ -16,13 +16,13 @@ import org.openintents.openpgp.OpenPgpApiManager.OpenPgpProviderError
 class AutocryptKeyTransferPresenter internal constructor(
     lifecycleOwner: LifecycleOwner,
     private val openPgpApiManager: OpenPgpApiManager,
-    private val preferences: Preferences,
+    private val accountManager: LegacyAccountManager,
     private val viewModel: AutocryptKeyTransferViewModel,
     private val view: AutocryptKeyTransferActivity,
     private val presenterScope: CoroutineScope = MainScope(),
 ) {
 
-    private lateinit var account: LegacyAccountDto
+    private lateinit var account: LegacyAccount
     private lateinit var showTransferCodePi: PendingIntent
 
     init {
@@ -40,7 +40,7 @@ class AutocryptKeyTransferPresenter internal constructor(
             return
         }
 
-        account = preferences.getById(AccountIdFactory.of(accountUuid))
+        account = accountManager.findById(AccountIdFactory.of(accountUuid))
             ?: error("Account $accountUuid not found")
 
         openPgpApiManager.setOpenPgpProvider(
@@ -89,7 +89,7 @@ class AutocryptKeyTransferPresenter internal constructor(
         view.setLoadingStateSending()
         view.sceneGeneratingAndSending()
 
-        viewModel.autocryptSetupTransferLiveEvent.sendMessageAsync(account, setupMsg)
+        viewModel.autocryptSetupTransferLiveEvent.sendMessageAsync(account.id, setupMsg)
     }
 
     private fun onLoadedAutocryptSetupTransfer(result: AutocryptSetupTransferResult?) {

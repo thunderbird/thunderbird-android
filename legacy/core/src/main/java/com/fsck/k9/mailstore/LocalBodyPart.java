@@ -3,26 +3,27 @@ package com.fsck.k9.mailstore;
 
 import net.thunderbird.core.common.exception.MessagingException;
 import com.fsck.k9.mail.internet.MimeBodyPart;
+import net.thunderbird.feature.account.AccountId;
 
 
 public class LocalBodyPart extends MimeBodyPart implements LocalPart {
-    private final String accountUuid;
+    private final AccountId accountId;
     private final LocalMessage message;
     private final long messagePartId;
     private final long size;
 
-    public LocalBodyPart(String accountUuid, LocalMessage message, long messagePartId, long size)
+    public LocalBodyPart(AccountId accountId, LocalMessage message, long messagePartId, long size)
             throws MessagingException {
         super();
-        this.accountUuid = accountUuid;
+        this.accountId = accountId;
         this.message = message;
         this.messagePartId = messagePartId;
         this.size = size;
     }
 
     @Override
-    public String getAccountUuid() {
-        return accountUuid;
+    public AccountId getAccountId() {
+        return accountId;
     }
 
     @Override

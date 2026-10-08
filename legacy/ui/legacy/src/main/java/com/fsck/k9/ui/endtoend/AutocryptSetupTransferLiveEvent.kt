@@ -9,17 +9,17 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.feature.account.AccountId
 
 class AutocryptSetupTransferLiveEvent(
     private val messagingController: MessagingController,
     private val eventScope: CoroutineScope = MainScope(),
 ) : SingleLiveEvent<AutocryptSetupTransferResult>() {
 
-    fun sendMessageAsync(account: LegacyAccountDto, setupMsg: AutocryptSetupMessage) {
+    fun sendMessageAsync(accountId: AccountId, setupMsg: AutocryptSetupMessage) {
         eventScope.launch {
             val setupMessage = async(Dispatchers.IO) {
-                messagingController.sendMessageBlocking(account, setupMsg.setupMessage)
+                messagingController.sendMessageBlocking(accountId, setupMsg.setupMessage)
             }
 
             delay(2000)

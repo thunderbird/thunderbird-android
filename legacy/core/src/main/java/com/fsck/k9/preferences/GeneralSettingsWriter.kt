@@ -1,14 +1,14 @@
 package com.fsck.k9.preferences
 
-import com.fsck.k9.Preferences
 import net.thunderbird.core.preference.PreferenceChangePublisher
 import net.thunderbird.core.preference.getPreferenceScope
 import net.thunderbird.core.preference.storage.StorageEditor
+import net.thunderbird.core.preference.storage.StorageProvider
 import net.thunderbird.feature.account.storage.legacy.LegacyAccountStorageHandler
 import net.thunderbird.legacy.logging.Log
 
 internal class GeneralSettingsWriter(
-    private val preferences: Preferences,
+    private val storageProvider: StorageProvider,
     private val generalSettingsManager: DefaultGeneralSettingsManager,
     private val changePublisher: PreferenceChangePublisher,
 ) {
@@ -16,10 +16,10 @@ internal class GeneralSettingsWriter(
         // Convert general settings to the string representation used in preference storage
         val stringSettings = GeneralSettingsDescriptions.convert(settings)
 
-        val editor = preferences.createStorageEditor()
+        val editor = storageProvider.createStorageEditor()
 
         // Use current general settings as base and overwrite with validated settings read from the import file.
-        val mergedSettings = GeneralSettingsDescriptions.getGlobalSettings(preferences.storage).toMutableMap()
+        val mergedSettings = GeneralSettingsDescriptions.getGlobalSettings(storageProvider.storage).toMutableMap()
         mergedSettings.putAll(stringSettings)
 
         for ((key, value) in mergedSettings) {

@@ -12,6 +12,7 @@ import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import net.thunderbird.components.core.outcome.Outcome
 import net.thunderbird.components.ui.testing.coroutines.MainDispatcherHelper
+import net.thunderbird.core.android.account.Identity
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.ShowPictures
 import net.thunderbird.core.logging.testing.TestLogger
@@ -19,6 +20,9 @@ import net.thunderbird.core.ui.setting.SettingValue.Select.SelectOption
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract
+import net.thunderbird.feature.account.storage.profile.AvatarDto
+import net.thunderbird.feature.account.storage.profile.AvatarTypeDto
+import net.thunderbird.feature.account.storage.profile.ProfileDto
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class ReadingMailSettingsViewModelTest {
@@ -47,24 +51,25 @@ class ReadingMailSettingsViewModelTest {
         accountId: AccountId,
         showPictures: ShowPictures = ShowPictures.NEVER,
         isMarkReadOnView: Boolean = false,
-    ) = net.thunderbird.core.android.account.LegacyAccount(
+    ) = LegacyAccount(
         id = accountId,
         name = "Demo",
         email = "demo@example.com",
         isSensitiveDebugLoggingEnabled = { true },
-        profile = net.thunderbird.feature.account.storage.profile.ProfileDto(
+        profile = ProfileDto(
             id = accountId,
             name = "Demo",
             color = 0xFF0000,
-            avatar = net.thunderbird.feature.account.storage.profile.AvatarDto(
-                avatarType = net.thunderbird.feature.account.storage.profile.AvatarTypeDto.ICON,
+            avatar = AvatarDto(
+                id = accountId,
+                avatarType = AvatarTypeDto.ICON,
                 avatarMonogram = null,
                 avatarImageUri = null,
                 avatarIconName = "star",
             ),
         ),
         identities = listOf(
-            net.thunderbird.core.android.account.Identity(
+            Identity(
                 signatureUse = false,
                 description = "Demo Identity",
             ),

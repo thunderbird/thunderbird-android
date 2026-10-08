@@ -9,25 +9,29 @@ import com.fsck.k9.mailstore.LocalFolder
 import com.fsck.k9.mailstore.LocalMessage
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
-import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.core.common.mail.Flag
 import net.thunderbird.core.common.mail.toEmailAddressOrNull
 import net.thunderbird.legacy.logging.Log
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.notification.NotificationPreference
+import net.thunderbird.feature.account.AccountId
 
 class K9NotificationStrategy(
     private val contactRepository: ContactRepository,
     private val generalSettingsManager: GeneralSettingsManager,
+    private val accountManager: LegacyAccountManager,
 ) : NotificationStrategy {
 
     @Suppress("ReturnCount")
     override fun shouldNotifyForMessage(
-        account: LegacyAccountDto,
+        accountId: AccountId,
         localFolder: LocalFolder,
         message: LocalMessage,
         isOldMessage: Boolean,
     ): Boolean {
+        val account = accountManager.findById(accountId) ?: return false
+
         if (!generalSettingsManager.getConfig().notification.isNotificationDuringQuietTimeEnabled &&
             generalSettingsManager.getConfig().notification.isQuietTime
         ) {

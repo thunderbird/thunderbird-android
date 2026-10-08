@@ -28,7 +28,6 @@ private const val VISIBLE_LIMIT = 100
 
 class DefaultOutboxFolderManager(
     private val logger: Logger,
-    private val accountManager: LegacyAccountManager,
     private val localStoreProvider: LocalStoreProvider,
     private val outboxFolderIdCache: TimeLimitedCache<AccountId, Long>,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
@@ -149,10 +148,6 @@ class DefaultOutboxFolderManager(
     }
 
     private fun createLocalStore(accountId: AccountId): LocalStore {
-        val account = requireNotNull(accountManager.getById(accountId)) {
-            "Account with id $accountId not found"
-        }
-
-        return localStoreProvider.getInstanceByLegacyAccount(account = account)
+        return localStoreProvider.getInstance(accountId)
     }
 }

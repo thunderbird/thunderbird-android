@@ -11,7 +11,6 @@ import app.k9mail.legacy.message.controller.SimpleMessagingListener
 import com.fsck.k9.mail.Message
 import com.fsck.k9.mail.Part
 import com.fsck.k9.mailstore.AttachmentViewInfo
-import com.fsck.k9.mailstore.LocalPart
 import com.fsck.k9.provider.AttachmentTempFileProvider
 import com.fsck.k9.ui.R
 import java.io.IOException
@@ -22,9 +21,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
-import net.thunderbird.core.android.account.LegacyAccountDto
-import net.thunderbird.core.android.account.LegacyAccountDtoManager
 import net.thunderbird.core.logging.Logger
+import net.thunderbird.feature.account.AccountId
 import org.apache.commons.io.IOUtils
 
 class AttachmentController internal constructor(
@@ -127,7 +125,7 @@ class AttachmentController internal constructor(
         controller.loadAttachment(
             part = attachment.part,
             listener = object : SimpleMessagingListener() {
-                override fun loadAttachmentFinished(account: LegacyAccountDto?, message: Message?, part: Part?) {
+                override fun loadAttachmentFinished(accountId: AccountId?, message: Message?, part: Part?) {
                     attachment.setContentAvailable()
                     attachmentDisplayController.hideAttachmentLoadingDialogOnMainThread()
                     if (continuation.isActive) {
@@ -136,7 +134,7 @@ class AttachmentController internal constructor(
                 }
 
                 override fun loadAttachmentFailed(
-                    account: LegacyAccountDto?,
+                    accountId: AccountId?,
                     message: Message?,
                     part: Part?,
                     reason: String?,

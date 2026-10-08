@@ -22,11 +22,15 @@ internal class SingleMessageNotificationCreator(
         singleNotificationData: SingleNotificationData,
         isGroupSummary: Boolean = false,
     ) {
-        val account = baseNotificationData.account
+        val accountId = baseNotificationData.accountId
         val notificationId = singleNotificationData.notificationId
         val content = singleNotificationData.content
 
-        val notification = notificationHelper.createNotificationBuilder(account, ChannelType.MESSAGES)
+        val notification = notificationHelper.createNotificationBuilder(
+            accountId,
+            ChannelType.MESSAGES,
+            baseNotificationData.messagesNotificationChannelVersion,
+        )
             .setCategory(NotificationCompat.CATEGORY_EMAIL)
             .setGroup(baseNotificationData.groupKey)
             .setGroupSummary(isGroupSummary)
@@ -55,7 +59,7 @@ internal class SingleMessageNotificationCreator(
                 notification,
             )
         }
-        notificationHelper.notify(account, notificationId, notification)
+        notificationHelper.notify(accountId, notificationId, notification)
     }
 
     private fun NotificationBuilder.setAvatar(content: NotificationContent) = apply {

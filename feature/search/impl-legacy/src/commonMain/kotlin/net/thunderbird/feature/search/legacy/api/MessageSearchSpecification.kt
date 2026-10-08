@@ -1,5 +1,6 @@
 package net.thunderbird.feature.search.legacy.api
 
+import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.search.legacy.SearchConditionTreeNode
 
 /**
@@ -15,7 +16,7 @@ interface MessageSearchSpecification {
      * Get all the uuids of accounts this search acts on.
      * @return Set of uuids.
      */
-    val accountUuids: Set<String>
+    val accountIds: Set<AccountId>
 
     /**
      * Returns the root node of the condition tree accompanying

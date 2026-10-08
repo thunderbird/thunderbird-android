@@ -8,14 +8,14 @@ import com.fsck.k9.mail.ServerSettings
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import net.thunderbird.core.android.account.LegacyAccountDto
-import net.thunderbird.core.android.account.LegacyAccountDtoManager
+import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.core.common.mail.Protocols
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.legacy.logging.Log
 
 class AccountStateLoader(
-    private val accountManager: LegacyAccountDtoManager,
+    private val accountManager: LegacyAccountManager,
     private val coroutineDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : AccountCommonExternalContract.AccountStateLoader {
 
@@ -33,10 +33,10 @@ class AccountStateLoader(
     }
 
     private fun load(accountId: AccountId): AccountState? {
-        return accountManager.getById(accountId)?.let { mapToAccountState(it) }
+        return accountManager.findById(accountId)?.let { mapToAccountState(it) }
     }
 
-    private fun mapToAccountState(account: LegacyAccountDto): AccountState {
+    private fun mapToAccountState(account: LegacyAccount): AccountState {
         return AccountState(
             id = account.id,
             emailAddress = account.email,
@@ -47,7 +47,7 @@ class AccountStateLoader(
     }
 }
 
-private val LegacyAccountDto.incomingServerSettingsExtra: ServerSettings
+private val LegacyAccount.incomingServerSettingsExtra: ServerSettings
     get() = when (incomingServerSettings.type) {
         Protocols.IMAP -> toImapServerSettings()
         else -> incomingServerSettings

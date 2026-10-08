@@ -49,7 +49,7 @@ internal class SetArchiveFolder(
                             selection = SpecialFolderSelection.MANUAL,
                         )
                         specialFolderUpdater.updateSpecialFolders()
-                        accountManager.saveAccount(account)
+                        accountManager.updateSync(account)
 
                         Outcome.success(SetAccountFolderOutcome.Success)
                     }

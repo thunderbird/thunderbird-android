@@ -5,11 +5,8 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import net.thunderbird.components.core.outcome.Outcome
-import net.thunderbird.core.android.account.LegacyAccountManager
-import net.thunderbird.core.architecture.model.LegacyEntityIdFactory
 import net.thunderbird.core.logging.Logger
 import net.thunderbird.feature.account.AccountId
-import net.thunderbird.feature.mail.folder.FolderId
 import net.thunderbird.feature.mail.folder.LegacyFolderIdFactory
 import net.thunderbird.feature.mail.message.LegacyMessageIdFactory
 import net.thunderbird.feature.mail.message.MessageId
@@ -21,7 +18,6 @@ private const val LOG_ID = "[repository][message-query]"
 
 class DefaultMessageQueryRepository(
     private val logger: Logger,
-    private val accountManager: LegacyAccountManager,
     private val localStoreProvider: LocalStoreProvider,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : MessageQueryRepository {
@@ -30,8 +26,7 @@ class DefaultMessageQueryRepository(
         criteria: GetMessageIdCriteria,
     ): Outcome<MessageId?, MessageQueryError> = withContext(ioDispatcher) {
         logger.verbose { "$LOG_ID finding message id by account id = '$accountId' and criteria = $criteria" }
-        val account = accountManager.getById(accountId) ?: error("account not found")
-        val localStore = localStoreProvider.getInstanceByLegacyAccount(account)
+        val localStore = localStoreProvider.getInstance(accountId)
         val lockableDatabase = localStore.database
         val legacyFolderId = LegacyFolderIdFactory.toLegacyId(criteria.folderId)
         val rawServerId = criteria.messageServerId.value

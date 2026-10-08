@@ -22,7 +22,7 @@ import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.UN
 import net.thunderbird.core.android.account.Expunge
 import net.thunderbird.core.android.account.FolderMode
 import net.thunderbird.core.android.account.Identity
-import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.ShowPictures
 import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.featureflag.keys.GeneratedFeatureFlagKey
@@ -38,101 +38,99 @@ internal class DefaultAccountDefaultsProvider(
     private val featureFlagProvider: FeatureFlagProvider,
 ) : AccountDefaultsProvider {
 
-    override fun applyDefaults(account: LegacyAccountDto) = with(account) {
-        applyLegacyDefaults()
-    }
-
-    override fun applyOverwrites(account: LegacyAccountDto, storage: Storage) = with(account) {
-        if (storage.contains("${account.id}.notifyNewMail")) {
-            isNotifyNewMail = storage.getBoolean("${account.id}.notifyNewMail", false)
-            isNotifySelfNewMail = storage.getBoolean("${account.id}.notifySelfNewMail", true)
-        } else {
-            isNotifyNewMail = featureFlagProvider.provide(
-                GeneratedFeatureFlagKey.EMAIL_NOTIFICATION_DEFAULT,
-            ).whenEnabledOrNot(
-                onEnabled = { true },
-                onDisabledOrUnavailable = { false },
-            )
-
-            isNotifySelfNewMail = featureFlagProvider.provide(
-                GeneratedFeatureFlagKey.EMAIL_NOTIFICATION_DEFAULT,
-            ).whenEnabledOrNot(
-                onEnabled = { true },
-                onDisabledOrUnavailable = { false },
-            )
-        }
-    }
-
     @Suppress("LongMethod")
-    private fun LegacyAccountDto.applyLegacyDefaults() {
-        automaticCheckIntervalMinutes = DEFAULT_SYNC_INTERVAL
-        idleRefreshMinutes = 24
-        displayCount = DEFAULT_VISIBLE_LIMIT
-        accountNumber = UNASSIGNED_ACCOUNT_NUMBER
-        isNotifyNewMail = true
-        folderNotifyNewMailMode = FolderMode.ALL
-        isNotifySync = false
-        isNotifySelfNewMail = true
-        isNotifyContactsMailOnly = false
-        isIgnoreChatMessages = false
-        messagesNotificationChannelVersion = 0
-        folderDisplayMode = FolderMode.NOT_SECOND_CLASS
-        folderSyncMode = FolderMode.FIRST_CLASS
-        folderPushMode = FolderMode.NONE
-        sortType = DEFAULT_SORT_TYPE
-        setSortAscending(DEFAULT_SORT_TYPE, DEFAULT_SORT_ASCENDING)
-        showPictures = ShowPictures.NEVER
-        isSignatureBeforeQuotedText = false
-        expungePolicy = Expunge.EXPUNGE_IMMEDIATELY
-        importedAutoExpandFolder = null
-        legacyInboxFolder = null
-        maxPushFolders = 10
-        isSubscribedFoldersOnly = false
-        maximumPolledMessageAge = -1
-        maximumAutoDownloadMessageSize = DEFAULT_MAXIMUM_AUTO_DOWNLOAD_MESSAGE_SIZE
-        messageFormat = DEFAULT_MESSAGE_FORMAT
-        isMessageFormatAuto = DEFAULT_MESSAGE_FORMAT_AUTO
-        isMessageReadReceipt = DEFAULT_MESSAGE_READ_RECEIPT
-        quoteStyle = DEFAULT_QUOTE_STYLE
-        quotePrefix = DEFAULT_QUOTE_PREFIX
-        isDefaultQuotedTextShown = DEFAULT_QUOTED_TEXT_SHOWN
-        isReplyAfterQuote = DEFAULT_REPLY_AFTER_QUOTE
-        isStripSignature = DEFAULT_STRIP_SIGNATURE
-        isSyncRemoteDeletions = true
-        openPgpKey = NO_OPENPGP_KEY
-        isRemoteSearchFullText = false
-        remoteSearchNumResults = DEFAULT_REMOTE_SEARCH_NUM_RESULTS
-        isUploadSentMessages = true
-        isMarkMessageAsReadOnView = true
-        isMarkMessageAsReadOnDelete = true
-        isAlwaysShowCcBcc = false
-        lastSyncTime = 0L
-        lastFolderListRefreshTime = 0L
-
-        setArchiveFolderId(null, SpecialFolderSelection.AUTOMATIC)
-        setDraftsFolderId(null, SpecialFolderSelection.AUTOMATIC)
-        setSentFolderId(null, SpecialFolderSelection.AUTOMATIC)
-        setSpamFolderId(null, SpecialFolderSelection.AUTOMATIC)
-        setTrashFolderId(null, SpecialFolderSelection.AUTOMATIC)
-
-        identities = ArrayList<Identity>()
-
+    override fun applyDefaults(account: LegacyAccount): LegacyAccount {
         val identity = Identity(
             signatureUse = false,
             signature = null,
             description = resourceProvider.defaultIdentityDescription(),
         )
-        identities.add(identity)
 
-        updateNotificationSettings {
-            NotificationSettings(
+        return account.copy(
+            automaticCheckIntervalMinutes = DEFAULT_SYNC_INTERVAL,
+            idleRefreshMinutes = 24,
+            displayCount = DEFAULT_VISIBLE_LIMIT,
+            accountNumber = UNASSIGNED_ACCOUNT_NUMBER,
+            isNotifyNewMail = true,
+            folderNotifyNewMailMode = FolderMode.ALL,
+            isNotifySync = false,
+            isNotifySelfNewMail = true,
+            isNotifyContactsMailOnly = false,
+            isIgnoreChatMessages = false,
+            messagesNotificationChannelVersion = 0,
+            folderDisplayMode = FolderMode.NOT_SECOND_CLASS,
+            folderSyncMode = FolderMode.FIRST_CLASS,
+            folderPushMode = FolderMode.NONE,
+            sortType = DEFAULT_SORT_TYPE,
+            sortAscending = mapOf(DEFAULT_SORT_TYPE to DEFAULT_SORT_ASCENDING),
+            showPictures = ShowPictures.NEVER,
+            isSignatureBeforeQuotedText = false,
+            expungePolicy = Expunge.EXPUNGE_IMMEDIATELY,
+            importedAutoExpandFolder = null,
+            legacyInboxFolder = null,
+            maxPushFolders = 10,
+            isSubscribedFoldersOnly = false,
+            maximumPolledMessageAge = -1,
+            maximumAutoDownloadMessageSize = DEFAULT_MAXIMUM_AUTO_DOWNLOAD_MESSAGE_SIZE,
+            messageFormat = DEFAULT_MESSAGE_FORMAT,
+            isMessageFormatAuto = DEFAULT_MESSAGE_FORMAT_AUTO,
+            isMessageReadReceipt = DEFAULT_MESSAGE_READ_RECEIPT,
+            quoteStyle = DEFAULT_QUOTE_STYLE,
+            quotePrefix = DEFAULT_QUOTE_PREFIX,
+            isDefaultQuotedTextShown = DEFAULT_QUOTED_TEXT_SHOWN,
+            isReplyAfterQuote = DEFAULT_REPLY_AFTER_QUOTE,
+            isStripSignature = DEFAULT_STRIP_SIGNATURE,
+            isSyncRemoteDeletions = true,
+            openPgpKey = NO_OPENPGP_KEY,
+            isRemoteSearchFullText = false,
+            remoteSearchNumResults = DEFAULT_REMOTE_SEARCH_NUM_RESULTS,
+            isUploadSentMessages = true,
+            isMarkMessageAsReadOnView = true,
+            isMarkMessageAsReadOnDelete = true,
+            isAlwaysShowCcBcc = false,
+            lastSyncTime = 0L,
+            lastFolderListRefreshTime = 0L,
+            archiveFolderSelection = SpecialFolderSelection.AUTOMATIC,
+            draftsFolderSelection = SpecialFolderSelection.AUTOMATIC,
+            sentFolderSelection = SpecialFolderSelection.AUTOMATIC,
+            spamFolderSelection = SpecialFolderSelection.AUTOMATIC,
+            trashFolderSelection = SpecialFolderSelection.AUTOMATIC,
+            identities = listOf(identity),
+            notificationSettings = NotificationSettings(
                 isRingEnabled = true,
                 ringtone = DEFAULT_RINGTONE_URI,
                 light = NotificationLight.Disabled,
                 vibration = NotificationVibration.DEFAULT,
+            ),
+        )
+    }
+
+    override fun applyOverwrites(account: LegacyAccount, storage: Storage): LegacyAccount {
+        val notifyNewMail: Boolean
+        val notifySelfNewMail: Boolean
+
+        if (storage.contains("${account.id}.notifyNewMail")) {
+            notifyNewMail = storage.getBoolean("${account.id}.notifyNewMail", false)
+            notifySelfNewMail = storage.getBoolean("${account.id}.notifySelfNewMail", true)
+        } else {
+            notifyNewMail = featureFlagProvider.provide(
+                GeneratedFeatureFlagKey.EMAIL_NOTIFICATION_DEFAULT,
+            ).whenEnabledOrNot(
+                onEnabled = { true },
+                onDisabledOrUnavailable = { false },
+            )
+
+            notifySelfNewMail = featureFlagProvider.provide(
+                GeneratedFeatureFlagKey.EMAIL_NOTIFICATION_DEFAULT,
+            ).whenEnabledOrNot(
+                onEnabled = { true },
+                onDisabledOrUnavailable = { false },
             )
         }
 
-        resetChangeMarkers()
+        return account.copy(
+            isNotifyNewMail = notifyNewMail,
+            isNotifySelfNewMail = notifySelfNewMail,
+        )
     }
 }

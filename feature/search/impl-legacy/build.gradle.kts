@@ -9,6 +9,7 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             implementation(projects.feature.mail.account.api)
+            implementation(projects.feature.mail.folder.api)
         }
     }
 }

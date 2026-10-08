@@ -1,5 +1,8 @@
 package net.thunderbird.feature.search.legacy
 
+import net.thunderbird.feature.account.AccountId
+import net.thunderbird.feature.account.UnifiedAccountId
+import net.thunderbird.feature.mail.folder.FolderType
 import net.thunderbird.feature.search.legacy.api.MessageSearchField
 import net.thunderbird.feature.search.legacy.api.SearchAttribute
 
@@ -8,41 +11,28 @@ import net.thunderbird.feature.search.legacy.api.SearchAttribute
  * This is a meta-account containing all the messages that match the search.
  */
 class SearchAccount(
-    val id: String,
+    val id: AccountId,
     search: LocalMessageSearch,
     val name: String,
     val email: String,
 ) {
-    /**
-     * Returns the ID of this `SearchAccount` instance.
-     *
-     * This isn't really a UUID. But since we don't expose this value to other apps and we only use the account UUID
-     * as opaque string (e.g. as key in a `Map`) we're fine.
-     *
-     * Using a constant string is necessary to identify the same search account even when the corresponding
-     * [SearchAccount] object has been recreated.
-     */
-    val uuid: String = id
-
     val relatedSearch: LocalMessageSearch = search
 
     companion object {
-        const val UNIFIED_FOLDERS = "unified_folders"
-        const val NEW_MESSAGES = "new_messages"
-
         @JvmStatic
-        fun createUnifiedFoldersSearch(
+        fun createUnifiedInboxSearch(
             title: String,
             detail: String,
         ): SearchAccount {
             val tmpSearch = LocalMessageSearch().apply {
-                id = UNIFIED_FOLDERS
+                id = UnifiedAccountId
+                type = LocalMessageSearchType.Unified(UnifiedFolderSelection.Special(FolderType.INBOX))
                 // The ingrate field is used to identify the unified folders.
                 and(MessageSearchField.INTEGRATE, "1", SearchAttribute.EQUALS)
             }
 
             return SearchAccount(
-                id = UNIFIED_FOLDERS,
+                id = UnifiedAccountId,
                 search = tmpSearch,
                 name = title,
                 email = detail,

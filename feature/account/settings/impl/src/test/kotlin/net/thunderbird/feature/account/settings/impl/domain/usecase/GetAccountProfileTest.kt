@@ -23,7 +23,10 @@ internal class GetAccountProfileTest {
             id = accountId,
             name = "Test Account",
             color = 0xFF0000,
-            avatar = Avatar.Icon(name = "star"),
+            avatar = Avatar.Icon(
+                id = accountId,
+                name = "star",
+            ),
         )
         val testSubject = createTestSubject(accountProfile)
 

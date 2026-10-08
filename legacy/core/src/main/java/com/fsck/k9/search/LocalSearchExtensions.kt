@@ -3,44 +3,35 @@
 package com.fsck.k9.search
 
 import net.thunderbird.core.android.account.LegacyAccount
-import net.thunderbird.core.android.account.LegacyAccountDto
-import net.thunderbird.core.android.account.LegacyAccountDtoManager
 import net.thunderbird.core.android.account.LegacyAccountManager
+import net.thunderbird.feature.mail.folder.FolderType
 import net.thunderbird.feature.search.legacy.LocalMessageSearch
-import net.thunderbird.feature.search.legacy.SearchAccount
+import net.thunderbird.feature.search.legacy.LocalMessageSearchType
+import net.thunderbird.feature.search.legacy.UnifiedFolderSelection
 
-val LocalMessageSearch.isUnifiedFolders: Boolean
-    get() = id == SearchAccount.UNIFIED_FOLDERS
+val LocalMessageSearch.isUnified: Boolean
+    get() = type is LocalMessageSearchType.Unified
+
+val LocalMessageSearch.isUnifiedInbox: Boolean
+    get() = (type as? LocalMessageSearchType.Unified)?.folder == UnifiedFolderSelection.Special(FolderType.INBOX)
 
 val LocalMessageSearch.isNewMessages: Boolean
-    get() = id == SearchAccount.NEW_MESSAGES
+    get() = type == LocalMessageSearchType.NewMessages
 
 val LocalMessageSearch.isSingleAccount: Boolean
-    get() = accountUuids.size == 1
+    get() = accountIds.size == 1
 
 val LocalMessageSearch.isSingleFolder: Boolean
     get() = isSingleAccount && folderIds.size == 1
 
-@Deprecated("Use getLegacyAccounts instead")
-@JvmName("getAccountsFromLocalSearch")
-fun LocalMessageSearch.getAccounts(accountManager: LegacyAccountDtoManager): List<LegacyAccountDto> {
-    val accounts = accountManager.getAccounts()
-    return if (searchAllAccounts()) {
-        accounts
-    } else {
-        val searchAccountUuids = accountUuids.toSet()
-        accounts.filter { it.id.toString()  in searchAccountUuids }
-    }
-}
-
 @JvmName("getLegacyAccountsFromLocalSearch")
 fun LocalMessageSearch.getLegacyAccounts(accountManager: LegacyAccountManager): List<LegacyAccount> {
-    val accounts = accountManager.getAccounts()
+    val accounts = accountManager.findAll()
     return if (searchAllAccounts()) {
         accounts
     } else {
-        val searchAccountUuids = accountUuids.toSet()
-        accounts.filter { it.id.toString()  in searchAccountUuids }
+        val searchAccountIds = accountIds.toSet()
+        accounts.filter { it.id in searchAccountIds || it.id in searchAccountIds }
     }
 }
 

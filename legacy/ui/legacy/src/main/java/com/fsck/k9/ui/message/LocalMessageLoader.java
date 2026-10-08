@@ -4,7 +4,7 @@ package com.fsck.k9.ui.message;
 import android.content.Context;
 import androidx.loader.content.AsyncTaskLoader;
 
-import net.thunderbird.core.android.account.LegacyAccountDto;
+import net.thunderbird.feature.account.AccountId;
 import net.thunderbird.legacy.logging.Log;
 import app.k9mail.legacy.message.controller.MessageReference;
 import com.fsck.k9.controller.MessagingController;
@@ -14,16 +14,16 @@ import com.fsck.k9.mailstore.LocalMessage;
 
 public class LocalMessageLoader extends AsyncTaskLoader<LocalMessage> {
     private final MessagingController controller;
-    private final LegacyAccountDto account;
+    private final AccountId accountId;
     private final MessageReference messageReference;
     private final boolean onlyLoadMetadata;
     private LocalMessage message;
 
-    public LocalMessageLoader(Context context, MessagingController controller, LegacyAccountDto account,
+    public LocalMessageLoader(Context context, MessagingController controller, AccountId accountId,
             MessageReference messageReference, boolean onlyLoadMetaData) {
         super(context);
         this.controller = controller;
-        this.account = account;
+        this.accountId = accountId;
         this.messageReference = messageReference;
         this.onlyLoadMetadata = onlyLoadMetaData;
     }
@@ -60,11 +60,11 @@ public class LocalMessageLoader extends AsyncTaskLoader<LocalMessage> {
     }
 
     private LocalMessage loadMessageMetadataFromDatabase() throws MessagingException {
-        return controller.loadMessageMetadata(account, messageReference.getFolderId(), messageReference.getUid());
+        return controller.loadMessageMetadata(accountId, messageReference.getFolderId(), messageReference.getUid());
     }
 
     private LocalMessage loadMessageFromDatabase() throws MessagingException {
-        return controller.loadMessage(account, messageReference.getFolderId(), messageReference.getUid());
+        return controller.loadMessage(accountId, messageReference.getFolderId(), messageReference.getUid());
     }
 
     public boolean isCreatedFor(MessageReference messageReference) {

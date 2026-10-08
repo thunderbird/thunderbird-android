@@ -8,12 +8,14 @@ import assertk.assertions.isEqualTo
 import assertk.assertions.isFalse
 import assertk.assertions.isInstanceOf
 import assertk.assertions.isTrue
+import com.fsck.k9.FakeLegacyAccount
 import com.fsck.k9.mail.Address
 import java.util.Calendar
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
-import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.core.preference.GeneralSettings
 import net.thunderbird.core.preference.LockScreenNotificationVisibility
 import net.thunderbird.core.preference.NotificationQuickDelete
@@ -29,11 +31,12 @@ import org.junit.Test
 import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
 import org.koin.dsl.module
+import org.mockito.kotlin.any
 import org.mockito.kotlin.doAnswer
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 
-private val TIMESTAMP = 0L
+private const val TIMESTAMP = 0L
 
 @OptIn(ExperimentalTime::class)
 class SummaryNotificationDataCreatorTest {
@@ -41,6 +44,12 @@ class SummaryNotificationDataCreatorTest {
     private val accountId = AccountIdFactory.create()
 
     private val account = createAccount()
+    private val accountManager = mock<LegacyAccountManager> {
+        on { findById(accountId) } doReturn account
+    }
+    private val notificationIdRegistry = mock<AccountNotificationIdRegistry> {
+        on { getOrAllocate(any(), any()) } doReturn 1
+    }
     private val testClock = TestClock()
     private var generalSettings = GeneralSettings(
         display = DisplaySettings(),
@@ -52,13 +61,18 @@ class SummaryNotificationDataCreatorTest {
         privacy = PrivacySettings(),
         platformConfigProvider = FakePlatformConfigProvider(),
     )
+
+    private val singleMessageNotificationDataCreator = SingleMessageNotificationDataCreator(
+        interactionPreferences = mock {
+            on { getConfig() } doAnswer { generalSettings.interaction }
+        },
+        notificationPreference = mock { on { getConfig() } doReturn generalSettings.notification },
+        accountManager = accountManager,
+        notificationIdRegistry = notificationIdRegistry,
+    )
+
     private val notificationDataCreator = SummaryNotificationDataCreator(
-        singleMessageNotificationDataCreator = SingleMessageNotificationDataCreator(
-            interactionPreferences = mock {
-                on { getConfig() } doAnswer { generalSettings.interaction }
-            },
-            notificationPreference = mock { on { getConfig() } doReturn generalSettings.notification },
-        ),
+        singleMessageNotificationDataCreator = singleMessageNotificationDataCreator,
         generalSettingsManager = mock {
             on { getConfig() } doAnswer { generalSettings }
         },
@@ -100,14 +114,7 @@ class SummaryNotificationDataCreatorTest {
         val notificationData = createNotificationData()
 
         val result = SummaryNotificationDataCreator(
-            singleMessageNotificationDataCreator = SingleMessageNotificationDataCreator(
-                interactionPreferences = mock {
-                    on { getConfig() } doReturn generalSettings.interaction
-                },
-                notificationPreference = mock {
-                    on { getConfig() } doReturn generalSettings.notification
-                },
-            ),
+            singleMessageNotificationDataCreator = singleMessageNotificationDataCreator,
             generalSettingsManager = mock {
                 on { getConfig() } doReturn generalSettings.copy(
                     notification = generalSettings.notification.copy(isQuietTimeEnabled = true),
@@ -144,14 +151,7 @@ class SummaryNotificationDataCreatorTest {
         val notificationData = createNotificationDataWithMultipleMessages()
 
         val result = SummaryNotificationDataCreator(
-            singleMessageNotificationDataCreator = SingleMessageNotificationDataCreator(
-                interactionPreferences = mock {
-                    on { getConfig() } doReturn generalSettings.interaction
-                },
-                notificationPreference = mock {
-                    on { getConfig() } doReturn generalSettings.notification
-                },
-            ),
+            singleMessageNotificationDataCreator = singleMessageNotificationDataCreator,
             generalSettingsManager = mock {
                 on { getConfig() } doReturn generalSettings.copy(
                     notification = generalSettings.notification.copy(isQuietTimeEnabled = true),
@@ -191,7 +191,7 @@ class SummaryNotificationDataCreatorTest {
 
         val summaryNotificationData = result as SummaryInboxNotificationData
         assertThat(summaryNotificationData.notificationId).isEqualTo(
-            NotificationIds.getNewMailSummaryNotificationId(account),
+            NotificationIds.getNewMailSummaryNotificationId(account.accountNumber),
         )
         assertThat(summaryNotificationData.isSilent).isTrue()
         assertThat(summaryNotificationData.timestamp).isEqualTo(TIMESTAMP)
@@ -276,8 +276,8 @@ class SummaryNotificationDataCreatorTest {
 
     @Test
     fun `archive action with archive folder`() {
-        account.archiveFolderId = 1
-        val notificationData = createNotificationDataWithMultipleMessages()
+        val accountWithArchive = account.copy(archiveFolderId = 1L)
+        val notificationData = createNotificationDataWithMultipleMessages(account = accountWithArchive)
 
         val result = notificationDataCreator.createSummaryNotificationData(
             notificationData,
@@ -290,8 +290,8 @@ class SummaryNotificationDataCreatorTest {
 
     @Test
     fun `archive action without archive folder`() {
-        account.archiveFolderId = null
-        val notificationData = createNotificationDataWithMultipleMessages()
+        val accountWithoutArchive = account.copy(archiveFolderId = null)
+        val notificationData = createNotificationDataWithMultipleMessages(account = accountWithoutArchive)
 
         val result = notificationDataCreator.createSummaryNotificationData(
             notificationData,
@@ -327,10 +327,11 @@ class SummaryNotificationDataCreatorTest {
         )
     }
 
-    private fun createAccount(): LegacyAccountDto {
-        return LegacyAccountDto(AccountIdFactory.create()).apply {
-            accountNumber = 42
-        }
+    private fun createAccount(): LegacyAccount {
+        return FakeLegacyAccount.ACCOUNT.copy(
+            id = accountId,
+            accountNumber = 42,
+        )
     }
 
     private fun createNotificationContent() = NotificationContent(
@@ -342,6 +343,7 @@ class SummaryNotificationDataCreatorTest {
     )
 
     private fun createNotificationData(
+        account: LegacyAccount = this.account,
         contentList: List<NotificationContent> = listOf(createNotificationContent()),
     ): NotificationData {
         val activeNotifications = contentList.mapIndexed { index, content ->
@@ -356,13 +358,16 @@ class SummaryNotificationDataCreatorTest {
         )
     }
 
-    private fun createNotificationDataWithMultipleMessages(times: Int = 2): NotificationData {
+    private fun createNotificationDataWithMultipleMessages(
+        account: LegacyAccount = this.account,
+        times: Int = 2,
+    ): NotificationData {
         val contentList = buildList {
             repeat(times) {
                 add(createNotificationContent())
             }
         }
-        return createNotificationData(contentList)
+        return createNotificationData(account, contentList)
     }
 
     private fun setClockTo(time: String) {

@@ -44,7 +44,7 @@ import org.junit.Test
 import org.mockito.kotlin.mock
 import org.robolectric.Robolectric
 
-private const val SOME_ACCOUNT_UUID = "6b84207b-25de-4dab-97c3-953bbf03fec6"
+private val SOME_ACCOUNT_ID = AccountIdFactory.of("6b84207b-25de-4dab-97c3-953bbf03fec6")
 private const val FIRST_LINE_DEFAULT_FONT_SIZE = 16f
 private const val SECOND_LINE_DEFAULT_FONT_SIZE = 14f
 private const val DATE_DEFAULT_FONT_SIZE = 14f
@@ -495,7 +495,7 @@ class MessageListAdapterTest : RobolectricTest() {
 
     private fun createLegacyAccount(): LegacyAccount {
         return LegacyAccount(
-            id = AccountIdFactory.of(SOME_ACCOUNT_UUID),
+            id = SOME_ACCOUNT_ID,
             name = "irrelevant",
             email = "irrelevant@example.com",
             profile = createProfile(),
@@ -513,10 +513,11 @@ class MessageListAdapterTest : RobolectricTest() {
 
     private fun createProfile(): ProfileDto {
         return ProfileDto(
-            id = AccountIdFactory.of(SOME_ACCOUNT_UUID),
+            id = SOME_ACCOUNT_ID,
             name = "irrelevant",
             color = 0xFF00FF,
             avatar = AvatarDto(
+                id = SOME_ACCOUNT_ID,
                 avatarType = AvatarTypeDto.MONOGRAM,
                 avatarMonogram = "ab",
                 avatarImageUri = null,

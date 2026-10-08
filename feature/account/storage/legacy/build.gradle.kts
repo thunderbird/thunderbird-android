@@ -23,6 +23,7 @@ dependencies {
     implementation(libs.moshi)
 
     testImplementation(projects.feature.account.fake)
+    testImplementation(projects.core.logging.testing)
     testImplementation(projects.mail.protocols.imap)
 }
 

@@ -3,8 +3,8 @@ package com.fsck.k9.notification
 import app.k9mail.legacy.message.controller.MessageReference
 import com.fsck.k9.mailstore.LocalFolder
 import com.fsck.k9.mailstore.LocalMessage
-import net.thunderbird.core.android.account.LegacyAccountDto
-import net.thunderbird.legacy.logging.Log
+import net.thunderbird.core.logging.Logger
+import net.thunderbird.feature.account.AccountId
 
 class NotificationController internal constructor(
     private val certificateErrorNotificationController: CertificateErrorNotificationController,
@@ -12,86 +12,84 @@ class NotificationController internal constructor(
     private val syncNotificationController: SyncNotificationController,
     private val sendFailedNotificationController: SendFailedNotificationController,
     private val newMailNotificationController: NewMailNotificationController,
+    private val logger: Logger,
 ) {
-    fun showCertificateErrorNotification(account: LegacyAccountDto, incoming: Boolean) {
-        certificateErrorNotificationController.showCertificateErrorNotification(account, incoming)
+    fun showCertificateErrorNotification(accountId: AccountId, incoming: Boolean) {
+        certificateErrorNotificationController.showCertificateErrorNotification(accountId, incoming)
     }
 
-    fun clearCertificateErrorNotifications(account: LegacyAccountDto, incoming: Boolean) {
-        certificateErrorNotificationController.clearCertificateErrorNotifications(account, incoming)
+    fun clearCertificateErrorNotifications(accountId: AccountId, incoming: Boolean) {
+        certificateErrorNotificationController.clearCertificateErrorNotifications(accountId, incoming)
     }
 
-    fun showAuthenticationErrorNotification(account: LegacyAccountDto, incoming: Boolean) {
-        authenticationErrorNotificationController.showAuthenticationErrorNotification(account, incoming)
+    fun showAuthenticationErrorNotification(accountId: AccountId, incoming: Boolean) {
+        authenticationErrorNotificationController.showAuthenticationErrorNotification(accountId, incoming)
     }
 
-    fun clearAuthenticationErrorNotification(account: LegacyAccountDto, incoming: Boolean) {
-        authenticationErrorNotificationController.clearAuthenticationErrorNotification(account, incoming)
+    fun clearAuthenticationErrorNotification(accountId: AccountId, incoming: Boolean) {
+        authenticationErrorNotificationController.clearAuthenticationErrorNotification(accountId, incoming)
     }
 
-    fun showSendingNotification(account: LegacyAccountDto) {
-        syncNotificationController.showSendingNotification(account)
+    fun showSendingNotification(accountId: AccountId) {
+        syncNotificationController.showSendingNotification(accountId)
     }
 
-    fun clearSendingNotification(account: LegacyAccountDto) {
-        syncNotificationController.clearSendingNotification(account)
+    fun clearSendingNotification(accountId: AccountId) {
+        syncNotificationController.clearSendingNotification(accountId)
     }
 
-    fun showSendFailedNotification(account: LegacyAccountDto, exception: Exception) {
-        sendFailedNotificationController.showSendFailedNotification(account, exception)
+    fun showSendFailedNotification(accountId: AccountId, exception: Exception) {
+        sendFailedNotificationController.showSendFailedNotification(accountId, exception)
     }
 
-    fun clearSendFailedNotification(account: LegacyAccountDto) {
-        sendFailedNotificationController.clearSendFailedNotification(account)
+    fun clearSendFailedNotification(accountId: AccountId) {
+        sendFailedNotificationController.clearSendFailedNotification(accountId)
     }
 
-    fun showFetchingMailNotification(account: LegacyAccountDto, folder: LocalFolder) {
-        syncNotificationController.showFetchingMailNotification(account, folder)
+    fun showFetchingMailNotification(accountId: AccountId, folder: LocalFolder) {
+        syncNotificationController.showFetchingMailNotification(accountId, folder)
     }
 
-    fun showEmptyFetchingMailNotification(account: LegacyAccountDto) {
-        syncNotificationController.showEmptyFetchingMailNotification(account)
+    fun showEmptyFetchingMailNotification(accountId: AccountId) {
+        syncNotificationController.showEmptyFetchingMailNotification(accountId)
     }
 
-    fun clearFetchingMailNotification(account: LegacyAccountDto) {
-        syncNotificationController.clearFetchingMailNotification(account)
+    fun clearFetchingMailNotification(accountId: AccountId) {
+        syncNotificationController.clearFetchingMailNotification(accountId)
     }
 
-    fun restoreNewMailNotifications(accounts: List<LegacyAccountDto>) {
+    fun restoreNewMailNotifications(accounts: List<AccountId>) {
         newMailNotificationController.restoreNewMailNotifications(accounts)
     }
 
-    fun addNewMailNotification(account: LegacyAccountDto, message: LocalMessage, silent: Boolean) {
-        Log.v(
-            "Creating notification for message %s:%s:%s",
-            message.account.id,
-            message.folder.databaseId,
-            message.uid,
-        )
+    fun addNewMailNotification(accountId: AccountId, message: LocalMessage, silent: Boolean) {
+        logger.verbose {
+            "Creating notification for message ${message.accountId}:${message.folder.databaseId}:${message.uid}"
+        }
 
-        newMailNotificationController.addNewMailNotification(account, message, silent)
+        newMailNotificationController.addNewMailNotification(accountId, message, silent)
     }
 
-    fun removeNewMailNotification(account: LegacyAccountDto, messageReference: MessageReference) {
-        Log.v("Removing notification for message %s", messageReference)
+    fun removeNewMailNotification(accountId: AccountId, messageReference: MessageReference) {
+        logger.verbose { "Removing notification for message $messageReference" }
 
-        newMailNotificationController.removeNewMailNotifications(account, clearNewMessageState = true) {
+        newMailNotificationController.removeNewMailNotifications(accountId, clearNewMessageState = true) {
             listOf(messageReference)
         }
     }
 
     fun clearNewMailNotifications(
-        account: LegacyAccountDto,
+        accountId: AccountId,
         selector: (List<MessageReference>) -> List<MessageReference>,
     ) {
-        Log.v("Removing some notifications for account %s", account.id)
+        logger.verbose { "Removing some notifications for account $accountId" }
 
-        newMailNotificationController.removeNewMailNotifications(account, clearNewMessageState = false, selector)
+        newMailNotificationController.removeNewMailNotifications(accountId, clearNewMessageState = false, selector)
     }
 
-    fun clearNewMailNotifications(account: LegacyAccountDto, clearNewMessageState: Boolean) {
-        Log.v("Removing all notifications for account %s", account.id)
+    fun clearNewMailNotifications(accountId: AccountId, clearNewMessageState: Boolean) {
+        logger.verbose { "Removing all notifications for account $accountId" }
 
-        newMailNotificationController.clearNewMailNotifications(account, clearNewMessageState)
+        newMailNotificationController.clearNewMailNotifications(accountId, clearNewMessageState)
     }
 }

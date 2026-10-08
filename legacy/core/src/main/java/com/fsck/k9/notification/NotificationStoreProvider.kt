@@ -1,7 +1,7 @@
 package com.fsck.k9.notification
 
-import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.feature.account.AccountId
 
 interface NotificationStoreProvider {
-    fun getNotificationStore(account: LegacyAccountDto): NotificationStore
+    fun getNotificationStore(accountId: AccountId): NotificationStore
 }

@@ -4,13 +4,12 @@ import android.database.sqlite.SQLiteDatabase
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNotNull
-import com.fsck.k9.mailstore.MigrationsHelper
 import com.fsck.k9.storage.messages.createFolder
 import com.fsck.k9.storage.messages.createMessage
 import com.fsck.k9.storage.messages.readFolders
 import com.fsck.k9.storage.messages.readMessages
 import kotlin.test.Test
-import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.feature.account.AccountIdFactory
 import org.junit.After
 import org.junit.runner.RunWith
@@ -22,7 +21,7 @@ import org.robolectric.RobolectricTestRunner
 class MigrationTo91Test {
     private val database = createDatabaseVersion88()
     private val account = createAccount()
-    private val migrationHelper = createMigrationsHelper(account)
+    private val migrationHelper = FakeMigrationsHelper(account)
     private val migration = MigrationTo91(database, migrationHelper)
 
     @After
@@ -69,21 +68,9 @@ class MigrationTo91Test {
         assertThat(messages.size).isEqualTo(0)
     }
 
-    private fun createAccount(): LegacyAccountDto {
+    private fun createAccount(): LegacyAccount {
         return mock {
             on { id } doReturn AccountIdFactory.of(ACCOUNT_UUID)
-        }
-    }
-
-    private fun createMigrationsHelper(account: LegacyAccountDto): MigrationsHelper {
-        return object : MigrationsHelper {
-            override fun getAccount(): LegacyAccountDto {
-                return account
-            }
-
-            override fun saveAccount() {
-                throw UnsupportedOperationException("not implemented")
-            }
         }
     }
 

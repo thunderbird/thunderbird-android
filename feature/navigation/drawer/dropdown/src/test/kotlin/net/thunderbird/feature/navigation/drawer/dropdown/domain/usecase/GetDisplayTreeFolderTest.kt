@@ -6,6 +6,8 @@ import kotlin.test.Test
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import net.thunderbird.core.logging.testing.TestLogger
+import net.thunderbird.feature.account.AccountId
+import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.mail.folder.FolderType
 import net.thunderbird.feature.mail.folder.api.Folder
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayFolder
@@ -175,7 +177,7 @@ class GetDisplayTreeFolderTest {
             children = persistentListOf(
                 DisplayTreeFolder(
                     displayFolder = MailDisplayFolder(
-                        accountId = "accountId",
+                        accountId = ACCOUNT_ID,
                         folder = Folder(id = 1, name = "Inbox", type = FolderType.REGULAR, isLocalOnly = false),
                         isInTopGroup = true,
                         unreadMessageCount = 2,
@@ -189,7 +191,7 @@ class GetDisplayTreeFolderTest {
                 ),
                 DisplayTreeFolder(
                     displayFolder = MailDisplayFolder(
-                        accountId = "accountId",
+                        accountId = ACCOUNT_ID,
                         folder = Folder(id = 2, name = "", type = FolderType.REGULAR, isLocalOnly = false),
                         isInTopGroup = true,
                         unreadMessageCount = 4,
@@ -202,7 +204,7 @@ class GetDisplayTreeFolderTest {
                     children = persistentListOf(
                         DisplayTreeFolder(
                             displayFolder = MailDisplayFolder(
-                                accountId = null,
+                                accountId = ACCOUNT_ID,
                                 folder = Folder(
                                     id = 1L,
                                     name = "(Unnamed)/(Unnamed)",
@@ -220,7 +222,7 @@ class GetDisplayTreeFolderTest {
                             children = persistentListOf(
                                 DisplayTreeFolder(
                                     displayFolder = MailDisplayFolder(
-                                        accountId = "accountId",
+                                        accountId = ACCOUNT_ID,
                                         folder = Folder(
                                             id = 3,
                                             name = "///",
@@ -243,7 +245,7 @@ class GetDisplayTreeFolderTest {
                 ),
                 DisplayTreeFolder(
                     displayFolder = MailDisplayFolder(
-                        accountId = null,
+                        accountId = ACCOUNT_ID,
                         folder = Folder(id = 2, name = "valid1", type = FolderType.REGULAR, isLocalOnly = false),
                         isInTopGroup = true,
                         unreadMessageCount = 0,
@@ -256,7 +258,7 @@ class GetDisplayTreeFolderTest {
                     children = persistentListOf(
                         DisplayTreeFolder(
                             displayFolder = MailDisplayFolder(
-                                accountId = null,
+                                accountId = ACCOUNT_ID,
                                 folder = Folder(
                                     id = 3L,
                                     name = "valid1/(Unnamed)",
@@ -274,7 +276,7 @@ class GetDisplayTreeFolderTest {
                             children = persistentListOf(
                                 DisplayTreeFolder(
                                     displayFolder = MailDisplayFolder(
-                                        accountId = "accountId",
+                                        accountId = ACCOUNT_ID,
                                         folder = Folder(
                                             id = 4,
                                             name = "valid1///valid2",
@@ -329,7 +331,7 @@ class GetDisplayTreeFolderTest {
             children = persistentListOf(
                 createDisplayTreeFolder(
                     displayFolder = createDisplayAccountFolder(
-                        accountId = null,
+                        accountId = ACCOUNT_ID,
                         folderId = 1L,
                         folderName = "folderLevel1",
                         unreadMessageCount = 0,
@@ -388,7 +390,7 @@ class GetDisplayTreeFolderTest {
             children = persistentListOf(
                 createDisplayTreeFolder(
                     displayFolder = createDisplayAccountFolder(
-                        accountId = null,
+                        accountId = ACCOUNT_ID,
                         folderId = 1,
                         folderName = "level1",
                         unreadMessageCount = 0,
@@ -400,7 +402,7 @@ class GetDisplayTreeFolderTest {
                     children = persistentListOf(
                         createDisplayTreeFolder(
                             displayFolder = createDisplayAccountFolder(
-                                accountId = null,
+                                accountId = ACCOUNT_ID,
                                 folderId = 2L,
                                 folderName = "level1/level2",
                                 unreadMessageCount = 0,
@@ -433,12 +435,14 @@ class GetDisplayTreeFolderTest {
     }
 
     private companion object {
+        val ACCOUNT_ID = AccountIdFactory.create()
+
         fun createDisplayAccountFolder(
             folderId: Long,
             folderName: String,
             unreadMessageCount: Int,
             starredMessageCount: Int,
-            accountId: String? = "accountId",
+            accountId: AccountId = ACCOUNT_ID,
         ): MailDisplayFolder {
             return MailDisplayFolder(
                 accountId = accountId,
@@ -461,7 +465,7 @@ class GetDisplayTreeFolderTest {
             starredMessageCount: Int,
         ): UnifiedDisplayFolder {
             return UnifiedDisplayFolder(
-                id = unifiedFolderType.name.lowercase(),
+                folderId = unifiedFolderType.name.lowercase(),
                 unifiedType = unifiedFolderType,
                 unreadMessageCount = unreadMessageCount,
                 starredMessageCount = starredMessageCount,

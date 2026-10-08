@@ -8,6 +8,6 @@ class DefaultGetDefaultAccountId(
     private val accountManager: LegacyAccountManager,
 ) : GetDefaultAccountId {
     override operator fun invoke(): AccountId? {
-        return accountManager.getAccounts().firstOrNull()?.id
+        return accountManager.findAll().firstOrNull()?.id
     }
 }

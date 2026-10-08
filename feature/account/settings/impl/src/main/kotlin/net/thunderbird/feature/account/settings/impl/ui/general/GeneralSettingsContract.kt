@@ -7,6 +7,7 @@ import net.thunderbird.core.ui.contract.mvi.UnidirectionalViewModel
 import net.thunderbird.core.ui.setting.Settings
 import net.thunderbird.core.validation.input.IntegerInputField
 import net.thunderbird.core.validation.input.StringInputField
+import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.avatar.Avatar
 import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.ValidateAccountNameError
 import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.ValidateMonogramError
@@ -53,6 +54,7 @@ internal interface GeneralSettingsContract {
 
     fun interface SettingsBuilder {
         fun build(
+            accountId: AccountId,
             state: State,
             onEvent: (Event) -> Unit,
         ): Settings

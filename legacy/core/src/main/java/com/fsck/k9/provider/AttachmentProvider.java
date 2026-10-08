@@ -17,11 +17,9 @@ import androidx.annotation.Nullable;
 import app.k9mail.legacy.di.DI;
 import com.fsck.k9.helper.MimeTypeUtil;
 import com.fsck.k9.mailstore.LocalStoreProvider;
-import net.thunderbird.core.android.account.LegacyAccountDto;
 import net.thunderbird.feature.account.AccountId;
 import net.thunderbird.feature.account.AccountIdFactory;
 import net.thunderbird.legacy.logging.Log;
-import com.fsck.k9.Preferences;
 import net.thunderbird.core.common.exception.MessagingException;
 import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.mailstore.LocalStore.AttachmentInfo;
@@ -47,9 +45,9 @@ public class AttachmentProvider extends ContentProvider {
     }
 
 
-    public static Uri getAttachmentUri(String accountUuid, long id) {
+    public static Uri getAttachmentUri(AccountId accountId, long id) {
         return CONTENT_URI.buildUpon()
-                .appendPath(accountUuid)
+                .appendPath(accountId.toString())
                 .appendPath(Long.toString(id))
                 .build();
     }
@@ -106,8 +104,7 @@ public class AttachmentProvider extends ContentProvider {
 
         final AttachmentInfo attachmentInfo;
         try {
-            final LegacyAccountDto account = Preferences.getPreferences().getById(accountId);
-            attachmentInfo = DI.get(LocalStoreProvider.class).getInstance(account).getAttachmentInfo(id);
+            attachmentInfo = DI.get(LocalStoreProvider.class).getInstance(accountId).getAttachmentInfo(id);
         } catch (MessagingException e) {
             Log.e(e, "Unable to retrieve attachment info from local store for ID: %s", id);
             return null;
@@ -166,10 +163,9 @@ public class AttachmentProvider extends ContentProvider {
 
     private String getType(AccountId accountId, String id, String mimeType) {
         String type;
-        final LegacyAccountDto account = Preferences.getPreferences().getById(accountId);
 
         try {
-            final LocalStore localStore = DI.get(LocalStoreProvider.class).getInstance(account);
+            final LocalStore localStore = DI.get(LocalStoreProvider.class).getInstance(accountId);
 
             AttachmentInfo attachmentInfo = localStore.getAttachmentInfo(id);
             if (mimeType != null) {
@@ -178,7 +174,7 @@ public class AttachmentProvider extends ContentProvider {
                 type = attachmentInfo.type;
             }
         } catch (MessagingException e) {
-            Log.e(e, "Unable to retrieve LocalStore for %s", account);
+            Log.e(e, "Unable to retrieve LocalStore for %s", accountId);
             type = MimeTypeUtil.DEFAULT_ATTACHMENT_MIME_TYPE;
         }
 
@@ -205,8 +201,7 @@ public class AttachmentProvider extends ContentProvider {
 
     @Nullable
     private OpenPgpDataSource getAttachmentDataSource(AccountId accountId, String attachmentId) throws MessagingException {
-        final LegacyAccountDto account = Preferences.getPreferences().getById(accountId);
-        LocalStore localStore = DI.get(LocalStoreProvider.class).getInstance(account);
+        LocalStore localStore = DI.get(LocalStoreProvider.class).getInstance(accountId);
         return localStore.getAttachmentDataSource(attachmentId);
     }
 }

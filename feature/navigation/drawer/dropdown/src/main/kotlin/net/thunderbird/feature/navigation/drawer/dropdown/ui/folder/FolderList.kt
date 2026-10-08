@@ -34,7 +34,7 @@ internal fun FolderList(
     ) {
         items(
             items = rootFolder.children,
-            key = { it.displayFolder?.id ?: '0' },
+            key = { it.displayFolder?.folderId ?: '0' },
         ) { folder ->
             val currentDisplayFolder = folder.displayFolder
             FolderListItem(
@@ -45,7 +45,7 @@ internal fun FolderList(
                 showStarredCount = showStarredCount,
                 onClick = onFolderClick,
                 folderNameFormatter = folderNameFormatter,
-                selectedFolderId = selectedFolder?.id,
+                selectedFolderId = selectedFolder?.folderId,
                 isExpandInitial = isExpandedInitial,
             )
         }

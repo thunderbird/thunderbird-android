@@ -37,7 +37,7 @@ val settingsUiModule = module {
     viewModel { AccountSettingsViewModel(get(), get(), get()) }
     single {
         AccountSettingsDataStoreFactory(
-            preferences = get(),
+            accountManager = get(),
             jobManager = get(),
             executorService = get(named("SaveSettingsExecutorService")),
             notificationChannelManager = get(),

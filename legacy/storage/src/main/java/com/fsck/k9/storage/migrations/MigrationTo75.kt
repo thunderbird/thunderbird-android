@@ -6,23 +6,24 @@ import com.fsck.k9.mailstore.MigrationsHelper
 internal class MigrationTo75(private val db: SQLiteDatabase, private val migrationsHelper: MigrationsHelper) {
     fun updateAccountWithSpecialFolderIds() {
         val account = migrationsHelper.account
+        val updatedAccount = account.copy(
+            inboxFolderId = getFolderId(account.legacyInboxFolder),
+            draftsFolderId = getFolderId(account.importedDraftsFolder),
+            sentFolderId = getFolderId(account.importedSentFolder),
+            trashFolderId = getFolderId(account.importedTrashFolder),
+            archiveFolderId = getFolderId(account.importedArchiveFolder),
+            spamFolderId = getFolderId(account.importedSpamFolder),
+            autoExpandFolderId = getFolderId(account.importedAutoExpandFolder),
 
-        account.inboxFolderId = getFolderId(account.legacyInboxFolder)
-        account.draftsFolderId = getFolderId(account.importedDraftsFolder)
-        account.sentFolderId = getFolderId(account.importedSentFolder)
-        account.trashFolderId = getFolderId(account.importedTrashFolder)
-        account.archiveFolderId = getFolderId(account.importedArchiveFolder)
-        account.spamFolderId = getFolderId(account.importedSpamFolder)
-        account.autoExpandFolderId = getFolderId(account.importedAutoExpandFolder)
+            importedDraftsFolder = null,
+            importedSentFolder = null,
+            importedTrashFolder = null,
+            importedArchiveFolder = null,
+            importedSpamFolder = null,
+            importedAutoExpandFolder = null,
+        )
 
-        account.importedDraftsFolder = null
-        account.importedSentFolder = null
-        account.importedTrashFolder = null
-        account.importedArchiveFolder = null
-        account.importedSpamFolder = null
-        account.importedAutoExpandFolder = null
-
-        migrationsHelper.saveAccount()
+        migrationsHelper.saveAccount(updatedAccount)
     }
 
     private fun getFolderId(serverId: String?): Long? {

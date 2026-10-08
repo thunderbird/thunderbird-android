@@ -2,6 +2,9 @@ package net.thunderbird.feature.account.settings.impl.ui.fetchingMail
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import com.fsck.k9.mail.AuthType
+import com.fsck.k9.mail.ConnectionSecurity
+import com.fsck.k9.mail.ServerSettings
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -14,12 +17,16 @@ import net.thunderbird.components.core.outcome.Outcome
 import net.thunderbird.components.ui.testing.coroutines.MainDispatcherHelper
 import net.thunderbird.core.android.account.DeletePolicy
 import net.thunderbird.core.android.account.Expunge
+import net.thunderbird.core.android.account.Identity
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.logging.testing.TestLogger
 import net.thunderbird.core.ui.setting.SettingValue.Select.SelectOption
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract
+import net.thunderbird.feature.account.storage.profile.AvatarDto
+import net.thunderbird.feature.account.storage.profile.AvatarTypeDto
+import net.thunderbird.feature.account.storage.profile.ProfileDto
 
 @OptIn(ExperimentalCoroutinesApi::class)
 internal class FetchingMailSettingsViewModelTest {
@@ -78,39 +85,40 @@ internal class FetchingMailSettingsViewModelTest {
             maxPushFolders = 250,
             idleRefreshMinutes = 48,
             isSensitiveDebugLoggingEnabled = { true },
-            profile = net.thunderbird.feature.account.storage.profile.ProfileDto(
+            profile = ProfileDto(
                 id = accountId,
                 name = "Demo",
                 color = 0xFF0000,
-                avatar = net.thunderbird.feature.account.storage.profile.AvatarDto(
-                    avatarType = net.thunderbird.feature.account.storage.profile.AvatarTypeDto.ICON,
+                avatar = AvatarDto(
+                    id = accountId,
+                    avatarType = AvatarTypeDto.ICON,
                     avatarMonogram = null,
                     avatarImageUri = null,
                     avatarIconName = "star",
                 ),
             ),
             identities = listOf(
-                net.thunderbird.core.android.account.Identity(
+                Identity(
                     signatureUse = false,
                     description = "Test Identity",
                 ),
             ),
-            incomingServerSettings = com.fsck.k9.mail.ServerSettings(
+            incomingServerSettings = ServerSettings(
                 type = "imap",
                 host = "imap.example.com",
                 port = 993,
-                connectionSecurity = com.fsck.k9.mail.ConnectionSecurity.SSL_TLS_REQUIRED,
-                authenticationType = com.fsck.k9.mail.AuthType.PLAIN,
+                connectionSecurity = ConnectionSecurity.SSL_TLS_REQUIRED,
+                authenticationType = AuthType.PLAIN,
                 username = "test",
                 password = "pass",
                 clientCertificateAlias = null,
             ),
-            outgoingServerSettings = com.fsck.k9.mail.ServerSettings(
+            outgoingServerSettings = ServerSettings(
                 type = "smtp",
                 host = "smtp.example.com",
                 port = 465,
-                connectionSecurity = com.fsck.k9.mail.ConnectionSecurity.SSL_TLS_REQUIRED,
-                authenticationType = com.fsck.k9.mail.AuthType.PLAIN,
+                connectionSecurity = ConnectionSecurity.SSL_TLS_REQUIRED,
+                authenticationType = AuthType.PLAIN,
                 username = "test",
                 password = "pass",
                 clientCertificateAlias = null,

@@ -28,7 +28,7 @@ internal class AccountSetupCompositionViewModel(
         Pair(2, resources.stringResource(R.string.account_settings_signature__location_after_quoted_text)),
     )
 
-    private var account: LegacyAccount = legacyAccountManager.getById(AccountIdFactory.of(accountUuid))
+    private var account: LegacyAccount = legacyAccountManager.findById(AccountIdFactory.of(accountUuid))
         ?: error("Couldn't find account")
 
     init {
@@ -110,7 +110,7 @@ internal class AccountSetupCompositionViewModel(
     }
 
     private fun saveAccount() {
-        legacyAccountManager.saveAccount(account)
+        legacyAccountManager.updateSync(account)
     }
 
     private fun handleOnFormatSignatureAsHtmlCheck(event: Event.OnFormatSignatureAsHtmlCheck) {

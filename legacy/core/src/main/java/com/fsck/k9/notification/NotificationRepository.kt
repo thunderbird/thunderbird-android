@@ -3,9 +3,10 @@ package com.fsck.k9.notification
 import app.k9mail.legacy.mailstore.MessageStoreManager
 import app.k9mail.legacy.message.controller.MessageReference
 import com.fsck.k9.mailstore.LocalStoreProvider
-import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.LockScreenNotificationVisibility
+import net.thunderbird.feature.account.AccountId
 
 internal class NotificationRepository(
     private val notificationStoreProvider: NotificationStoreProvider,
@@ -13,52 +14,55 @@ internal class NotificationRepository(
     private val messageStoreManager: MessageStoreManager,
     private val notificationContentCreator: NotificationContentCreator,
     private val generalSettingsManager: GeneralSettingsManager,
+    private val notificationDataStore: NotificationDataStore,
+    private val accountManager: LegacyAccountManager,
 ) {
-    private val notificationDataStore = NotificationDataStore()
     private val lockScreenNotificationVisibility: LockScreenNotificationVisibility
         get() = generalSettingsManager.getConfig().notification.lockScreenNotificationVisibility
 
     @Synchronized
-    fun restoreNotifications(account: LegacyAccountDto): NotificationData? {
-        if (notificationDataStore.isAccountInitialized(account)) return null
+    fun restoreNotifications(accountId: AccountId): NotificationData? {
+        if (notificationDataStore.isAccountInitialized(accountId)) return null
 
-        val localStore = localStoreProvider.getInstance(account)
+        return accountManager.findById(accountId)?.let { account ->
+            val localStore = localStoreProvider.getInstance(accountId)
 
-        val (activeNotificationMessages, inactiveNotificationMessages) = localStore.notificationMessages.partition {
-            it.notificationId != null
+            val (activeNotificationMessages, inactiveNotificationMessages) = localStore.notificationMessages.partition {
+                it.notificationId != null
+            }
+
+            val activeNotifications = activeNotificationMessages.map { notificationMessage ->
+                val isFromSelf = account.isAnIdentity(notificationMessage.message.from)
+                val content = notificationContentCreator.createFromMessage(notificationMessage.message, isFromSelf)
+                NotificationHolder(notificationMessage.notificationId!!, notificationMessage.timestamp, content)
+            }
+
+            val inactiveNotifications = inactiveNotificationMessages.map { notificationMessage ->
+                val isFromSelf = account.isAnIdentity(notificationMessage.message.from)
+                val content = notificationContentCreator.createFromMessage(notificationMessage.message, isFromSelf)
+                InactiveNotificationHolder(notificationMessage.timestamp, content)
+            }
+
+            notificationDataStore.initializeAccount(
+                accountId,
+                activeNotifications,
+                inactiveNotifications,
+                lockScreenNotificationVisibility,
+            ).takeIf { it.activeNotifications.isNotEmpty() }
         }
-
-        val activeNotifications = activeNotificationMessages.map { notificationMessage ->
-            val content = notificationContentCreator.createFromMessage(account, notificationMessage.message)
-            NotificationHolder(notificationMessage.notificationId!!, notificationMessage.timestamp, content)
-        }
-
-        val inactiveNotifications = inactiveNotificationMessages.map { notificationMessage ->
-            val content = notificationContentCreator.createFromMessage(account, notificationMessage.message)
-            InactiveNotificationHolder(notificationMessage.timestamp, content)
-        }
-
-        val notificationData = notificationDataStore.initializeAccount(
-            account,
-            activeNotifications,
-            inactiveNotifications,
-            lockScreenNotificationVisibility,
-        )
-
-        return if (notificationData.activeNotifications.isNotEmpty()) notificationData else null
     }
 
     @Synchronized
     fun addNotification(
-        account: LegacyAccountDto,
+        accountId: AccountId,
         content: NotificationContent,
         timestamp: Long,
     ): AddNotificationResult? {
-        restoreNotifications(account)
+        restoreNotifications(accountId)
 
-        return notificationDataStore.addNotification(account, content, timestamp)?.also { result ->
+        return notificationDataStore.addNotification(accountId, content, timestamp)?.also { result ->
             persistNotificationDataStoreChanges(
-                account = account,
+                accountId = accountId,
                 operations = result.notificationStoreOperations,
                 updateNewMessageState = true,
             )
@@ -67,15 +71,15 @@ internal class NotificationRepository(
 
     @Synchronized
     fun removeNotifications(
-        account: LegacyAccountDto,
+        accountId: AccountId,
         clearNewMessageState: Boolean = true,
         selector: (List<MessageReference>) -> List<MessageReference>,
     ): RemoveNotificationsResult? {
-        restoreNotifications(account)
+        restoreNotifications(accountId)
 
-        return notificationDataStore.removeNotifications(account, selector)?.also { result ->
+        return notificationDataStore.removeNotifications(accountId, selector)?.also { result ->
             persistNotificationDataStoreChanges(
-                account = account,
+                accountId = accountId,
                 operations = result.notificationStoreOperations,
                 updateNewMessageState = clearNewMessageState,
             )
@@ -83,30 +87,30 @@ internal class NotificationRepository(
     }
 
     @Synchronized
-    fun clearNotifications(account: LegacyAccountDto, clearNewMessageState: Boolean) {
-        notificationDataStore.clearNotifications(account)
-        clearNotificationStore(account)
+    fun clearNotifications(accountId: AccountId, clearNewMessageState: Boolean) {
+        notificationDataStore.clearNotifications(accountId)
+        clearNotificationStore(accountId)
 
         if (clearNewMessageState) {
-            clearNewMessageState(account)
+            clearNewMessageState(accountId)
         }
     }
 
     private fun persistNotificationDataStoreChanges(
-        account: LegacyAccountDto,
+        accountId: AccountId,
         operations: List<NotificationStoreOperation>,
         updateNewMessageState: Boolean,
     ) {
-        val notificationStore = notificationStoreProvider.getNotificationStore(account)
+        val notificationStore = notificationStoreProvider.getNotificationStore(accountId)
         notificationStore.persistNotificationChanges(operations)
 
         if (updateNewMessageState) {
-            setNewMessageState(account, operations)
+            setNewMessageState(accountId, operations)
         }
     }
 
-    private fun setNewMessageState(account: LegacyAccountDto, operations: List<NotificationStoreOperation>) {
-        val messageStore = messageStoreManager.getMessageStore(account)
+    private fun setNewMessageState(accountId: AccountId, operations: List<NotificationStoreOperation>) {
+        val messageStore = messageStoreManager.getMessageStore(accountId)
 
         for (operation in operations) {
             when (operation) {
@@ -131,13 +135,13 @@ internal class NotificationRepository(
         }
     }
 
-    private fun clearNewMessageState(account: LegacyAccountDto) {
-        val messageStore = messageStoreManager.getMessageStore(account)
+    private fun clearNewMessageState(accountId: AccountId) {
+        val messageStore = messageStoreManager.getMessageStore(accountId)
         messageStore.clearNewMessageState()
     }
 
-    private fun clearNotificationStore(account: LegacyAccountDto) {
-        val notificationStore = notificationStoreProvider.getNotificationStore(account)
+    private fun clearNotificationStore(accountId: AccountId) {
+        val notificationStore = notificationStoreProvider.getNotificationStore(accountId)
         notificationStore.clearNotifications()
     }
 }

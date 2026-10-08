@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 
 import com.fsck.k9.helper.MimeTypeUtil;
+import net.thunderbird.feature.account.AccountId;
 import net.thunderbird.legacy.logging.Log;
 import androidx.annotation.WorkerThread;
 
@@ -58,18 +59,18 @@ public class AttachmentInfoExtractor {
 
         if (part instanceof LocalPart) {
             LocalPart localPart = (LocalPart) part;
-            String accountUuid = localPart.getAccountUuid();
+            AccountId accountId = localPart.getAccountId();
             long messagePartId = localPart.getPartId();
             size = localPart.getSize();
             isContentAvailable = part.getBody() != null;
-            uri = AttachmentProvider.getAttachmentUri(accountUuid, messagePartId);
+            uri = AttachmentProvider.getAttachmentUri(accountId, messagePartId);
         } else if (part instanceof LocalMessage) {
             LocalMessage localMessage = (LocalMessage) part;
-            String accountUuid = localMessage.getAccount().getId().toString();
+            AccountId accountId = localMessage.getAccountId();
             long messagePartId = localMessage.getMessagePartId();
             size = localMessage.getSize();
             isContentAvailable = part.getBody() != null;
-            uri = AttachmentProvider.getAttachmentUri(accountUuid, messagePartId);
+            uri = AttachmentProvider.getAttachmentUri(accountId, messagePartId);
         } else {
             Body body = part.getBody();
             if (body instanceof DeferredFileBody) {

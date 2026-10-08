@@ -6,12 +6,15 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.test.core.app.ApplicationProvider
 import app.k9mail.core.android.common.provider.NotificationIconResourceProvider
+import com.fsck.k9.FakeLegacyAccount
 import com.fsck.k9.mailstore.LocalFolder
-import com.fsck.k9.notification.NotificationIds.getFetchingMailNotificationId
-import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.core.android.testing.MockHelper.mockBuilder
 import net.thunderbird.core.android.testing.RobolectricTest
 import net.thunderbird.feature.account.AccountIdFactory
+import net.thunderbird.feature.account.storage.profile.AvatarDto
+import net.thunderbird.feature.account.storage.profile.AvatarTypeDto
+import net.thunderbird.feature.account.storage.profile.ProfileDto
 import net.thunderbird.legacy.core.mailstore.folder.FakeOutboxFolderManager
 import org.junit.Test
 import org.mockito.ArgumentMatchers.anyLong
@@ -27,6 +30,7 @@ private const val ACCOUNT_NAME = "TestAccount"
 private const val FOLDER_SERVER_ID = "INBOX"
 private const val FOLDER_NAME = "Inbox"
 private const val TEST_ICON_ID = 0xCAFE
+private const val NOTIFICATION_ID = 101
 
 class SyncNotificationControllerTest : RobolectricTest() {
     private val resourceProvider: NotificationResourceProvider = TestNotificationResourceProvider()
@@ -37,12 +41,34 @@ class SyncNotificationControllerTest : RobolectricTest() {
     private val notificationManager = mock<NotificationManagerCompat>()
     private val builder = createFakeNotificationBuilder(notification)
     private val lockScreenNotificationBuilder = createFakeNotificationBuilder(lockScreenNotification)
+    private val accountId = AccountIdFactory.create()
     private val notificationHelper = createFakeNotificationHelper(
         notificationManager,
         builder,
         lockScreenNotificationBuilder,
     )
-    private val account = createFakeAccount()
+    private val account = FakeLegacyAccount.ACCOUNT.copy(
+        id = accountId,
+        accountNumber = ACCOUNT_NUMBER,
+        profile = ProfileDto(
+            id = accountId,
+            name = ACCOUNT_NAME,
+            color = -1,
+            avatar = AvatarDto(
+                id = accountId,
+                avatarType = AvatarTypeDto.MONOGRAM,
+                avatarMonogram = "TA",
+                avatarImageUri = null,
+                avatarIconName = null,
+            ),
+        ),
+    )
+    private val accountManager = mock<LegacyAccountManager> {
+        on { findById(accountId) } doReturn account
+    }
+    private val notificationIdRegistry = mock<AccountNotificationIdRegistry> {
+        on { getOrAllocate(accountId, AccountNotificationKind.Sync) } doReturn NOTIFICATION_ID
+    }
     private val contentIntent = mock<PendingIntent>()
     private val controller = SyncNotificationController(
         notificationHelper = notificationHelper,
@@ -50,15 +76,15 @@ class SyncNotificationControllerTest : RobolectricTest() {
         resourceProvider = resourceProvider,
         outboxFolderManager = FakeOutboxFolderManager(outboxFolderId = 33L),
         iconResourceProvider = iconResourceProvider,
+        accountManager = accountManager,
+        notificationIdRegistry = notificationIdRegistry,
     )
 
     @Test
     fun testShowSendingNotification() {
-        val notificationId = getFetchingMailNotificationId(account)
+        controller.showSendingNotification(accountId)
 
-        controller.showSendingNotification(account)
-
-        verify(notificationHelper).notify(notificationId, notification)
+        verify(notificationHelper).notify(NOTIFICATION_ID, notification)
         verify(builder).setSmallIcon(resourceProvider.iconSendingMail)
         verify(builder).setTicker("Sending mail: $ACCOUNT_NAME")
         verify(builder).setContentTitle("Sending mail")
@@ -72,21 +98,18 @@ class SyncNotificationControllerTest : RobolectricTest() {
 
     @Test
     fun testClearSendingNotification() {
-        val notificationId = getFetchingMailNotificationId(account)
+        controller.clearSendingNotification(accountId)
 
-        controller.clearSendingNotification(account)
-
-        verify(notificationManager).cancel(notificationId)
+        verify(notificationManager).cancel(NOTIFICATION_ID)
     }
 
     @Test
     fun testGetFetchingMailNotificationId() {
         val localFolder = createFakeLocalFolder()
-        val notificationId = getFetchingMailNotificationId(account)
 
-        controller.showFetchingMailNotification(account, localFolder)
+        controller.showFetchingMailNotification(accountId, localFolder)
 
-        verify(notificationHelper).notify(notificationId, notification)
+        verify(notificationHelper).notify(NOTIFICATION_ID, notification)
         verify(builder).setSmallIcon(iconResourceProvider.pushNotificationIcon)
         verify(builder).setTicker("Checking mail: $ACCOUNT_NAME:$FOLDER_NAME")
         verify(builder).setContentTitle("Checking mail")
@@ -100,11 +123,9 @@ class SyncNotificationControllerTest : RobolectricTest() {
 
     @Test
     fun testShowEmptyFetchingMailNotification() {
-        val notificationId = getFetchingMailNotificationId(account)
+        controller.showEmptyFetchingMailNotification(accountId)
 
-        controller.showEmptyFetchingMailNotification(account)
-
-        verify(notificationHelper).notify(notificationId, notification)
+        verify(notificationHelper).notify(NOTIFICATION_ID, notification)
         verify(builder).setSmallIcon(iconResourceProvider.pushNotificationIcon)
         verify(builder).setContentTitle("Checking mail")
         verify(builder).setContentText(ACCOUNT_NAME)
@@ -116,11 +137,9 @@ class SyncNotificationControllerTest : RobolectricTest() {
 
     @Test
     fun testClearSendFailedNotification() {
-        val notificationId = getFetchingMailNotificationId(account)
+        controller.clearFetchingMailNotification(accountId)
 
-        controller.clearFetchingMailNotification(account)
-
-        verify(notificationManager).cancel(notificationId)
+        verify(notificationManager).cancel(NOTIFICATION_ID)
     }
 
     private fun createFakeNotificationBuilder(notification: Notification): NotificationCompat.Builder {
@@ -137,22 +156,17 @@ class SyncNotificationControllerTest : RobolectricTest() {
         return mock {
             on { getContext() } doReturn ApplicationProvider.getApplicationContext()
             on { getNotificationManager() } doReturn notificationManager
-            on { createNotificationBuilder(any(), any()) }.doReturn(notificationBuilder, lockScreenNotificationBuilder)
-        }
-    }
-
-    private fun createFakeAccount(): LegacyAccountDto {
-        return mock {
-            on { id } doReturn AccountIdFactory.create()
-            on { accountNumber } doReturn ACCOUNT_NUMBER
-            on { name } doReturn ACCOUNT_NAME
-            on { displayName } doReturn ACCOUNT_NAME
+            on {
+                createNotificationBuilder(eq(accountId), any(), any())
+            }.doReturn(notificationBuilder, lockScreenNotificationBuilder)
         }
     }
 
     private fun createActionBuilder(contentIntent: PendingIntent): NotificationActionCreator {
         return mock {
-            on { createViewFolderPendingIntent(eq(account), anyLong()) } doReturn contentIntent
+            on {
+                createViewFolderPendingIntent(eq(accountId), anyLong())
+            } doReturn contentIntent
         }
     }
 

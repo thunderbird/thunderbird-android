@@ -3,11 +3,11 @@ package com.fsck.k9.notification
 import android.content.Intent
 import assertk.assertThat
 import assertk.assertions.isEqualTo
-import com.fsck.k9.Preferences
 import com.fsck.k9.controller.MessagingController
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.core.android.testing.RobolectricTest
 import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.logging.testing.TestLogger
@@ -24,7 +24,7 @@ import org.mockito.kotlin.verifyNoInteractions
 import org.robolectric.Robolectric
 
 class NotificationActionServiceTest : RobolectricTest() {
-    private val preferences = mock<Preferences>()
+    private val accountManager = mock<LegacyAccountManager>()
     private val messagingController = mock<MessagingController>()
     private val interactionPreferences = mock<InteractionSettingsPreferenceManager>()
 
@@ -34,7 +34,7 @@ class NotificationActionServiceTest : RobolectricTest() {
         startKoin {
             modules(
                 module {
-                    single { preferences }
+                    single { accountManager }
                     single { messagingController }
                     single { interactionPreferences }
                     single<Logger> { TestLogger() }
@@ -60,6 +60,6 @@ class NotificationActionServiceTest : RobolectricTest() {
 
         // Assert
         assertThat(result).isEqualTo(android.app.Service.START_NOT_STICKY)
-        verifyNoInteractions(preferences, messagingController)
+        verifyNoInteractions(accountManager, messagingController)
     }
 }

@@ -191,7 +191,7 @@ class MessageListLoader(
         return if (accounts.size == 1 && folderIds.size == 1) {
             val account = accounts[0]
             val folderId = folderIds[0]
-            val localStore = localStoreProvider.getInstanceByLegacyAccount(account)
+            val localStore = localStoreProvider.getInstance(account.id)
             val localFolder = localStore.getFolder(folderId)
             localFolder.open()
             localFolder.hasMoreMessages()

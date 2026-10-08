@@ -3,9 +3,9 @@ package com.fsck.k9.account
 import android.content.Context
 import app.k9mail.feature.settings.import.SettingsImportExternalContract
 import com.fsck.k9.Core
-import com.fsck.k9.Preferences
 import com.fsck.k9.controller.MessagingController
-import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.feature.account.AccountId
 
 /**
@@ -13,43 +13,41 @@ import net.thunderbird.feature.account.AccountId
  */
 class AccountActivator(
     private val context: Context,
-    private val preferences: Preferences,
+    private val accountManager: LegacyAccountManager,
     private val messagingController: MessagingController,
 ) : SettingsImportExternalContract.AccountActivator {
     override fun enableAccount(accountId: AccountId, incomingServerPassword: String?, outgoingServerPassword: String?) {
-        val account = preferences.getById(accountId) ?: error("Account $accountId not found")
+        val account = accountManager.findById(accountId) ?: error("Account $accountId not found")
 
         setAccountPasswords(account, incomingServerPassword, outgoingServerPassword)
-        enableAccount(account)
+        enableAccount(accountId)
     }
 
     override fun enableAccount(accountId: AccountId) {
-        val account = preferences.getById(accountId) ?: error("Account $accountId not found")
-
-        enableAccount(account)
-    }
-
-    private fun enableAccount(account: LegacyAccountDto) {
         // Start services if necessary
         Core.setServicesEnabled(context)
 
         // Get list of folders from remote server
-        messagingController.refreshFolderList(account)
+        messagingController.refreshFolderList(accountId)
     }
 
     private fun setAccountPasswords(
-        account: LegacyAccountDto,
+        account: LegacyAccount,
         incomingServerPassword: String?,
         outgoingServerPassword: String?,
     ) {
+        var updatedAccount = account
+
         if (incomingServerPassword != null) {
-            account.incomingServerSettings = account.incomingServerSettings.newPassword(incomingServerPassword)
+            val newIncoming = updatedAccount.incomingServerSettings.newPassword(incomingServerPassword)
+            updatedAccount = updatedAccount.copy(incomingServerSettings = newIncoming)
         }
 
         if (outgoingServerPassword != null) {
-            account.outgoingServerSettings = account.outgoingServerSettings.newPassword(outgoingServerPassword)
+            val newOutgoing = updatedAccount.outgoingServerSettings.newPassword(outgoingServerPassword)
+            updatedAccount = updatedAccount.copy(outgoingServerSettings = newOutgoing)
         }
 
-        preferences.saveAccount(account)
+        accountManager.updateSync(updatedAccount)
     }
 }
