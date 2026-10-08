@@ -291,7 +291,7 @@ The index and release file for the same release must agree on `version` and `dat
 
 Release ordering:
 
-* Releases sort by descending `date`.
+* Releases sort by descending version (numeric version components, followed by prerelease suffixes).
 * Recent Changes matches the full current app version name to the release `version` for beta and release builds.
 * Recent Changes matches both the full current app version name and the current date for daily builds.
 * Per-release resource names are derived from the release `version`, matching `thunderbird-notes`.
@@ -368,7 +368,7 @@ Generation behavior:
 10. Write or replace each per-release changelog file.
 11. Load the existing `changelog_index.json` when present.
 12. Insert or replace release index entries by `version`.
-13. Sort index entries descending by `date`.
+13. Sort index entries descending by version, with the final release after its prerelease candidates.
 14. Validate the index and release files against their schemas.
 15. Write the target `changelog_index.json`.
 
@@ -538,7 +538,7 @@ Generator tests should verify:
 * Resource name generation from beta versions such as `10.0b1`.
 * Multiple release files generated from one `thunderbird-notes` file with multiple `release.releases` entries.
 * Grouped beta notes are emitted only to the matching generated release file.
-* Descending release ordering by `date`.
+* Descending release ordering by version, including multi-digit prerelease numbers and release candidates.
 * Source note order preservation.
 * `issues` preservation.
 * `pull_requests` to `pullRequests` mapping.

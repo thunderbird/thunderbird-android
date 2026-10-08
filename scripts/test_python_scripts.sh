@@ -52,6 +52,8 @@ echo ""
 echo "Testing script compile..."
 echo ""
 python3 -m py_compile "$SCRIPT_DIR/ci/render-notes.py" && echo "  ✓ render-notes.py"
+python3 -m py_compile "$SCRIPT_DIR/changelog/generate_changelog_json.py" "$SCRIPT_DIR/changelog/migrate_changelog_to_json.py" && echo "  ✓ changelog scripts"
+python3 -m unittest discover -s "$SCRIPT_DIR/changelog" -p 'test_*.py'
 python3 -m py_compile "$SCRIPT_DIR/ci/setup_release_automation" && echo "  ✓ setup_release_automation"
 python3 -m py_compile "$SCRIPT_DIR/ci/merges/merge_gradle.py" && echo "  ✓ merge_gradle.py"
 python3 -m py_compile "$SCRIPT_DIR/ci/contributor_list.py" && echo "  ✓ contributor_list.py"
