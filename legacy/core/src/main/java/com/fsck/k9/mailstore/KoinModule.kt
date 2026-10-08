@@ -77,6 +77,9 @@ val legacyMailStoreModule = module {
             messageStoreManager = get(),
             specialFolderUpdaterFactory = get(),
             saveMessageDataCreator = get(),
+            messageLifecycleRepository = get(),
+            messageQueryRepository = get(),
+            messageDataMapper = get(),
         )
     }
     factory { SpecialLocalFoldersCreator(preferences = get(), localStoreProvider = get(), outboxFolderManager = get()) }
