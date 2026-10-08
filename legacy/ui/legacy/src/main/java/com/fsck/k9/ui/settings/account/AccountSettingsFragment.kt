@@ -34,6 +34,7 @@ import com.fsck.k9.notification.NotificationSettingsUpdater
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.extensions.withArguments
 import com.fsck.k9.ui.endtoend.AutocryptKeyTransferActivity
+import com.fsck.k9.ui.managefolders.ManageFoldersActivity
 import com.fsck.k9.ui.settings.onClick
 import com.fsck.k9.ui.settings.oneTimeClickListener
 import com.fsck.k9.ui.settings.remove
@@ -431,6 +432,9 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
     }
 
     private fun initializeFolderSettings(account: LegacyAccountDto) {
+        findPreference<Preference>(PREFERENCE_FOLDER_VISIBILITY_AND_SYNC)?.onClick {
+            ManageFoldersActivity.launch(requireActivity(), getAccount())
+        }
         findPreference<Preference>(PREFERENCE_FOLDERS)?.let {
             if (!messagingController.supportsFolderSubscriptions(account)) {
                 findPreference<Preference>(PREFERENCE_SUBSCRIBED_FOLDERS_ONLY).remove()
@@ -543,6 +547,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         private const val PREFERENCE_OPENPGP_KEY = "openpgp_key"
         private const val PREFERENCE_AUTOCRYPT_TRANSFER = "autocrypt_transfer"
         internal const val PREFERENCE_FOLDERS = "folders"
+        internal const val PREFERENCE_FOLDER_VISIBILITY_AND_SYNC = "visibility_and_syncing"
         private const val PREFERENCE_AUTO_SELECT_FOLDER = "auto_select_folder"
         private const val PREFERENCE_SUBSCRIBED_FOLDERS_ONLY = "subscribed_folders_only"
         private const val PREFERENCE_ARCHIVE_FOLDER = "archive_folder"

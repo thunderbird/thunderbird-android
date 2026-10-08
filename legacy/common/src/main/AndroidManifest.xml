@@ -169,7 +169,7 @@
 
         <activity
             android:name="com.fsck.k9.ui.managefolders.ManageFoldersActivity"
-            android:label="@string/folders_action"
+            android:label="@string/account_setup_visibility_and_syncing"
             />
 
         <activity
