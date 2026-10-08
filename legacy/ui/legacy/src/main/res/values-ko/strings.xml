@@ -957,4 +957,6 @@
     <string name="account_settings_signature_clear_label">서명 지우기</string>
     <string name="message_compose_encrypting_message">메시지 암호화 중…</string>
     <string name="message_view_from_me_text">나</string>
+    <string name="account_settings_signature_preview_empty">서명 미리보기가 여기에 나타납니다</string>
+    <string name="error_no_contact_provider">연락처 앱을 찾을 수 없습니다. 이 주소를 추가하려면 연락처 앱을 설치하세요.</string>
 </resources>
