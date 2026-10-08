@@ -379,13 +379,14 @@ class MessageViewFragment :
 
     @Suppress("LongMethod")
     private fun prepareMenu(menu: Menu) {
+        val visualSettings = generalSettingsManager.getConfig().display.visualSettings
+
         menu.findItem(R.id.delete).apply {
-            isVisible = generalSettingsManager.getConfig()
-                .display.visualSettings.isMessageViewDeleteActionVisible
+            isVisible = visualSettings.isMessageViewDeleteActionVisible
             isEnabled = !isDeleteMenuItemDisabled
         }
 
-        val showToggleUnread = !isOutbox
+        val showToggleUnread = !isOutbox && visualSettings.isMessageViewToggleUnreadActionVisible
         menu.findItem(R.id.toggle_unread).isVisible = showToggleUnread
 
         if (showToggleUnread) {
@@ -409,47 +410,40 @@ class MessageViewFragment :
         if (isMoveCapable) {
             val canMessageBeArchived = canMessageBeArchived()
             val canMessageBeMovedToSpam = canMessageBeMovedToSpam()
-            menu.findItem(R.id.move).isVisible =
-                generalSettingsManager.getConfig().display.visualSettings.isMessageViewMoveActionVisible
 
+            menu.findItem(R.id.move).isVisible = visualSettings.isMessageViewMoveActionVisible
             menu.findItem(R.id.archive).isVisible =
-                canMessageBeArchived &&
-                    generalSettingsManager.getConfig()
-                        .display
-                        .visualSettings
-                        .isMessageViewArchiveActionVisible
-
+                canMessageBeArchived && visualSettings.isMessageViewArchiveActionVisible
             menu.findItem(R.id.spam).isVisible =
-                canMessageBeMovedToSpam &&
-                    generalSettingsManager.getConfig()
-                        .display
-                        .visualSettings
-                        .isMessageViewSpamActionVisible
+                canMessageBeMovedToSpam && visualSettings.isMessageViewSpamActionVisible
 
-            menu.findItem(R.id.refile_move).isVisible = true
-            menu.findItem(R.id.refile_archive).isVisible = canMessageBeArchived
-            menu.findItem(R.id.refile_spam).isVisible = canMessageBeMovedToSpam
-
-            menu.findItem(R.id.refile).isVisible = true
+            menu.findItem(R.id.refile_move).isVisible = !visualSettings.isMessageViewMoveActionVisible
+            menu.findItem(R.id.refile_archive).isVisible =
+                canMessageBeArchived && !visualSettings.isMessageViewArchiveActionVisible
+            menu.findItem(R.id.refile_spam).isVisible =
+                canMessageBeMovedToSpam && !visualSettings.isMessageViewSpamActionVisible
         } else {
             menu.findItem(R.id.move).isVisible = false
             menu.findItem(R.id.archive).isVisible = false
             menu.findItem(R.id.spam).isVisible = false
-
-            menu.findItem(R.id.refile).isVisible = false
         }
 
         menu.findItem(R.id.set_format_plain).isVisible = !isRenderPlainFormat()
         menu.findItem(R.id.set_format_html).isVisible = isRenderPlainFormat()
 
         if (isCopyCapable) {
-            menu.findItem(R.id.copy).isVisible = generalSettingsManager.getConfig()
-                .display.visualSettings.isMessageViewCopyActionVisible
-            menu.findItem(R.id.refile_copy).isVisible = true
+            menu.findItem(R.id.copy).isVisible = visualSettings.isMessageViewCopyActionVisible
+            menu.findItem(R.id.refile_copy).isVisible = !visualSettings.isMessageViewCopyActionVisible
         } else {
             menu.findItem(R.id.copy).isVisible = false
             menu.findItem(R.id.refile_copy).isVisible = false
         }
+
+        menu.findItem(R.id.refile).isVisible =
+            menu.findItem(R.id.refile_move).isVisible ||
+                menu.findItem(R.id.refile_archive).isVisible ||
+                menu.findItem(R.id.refile_spam).isVisible ||
+                menu.findItem(R.id.refile_copy).isVisible
 
         menu.findItem(R.id.move_to_drafts).isVisible = isOutbox
         menu.findItem(R.id.unsubscribe).isVisible = canMessageBeUnsubscribed()
