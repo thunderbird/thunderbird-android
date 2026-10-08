@@ -9,19 +9,20 @@ import app.k9mail.legacy.message.controller.MessagingControllerRegistry
 import com.fsck.k9.Preferences
 import com.fsck.k9.backend.BackendManager
 import com.fsck.k9.mailstore.LocalStoreProvider
-import com.fsck.k9.mailstore.SaveMessageDataCreator
-import com.fsck.k9.mailstore.SpecialLocalFoldersCreator
 import com.fsck.k9.notification.NotificationController
 import com.fsck.k9.notification.NotificationStrategy
 import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.logging.Logger
 import net.thunderbird.feature.mail.folder.api.OutboxFolderManager
+import net.thunderbird.feature.mail.message.domain.MessageLifecycleRepository
 import net.thunderbird.feature.mail.message.list.LocalDeleteOperationDecider
 import net.thunderbird.feature.mail.message.list.LocalMessageUidPrefixProvider
+import net.thunderbird.feature.mail.message.mapper.MessageDataMapper
 import net.thunderbird.feature.notification.api.NotificationManager
 import org.koin.core.qualifier.named
 import org.koin.dsl.binds
 import org.koin.dsl.module
+import com.fsck.k9.mail.Message as LegacyMessage
 
 val controllerModule = module {
     single {
@@ -33,8 +34,6 @@ val controllerModule = module {
             get<BackendManager>(),
             get<Preferences>(),
             get<MessageStoreManager>(),
-            get<SaveMessageDataCreator>(),
-            get<SpecialLocalFoldersCreator>(),
             get<LocalDeleteOperationDecider>(),
             get<LocalMessageUidPrefixProvider>(),
             get(named("controllerExtensions")),
@@ -42,6 +41,8 @@ val controllerModule = module {
             get<Logger>(named("syncDebug")),
             get<NotificationManager>(),
             get<OutboxFolderManager>(),
+            get<MessageLifecycleRepository>(),
+            get<MessageDataMapper<LegacyMessage>>(),
         )
     } binds arrayOf(MessagingControllerRegistry::class)
 
