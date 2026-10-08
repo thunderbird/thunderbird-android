@@ -71,12 +71,15 @@ val legacyMailStoreModule = module {
     single { SpecialFolderSelectionStrategy() }
     single<BackendStorageFactory> {
         K9BackendStorageFactory(
+            logger = get(),
             preferences = get(),
             accountManager = get(),
             folderQueryRepository = get(),
             messageStoreManager = get(),
             specialFolderUpdaterFactory = get(),
-            saveMessageDataCreator = get(),
+            messageQueryRepository = get(),
+            messageLifecycleRepository = get(),
+            messageDataMapper = get(),
         )
     }
     factory { SpecialLocalFoldersCreator(preferences = get(), localStoreProvider = get(), outboxFolderManager = get()) }

@@ -172,7 +172,7 @@ internal class Pop3Sync(
                 if (!destroyMessageUids.isEmpty()) {
                     moreMessages = BackendFolder.MoreMessages.UNKNOWN
 
-                    backendFolder.destroyMessages(destroyMessageUids)
+                    runBlocking { backendFolder.destroyMessages(destroyMessageUids) }
                     for (uid in destroyMessageUids) {
                         listener.syncRemovedMessage(folderServerId = folder, messageServerId = uid)
                     }
