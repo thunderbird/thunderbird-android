@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sent_folder_not_found_dialog_title">Lähetetyt-kansiota ei löytynyt</string>
+    <string name="sent_folder_not_found_dialog_supporting_text">Tallentaaksesi tämän viestin lähettämisen jälkeen, aseta Lähetetyt-kansio tilin asetuksissa.</string>
+    <string name="sent_folder_not_found_dialog_assign_folder_action">Määritä Lähetetyt-kansio</string>
+    <string name="sent_folder_not_found_dialog_cancel_action">Peruuta</string>
+    <string name="sent_folder_not_found_dialog_send_and_delete_action">Lähetä ja poista</string>
+</resources>

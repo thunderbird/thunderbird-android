@@ -15,6 +15,5 @@
     <string name="account_server_validation_error_client_certificate_retrieval_failure">Klientcertifikatet kunde inte nås</string>
     <string name="account_server_validation_error_missing_server_capability_details">Servern saknar denna kapacitet:\n%s</string>
     <string name="account_server_validation_error_client_certificate_expired">Klientcertifikatet är inte längre giltigt</string>
-    <string name="account_server_validation_error_details">Detaljer:
-\n%s</string>
+    <string name="account_server_validation_error_details">Detaljer: \n%s</string>
 </resources>

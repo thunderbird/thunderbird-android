@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "version": "4.701",
+  "versioncode": 19002,
+  "date": "2013-11-06",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Overhauled how we do message view scrolling to fix a KitKat issue. Thanks to Joe Steele!",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Hardened TLS cipher suites and versions",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "K-9 no longer adds blank lines to composed messages if there is no quoted text",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed serveral issues related to message drafts",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Better cleanup of old data when deleting an account",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Worked around a bug in KitKat that stopped settings import from working",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Updated German, Greek, Japanese, Korean, Lithuanian, Portugese, Russian and Slovak translations",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

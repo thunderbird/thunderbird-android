@@ -18,7 +18,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
-import net.thunderbird.core.logging.legacy.Log;
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.Authentication;
 import com.fsck.k9.mail.AuthenticationFailedException;
@@ -32,6 +31,7 @@ import com.fsck.k9.mail.filter.Hex;
 import com.fsck.k9.mail.ssl.CertificateChainExtractor;
 import com.fsck.k9.mail.ssl.TrustedSocketFactory;
 import javax.net.ssl.SSLException;
+import net.thunderbird.legacy.logging.Log;
 
 import static com.fsck.k9.mail.K9MailLib.DEBUG_PROTOCOL_POP3;
 import static com.fsck.k9.mail.NetworkTimeouts.SOCKET_CONNECT_TIMEOUT;

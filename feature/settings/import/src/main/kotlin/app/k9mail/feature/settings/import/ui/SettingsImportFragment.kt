@@ -125,6 +125,7 @@ class SettingsImportFragment : Fragment() {
             }
 
             ButtonState.INVISIBLE -> importButton.isInvisible = true
+
             ButtonState.GONE -> importButton.isGone = true
         }
 

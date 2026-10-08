@@ -52,7 +52,7 @@ class ManageFoldersActivity : BaseActivity() {
         @JvmStatic
         fun launch(activity: Activity, account: LegacyAccountDto) {
             val intent = Intent(activity, ManageFoldersActivity::class.java).apply {
-                putExtra(EXTRA_ACCOUNT, account.uuid)
+                putExtra(EXTRA_ACCOUNT, account.id.toString())
             }
             activity.startActivity(intent)
         }

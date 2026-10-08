@@ -4,7 +4,7 @@ import androidx.annotation.VisibleForTesting
 import com.fsck.k9.mail.Part
 import com.fsck.k9.mail.internet.MimeUtility
 import java.util.Collections
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.legacy.logging.Log
 import okio.ByteString.Companion.decodeBase64
 
 internal object AutocryptGossipHeaderParser {

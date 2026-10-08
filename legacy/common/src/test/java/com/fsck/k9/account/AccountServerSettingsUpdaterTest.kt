@@ -13,9 +13,11 @@ import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ConnectionSecurity
 import com.fsck.k9.mail.ServerSettings
 import kotlinx.coroutines.test.runTest
+import net.thunderbird.account.fake.FakeAccountData.ACCOUNT_ID
 import net.thunderbird.account.fake.FakeAccountData.ACCOUNT_ID_RAW
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.legacy.logging.Log
 import net.thunderbird.core.logging.testing.TestLogger
+import net.thunderbird.feature.account.AccountId
 import org.junit.Before
 import org.junit.Test
 import net.thunderbird.core.android.account.LegacyAccountDto as K9Account
@@ -33,7 +35,7 @@ class AccountServerSettingsUpdaterTest {
         val testSubject = AccountServerSettingsUpdater(accountManager)
 
         val result = testSubject.updateServerSettings(
-            accountUuid = ACCOUNT_ID_RAW,
+            accountId = ACCOUNT_ID,
             isIncoming = true,
             serverSettings = INCOMING_SERVER_SETTINGS,
             authorizationState = AUTHORIZATION_STATE,
@@ -41,7 +43,7 @@ class AccountServerSettingsUpdaterTest {
 
         assertThat(result).isEqualTo(
             AccountUpdaterResult.Failure(
-                error = AccountUpdaterFailure.AccountNotFound(ACCOUNT_ID_RAW),
+                error = AccountUpdaterFailure.AccountNotFound(ACCOUNT_ID),
             ),
         )
     }
@@ -49,22 +51,22 @@ class AccountServerSettingsUpdaterTest {
     @Test
     fun `updateServerSettings() SHOULD return success with updated incoming settings WHEN is incoming`() = runTest {
         val accountManager = FakeLegacyAccountDtoManager(
-            accounts = mutableMapOf(ACCOUNT_ID_RAW to createAccount(ACCOUNT_ID_RAW)),
+            accounts = mutableMapOf(ACCOUNT_ID to createAccount(ACCOUNT_ID)),
         )
         val updatedIncomingServerSettings = INCOMING_SERVER_SETTINGS.copy(port = 123)
         val updatedAuthorizationState = AuthorizationState("new")
         val testSubject = AccountServerSettingsUpdater(accountManager)
 
         val result = testSubject.updateServerSettings(
-            accountUuid = ACCOUNT_ID_RAW,
+            accountId = ACCOUNT_ID,
             isIncoming = true,
             serverSettings = updatedIncomingServerSettings,
             authorizationState = updatedAuthorizationState,
         )
 
-        assertThat(result).isEqualTo(AccountUpdaterResult.Success(ACCOUNT_ID_RAW))
+        assertThat(result).isEqualTo(AccountUpdaterResult.Success(ACCOUNT_ID))
 
-        val k9Account = accountManager.getAccount(ACCOUNT_ID_RAW)
+        val k9Account = accountManager.getById(ACCOUNT_ID)
         assertThat(k9Account).isNotNull().all {
             prop(K9Account::incomingServerSettings).isEqualTo(updatedIncomingServerSettings)
             prop(K9Account::outgoingServerSettings).isEqualTo(OUTGOING_SERVER_SETTINGS)
@@ -75,22 +77,22 @@ class AccountServerSettingsUpdaterTest {
     @Test
     fun `updateServerSettings() SHOULD return success with updated outgoing settings WHEN is not incoming`() = runTest {
         val accountManager = FakeLegacyAccountDtoManager(
-            accounts = mutableMapOf(ACCOUNT_ID_RAW to createAccount(ACCOUNT_ID_RAW)),
+            accounts = mutableMapOf(ACCOUNT_ID to createAccount(ACCOUNT_ID)),
         )
         val updatedOutgoingServerSettings = OUTGOING_SERVER_SETTINGS.copy(port = 123)
         val updatedAuthorizationState = AuthorizationState("new")
         val testSubject = AccountServerSettingsUpdater(accountManager)
 
         val result = testSubject.updateServerSettings(
-            accountUuid = ACCOUNT_ID_RAW,
+            accountId = ACCOUNT_ID,
             isIncoming = false,
             serverSettings = updatedOutgoingServerSettings,
             authorizationState = updatedAuthorizationState,
         )
 
-        assertThat(result).isEqualTo(AccountUpdaterResult.Success(ACCOUNT_ID_RAW))
+        assertThat(result).isEqualTo(AccountUpdaterResult.Success(ACCOUNT_ID))
 
-        val k9Account = accountManager.getAccount(ACCOUNT_ID_RAW)
+        val k9Account = accountManager.getById(ACCOUNT_ID)
         assertThat(k9Account).isNotNull().all {
             prop(K9Account::incomingServerSettings).isEqualTo(INCOMING_SERVER_SETTINGS)
             prop(K9Account::outgoingServerSettings).isEqualTo(updatedOutgoingServerSettings)
@@ -101,13 +103,13 @@ class AccountServerSettingsUpdaterTest {
     @Test
     fun `updateServerSettings() SHOULD return unknown error when exception thrown`() = runTest {
         val accountManager = FakeLegacyAccountDtoManager(
-            accounts = mutableMapOf(ACCOUNT_ID_RAW to createAccount(ACCOUNT_ID_RAW)),
+            accounts = mutableMapOf(ACCOUNT_ID to createAccount(ACCOUNT_ID)),
             isFailureOnSave = true,
         )
         val testSubject = AccountServerSettingsUpdater(accountManager)
 
         val result = testSubject.updateServerSettings(
-            accountUuid = ACCOUNT_ID_RAW,
+            accountId = ACCOUNT_ID,
             isIncoming = true,
             serverSettings = INCOMING_SERVER_SETTINGS,
             authorizationState = AUTHORIZATION_STATE,
@@ -145,9 +147,9 @@ class AccountServerSettingsUpdaterTest {
 
         val AUTHORIZATION_STATE = AuthorizationState("auth state")
 
-        fun createAccount(accountUuid: String): K9Account {
+        fun createAccount(accountId: AccountId): K9Account {
             return K9Account(
-                uuid = accountUuid,
+                id = accountId,
             ).apply {
                 incomingServerSettings = INCOMING_SERVER_SETTINGS
                 outgoingServerSettings = OUTGOING_SERVER_SETTINGS

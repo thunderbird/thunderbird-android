@@ -1,6 +1,7 @@
 package net.thunderbird.feature.navigation.drawer.dropdown.ui.account
 
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.core.snap
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
@@ -27,11 +28,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.LineBreak
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.LayoutDirection
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyLarge
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyMedium
-import app.k9mail.core.ui.compose.theme2.MainTheme
+import net.thunderbird.components.ui.bolt.atom.text.TextBodyLarge
+import net.thunderbird.components.ui.bolt.atom.text.TextBodyLargeAutoResize
+import net.thunderbird.components.ui.bolt.atom.text.TextBodyMedium
+import net.thunderbird.components.ui.bolt.atom.text.TextDisplayMediumAutoResize
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.feature.navigation.drawer.dropdown.R
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayAccount
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.MailDisplayAccount
@@ -44,6 +48,7 @@ internal fun AccountView(
     onClick: () -> Unit,
     onAvatarClick: () -> Unit,
     showAccountSelection: Boolean,
+    isShowAnimations: Boolean,
     modifier: Modifier = Modifier,
 ) {
     AccountLayout(
@@ -56,13 +61,15 @@ internal fun AccountView(
             AccountSelectedView(
                 account = account,
                 onAvatarClick = onAvatarClick,
+                isShowAnimations = isShowAnimations,
             )
         }
 
         AnimatedExpandIcon(
             isExpanded = showAccountSelection,
-            modifier = Modifier.padding(end = MainTheme.spacings.double),
-            tint = MainTheme.colors.onSurfaceVariant,
+            isShowAnimations = isShowAnimations,
+            modifier = Modifier.padding(end = BoltTheme.spacings.double),
+            tint = BoltTheme.colors.onSurfaceVariant,
         )
     }
 }
@@ -71,12 +78,18 @@ internal fun AccountView(
 private fun RowScope.AccountSelectedView(
     account: DisplayAccount,
     onAvatarClick: () -> Unit,
+    isShowAnimations: Boolean,
 ) {
     AnimatedContent(
         targetState = account,
         transitionSpec = {
-            (slideInHorizontally { it } + fadeIn()) togetherWith
-                (slideOutHorizontally { -it } + fadeOut())
+            if (isShowAnimations) {
+                (slideInHorizontally { it } + fadeIn()) togetherWith
+                    (slideOutHorizontally { -it } + fadeOut())
+            } else {
+                (slideInHorizontally(animationSpec = snap()) { 0 } + fadeIn(animationSpec = snap())) togetherWith
+                    (slideOutHorizontally(animationSpec = snap()) { 0 } + fadeOut(animationSpec = snap()))
+            }
         },
         label = "AccountSelectedContent",
         contentKey = { it.id },
@@ -86,7 +99,7 @@ private fun RowScope.AccountSelectedView(
     ) { targetAccount ->
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(MainTheme.spacings.double),
+            horizontalArrangement = Arrangement.spacedBy(BoltTheme.spacings.double),
         ) {
             AccountAvatar(
                 account = targetAccount,
@@ -95,18 +108,20 @@ private fun RowScope.AccountSelectedView(
             )
 
             Column(
-                verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.half),
+                verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.half),
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f),
             ) {
                 val name = getDisplayAccountName(targetAccount)
-                TextBodyLarge(
+                TextBodyLargeAutoResize(
                     text = buildAnnotatedString {
                         withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
                             append(name)
                         }
                     },
+                    softWrap = true,
+                    maxLines = 2,
                 )
                 if (targetAccount is MailDisplayAccount && targetAccount.name != targetAccount.email) {
                     TextBodyMedium(
@@ -142,18 +157,18 @@ private fun AccountLayout(
         modifier = modifier
             .clickable(onClick = onClick)
             .padding(
-                top = MainTheme.spacings.default,
-                start = MainTheme.spacings.triple,
-                end = MainTheme.spacings.double,
-                bottom = MainTheme.spacings.default,
+                top = BoltTheme.spacings.default,
+                start = BoltTheme.spacings.triple,
+                end = BoltTheme.spacings.double,
+                bottom = BoltTheme.spacings.default,
             ),
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(MainTheme.sizes.large),
+                .height(BoltTheme.sizes.large),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(MainTheme.spacings.double),
+            horizontalArrangement = Arrangement.spacedBy(BoltTheme.spacings.double),
         ) {
             content()
         }

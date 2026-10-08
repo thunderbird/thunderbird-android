@@ -4,8 +4,7 @@
     <string name="account_server_certificate_fingerprints_section">Fingraför</string>
     <string name="account_server_certificate_warning_title">Aðvörun</string>
     <string name="account_server_certificate_unknown_error_subtitle">Villa í skilríki</string>
-    <string name="account_server_certificate_unknown_error_description_format">Forritið rakst á mögulega öryggisógn og hélt ekki áfram að tengjast við <xliff:g id="serverName">%s</xliff:g>.
-\nEf þú heldur áfram, gætu óprúttnir aðilar reynt að stela upplýsingum á borð við lykilorðin þín eða tölvupósta.</string>
+    <string name="account_server_certificate_unknown_error_description_format">Forritið rakst á mögulega öryggisógn og hélt ekki áfram að tengjast við <xliff:g id="serverName">%s</xliff:g>. \nEf þú heldur áfram, gætu óprúttnir aðilar reynt að stela upplýsingum á borð við lykilorðin þín eða tölvupósta.</string>
     <string name="account_server_certificate_button_back">Fara til baka (ráðlagt)</string>
     <string name="account_server_certificate_button_advanced">Ítarlegt</string>
     <string name="account_server_certificate_button_continue">Taka áhættu og halda áfram</string>

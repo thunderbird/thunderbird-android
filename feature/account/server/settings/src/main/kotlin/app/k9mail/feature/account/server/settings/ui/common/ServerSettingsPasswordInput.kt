@@ -3,9 +3,9 @@ package app.k9mail.feature.account.server.settings.ui.common
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import app.k9mail.core.ui.compose.designsystem.molecule.input.PasswordInput
-import app.k9mail.core.ui.compose.designsystem.molecule.input.inputContentPadding
 import app.k9mail.feature.account.common.domain.entity.InteractionMode
+import net.thunderbird.components.ui.bolt.molecule.input.PasswordInput
+import net.thunderbird.components.ui.bolt.molecule.input.inputContentPadding
 
 @Composable
 fun ServerSettingsPasswordInput(

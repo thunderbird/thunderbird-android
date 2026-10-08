@@ -1,7 +1,7 @@
 package app.k9mail.feature.account.setup.navigation
 
-import app.k9mail.core.ui.compose.navigation.Route
 import kotlinx.serialization.Serializable
+import net.thunderbird.core.ui.navigation.Route
 
 sealed interface AccountSetupRoute : Route {
 
@@ -16,6 +16,18 @@ sealed interface AccountSetupRoute : Route {
         companion object {
             const val BASE_PATH = ACCOUNT_SETUP_BASE_PATH
         }
+    }
+
+    data object ThundermailSignIn : AccountSetupRoute {
+        override val basePath: String = ACCOUNT_SETUP_BASE_PATH
+
+        override fun route(): String = "$basePath/thundermail-sign-in"
+    }
+
+    data object ThundermailScanQrCode : AccountSetupRoute {
+        override val basePath: String = ACCOUNT_SETUP_BASE_PATH
+
+        override fun route(): String = "$basePath/thundermail-scan-qr-code"
     }
 
     companion object {

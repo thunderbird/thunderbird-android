@@ -11,8 +11,8 @@ import java.io.ByteArrayOutputStream
 import java.io.IOException
 import java.net.Socket
 import net.thunderbird.core.common.exception.MessagingException
-import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.logging.testing.TestLogger
+import net.thunderbird.legacy.logging.Log
 import org.junit.Before
 import org.junit.Test
 import org.mockito.kotlin.doReturn

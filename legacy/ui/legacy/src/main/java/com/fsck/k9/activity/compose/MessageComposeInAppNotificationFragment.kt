@@ -13,6 +13,8 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.collections.immutable.persistentSetOf
 import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.ui.theme.api.FeatureThemeProvider
+import net.thunderbird.feature.account.AccountId
+import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.notification.api.ui.InAppNotificationHost
 import net.thunderbird.feature.notification.api.ui.action.NotificationAction
 import net.thunderbird.feature.notification.api.ui.host.DisplayInAppNotificationFlag
@@ -26,14 +28,16 @@ class MessageComposeInAppNotificationFragment : Fragment() {
     private val themeProvider: FeatureThemeProvider by inject()
     private val logger: Logger by inject()
     private var parentView: View? = null
-    private var accountIds: Set<String> = emptySet()
+    private var accountIds: Set<AccountId> = emptySet()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let { arg ->
-            accountIds = requireNotNull(arg.getStringArray(ARG_ACCOUNT_IDS)?.toSet()) {
+            accountIds = requireNotNull(
+                arg.getStringArray(ARG_ACCOUNT_IDS)
+            ) {
                 "Missing argument $ARG_ACCOUNT_IDS"
-            }
+            }.map(AccountIdFactory::of).toSet()
         }
     }
 
@@ -51,8 +55,8 @@ class MessageComposeInAppNotificationFragment : Fragment() {
                         ),
                         onSnackbarNotificationEvent = ::onSnackbarInAppNotificationEvent,
                         eventFilter = { notification ->
-                            val accountUuid = notification.accountUuid
-                            accountUuid != null && accountUuid in accountIds
+                            val accountId = notification.accountId
+                            accountId != null && accountId in accountIds
                         },
                     )
                 }
@@ -91,7 +95,7 @@ class MessageComposeInAppNotificationFragment : Fragment() {
             is NotificationAction.AssignSentFolder ->
                 AccountSettingsActivity.start(
                     context = requireContext(),
-                    accountUuid = action.accountUuid,
+                    accountUuid = action.accountId.toString(),
                     startScreenKey = AccountSettingsFragment.PREFERENCE_FOLDERS,
                 )
 

@@ -72,7 +72,7 @@ def render_notes(
         render_data["releases"][vers]["versioncode"] = int(versioncode)
         render_data["releases"][vers]["application"] = application
         render_data["releases"][vers]["date"] = release["release_date"]
-        render_data["releases"][vers]["short_notes"] = []
+        render_data["releases"][vers]["short_notes"] = {}
         render_data["releases"][vers]["notes"] = {}
         render_data["releases"][vers]["long_notes"] = []
         for note in yaml_content["notes"]:
@@ -87,12 +87,17 @@ def render_notes(
                     tag = note["tag"].lower().capitalize()
                     if tag not in render_data["releases"][vers]["notes"]:
                         render_data["releases"][vers]["notes"][tag] = []
-                    render_data["releases"][vers]["notes"][tag].append(
-                        note["note"].strip()
-                    )
+                    note_entry = {
+                        "text": note["note"].strip(),
+                        "issues": note.get("issues", []),
+                    }
+                    render_data["releases"][vers]["notes"][tag].append(note_entry)
                     render_data["releases"][vers]["long_notes"].append(note["note"].strip())
                 if "short_note" in note:
-                    render_data["releases"][vers]["short_notes"].append(
+                    tag = note["tag"].lower().capitalize()
+                    if tag not in render_data["releases"][vers]["short_notes"]:
+                        render_data["releases"][vers]["short_notes"][tag] = []
+                    render_data["releases"][vers]["short_notes"][tag].append(
                         note["short_note"].strip()
                     )
 
@@ -119,19 +124,19 @@ def render_notes(
 
     template_base = os.path.join(os.path.dirname(sys.argv[0]), "templates")
 
-    for render_file in render_files:
-        with open(os.path.join(template_base, render_files[render_file]["template"]), "r") as file:
+    for render_file, config in render_files.items():
+        with open(os.path.join(template_base, config["template"]), "r") as file:
             template = file.read()
-        template = Template(template, autoescape=render_files[render_file].get("autoescape", False))
-        rendered = template.render(render_files[render_file]["render_data"])
+        template = Template(template, autoescape=config.get("autoescape", False))
+        rendered = template.render(config["render_data"])
         if render_file == "changelog_master":
             if print_only:
-                print(f"\n==={render_files[render_file]['outfile']}===")
+                print(f"\n==={config['outfile']}===")
                 print("...")
                 print(rendered)
                 print("...")
             else:
-                with open(render_files[render_file]["outfile"], "r") as file:
+                with open(config["outfile"], "r") as file:
                     lines = file.readlines()
                     for index, line in enumerate(lines):
                         if "<changelog>" in line:
@@ -139,13 +144,13 @@ def render_notes(
                                 break
                             lines.insert(index + 1, rendered)
                             break
-                with open(render_files[render_file]["outfile"], "w") as file:
+                with open(config["outfile"], "w") as file:
                     file.writelines(lines)
         elif render_file == "changelog" or render_file == "changelog_long":
             stripped = rendered.lstrip()
-            maxlen = render_files[render_file].get("max_length", float("inf"))
+            maxlen = config.get("max_length", float("inf"))
             if print_only:
-                print(f"\n==={render_files[render_file]['outfile']}===")
+                print(f"\n==={config['outfile']}===")
                 print(stripped)
 
             if len(stripped) > maxlen:
@@ -155,7 +160,7 @@ def render_notes(
                 sys.exit(1)
 
             if not print_only:
-                with open(render_files[render_file]["outfile"], "x") as file:
+                with open(config["outfile"], "x") as file:
                     file.write(stripped)
 
 

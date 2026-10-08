@@ -1,0 +1,123 @@
+package net.thunderbird.core.featureflag.provider
+
+import androidx.annotation.CallSuper
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
+import net.thunderbird.core.featureflag.FeatureFlagKey
+import net.thunderbird.core.featureflag.FeatureFlagProvider
+import net.thunderbird.core.featureflag.FeatureFlagResult
+import net.thunderbird.core.featureflag.data.FeatureFlagCatalogDataSource
+import net.thunderbird.core.featureflag.model.FeatureFlagCatalog
+import net.thunderbird.core.featureflag.model.FlagOverrides
+import net.thunderbird.core.featureflag.provider.CatalogFeatureFlagProvider.State
+import net.thunderbird.core.featureflag.provider.context.FeatureFlagContext
+import net.thunderbird.core.logging.Logger
+
+/**
+ * Extended interface for catalog-based feature flag providers.
+ *
+ * Provides feature flags loaded from a catalog data source while exposing
+ * provider metadata for identification and debugging purposes. Implementations
+ * include bundled catalogs (offline) and remote catalogs (fetched at runtime).
+ */
+interface CatalogFeatureFlagProvider : FeatureFlagProvider {
+    val state: StateFlow<State>
+    val metadata: ProviderMetadata
+
+    override fun toString(): String
+
+    enum class State { Initializing, ResolvingFlags, Resolved }
+}
+
+/**
+ *
+ * Base [FeatureFlagCatalog] for a feature-flag catalog loaded through a [FeatureFlagCatalogDataSource].
+ *
+ * Effective flag values are the catalog [base defaults][FeatureFlagCatalog.flags] overlaid with the
+ * per-build-type overrides for the current build (`app`/`build_type` attributes from the
+ * [FeatureFlagContext]; overrides win), re-resolved whenever the context changes. Keys absent from
+ * the resolved catalog return [FeatureFlagResult.Unavailable], so a `MultiProvider` using first-match
+ * strategy falls through to the next provider.
+ *
+ * @param providerName The identifying name for this provider instance.
+ * @param logger Logger instance for diagnostic and error messages.
+ */
+abstract class BaseCatalogFeatureFlagProvider internal constructor(
+    providerName: String,
+    private val logger: Logger,
+    private val scope: CoroutineScope,
+) : CatalogFeatureFlagProvider {
+    final override val metadata: ProviderMetadata = CatalogProviderMetadata(providerName)
+    protected val logPrefix get() = "[feature-flag][${metadata.name}]"
+
+    final override val state: StateFlow<State>
+        field: MutableStateFlow<State> = MutableStateFlow(State.Initializing)
+
+    protected val catalog: StateFlow<FeatureFlagCatalog?>
+        field = MutableStateFlow(null)
+    internal open val resolvedFlags: StateFlow<FlagOverrides> = catalog
+        .map { catalog -> resolve(context, catalog) }
+        .distinctUntilChanged()
+        .stateIn(scope = scope, started = SharingStarted.Eagerly, initialValue = emptyMap())
+
+    protected var context: FeatureFlagContext? = null
+
+    /**
+     * Initializes the feature flag provider with the given context and loads the catalog.
+     *
+     * @param initialContext The evaluation context containing targeting key and attributes for flag resolution.
+     */
+    @CallSuper
+    open suspend fun initialize(initialContext: FeatureFlagContext) {
+        context = initialContext
+    }
+
+    override fun provide(key: FeatureFlagKey): FeatureFlagResult = when (resolvedFlags.value[key.key]) {
+        null -> FeatureFlagResult.Unavailable
+        true -> FeatureFlagResult.Enabled
+        false -> FeatureFlagResult.Disabled
+    }
+
+    /** The variant-resolved baseline values, for surfaces that enumerate all flags. */
+    protected fun resolvedFlags(): Map<String, Boolean> = resolvedFlags.value
+
+    protected fun clearCatalog() {
+        catalog.update { null }
+    }
+
+    protected fun resolve(context: FeatureFlagContext?, catalog: FeatureFlagCatalog?): Map<String, Boolean> {
+        this.catalog.update { catalog }
+        updateState { State.ResolvingFlags }
+        logger.verbose { "$logPrefix resolving feature flag catalog for '${metadata.name}' provider" }
+        if (catalog == null) {
+            logger.verbose { "$logPrefix no catalog available" }
+            updateState { State.Resolved }
+            return emptyMap()
+        }
+        val base = catalog.flags.associate { it.key to it.default }
+        logger.verbose { "$logPrefix base flags: $base" }
+
+        val app = context?.get(key = "app")?.asString()
+        val buildType = context?.get(key = "build_type")?.asString()
+        logger.verbose { "$logPrefix fetching overrides for '$app/$buildType'" }
+        val overrides = if (app != null && buildType != null) {
+            catalog.overrides[app]?.get(buildType).orEmpty()
+        } else {
+            emptyMap()
+        }
+        val resolvedFlags = base + overrides
+        logger.verbose { "$logPrefix resolved flags: $resolvedFlags" }
+        updateState { State.Resolved }
+        return resolvedFlags
+    }
+
+    protected fun updateState(function: (State) -> State) {
+        state.update(function)
+    }
+}

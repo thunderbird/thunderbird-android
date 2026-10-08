@@ -18,7 +18,7 @@ internal class UnreadWidgetRepository(
         }
     }
 
-    fun getWidgetData(appWidgetId: Int): UnreadWidgetData? {
+    suspend fun getWidgetData(appWidgetId: Int): UnreadWidgetData? {
         val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
 
         val version = prefs.getInt(PREF_VERSION_KEY, 1)
@@ -34,7 +34,7 @@ internal class UnreadWidgetRepository(
         return dataRetriever.loadUnreadWidgetData(configuration)
     }
 
-    private fun upgradePreferences(version: Int, preferences: SharedPreferences) {
+    private suspend fun upgradePreferences(version: Int, preferences: SharedPreferences) {
         if (version > PREFS_VERSION) {
             error("UnreadWidgetRepository: Version downgrades are not supported")
         } else {

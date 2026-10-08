@@ -50,7 +50,7 @@ class MessageHeadersFragment : Fragment() {
         var first = true
         for ((name, value) in headers) {
             if (!first) {
-                sb.append("\n")
+                sb.append("\n\n")
             } else {
                 first = false
             }

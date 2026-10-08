@@ -2,4 +2,5 @@
 <resources>
     <string name="account_edit_save_server_settings_loading_message">Сервер баптаулары сақталуда…</string>
     <string name="account_edit_save_server_settings_success_message">Сервер баптаулары сақталды</string>
+    <string name="account_edit_save_server_settings_error_message">Сервер баптамалары сәтсіз сақталмады</string>
 </resources>

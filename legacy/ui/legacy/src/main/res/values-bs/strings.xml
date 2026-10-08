@@ -91,7 +91,6 @@
     <string name="compose_title_forward_as_attachment">Proslijedi kao prilog</string>
     <string name="compose_title_reply_all">Odgovori svima</string>
     <string name="choose_folder_title">Odaberite direktorijum</string>
-    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> odabrano</string>
     <string name="send_action">Pošalji</string>
     <string name="spam_action">Neželjena pošta</string>
     <string name="reply_all_action">Odgovori svima</string>
@@ -157,9 +156,7 @@
     <string name="notification_authentication_error_text">Autentifikacija nije uspjela za <xliff:g id="account">%s</xliff:g>. Ažurirajte postavke vašeg servera.</string>
     <string name="notification_authentication_error_title">Autentifikacija nije uspjela</string>
     <string name="notification_notify_error_title">Greška pri kreiranju obavještenja</string>
-    <string name="notification_notify_error_text">Dogodila se greška tokom kreiranja sistemskog obavještenja za novu poruku. Razlog je vjerovatno nemanje zvuka obavještenja.
-\n
-\nDodirnite da otvorite podešavanja obavještenja.</string>
+    <string name="notification_notify_error_text">Dogodila se greška tokom kreiranja sistemskog obavještenja za novu poruku. Razlog je vjerovatno nemanje zvuka obavještenja. \n \nDodirnite da otvorite podešavanja obavještenja.</string>
     <string name="notification_bg_sync_title">Provjeravanje pošte</string>
     <string name="notification_bg_sync_ticker">Provjeravanje pošte: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
     <string name="notification_channel_push_title">Sinhronizacija (Push)</string>
@@ -169,7 +166,7 @@
     <string name="message_compose_quote_header_separator">-------- Originalna Poruka --------</string>
     <string name="message_compose_quote_header_send_date">Poslano:</string>
     <string name="message_compose_quote_header_to">Za:</string>
-    <string name="message_view_me_text">mene</string>
+    <string name="message_view_to_me_text">mene</string>
     <string name="message_compose_quote_header_from">Od:</string>
     <string name="message_to_label">Za:</string>
     <string name="message_view_cc_label">Cc:</string>

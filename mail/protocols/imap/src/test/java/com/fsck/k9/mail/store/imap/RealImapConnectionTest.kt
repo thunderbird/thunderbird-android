@@ -25,8 +25,8 @@ import com.fsck.k9.mail.testing.XOAuth2ChallengeParserTestData
 import com.fsck.k9.mail.testing.security.TestTrustedSocketFactory
 import java.io.IOException
 import java.net.UnknownHostException
-import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.logging.testing.TestLogger
+import net.thunderbird.legacy.logging.Log
 import okio.ByteString.Companion.encodeUtf8
 import org.junit.Before
 import org.junit.Test

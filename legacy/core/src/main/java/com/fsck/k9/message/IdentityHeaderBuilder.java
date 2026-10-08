@@ -11,7 +11,7 @@ import com.fsck.k9.mail.internet.TextBody;
 import com.fsck.k9.message.quote.InsertableHtmlContent;
 import net.thunderbird.core.android.account.Identity;
 import net.thunderbird.core.android.account.QuoteStyle;
-import net.thunderbird.core.logging.legacy.Log;
+import net.thunderbird.legacy.logging.Log;
 
 
 public class IdentityHeaderBuilder {
@@ -85,6 +85,7 @@ public class IdentityHeaderBuilder {
         // If we're not using the standard identity of signature, append it on to the identity blob.
         if (identity.getSignatureUse() && signatureChanged) {
             appendValue(IdentityField.SIGNATURE, signature);
+            appendValue(IdentityField.SIGNATURE_IS_HTML, Boolean.toString(identity.getSignatureIsHtml()));
         }
 
         if (identityChanged) {

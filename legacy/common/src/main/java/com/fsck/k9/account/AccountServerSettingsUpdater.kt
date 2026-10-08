@@ -15,7 +15,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import net.thunderbird.core.android.account.LegacyAccountDtoManager
 import net.thunderbird.core.common.mail.Protocols
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.feature.account.AccountId
+import net.thunderbird.legacy.logging.Log
 
 class AccountServerSettingsUpdater(
     private val accountManager: LegacyAccountDtoManager,
@@ -24,30 +25,30 @@ class AccountServerSettingsUpdater(
 
     @Suppress("TooGenericExceptionCaught")
     override suspend fun updateServerSettings(
-        accountUuid: String,
+        accountId: AccountId,
         isIncoming: Boolean,
         serverSettings: ServerSettings,
         authorizationState: AuthorizationState?,
     ): AccountUpdaterResult {
         return try {
             withContext(coroutineDispatcher) {
-                updateSettings(accountUuid, isIncoming, serverSettings, authorizationState)
+                updateSettings(accountId, isIncoming, serverSettings, authorizationState)
             }
         } catch (error: Exception) {
-            Log.e(error, "Error while updating account server settings with UUID %s", accountUuid)
+            Log.e(error, "Error while updating account server settings with UUID %s", accountId)
 
             AccountUpdaterResult.Failure(AccountUpdaterFailure.UnknownError(error))
         }
     }
 
     private fun updateSettings(
-        accountUuid: String,
+        accountId: AccountId,
         isIncoming: Boolean,
         serverSettings: ServerSettings,
         authorizationState: AuthorizationState?,
     ): AccountUpdaterResult {
-        val account = accountManager.getAccount(accountUuid = accountUuid) ?: return AccountUpdaterResult.Failure(
-            AccountUpdaterFailure.AccountNotFound(accountUuid),
+        val account = accountManager.getById(accountId) ?: return AccountUpdaterResult.Failure(
+            AccountUpdaterFailure.AccountNotFound(accountId),
         )
 
         if (isIncoming) {
@@ -71,6 +72,6 @@ class AccountServerSettingsUpdater(
 
         accountManager.saveAccount(account)
 
-        return AccountUpdaterResult.Success(accountUuid)
+        return AccountUpdaterResult.Success(accountId)
     }
 }

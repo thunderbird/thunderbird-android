@@ -47,10 +47,12 @@ public class MimeBodyPart extends BodyPart {
         this(body, null);
     }
 
+    @SuppressWarnings("this-escape")
     public MimeBodyPart(Body body, String contentType) throws MessagingException {
         this(body, contentType, false);
     }
 
+    @SuppressWarnings("this-escape")
     private MimeBodyPart(Body body, String contentType, boolean checkHeaders) throws MessagingException {
         mHeader = new MimeHeader();
         mHeader.setCheckHeaders(checkHeaders);

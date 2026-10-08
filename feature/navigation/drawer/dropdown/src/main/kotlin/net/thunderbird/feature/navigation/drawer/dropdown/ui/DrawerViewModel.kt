@@ -1,7 +1,6 @@
 package net.thunderbird.feature.navigation.drawer.dropdown.ui
 
 import androidx.lifecycle.viewModelScope
-import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -11,13 +10,15 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import net.thunderbird.core.ui.contract.mvi.BaseViewModel
+import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.DomainContract.UseCase
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayAccount
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayFolder
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayTreeFolder
+import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.MailDisplayAccount
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.MailDisplayFolder
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.UnifiedDisplayFolder
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.DrawerContract.Effect
@@ -35,7 +36,6 @@ private const val ACCOUNT_CLOSE_DELAY = 150L
 @Suppress("MagicNumber", "TooManyFunctions")
 internal class DrawerViewModel(
     private val getDrawerConfig: UseCase.GetDrawerConfig,
-    private val saveDrawerConfig: UseCase.SaveDrawerConfig,
     private val getDisplayAccounts: UseCase.GetDisplayAccounts,
     private val getDisplayFoldersForAccount: UseCase.GetDisplayFoldersForAccount,
     private val getDisplayTreeFolder: UseCase.GetDisplayTreeFolder,
@@ -154,10 +154,13 @@ internal class DrawerViewModel(
     override fun event(event: Event) {
         when (event) {
             is Event.SelectAccount -> selectAccount(event.accountId)
+
             is Event.SelectFolder -> selectFolder(event.folderId)
 
             is Event.OnAccountClick -> openAccount(event.account)
+
             is Event.OnFolderClick -> openFolder(event.folder)
+
             is Event.OnAccountViewClick -> {
                 openAccount(
                     state.value.accounts.nextOrFirst(event.account),
@@ -166,20 +169,24 @@ internal class DrawerViewModel(
 
             Event.OnAccountSelectorClick -> {
                 viewModelScope.launch {
-                    saveDrawerConfig(
-                        state.value.config.copy(showAccountSelector = state.value.config.showAccountSelector.not()),
-                    ).launchIn(viewModelScope)
                     delay(ACCOUNT_CLOSE_DELAY)
                     updateState {
-                        it.copy(showAccountSelection = it.showAccountSelection.not())
+                        it.copy(
+                            showAccountSelection = it.showAccountSelection.not(),
+                            showAccountSelector = it.showAccountSelector.not(),
+                        )
                     }
                 }
             }
 
             Event.OnManageFoldersClick -> emitEffect(Effect.OpenManageFolders)
+
             Event.OnSettingsClick -> emitEffect(Effect.OpenSettings)
+
             Event.OnSyncAccount -> onSyncAccount()
+
             Event.OnSyncAllAccounts -> onSyncAllAccounts()
+
             Event.OnAddAccountClick -> emitEffect(Effect.OpenAddAccount)
         }
     }
@@ -221,6 +228,17 @@ internal class DrawerViewModel(
     private fun openAccount(account: DisplayAccount?) {
         if (account != null) {
             emitEffect(Effect.OpenAccount(account.id))
+            viewModelScope.launch {
+                delay(DRAWER_CLOSE_DELAY)
+                updateState {
+                    it.copy(
+                        showAccountSelection = false,
+                    )
+                }
+                if (account is MailDisplayAccount && account.hasAutoExpandFolder) {
+                    emitEffect(Effect.CloseDrawer)
+                }
+            }
         }
     }
 
@@ -266,7 +284,7 @@ internal class DrawerViewModel(
                 it.copy(isLoading = true)
             }
 
-            state.value.selectedAccountId?.let { syncAccount(it).collect() }
+            state.value.selectedAccountId?.let { syncAccount(AccountIdFactory.of(it)).collect() }
 
             updateState {
                 it.copy(isLoading = false)

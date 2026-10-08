@@ -1,5 +1,6 @@
 package com.fsck.k9.storage.messages
 
+import android.database.sqlite.SQLiteDatabase
 import assertk.assertThat
 import assertk.assertions.containsExactly
 import assertk.assertions.extracting
@@ -9,22 +10,30 @@ import assertk.assertions.isNotNull
 import com.fsck.k9.mailstore.StorageFilesProvider
 import com.fsck.k9.storage.RobolectricTest
 import org.junit.After
+import org.junit.Before
 import org.junit.Test
 import org.mockito.kotlin.mock
 
 class DeleteFolderOperationsTest : RobolectricTest() {
     private val messagePartDirectory = createRandomTempDirectory()
-    private val sqliteDatabase = createDatabase()
-    private val storageFilesProvider = object : StorageFilesProvider {
-        override fun getDatabaseFile() = error("Not implemented")
-        override fun getAttachmentDirectory() = messagePartDirectory
+    private lateinit var sqliteDatabase: SQLiteDatabase
+    private lateinit var deleteFolderOperations: DeleteFolderOperations
+
+    @Before
+    fun setUp() {
+        sqliteDatabase = createDatabase()
+        val storageFilesProvider = object : StorageFilesProvider {
+            override fun getDatabaseFile() = error("Not implemented")
+            override fun getAttachmentDirectory() = messagePartDirectory
+        }
+        val lockableDatabase = createLockableDatabaseMock(sqliteDatabase)
+        val attachmentFileManager = AttachmentFileManager(storageFilesProvider, mock())
+        deleteFolderOperations = DeleteFolderOperations(lockableDatabase, attachmentFileManager)
     }
-    private val lockableDatabase = createLockableDatabaseMock(sqliteDatabase)
-    private val attachmentFileManager = AttachmentFileManager(storageFilesProvider, mock())
-    private val deleteFolderOperations = DeleteFolderOperations(lockableDatabase, attachmentFileManager)
 
     @After
     fun tearDown() {
+        sqliteDatabase.close()
         messagePartDirectory.deleteRecursively()
     }
 

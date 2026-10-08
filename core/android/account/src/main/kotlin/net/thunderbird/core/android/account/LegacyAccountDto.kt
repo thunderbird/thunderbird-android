@@ -28,12 +28,12 @@ const val DEFAULT_VISIBLE_LIMIT = 25
 )
 @Suppress("TooManyFunctions")
 open class LegacyAccountDto(
-    override val uuid: String,
+    // [Account]
+    override val id: AccountId,
+
+    // Uncategorized
     val isSensitiveDebugLoggingEnabled: () -> Boolean = { false },
 ) : Account, BaseAccount {
-
-    // [Account]
-    override val id: AccountId = AccountIdFactory.of(uuid)
 
     // [BaseAccount]
     @get:Synchronized
@@ -433,6 +433,15 @@ open class LegacyAccountDto(
             identities[0] = newIdentity
         }
 
+    @get:Synchronized
+    @set:Synchronized
+    var signatureIsHtml: Boolean
+        get() = identities[0].signatureIsHtml
+        set(signatureIsHtml) {
+            val newIdentity = identities[0].withSignatureIsHtml(signatureIsHtml)
+            identities[0] = newIdentity
+        }
+
     @get:JvmName("shouldMigrateToOAuth")
     @get:Synchronized
     @set:Synchronized
@@ -548,7 +557,12 @@ open class LegacyAccountDto(
 
     @Synchronized
     fun findIdentity(address: Address): Identity? {
+        // Prefer to match by email and name.
+        // Fall back to email only if no identity's name matches (e.g. a renamed identity).
         return identities.find { identity ->
+            identity.email.equals(address.address, ignoreCase = true) &&
+                identity.name.equals(address.personal, ignoreCase = true)
+        } ?: identities.find { identity ->
             identity.email.equals(address.address, ignoreCase = true)
         }
     }
@@ -614,19 +628,19 @@ open class LegacyAccountDto(
     }
 
     override fun toString(): String {
-        return if (isSensitiveDebugLoggingEnabled()) displayName else uuid
+        return if (isSensitiveDebugLoggingEnabled()) displayName else id.toString()
     }
 
     override fun equals(other: Any?): Boolean {
         return if (other is LegacyAccountDto) {
-            other.uuid == uuid
+            other.id == id
         } else {
             super.equals(other)
         }
     }
 
     override fun hashCode(): Int {
-        return uuid.hashCode()
+        return id.hashCode()
     }
 
     companion object Companion {

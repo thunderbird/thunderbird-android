@@ -1,10 +1,19 @@
 package app.k9mail.legacy.mailstore
 
 import java.util.concurrent.CopyOnWriteArraySet
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
 import net.thunderbird.feature.mail.folder.api.FolderDetails
 
 @Suppress("TooManyFunctions")
-class ListenableMessageStore(private val messageStore: MessageStore) : MessageStore by messageStore {
+class ListenableMessageStore(
+    private val messageStore: MessageStore,
+    mainImmediateDispatcher: CoroutineDispatcher = Dispatchers.Main.immediate,
+) : MessageStore by messageStore {
+    private val scope = CoroutineScope(SupervisorJob() + mainImmediateDispatcher)
     private val folderSettingsListener = CopyOnWriteArraySet<FolderSettingsChangedListener>()
 
     override fun createFolders(folders: List<CreateFolderInfo>): Set<Long> {
@@ -62,12 +71,14 @@ class ListenableMessageStore(private val messageStore: MessageStore) : MessageSt
     }
 
     private fun notifyFolderSettingsChanged() {
-        for (listener in folderSettingsListener) {
-            listener.onFolderSettingsChanged()
+        scope.launch {
+            for (listener in folderSettingsListener) {
+                listener.onFolderSettingsChanged()
+            }
         }
     }
 }
 
 fun interface FolderSettingsChangedListener {
-    fun onFolderSettingsChanged()
+    suspend fun onFolderSettingsChanged()
 }

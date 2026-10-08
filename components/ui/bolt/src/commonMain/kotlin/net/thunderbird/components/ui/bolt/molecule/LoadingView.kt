@@ -1,0 +1,71 @@
+package net.thunderbird.components.ui.bolt.molecule
+
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
+import net.thunderbird.components.ui.bolt.PreviewWithThemes
+import net.thunderbird.components.ui.bolt.atom.CircularProgressIndicator
+import net.thunderbird.components.ui.bolt.atom.text.TextTitleMedium
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
+
+@Composable
+fun LoadingView(
+    modifier: Modifier = Modifier,
+    message: String? = null,
+    contentAlignment: Alignment = Alignment.Center,
+) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .then(modifier),
+        contentAlignment = contentAlignment,
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(BoltTheme.spacings.triple),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+        ) {
+            if (message != null) {
+                TextTitleMedium(
+                    text = message,
+                    textAlign = TextAlign.Center,
+                )
+            }
+            Row(
+                modifier = Modifier.height(BoltTheme.sizes.larger),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                CircularProgressIndicator()
+            }
+        }
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+internal fun LoadingViewPreview() {
+    PreviewWithThemes {
+        LoadingView()
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+internal fun LoadingViewWithMessagePreview() {
+    PreviewWithThemes {
+        LoadingView(
+            message = "Loading ...",
+        )
+    }
+}

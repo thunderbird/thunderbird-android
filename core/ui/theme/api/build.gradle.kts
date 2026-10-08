@@ -3,7 +3,11 @@ plugins {
 }
 
 kotlin {
-    androidLibrary {
+    android {
         namespace = "net.thunderbird.core.ui.theme.api"
     }
+}
+
+codeCoverage {
+    lineCoverage = 0
 }

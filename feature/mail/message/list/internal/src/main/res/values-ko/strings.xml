@@ -1,3 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="setup_archive_folder_dialog_error_retrieve_folders_detailed_message">오류 세부 정보: %1$s</string>
+    <string name="setup_archive_folder_dialog_dont_show_again">다시 보지 않기</string>
+    <string name="setup_archive_folder_dialog_skip_for_now">지금은 건너뛰기</string>
+    <string name="setup_archive_folder_dialog_create_new_folder">새 폴더 생성</string>
+    <string name="setup_archive_folder_dialog_done">완료</string>
+    <string name="setup_archive_folder_dialog_cancel">취소</string>
+    <string name="setup_archive_folder_dialog_create_and_set_new_folder"><![CDATA[새 폴더 생성 및 설정]]></string>
+    <string name="setup_archive_folder_create_archive_folder_syncing">동기화 중…</string>
+    <string name="setup_archive_folder_create_archive_folder_account_not_found">계정(%1$s)을 찾을 수 없음</string>
+    <string name="setup_archive_folder_create_archive_folder_error_folder_name_blank">폴더 이름은 비워둘 수 없음</string>
+    <string name="setup_archive_folder_create_archive_folder_invalid_folder_name">잘못된 폴더 이름 \'%1$s\'</string>
+    <string name="setup_archive_folder_dialog_error_retrieve_folders">이런, 계정 폴더를 가져오는 데 오류가 발생했습니다!</string>
+    <string name="message_list_state_new_message_description">신규</string>
+    <string name="message_list_state_read_message_description">읽음</string>
+    <string name="message_list_state_unread_message_description">읽지 않음</string>
+    <string name="message_list_state_active_new_message_description">활성, 신규</string>
+    <string name="message_list_state_active_read_message_description">활성, 읽음</string>
+    <string name="message_list_state_active_unread_message_description">활성, 읽지 않음</string>
+    <string name="message_list_state_selected_new_message_description">선택함, 신규</string>
+    <string name="message_list_state_selected_read_message_description">선택함, 읽음</string>
+    <string name="message_list_state_selected_unread_message_description">선택함, 읽지 않음</string>
+    <string name="setup_archive_folder_dialog_email_can_not_be_archived">이메일을 보관할 수 없음</string>
+    <string name="setup_archive_folder_dialog_configure_archive_folder">지금 보관함 설정하기</string>
+    <string name="setup_archive_folder_dialog_set_archive_folder">보관함 설정</string>
+    <string name="setup_archive_folder_create_archive_folder_local_folder_created">로컬 폴더를 생성했습니다. 동기화를 시작하는 중…</string>
+    <string name="setup_archive_folder_create_archive_folder_remote_folder_created">원격 폴더를 생성했습니다.</string>
+    <string name="setup_archive_folder_create_archive_folder_failed_create_local_folder">로컬 폴더 \'%1$s\' 생성에 실패했습니다.</string>
+    <string name="setup_archive_folder_create_archive_folder_failed_sync_folder">\'%1$s\' 폴더를 원격 폴더와 동기화하지 못했습니다. 메시지: %2$s</string>
+    <string name="setup_archive_folder_create_archive_folder_creating_folder_email_provider">이메일 제공업체에 폴더를 생성하는 중…</string>
+    <string name="setup_archive_folder_create_archive_folder_updating_special_folder_rules">특수 폴더 규칙을 업데이트하는 중…</string>
+    <string name="setup_archive_folder_set_archive_error_account_not_found">\'%1$s\' UUID에 연결된 계정을 찾을 수 없습니다</string>
+    <string name="setup_archive_folder_unhandled_error">처리되지 않은 오류: %1$s</string>
 </resources>

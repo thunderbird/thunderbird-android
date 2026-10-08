@@ -1,0 +1,9 @@
+appId: ${MAESTRO_APP_ID}
+---
+# Migration screen - Verify and choose new account
+- waitForAnimationToEnd:
+    timeout: 800
+- assertVisible:
+    id: "onboarding_migration_new_account_button"
+- tapOn:
+    id: "onboarding_migration_new_account_button"

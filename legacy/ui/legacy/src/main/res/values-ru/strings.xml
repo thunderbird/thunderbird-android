@@ -35,7 +35,6 @@
     <string name="choose_folder_title">Выбор папки</string>
     <string name="choose_folder_move_title">Переместить в…</string>
     <string name="choose_folder_copy_title">Копировать в…</string>
-    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> выбрано</string>
     <string name="send_action">Отправить</string>
     <string name="empty_subject">Тема не заполнена, нажмите ещё раз для отправки без темы</string>
     <string name="reply_action">Ответить</string>
@@ -94,7 +93,7 @@
     <!--Shown in place of the subject when a message has no subject. Showing this in parentheses is customary.-->
     <string name="general_no_subject">(Без темы)</string>
     <string name="general_no_sender">Нет отправителя</string>
-    <string name="status_loading_more">Загрузка сообщений\u2026</string>
+    <string name="status_loading_more">Загрузка сообщений…</string>
     <string name="status_network_error">Сбой подключения</string>
     <string name="status_invalid_id_error">Сообщение не найдено</string>
     <string name="status_loading_error">Сбой загрузки сообщения</string>
@@ -119,16 +118,14 @@
     <string name="notification_action_archive_all">Архивировать все</string>
     <string name="notification_action_spam">Спам</string>
     <string name="notification_certificate_error_public">Ошибка сертификата</string>
-    <string name="notification_certificate_error_title">Сбой сертификата <xliff:g id="account">%s</xliff:g></string>
+    <string name="notification_certificate_error_title">Ошибка сертификата <xliff:g id="account">%s</xliff:g></string>
     <string name="notification_certificate_error_text">Проверьте настройки сервера</string>
     <string name="notification_authentication_error_title">Сбой аутентификации</string>
     <string name="notification_authentication_error_text">Сбой аутентификации для <xliff:g id="account">%s</xliff:g>. Обновите настройки сервера.</string>
     <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
     <string name="notification_notify_error_title">Ошибка уведомления</string>
     <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
-    <string name="notification_notify_error_text">При попытке создать системное уведомление для нового сообщения произошла ошибка. Причина, скорее всего, заключается в отсутствующем звуке уведомления.
-\n
-\nНажмите, чтобы открыть настройки уведомлений.</string>
+    <string name="notification_notify_error_text">При попытке создать системное уведомление для нового сообщения произошла ошибка. Причина, скорее всего, заключается в отсутствующем звуке уведомления. \n \nНажмите, чтобы открыть настройки уведомлений.</string>
     <string name="notification_bg_sync_ticker">Проверка почты: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
     <string name="notification_bg_sync_title">Проверка почты</string>
     <string name="notification_bg_send_ticker">Отправка <xliff:g id="account">%s</xliff:g></string>
@@ -145,7 +142,7 @@
     <string name="debug_enable_debug_logging_title">Журнал отладки</string>
     <string name="debug_enable_debug_logging_summary">Запись диагностических сообщений</string>
     <string name="debug_enable_sensitive_logging_title">Личные данные</string>
-    <string name="debug_enable_sensitive_logging_summary">Позволить отображение паролей в журнале.</string>
+    <string name="debug_enable_sensitive_logging_summary">Возможно появление паролей в журнале</string>
     <string name="debug_export_logs_title">Экспорт журнала</string>
     <string name="debug_export_logs_success">Экспорт выполнен. Журнал может содержать личные данные. Будьте осторожнее с тем, кому вы их посылаете.</string>
     <string name="debug_export_logs_failure">Сбой экспорта.</string>
@@ -180,7 +177,7 @@
     <!--Displayed in the message view screen in front of the number of additional recipients (the ones that are not displayed).-->
     <string name="message_view_additional_recipient_prefix">+</string>
     <!--Displayed in the message view screen if the message was addressed to the user. Make sure this works with 'message_view_recipient_prefix'. In English it's "to me".-->
-    <string name="message_view_me_text">мне</string>
+    <string name="message_view_to_me_text">мне</string>
     <!--Text of the button that is displayed below the message header when the message body references one or more remote images-->
     <string name="message_view_show_remote_images_action">Загрузить изображения</string>
     <string name="message_view_no_viewer">Отсутствует просмотрщик <xliff:g id="mimetype">%s</xliff:g>.</string>
@@ -305,7 +302,7 @@
     <string name="account_setup_options_mail_display_count_10000">10000 сообщений</string>
     <string name="account_setup_options_mail_display_count_all">Все сообщения</string>
     <string name="move_copy_cannot_copy_unsynced_message">Нельзя скопировать или переместить сообщение, не синхронизированное с сервером</string>
-    <string name="account_settings_push_advanced_title">Дополнительно</string>
+    <string name="account_settings_push_advanced_title">Дополнительные</string>
     <string name="account_settings_title_fmt">Настройки учётной записи</string>
     <string name="account_settings_notify_label">Уведомить о почте</string>
     <string name="account_settings_notify_sync_label">Уведомить о проверке</string>
@@ -321,11 +318,11 @@
     <string name="account_settings_mark_message_as_read_on_view_label">Открытое прочитано</string>
     <string name="account_settings_mark_message_as_read_on_view_summary">Отметить сообщение прочитанным после просмотра</string>
     <string name="account_settings_mark_message_as_read_on_delete_label">Отметить как прочитанное при удалении</string>
-    <string name="account_settings_mark_message_as_read_on_delete_summary">Отметить как прочитанное при удалении</string>
+    <string name="account_settings_mark_message_as_read_on_delete_summary">Отмечать сообщение прочитанным при удалении</string>
     <string name="account_settings_notification_channels_label">Категории уведомлений</string>
     <string name="account_settings_open_notification_settings_messages_summary">Настройка уведомлений о новых сообщениях</string>
     <string name="account_settings_open_notification_settings_miscellaneous_summary">Настройка уведомлений об ошибках и статусе</string>
-    <string name="account_settings_show_pictures_label">Показать изображения</string>
+    <string name="account_settings_show_pictures_label">Показывать изображения</string>
     <string name="account_settings_show_pictures_never">Никогда</string>
     <string name="account_settings_show_pictures_only_from_contacts">От контактов</string>
     <string name="account_settings_show_pictures_always">Всегда</string>
@@ -364,44 +361,44 @@
     <string name="account_settings_crypto_encrypt_all_drafts_on">Все черновики будут храниться в зашифрованном виде</string>
     <string name="account_settings_crypto_encrypt_all_drafts_off">Зашифровать черновики, если включено шифрование</string>
     <string name="account_settings_mail_check_frequency_label">Промежуток проверки</string>
-    <string name="account_settings_mail_display_count_label">Отображать сообщений</string>
+    <string name="account_settings_mail_display_count_label">Размер локальной папки</string>
     <string name="account_settings_autodownload_message_size_label">Загружать фрагмент</string>
-    <string name="account_settings_autodownload_message_size_1">1 КиБ</string>
-    <string name="account_settings_autodownload_message_size_2">2 КиБ</string>
-    <string name="account_settings_autodownload_message_size_4">4 КиБ</string>
-    <string name="account_settings_autodownload_message_size_8">8 КиБ</string>
-    <string name="account_settings_autodownload_message_size_16">16 КиБ</string>
-    <string name="account_settings_autodownload_message_size_32">32 КиБ</string>
-    <string name="account_settings_autodownload_message_size_64">64 КиБ</string>
-    <string name="account_settings_autodownload_message_size_128">128 КиБ</string>
-    <string name="account_settings_autodownload_message_size_256">256 КиБ</string>
-    <string name="account_settings_autodownload_message_size_512">512 КиБ</string>
-    <string name="account_settings_autodownload_message_size_1024">1 МиБ</string>
-    <string name="account_settings_autodownload_message_size_2048">2 МиБ</string>
-    <string name="account_settings_autodownload_message_size_5120">5 МиБ</string>
-    <string name="account_settings_autodownload_message_size_10240">10 МиБ</string>
-    <string name="account_settings_autodownload_message_size_any">Полностью</string>
-    <string name="account_settings_message_age_label">Глубина синхронизации</string>
-    <string name="account_settings_message_age_any">Всё время</string>
-    <string name="account_settings_message_age_0">Сегодня</string>
-    <string name="account_settings_message_age_1">2 дня</string>
-    <string name="account_settings_message_age_2">3 дня</string>
-    <string name="account_settings_message_age_7">1 неделя</string>
-    <string name="account_settings_message_age_14">2 недели</string>
-    <string name="account_settings_message_age_21">3 недели</string>
-    <string name="account_settings_message_age_1_month">1 месяц</string>
-    <string name="account_settings_message_age_2_months">2 месяца</string>
-    <string name="account_settings_message_age_3_months">3 месяца</string>
-    <string name="account_settings_message_age_6_months">6 месяцев</string>
-    <string name="account_settings_message_age_1_year">1 год</string>
+    <string name="account_settings_autodownload_message_size_1">1 КБ</string>
+    <string name="account_settings_autodownload_message_size_2">2 КБ</string>
+    <string name="account_settings_autodownload_message_size_4">4 КБ</string>
+    <string name="account_settings_autodownload_message_size_8">8 КБ</string>
+    <string name="account_settings_autodownload_message_size_16">16 КБ</string>
+    <string name="account_settings_autodownload_message_size_32">32 КБ</string>
+    <string name="account_settings_autodownload_message_size_64">64 КБ</string>
+    <string name="account_settings_autodownload_message_size_128">128 КБ</string>
+    <string name="account_settings_autodownload_message_size_256">256 КБ</string>
+    <string name="account_settings_autodownload_message_size_512">512 КБ</string>
+    <string name="account_settings_autodownload_message_size_1024">1 МБ</string>
+    <string name="account_settings_autodownload_message_size_2048">2 МБ</string>
+    <string name="account_settings_autodownload_message_size_5120">5 МБ</string>
+    <string name="account_settings_autodownload_message_size_10240">10 МБ</string>
+    <string name="account_settings_autodownload_message_size_any">любой размер (без ограничений)</string>
+    <string name="account_settings_message_age_label">Синхронизировать сообщения за</string>
+    <string name="account_settings_message_age_any">любое время (без ограничений)</string>
+    <string name="account_settings_message_age_0">сегодня</string>
+    <string name="account_settings_message_age_1">последние 2 дня</string>
+    <string name="account_settings_message_age_2">последние 3 дня</string>
+    <string name="account_settings_message_age_7">последняя неделя</string>
+    <string name="account_settings_message_age_14">последние 2 недели</string>
+    <string name="account_settings_message_age_21">последние 3 недели</string>
+    <string name="account_settings_message_age_1_month">последний месяц</string>
+    <string name="account_settings_message_age_2_months">последние 2 месяца</string>
+    <string name="account_settings_message_age_3_months">последние 3 месяца</string>
+    <string name="account_settings_message_age_6_months">последние 6 месяцев</string>
+    <string name="account_settings_message_age_1_year">последний год</string>
     <string name="account_settings_sync_remote_deletetions_label">Синхронное удаление</string>
     <string name="account_settings_sync_remote_deletetions_summary">Удалять сообщения при удалении на сервере</string>
     <string name="account_settings_openpgp_missing">Отсутствует OpenPGP-приложение – было удалено?</string>
     <string name="folder_settings_title">Настройки папки</string>
     <string name="folder_settings_in_top_group_label">Начало списка</string>
     <string name="folder_settings_clear_local_folder_action">Стереть локальные</string>
-    <string name="account_settings_incoming_label">Сервер входящих</string>
-    <string name="account_settings_incoming_summary">Настройки сервера входящей почты</string>
+    <string name="account_settings_incoming_label">Входящий сервер</string>
+    <string name="account_settings_incoming_summary">Настройка сервера входящей почты</string>
     <string name="account_settings_outgoing_label">Сервер исходящих</string>
     <string name="account_settings_outgoing_summary">Настройки сервера исходящей почты</string>
     <string name="account_settings_name_label">Ваше имя</string>
@@ -474,7 +471,7 @@
     <string name="sort_unread_last">Прочитано – не прочитано</string>
     <string name="sort_attach_first">С вложениями – без вложений</string>
     <string name="sort_unattached_first">Без вложений – с вложениями</string>
-    <string name="sort_by">Сортировать по…</string>
+    <string name="sort_by">Сортировка…</string>
     <string name="sort_by_date">Дата</string>
     <string name="sort_by_arrival">Получено</string>
     <string name="sort_by_subject">Тема</string>
@@ -524,7 +521,6 @@
     <string name="account_setup_push_limit_500">500 папок</string>
     <string name="account_setup_push_limit_1000">1000 папок</string>
     <string name="animations_title">Анимация</string>
-    <string name="animations_summary">Анимация интерфейса</string>
     <string name="show_unified_inbox_title">Показывать общий ящик для входящих</string>
     <string name="show_starred_count_title">Счётчик важных</string>
     <string name="integrated_inbox_title">Общие входящие</string>
@@ -630,7 +626,7 @@
     <string name="account_settings_remote_search_num_results_entries_250">250</string>
     <string name="account_settings_remote_search_num_results_entries_500">500</string>
     <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
-    <string name="account_settings_remote_search_num_label">Ограничение поиска на сервере</string>
+    <string name="account_settings_remote_search_num_label">Ограничение поиска сервера</string>
     <string name="remote_search_sending_query">Отправка запроса на сервер</string>
     <plurals name="remote_search_downloading">
         <item quantity="one">Получение %d результата</item>
@@ -673,7 +669,7 @@
     <string name="fetching_attachment_dialog_message">Получение вложений…</string>
     <!--Note: This references message_view_download_remainder-->
     <string name="preview_encrypted">*Зашифровано*</string>
-    <string name="add_from_contacts">Добавить из Контактов</string>
+    <string name="add_from_contacts">Добавить из контактов</string>
     <string name="recipient_cc">Копия</string>
     <string name="recipient_bcc">Скрытая копия</string>
     <string name="recipient_to">Кому</string>
@@ -685,7 +681,7 @@
     <string name="address_type_work">Работа</string>
     <string name="address_type_other">Прочее</string>
     <string name="address_type_mobile">Мобильный</string>
-    <string name="compose_error_no_draft_folder">Для данной учётной записи не настроена папка Черновики!</string>
+    <string name="compose_error_no_draft_folder">Для данной учётной записи не настроена папка черновиков!</string>
     <string name="compose_error_no_key_configured">Для данной учётной записи не настроены ключи! Проверьте настройки.</string>
     <string name="error_crypto_provider_incompatible">Криптопровайдер использует несовместимую версию. Проверьте настройки!</string>
     <string name="error_crypto_provider_connect">Нет доступа к криптопровайдеру. Проверьте настройки или нажмите значок шифрования для повтора!</string>
@@ -696,8 +692,7 @@
     <string name="enable_sign_only">Включить PGP \"Только подпись\"</string>
     <string name="disable_sign_only">Отключить PGP \"Только подпись\"</string>
     <string name="openpgp_inline_title">Режим PGP/INLINE</string>
-    <string name="openpgp_inline_text">Сообщение отправлено в формате PGP/INLINE.
-\nИспользуйте только для совместимости:</string>
+    <string name="openpgp_inline_text">Сообщение отправлено в формате PGP/INLINE. \nИспользуйте только для совместимости:</string>
     <string name="openpgp_inline_plus_compat">Некоторые клиенты поддерживают только этот формат</string>
     <string name="openpgp_inline_minus_transit">Подписи могут повредиться при передаче</string>
     <string name="openpgp_inline_minus_attach">Вложения не поддерживаются</string>
@@ -745,7 +740,6 @@
     <string name="crypto_msg_encrypted_insecure">но шифрование не считается безопасным</string>
     <string name="locked_attach_unlock">Разблокировать</string>
     <string name="locked_attach_unencrypted">Эта часть не была зашифрована и может быть небезопасна.</string>
-    <string name="locked_attach_title">Незащищённое вложение</string>
     <string name="message_progress_text">Загрузка…</string>
     <string name="messageview_decrypt_cancelled">Расшифрование отменено.</string>
     <string name="messageview_decrypt_retry">Повтор</string>
@@ -760,7 +754,7 @@
     <string name="unsigned_text_divider_label">Неподписанный текст</string>
     <string name="crypto_no_provider_title">Сообщение зашифровано</string>
     <string name="crypto_no_provider_message">Сообщение зашифровано OpenPGP.\nЧтобы прочесть его, необходимо установить и настроить подходящее OpenPGP-приложение.</string>
-    <string name="crypto_no_provider_button">В Настройки</string>
+    <string name="crypto_no_provider_button">В настройки</string>
     <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
     <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
     <string name="openpgp_enabled_error_title">Шифрование невозможно</string>
@@ -784,7 +778,7 @@
     <string name="dialog_openkeychain_info_install">Установить</string>
     <string name="account_settings_crypto_encrypt_subject">Шифровать темы сообщений</string>
     <string name="account_settings_crypto_encrypt_subject_subtitle">Может поддерживаться не всеми адресатами</string>
-    <string name="toast_account_not_found">Внутренний сбой: неверная учётная запись!</string>
+    <string name="toast_account_not_found">Внутренняя ошибка: неверная учётная запись!</string>
     <string name="toast_openpgp_provider_error">Сбой подключения к %s!</string>
     <string name="ac_transfer_setting_title">Отправка настроек автошифрования</string>
     <string name="ac_transfer_setting_summary">Передать настройки шифрования на другие устройства</string>
@@ -797,12 +791,7 @@
     <string name="ac_transfer_finish">Для завершения, откройте сообщение на новом устройстве и введите код установки.</string>
     <string name="ac_transfer_show_code">Показать код установки</string>
     <string name="ac_transfer_msg_subject">Настройки взаимного автошифрования</string>
-    <string name="ac_transfer_msg_body">Это сообщение содержит все сведения, необходимые для переноса настроек взаимного автошифрования вместе с секретным ключом с исходного устройства.
-
-Для настройки взаимного автошифрования на новом устройстве, следуйте руководству, отображаемому на новом устройстве.
-
-Это сообщение можно сохранить и использовать в качестве резервной копии своего секретного ключа. Запишите и надёжно сохраните пароль.
-</string>
+    <string name="ac_transfer_msg_body">Это сообщение содержит все сведения, необходимые для переноса настроек взаимного автошифрования вместе с секретным ключом с исходного устройства. Для настройки взаимного автошифрования на новом устройстве, следуйте руководству, отображаемому на новом устройстве. Это сообщение можно сохранить и использовать в качестве резервной копии своего секретного ключа. Запишите и надёжно сохраните пароль.</string>
     <string name="ac_transfer_error_send">Сбой при отправке сообщения. Проверьте соединение с сетью и настройки сервера исходящей почты.</string>
     <string name="switch_on">Вкл</string>
     <string name="switch_off">Выкл</string>
@@ -819,25 +808,15 @@
     <string name="push_info_disable_push_text">Если вам не нужны мгновенные уведомления о новых сообщениях, вам следует отключить \"Push\" и использовать \"Опрос\". Опрос проверяет наличие новой почты через регулярные промежутки времени и не нуждается в уведомлениях.</string>
     <string name="push_info_disable_push_action">Отключить push</string>
     <!--Name of the swipe action to select a message. Try to keep it short.-->
-    <string name="swipe_action_select">Выбрать</string>
     <!--Name of the swipe action to deselect a message. Try to keep it short.-->
-    <string name="swipe_action_deselect">Снять выбор</string>
     <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
-    <string name="swipe_action_mark_as_read">Прочитано</string>
     <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
-    <string name="swipe_action_mark_as_unread">Не прочитано</string>
     <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
-    <string name="swipe_action_add_star">Важное</string>
     <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
-    <string name="swipe_action_remove_star">Обычное</string>
     <!--Name of the swipe action to archive a message. Try to keep it short.-->
-    <string name="swipe_action_archive">Архивировать</string>
     <!--Name of the swipe action to delete a message. Try to keep it short.-->
-    <string name="swipe_action_delete">Удалить</string>
     <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
-    <string name="swipe_action_spam">Отправить в спам</string>
     <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
-    <string name="swipe_action_move">Переместить в…</string>
     <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
     <string name="general_settings_show_compose_button_title">Показать плавающую кнопку создания сообщения</string>
     <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
@@ -914,8 +893,6 @@
     <string name="debug_enable_sync_debug_logging_title">Журнал отладки синхронизации</string>
     <string name="debug_enable_sync_debug_logging_summary">Запись диагностических сообщений синхронизации за 24 часа</string>
     <string name="debug_sync_export_logs_title">Экспорт журналов синхронизации</string>
-    <string name="swipe_action_archive_folder_not_set">Настроить папку архива</string>
-    <string name="swipe_action_change_swipe_gestures">Изменить \nжесты</string>
     <string name="archiving_not_available_for_this_account">Архивирование недоступно для этой учётной записи.</string>
     <string name="debug_open_secret_debug_screen">Экран отладки Open Secret</string>
     <string name="debug_invalidate_access_token">Тест: недействительный токен доступа</string>
@@ -943,4 +920,60 @@
     <string name="expand_folders">Развернуть папки</string>
     <string name="debug_feature_flags">ОТЛАДКА: флаги функций</string>
     <string name="print_message_action">Печать</string>
+    <string name="global_settings_splitview_when_unfolded">Когда устройство развёрнуто</string>
+    <string name="general_settings_message_list_date_time_format_title">Формат даты/времени</string>
+    <string name="general_settings_message_list_date_time_format_contextual">Контекстный</string>
+    <string name="general_settings_message_list_date_time_format_full">Полный</string>
+    <string name="sort_by_then_by">Затем по…</string>
+    <plurals name="message_view_attachment_summary">
+        <item quantity="one"><xliff:g id="count">%1$d</xliff:g> вложение (<xliff:g id="size">%2$s</xliff:g>)</item>
+        <item quantity="few"><xliff:g id="count">%1$d</xliff:g> вложения (<xliff:g id="size">%2$s</xliff:g>)</item>
+        <item quantity="many"><xliff:g id="count">%1$d</xliff:g> вложений (<xliff:g id="size">%2$s</xliff:g>)</item>
+        <item quantity="other"><xliff:g id="count">%1$d</xliff:g> вложений (<xliff:g id="size">%2$s</xliff:g>)</item>
+    </plurals>
+    <string name="message_view_attachments_view_all">Посмотреть все</string>
+    <string name="message_view_attachments_view">Посмотреть</string>
+    <string name="message_view_attachments_title">Вложения</string>
+    <string name="message_view_attachments_save_all">Сохранить все</string>
+    <string name="general_settings_message_list_date_time_format_iso">ISO</string>
+    <string name="message_view_single_attachment_summary"><xliff:g id="name">%1$s</xliff:g> (<xliff:g id="size">%2$s</xliff:g>)</string>
+    <string name="no_network_message_will_be_sent_later_toast">Нет сети. Сообщение будет отправлено, как только появится соединение.</string>
+    <string name="notification_actions_settings_title">Действия в уведомлениях</string>
+    <string name="notification_actions_settings_summary">Выбор действий, которые будут доступны в уведомлениях об электронной почте</string>
+    <string name="notification_summary_delete_title">\"Удалить\" в сводных уведомлениях</string>
+    <string name="notification_summary_delete_summary">Показывать команду удаления в сводных уведомлениях о нескольких новых сообщениях</string>
+    <string name="notification_actions_settings_description">Изменение порядка действий в уведомлениях</string>
+    <string name="notification_actions_cutoff_state">Действия выше этой строки отображаются в уведомлении</string>
+    <string name="notification_actions_shown_state">Отображается в уведомлении</string>
+    <string name="notification_actions_hidden_state">Не отображается в уведомлении</string>
+    <string name="accessibility_move_up">Переместить выше</string>
+    <string name="accessibility_move_down">Переместить ниже</string>
+    <string name="accessibility_move_item_up">Переместить <xliff:g id="item">%1$s</xliff:g> выше</string>
+    <string name="accessibility_move_item_down">Переместить <xliff:g id="item">%1$s</xliff:g> ниже</string>
+    <string name="accessibility_move_cutoff_up">Переместить границу отображаемых действий выше</string>
+    <string name="accessibility_move_cutoff_down">Переместить границу отображаемых действий ниже</string>
+    <string name="notification_actions_cutoff_description">Граница отображаемых действий</string>
+    <string name="notification_action_star">Избранное</string>
+    <string name="changelog_type_new_text">ДОБАВЛЕНО</string>
+    <string name="changelog_type_changed_text">ИЗМЕНЕНО</string>
+    <string name="changelog_type_fixed_text">ИСПРАВЛЕНО</string>
+    <string name="notification_show_contact_picture_title">Показывать изображения контактов в уведомлениях</string>
+    <string name="notification_show_contact_picture_summary">Показывать аватары отправителей в уведомлениях о новых сообщениях</string>
+    <string name="changelog_latest_label_text">ПОСЛЕДНЕЕ</string>
+    <string name="animation_setting_on">Включена</string>
+    <string name="animation_setting_off">Отключена</string>
+    <string name="animation_setting_follow_system">Как в системе</string>
+    <string name="global_settings_privacy_incognito_keyboard_detail">Запрещать клавиатуре обучаться на том, что вы вводите при написании сообщений</string>
+    <string name="global_settings_privacy_incognito_keyboard">Инкогнито-клавиатура</string>
+    <string name="sort_by_indicator">•</string>
+    <string name="camera_capture_lost">Захваченное изображение утеряно, потому что приложение было закрыто. Повторите попытку.</string>
+    <string name="account_settings_signature_html_label">Подпись HTML</string>
+    <string name="account_settings_signature_is_html_label">Сохранить подпись как HTML</string>
+    <string name="account_settings_signature_is_html_summary">Интерпретировать подпись как HTML. Скрипты и обработчики событий будут удалены в целях безопасности.</string>
+    <string name="account_settings_signature_preview">Просмотр подписи</string>
+    <string name="account_settings_signature_clear_label">Удалить подпись</string>
+    <string name="message_compose_encrypting_message">Шифрование сообщения…</string>
+    <string name="message_view_from_me_text">меня</string>
+    <string name="error_no_contact_provider">Приложение \"Контакты\" не найдено. Установите приложение для работы с контактами, чтобы добавить этот адрес.</string>
+    <string name="account_settings_signature_preview_empty">Здесь будет отображаться ваша подпись</string>
 </resources>

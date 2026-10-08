@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="notification_channel_push_title">സമന്വയിപ്പിക്കുക (പുഷ്)</string>
     <string name="notification_channel_push_description">പുതിയ സന്ദേശങ്ങൾക്കായി കാത്തിരിക്കുമ്പോൾ പ്രദർശിപ്പിക്കുന്നു</string>

@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "version": "5.725",
+  "versioncode": 27025,
+  "date": "2020-11-18",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Prefer email addresses marked as default in email auto-completion popup",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Internal changes",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Updated translations",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

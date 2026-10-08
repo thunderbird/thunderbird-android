@@ -7,20 +7,23 @@ import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.common.exception.MessagingException
 import net.thunderbird.core.preference.GeneralSettingsManager
+import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.storage.legacy.mapper.LegacyAccountDataMapper
+import net.thunderbird.feature.mail.message.list.LocalMessageUidPrefixProvider
 
 class LocalStoreProvider {
-    private val localStores = ConcurrentHashMap<String, LocalStore>()
-    private val accountLocks = ConcurrentHashMap<String, Any>()
+    private val localStores = ConcurrentHashMap<AccountId, LocalStore>()
+    private val accountLocks = ConcurrentHashMap<AccountId, Any>()
 
     @Throws(MessagingException::class)
     fun getInstance(account: LegacyAccountDto): LocalStore {
         val context = DI.get(Context::class.java)
         val generalSettingsManager = DI.get(GeneralSettingsManager::class.java)
-        val accountUuid = account.uuid
+        val localMessageUidPrefixProvider = DI.get(LocalMessageUidPrefixProvider::class.java)
+        val accountId = account.id
 
-        return getInstanceById(accountUuid) {
-            LocalStore.createInstance(account, context, generalSettingsManager)
+        return getInstanceById(accountId) {
+            LocalStore.createInstance(account, context, generalSettingsManager, localMessageUidPrefixProvider)
         }
     }
 
@@ -29,26 +32,27 @@ class LocalStoreProvider {
         val context = DI.get(Context::class.java)
         val legacyAccountMapper = DI.get(LegacyAccountDataMapper::class.java)
         val generalSettingsManager = DI.get(GeneralSettingsManager::class.java)
-        val accountUuid = account.uuid
+        val localMessageUidPrefixProvider = DI.get(LocalMessageUidPrefixProvider::class.java)
+        val accountId = account.id
         val accountDto = legacyAccountMapper.toDto(account)
 
-        return getInstanceById(accountUuid) {
-            LocalStore.createInstance(accountDto, context, generalSettingsManager)
+        return getInstanceById(accountId) {
+            LocalStore.createInstance(accountDto, context, generalSettingsManager, localMessageUidPrefixProvider)
         }
     }
 
-    private fun getInstanceById(uuid: String, create: () -> LocalStore): LocalStore {
+    private fun getInstanceById(accountId: AccountId, create: () -> LocalStore): LocalStore {
         // Use per-account locks so DatabaseUpgradeService always knows which account database is currently upgraded.
-        synchronized(accountLocks.getOrPut(uuid) { Any() }) {
+        synchronized(accountLocks.getOrPut(accountId) { Any() }) {
             // Creating a LocalStore instance will create or upgrade the database if
             // necessary. This could take some time.
-            return localStores.getOrPut(uuid) {
+            return localStores.getOrPut(accountId) {
                 create()
             }
         }
     }
 
-    fun removeInstance(uuid: String) {
-        localStores.remove(uuid)
+    fun removeInstance(accountId: AccountId) {
+        localStores.remove(accountId)
     }
 }

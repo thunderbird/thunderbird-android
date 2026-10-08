@@ -27,7 +27,7 @@
     </plurals>
     <string name="settings_import_incoming_server_password_hint">Парола за входящ сървър</string>
     <string name="settings_import_outgoing_server_password_hint">Парола за изходящ сървър</string>
-    <string name="settings_import_use_same_password_for_outgoing_server">Използвай същата парола  като на изходящия сървър</string>
+    <string name="settings_import_use_same_password_for_outgoing_server">Използвай същата парола като на изходящия сървър</string>
     <string name="settings_import_server_name_format">Име на сървър: <xliff:g id="hostname">%s</xliff:g></string>
     <string name="settings_import_oauth_description">За да използвате този профил, трябва да се впишете и да разрешите на приложението достъп до имейлите си.</string>
     <string name="settings_import_oauth_sign_in">Вписване</string>

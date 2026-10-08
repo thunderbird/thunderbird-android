@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "version": "5.110",
+  "versioncode": 23100,
+  "date": "2016-07-06",
+  "notes": [
+    {
+      "type": "new",
+      "text": "New option: only notify for messages from contacts",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Added auto-configuration support for more providers",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Improved PGP/MIME experience",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Lots of internal improvements",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

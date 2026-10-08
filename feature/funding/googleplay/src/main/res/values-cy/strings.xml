@@ -54,4 +54,6 @@
     <string name="funding_googleplay_contribution_reminder_message">Ymunwch â\'n cenhadaeth i greu\'r profiad e-bost gorau posibl sy\'n parchu preifatrwydd ac yn gyfaddasadwy.</string>
     <string name="funding_googleplay_contribution_reminder_positive_button">Iawn</string>
     <string name="funding_googleplay_contribution_reminder_negative_button">Nid nawr</string>
+    <string name="funding_googleplay_contribution_footer_payment_processing_button">Wrthi\'n prosesu pryniant…</string>
+    <string name="funding_googleplay_contribution_footer_payment_cancel_button">Diddymu</string>
 </resources>

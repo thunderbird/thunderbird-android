@@ -32,4 +32,6 @@
     <string name="account_server_settings_validation_error_port_required">Port je vyžadovaný.</string>
     <string name="account_server_settings_validation_error_password_required">Heslo je vyžadované.</string>
     <string name="account_server_settings_incoming_imap_send_client_info_label">Odoslať klientské informácie</string>
+    <string name="account_server_settings_password_authentication_failed">Overenie zlyhalo!</string>
+    <string name="account_server_settings_password_authentication_unable_to_start">Nepodarilo sa spustiť biometrické overenie.</string>
 </resources>

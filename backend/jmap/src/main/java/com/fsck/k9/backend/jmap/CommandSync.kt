@@ -8,8 +8,9 @@ import com.fsck.k9.mail.AuthenticationFailedException
 import com.fsck.k9.mail.MessageDownloadState
 import com.fsck.k9.mail.internet.MimeMessage
 import java.util.Date
+import kotlinx.coroutines.runBlocking
 import net.thunderbird.core.common.mail.Flag
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.legacy.logging.Log
 import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -92,7 +93,14 @@ class CommandSync(
         val destroyServerIds = (cachedServerIds - remoteServerIds).toList()
         val newServerIds = remoteServerIds - cachedServerIds
 
-        handleFolderUpdates(backendFolder, folderServerId, destroyServerIds, newServerIds, queryState, listener)
+        handleFolderUpdates(
+            backendFolder = backendFolder,
+            folderServerId = folderServerId,
+            destroyServerIds = destroyServerIds,
+            newServerIds = newServerIds,
+            newQueryState = queryState,
+            listener = listener
+        )
 
         val refreshServerIds = cachedServerIds.intersect(remoteServerIds)
         refreshMessageFlags(backendFolder, syncConfig, refreshServerIds)
@@ -193,7 +201,7 @@ class CommandSync(
                     setFlags(messageInfo.flags, true)
                 }
 
-                backendFolder.saveMessage(message, MessageDownloadState.FULL)
+                runBlocking { backendFolder.saveMessage(message, MessageDownloadState.FULL) }
             } else {
                 Log.d("Failed to download message: %s", messageInfo.serverId)
             }
@@ -230,7 +238,12 @@ class CommandSync(
 
     private fun Email.toMessageInfo(session: Session): MessageInfo {
         val downloadUrl = session.getDownloadUrl(accountId, blobId, blobId, "application/octet-stream")
-        return MessageInfo(id, downloadUrl, receivedAt, keywords.toFlags())
+        return MessageInfo(
+            serverId = id,
+            downloadUrl = downloadUrl,
+            receivedAt = receivedAt,
+            flags = keywords.toFlags(),
+        )
     }
 
     private fun downloadMessage(downloadUrl: HttpUrl): MimeMessage? {
@@ -243,7 +256,7 @@ class CommandSync(
 
         return okHttpClient.newCall(request).execute().use { response ->
             if (response.isSuccessful) {
-                val inputStream = response.body!!.byteStream()
+                val inputStream = response.body.byteStream()
                 MimeMessage.parseMimeMessage(inputStream, false)
             } else {
                 null
@@ -303,7 +316,7 @@ class CommandSync(
     }
 
     private fun BackendFolder.saveQueryState(queryState: String?) {
-        setFolderExtraString(EXTRA_QUERY_STATE, queryState)
+        setFolderExtraString(name = EXTRA_QUERY_STATE, value = queryState)
     }
 
     companion object {

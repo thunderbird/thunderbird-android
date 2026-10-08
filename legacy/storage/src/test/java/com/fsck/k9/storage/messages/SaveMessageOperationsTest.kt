@@ -1,5 +1,6 @@
 package com.fsck.k9.storage.messages
 
+import android.database.sqlite.SQLiteDatabase
 import app.k9mail.legacy.mailstore.SaveMessageData
 import app.k9mail.legacy.message.extractors.PreviewResult
 import assertk.assertThat
@@ -8,7 +9,6 @@ import assertk.assertions.isEqualTo
 import assertk.assertions.isNotNull
 import assertk.assertions.isNull
 import assertk.assertions.startsWith
-import com.fsck.k9.K9
 import com.fsck.k9.mail.Address
 import com.fsck.k9.mail.Message
 import com.fsck.k9.mail.MessageDownloadState
@@ -21,7 +21,7 @@ import com.fsck.k9.storage.RobolectricTest
 import java.io.ByteArrayOutputStream
 import java.util.Stack
 import net.thunderbird.core.common.mail.Flag
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.legacy.logging.Log
 import net.thunderbird.core.logging.testing.TestLogger
 import net.thunderbird.feature.account.AccountIdFactory
 import org.junit.After
@@ -32,32 +32,38 @@ import org.mockito.Mockito.mock
 class SaveMessageOperationsTest : RobolectricTest() {
 
     private val accountId = AccountIdFactory.create()
+    private var localMessageUidProvider = FakeLocalMessageUidPrefixProvider()
 
     private val messagePartDirectory = createRandomTempDirectory()
-    private val sqliteDatabase = createDatabase()
-    private val storageFilesProvider = object : StorageFilesProvider {
-        override fun getDatabaseFile() = error("Not implemented")
-        override fun getAttachmentDirectory() = messagePartDirectory
-    }
-    private val lockableDatabase = createLockableDatabaseMock(sqliteDatabase)
-    private val attachmentFileManager = AttachmentFileManager(storageFilesProvider, mock())
-    private val basicPartInfoExtractor = BasicPartInfoExtractor()
-    private val threadMessageOperations = ThreadMessageOperations()
-    private val saveMessageOperations = SaveMessageOperations(
-        lockableDatabase,
-        attachmentFileManager,
-        basicPartInfoExtractor,
-        threadMessageOperations,
-        accountId,
-    )
+    private lateinit var sqliteDatabase: SQLiteDatabase
+    private lateinit var saveMessageOperations: SaveMessageOperations
 
     @Before
     fun setUp() {
         Log.logger = TestLogger()
+
+        sqliteDatabase = createDatabase()
+        val storageFilesProvider = object : StorageFilesProvider {
+            override fun getDatabaseFile() = error("Not implemented")
+            override fun getAttachmentDirectory() = messagePartDirectory
+        }
+        val lockableDatabase = createLockableDatabaseMock(sqliteDatabase)
+        val attachmentFileManager = AttachmentFileManager(storageFilesProvider, mock())
+        val basicPartInfoExtractor = BasicPartInfoExtractor()
+        val threadMessageOperations = ThreadMessageOperations()
+        saveMessageOperations = SaveMessageOperations(
+            lockableDatabase,
+            attachmentFileManager,
+            basicPartInfoExtractor,
+            threadMessageOperations,
+            accountId,
+            localMessageUidProvider,
+        )
     }
 
     @After
     fun tearDown() {
+        sqliteDatabase.close()
         messagePartDirectory.deleteRecursively()
     }
 
@@ -375,6 +381,46 @@ class SaveMessageOperationsTest : RobolectricTest() {
     }
 
     @Test
+    fun `replace envelope message with full message should preserve thread entry`() {
+        // Arrange: simulate remote search saving a message as ENVELOPE (no body)
+        val envelopeMessageData = buildMessage {
+            header("Message-ID", "<msg0001@domain.example>")
+            header("Subject", "Search Result")
+        }.toSaveMessageData(
+            downloadState = MessageDownloadState.ENVELOPE,
+        )
+        saveMessageOperations.saveRemoteMessage(folderId = 1, messageServerId = "uid1", envelopeMessageData)
+
+        val threadsBeforeReplace = sqliteDatabase.readThreads()
+        assertThat(threadsBeforeReplace).hasSize(1)
+        val threadBeforeReplace = threadsBeforeReplace.first()
+
+        // Act: simulate sync re-downloading the same message as FULL
+        val fullMessageData = buildMessage {
+            header("Message-ID", "<msg0001@domain.example>")
+            header("Subject", "Search Result")
+            textBody("Full body content")
+        }.toSaveMessageData(
+            downloadState = MessageDownloadState.FULL,
+        )
+        saveMessageOperations.saveRemoteMessage(folderId = 1, messageServerId = "uid1", fullMessageData)
+
+        // Assert: thread entry must still exist and point to the same message
+        val messages = sqliteDatabase.readMessages()
+        assertThat(messages).hasSize(1)
+        val message = messages.first()
+        assertThat(message.flags).isEqualTo("X_DOWNLOADED_FULL")
+
+        val threads = sqliteDatabase.readThreads()
+        assertThat(threads).hasSize(1)
+        val thread = threads.first()
+        assertThat(thread.id).isEqualTo(threadBeforeReplace.id)
+        assertThat(thread.messageId).isEqualTo(message.id)
+        assertThat(thread.root).isEqualTo(thread.id)
+        assertThat(thread.parent).isNull()
+    }
+
+    @Test
     fun `save local message`() {
         val messageData = buildMessage {
             textBody("local")
@@ -395,7 +441,7 @@ class SaveMessageOperationsTest : RobolectricTest() {
             assertThat(id).isEqualTo(newMessageId)
             assertThat(deleted).isEqualTo(0)
             assertThat(folderId).isEqualTo(1)
-            assertThat(uid).isNotNull().startsWith(K9.LOCAL_UID_PREFIX)
+            assertThat(uid).isNotNull().startsWith(localMessageUidProvider.get())
             assertThat(subject).isEqualTo("Provided subject")
             assertThat(date).isEqualTo(1618191720000L)
             assertThat(internalDate).isEqualTo(1618191720000L)

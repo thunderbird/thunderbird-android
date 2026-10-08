@@ -10,13 +10,14 @@ dependencies {
     api(projects.core.mail.mailserver)
     api(projects.core.android.common)
     api(projects.core.android.account)
+    api(projects.core.common)
     api(projects.core.preference.impl)
     api(projects.core.android.logging)
     api(projects.core.logging.implFile)
     api(projects.core.logging.implComposite)
     api(projects.core.logging.config)
     api(projects.core.android.network)
-    api(projects.core.outcome)
+    api(libs.tb.mobile.components.core.outcome)
     api(projects.feature.mail.folder.api)
     api(projects.feature.account.storage.legacy)
 
@@ -25,6 +26,7 @@ dependencies {
     api(projects.legacy.di)
     api(projects.legacy.mailstore)
     api(projects.legacy.message)
+    implementation(projects.legacy.logging)
     implementation(projects.feature.notification.api)
 
     implementation(projects.plugins.openpgpApiLib.openpgpApi)
@@ -36,7 +38,6 @@ dependencies {
 
     implementation(libs.okio)
     implementation(libs.commons.io)
-    implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.work.runtime)
     implementation(libs.androidx.fragment)
     implementation(libs.androidx.localbroadcastmanager)
@@ -49,9 +50,11 @@ dependencies {
     implementation(projects.feature.navigation.drawer.api)
     implementation(projects.feature.mail.message.list.api)
     implementation(projects.feature.mail.message.reader.api)
+    implementation(projects.feature.mail.message.composer.api)
 
-    testApi(projects.core.testing)
-    testApi(projects.core.android.testing)
+    testImplementation(projects.core.testing)
+    testImplementation(libs.tb.mobile.components.ui.testing)
+    testImplementation(projects.core.android.testing)
     testImplementation(projects.core.logging.testing)
     testImplementation(projects.feature.telemetry.noop)
     testImplementation(projects.mail.testing)
@@ -59,11 +62,12 @@ dependencies {
     testImplementation(projects.mail.protocols.smtp)
     testImplementation(projects.legacy.storage)
     testImplementation(projects.core.android.common)
-    testImplementation(libs.kotlin.test)
+
     testImplementation(libs.kotlin.reflect)
     testImplementation(libs.robolectric)
     testImplementation(libs.androidx.test.core)
     testImplementation(libs.jdom2)
+    testImplementation(libs.mockito.kotlin)
 
     // test fakes
     testImplementation(projects.feature.account.fake)
@@ -82,4 +86,9 @@ android {
             isIncludeAndroidResources = true
         }
     }
+}
+
+codeCoverage {
+    branchCoverage = 41
+    lineCoverage = 46
 }

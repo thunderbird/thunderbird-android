@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="notification_channel_push_title">Sinhronizacija (Push)</string>
     <string name="notification_channel_push_description">Prikazano dok se čeka na nove poruke</string>
@@ -7,9 +7,7 @@
     <string name="notification_channel_miscellaneous_title">Razno</string>
     <string name="notification_channel_miscellaneous_description">Raznovrsne obavijesti kao greške itd.</string>
     <string name="notification_notify_error_title">Greška pri kreiranju obavještenja</string>
-    <string name="notification_notify_error_text">Dogodila se greška tokom kreiranja sistemskog obavještenja za novu poruku. Razlog je vjerovatno nemanje zvuka obavještenja.
-\n
-\nDodirnite da otvorite podešavanja obavještenja.</string>
+    <string name="notification_notify_error_text">Dogodila se greška tokom kreiranja sistemskog obavještenja za novu poruku. Razlog je vjerovatno nemanje zvuka obavještenja. \n \nDodirnite da otvorite podešavanja obavještenja.</string>
     <string name="notification_authentication_error_title">Autentifikacija nije uspjela</string>
     <string name="notification_certificate_error_public">Greška sertifikata</string>
     <string name="notification_certificate_error_title">Greška sertifikata za %1$s</string>

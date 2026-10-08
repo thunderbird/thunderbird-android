@@ -3,13 +3,18 @@ plugins {
 }
 
 kotlin {
-    androidLibrary {
+    android {
         namespace = "net.thunderbird.feature.notification.testing"
     }
     sourceSets {
         commonMain.dependencies {
-            implementation(projects.core.outcome)
+            api(projects.feature.account.api)
             api(projects.feature.notification.api)
         }
     }
+}
+
+codeCoverage {
+    branchCoverage = 0
+    lineCoverage = 0
 }

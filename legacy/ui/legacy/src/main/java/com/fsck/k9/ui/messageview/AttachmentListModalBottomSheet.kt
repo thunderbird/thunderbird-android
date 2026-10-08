@@ -1,0 +1,197 @@
+package com.fsck.k9.ui.messageview
+
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
+import net.thunderbird.components.ui.bolt.atom.button.ButtonIcon
+import net.thunderbird.components.ui.bolt.atom.text.TextBodyMedium
+import net.thunderbird.components.ui.bolt.atom.text.TextBodySmall
+import net.thunderbird.components.ui.bolt.atom.text.TextLabelLarge
+import net.thunderbird.components.ui.bolt.atom.text.TextTitleMedium
+import com.fsck.k9.mailstore.AttachmentViewInfo
+import com.fsck.k9.ui.R
+import com.fsck.k9.ui.helper.SizeFormatter
+import kotlinx.collections.immutable.ImmutableList
+import net.thunderbird.components.ui.bolt.atom.icon.Icon
+import net.thunderbird.components.ui.bolt.atom.icon.Icons
+import net.thunderbird.components.ui.bolt.organism.ModalBottomSheet
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
+import net.thunderbird.feature.mail.message.reader.api.R as MessageReaderR
+
+private const val OPEN_PGP_RED = 0xFFCC0000
+
+internal data class AttachmentListItemModel(
+    val attachment: AttachmentViewInfo,
+    val isLocked: Boolean,
+)
+
+@Composable
+internal fun AttachmentListModalBottomSheet(
+    attachments: ImmutableList<AttachmentListItemModel>,
+    sizeFormatter: SizeFormatter,
+    onDismissRequest: () -> Unit,
+    onAttachmentClick: (AttachmentViewInfo) -> Unit,
+    onSaveClick: (AttachmentViewInfo) -> Unit,
+    onSaveAllClick: () -> Unit,
+) {
+    ModalBottomSheet(
+        onDismissRequest = onDismissRequest,
+    ) {
+        AttachmentListContent(
+            attachments = attachments,
+            sizeFormatter = sizeFormatter,
+            onAttachmentClick = onAttachmentClick,
+            onSaveClick = onSaveClick,
+            onSaveAllClick = onSaveAllClick,
+        )
+    }
+}
+
+@Composable
+private fun AttachmentListContent(
+    attachments: ImmutableList<AttachmentListItemModel>,
+    sizeFormatter: SizeFormatter,
+    onAttachmentClick: (AttachmentViewInfo) -> Unit,
+    onSaveClick: (AttachmentViewInfo) -> Unit,
+    onSaveAllClick: () -> Unit,
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .verticalScroll(rememberScrollState()),
+    ) {
+        AttachmentListHeader(onSaveAllClick = onSaveAllClick)
+
+        attachments.forEach { item ->
+            AttachmentListItem(
+                attachment = item.attachment,
+                isLocked = item.isLocked,
+                sizeFormatter = sizeFormatter,
+                onClick = { onAttachmentClick(item.attachment) },
+                onSaveClick = { onSaveClick(item.attachment) },
+            )
+        }
+    }
+}
+
+@Composable
+private fun AttachmentListHeader(
+    onSaveAllClick: () -> Unit,
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(
+                start = BoltTheme.spacings.double,
+                end = BoltTheme.spacings.double,
+                bottom = BoltTheme.spacings.default,
+                top = BoltTheme.spacings.double,
+            ),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Icon(
+            imageVector = Icons.Outlined.Attachment,
+            contentDescription = null,
+            tint = BoltTheme.colors.onSurfaceVariant,
+            modifier = Modifier.size(BoltTheme.sizes.icon),
+        )
+        Spacer(modifier = Modifier.width(BoltTheme.spacings.default))
+        TextTitleMedium(
+            text = stringResource(R.string.message_view_attachments_title),
+            modifier = Modifier.weight(1f),
+        )
+        Row(
+            modifier = Modifier.clickable(onClick = onSaveAllClick),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Icon(
+                imageVector = Icons.Outlined.Download,
+                contentDescription = null,
+                tint = BoltTheme.colors.primary,
+                modifier = Modifier.size(BoltTheme.sizes.iconSmall),
+            )
+            Spacer(modifier = Modifier.width(BoltTheme.spacings.half))
+            TextLabelLarge(
+                text = stringResource(R.string.message_view_attachments_save_all),
+                color = BoltTheme.colors.primary,
+            )
+        }
+    }
+}
+
+@Composable
+private fun AttachmentListItem(
+    attachment: AttachmentViewInfo,
+    isLocked: Boolean,
+    sizeFormatter: SizeFormatter,
+    onClick: () -> Unit,
+    onSaveClick: () -> Unit,
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(onClick = onClick)
+            .padding(
+                start = BoltTheme.spacings.double,
+                end = BoltTheme.spacings.default,
+                top = BoltTheme.spacings.default,
+                bottom = BoltTheme.spacings.default,
+            ),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Icon(
+            imageVector = if (isLocked) Icons.Outlined.Lock else Icons.Outlined.Description,
+            contentDescription = null,
+            tint = if (isLocked) Color(OPEN_PGP_RED) else BoltTheme.colors.onSurfaceVariant,
+            modifier = Modifier.size(BoltTheme.sizes.icon),
+        )
+        Spacer(modifier = Modifier.width(BoltTheme.spacings.double))
+        Column(modifier = Modifier.weight(1f)) {
+            TextBodyMedium(
+                text = when (val displayName = attachment.displayName) {
+                    null -> stringResource(MessageReaderR.string.unnamed_attachment_title)
+                    else if isLocked -> stringResource(MessageReaderR.string.encrypted_attachment_title)
+                    else -> displayName
+                },
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
+            if (isLocked) {
+                TextBodySmall(
+                    text = stringResource(R.string.locked_attach_unencrypted),
+                    color = BoltTheme.colors.onSurfaceVariant,
+                )
+            } else if (attachment.size != AttachmentViewInfo.UNKNOWN_SIZE) {
+                TextBodySmall(
+                    text = sizeFormatter.formatSize(attachment.size),
+                    color = BoltTheme.colors.onSurfaceVariant,
+                )
+            }
+        }
+        if (isLocked) {
+            ButtonIcon(
+                onClick = onClick,
+                imageVector = Icons.Outlined.Visibility,
+                contentDescription = stringResource(R.string.locked_attach_unlock),
+            )
+        }
+        ButtonIcon(
+            onClick = onSaveClick,
+            imageVector = Icons.Outlined.Download,
+            contentDescription = stringResource(R.string.save_attachment_action),
+        )
+    }
+}

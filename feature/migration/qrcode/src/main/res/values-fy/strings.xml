@@ -6,4 +6,5 @@
     <string name="migration_qrcode_scanning_progress">Scand %1$s fan %2$s</string>
     <string name="migration_qrcode_done_button_text">Dien</string>
     <string name="migration_qrcode_scanning_instructions">De QR-koade fan Thunderbird desktop útlynje</string>
+    <string name="migration_qrcode_unsupported_code">De QR-koade is detektearre, mar it befettet ûnjildige of net-stipe gegevens.</string>
 </resources>

@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "version": "6.100",
+  "versioncode": 31000,
+  "date": "2022-06-15",
+  "notes": [
+    {
+      "type": "new",
+      "text": "Added support for using OAuth 2.0 with Google accounts",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Added support for using OAuth 2.0 with Yahoo and AOL accounts",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Added \"Unsubscribe\" action that is displayed in the menu when viewing a message that contains an Unsubscribe header",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed a bug where unrelated notifications where cleared after synchronizing a folder containing no unread messages",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed rare problem with decoding format=flowed messages",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Various other small bug fixes and improvements",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Updated translations",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

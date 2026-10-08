@@ -2,6 +2,7 @@ package net.thunderbird.core.file
 
 import assertk.assertThat
 import assertk.assertions.isTrue
+import com.eygraber.uri.Uri
 import java.io.File
 import java.net.URI
 import kotlin.test.Test
@@ -40,5 +41,5 @@ class JvmDirectoryProviderTest {
         }
     }
 
-    private fun uriToFile(uri: com.eygraber.uri.Uri): File = File(URI(uri.toString()))
+    private fun uriToFile(uri: Uri): File = File(URI(uri.toString()))
 }

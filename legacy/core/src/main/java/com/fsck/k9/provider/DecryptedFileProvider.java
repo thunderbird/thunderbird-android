@@ -22,7 +22,7 @@ import androidx.core.content.FileProvider;
 import android.text.TextUtils;
 
 import app.k9mail.legacy.di.DI;
-import net.thunderbird.core.logging.legacy.Log;
+import net.thunderbird.legacy.logging.Log;
 
 import com.fsck.k9.K9;
 import com.fsck.k9.mailstore.util.FileFactory;

@@ -17,8 +17,12 @@ internal class CommandSearch(private val imapStore: ImapStore) {
         try {
             folder.open(OpenMode.READ_ONLY)
 
-            return folder.search(query, requiredFlags, forbiddenFlags, performFullTextSearch)
-                .sortedWith(UidReverseComparator())
+            return folder.search(
+                queryString = query,
+                requiredFlags = requiredFlags,
+                forbiddenFlags = forbiddenFlags,
+                performFullTextSearch = performFullTextSearch,
+            ).sortedWith(UidReverseComparator())
                 .map { it.uid }
         } finally {
             folder.close()

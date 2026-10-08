@@ -10,8 +10,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
 import android.os.SystemClock
-import android.print.PrintAttributes
-import android.print.PrintManager
 import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.Menu
@@ -20,9 +18,15 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.webkit.WebView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.MenuHost
@@ -36,11 +40,11 @@ import app.k9mail.core.android.common.activity.CreateDocumentResultContract
 import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons
 import app.k9mail.legacy.message.controller.MessageReference
 import com.eygraber.uri.toKmpUri
-import com.fsck.k9.K9
 import com.fsck.k9.activity.MessageCompose
 import com.fsck.k9.activity.MessageLoaderHelper
 import com.fsck.k9.activity.MessageLoaderHelper.MessageLoaderCallbacks
 import com.fsck.k9.activity.MessageLoaderHelperFactory
+import com.fsck.k9.activity.compose.MessageActions
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.fragment.AttachmentDownloadDialogFragment
 import com.fsck.k9.fragment.ConfirmationDialogFragment
@@ -48,6 +52,8 @@ import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmen
 import com.fsck.k9.helper.HttpsUnsubscribeUri
 import com.fsck.k9.helper.MailtoUnsubscribeUri
 import com.fsck.k9.helper.UnsubscribeUri
+import com.fsck.k9.mail.Message
+import com.fsck.k9.mail.Part
 import com.fsck.k9.mailstore.AttachmentViewInfo
 import com.fsck.k9.mailstore.LocalMessage
 import com.fsck.k9.mailstore.MessageViewInfo
@@ -56,13 +62,19 @@ import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.extensions.withArguments
 import com.fsck.k9.ui.choosefolder.ChooseFolderActivity
 import com.fsck.k9.ui.choosefolder.ChooseFolderResultContract
+import com.fsck.k9.ui.helper.SizeFormatter
 import com.fsck.k9.ui.messagedetails.MessageDetailsFragment
 import com.fsck.k9.ui.messagesource.MessageSourceActivity
 import com.fsck.k9.ui.messageview.MessageCryptoPresenter.MessageCryptoMvpView
 import com.fsck.k9.ui.settings.account.AccountSettingsActivity
 import com.fsck.k9.ui.share.ShareIntentBuilder
 import java.util.Locale
+import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toPersistentList
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
@@ -71,36 +83,59 @@ import net.thunderbird.core.android.account.LegacyAccountDtoManager
 import net.thunderbird.core.common.mail.Flag
 import net.thunderbird.core.common.provider.AppNameProvider
 import net.thunderbird.core.featureflag.FeatureFlagProvider
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.core.featureflag.keys.GeneratedFeatureFlagKey
+import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.interaction.InteractionSettings
+import net.thunderbird.core.ui.contract.mvi.observe
+import net.thunderbird.core.ui.theme.api.FeatureThemeProvider
 import net.thunderbird.core.ui.theme.api.Theme
 import net.thunderbird.core.ui.theme.manager.ThemeManager
 import net.thunderbird.feature.mail.folder.api.OutboxFolderManager
 import net.thunderbird.feature.mail.message.export.MessageExporter
 import net.thunderbird.feature.mail.message.export.MessageFileNameSuggester
+import net.thunderbird.feature.mail.message.reader.api.domain.ReplyAction
+import net.thunderbird.feature.mail.message.reader.api.strategy.ReplyActionStrategy
+import net.thunderbird.feature.mail.message.reader.api.ui.MessageReaderViewContract
+import net.thunderbird.feature.mail.message.reader.api.ui.MessageReaderViewContract.Effect
+import net.thunderbird.feature.mail.message.reader.api.ui.MessageReaderViewContract.Event
+import net.thunderbird.feature.mail.message.reader.api.ui.bridge.MessageReaderBottomSheet
+import net.thunderbird.legacy.logging.Log
 import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.compose.koinInject
 import org.openintents.openpgp.util.OpenPgpIntentStarter
+import net.thunderbird.feature.mail.message.reader.api.R as MessageReaderR
 
-@Suppress("LargeClass")
+@Suppress("LargeClass", "TooManyFunctions")
 class MessageViewFragment :
     Fragment(),
     ConfirmationDialogFragmentListener,
+    AttachmentDisplayController,
     AttachmentViewCallback {
 
     private val themeManager: ThemeManager by inject()
+    private val themeProvider: FeatureThemeProvider by inject()
     private val messageLoaderHelperFactory: MessageLoaderHelperFactory by inject()
     private val accountManager: LegacyAccountDtoManager by inject()
     private val messagingController: MessagingController by inject()
+    private val attachmentLoadingController: AttachmentLoadingController by inject()
     private val shareIntentBuilder: ShareIntentBuilder by inject()
     private val generalSettingsManager: GeneralSettingsManager by inject()
     private val outboxFolderManager: OutboxFolderManager by inject()
     private val featureFlagProvider: FeatureFlagProvider by inject()
     private val appNameProvider: AppNameProvider by inject()
+    private val messageReaderViewModel: MessageReaderViewContract.ViewModel<Part> by viewModel()
+    private val logger: Logger by inject()
+    private val replayAllStrategy: ReplyActionStrategy<LegacyAccountDto, Message> by inject()
 
     private val createDocumentLauncher: ActivityResultLauncher<CreateDocumentResultContract.Input> =
         registerForActivityResult(CreateDocumentResultContract()) { documentUri ->
             onCreateDocumentResult(documentUri)
+        }
+    private val openDocumentTreeLauncher: ActivityResultLauncher<Uri?> =
+        registerForActivityResult(ActivityResultContracts.OpenDocumentTree()) { directoryUri ->
+            onOpenDocumentTreeResult(directoryUri)
         }
     private val chooseFolderForCopyLauncher: ActivityResultLauncher<ChooseFolderResultContract.Input> =
         registerForActivityResult(ChooseFolderResultContract(ChooseFolderActivity.Action.COPY)) { result ->
@@ -143,7 +178,8 @@ class MessageViewFragment :
     private var pendingEmlExport: Boolean = false
 
     private var isActive: Boolean = false
-        private set
+
+    private val attachmentListBottomSheetState = MutableStateFlow(persistentListOf<AttachmentListItemModel>())
 
     private val interactionSettings: InteractionSettings
         get() = generalSettingsManager.getConfig().interaction
@@ -205,7 +241,54 @@ class MessageViewFragment :
     private fun initializeMessageTopView(messageTopView: MessageTopView) {
         messageTopView.setShowAccountIndicator(showAccountIndicator)
 
+        val sizeFormatter = SizeFormatter(resources)
+        val composeView = messageTopView.findViewById<ComposeView>(R.id.bottom_sheet_compose_view)
+        composeView.apply {
+            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+            setContent {
+                themeProvider.WithTheme {
+                    val attachments by attachmentListBottomSheetState.collectAsState()
+                    val (stateHolder, dispatch) = messageReaderViewModel.observe { effect ->
+                        when (effect) {
+                            Effect.TriggerOnReplyAllListener -> onReplyAll()
+                            Effect.TriggerOnReplyListener -> onReply(forceReplyAction = true)
+                        }
+                    }
+                    val state by stateHolder
+                    val messageReaderBottomSheetContent = koinInject<MessageReaderBottomSheet>()
+
+                    when {
+                        attachments.isNotEmpty() -> {
+                            AttachmentListModalBottomSheet(
+                                attachments = attachments,
+                                sizeFormatter = sizeFormatter,
+                                onDismissRequest = {
+                                    attachmentListBottomSheetState.update { persistentListOf() }
+                                },
+                                onAttachmentClick = { attachment ->
+                                    attachmentListBottomSheetState.update { persistentListOf() }
+                                    onViewAttachment(attachment)
+                                },
+                                onSaveClick = { attachment ->
+                                    onSaveAttachment(attachment)
+                                },
+                                onSaveAllClick = { onSaveAllAttachments() },
+                            )
+                        }
+
+                        state.showReaderActionsBottomSheet -> messageReaderBottomSheetContent.Content(
+                            actions = state.messageReaderActions,
+                            onClick = { action -> dispatch(Event.OnMessageReaderBottomSheetActionClick(action)) },
+                            onDismiss = { dispatch(Event.CloseMessageReaderBottomSheet()) },
+                            modifier = Modifier.fillMaxWidth(),
+                        )
+                    }
+                }
+            }
+        }
+
         messageTopView.setAttachmentCallback(this)
+        messageTopView.setMessageReaderViewModel(messageReaderViewModel)
         messageTopView.setMessageCryptoPresenter(messageCryptoPresenter)
 
         messageTopView.setOnToggleFlagClickListener {
@@ -250,8 +333,8 @@ class MessageViewFragment :
     private fun loadMessage(messageReference: MessageReference) {
         Log.d("MessageViewFragment displaying message %s", messageReference)
 
-        account = accountManager.getAccount(messageReference.accountUuid)
-            ?: error("Account ${messageReference.accountUuid} not found")
+        account = accountManager.getById(messageReference.accountId)
+            ?: error("Account ${messageReference.accountId} not found")
 
         messageLoaderHelper.asyncStartOrResumeLoadingMessage(messageReference, null)
 
@@ -297,7 +380,8 @@ class MessageViewFragment :
     @Suppress("LongMethod")
     private fun prepareMenu(menu: Menu) {
         menu.findItem(R.id.delete).apply {
-            isVisible = K9.isMessageViewDeleteActionVisible
+            isVisible = generalSettingsManager.getConfig()
+                .display.visualSettings.isMessageViewDeleteActionVisible
             isEnabled = !isDeleteMenuItemDisabled
         }
 
@@ -325,10 +409,22 @@ class MessageViewFragment :
         if (isMoveCapable) {
             val canMessageBeArchived = canMessageBeArchived()
             val canMessageBeMovedToSpam = canMessageBeMovedToSpam()
+            menu.findItem(R.id.move).isVisible =
+                generalSettingsManager.getConfig().display.visualSettings.isMessageViewMoveActionVisible
 
-            menu.findItem(R.id.move).isVisible = K9.isMessageViewMoveActionVisible
-            menu.findItem(R.id.archive).isVisible = canMessageBeArchived && K9.isMessageViewArchiveActionVisible
-            menu.findItem(R.id.spam).isVisible = canMessageBeMovedToSpam && K9.isMessageViewSpamActionVisible
+            menu.findItem(R.id.archive).isVisible =
+                canMessageBeArchived &&
+                    generalSettingsManager.getConfig()
+                        .display
+                        .visualSettings
+                        .isMessageViewArchiveActionVisible
+
+            menu.findItem(R.id.spam).isVisible =
+                canMessageBeMovedToSpam &&
+                    generalSettingsManager.getConfig()
+                        .display
+                        .visualSettings
+                        .isMessageViewSpamActionVisible
 
             menu.findItem(R.id.refile_move).isVisible = true
             menu.findItem(R.id.refile_archive).isVisible = canMessageBeArchived
@@ -347,7 +443,8 @@ class MessageViewFragment :
         menu.findItem(R.id.set_format_html).isVisible = isRenderPlainFormat()
 
         if (isCopyCapable) {
-            menu.findItem(R.id.copy).isVisible = K9.isMessageViewCopyActionVisible
+            menu.findItem(R.id.copy).isVisible = generalSettingsManager.getConfig()
+                .display.visualSettings.isMessageViewCopyActionVisible
             menu.findItem(R.id.refile_copy).isVisible = true
         } else {
             menu.findItem(R.id.copy).isVisible = false
@@ -358,7 +455,7 @@ class MessageViewFragment :
         menu.findItem(R.id.unsubscribe).isVisible = canMessageBeUnsubscribed()
         menu.findItem(R.id.show_headers).isVisible = true
         menu.findItem(R.id.export_eml).isVisible =
-            featureFlagProvider.provide(MessageViewFeatureFlags.ActionExportEml).isEnabled()
+            featureFlagProvider.provide(GeneratedFeatureFlagKey.MESSAGE_VIEW_ACTION_EXPORT_EML).isEnabled()
         menu.findItem(R.id.print)?.isVisible = true
         menu.findItem(R.id.view_compose).isVisible = true
 
@@ -401,15 +498,18 @@ class MessageViewFragment :
                 printMessage()
                 return true
             }
+
             R.id.export_eml -> if (
-                featureFlagProvider.provide(MessageViewFeatureFlags.ActionExportEml).isEnabled()
+                featureFlagProvider.provide(GeneratedFeatureFlagKey.MESSAGE_VIEW_ACTION_EXPORT_EML).isEnabled()
             ) {
                 onExportEml()
             } else {
                 return true
             }
+
             R.id.set_format_plain -> onDisplayPlainText()
             R.id.set_format_html -> onDisplayHTML()
+            R.id.view_compose -> MessageActions.actionCompose(requireActivity(), account)
             else -> return false
         }
 
@@ -417,20 +517,12 @@ class MessageViewFragment :
     }
 
     private fun printMessage() {
-        val context = context
-        val webView = view?.findViewById<WebView>(R.id.message_content)
-        val printManager = context?.getSystemService(Context.PRINT_SERVICE) as? PrintManager
-        if (context == null || webView == null || printManager == null) return
-
-        val subject = mMessageViewInfo?.subject ?: getString(R.string.general_no_subject)
-        val jobName = appNameProvider.appName + ": " + subject
-        val printAdapter = webView.createPrintDocumentAdapter(jobName)
-
-        printManager.print(
-            jobName,
-            printAdapter,
-            PrintAttributes.Builder().build(),
-        )
+        val messageViewInfo = mMessageViewInfo ?: return
+        MessagePrinter(
+            context = requireContext(),
+            appName = appNameProvider.appName,
+            noSubjectText = getString(R.string.general_no_subject),
+        ).print(messageViewInfo)
     }
 
     private fun onShowHeaders() {
@@ -510,6 +602,29 @@ class MessageViewFragment :
                 else -> error("Missing handler for reply menu item $itemId")
             }
         }
+
+        override fun onViewAllAttachmentsClick() {
+            showAttachmentListBottomSheet()
+        }
+    }
+
+    private fun showAttachmentListBottomSheet() {
+        val messageViewInfo = mMessageViewInfo ?: return
+
+        val nonInlineAttachments = messageViewInfo.attachments
+            ?.filter { !it.inlineAttachment }
+            ?.map { AttachmentListItemModel(attachment = it, isLocked = false) }
+            .orEmpty()
+
+        val extraNonInlineAttachments = messageViewInfo.extraAttachments
+            ?.filter { !it.inlineAttachment }
+            ?.map { AttachmentListItemModel(attachment = it, isLocked = true) }
+            .orEmpty()
+
+        val allAttachments = nonInlineAttachments + extraNonInlineAttachments
+        if (allAttachments.isEmpty()) return
+
+        attachmentListBottomSheetState.update { allAttachments.toPersistentList() }
     }
 
     private fun onDownloadButtonClicked() {
@@ -585,13 +700,18 @@ class MessageViewFragment :
         messagingController.moveMessage(account, sourceFolderId, messageReference, destinationFolderId)
     }
 
-    fun onReply() {
+    fun onReply(forceReplyAction: Boolean = false) {
         val message = this.message ?: return
 
-        fragmentListener.onReply(
-            messageReference = message.makeMessageReference(),
-            decryptionResultForReply = messageCryptoPresenter.decryptionResultForReply,
-        )
+        val additionalActions = replayAllStrategy.getReplyActions(account, message).additionalActions
+        if (!forceReplyAction && ReplyAction.REPLY_ALL in additionalActions) {
+            messageReaderViewModel.event(Event.OpenMessageReaderBottomSheet())
+        } else {
+            fragmentListener.onReply(
+                messageReference = message.makeMessageReference(),
+                decryptionResultForReply = messageCryptoPresenter.decryptionResultForReply,
+            )
+        }
     }
 
     fun onReplyAll() {
@@ -638,7 +758,7 @@ class MessageViewFragment :
 
         chooseFolderForMoveLauncher.launch(
             input = ChooseFolderResultContract.Input(
-                accountUuid = account.uuid,
+                accountId = account.id,
                 currentFolderId = messageReference.folderId,
                 scrollToFolderId = account.lastSelectedFolderId,
                 messageReference = messageReference,
@@ -657,7 +777,7 @@ class MessageViewFragment :
 
         chooseFolderForCopyLauncher.launch(
             input = ChooseFolderResultContract.Input(
-                accountUuid = account.uuid,
+                accountId = account.id,
                 currentFolderId = messageReference.folderId,
                 scrollToFolderId = account.lastSelectedFolderId,
                 messageReference = messageReference,
@@ -739,7 +859,21 @@ class MessageViewFragment :
             return
         }
 
-        createAttachmentController(currentAttachmentViewInfo).saveAttachmentTo(uri)
+        currentAttachmentViewInfo?.let {
+            createAttachmentController(it).saveAttachmentTo(lifecycleScope, uri)
+        }
+    }
+
+    private fun onOpenDocumentTreeResult(directoryUri: Uri?) {
+        if (directoryUri == null) return
+
+        val messageView = mMessageViewInfo ?: return
+        val attachments = messageView.attachments.filter { !it.inlineAttachment }
+        attachments.forEach {
+            currentAttachmentViewInfo = it
+            createAttachmentController(it)
+                .saveAttachmentToDirectory(lifecycleScope, directoryUri)
+        }
     }
 
     private fun onChooseFolderMoveResult(result: ChooseFolderResultContract.Result?) {
@@ -770,7 +904,7 @@ class MessageViewFragment :
         copyMessage(messageReference, destinationFolderId)
     }
 
-    @OptIn(kotlin.time.ExperimentalTime::class)
+    @OptIn(ExperimentalTime::class)
     private fun onExportEml() {
         // Mark this flow as an EML export so the result handler doesn't touch attachment logic
         pendingEmlExport = true
@@ -953,7 +1087,7 @@ class MessageViewFragment :
                 Intent(requireContext(), MessageCompose::class.java).apply {
                     action = Intent.ACTION_VIEW
                     data = unsubscribeUri.uri
-                    putExtra(MessageCompose.EXTRA_ACCOUNT, messageReference.accountUuid)
+                    putExtra(MessageCompose.EXTRA_ACCOUNT, messageReference.accountId.toString())
                 }
             }
 
@@ -971,17 +1105,17 @@ class MessageViewFragment :
         requireActivity().runOnUiThread(runnable)
     }
 
-    fun showAttachmentLoadingDialog() {
+    override fun showAttachmentLoadingDialog() {
         showDialog(R.id.dialog_attachment_progress)
     }
 
-    fun hideAttachmentLoadingDialogOnMainThread() {
+    override fun hideAttachmentLoadingDialogOnMainThread() {
         runOnMainThread {
             removeDialog(R.id.dialog_attachment_progress)
         }
     }
 
-    fun refreshAttachmentThumbnail(attachment: AttachmentViewInfo) {
+    override fun refreshAttachmentThumbnail(attachment: AttachmentViewInfo) {
         messageTopView.refreshAttachmentThumbnail(attachment)
     }
 
@@ -1011,7 +1145,7 @@ class MessageViewFragment :
         }
 
         override fun showCryptoConfigDialog() {
-            AccountSettingsActivity.startCryptoSettings(requireActivity(), account.uuid)
+            AccountSettingsActivity.startCryptoSettings(requireActivity(), account.id.toString())
         }
     }
 
@@ -1101,7 +1235,15 @@ class MessageViewFragment :
     override fun onViewAttachment(attachment: AttachmentViewInfo) {
         currentAttachmentViewInfo = attachment
 
-        createAttachmentController(attachment).viewAttachment()
+        createAttachmentController(attachment).viewAttachment(lifecycleScope)
+    }
+
+    fun onSaveAllAttachments() {
+        try {
+            openDocumentTreeLauncher.launch(null)
+        } catch (_: ActivityNotFoundException) {
+            Toast.makeText(requireContext(), R.string.error_activity_not_found, Toast.LENGTH_LONG).show()
+        }
     }
 
     override fun onSaveAttachment(attachment: AttachmentViewInfo) {
@@ -1110,8 +1252,10 @@ class MessageViewFragment :
         try {
             createDocumentLauncher.launch(
                 input = CreateDocumentResultContract.Input(
-                    title = attachment.displayName,
-                    mimeType = attachment.mimeType,
+                    title = attachment.displayName ?: getString(MessageReaderR.string.unnamed_attachment_title),
+                    mimeType = requireNotNull(attachment.mimeType) {
+                        "Invalid attachment type. The mimeType is null. Attachment = $attachment"
+                    },
                 ),
             )
         } catch (_: ActivityNotFoundException) {
@@ -1119,8 +1263,14 @@ class MessageViewFragment :
         }
     }
 
-    private fun createAttachmentController(attachment: AttachmentViewInfo?): AttachmentController {
-        return AttachmentController(requireContext(), messagingController, this, attachment)
+    private fun createAttachmentController(attachment: AttachmentViewInfo): AttachmentController {
+        return AttachmentController(
+            context = requireContext(),
+            controller = attachmentLoadingController,
+            attachmentDisplayController = this,
+            attachment = attachment,
+            logger = logger,
+        )
     }
 
     private fun invalidateMenu() {

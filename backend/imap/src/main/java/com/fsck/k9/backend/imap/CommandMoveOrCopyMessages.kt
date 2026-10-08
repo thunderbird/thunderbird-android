@@ -3,7 +3,7 @@ package com.fsck.k9.backend.imap
 import com.fsck.k9.mail.store.imap.ImapFolder
 import com.fsck.k9.mail.store.imap.ImapStore
 import com.fsck.k9.mail.store.imap.OpenMode
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.legacy.logging.Log
 
 internal class CommandMoveOrCopyMessages(private val imapStore: ImapStore) {
 
@@ -12,7 +12,12 @@ internal class CommandMoveOrCopyMessages(private val imapStore: ImapStore) {
         targetFolderServerId: String,
         messageServerIds: List<String>,
     ): Map<String, String>? {
-        return moveOrCopyMessages(sourceFolderServerId, targetFolderServerId, messageServerIds, false)
+        return moveOrCopyMessages(
+            srcFolder = sourceFolderServerId,
+            destFolder = targetFolderServerId,
+            uids = messageServerIds,
+            isCopy = false,
+        )
     }
 
     fun copyMessages(
@@ -20,7 +25,12 @@ internal class CommandMoveOrCopyMessages(private val imapStore: ImapStore) {
         targetFolderServerId: String,
         messageServerIds: List<String>,
     ): Map<String, String>? {
-        return moveOrCopyMessages(sourceFolderServerId, targetFolderServerId, messageServerIds, true)
+        return moveOrCopyMessages(
+            srcFolder = sourceFolderServerId,
+            destFolder = targetFolderServerId,
+            uids = messageServerIds,
+            isCopy = true,
+        )
     }
 
     private fun moveOrCopyMessages(

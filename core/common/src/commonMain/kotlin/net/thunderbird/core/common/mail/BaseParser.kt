@@ -3,7 +3,6 @@ package net.thunderbird.core.common.mail
 import net.thunderbird.core.common.mail.EmailAddressParserError.UnexpectedCharacter
 import net.thunderbird.core.common.mail.EmailAddressParserError.UnexpectedEndOfInput
 
-@Suppress("UnnecessaryAbstractClass")
 /**
  * Base class for string parsers.
  *
@@ -13,6 +12,7 @@ import net.thunderbird.core.common.mail.EmailAddressParserError.UnexpectedEndOfI
  * @property startIndex The index to start parsing from (inclusive).
  * @property endIndex The index to stop parsing at (exclusive).
  */
+@Suppress("UnnecessaryAbstractClass")
 internal abstract class BaseParser(val input: String, startIndex: Int = 0, val endIndex: Int = input.length) {
     protected var currentIndex = startIndex
 

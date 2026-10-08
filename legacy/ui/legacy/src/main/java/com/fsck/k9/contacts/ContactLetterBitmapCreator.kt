@@ -42,7 +42,7 @@ class ContactLetterBitmapCreator(
         return bitmap
     }
 
-    private fun calcUnknownContactColor(address: Address): Int {
+    fun calcUnknownContactColor(address: Address): Int {
         if (config.hasDefaultBackgroundColor) {
             return config.defaultBackgroundColor
         }

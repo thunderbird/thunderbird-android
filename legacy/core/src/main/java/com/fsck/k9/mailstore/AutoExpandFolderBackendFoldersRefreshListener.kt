@@ -1,57 +1,81 @@
 package com.fsck.k9.mailstore
 
-import app.k9mail.legacy.mailstore.FolderRepository
-import com.fsck.k9.Preferences
-import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.components.core.outcome.fold
+import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountManager
+import net.thunderbird.feature.account.AccountId
+import net.thunderbird.feature.mail.folder.api.FolderServerId
+import net.thunderbird.feature.mail.folder.api.data.repository.FolderQueryRepository
 
 /**
  * Update an Account's auto-expand folder after the folder list has been refreshed.
  */
 class AutoExpandFolderBackendFoldersRefreshListener(
-    private val preferences: Preferences,
-    private val account: LegacyAccountDto,
-    private val folderRepository: FolderRepository,
+    private val accountManager: LegacyAccountManager,
+    private val accountId: AccountId,
+    private val folderQueryRepository: FolderQueryRepository,
 ) : BackendFoldersRefreshListener {
     private var isFirstSync = false
 
     override fun onBeforeFolderListRefresh() {
-        isFirstSync = account.inboxFolderId == null
+        isFirstSync = getAccountById(accountId).inboxFolderId == null
     }
 
-    override fun onAfterFolderListRefresh() {
-        checkAutoExpandFolder()
+    override suspend fun onAfterFolderListRefresh() {
+        var account = getAccountById(accountId)
 
-        removeImportedAutoExpandFolder()
-        saveAccount()
+        account = checkAutoExpandFolder(account)
+
+        removeImportedAutoExpandFolder(account)
+
+        updateAccount(account)
     }
 
-    private fun checkAutoExpandFolder() {
-        account.importedAutoExpandFolder?.let { folderName ->
+    private suspend fun checkAutoExpandFolder(account: LegacyAccount): LegacyAccount {
+        var updated = account
+
+        updated.importedAutoExpandFolder?.let { folderName ->
             if (folderName.isEmpty()) {
-                account.autoExpandFolderId = null
+                updated = updated.copy(autoExpandFolderId = null)
             } else {
-                val folderId = folderRepository.getFolderId(account, folderName)
-                account.autoExpandFolderId = folderId
+                val folderId = folderQueryRepository.findIdByServerId(accountId, FolderServerId(folderName))
+                    .fold(
+                        onSuccess = { it },
+                        onFailure = { error ->
+                            when (val throwable = error.throwable) {
+                                null -> null
+                                else -> throw throwable
+                            }
+                        },
+                    )
+                updated = updated.copy(autoExpandFolderId = folderId)
             }
-            return
+            return updated
         }
 
-        account.autoExpandFolderId?.let { autoExpandFolderId ->
-            if (!folderRepository.isFolderPresent(account, autoExpandFolderId)) {
-                account.autoExpandFolderId = null
+        updated.autoExpandFolderId?.let { autoExpandFolderId ->
+            if (!folderQueryRepository.isPresent(accountId, autoExpandFolderId)) {
+                updated = updated.copy(autoExpandFolderId = null)
             }
         }
 
-        if (isFirstSync && account.autoExpandFolderId == null) {
-            account.autoExpandFolderId = account.inboxFolderId
+        if (isFirstSync && updated.autoExpandFolderId == null) {
+            updated = updated.copy(autoExpandFolderId = updated.inboxFolderId)
         }
+
+        return updated
     }
 
-    private fun removeImportedAutoExpandFolder() {
-        account.importedAutoExpandFolder = null
+    private fun removeImportedAutoExpandFolder(account: LegacyAccount): LegacyAccount {
+        return account.copy(importedAutoExpandFolder = null)
     }
 
-    private fun saveAccount() {
-        preferences.saveAccount(account)
+    private fun getAccountById(id: AccountId): LegacyAccount {
+        return accountManager.getById(id)
+            ?: error("Account not found with ID: $id")
+    }
+
+    private fun updateAccount(account: LegacyAccount) {
+        accountManager.updateSync(account)
     }
 }

@@ -4,11 +4,12 @@ import android.net.ConnectivityManager.NetworkCallback
 import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.NetworkRequest
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.core.logging.Logger
 import android.net.ConnectivityManager as SystemConnectivityManager
 
 internal class ConnectivityManagerApi23(
     private val systemConnectivityManager: SystemConnectivityManager,
+    private val logger: Logger,
 ) : ConnectivityManagerBase() {
     private var isRunning = false
     private var lastActiveNetwork: Network? = null
@@ -16,12 +17,12 @@ internal class ConnectivityManagerApi23(
 
     private val networkCallback = object : NetworkCallback() {
         override fun onAvailable(network: Network) {
-            Log.v("Network available: $network")
+            logger.verbose { "Network available: $network" }
             notifyIfActiveNetworkOrConnectivityHasChanged()
         }
 
         override fun onLost(network: Network) {
-            Log.v("Network lost: $network")
+            logger.verbose { "Network lost: $network" }
             notifyIfActiveNetworkOrConnectivityHasChanged()
         }
 

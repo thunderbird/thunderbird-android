@@ -50,6 +50,7 @@ val featureAccountOAuthModule: Module = module {
             getOAuthRequestIntent = get(),
             finishOAuthSignIn = get(),
             checkIsGoogleSignIn = get(),
+            logger = get(),
         )
     }
 }

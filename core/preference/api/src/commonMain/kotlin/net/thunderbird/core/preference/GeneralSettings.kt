@@ -62,4 +62,28 @@ enum class SplitViewMode {
     ALWAYS,
     NEVER,
     WHEN_IN_LANDSCAPE,
+    WHEN_UNFOLDED,
+}
+
+/**
+ * Controls behaviour of delete button in notifications.
+ */
+enum class NotificationQuickDelete {
+    ALWAYS,
+    FOR_SINGLE_MSG,
+    NEVER,
+}
+
+enum class LockScreenNotificationVisibility {
+    EVERYTHING,
+    SENDERS,
+    MESSAGE_COUNT,
+    APP_NAME,
+    NOTHING,
+}
+
+enum class AnimationPreference {
+    ON,
+    OFF,
+    FOLLOW_SYSTEM,
 }

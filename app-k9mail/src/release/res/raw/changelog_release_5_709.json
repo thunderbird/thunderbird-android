@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "version": "5.709",
+  "versioncode": 27009,
+  "date": "2020-04-18",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Display larger preview for image attachments",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed import and export of folder settings",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "IMAP: Properly handle UIDVALIDITY changes",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Various smaller bug fixes",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Updated translations",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

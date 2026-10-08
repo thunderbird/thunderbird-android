@@ -1,0 +1,23 @@
+appId: ${MAESTRO_APP_ID}
+---
+# Add contact
+
+## Open contact dialog
+- tapOn:
+    id: "menu_add_contact"
+- tapOn:
+    id: "com.android.contacts:id/cliv_name_textview"
+
+## Save contact
+- runFlow:
+    when:
+      visible:
+        id: "com.android.contacts:id/editor_menu_save_button"
+    commands:
+      - inputText: " from Contacts"
+      - tapOn:
+          id: "com.android.contacts:id/editor_menu_save_button"
+
+### Close contact dialog
+- tapOn:
+    id: "com.android.systemui:id/back"

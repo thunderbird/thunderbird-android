@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "version": "5.902",
+  "versioncode": 29002,
+  "date": "2021-09-21",
+  "notes": [
+    {
+      "type": "fixed",
+      "text": "Fixed missing notification sound",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

@@ -8,9 +8,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import app.k9mail.core.ui.compose.designsystem.atom.RadioGroup
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyMedium
-import app.k9mail.core.ui.compose.theme2.MainTheme
+import net.thunderbird.components.ui.bolt.atom.RadioGroup
+import net.thunderbird.components.ui.bolt.atom.text.TextBodyMedium
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.core.ui.setting.SettingValue
 import net.thunderbird.core.ui.setting.dialog.ui.components.dialog.SettingDialogLayout
 
@@ -23,7 +23,7 @@ internal fun SelectDialogView(
     modifier: Modifier = Modifier,
 ) {
     val options by remember { mutableStateOf(setting.options) }
-    var selectedOption by remember { mutableStateOf(setting.value) }
+    var selectedOption by remember { mutableStateOf(options.find { it.id == setting.value.id } ?: setting.value) }
 
     SettingDialogLayout(
         title = setting.title(),
@@ -38,7 +38,7 @@ internal fun SelectDialogView(
         setting.description()?.let {
             TextBodyMedium(text = it)
 
-            Spacer(modifier = Modifier.height(MainTheme.spacings.default))
+            Spacer(modifier = Modifier.height(BoltTheme.spacings.default))
         }
 
         RadioGroup(

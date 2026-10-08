@@ -3,7 +3,7 @@ package app.k9mail.feature.migration.qrcode.payload
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.JsonReader
 import com.squareup.moshi.JsonWriter
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.legacy.logging.Log
 
 internal class QrCodePayloadAdapter : JsonAdapter<QrCodeData>() {
     override fun fromJson(jsonReader: JsonReader): QrCodeData? {

@@ -21,8 +21,7 @@ import net.thunderbird.core.common.mail.Protocols
 import net.thunderbird.core.preference.GeneralSettings
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.display.DisplaySettings
-import net.thunderbird.core.preference.interaction.KEY_SWIPE_ACTION_LEFT
-import net.thunderbird.core.preference.interaction.KEY_SWIPE_ACTION_RIGHT
+import net.thunderbird.core.preference.interaction.InteractionSettingKey
 import net.thunderbird.core.preference.network.NetworkSettings
 import net.thunderbird.core.preference.notification.NotificationPreference
 import net.thunderbird.core.preference.privacy.PrivacySettings
@@ -120,7 +119,7 @@ class BuildSwipeActionsTest {
             val testSubject = createTestSubject(
                 accountsIds = ids,
                 storageValues = mapOf(
-                    KEY_SWIPE_ACTION_LEFT to SwipeAction.None,
+                    InteractionSettingKey.SwipeActionLeft.value to SwipeAction.None,
                 ),
             )
 
@@ -150,7 +149,7 @@ class BuildSwipeActionsTest {
             val testSubject = createTestSubject(
                 accountsIds = ids,
                 storageValues = mapOf(
-                    KEY_SWIPE_ACTION_RIGHT to SwipeAction.Delete,
+                    InteractionSettingKey.SwipeActionRight.value to SwipeAction.Delete,
                 ),
             )
 
@@ -179,8 +178,8 @@ class BuildSwipeActionsTest {
             val testSubject = createTestSubject(
                 accounts = listOf(FakeLegacyAccount(id = id, archiveFolderId = 123)),
                 storageValues = mapOf(
-                    KEY_SWIPE_ACTION_LEFT to SwipeAction.Archive,
-                    KEY_SWIPE_ACTION_RIGHT to SwipeAction.Archive,
+                    InteractionSettingKey.SwipeActionLeft.value to SwipeAction.Archive,
+                    InteractionSettingKey.SwipeActionRight.value to SwipeAction.Archive,
                 ),
             )
 
@@ -209,8 +208,8 @@ class BuildSwipeActionsTest {
             val testSubject = createTestSubject(
                 accounts = listOf(FakeLegacyAccount(id = id, incomingServerType = Protocols.POP3)),
                 storageValues = mapOf(
-                    KEY_SWIPE_ACTION_LEFT to SwipeAction.Archive,
-                    KEY_SWIPE_ACTION_RIGHT to SwipeAction.Archive,
+                    InteractionSettingKey.SwipeActionLeft.value to SwipeAction.Archive,
+                    InteractionSettingKey.SwipeActionRight.value to SwipeAction.Archive,
                 ),
             )
 
@@ -247,8 +246,8 @@ class BuildSwipeActionsTest {
                 ),
                 accountsIds = ids,
                 storageValues = mapOf(
-                    KEY_SWIPE_ACTION_LEFT to SwipeAction.Archive,
-                    KEY_SWIPE_ACTION_RIGHT to SwipeAction.Archive,
+                    InteractionSettingKey.SwipeActionLeft.value to SwipeAction.Archive,
+                    InteractionSettingKey.SwipeActionRight.value to SwipeAction.Archive,
                 ),
             )
 
@@ -290,8 +289,8 @@ class BuildSwipeActionsTest {
                 ),
                 accounts = accounts,
                 storageValues = mapOf(
-                    KEY_SWIPE_ACTION_LEFT to SwipeAction.Archive,
-                    KEY_SWIPE_ACTION_RIGHT to SwipeAction.Archive,
+                    InteractionSettingKey.SwipeActionLeft.value to SwipeAction.Archive,
+                    InteractionSettingKey.SwipeActionRight.value to SwipeAction.Archive,
                 ),
             )
 
@@ -342,14 +341,19 @@ class BuildSwipeActionsTest {
         generalSettingsManager = FakeGeneralSettingsManager(
             initialGeneralSettings.let { settings ->
                 if (storageValues.isNotEmpty() &&
-                    (KEY_SWIPE_ACTION_LEFT in storageValues || KEY_SWIPE_ACTION_RIGHT in storageValues)
+                    (
+                        InteractionSettingKey.SwipeActionLeft.value in storageValues ||
+                            InteractionSettingKey.SwipeActionRight.value in storageValues
+                        )
                 ) {
                     val swipeActions = settings.interaction.swipeActions
                     settings.copy(
                         interaction = settings.interaction.copy(
                             swipeActions = swipeActions.copy(
-                                leftAction = storageValues[KEY_SWIPE_ACTION_LEFT] ?: swipeActions.leftAction,
-                                rightAction = storageValues[KEY_SWIPE_ACTION_RIGHT] ?: swipeActions.rightAction,
+                                leftAction = storageValues[InteractionSettingKey.SwipeActionLeft.value]
+                                    ?: swipeActions.leftAction,
+                                rightAction = storageValues[InteractionSettingKey.SwipeActionRight.value]
+                                    ?: swipeActions.rightAction,
                             ),
                         ),
                     )

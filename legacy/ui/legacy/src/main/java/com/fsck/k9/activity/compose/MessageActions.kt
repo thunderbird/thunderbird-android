@@ -5,10 +5,13 @@ import android.content.Intent
 import android.os.Parcelable
 import app.k9mail.feature.launcher.FeatureLauncherActivity
 import app.k9mail.feature.launcher.FeatureLauncherTarget.AccountSetup
+import app.k9mail.legacy.di.DI
 import app.k9mail.legacy.message.controller.MessageReference
-import com.fsck.k9.Preferences
 import com.fsck.k9.activity.MessageCompose
+import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.feature.account.AccountId
+import net.thunderbird.feature.account.usecase.GetDefaultAccountId
 
 object MessageActions {
     /**
@@ -17,17 +20,24 @@ object MessageActions {
      * activity.
      */
     @JvmStatic
+    fun actionCompose(context: Context, account: LegacyAccount? = null) {
+        actionCompose(context, account?.id)
+    }
+
+    @JvmStatic
     fun actionCompose(context: Context, account: LegacyAccountDto?) {
-        val defaultAccount = Preferences.getPreferences().defaultAccount
-        if (account == null && defaultAccount == null) {
+        actionCompose(context, account?.id)
+    }
+
+    @JvmStatic
+    fun actionCompose(context: Context, accountId: AccountId? = null) {
+        val getDefaultAccountId = DI.get<GetDefaultAccountId>()
+        val targetAccountId = accountId ?: getDefaultAccountId()
+        if (targetAccountId == null) {
             FeatureLauncherActivity.launch(context, AccountSetup)
         } else {
-            val accountUuid = account?.uuid ?: requireNotNull(defaultAccount?.uuid) {
-                "Unexpected state. At this point, either account ($account) or defaultAccount " +
-                    "($defaultAccount) must have a value."
-            }
             val intent = Intent(context, MessageCompose::class.java).apply {
-                putExtra(MessageCompose.EXTRA_ACCOUNT, accountUuid)
+                putExtra(MessageCompose.EXTRA_ACCOUNT, targetAccountId.toString())
                 action = MessageCompose.ACTION_COMPOSE
             }
             context.startActivity(intent)

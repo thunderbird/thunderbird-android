@@ -1,6 +1,6 @@
 package app.k9mail.core.ui.compose.testing
 
-import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
+import net.thunderbird.core.ui.contract.mvi.BaseViewModel
 
 /**
  * Base class for providing fake MVI ViewModels for testing.

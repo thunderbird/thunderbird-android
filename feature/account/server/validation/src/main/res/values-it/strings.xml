@@ -13,9 +13,7 @@
     <string name="account_server_validation_error_server">Errore del server</string>
     <string name="account_server_validation_error_missing_server_capability">Funzionalità del server mancante</string>
     <string name="account_server_validation_error_client_certificate_retrieval_failure">Impossibile accedere al certificato client</string>
-    <string name="account_server_validation_error_missing_server_capability_details">Al server manca questa funzionalità:
-\n%s</string>
+    <string name="account_server_validation_error_missing_server_capability_details">Al server manca questa funzionalità: \n%s</string>
     <string name="account_server_validation_error_client_certificate_expired">Il certificato client non è più valido</string>
-    <string name="account_server_validation_error_details">Dettagli:
-\n%s</string>
+    <string name="account_server_validation_error_details">Dettagli: \n%s</string>
 </resources>

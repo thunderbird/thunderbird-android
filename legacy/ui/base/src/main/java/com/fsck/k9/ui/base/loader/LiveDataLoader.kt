@@ -9,7 +9,7 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.legacy.logging.Log
 
 const val LOADING_INDICATOR_DELAY = 500L
 

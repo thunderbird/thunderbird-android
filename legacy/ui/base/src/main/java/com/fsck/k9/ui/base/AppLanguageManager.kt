@@ -89,9 +89,14 @@ class AppLanguageManager(
             // language is in the form: en_US
             val language = appLanguage.substring(0, 2)
             val country = appLanguage.substring(3)
-            Locale(language, country)
+            Locale.Builder()
+                .setLanguage(language)
+                .setRegion(country)
+                .build()
         } else {
-            Locale(appLanguage)
+            Locale.Builder()
+                .setLanguage(appLanguage)
+                .build()
         }
     }
 

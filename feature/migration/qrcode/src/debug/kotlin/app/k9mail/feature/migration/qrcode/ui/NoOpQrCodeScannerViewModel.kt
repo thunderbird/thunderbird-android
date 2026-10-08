@@ -1,10 +1,10 @@
 package app.k9mail.feature.migration.qrcode.ui
 
-import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
 import app.k9mail.feature.migration.qrcode.domain.QrCodeDomainContract.UseCase
 import app.k9mail.feature.migration.qrcode.ui.QrCodeScannerContract.Effect
 import app.k9mail.feature.migration.qrcode.ui.QrCodeScannerContract.Event
 import app.k9mail.feature.migration.qrcode.ui.QrCodeScannerContract.State
+import net.thunderbird.core.ui.contract.mvi.BaseViewModel
 
 internal class NoOpQrCodeScannerViewModel(
     initialState: State = State(),

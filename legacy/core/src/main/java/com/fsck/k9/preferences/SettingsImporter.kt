@@ -7,7 +7,7 @@ import com.fsck.k9.preferences.ServerSettingsDescriptions.PASSWORD
 import com.fsck.k9.preferences.ServerSettingsDescriptions.USERNAME
 import com.fsck.k9.preferences.Settings.InvalidSettingValueException
 import java.io.InputStream
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.legacy.logging.Log
 
 @Suppress("LongParameterList")
 class SettingsImporter internal constructor(

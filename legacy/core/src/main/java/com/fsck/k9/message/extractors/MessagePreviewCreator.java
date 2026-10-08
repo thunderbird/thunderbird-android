@@ -7,7 +7,7 @@ import app.k9mail.legacy.message.extractors.PreviewResult;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Part;
 
-import net.thunderbird.core.logging.legacy.Log;
+import net.thunderbird.legacy.logging.Log;
 
 
 public class MessagePreviewCreator {

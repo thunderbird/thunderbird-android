@@ -9,5 +9,5 @@ android {
 }
 
 dependencies {
-    api(projects.core.ui.compose.navigation)
+    api(projects.core.ui.navigation)
 }

@@ -1,15 +1,29 @@
 package com.fsck.k9.storage.messages
 
+import android.database.sqlite.SQLiteDatabase
 import assertk.assertThat
 import assertk.assertions.hasSize
 import assertk.assertions.isEqualTo
 import com.fsck.k9.storage.RobolectricTest
+import org.junit.After
+import org.junit.Before
 import org.junit.Test
 
 class UpdateMessageOperationsTest : RobolectricTest() {
-    private val sqliteDatabase = createDatabase()
-    private val lockableDatabase = createLockableDatabaseMock(sqliteDatabase)
-    private val updateMessageOperations = UpdateMessageOperations(lockableDatabase)
+    private lateinit var sqliteDatabase: SQLiteDatabase
+    private lateinit var updateMessageOperations: UpdateMessageOperations
+
+    @Before
+    fun setUp() {
+        sqliteDatabase = createDatabase()
+        val lockableDatabase = createLockableDatabaseMock(sqliteDatabase)
+        updateMessageOperations = UpdateMessageOperations(lockableDatabase)
+    }
+
+    @After
+    fun tearDown() {
+        sqliteDatabase.close()
+    }
 
     @Test
     fun `mark message as new`() {

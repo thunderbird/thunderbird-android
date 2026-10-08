@@ -1,6 +1,7 @@
 package com.fsck.k9.ui.settings.account
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -9,6 +10,8 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.net.toUri
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
@@ -19,7 +22,6 @@ import androidx.preference.PreferenceCategory
 import androidx.preference.SwitchPreference
 import app.k9mail.feature.launcher.FeatureLauncherActivity
 import app.k9mail.feature.launcher.FeatureLauncherTarget
-import com.fsck.k9.account.BackgroundAccountRemover
 import com.fsck.k9.activity.ManageIdentities
 import com.fsck.k9.activity.setup.AccountSetupComposition
 import com.fsck.k9.controller.MessagingController
@@ -41,7 +43,10 @@ import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.NO
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.account.QuoteStyle
 import net.thunderbird.core.common.provider.AppNameProvider
-import net.thunderbird.feature.mail.folder.api.FolderType
+import net.thunderbird.feature.account.AccountId
+import net.thunderbird.feature.account.AccountIdFactory
+import net.thunderbird.feature.account.settings.api.BackgroundAccountRemover
+import net.thunderbird.feature.mail.folder.FolderType
 import net.thunderbird.feature.mail.folder.api.RemoteFolder
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
@@ -68,9 +73,21 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
     private var notificationLightPreference: ListPreference? = null
     private var notificationVibrationPreference: VibrationPreference? = null
 
-    private val accountUuid: String by lazy {
-        checkNotNull(arguments?.getString(ARG_ACCOUNT_UUID)) { "$ARG_ACCOUNT_UUID == null" }
+    private val launcherForActivityResult: ActivityResultLauncher<Intent> = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult(),
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            closeAccountSettings()
+            accountRemover.removeAccountAsync(accountId)
+        }
     }
+
+    private val accountId: AccountId by lazy {
+        checkNotNull(
+            arguments?.getString(ARG_ACCOUNT_UUID)?.let { AccountIdFactory.of(it) }
+        ) { "$ARG_ACCOUNT_UUID == null" }
+    }
+
     private var title: CharSequence? = null
 
     override fun onCreatePreferencesFix(savedInstanceState: Bundle?, rootKey: String?) {
@@ -82,6 +99,9 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         title = preferenceScreen.title
 
         initializeGeneralSettings()
+        initializeReadingMail()
+        initializeFetchingMail()
+        initializeSearch()
         initializeIncomingServer()
         initializeComposition()
         initializeManageIdentities()
@@ -130,7 +150,6 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
 
     override fun onResume() {
         super.onResume()
-
         // we might be returning from OpenPgpAppSelectDialog, make sure settings are up to date
         val account = getAccount()
         initializeCryptoSettings(account)
@@ -151,7 +170,37 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         findPreference<Preference>(PREFERENCE_GENERAL)?.onClick {
             FeatureLauncherActivity.launch(
                 context = requireActivity(),
-                target = FeatureLauncherTarget.AccountSettings(accountUuid),
+                target = FeatureLauncherTarget.AccountSettings(accountId),
+            )
+        }
+    }
+
+    private fun initializeReadingMail() {
+        findPreference<Preference>(PREFERENCE_READING_MAIL)?.onClick {
+            FeatureLauncherActivity.launch(
+                context = requireActivity(),
+                target = FeatureLauncherTarget.AccountReadingMailSettings(accountId),
+                launcher = launcherForActivityResult,
+            )
+        }
+    }
+
+    private fun initializeFetchingMail() {
+        findPreference<Preference>(PREFERENCE_FETCHING_MAIL)?.onClick {
+            FeatureLauncherActivity.launch(
+                context = requireActivity(),
+                target = FeatureLauncherTarget.AccountFetchingMailSettings(accountId),
+                launcher = launcherForActivityResult,
+            )
+        }
+    }
+
+    private fun initializeSearch() {
+        findPreference<Preference>(PREFERENCE_SEARCH)?.onClick {
+            FeatureLauncherActivity.launch(
+                context = requireActivity(),
+                target = FeatureLauncherTarget.AccountSearchSettings(accountId),
+                launcher = launcherForActivityResult,
             )
         }
     }
@@ -160,20 +209,20 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         findPreference<Preference>(PREFERENCE_INCOMING_SERVER)?.onClick {
             FeatureLauncherActivity.launch(
                 context = requireActivity(),
-                target = FeatureLauncherTarget.AccountEditIncomingSettings(accountUuid),
+                target = FeatureLauncherTarget.AccountEditIncomingSettings(accountId),
             )
         }
     }
 
     private fun initializeComposition() {
         findPreference<Preference>(PREFERENCE_COMPOSITION)?.onClick {
-            AccountSetupComposition.actionEditCompositionSettings(requireActivity(), accountUuid)
+            AccountSetupComposition.actionEditCompositionSettings(requireActivity(), accountId)
         }
     }
 
     private fun initializeManageIdentities() {
         findPreference<Preference>(PREFERENCE_MANAGE_IDENTITIES)?.onClick {
-            ManageIdentities.start(requireActivity(), accountUuid)
+            ManageIdentities.start(requireActivity(), accountId.toString())
         }
     }
 
@@ -189,7 +238,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         findPreference<Preference>(PREFERENCE_OUTGOING_SERVER)?.onClick {
             FeatureLauncherActivity.launch(
                 context = requireActivity(),
-                target = FeatureLauncherTarget.AccountEditOutgoingSettings(accountUuid),
+                target = FeatureLauncherTarget.AccountEditOutgoingSettings(accountId),
             )
         }
     }
@@ -376,7 +425,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
 
     private fun configureAutocryptTransfer(account: LegacyAccountDto) {
         findPreference<Preference>(PREFERENCE_AUTOCRYPT_TRANSFER)!!.onClick {
-            val intent = AutocryptKeyTransferActivity.createIntent(requireContext(), account.uuid)
+            val intent = AutocryptKeyTransferActivity.createIntent(requireContext(), account.id.toString())
             startActivity(intent)
         }
     }
@@ -433,7 +482,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
     }
 
     private fun getAccount(): LegacyAccountDto {
-        return viewModel.getAccountBlocking(accountUuid)
+        return viewModel.getAccountBlocking(accountId)
     }
 
     private fun onDeleteAccount() {
@@ -450,7 +499,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
 
     override fun doPositiveClick(dialogId: Int) {
         closeAccountSettings()
-        accountRemover.removeAccountAsync(accountUuid)
+        accountRemover.removeAccountAsync(accountId)
     }
 
     override fun doNegativeClick(dialogId: Int) = Unit
@@ -476,6 +525,10 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         internal const val PREFERENCE_OPENPGP = "openpgp"
         private const val ARG_ACCOUNT_UUID = "accountUuid"
         private const val PREFERENCE_GENERAL = "general"
+
+        private const val PREFERENCE_READING_MAIL = "reading_mail"
+        private const val PREFERENCE_FETCHING_MAIL = "fetching_mail"
+        private const val PREFERENCE_SEARCH = "search"
         private const val PREFERENCE_INCOMING_SERVER = "incoming"
         private const val PREFERENCE_COMPOSITION = "composition"
         private const val PREFERENCE_MANAGE_IDENTITIES = "manage_identities"

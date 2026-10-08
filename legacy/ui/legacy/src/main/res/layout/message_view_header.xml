@@ -187,4 +187,53 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <LinearLayout
+        android:id="@+id/attachment_summary_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingTop="4dp"
+        android:paddingBottom="12dp"
+        android:visibility="gone"
+        tools:visibility="visible"
+        >
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            app:srcCompat="@drawable/ic_attachment"
+            app:tint="?attr/colorOnSurfaceVariant"
+            android:contentDescription="@null"
+            />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/attachment_summary_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="8dp"
+            android:singleLine="true"
+            android:ellipsize="middle"
+            android:textAppearance="?attr/textAppearanceBodyMedium"
+            android:textColor="?attr/colorOnSurfaceVariant"
+            tools:text="3 Attachments (1.5 MB)"
+            />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/view_all_attachments"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?attr/textAppearanceLabelLarge"
+            android:textColor="?attr/colorPrimary"
+            android:background="?attr/selectableItemBackground"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="4dp"
+            tools:text="View all"
+            />
+
+    </LinearLayout>
+
 </com.fsck.k9.view.MessageHeader>

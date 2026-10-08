@@ -3,9 +3,11 @@ package net.thunderbird.cli.translation
 import net.thunderbird.cli.translation.net.Language
 import net.thunderbird.cli.translation.net.Translation
 import net.thunderbird.cli.translation.net.WeblateClient
+import net.thunderbird.cli.translation.net.WeblateConfig
 
 class LanguageCodeLoader(
-    private val client: WeblateClient = WeblateClient(),
+    config: WeblateConfig = WeblateConfig(),
+    private val client: WeblateClient = WeblateClient(config = config),
 ) {
     fun loadCurrentAndroidLanguageCodes(token: String, threshold: Double): List<String> {
         val languages = client.loadLanguages(token)

@@ -4,8 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
-import app.k9mail.core.ui.compose.designsystem.PreviewWithTheme
-import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
+import net.thunderbird.components.ui.bolt.PreviewWithTheme
+import net.thunderbird.components.ui.bolt.atom.icon.Icons
 import net.thunderbird.core.ui.setting.SettingValue.IconList.IconOption
 
 @Composable

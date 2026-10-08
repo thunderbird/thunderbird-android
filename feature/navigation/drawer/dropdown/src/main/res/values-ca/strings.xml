@@ -2,11 +2,12 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="navigation_drawer_dropdown_action_settings">Configuració</string>
     <string name="navigation_drawer_dropdown_action_manage_folders">Gestioneu les carpetes</string>
-    <string name="navigation_drawer_dropdown_unified_inbox_title">Bústia d\'entrada unificada</string>
+    <string name="navigation_drawer_dropdown_unified_inbox_title">Bústia d\'entrada</string>
     <string name="navigation_drawer_dropdown_action_sync_all_accounts">Sincronitza tots els comptes</string>
     <string name="navigation_drawer_dropdown_folder_item_badge_count_greater_than_99">99+</string>
     <string name="navigation_drawer_dropdown_folder_item_badge_count_greater_than_1_000">1000+</string>
     <string name="navigation_drawer_dropdown_avount_view_selection_title">Llistat de comptes</string>
     <string name="navigation_drawer_dropdown_unified_account_title">Compte unificat</string>
     <string name="navigation_drawer_dropdown_action_add_account">Afegir compte</string>
+    <string name="navigation_drawer_dropdown_action_sync_account">Sincronitza el compte</string>
 </resources>

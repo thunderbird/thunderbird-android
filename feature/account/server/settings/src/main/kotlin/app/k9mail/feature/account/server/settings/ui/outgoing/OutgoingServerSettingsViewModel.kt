@@ -1,6 +1,5 @@
 package app.k9mail.feature.account.server.settings.ui.outgoing
 
-import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
 import app.k9mail.feature.account.common.domain.AccountDomainContract
 import app.k9mail.feature.account.common.domain.entity.ConnectionSecurity
 import app.k9mail.feature.account.common.domain.entity.InteractionMode
@@ -10,7 +9,8 @@ import app.k9mail.feature.account.server.settings.ui.outgoing.OutgoingServerSett
 import app.k9mail.feature.account.server.settings.ui.outgoing.OutgoingServerSettingsContract.State
 import app.k9mail.feature.account.server.settings.ui.outgoing.OutgoingServerSettingsContract.Validator
 import app.k9mail.feature.account.server.settings.ui.outgoing.OutgoingServerSettingsContract.ViewModel
-import net.thunderbird.core.outcome.Outcome
+import net.thunderbird.components.core.outcome.Outcome
+import net.thunderbird.core.ui.contract.mvi.BaseViewModel
 
 open class OutgoingServerSettingsViewModel(
     initialState: State = State(),
@@ -24,16 +24,23 @@ open class OutgoingServerSettingsViewModel(
             Event.LoadAccountState -> handleOneTimeEvent(event, ::loadAccountState)
 
             is Event.ServerChanged -> updateState { it.copy(server = it.server.updateValue(event.server)) }
+
             is Event.SecurityChanged -> updateSecurity(event.security)
+
             is Event.PortChanged -> updateState { it.copy(port = it.port.updateValue(event.port)) }
+
             is Event.AuthenticationTypeChanged -> updateState { it.copy(authenticationType = event.authenticationType) }
+
             is Event.UsernameChanged -> updateState { it.copy(username = it.username.updateValue(event.username)) }
+
             is Event.PasswordChanged -> updateState { it.copy(password = it.password.updateValue(event.password)) }
+
             is Event.ClientCertificateChanged -> updateState {
                 it.copy(clientCertificateAlias = event.clientCertificateAlias)
             }
 
             Event.OnNextClicked -> onNext()
+
             Event.OnBackClicked -> onBack()
         }
     }

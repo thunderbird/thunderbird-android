@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="designsystem_atom_password_textfield_hide_password">Wachtwoord verbergen</string>
-    <string name="designsystem_molecule_email_address_input_label">E-mailadres</string>
-    <string name="designsystem_atom_password_textfield_show_password">Wachtwoord tonen</string>
-    <string name="designsystem_molecule_error_view_button_retry">Opnieuw proberen</string>
-    <string name="designsystem_molecule_password_input_label">Wachtwoord</string>
-</resources>

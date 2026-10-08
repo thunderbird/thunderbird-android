@@ -1,7 +1,7 @@
 package app.k9mail.feature.account.server.settings.domain.usecase
 
 import app.k9mail.feature.account.server.settings.domain.ServerSettingsDomainContract.UseCase
-import net.thunderbird.core.outcome.Outcome
+import net.thunderbird.components.core.outcome.Outcome
 import net.thunderbird.core.validation.ValidationError
 import net.thunderbird.core.validation.ValidationOutcome
 import net.thunderbird.core.validation.ValidationSuccess
@@ -12,7 +12,6 @@ class ValidatePassword : UseCase.ValidatePassword {
     override fun execute(password: String): ValidationOutcome {
         return when {
             password.isBlank() -> Outcome.Failure(ValidatePasswordError.EmptyPassword)
-
             else -> ValidationSuccess
         }
     }

@@ -3,4 +3,7 @@
     <string name="account_oauth_sign_in_button">Кіру</string>
     <string name="account_oauth_sign_in_with_google_button">Google арқылы кіру</string>
     <string name="account_oauth_loading_message">OAuth арқылы кіруде</string>
+    <string name="account_oauth_loading_error">OAuth кіру сәтсіз аяқталды</string>
+    <string name="account_oauth_error_canceled">Авторизациясы тоқтатылды</string>
+    <string name="account_oauth_error_not_supported">OAuth 2.0 қазір бұл провайдермен қолжетімсіз.</string>
 </resources>

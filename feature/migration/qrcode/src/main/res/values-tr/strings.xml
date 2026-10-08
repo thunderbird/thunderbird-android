@@ -6,4 +6,5 @@
     <string name="migration_qrcode_scanning_progress">%1$s / %2$s tarandı</string>
     <string name="migration_qrcode_done_button_text">Tamam</string>
     <string name="migration_qrcode_scanning_instructions">Bilgisayarınızdaki Thunderbird\'ün verdiği QR kodunu okutun</string>
+    <string name="migration_qrcode_unsupported_code">QR kodu algılandı, ancak geçersiz veya desteklenmeyen veriler içeriyor.</string>
 </resources>

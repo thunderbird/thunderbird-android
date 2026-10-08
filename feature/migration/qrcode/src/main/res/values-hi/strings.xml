@@ -2,4 +2,5 @@
 <resources>
     <string name="migration_qrcode_permission_denied_title">कैमरा एक्सेस आवश्यक है</string>
     <string name="migration_qrcode_permission_denied_message">एंड्रॉइड सेटिंग्स पर जाएं, अनुमतियों पर टैप करें और कैमरे तक पहुंच की अनुमति दें।</string>
+    <string name="migration_qrcode_go_to_settings_button_text">सेटिंग्स पर जाएं</string>
 </resources>

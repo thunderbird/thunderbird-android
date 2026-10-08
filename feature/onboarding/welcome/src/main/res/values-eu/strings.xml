@@ -3,5 +3,5 @@
     <string name="onboarding_welcome_start_button">Hasi</string>
     <string name="onboarding_welcome_import_button">Ezarpenak inportatu</string>
     <string name="onboarding_welcome_text">Kode irekiko, pribatutasunean oinarritutako eta iragarkirik gabeko posta elektronikoko aplikazioa Androiderako.</string>
-    <string name="onboarding_welcome_developed_by">MZLA Technologies-eko talde dedikatu batek eta boluntarioen komunitate global batek garatua. Mozilla familiaren parte.</string>
+    <string name="onboarding_welcome_developed_by">MZLA Technologies-eko berariazko talde batek eta boluntarioen komunitate global batek garatua. Mozilla familiaren parte da.</string>
 </resources>

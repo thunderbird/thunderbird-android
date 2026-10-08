@@ -1,14 +1,13 @@
 plugins {
     id(ThunderbirdPlugins.App.androidCompose)
     alias(libs.plugins.dependency.guard)
-    id("thunderbird.app.version.info")
-    id("thunderbird.quality.badging")
+    alias(libs.plugins.tb.app.badging)
+    alias(libs.plugins.tb.app.versioning)
 }
 
-val testCoverageEnabled: Boolean by extra
-if (testCoverageEnabled) {
-    apply(plugin = "jacoco")
-}
+val testCoverageEnabled = providers
+    .gradleProperty("testCoverageEnabled")
+    .isPresent
 
 android {
     namespace = "com.fsck.k9"
@@ -18,7 +17,7 @@ android {
         testApplicationId = "com.fsck.k9.tests"
 
         versionCode = 39004
-        versionName = "17.0"
+        versionName = "26.0"
         versionNameSuffix = "a1"
 
         buildConfigField("String", "CLIENT_INFO_APP_NAME", "\"K-9 Mail\"")
@@ -88,18 +87,24 @@ android {
     }
 
     buildTypes {
+        val isCI = providers.gradleProperty("ci")
+            .map(String::toBoolean)
+            .orElse(false)
         release {
             signingConfig = signingConfigs.getByType(SigningType.K9_RELEASE)
 
-            isMinifyEnabled = true
+            isMinifyEnabled = !isCI.get()
+            isShrinkResources = !isCI.get()
+
             proguardFiles(
-                getDefaultProguardFile("proguard-android.txt"),
+                getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro",
             )
         }
 
         debug {
             applicationIdSuffix = ".debug"
+
             enableUnitTestCoverage = testCoverageEnabled
             enableAndroidTestCoverage = testCoverageEnabled
 
@@ -138,7 +143,7 @@ android {
 
 dependencies {
     implementation(projects.appCommon)
-    implementation(projects.core.ui.compose.theme2.k9mail)
+    implementation(projects.core.ui.compose.common)
     implementation(projects.core.ui.legacy.theme2.k9mail)
     implementation(projects.feature.launcher)
     implementation(projects.feature.mail.message.list.api)
@@ -150,12 +155,16 @@ dependencies {
 
     implementation(projects.core.featureflag)
 
+    implementation(projects.feature.autodiscovery.api)
     implementation(projects.feature.account.settings.impl)
 
     "fossImplementation"(projects.feature.funding.noop)
     "fullImplementation"(projects.feature.funding.googleplay)
     implementation(projects.feature.migration.launcher.noop)
     implementation(projects.feature.onboarding.migration.noop)
+    implementation(projects.feature.thundermail.api)
+    implementation(projects.feature.thundermail.k9mail)
+    implementation(projects.feature.thundermail.api)
     implementation(projects.feature.telemetry.noop)
     implementation(projects.feature.widget.messageList)
     implementation(projects.feature.widget.messageListGlance)
@@ -164,18 +173,26 @@ dependencies {
 
     implementation(libs.androidx.work.runtime)
 
-    implementation(projects.feature.autodiscovery.api)
     debugImplementation(projects.backend.demo)
     debugImplementation(projects.feature.autodiscovery.demo)
 
     // Required for DependencyInjectionTest
     testImplementation(projects.feature.account.api)
     testImplementation(projects.feature.account.common)
+    testImplementation(projects.feature.thundermail.internal.common)
     testImplementation(projects.plugins.openpgpApiLib.openpgpApi)
+    testImplementation(projects.feature.changelog.api)
+    testImplementation(projects.feature.changelog.internal)
+
     testImplementation(libs.appauth)
 }
 
 dependencyGuard {
     configuration("fossReleaseRuntimeClasspath")
     configuration("fullReleaseRuntimeClasspath")
+}
+
+codeCoverage {
+    branchCoverage = 0
+    lineCoverage = 24
 }

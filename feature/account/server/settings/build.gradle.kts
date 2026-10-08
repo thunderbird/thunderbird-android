@@ -14,10 +14,11 @@ android {
 }
 
 dependencies {
-    implementation(projects.core.ui.compose.designsystem)
+    implementation(projects.core.ui.contract)
     implementation(projects.core.common)
     implementation(projects.core.validation)
 
+    implementation(projects.legacy.logging)
     implementation(projects.mail.common)
     implementation(projects.mail.protocols.imap)
 
@@ -26,4 +27,9 @@ dependencies {
     implementation(libs.androidx.biometric)
 
     testImplementation(projects.core.ui.compose.testing)
+}
+
+codeCoverage {
+    branchCoverage = 1
+    lineCoverage = 3
 }

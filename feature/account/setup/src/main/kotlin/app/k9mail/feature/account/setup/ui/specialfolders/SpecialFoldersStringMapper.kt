@@ -13,7 +13,9 @@ internal fun SpecialFolderOption.toResourceString(resources: Resources) = when (
             noneString
         }
     }
+
     is SpecialFolderOption.Regular -> remoteFolder.displayName
+
     is SpecialFolderOption.Special -> {
         if (isAutomatic) {
             resources.getString(R.string.account_setup_special_folders_folder_automatic, remoteFolder.displayName)

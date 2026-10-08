@@ -13,12 +13,15 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceCategory
 import androidx.preference.PreferenceScreen
 import androidx.work.WorkInfo
+import app.k9mail.feature.launcher.FeatureLauncherActivity
+import app.k9mail.feature.launcher.FeatureLauncherTarget
 import app.k9mail.feature.telemetry.api.TelemetryManager
 import com.fsck.k9.job.K9JobManager
 import com.fsck.k9.ui.BuildConfig
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.extensions.withArguments
 import com.fsck.k9.ui.observe
+import com.fsck.k9.ui.settings.notificationactions.NotificationActionsSettingsActivity
 import com.fsck.k9.ui.settings.remove
 import com.google.android.material.snackbar.Snackbar
 import com.takisoft.preferencex.PreferenceFragmentCompat
@@ -26,7 +29,7 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 import net.thunderbird.core.featureflag.FeatureFlagProvider
-import net.thunderbird.core.featureflag.toFeatureFlagKey
+import net.thunderbird.core.featureflag.keys.GeneratedFeatureFlagKey
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -78,6 +81,21 @@ class GeneralSettingsFragment : PreferenceFragmentCompat() {
         preferenceManager.preferenceDataStore = dataStore
         this.rootKey = rootKey
         setPreferencesFromResource(R.xml.general_settings, rootKey)
+
+        findPreference<Preference>("notification_actions_settings")?.onPreferenceClickListener =
+            Preference.OnPreferenceClickListener {
+                context?.let { NotificationActionsSettingsActivity.start(it) }
+                true
+            }
+        findPreference<Preference>("remote_feature_flag")?.onPreferenceClickListener =
+            Preference.OnPreferenceClickListener {
+                FeatureLauncherActivity.launch(
+                    context = requireContext(),
+                    target = FeatureLauncherTarget.RemoteFeatureFlag,
+                )
+                true
+            }
+
         val listener = Preference.OnPreferenceChangeListener { _, newValue ->
             if (!(newValue as Boolean)) {
                 jobManager.cancelDebugLogLimit()
@@ -88,7 +106,7 @@ class GeneralSettingsFragment : PreferenceFragmentCompat() {
             true
         }
         findPreference<Preference>("sync_debug_logging")?.onPreferenceChangeListener = listener
-        featureFlagProvider.provide("disable_font_size_config".toFeatureFlagKey())
+        featureFlagProvider.provide(GeneratedFeatureFlagKey.DISABLE_FONT_SIZE_CONFIG)
             .onEnabled {
                 val parentPreference = findPreference<PreferenceCategory>("global_preferences")
                 val fontSizePreferenceScreen = findPreference<PreferenceScreen>("font_size")

@@ -5,7 +5,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationCompat.WearableExtender
 import com.fsck.k9.notification.NotificationChannelManager.ChannelType
 import net.thunderbird.core.android.account.LegacyAccountDto
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.legacy.logging.Log
 import androidx.core.app.NotificationCompat.Builder as NotificationBuilder
 
 internal class SummaryNotificationCreator(

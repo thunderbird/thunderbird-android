@@ -3,15 +3,13 @@ plugins {
 }
 
 kotlin {
-    androidLibrary {
+    android {
         namespace = "net.thunderbird.core.logging.file"
-        withHostTest {}
     }
     sourceSets {
         commonMain.dependencies {
             implementation(projects.core.logging.api)
             implementation(projects.core.file)
-            implementation(projects.core.outcome)
 
             implementation(libs.kotlinx.io.core)
             implementation(libs.uri)
@@ -20,4 +18,9 @@ kotlin {
             implementation(libs.robolectric)
         }
     }
+}
+
+codeCoverage {
+    branchCoverage = 50
+    lineCoverage = 71
 }

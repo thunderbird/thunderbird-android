@@ -4,23 +4,28 @@ plugins {
 }
 
 dependencies {
+    api(projects.feature.changelog.api)
     api(projects.legacy.ui.base)
     api(projects.core.ui.account)
     api(projects.legacy.ui.folder)
     api(projects.core.ui.legacy.designsystem)
 
     implementation(projects.legacy.core)
+    implementation(projects.legacy.logging)
     implementation(projects.feature.mail.account.api)
     implementation(projects.mail.common)
     implementation(projects.uiUtils.toolbarBottomSheet)
     implementation(projects.core.android.contact)
+    implementation(projects.core.android.webkit)
+    implementation(projects.feature.changelog.internal)
 
     implementation(projects.core.featureflag)
     implementation(projects.core.logging.api)
+    implementation(projects.core.ui.compose.common)
     implementation(projects.core.ui.theme.api)
     implementation(projects.feature.launcher)
+    implementation(projects.feature.account.settings.api)
     implementation(projects.core.common)
-    implementation(projects.core.ui.compose.designsystem)
     implementation(projects.feature.navigation.drawer.api)
     implementation(projects.feature.navigation.drawer.dropdown)
     implementation(projects.feature.notification.api)
@@ -33,7 +38,7 @@ dependencies {
     implementation(projects.feature.settings.import)
     implementation(projects.feature.telemetry.api)
     implementation(projects.feature.mail.message.list.api)
-    implementation(projects.feature.mail.message.composer)
+    implementation(projects.feature.mail.message.composer.api)
     implementation(projects.feature.mail.message.export.api)
     implementation(projects.feature.mail.message.reader.api)
 
@@ -55,7 +60,6 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.localbroadcastmanager)
     implementation(libs.androidx.swiperefreshlayout)
-    implementation(libs.ckchangelog.core)
     implementation(projects.library.tokenAutoComplete)
     implementation(libs.safeContentResolver)
     implementation(libs.searchPreference)
@@ -87,11 +91,10 @@ dependencies {
     testImplementation(projects.mail.testing)
     testImplementation(projects.legacy.storage)
     testImplementation(projects.feature.telemetry.noop)
-    testImplementation(libs.robolectric)
+
     testImplementation(libs.androidx.test.core)
-    testImplementation(libs.kotlin.test)
-    testImplementation(libs.kotlinx.coroutines.test)
-    testImplementation(libs.turbine)
+    testImplementation(libs.mockito.kotlin)
+    testImplementation(libs.robolectric)
 }
 
 android {
@@ -106,4 +109,9 @@ android {
             isIncludeAndroidResources = true
         }
     }
+}
+
+codeCoverage {
+    branchCoverage = 2
+    lineCoverage = 4
 }

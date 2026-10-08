@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="designsystem_atom_password_textfield_hide_password">Skjul kodeord</string>
-    <string name="designsystem_molecule_email_address_input_label">Email adresse</string>
-    <string name="designsystem_atom_password_textfield_show_password">Vis kodeord</string>
-    <string name="designsystem_molecule_error_view_button_retry">Prøv igen</string>
-    <string name="designsystem_molecule_password_input_label">Kodeord</string>
-</resources>

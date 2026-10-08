@@ -8,4 +8,6 @@
     <string name="navigation_drawer_dropdown_action_sync_all_accounts">Sioncronaich a h-uile cunntas</string>
     <string name="navigation_drawer_dropdown_avount_view_selection_title">Liosta nan cunntasan</string>
     <string name="navigation_drawer_dropdown_unified_account_title">Co-chunntas</string>
+    <string name="navigation_drawer_dropdown_action_sync_account">Sioncronaich an cunntas</string>
+    <string name="navigation_drawer_dropdown_action_add_account">Cuir cunntas ris</string>
 </resources>

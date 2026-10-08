@@ -6,7 +6,7 @@ import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
 import kotlin.test.Test
 import kotlinx.coroutines.test.runTest
-import net.thunderbird.core.outcome.Outcome
+import net.thunderbird.components.core.outcome.Outcome
 import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.account.avatar.Avatar
 import net.thunderbird.feature.account.profile.AccountProfile
@@ -50,7 +50,7 @@ internal class GetAccountProfileTest {
             assertThat(awaitItem()).isEqualTo(
                 Outcome.failure(
                     AccountSettingError.NotFound(
-                        message = "AccountProfile not found for accountId: ${accountId.asRaw()}",
+                        message = "AccountProfile not found for accountId: $accountId",
                     ),
                 ),
             )

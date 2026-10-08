@@ -11,11 +11,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.compose.AndroidFragment
 import androidx.lifecycle.compose.LocalLifecycleOwner
-import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonIcon
-import app.k9mail.core.ui.compose.designsystem.organism.TopAppBar
-import app.k9mail.core.ui.compose.designsystem.template.Scaffold
 import app.k9mail.feature.settings.importing.R
-import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
+import net.thunderbird.components.ui.bolt.atom.button.ButtonIcon
+import net.thunderbird.components.ui.bolt.atom.icon.Icons
+import net.thunderbird.components.ui.bolt.organism.TopAppBar
+import net.thunderbird.components.ui.bolt.template.Scaffold
 
 @Composable
 fun SettingsImportScreen(

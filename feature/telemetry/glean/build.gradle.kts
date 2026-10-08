@@ -15,3 +15,8 @@ dependencies {
     implementation(libs.mozilla.components.glean)
     implementation(libs.mozilla.components.fetch.okhttp)
 }
+
+codeCoverage {
+    branchCoverage = 0
+    lineCoverage = 0
+}

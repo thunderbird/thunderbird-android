@@ -3,7 +3,7 @@ plugins {
 }
 
 kotlin {
-    androidLibrary {
+    android {
         namespace = "net.thunderbird.core.logging.testing"
     }
     sourceSets {
@@ -11,4 +11,8 @@ kotlin {
             api(projects.core.logging.api)
         }
     }
+}
+
+codeCoverage {
+    lineCoverage = 0
 }

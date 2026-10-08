@@ -1,0 +1,15 @@
+appId: ${MAESTRO_APP_ID}
+---
+
+# Launches app and handles complete onboarding (demo or real account)
+#
+# Environment is prepared by scripts/detect_variant.js.
+
+- runScript: ../scripts/detect_variant.js
+
+- launchApp:
+    clearState: true
+
+## Run the complete onboarding sequence
+- runFlow:
+    file: onboard.yml

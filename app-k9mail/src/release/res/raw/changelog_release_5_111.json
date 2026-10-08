@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "version": "5.111",
+  "versioncode": 23110,
+  "date": "2016-08-27",
+  "notes": [
+    {
+      "type": "fixed",
+      "text": "Fixed replying to and forwarding of encrypted messages",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Ask for confirmation on \"mark all as read\"",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Suggest server name based on server type",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Added support for esPass MIME type (application/vnd.espass-espass+zip)",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Removed attachment indicator for encrypted messages",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Don't add additional line break to the end of a message when sending",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Removed broken support for sending messages as 8-bit via SMTP",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Lots of internal changes and minor bug fixes",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

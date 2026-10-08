@@ -13,7 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 
 import com.fsck.k9.helper.MimeTypeUtil;
-import net.thunderbird.core.logging.legacy.Log;
+import net.thunderbird.legacy.logging.Log;
 import androidx.annotation.WorkerThread;
 
 import com.fsck.k9.mail.Body;
@@ -65,7 +65,7 @@ public class AttachmentInfoExtractor {
             uri = AttachmentProvider.getAttachmentUri(accountUuid, messagePartId);
         } else if (part instanceof LocalMessage) {
             LocalMessage localMessage = (LocalMessage) part;
-            String accountUuid = localMessage.getAccount().getUuid();
+            String accountUuid = localMessage.getAccount().getId().toString();
             long messagePartId = localMessage.getMessagePartId();
             size = localMessage.getSize();
             isContentAvailable = part.getBody() != null;

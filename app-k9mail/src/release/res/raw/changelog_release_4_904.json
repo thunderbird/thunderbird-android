@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "version": "4.904",
+  "versioncode": 21007,
+  "date": "2014-04-18",
+  "notes": [
+    {
+      "type": "new",
+      "text": "Added support for OpenPGP API v3",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed problems with IMAP login",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Updated translations",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed multiple bugs",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

@@ -5,7 +5,8 @@ import app.k9mail.legacy.mailstore.FolderTypeMapper
 import app.k9mail.legacy.mailstore.MessageStoreManager
 import app.k9mail.legacy.message.controller.MessagingControllerRegistry
 import app.k9mail.legacy.message.controller.SimpleMessagingListener
-import kotlin.coroutines.CoroutineContext
+import java.text.Collator
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.awaitClose
@@ -15,10 +16,13 @@ import kotlinx.coroutines.flow.buffer
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.withContext
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.account.LegacyAccountDtoManager
+import net.thunderbird.feature.account.AccountId
+import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.mail.folder.api.Folder
-import net.thunderbird.feature.mail.folder.api.FolderType
+import net.thunderbird.feature.mail.folder.FolderType
 import net.thunderbird.feature.mail.folder.api.OutboxFolderManager
 import com.fsck.k9.mail.FolderType as LegacyFolderType
 
@@ -27,21 +31,26 @@ class DefaultDisplayFolderRepository(
     private val messagingController: MessagingControllerRegistry,
     private val messageStoreManager: MessageStoreManager,
     private val outboxFolderManager: OutboxFolderManager,
-    private val coroutineContext: CoroutineContext = Dispatchers.IO,
+    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : DisplayFolderRepository {
     private val sortForDisplay =
         compareByDescending<DisplayFolder> { it.folder.type == FolderType.INBOX }
             .thenByDescending { it.folder.type == FolderType.OUTBOX }
             .thenByDescending { it.folder.type != FolderType.REGULAR }
             .thenByDescending { it.isInTopGroup }
-            .thenBy(String.CASE_INSENSITIVE_ORDER) { it.folder.name }
+            .thenBy(
+                // #10718 use locale-sensitive ordering for folders
+                Collator.getInstance().apply {
+                    decomposition = Collator.CANONICAL_DECOMPOSITION
+                },
+            ) { it.folder.name }
 
     private fun getDisplayFolders(
         account: LegacyAccountDto,
         outboxFolderId: Long,
         includeHiddenFolders: Boolean,
     ): List<DisplayFolder> {
-        val messageStore = messageStoreManager.getMessageStore(account.uuid)
+        val messageStore = messageStoreManager.getMessageStore(account.id)
         return messageStore.getDisplayFolders(
             includeHiddenFolders = includeHiddenFolders,
             outboxFolderId = outboxFolderId,
@@ -66,7 +75,7 @@ class DefaultDisplayFolderRepository(
         account: LegacyAccountDto,
         includeHiddenFolders: Boolean,
     ): Flow<List<DisplayFolder>> {
-        val messageStore = messageStoreManager.getMessageStore(account.uuid)
+        val messageStore = messageStoreManager.getMessageStore(account.id)
 
         return callbackFlow {
             val outboxFolderId = outboxFolderManager.getOutboxFolderId(account.id)
@@ -74,7 +83,7 @@ class DefaultDisplayFolderRepository(
 
             val folderStatusChangedListener = object : SimpleMessagingListener() {
                 override fun folderStatusChanged(statusChangedAccount: LegacyAccountDto, folderId: Long) {
-                    if (statusChangedAccount.uuid == account.uuid) {
+                    if (statusChangedAccount.id == account.id) {
                         trySendBlocking(getDisplayFolders(account, outboxFolderId, includeHiddenFolders))
                     }
                 }
@@ -82,7 +91,9 @@ class DefaultDisplayFolderRepository(
             messagingController.addListener(folderStatusChangedListener)
 
             val folderSettingsChangedListener = FolderSettingsChangedListener {
-                trySendBlocking(getDisplayFolders(account, outboxFolderId, includeHiddenFolders))
+                withContext(ioDispatcher) {
+                    trySendBlocking(getDisplayFolders(account, outboxFolderId, includeHiddenFolders))
+                }
             }
             messageStore.addFolderSettingsChangedListener(folderSettingsChangedListener)
 
@@ -92,11 +103,11 @@ class DefaultDisplayFolderRepository(
             }
         }.buffer(capacity = Channel.CONFLATED)
             .distinctUntilChanged()
-            .flowOn(coroutineContext)
+            .flowOn(ioDispatcher)
     }
 
-    override fun getDisplayFoldersFlow(accountUuid: String): Flow<List<DisplayFolder>> {
-        val account = accountManager.getAccount(accountUuid) ?: error("Account not found: $accountUuid")
+    override fun getDisplayFoldersFlow(accountId: String): Flow<List<DisplayFolder>> {
+        val account = accountManager.getById(AccountIdFactory.of(accountId)) ?: error("Account not found: $accountId")
         return getDisplayFoldersFlow(account, includeHiddenFolders = false)
     }
 

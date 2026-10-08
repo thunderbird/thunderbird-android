@@ -20,7 +20,7 @@
     <string name="notification_additional_messages">in %1$d na %2$s</string>
     <string name="push_notification_state_initializing">Začenjanje …</string>
     <string name="push_notification_state_listening">Čakam na nova e-poštna sporočila</string>
-    <string name="push_notification_state_wait_background_sync">Spanje, dokler ni dovoljena sinhronizacija v ozadju </string>
+    <string name="push_notification_state_wait_background_sync">Spanje, dokler ni dovoljena sinhronizacija v ozadju</string>
     <string name="push_notification_state_wait_network">Spanje, dokler ni na voljo omrežja</string>
     <string name="push_notification_state_alarm_permission_missing">Manjka dovoljenje za nastavitev alarma.</string>
     <string name="push_notification_info">Dotakni se, če želiš izvedeti več.</string>

@@ -5,10 +5,11 @@ import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
 import assertk.assertions.isNotNull
 import assertk.assertions.isSameInstanceAs
-import com.fsck.k9.K9
-import com.fsck.k9.K9.LockScreenNotificationVisibility
+import com.fsck.k9.mail.Address
 import net.thunderbird.core.android.account.Identity
 import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.preference.LockScreenNotificationVisibility
+import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.notification.NotificationLight
 import net.thunderbird.feature.notification.NotificationVibration
 import net.thunderbird.feature.notification.VibratePattern
@@ -21,7 +22,9 @@ class BaseNotificationDataCreatorTest {
 
     @Test
     fun `account instance`() {
-        val notificationData = createNotificationData()
+        val notificationData = createNotificationData(
+            lockScreenNotificationVisibility = LockScreenNotificationVisibility.MESSAGE_COUNT,
+        )
 
         val result = notificationDataCreator.createBaseNotificationData(notificationData)
 
@@ -32,7 +35,9 @@ class BaseNotificationDataCreatorTest {
     fun `account name from name property`() {
         account.name = "name"
         account.email = "irrelevant@k9mail.example"
-        val notificationData = createNotificationData()
+        val notificationData = createNotificationData(
+            lockScreenNotificationVisibility = LockScreenNotificationVisibility.MESSAGE_COUNT,
+        )
 
         val result = notificationDataCreator.createBaseNotificationData(notificationData)
 
@@ -43,7 +48,9 @@ class BaseNotificationDataCreatorTest {
     fun `account name is blank`() {
         account.name = ""
         account.email = "test@k9mail.example"
-        val notificationData = createNotificationData()
+        val notificationData = createNotificationData(
+            lockScreenNotificationVisibility = LockScreenNotificationVisibility.MESSAGE_COUNT,
+        )
 
         val result = notificationDataCreator.createBaseNotificationData(notificationData)
 
@@ -54,7 +61,9 @@ class BaseNotificationDataCreatorTest {
     fun `account name is null`() {
         account.name = null
         account.email = "test@k9mail.example"
-        val notificationData = createNotificationData()
+        val notificationData = createNotificationData(
+            lockScreenNotificationVisibility = LockScreenNotificationVisibility.MESSAGE_COUNT,
+        )
 
         val result = notificationDataCreator.createBaseNotificationData(notificationData)
 
@@ -64,7 +73,9 @@ class BaseNotificationDataCreatorTest {
     @Test
     fun `group key`() {
         account.accountNumber = 42
-        val notificationData = createNotificationData()
+        val notificationData = createNotificationData(
+            lockScreenNotificationVisibility = LockScreenNotificationVisibility.MESSAGE_COUNT,
+        )
 
         val result = notificationDataCreator.createBaseNotificationData(notificationData)
 
@@ -74,7 +85,9 @@ class BaseNotificationDataCreatorTest {
     @Test
     fun `notification color`() {
         account.chipColor = 0xFF0000
-        val notificationData = createNotificationData()
+        val notificationData = createNotificationData(
+            lockScreenNotificationVisibility = LockScreenNotificationVisibility.MESSAGE_COUNT,
+        )
 
         val result = notificationDataCreator.createBaseNotificationData(notificationData)
 
@@ -83,7 +96,10 @@ class BaseNotificationDataCreatorTest {
 
     @Test
     fun `new messages count`() {
-        val notificationData = createNotificationData(senders = listOf("irrelevant", "irrelevant"))
+        val notificationData = createNotificationData(
+            senders = listOf("irrelevant", "irrelevant"),
+            lockScreenNotificationVisibility = LockScreenNotificationVisibility.MESSAGE_COUNT,
+        )
 
         val result = notificationDataCreator.createBaseNotificationData(notificationData)
 
@@ -92,8 +108,9 @@ class BaseNotificationDataCreatorTest {
 
     @Test
     fun `do not display notification on lock screen`() {
-        setLockScreenMode(LockScreenNotificationVisibility.NOTHING)
-        val notificationData = createNotificationData()
+        val notificationData = createNotificationData(
+            lockScreenNotificationVisibility = LockScreenNotificationVisibility.NOTHING,
+        )
 
         val result = notificationDataCreator.createBaseNotificationData(notificationData)
 
@@ -102,8 +119,9 @@ class BaseNotificationDataCreatorTest {
 
     @Test
     fun `display application name on lock screen`() {
-        setLockScreenMode(LockScreenNotificationVisibility.APP_NAME)
-        val notificationData = createNotificationData()
+        val notificationData = createNotificationData(
+            lockScreenNotificationVisibility = LockScreenNotificationVisibility.APP_NAME,
+        )
 
         val result = notificationDataCreator.createBaseNotificationData(notificationData)
 
@@ -112,8 +130,9 @@ class BaseNotificationDataCreatorTest {
 
     @Test
     fun `display new message count on lock screen`() {
-        setLockScreenMode(LockScreenNotificationVisibility.MESSAGE_COUNT)
-        val notificationData = createNotificationData()
+        val notificationData = createNotificationData(
+            lockScreenNotificationVisibility = LockScreenNotificationVisibility.MESSAGE_COUNT,
+        )
 
         val result = notificationDataCreator.createBaseNotificationData(notificationData)
 
@@ -122,20 +141,24 @@ class BaseNotificationDataCreatorTest {
 
     @Test
     fun `display message sender names on lock screen`() {
-        setLockScreenMode(LockScreenNotificationVisibility.SENDERS)
-        val notificationData = createNotificationData(senders = listOf("Sender One", "Sender Two", "Sender Three"))
+        val notificationData = createNotificationData(
+            senders = listOf("Sender One", "Sender Two", "Sender Three"),
+            lockScreenNotificationVisibility = LockScreenNotificationVisibility.SENDERS,
+        )
 
         val result = notificationDataCreator.createBaseNotificationData(notificationData)
 
         assertThat(result.lockScreenNotificationData).isInstanceOf<LockScreenNotificationData.SenderNames>()
         val senderNamesData = result.lockScreenNotificationData as LockScreenNotificationData.SenderNames
-        assertThat(senderNamesData.senderNames).isEqualTo("Sender One, Sender Two, Sender Three")
+        assertThat(senderNamesData.senderNames)
+            .isEqualTo("Sender One <irrelevant>, Sender Two <irrelevant>, Sender Three <irrelevant>")
     }
 
     @Test
     fun `display notification on lock screen`() {
-        setLockScreenMode(LockScreenNotificationVisibility.EVERYTHING)
-        val notificationData = createNotificationData()
+        val notificationData = createNotificationData(
+            lockScreenNotificationVisibility = LockScreenNotificationVisibility.EVERYTHING,
+        )
 
         val result = notificationDataCreator.createBaseNotificationData(notificationData)
 
@@ -145,7 +168,9 @@ class BaseNotificationDataCreatorTest {
     @Test
     fun ringtone() {
         account.updateNotificationSettings { it.copy(ringtone = "content://ringtone/1") }
-        val notificationData = createNotificationData()
+        val notificationData = createNotificationData(
+            lockScreenNotificationVisibility = LockScreenNotificationVisibility.MESSAGE_COUNT,
+        )
 
         val result = notificationDataCreator.createBaseNotificationData(notificationData)
 
@@ -163,7 +188,9 @@ class BaseNotificationDataCreatorTest {
                 ),
             )
         }
-        val notificationData = createNotificationData()
+        val notificationData = createNotificationData(
+            lockScreenNotificationVisibility = LockScreenNotificationVisibility.MESSAGE_COUNT,
+        )
 
         val result = notificationDataCreator.createBaseNotificationData(notificationData)
 
@@ -183,36 +210,42 @@ class BaseNotificationDataCreatorTest {
                 light = NotificationLight.Green,
             )
         }
-        val notificationData = createNotificationData()
+        val notificationData = createNotificationData(
+            lockScreenNotificationVisibility = LockScreenNotificationVisibility.MESSAGE_COUNT,
+        )
 
         val result = notificationDataCreator.createBaseNotificationData(notificationData)
 
         assertThat(result.appearance.ledColor).isEqualTo(0xFF00FF00L.toInt())
     }
 
-    private fun setLockScreenMode(mode: LockScreenNotificationVisibility) {
-        K9.lockScreenNotificationVisibility = mode
-    }
-
-    private fun createNotificationData(senders: List<String> = emptyList()): NotificationData {
+    private fun createNotificationData(
+        senders: List<String> = emptyList(),
+        lockScreenNotificationVisibility: LockScreenNotificationVisibility,
+    ): NotificationData {
         val activeNotifications = senders.mapIndexed { index, sender ->
             NotificationHolder(
                 notificationId = index,
                 timestamp = 0L,
                 content = NotificationContent(
                     messageReference = mock(),
-                    sender = sender,
+                    sender = Address("irrelevant", sender),
                     preview = "irrelevant",
                     summary = "irrelevant",
                     subject = "irrelevant",
                 ),
             )
         }
-        return NotificationData(account, activeNotifications, inactiveNotifications = emptyList())
+        return NotificationData(
+            account = account,
+            activeNotifications = activeNotifications,
+            inactiveNotifications = emptyList(),
+            lockScreenNotificationVisibility = lockScreenNotificationVisibility,
+        )
     }
 
     private fun createAccount(): LegacyAccountDto {
-        return LegacyAccountDto("00000000-0000-4000-0000-000000000000").apply {
+        return LegacyAccountDto(AccountIdFactory.create()).apply {
             name = "account name"
             replaceIdentities(listOf(Identity()))
         }

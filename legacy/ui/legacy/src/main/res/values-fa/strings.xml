@@ -35,7 +35,6 @@
     <string name="choose_folder_title">انتخاب پوشه</string>
     <string name="choose_folder_move_title">انتقال به…</string>
     <string name="choose_folder_copy_title">کپی به…</string>
-    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> انتخاب</string>
     <string name="send_action">ارسال</string>
     <string name="empty_subject">موضوع خالی است، دوباره بزنید می‌رود</string>
     <string name="reply_action">پاسخ</string>
@@ -92,7 +91,7 @@
     <!--Shown in place of the subject when a message has no subject. Showing this in parentheses is customary.-->
     <string name="general_no_subject">(بدون موضوع)</string>
     <string name="general_no_sender">بدون فرستنده</string>
-    <string name="status_loading_more">بارگیری پیام‌ها\u2026</string>
+    <string name="status_loading_more">بارگیری پیام‌ها…</string>
     <string name="status_network_error">خطای اتصال</string>
     <string name="status_invalid_id_error">پیام یافت نشد</string>
     <string name="status_loading_error">خطای بارگیری پیام</string>
@@ -122,9 +121,7 @@
     <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
     <string name="notification_notify_error_title">خطای آگاهی‌ها</string>
     <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
-    <string name="notification_notify_error_text">هنگام ساخت هشدار برای پیام جدید سامانه خطایی رخ داد. اغلب خطا به علت عدم وجود آهنگ هشدارها است.
-\n
-\n برای بازکردن تنظیمات آگاهی‌ها، بزنید.</string>
+    <string name="notification_notify_error_text">هنگام ساخت هشدار برای پیام جدید سامانه خطایی رخ داد. اغلب خطا به علت عدم وجود آهنگ هشدارها است. \n \n برای بازکردن تنظیمات آگاهی‌ها، بزنید.</string>
     <string name="notification_bg_sync_ticker">بررسی کردن نامه: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
     <string name="notification_bg_sync_title">بررسی کردن نامه</string>
     <string name="notification_bg_send_ticker">فرستادن نامه: <xliff:g id="account">%s</xliff:g></string>
@@ -176,7 +173,7 @@
     <!--Displayed in the message view screen in front of the number of additional recipients (the ones that are not displayed).-->
     <string name="message_view_additional_recipient_prefix">+</string>
     <!--Displayed in the message view screen if the message was addressed to the user. Make sure this works with 'message_view_recipient_prefix'. In English it's "to me".-->
-    <string name="message_view_me_text">من</string>
+    <string name="message_view_to_me_text">من</string>
     <!--Text of the button that is displayed below the message header when the message body references one or more remote images-->
     <string name="message_view_show_remote_images_action">نمایش تصاویر خارجی</string>
     <string name="message_view_no_viewer">نمایش‌دهنده‌ای برای <xliff:g id="mimetype">%s</xliff:g> پیدا نشد.</string>
@@ -314,17 +311,17 @@
     <string name="account_notify_contacts_mail_only_summary">نمایش آگاهی‌ها فقز برای پیام‌ها از آشنایان شناخته</string>
     <string name="account_settings_ignore_chat_messages_label">نادیده گرفتن پیام‌های گفتگو</string>
     <string name="account_settings_ignore_chat_messages_summary">آگاهی‌ها مرتبط با پیام‌های متعلق به یک گفتگوی رایانامه‌ای را نمایش نده</string>
-    <string name="account_settings_mark_message_as_read_on_view_label">اگر باز شد نشان بزن که خواندم</string>
-    <string name="account_settings_mark_message_as_read_on_view_summary">زمانی که یک پیام را باز کردید به‌عنوان خوانده علامت بخورد</string>
-    <string name="account_settings_mark_message_as_read_on_delete_label">هنگام حذف، نشان بزن که خواندم</string>
-    <string name="account_settings_mark_message_as_read_on_delete_summary">پیام حذف‌شده را نشان بزن که خوانده‌ام</string>
+    <string name="account_settings_mark_message_as_read_on_view_label">علامت‌گذاری به عنوان خوانده‌شده هنگام باز کردن</string>
+    <string name="account_settings_mark_message_as_read_on_view_summary">علامت‌گذاری پیام به عنوان خوانده‌شده هنگام باز شدن برای مشاهده</string>
+    <string name="account_settings_mark_message_as_read_on_delete_label">علامت‌گذاری به عنوان خوانده‌شده هنگام حذف</string>
+    <string name="account_settings_mark_message_as_read_on_delete_summary">علامت‌گذاری پیام به عنوان خوانده‌شده هنگام حذف آن</string>
     <string name="account_settings_notification_channels_label">دسته‌بندی‌های آگاهی</string>
     <string name="account_settings_open_notification_settings_messages_summary">آگاهی برای پیام‌های جدید را پیکربندی کنید</string>
     <string name="account_settings_open_notification_settings_miscellaneous_summary">آگاهی‌های وضعیت و خطا را پیکربندی کنید</string>
-    <string name="account_settings_show_pictures_label">همیشه عکس‌ها را نشان بده</string>
+    <string name="account_settings_show_pictures_label">همیشه تصویرها نشان داده شوند</string>
     <string name="account_settings_show_pictures_never">خیر</string>
-    <string name="account_settings_show_pictures_only_from_contacts">از آشنایان</string>
-    <string name="account_settings_show_pictures_always">از هرکس</string>
+    <string name="account_settings_show_pictures_only_from_contacts">از طرف مخاطبان</string>
+    <string name="account_settings_show_pictures_always">از طرف هر کسی</string>
     <string name="account_settings_composition">ارسال رایانامه</string>
     <string name="account_settings_default_quoted_text_shown_label">در پاسخ به پیام، آن را نقل‌قول کن</string>
     <string name="account_settings_default_quoted_text_shown_summary">پیام اولیه را در پاسخ شما می‌گنجاند.</string>
@@ -359,45 +356,45 @@
     <string name="account_settings_crypto_encrypt_all_drafts">ذخیرهٔ همهٔ پیش‌نویس‌ها به‌صورت رمزنگاری‌شده</string>
     <string name="account_settings_crypto_encrypt_all_drafts_on">همهٔ پیش‌نویس‌ها به‌صورت رمزنگاری‌شده ذخیره می‌شوند</string>
     <string name="account_settings_crypto_encrypt_all_drafts_off">پیش‌نویس‌ها فقط در صورتی رمزنگاری شوند که رمزنگاری فعال باشد</string>
-    <string name="account_settings_mail_check_frequency_label">تکرار سرکشی به پوشه</string>
-    <string name="account_settings_mail_display_count_label">گنجایش پوشهٔ محلی</string>
-    <string name="account_settings_autodownload_message_size_label">واکشی پیام‌ها تا این حجم</string>
-    <string name="account_settings_autodownload_message_size_1">1 KiB</string>
-    <string name="account_settings_autodownload_message_size_2">2 KiB</string>
-    <string name="account_settings_autodownload_message_size_4">4 KiB</string>
-    <string name="account_settings_autodownload_message_size_8">8 KiB</string>
-    <string name="account_settings_autodownload_message_size_16">16 KiB</string>
-    <string name="account_settings_autodownload_message_size_32">32 KiB</string>
-    <string name="account_settings_autodownload_message_size_64">64 KiB</string>
-    <string name="account_settings_autodownload_message_size_128">128 KiB</string>
-    <string name="account_settings_autodownload_message_size_256">256 KiB</string>
-    <string name="account_settings_autodownload_message_size_512">512 KiB</string>
-    <string name="account_settings_autodownload_message_size_1024">1 MiB</string>
-    <string name="account_settings_autodownload_message_size_2048">2 MiB</string>
-    <string name="account_settings_autodownload_message_size_5120">5 MiB</string>
-    <string name="account_settings_autodownload_message_size_10240">10 MiB</string>
+    <string name="account_settings_mail_check_frequency_label">فواصل بررسی شاخه</string>
+    <string name="account_settings_mail_display_count_label">اندازه شاخه محلی</string>
+    <string name="account_settings_autodownload_message_size_label">دریافت پیام‌ها تا حداکثر</string>
+    <string name="account_settings_autodownload_message_size_1">۱ کیبی‌بایت</string>
+    <string name="account_settings_autodownload_message_size_2">۲ کیبی‌بایت</string>
+    <string name="account_settings_autodownload_message_size_4">۴ کیبی‌بایت</string>
+    <string name="account_settings_autodownload_message_size_8">۸ کیبی‌بایت</string>
+    <string name="account_settings_autodownload_message_size_16">۱۶ کیبی‌بایت</string>
+    <string name="account_settings_autodownload_message_size_32">۳۲ کیبی‌بایت</string>
+    <string name="account_settings_autodownload_message_size_64">۶۴ کیبی‌بایت</string>
+    <string name="account_settings_autodownload_message_size_128">۱۲۸ کیبی‌بایت</string>
+    <string name="account_settings_autodownload_message_size_256">۲۵۶ کیبی‌بایت</string>
+    <string name="account_settings_autodownload_message_size_512">۵۱۲ کیبی‌بایت</string>
+    <string name="account_settings_autodownload_message_size_1024">۱ مبی‌بایت</string>
+    <string name="account_settings_autodownload_message_size_2048">۲ مبی‌بایت</string>
+    <string name="account_settings_autodownload_message_size_5120">۵ مبی‌بایت</string>
+    <string name="account_settings_autodownload_message_size_10240">۱۰ مبی‌بایت</string>
     <string name="account_settings_autodownload_message_size_any">هر اندازه‌ای (بدون محدودیت)</string>
     <string name="account_settings_message_age_label">همگام‌سازی پیام‌ها از</string>
     <string name="account_settings_message_age_any">هر زمانی (بدون محدودیت)</string>
     <string name="account_settings_message_age_0">امروز</string>
-    <string name="account_settings_message_age_1">۲ روز پیش</string>
-    <string name="account_settings_message_age_2">۳ روز پیش</string>
-    <string name="account_settings_message_age_7">هفتهٔ پیش</string>
-    <string name="account_settings_message_age_14">۲ هفته پیش</string>
-    <string name="account_settings_message_age_21">۳ هفته پیش</string>
-    <string name="account_settings_message_age_1_month">ماه پیش</string>
-    <string name="account_settings_message_age_2_months">۲ ماه پیش</string>
-    <string name="account_settings_message_age_3_months">۳ ماه پیش</string>
-    <string name="account_settings_message_age_6_months">۶ ماه پیش</string>
-    <string name="account_settings_message_age_1_year">سال قبل</string>
-    <string name="account_settings_sync_remote_deletetions_label">همگام‌سازی حذفیات کارساز</string>
-    <string name="account_settings_sync_remote_deletetions_summary">وقتی پیام‌ها در کارساز پاک شدند از اینجا هم حذف شود</string>
+    <string name="account_settings_message_age_1">۲ روز گذشته</string>
+    <string name="account_settings_message_age_2">۳ روز گذشته</string>
+    <string name="account_settings_message_age_7">هفته گذشته</string>
+    <string name="account_settings_message_age_14">۲ هفته گذشته</string>
+    <string name="account_settings_message_age_21">۳ هفته گذشته</string>
+    <string name="account_settings_message_age_1_month">ماه گذشته</string>
+    <string name="account_settings_message_age_2_months">۲ ماه گذشته</string>
+    <string name="account_settings_message_age_3_months">۳ ماه گذشته</string>
+    <string name="account_settings_message_age_6_months">۶ ماه گذشته</string>
+    <string name="account_settings_message_age_1_year">سال گذشته</string>
+    <string name="account_settings_sync_remote_deletetions_label">همگام‌سازی موارد حذف‌شده در کارساز</string>
+    <string name="account_settings_sync_remote_deletetions_summary">حذف پیام‌ها هنگامی که در کارساز حذف می‌شوند</string>
     <string name="account_settings_openpgp_missing">برنامهٔ OpenPGP نیست - حذف شده؟</string>
     <string name="folder_settings_title">تنظیمات پوشه</string>
     <string name="folder_settings_in_top_group_label">نمایش در بالا</string>
     <string name="folder_settings_clear_local_folder_action">پاک‌کردن پیام‌ها از روی دستگاه</string>
     <string name="account_settings_incoming_label">کارساز ورودی</string>
-    <string name="account_settings_incoming_summary">کارساز ورودی رایانامه را پیکربندی کنید</string>
+    <string name="account_settings_incoming_summary">پیکربندی کارساز رایانامه ورودی</string>
     <string name="account_settings_outgoing_label">کارساز خروجی</string>
     <string name="account_settings_outgoing_summary">کارساز خروجی رایانامه (SMTP) را پیکربندی کنید</string>
     <string name="account_settings_name_label">نام شما</string>
@@ -445,7 +442,7 @@
     <string name="edit_identity_description_hint">(اختیاری)</string>
     <string name="edit_identity_name_label">نام شما</string>
     <string name="edit_identity_name_hint">(اختیاری)</string>
-    <string name="edit_identity_email_label">نشانی رایانامه </string>
+    <string name="edit_identity_email_label">نشانی رایانامه</string>
     <string name="edit_identity_email_hint">(لازم)</string>
     <string name="edit_identity_reply_to_label">نشانی «پاسخ به»</string>
     <string name="edit_identity_reply_to_hint">(اختیاری)</string>
@@ -520,7 +517,6 @@
     <string name="account_setup_push_limit_500">۵۰۰ پوشه</string>
     <string name="account_setup_push_limit_1000">۱۰۰۰ پوشه</string>
     <string name="animations_title">پویانمایی</string>
-    <string name="animations_summary">استفاده از جلوه‌های پُرزرق‌وبرق</string>
     <string name="show_unified_inbox_title">نمایش صندوق یکپارچه</string>
     <string name="show_starred_count_title">نمایش تعداد ستاره‌دارها</string>
     <string name="integrated_inbox_title">صندوق ورودی یکپارچه</string>
@@ -566,7 +562,7 @@
     <string name="dialog_confirm_delete_title">تأیید حذف</string>
     <string name="dialog_confirm_delete_message">آیا این پیام حذف شود؟</string>
     <plurals name="dialog_confirm_delete_messages">
-        <item quantity="one">واقعاً می‌خواهید این پیام را حذف کنید؟</item>
+        <item quantity="one">واقعاً می‌خواهید %1$d پیام را حذف کنید؟</item>
         <item quantity="other">واقعاً می‌خواهید <xliff:g id="message_count">%1$d</xliff:g> پیام را حذف کنید؟</item>
     </plurals>
     <string name="dialog_confirm_delete_confirm_button">بله</string>
@@ -579,7 +575,7 @@
     <string name="dialog_confirm_mark_all_as_read_cancel_button">خیر</string>
     <string name="dialog_confirm_spam_title">تأیید انتقال به پوشهٔ هرزنامه</string>
     <plurals name="dialog_confirm_spam_message">
-        <item quantity="one">واقعاً می‌خواهید این پیام را به شاخهٔ هرزنامه منتقل کنید؟</item>
+        <item quantity="one">واقعاً می‌خواهید %1$d پیام را به شاخهٔ هرزنامه منتقل کنید؟</item>
         <item quantity="other">واقعاً می‌خواهید <xliff:g id="message_count">%1$d</xliff:g> پیام را به شاخهٔ هرزنامه منتقل کنید؟</item>
     </plurals>
     <string name="dialog_confirm_spam_confirm_button">بله</string>
@@ -622,7 +618,7 @@
     <string name="account_settings_remote_search_num_results_entries_250">۲۵۰</string>
     <string name="account_settings_remote_search_num_results_entries_500">۵۰۰</string>
     <string name="account_settings_remote_search_num_results_entries_1000">۱۰۰۰</string>
-    <string name="account_settings_remote_search_num_label">محدودیت جستجوی کارساز</string>
+    <string name="account_settings_remote_search_num_label">محدودیت جست‌و‌جوی کارساز</string>
     <string name="remote_search_sending_query">ارسال پرس‌وجو به کارساز</string>
     <plurals name="remote_search_downloading">
         <item quantity="one">واکشی %d نتیجه</item>
@@ -683,7 +679,7 @@
     <string name="disable_inline_pgp">غیرفعال‌سازی PGP/INLINE</string>
     <string name="enable_sign_only">فعال‌سازی PGP Sign-Only</string>
     <string name="disable_sign_only">غیرفعال‌سازی PGP Sign-Only</string>
-    <string name="openpgp_inline_title">حالت PGP/INLINE </string>
+    <string name="openpgp_inline_title">حالت PGP/INLINE</string>
     <string name="openpgp_inline_text">رایانامه در قالب PGP/INLINE ارسال شد.\nفقط برای سازگاری باید از این استفاده شود:</string>
     <string name="openpgp_inline_plus_compat">بعضی کارخواه‌ها فقط این قالب را پشتیبانی می‌کنند</string>
     <string name="openpgp_inline_minus_transit">ممکن است امضاها در حین انتقال شکسته شوند</string>
@@ -732,7 +728,6 @@
     <string name="crypto_msg_encrypted_insecure">اما رمزنگاری، امن نیست</string>
     <string name="locked_attach_unlock">قفل‌گشایی</string>
     <string name="locked_attach_unencrypted">این بخش رمزنگاری نشده و شاید ناامن باشد.</string>
-    <string name="locked_attach_title">پیوستِ محافظت‌نشده</string>
     <string name="message_progress_text">بارگیری…</string>
     <string name="messageview_decrypt_cancelled">رمزگشایی لغو شد.</string>
     <string name="messageview_decrypt_retry">تلاش دوباره</string>
@@ -773,7 +768,7 @@
     <string name="account_settings_crypto_encrypt_subject_subtitle">شاید برخی گیرندگان از آن پشتیبانی نکنند</string>
     <string name="toast_account_not_found">خطای داخلی: حساب نامعتبر است!</string>
     <string name="toast_openpgp_provider_error">خطا در اتصال به %s!</string>
-    <string name="ac_transfer_setting_title">ارسال پیام راه‌انداز Autocrypt </string>
+    <string name="ac_transfer_setting_title">ارسال پیام راه‌انداز Autocrypt</string>
     <string name="ac_transfer_setting_summary">راه‌انداز سرتاسر را به‌طور ایمن با سایر دستگاه‌ها به‌اشتراک بگذار</string>
     <string name="ac_transfer_title">پیام راه‌انداز Autocrypt</string>
     <string name="ac_transfer_intro">یک پیام راه‌انداز Autocrypt، راه‌انداز سرتاسر شما را به‌طور ایمن با سایر دستگاه‌ها به‌اشتراک می‌گذارد.</string>
@@ -784,12 +779,7 @@
     <string name="ac_transfer_finish">برای پایان پیام را روی دیگر افزاره‌تان گشوده و کد برپایی را وارد کنید.</string>
     <string name="ac_transfer_show_code">نمایش کد راه‌انداز</string>
     <string name="ac_transfer_msg_subject">پیام راه‌انداز Autocrypt</string>
-    <string name="ac_transfer_msg_body">این پیام حاوی تمام اطلاعات لازم برای انتقال امن تنظیمات Autocrypt و کلید سرّی‌تان از دستگاه اصلی‌تان است.
-
-برای اینکه دستگاه جدیدتان را برای Autocrypt آماده کنید، لطفاً دستورالعمل‌هایی که روی دستگاه جدید به شما ارائه می‌شود را دنبال کنید.
-
-می‌توانید این پیام را پیش خود نگه دارید و آن را به‌عنوان پشتیبان کلید سرّی‌تان به‌کار ببرید. برای انجام این کار باید گذرواژه را یادداشت و در جای امنی نگهداری کنید.
-</string>
+    <string name="ac_transfer_msg_body">این پیام حاوی تمام اطلاعات لازم برای انتقال امن تنظیمات Autocrypt و کلید سرّی‌تان از دستگاه اصلی‌تان است. برای اینکه دستگاه جدیدتان را برای Autocrypt آماده کنید، لطفاً دستورالعمل‌هایی که روی دستگاه جدید به شما ارائه می‌شود را دنبال کنید. می‌توانید این پیام را پیش خود نگه دارید و آن را به‌عنوان پشتیبان کلید سرّی‌تان به‌کار ببرید. برای انجام این کار باید گذرواژه را یادداشت و در جای امنی نگهداری کنید.</string>
     <string name="ac_transfer_error_send">هنگام ارسال پیام خطایی رخ داد. لطفاً اتصال شبکه‌تان و پیکربندی کارساز خروجی را بررسی کنید.</string>
     <string name="switch_on">روشن</string>
     <string name="switch_off">خاموش</string>
@@ -806,25 +796,15 @@
     <string name="push_info_disable_push_text">اگر برای پیام‌های جدید نیاز به آگاهی آنی ندارید، بهتر است پیشرانی را غیرفعال کنید و سرکشی را به کار ببرید. روش سرکشی در فواصل زمانی منظم آمدن نامه‌های جدید را بررسی می‌کند و به آن آگاهی نیاز ندارد.</string>
     <string name="push_info_disable_push_action">غیرفعال‌سازی پیشرانی</string>
     <!--Name of the swipe action to select a message. Try to keep it short.-->
-    <string name="swipe_action_select">انتخاب</string>
     <!--Name of the swipe action to deselect a message. Try to keep it short.-->
-    <string name="swipe_action_deselect">بی‌انتخاب</string>
     <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
-    <string name="swipe_action_mark_as_read">علامت‌گذاری به‌عنوان خوانده شده</string>
     <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
-    <string name="swipe_action_mark_as_unread">خوانده نشد</string>
     <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
-    <string name="swipe_action_add_star">افزودن ستاره</string>
     <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
-    <string name="swipe_action_remove_star">حذف ستاره</string>
     <!--Name of the swipe action to archive a message. Try to keep it short.-->
-    <string name="swipe_action_archive">بایگانی</string>
     <!--Name of the swipe action to delete a message. Try to keep it short.-->
-    <string name="swipe_action_delete">حذف</string>
     <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
-    <string name="swipe_action_spam">هرزنامه</string>
     <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
-    <string name="swipe_action_move">انتقال…</string>
     <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
     <string name="general_settings_show_compose_button_title">نمایش دکمه نوشتن شناور</string>
     <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
@@ -858,7 +838,7 @@
     <!--Name of the action to copy a name and email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
     <string name="action_copy_name_and_email_address">رونوشت از نام و نشانی رایانامه</string>
     <!--A user visible label for the email address copied to the clipboard-->
-    <string name="clipboard_label_email_address">نشانی رایانامه </string>
+    <string name="clipboard_label_email_address">نشانی رایانامه</string>
     <!--A user visible label for the name and email address copied to the clipboard-->
     <string name="clipboard_label_name_and_email_address">نام و نشانی رایانامه</string>
     <!--Might be displayed in a notification when deleting an account (in the background)-->
@@ -901,8 +881,6 @@
     <string name="debug_enable_sync_debug_logging_summary">ثبت داده‌های گزارش عیب‌یابی همگام‌سازی برای ۲۴ ساعت</string>
     <string name="debug_sync_export_logs_title">برون‌برد گزارش‌های همگام‌سازی</string>
     <string name="debug_enable_sync_debug_logging_title">فعال‌سازی ثبت گزارش عیب‌یابی همگام‌سازی</string>
-    <string name="swipe_action_archive_folder_not_set">راه‌اندازی پوشه بایگانی</string>
-    <string name="swipe_action_change_swipe_gestures">تغییر \nژست‌های کشیدن</string>
     <string name="archiving_not_available_for_this_account">بایگانی کردن برای این حساب در دسترس نیست.</string>
     <string name="debug_open_secret_debug_screen">گشودن صفحهٔ اشکال‌زدایی مخفی</string>
     <string name="message_view_menu_action_export_eml">برون‌ریزی به EML</string>
@@ -910,12 +888,12 @@
     <string name="debug_invalidate_access_token_local">آزمون: بی‌اعتباری ژتون دسترسی (محلی)</string>
     <string name="debug_invalidate_access_token_server">آزمون: بی‌اعتباری ژتون دسترسی (کارساز)</string>
     <string name="debug_force_auth_failure">آزمون: اجبار شکست فوری</string>
-    <string name="debug_invalidate_access_token_already_modified">ژتون دسترسی ذخیره شده از پیش تغییر کرده.</string>
+    <string name="debug_invalidate_access_token_already_modified">ژتون دسترسی ذخیره شده از پیش تغییر کرده.</string>
     <string name="global_settings_messageview_body_content_type_text_plain">متن خام (text/plain)</string>
     <string name="set_format_html_action">استفاده از قالب‌بندی اصلی</string>
-    <string name="set_format_html_condensed_action">نمایش قالب بسته</string>
-    <string name="set_format_plain_action">نمایش پیام بدون قالب بندی</string>
-    <string name="set_format_plain_condensed_action">نمایش بدون قالب بندی</string>
+    <string name="set_format_html_condensed_action">نمایش قالب بسته</string>
+    <string name="set_format_plain_action">نمایش پیام بدون قالب بندی</string>
+    <string name="set_format_plain_condensed_action">نمایش بدون قالب بندی</string>
     <string name="global_settings_messageview_body_content_type_title">گونهٔ محتوای بدنه</string>
     <string name="global_settings_messageview_body_content_type_text_html">HTML (text/html)</string>
     <string name="account_setup_auto_select_folder">گزینش خودکار شاخه</string>
@@ -923,11 +901,39 @@
     <string name="expand_folders">گسترش شاخه‌ها</string>
     <string name="debug_invalidate_access_token_done">ژتون دسترسی از اعتبار ساقط شد. درخواست بعدی باز خواهد خواند.</string>
     <string name="debug_invalidate_access_token_unavailable">هیچ ژتون OAuthای برای این حساب موجود نیست.</string>
-    <string name="debug_invalidate_access_token_local_done">درخواست نامعتبر سازی محلی شد. درخواست بعدی ژتونی جدید واخواهد کشید.</string>
-    <string name="debug_invalidate_access_token_server_done">ژتون دسترسی ذخیره شده خراب شد. درخواست بعدی شکست خورده و سپس بازخواهد خوانده شد.</string>
+    <string name="debug_invalidate_access_token_local_done">درخواست نامعتبر سازی محلی شد. درخواست بعدی ژتونی جدید واخواهد کشید.</string>
+    <string name="debug_invalidate_access_token_server_done">ژتون دسترسی ذخیره شده خراب شد. درخواست بعدی شکست خورده و سپس بازخواهد خوانده شد.</string>
     <string name="debug_force_auth_failure_done">وضعیت OAuth پاک شد. درخواست بعدی شکست خواهد خورد.</string>
     <string name="debug_force_auth_failure_unavailable">هیچ پیکربندی OAuthای برای این حساب موجود نیست.</string>
-    <string name="debug_invalidate_access_token_cannot_modify">نتوانست ژتون دسترسی ذخیره شده را دستگاری کند. آزمودن نامعتبر سازی محلی.</string>
+    <string name="debug_invalidate_access_token_cannot_modify">نتوانست ژتون دسترسی ذخیره شده را دستگاری کند. آزمودن نامعتبر سازی محلی.</string>
     <string name="debug_feature_flags">اشکال‌زدایی: پرچم‌های ویژگی</string>
     <string name="print_message_action">چاپ</string>
+    <string name="general_settings_message_list_date_time_format_title">قالب تاریخ و زمان</string>
+    <string name="general_settings_message_list_date_time_format_contextual">بافتاری</string>
+    <string name="general_settings_message_list_date_time_format_full">کامل</string>
+    <string name="global_settings_splitview_when_unfolded">هنگام باز شدن افزاره</string>
+    <string name="general_settings_message_list_date_time_format_iso">ایزو</string>
+    <string name="message_view_attachments_view">دیدن</string>
+    <string name="message_view_attachments_title">پیوست‌ها</string>
+    <string name="notification_action_star">ستاره</string>
+    <string name="message_view_attachments_view_all">دیدن همه</string>
+    <string name="message_view_attachments_save_all">ذخیرهٔ همه</string>
+    <string name="notification_actions_settings_title">کنش‌های آگاهی</string>
+    <string name="accessibility_move_up">جابه‌جایی به بالا</string>
+    <string name="accessibility_move_down">جابه‌جایی به پایین</string>
+    <string name="notification_actions_settings_description">تغییر ترتیب کنش‌های آگاهی.</string>
+    <string name="message_view_single_attachment_summary">‫‏<xliff:g id="name">%1$s</xliff:g> (<xliff:g id="size">%2$s</xliff:g>)</string>
+    <string name="notification_actions_shown_state">نمایش داده در آگاهی</string>
+    <string name="accessibility_move_item_up">جابه‌جایی <xliff:g id="item">%1$s</xliff:g> به بالا</string>
+    <string name="accessibility_move_item_down">جابه‌جایی <xliff:g id="item">%1$s</xliff:g> به پایین</string>
+    <string name="notification_summary_delete_title">نمایش حذف روی آگاهی‌های چندپیامه</string>
+    <string name="notification_actions_hidden_state">نمایش نداده در آگاهی</string>
+    <string name="notification_actions_settings_summary">گزینش کنش‌های نمایش داده در آگاهی‌های رایانامه</string>
+    <string name="no_network_message_will_be_sent_later_toast">برون‌خط. پیام‌ها پس از موجود شدن اتّصال فرستاده خواهند شد</string>
+    <string name="notification_actions_cutoff_state">کنش‌های بالای این خط در آگاهی نشان داده خواهند شد</string>
+    <plurals name="message_view_attachment_summary">
+        <item quantity="one">‫‏<xliff:g id="count">%1$d</xliff:g> پیوست (<xliff:g id="اندازه">%2$s</xliff:g>)</item>
+        <item quantity="other">‫‏<xliff:g id="count">%1$d</xliff:g> پیوست (<xliff:g id="اندازه">%2$s</xliff:g>)</item>
+    </plurals>
+    <string name="notification_summary_delete_summary">کنش حذف را به آگاهی‌ای که چندین پیام جدید را خلاصه می‌کند می‌افزاید</string>
 </resources>

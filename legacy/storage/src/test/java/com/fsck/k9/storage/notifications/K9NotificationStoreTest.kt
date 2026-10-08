@@ -1,5 +1,6 @@
 package com.fsck.k9.storage.notifications
 
+import android.database.sqlite.SQLiteDatabase
 import app.k9mail.legacy.message.controller.MessageReference
 import assertk.assertThat
 import assertk.assertions.hasSize
@@ -11,23 +12,35 @@ import com.fsck.k9.storage.RobolectricTest
 import com.fsck.k9.storage.messages.createDatabase
 import com.fsck.k9.storage.messages.createLockableDatabaseMock
 import com.fsck.k9.storage.messages.createMessage
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.legacy.logging.Log
 import net.thunderbird.core.logging.testing.TestLogger
+import net.thunderbird.feature.account.AccountIdFactory
+import org.junit.After
 import org.junit.Before
 import org.junit.Test
 
 private const val FOLDER_ID = 1L
 
 class K9NotificationStoreTest : RobolectricTest() {
-    private val sqliteDatabase = createDatabase()
-    private val lockableDatabase = createLockableDatabaseMock(sqliteDatabase)
-    private val store = K9NotificationStore(lockableDatabase)
-    private val messageIdOne = sqliteDatabase.createMessage(folderId = FOLDER_ID, uid = "uid-1")
-    private val messageIdTwo = sqliteDatabase.createMessage(folderId = FOLDER_ID, uid = "uid-2")
+    private lateinit var sqliteDatabase: SQLiteDatabase
+    private lateinit var store: K9NotificationStore
+    private var messageIdOne: Long = 0
+    private var messageIdTwo: Long = 0
 
     @Before
     fun setUp() {
         Log.logger = TestLogger()
+
+        sqliteDatabase = createDatabase()
+        val lockableDatabase = createLockableDatabaseMock(sqliteDatabase)
+        store = K9NotificationStore(lockableDatabase)
+        messageIdOne = sqliteDatabase.createMessage(folderId = FOLDER_ID, uid = "uid-1")
+        messageIdTwo = sqliteDatabase.createMessage(folderId = FOLDER_ID, uid = "uid-2")
+    }
+
+    @After
+    fun tearDown() {
+        sqliteDatabase.close()
     }
 
     @Test
@@ -110,6 +123,6 @@ class K9NotificationStoreTest : RobolectricTest() {
     }
 
     private fun createMessageReference(uid: String): MessageReference {
-        return MessageReference(accountUuid = "00000000-0000-4000-0000-000000000000", FOLDER_ID, uid)
+        return MessageReference(accountId = AccountIdFactory.of("00000000-0000-4000-0000-000000000000"), FOLDER_ID, uid)
     }
 }

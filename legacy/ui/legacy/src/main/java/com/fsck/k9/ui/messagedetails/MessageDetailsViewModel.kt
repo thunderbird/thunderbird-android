@@ -8,7 +8,6 @@ import androidx.lifecycle.viewModelScope
 import app.k9mail.core.android.common.contact.CachingRepository
 import app.k9mail.core.android.common.contact.ContactPermissionResolver
 import app.k9mail.core.android.common.contact.ContactRepository
-import app.k9mail.legacy.mailstore.FolderRepository
 import app.k9mail.legacy.message.controller.MessageReference
 import app.k9mail.legacy.ui.folder.FolderNameFormatter
 import com.fsck.k9.helper.ClipboardManager
@@ -20,22 +19,25 @@ import com.fsck.k9.ui.R
 import com.fsck.k9.view.MessageCryptoDisplayStatus
 import java.text.DateFormat
 import java.util.Locale
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import net.thunderbird.components.core.outcome.fold
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.account.LegacyAccountDtoManager
 import net.thunderbird.core.common.mail.toEmailAddressOrNull
 import net.thunderbird.feature.mail.folder.api.Folder
+import net.thunderbird.feature.mail.folder.api.data.repository.FolderQueryRepository
 
 @Suppress("TooManyFunctions", "LongParameterList")
 internal class MessageDetailsViewModel(
     private val resources: Resources,
     private val messageRepository: MessageRepository,
-    private val folderRepository: FolderRepository,
+    private val folderQueryRepository: FolderQueryRepository,
     private val contactSettingsProvider: ContactSettingsProvider,
     private val contactRepository: ContactRepository,
     private val contactPermissionResolver: ContactPermissionResolver,
@@ -43,6 +45,7 @@ internal class MessageDetailsViewModel(
     private val accountManager: LegacyAccountDtoManager,
     private val participantFormatter: MessageDetailsParticipantFormatter,
     private val folderNameFormatter: FolderNameFormatter,
+    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : ViewModel() {
     private val dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.MEDIUM, Locale.getDefault())
 
@@ -72,23 +75,32 @@ internal class MessageDetailsViewModel(
     }
 
     private fun loadData(messageReference: MessageReference) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(ioDispatcher) {
             internalUiState.value = try {
-                val account = accountManager.getAccount(messageReference.accountUuid) ?: error("Account not found")
+                val account = accountManager.getById(messageReference.accountId) ?: error("Account not found")
                 val messageDetails = messageRepository.getMessageDetails(messageReference)
 
-                val folder = folderRepository.getFolder(account, folderId = messageReference.folderId)
+                val folder = folderQueryRepository.findById(account.id, folderId = messageReference.folderId)
+                    .fold(
+                        onSuccess = { it },
+                        onFailure = { error ->
+                            when (val throwable = error.throwable) {
+                                null -> null
+                                else -> throw throwable
+                            }
+                        },
+                    )
 
                 val senderList = messageDetails.sender?.let { listOf(it) } ?: emptyList()
                 val messageDetailsUi = MessageDetailsUi(
                     date = buildDisplayDate(messageDetails.date),
                     cryptoDetails = cryptoResult?.toCryptoDetails(),
-                    from = messageDetails.from.toParticipants(account),
-                    sender = senderList.toParticipants(account),
-                    replyTo = messageDetails.replyTo.toParticipants(account),
-                    to = messageDetails.to.toParticipants(account),
-                    cc = messageDetails.cc.toParticipants(account),
-                    bcc = messageDetails.bcc.toParticipants(account),
+                    from = messageDetails.from.toParticipants(account, isSender = true),
+                    sender = senderList.toParticipants(account, isSender = true),
+                    replyTo = messageDetails.replyTo.toParticipants(account, isSender = false),
+                    to = messageDetails.to.toParticipants(account, isSender = false),
+                    cc = messageDetails.cc.toParticipants(account, isSender = false),
+                    bcc = messageDetails.bcc.toParticipants(account, isSender = false),
                     folder = folder?.toFolderInfo(),
                 )
 
@@ -125,9 +137,9 @@ internal class MessageDetailsViewModel(
         )
     }
 
-    private fun List<Address>.toParticipants(account: LegacyAccountDto): List<Participant> {
+    private fun List<Address>.toParticipants(account: LegacyAccountDto, isSender: Boolean): List<Participant> {
         return this.map { address ->
-            val displayName = participantFormatter.getDisplayName(address, account)
+            val displayName = participantFormatter.getDisplayName(address, account, isSender)
             val emailAddress = address.address
 
             Participant(

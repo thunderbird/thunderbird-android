@@ -1,0 +1,101 @@
+---
+name: Build - Docs & Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'docs/**'
+      - 'config/featureflag/**'
+
+  workflow_dispatch:
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  build-docs:
+    if: ${{ github.repository_owner == 'thunderbird' }}
+    runs-on: ubuntu-latest
+    environment: botmobile
+    steps:
+      - name: App token generate
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1  # v3.2.0
+        if: ${{ vars.BOT_CLIENT_ID }}
+        id: app-token
+        with:
+          client-id: ${{ vars.BOT_CLIENT_ID }}
+          private-key: ${{ secrets.BOT_PRIVATE_KEY }}
+
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          token: ${{ steps.app-token.outputs.token || github.token }}
+
+      - name: Cargo cache
+        uses: actions-rust-lang/setup-rust-toolchain@ecabd13d1c56bd1345c230e542e9144811ad706f  # v2.0.0
+
+      - name: Install mdbook and extensions
+        run: ./docs/install.sh
+
+      - name: Test docs
+        run: mdbook test docs
+
+      - name: Build docs
+        run: |
+          BUILD_DIR=$(mktemp -d)
+          echo "BUILD_DIR=${BUILD_DIR}" >> $GITHUB_ENV
+          echo "Building docs into ${BUILD_DIR}"
+          mdbook build docs --dest-dir="${BUILD_DIR}"
+
+          # Copy the remote feature-flag catalog to the assets folder
+          cp "config/featureflag/thunderbird_mobile_featureflag.catalog.json" "${BUILD_DIR}/assets/thunderbird_mobile_featureflag.catalog.json"
+
+          echo "Build output preview:"
+          ls -la "${BUILD_DIR}" || true
+
+          # Clean up unwanted files from the build directory before copying to gh-pages
+          rm -rf "${BUILD_DIR}/assets/draw.io" || true
+          rm -f "${BUILD_DIR}/.gitignore" || true
+          rm -f "${BUILD_DIR}/install.sh" || true
+
+      - name: Deploy docs to gh-pages
+        env:
+          APP_SLUG: ${{ steps.app-token.outputs.app-slug || 'github-actions'}}
+          APP_USER_ID: ${{ vars.BOT_USER_ID || '41898282' }}
+        run: |
+          git config --global user.name "${APP_SLUG}"
+          git config --global user.email "${APP_USER_ID}+${APP_SLUG}[bot]@users.noreply.github.com"
+
+          # Fetch the gh-pages branch
+          git fetch origin gh-pages || git checkout --orphan gh-pages
+          git checkout gh-pages
+
+           # Get the short commit hash
+          COMMIT_HASH=$(git rev-parse --short "$GITHUB_SHA")
+
+          # Keep necessary files and clean `docs/latest/`
+          mkdir -p docs/latest  # Ensure the folder exists
+          find docs/latest -mindepth 1 -delete  # Delete old files inside docs/latest
+
+          # Copy new docs to gh-pages branch
+          if [ ! -d "${BUILD_DIR}" ]; then
+            echo "ERROR: BUILD_DIR '${BUILD_DIR}' does not exist. The docs build may have failed."
+            exit 1
+          fi
+
+          echo "Copy docs from ${BUILD_DIR} to docs/latest/"
+          cp -a "${BUILD_DIR}/." docs/latest/ || { echo "ERROR: No files to copy from ${BUILD_DIR}"; exit 1; }
+
+          # Remove temporary build directory
+          rm -rf "${BUILD_DIR}" || true
+
+          # Add, commit, and push changes
+          git add .
+          git commit -m "Deploy docs update from [${COMMIT_HASH}]" || echo "No changes to commit"
+          git push --force-with-lease origin gh-pages

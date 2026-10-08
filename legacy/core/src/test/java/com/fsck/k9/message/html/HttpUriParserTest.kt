@@ -88,8 +88,15 @@ class HttpUriParserTest {
     }
 
     @Test
-    fun `IPv4 address with empty port`() {
-        assertValidUri("http://127.0.0.1:")
+    fun `IPv4 address with empty port treats trailing colon as punctuation`() {
+        // A bare trailing colon after a host is far more likely to be prose
+        // punctuation ("see http://127.0.0.1:") than an empty port, which is
+        // not a fetchable URI anyway. The colon is excluded from the match.
+        val input = "http://127.0.0.1:"
+
+        val uriMatch = parser.parseUri(input, 0)
+
+        assertUriMatch("http://127.0.0.1", uriMatch)
     }
 
     @Test
@@ -241,6 +248,15 @@ class HttpUriParserTest {
     }
 
     @Test
+    fun `URI ending in multiple trailing punctuation characters`() {
+        val input = "URL: https://domain.example/path,;"
+
+        val uriMatch = parser.parseUri(input, 5)
+
+        assertUriMatch("https://domain.example/path", uriMatch, 5)
+    }
+
+    @Test
     fun `URI wrapped in angle brackets ending in dot`() {
         val input = "URL: <https://domain.example/path.>"
 
@@ -274,6 +290,24 @@ class HttpUriParserTest {
         val uriMatch = parser.parseUri(input, 6)
 
         assertUriMatch("https://domain.example/path", uriMatch, 6)
+    }
+
+    @Test
+    fun `URI wrapped in parentheses followed by a comma`() {
+        val input = "(https://discourse.llvm.org/t/rfc-clang-with-gcc2-c-abi/90825),"
+
+        val uriMatch = parser.parseUri(input, 1)
+
+        assertUriMatch("https://discourse.llvm.org/t/rfc-clang-with-gcc2-c-abi/90825", uriMatch, 1)
+    }
+
+    @Test
+    fun `URI wrapped in parentheses followed by an apostrophe`() {
+        val input = "(https://discourse.llvm.org/t/rfc-yet-another-strict-fp/90798)'"
+
+        val uriMatch = parser.parseUri(input, 1)
+
+        assertUriMatch("https://discourse.llvm.org/t/rfc-yet-another-strict-fp/90798", uriMatch, 1)
     }
 
     @Test

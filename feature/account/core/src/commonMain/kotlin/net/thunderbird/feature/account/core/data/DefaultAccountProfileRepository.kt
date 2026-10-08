@@ -16,8 +16,8 @@ class DefaultAccountProfileRepository(
             .distinctUntilChanged()
     }
 
-    override fun getById(accountId: AccountId): Flow<AccountProfile?> {
-        return localDataSource.getById(accountId)
+    override fun getById(id: AccountId): Flow<AccountProfile?> {
+        return localDataSource.getById(id)
             .distinctUntilChanged()
     }
 

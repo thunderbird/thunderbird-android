@@ -12,8 +12,6 @@ import com.fsck.k9.mailstore.LocalStore
 import com.fsck.k9.preferences.DefaultGeneralSettingsManager
 import net.thunderbird.core.android.account.AccountDefaultsProvider
 import net.thunderbird.core.android.account.SortType
-import net.thunderbird.core.featureflag.FeatureFlagProvider
-import net.thunderbird.core.featureflag.toFeatureFlagKey
 import net.thunderbird.core.preference.storage.Storage
 import net.thunderbird.core.preference.storage.StorageEditor
 import net.thunderbird.core.preference.storage.getEnumOrDefault
@@ -25,7 +23,6 @@ import timber.log.Timber
 object K9 : KoinComponent {
     private val generalSettingsManager: DefaultGeneralSettingsManager by inject()
     private val telemetryManager: TelemetryManager by inject()
-    private val featureFlagProvider: FeatureFlagProvider by inject()
 
     /**
      * Name of the [SharedPreferences] file used to store the last known version of the
@@ -64,7 +61,6 @@ object K9 : KoinComponent {
      * @return `true`, if we know that all databases are using the current database schema. `false`, otherwise.
      */
     @Synchronized
-    @JvmStatic
     fun areDatabasesUpToDate(): Boolean {
         return databasesUpToDate
     }
@@ -114,38 +110,11 @@ object K9 : KoinComponent {
     @JvmStatic
     val fontSizes = FontSizes()
 
-    @JvmStatic
-    var notificationQuickDeleteBehaviour = NotificationQuickDelete.ALWAYS
-
-    @JvmStatic
-    var lockScreenNotificationVisibility = LockScreenNotificationVisibility.MESSAGE_COUNT
-
-    var messageViewPostMarkAsUnreadNavigation: PostMarkAsUnreadNavigation =
-        PostMarkAsUnreadNavigation.ReturnToMessageList
-
-    @JvmStatic
-    var isShowAccountSelector = true
-
     @get:Synchronized
     @set:Synchronized
     @JvmStatic
     var sortType: SortType = AccountDefaultsProvider.DEFAULT_SORT_TYPE
     private val sortAscending = mutableMapOf<SortType, Boolean>()
-
-    @JvmStatic
-    var isMessageViewArchiveActionVisible = false
-
-    @JvmStatic
-    var isMessageViewDeleteActionVisible = true
-
-    @JvmStatic
-    var isMessageViewMoveActionVisible = false
-
-    @JvmStatic
-    var isMessageViewCopyActionVisible = false
-
-    @JvmStatic
-    var isMessageViewSpamActionVisible = false
 
     @JvmStatic
     var pgpInlineDialogCounter: Int = 0
@@ -197,31 +166,10 @@ object K9 : KoinComponent {
     @JvmStatic
     @Suppress("LongMethod")
     fun loadPrefs(storage: Storage) {
-        isShowAccountSelector = storage.getBoolean("showAccountSelector", true)
-        messageViewPostMarkAsUnreadNavigation =
-            storage.getEnum("messageViewPostMarkAsUnreadAction", PostMarkAsUnreadNavigation.ReturnToMessageList)
-
         sortType = storage.getEnum("sortTypeEnum", AccountDefaultsProvider.DEFAULT_SORT_TYPE)
 
         val sortAscendingSetting = storage.getBoolean("sortAscending", AccountDefaultsProvider.DEFAULT_SORT_ASCENDING)
         sortAscending[sortType] = sortAscendingSetting
-
-        notificationQuickDeleteBehaviour = storage.getEnum("notificationQuickDelete", NotificationQuickDelete.ALWAYS)
-
-        lockScreenNotificationVisibility = storage.getEnum(
-            "lockScreenNotificationVisibility",
-            LockScreenNotificationVisibility.MESSAGE_COUNT,
-        )
-
-        featureFlagProvider.provide("disable_font_size_config".toFeatureFlagKey())
-            .onDisabledOrUnavailable {
-                fontSizes.load(storage)
-            }
-        isMessageViewArchiveActionVisible = storage.getBoolean("messageViewArchiveActionVisible", false)
-        isMessageViewDeleteActionVisible = storage.getBoolean("messageViewDeleteActionVisible", true)
-        isMessageViewMoveActionVisible = storage.getBoolean("messageViewMoveActionVisible", false)
-        isMessageViewCopyActionVisible = storage.getBoolean("messageViewCopyActionVisible", false)
-        isMessageViewSpamActionVisible = storage.getBoolean("messageViewSpamActionVisible", false)
 
         pgpInlineDialogCounter = storage.getInt("pgpInlineDialogCounter", 0)
         pgpSignOnlyDialogCounter = storage.getInt("pgpSignOnlyDialogCounter", 0)
@@ -237,20 +185,8 @@ object K9 : KoinComponent {
 
     @Suppress("LongMethod")
     internal fun save(editor: StorageEditor) {
-        editor.putBoolean("showAccountSelector", isShowAccountSelector)
-        editor.putEnum("messageViewPostMarkAsUnreadAction", messageViewPostMarkAsUnreadNavigation)
-
         editor.putEnum("sortTypeEnum", sortType)
         editor.putBoolean("sortAscending", sortAscending[sortType] ?: false)
-
-        editor.putString("notificationQuickDelete", notificationQuickDeleteBehaviour.toString())
-        editor.putString("lockScreenNotificationVisibility", lockScreenNotificationVisibility.toString())
-
-        editor.putBoolean("messageViewArchiveActionVisible", isMessageViewArchiveActionVisible)
-        editor.putBoolean("messageViewDeleteActionVisible", isMessageViewDeleteActionVisible)
-        editor.putBoolean("messageViewMoveActionVisible", isMessageViewMoveActionVisible)
-        editor.putBoolean("messageViewCopyActionVisible", isMessageViewCopyActionVisible)
-        editor.putBoolean("messageViewSpamActionVisible", isMessageViewSpamActionVisible)
 
         editor.putInt("pgpInlineDialogCounter", pgpInlineDialogCounter)
         editor.putInt("pgpSignOnlyDialogCounter", pgpSignOnlyDialogCounter)
@@ -284,8 +220,6 @@ object K9 : KoinComponent {
         putString(key, value.name)
     }
 
-    const val LOCAL_UID_PREFIX = "K9LOCAL:"
-
     const val IDENTITY_HEADER = K9MailLib.IDENTITY_HEADER
 
     /**
@@ -302,30 +236,4 @@ object K9 : KoinComponent {
     const val MAX_SEND_ATTEMPTS = 5
 
     const val MANUAL_WAKE_LOCK_TIMEOUT = 120000
-
-    /**
-     * Controls behaviour of delete button in notifications.
-     */
-    enum class NotificationQuickDelete {
-        ALWAYS,
-        FOR_SINGLE_MSG,
-        NEVER,
-    }
-
-    enum class LockScreenNotificationVisibility {
-        EVERYTHING,
-        SENDERS,
-        MESSAGE_COUNT,
-        APP_NAME,
-        NOTHING,
-    }
-
-    /**
-     * The navigation actions that can be to performed after the user has marked a message as unread from the message
-     * view screen.
-     */
-    enum class PostMarkAsUnreadNavigation {
-        StayOnCurrentMessage,
-        ReturnToMessageList,
-    }
 }

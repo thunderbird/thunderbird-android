@@ -1,0 +1,9 @@
+appId: com.android.chrome
+---
+# Google authentication - Approve access during OAuth flow
+- scrollUntilVisible:
+    element:
+      id: "submit_approve_access"
+    direction: DOWN
+- tapOn:
+    id: "submit_approve_access"

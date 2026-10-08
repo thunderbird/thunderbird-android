@@ -13,13 +13,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import app.k9mail.core.ui.compose.designsystem.organism.snackbar.SnackbarHost
-import app.k9mail.core.ui.compose.designsystem.organism.snackbar.SnackbarHostState
-import app.k9mail.core.ui.compose.designsystem.organism.snackbar.rememberSnackbarHostState
-import app.k9mail.core.ui.compose.designsystem.template.Scaffold
-import app.k9mail.core.ui.compose.designsystem.template.ScaffoldFabPosition
 import kotlinx.collections.immutable.ImmutableSet
-import net.thunderbird.core.ui.compose.common.modifier.testTagAsResourceId
+import net.thunderbird.components.ui.bolt.organism.snackbar.SnackbarHost
+import net.thunderbird.components.ui.bolt.organism.snackbar.SnackbarHostState
+import net.thunderbird.components.ui.bolt.organism.snackbar.rememberSnackbarHostState
+import net.thunderbird.components.ui.bolt.template.Scaffold
+import net.thunderbird.components.ui.bolt.template.ScaffoldFabPosition
+import net.thunderbird.feature.notification.api.content.InAppNotification
 import net.thunderbird.feature.notification.api.ui.InAppNotificationScaffoldDefaults.TEST_TAG_ERROR_NOTIFICATIONS_DIALOG
 import net.thunderbird.feature.notification.api.ui.InAppNotificationScaffoldDefaults.TEST_TAG_INNER_SCAFFOLD
 import net.thunderbird.feature.notification.api.ui.InAppNotificationScaffoldDefaults.TEST_TAG_IN_APP_NOTIFICATION_HOST
@@ -30,7 +30,7 @@ import net.thunderbird.feature.notification.api.ui.host.DisplayInAppNotification
 import net.thunderbird.feature.notification.api.ui.host.rememberInAppNotificationHostStateHolder
 import net.thunderbird.feature.notification.api.ui.host.visual.SnackbarVisual
 import net.thunderbird.feature.notification.api.ui.style.SnackbarDuration
-import app.k9mail.core.ui.compose.designsystem.organism.snackbar.SnackbarDuration as UiSnackbarDuration
+import net.thunderbird.components.ui.bolt.organism.snackbar.SnackbarDuration as UiSnackbarDuration
 
 /**
  * A scaffold that displays in-app notifications.
@@ -61,18 +61,19 @@ fun InAppNotificationScaffold(
     floatingActionButton: @Composable () -> Unit = {},
     floatingActionButtonPosition: ScaffoldFabPosition = ScaffoldFabPosition.End,
     onNotificationActionClick: (NotificationAction) -> Unit = {},
+    eventFilter: (InAppNotification) -> Boolean = { true },
     content: @Composable (PaddingValues) -> Unit,
 ) {
     val hostStateHolder = rememberInAppNotificationHostStateHolder(enabled)
     var showErrorNotificationDialog by remember { mutableStateOf(false) }
     Scaffold(
-        modifier = modifier.testTagAsResourceId(TEST_TAG_INNER_SCAFFOLD),
+        modifier = modifier.testTag(TEST_TAG_INNER_SCAFFOLD),
         topBar = topBar,
         bottomBar = bottomBar,
         snackbarHost = {
             SnackbarHost(
                 hostState = snackbarHostState,
-                modifier = Modifier.testTagAsResourceId(TEST_TAG_SNACKBAR_HOST),
+                modifier = Modifier.testTag(TEST_TAG_SNACKBAR_HOST),
             )
         },
         floatingActionButton = floatingActionButton,
@@ -98,7 +99,8 @@ fun InAppNotificationScaffold(
                     },
                 )
             },
-            modifier = Modifier.testTagAsResourceId(TEST_TAG_IN_APP_NOTIFICATION_HOST),
+            eventFilter = eventFilter,
+            modifier = Modifier.testTag(TEST_TAG_IN_APP_NOTIFICATION_HOST),
             content = content,
         )
 

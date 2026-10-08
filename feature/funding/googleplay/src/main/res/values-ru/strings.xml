@@ -54,4 +54,6 @@
     <string name="funding_googleplay_contribution_reminder_claim">Мы финансируемся исключительно такими же пользователями, как вы.</string>
     <string name="funding_googleplay_contribution_header_thank_you">Искренняя благодарность от всех нас!</string>
     <string name="funding_googleplay_contribution_reminder_statement_point_1">Мы не показываем рекламу.</string>
+    <string name="funding_googleplay_contribution_footer_payment_processing_button">Обработка платежа…</string>
+    <string name="funding_googleplay_contribution_footer_payment_cancel_button">Отмена</string>
 </resources>

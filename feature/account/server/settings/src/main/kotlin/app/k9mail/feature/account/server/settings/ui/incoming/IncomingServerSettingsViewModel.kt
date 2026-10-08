@@ -1,6 +1,5 @@
 package app.k9mail.feature.account.server.settings.ui.incoming
 
-import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
 import app.k9mail.feature.account.common.domain.AccountDomainContract
 import app.k9mail.feature.account.common.domain.entity.ConnectionSecurity
 import app.k9mail.feature.account.common.domain.entity.IncomingProtocolType
@@ -11,7 +10,8 @@ import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSett
 import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSettingsContract.State
 import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSettingsContract.Validator
 import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSettingsContract.ViewModel
-import net.thunderbird.core.outcome.Outcome
+import net.thunderbird.components.core.outcome.Outcome
+import net.thunderbird.core.ui.contract.mvi.BaseViewModel
 import net.thunderbird.core.validation.ValidationSuccess
 
 open class IncomingServerSettingsViewModel(
@@ -27,12 +27,19 @@ open class IncomingServerSettingsViewModel(
             Event.LoadAccountState -> handleOneTimeEvent(event, ::loadAccountState)
 
             is Event.ProtocolTypeChanged -> updateProtocolType(event.protocolType)
+
             is Event.ServerChanged -> updateState { it.copy(server = it.server.updateValue(event.server)) }
+
             is Event.SecurityChanged -> updateSecurity(event.security)
+
             is Event.PortChanged -> updateState { it.copy(port = it.port.updateValue(event.port)) }
+
             is Event.AuthenticationTypeChanged -> updateState { it.copy(authenticationType = event.authenticationType) }
+
             is Event.UsernameChanged -> updateState { it.copy(username = it.username.updateValue(event.username)) }
+
             is Event.PasswordChanged -> updateState { it.copy(password = it.password.updateValue(event.password)) }
+
             is Event.ClientCertificateChanged -> updateState {
                 it.copy(clientCertificateAlias = event.clientCertificateAlias)
             }
@@ -46,9 +53,11 @@ open class IncomingServerSettingsViewModel(
             }
 
             is Event.ImapUseCompressionChanged -> updateState { it.copy(imapUseCompression = event.useCompression) }
+
             is Event.ImapSendClientInfoChanged -> updateState { it.copy(imapSendClientInfo = event.sendClientInfo) }
 
             Event.OnNextClicked -> onNext()
+
             Event.OnBackClicked -> onBack()
         }
     }

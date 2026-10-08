@@ -55,7 +55,8 @@ public class PendingCommandSerializer {
 
 
     public <T extends PendingCommand> String serialize(T command) {
-        // noinspection unchecked, we know the map has correctly matching adapters
+        @SuppressWarnings("unchecked")
+        // we know the map has correctly matching adapters
         JsonAdapter<T> adapter = (JsonAdapter<T>) adapters.get(command.getCommandName());
         if (adapter == null) {
             throw new IllegalArgumentException("Unsupported pending command type!");

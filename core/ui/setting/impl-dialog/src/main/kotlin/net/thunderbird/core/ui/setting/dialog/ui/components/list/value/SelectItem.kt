@@ -5,8 +5,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyMedium
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleMedium
+import net.thunderbird.components.ui.bolt.atom.text.TextBodyMedium
+import net.thunderbird.components.ui.bolt.atom.text.TextTitleMedium
 import net.thunderbird.core.ui.setting.SettingValue
 import net.thunderbird.core.ui.setting.component.list.item.SettingItemLayout
 
@@ -27,9 +27,14 @@ internal fun SelectItem(
             Column(
                 Modifier.weight(1f),
             ) {
-                TextTitleMedium(text = setting.value.title())
-                setting.description()?.let {
-                    TextBodyMedium(text = it)
+                if (setting.displayValueAsSecondaryText) {
+                    TextTitleMedium(text = setting.title())
+                    TextBodyMedium(text = setting.value.title())
+                } else {
+                    TextTitleMedium(text = setting.value.title())
+                    setting.description()?.let {
+                        TextBodyMedium(text = it)
+                    }
                 }
             }
         }

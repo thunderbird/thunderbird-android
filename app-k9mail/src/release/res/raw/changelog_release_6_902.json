@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "version": "6.902",
+  "versioncode": 39002,
+  "date": "2024-06-21",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Changed a lot of internals to migrate to Material 3. Please note that the Material 3 UI is still in an early state.",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Changed the order of toolbar actions in the message view to match the order in multi-select mode",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Changed default value for \"Fetch messages up to\" to 128KiB",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed bug where toolbar icons were displayed in the wrong color after performing a swipe action",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed crash when cutting email addresses from a recipient field when composing a message",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed toolbar size when using a non-default system font size",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Added Corsican, Korean, and Vietnamese translations",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Updated translations",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

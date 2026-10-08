@@ -62,7 +62,7 @@ abstract class BaseUnreadWidgetProvider : AppWidgetProvider(), KoinComponent {
         }
     }
 
-    private fun updateWidgets(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray) {
+    private suspend fun updateWidgets(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray) {
         for (widgetId in appWidgetIds) {
             val widgetData = repository.getWidgetData(widgetId) ?: continue
             updateWidget(context, appWidgetManager, widgetData)

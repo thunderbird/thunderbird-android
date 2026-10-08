@@ -8,8 +8,7 @@
     <string name="account_server_validation_incoming_loading_error">Gagal memeriksa pengaturan peladen yang masuk</string>
     <string name="account_server_validation_incoming_success">Pengaturan peladen yang masuk diverifikasi</string>
     <string name="account_server_validation_error_missing_server_capability">Kehilangan kemampuan peladen</string>
-    <string name="account_server_validation_error_details">Rincian:
-\n%s</string>
+    <string name="account_server_validation_error_details">Rincian: \n%s</string>
     <string name="account_server_validation_incoming_loading_message">Memeriksa pengaturan peladen yang masuk…</string>
     <string name="account_server_validation_error_missing_server_capability_details">Peladen kehilangan kemampuan berikut ini:\n%s</string>
     <string name="account_server_validation_outgoing_success">Pengaturan peladen yang keluar diverifikasi</string>

@@ -13,7 +13,7 @@
     <string name="account_server_settings_password_authentication_title">Egiaztatu zure identitatea</string>
     <string name="account_server_settings_authentication_label">Autentifikazioa</string>
     <string name="account_server_settings_connection_security_none">Bat ere ez</string>
-    <string name="account_server_settings_port_label">Portua</string>
+    <string name="account_server_settings_port_label">Ataka</string>
     <string name="account_server_settings_incoming_imap_compression_label">Konpresioa erabili</string>
     <string name="account_server_settings_validation_error_port_required">Portua beharrezkoa da.</string>
     <string name="account_server_settings_authentication_client_certificate">Bezero ziurtagiria</string>
@@ -32,4 +32,6 @@
     <string name="account_server_settings_security_label">Segurtasuna</string>
     <string name="account_server_settings_validation_error_server_invalid_ip_or_hostname">IP edo ostalari-izen baliogabea</string>
     <string name="account_server_settings_incoming_imap_send_client_info_label">Bidali bezeroaren informazioa</string>
+    <string name="account_server_settings_password_authentication_failed">Ezin izan da egiaztatu!</string>
+    <string name="account_server_settings_password_authentication_unable_to_start">Ezin da abiarazi gonbita biometrikoa.</string>
 </resources>

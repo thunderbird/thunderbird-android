@@ -10,6 +10,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
+import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.ContextCompat
@@ -35,7 +36,7 @@ import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.GenericItem
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.mikepenz.fastadapter.listeners.ClickEventHook
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.legacy.logging.Log
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -280,7 +281,15 @@ class MessageDetailsFragment : ToolbarBottomSheetDialogFragment() {
     }
 
     private fun addToContacts(address: Address) {
-        addToContactsLauncher.launch(context = requireContext(), name = address.personal, email = address.address)
+        val wasLaunched = addToContactsLauncher.launch(
+            context = requireContext(),
+            name = address.personal,
+            email = address.address,
+        )
+
+        if (!wasLaunched) {
+            Toast.makeText(requireContext(), R.string.error_no_contact_provider, Toast.LENGTH_LONG).show()
+        }
     }
 
     private val overflowClickEventHook = object : ClickEventHook<ParticipantItem>() {
@@ -331,7 +340,7 @@ class MessageDetailsFragment : ToolbarBottomSheetDialogFragment() {
         val intent = Intent(context, MessageCompose::class.java).apply {
             action = Intent.ACTION_SEND
             putExtra(Intent.EXTRA_EMAIL, arrayOf(address.toString()))
-            putExtra(MessageCompose.EXTRA_ACCOUNT, messageReference.accountUuid)
+            putExtra(MessageCompose.EXTRA_ACCOUNT, messageReference.accountId.toString())
         }
 
         dismissAllowingStateLoss()

@@ -2,19 +2,17 @@ package net.thunderbird.feature.notification.impl.command
 
 import assertk.all
 import assertk.assertThat
+import assertk.assertions.containsExactly
 import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
 import assertk.assertions.prop
-import dev.mokkery.spy
-import dev.mokkery.verify.VerifyMode.Companion.exactly
-import dev.mokkery.verifySuspend
 import kotlin.test.Test
 import kotlinx.coroutines.test.runTest
-import net.thunderbird.core.featureflag.FeatureFlagKey
+import net.thunderbird.components.core.outcome.Outcome
 import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.featureflag.FeatureFlagResult
+import net.thunderbird.core.featureflag.keys.GeneratedFeatureFlagKey
 import net.thunderbird.core.logging.testing.TestLogger
-import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.feature.notification.api.NotificationSeverity
 import net.thunderbird.feature.notification.api.command.outcome.CommandExecutionFailed
 import net.thunderbird.feature.notification.api.command.outcome.Success
@@ -35,7 +33,9 @@ class DisplaySystemNotificationCommandTest {
             val testSubject = createTestSubject(
                 featureFlagProvider = { key ->
                     when (key) {
-                        FeatureFlagKey.UseNotificationSenderForSystemNotifications -> FeatureFlagResult.Disabled
+                        GeneratedFeatureFlagKey.USE_NOTIFICATION_SENDER_FOR_SYSTEM_NOTIFICATIONS ->
+                            FeatureFlagResult.Disabled
+
                         else -> FeatureFlagResult.Enabled
                     }
                 },
@@ -54,7 +54,7 @@ class DisplaySystemNotificationCommandTest {
                     prop(UnsupportedCommand<SystemNotification>::reason)
                         .isInstanceOf<UnsupportedCommand.Reason.FeatureFlagDisabled>()
                         .prop(UnsupportedCommand.Reason.FeatureFlagDisabled::key)
-                        .isEqualTo(FeatureFlagKey.UseNotificationSenderForSystemNotifications)
+                        .isEqualTo(GeneratedFeatureFlagKey.USE_NOTIFICATION_SENDER_FOR_SYSTEM_NOTIFICATIONS)
                 }
         }
 
@@ -65,7 +65,9 @@ class DisplaySystemNotificationCommandTest {
             val testSubject = createTestSubject(
                 featureFlagProvider = { key ->
                     when (key) {
-                        FeatureFlagKey.UseNotificationSenderForSystemNotifications -> FeatureFlagResult.Unavailable
+                        GeneratedFeatureFlagKey.USE_NOTIFICATION_SENDER_FOR_SYSTEM_NOTIFICATIONS ->
+                            FeatureFlagResult.Unavailable
+
                         else -> FeatureFlagResult.Enabled
                     }
                 },
@@ -84,7 +86,7 @@ class DisplaySystemNotificationCommandTest {
                     prop(UnsupportedCommand<SystemNotification>::reason)
                         .isInstanceOf<UnsupportedCommand.Reason.FeatureFlagDisabled>()
                         .prop(UnsupportedCommand.Reason.FeatureFlagDisabled::key)
-                        .isEqualTo(FeatureFlagKey.UseNotificationSenderForSystemNotifications)
+                        .isEqualTo(GeneratedFeatureFlagKey.USE_NOTIFICATION_SENDER_FOR_SYSTEM_NOTIFICATIONS)
                 }
         }
 
@@ -122,7 +124,7 @@ class DisplaySystemNotificationCommandTest {
                 severity = NotificationSeverity.Information,
             )
             val notificationRegistry = FakeNotificationRegistry()
-            val notifier = spy(FakeSystemNotificationNotifier(notificationRegistry))
+            val notifier = FakeSystemNotificationNotifier(notificationRegistry)
             val testSubject = createTestSubject(
                 notification = notification,
                 // TODO(#9391): Verify if the app is backgrounded.
@@ -144,9 +146,7 @@ class DisplaySystemNotificationCommandTest {
                         .isEqualTo(notificationRegistry.getValue(notification))
                 }
 
-            verifySuspend(exactly(1)) {
-                notifier.show(notification)
-            }
+            assertThat(notifier.shownNotifications).containsExactly(notification)
         }
 
     @Test
@@ -157,7 +157,7 @@ class DisplaySystemNotificationCommandTest {
                 severity = NotificationSeverity.Fatal,
             )
             val notificationRegistry = FakeNotificationRegistry()
-            val notifier = spy(FakeSystemNotificationNotifier(notificationRegistry))
+            val notifier = FakeSystemNotificationNotifier(notificationRegistry)
             val testSubject = createTestSubject(
                 notification = notification,
                 // TODO(#9391): Verify if the app is backgrounded.
@@ -179,9 +179,7 @@ class DisplaySystemNotificationCommandTest {
                         .isEqualTo(notificationRegistry.getValue(notification))
                 }
 
-            verifySuspend(exactly(1)) {
-                notifier.show(notification)
-            }
+            assertThat(notifier.shownNotifications).containsExactly(notification)
         }
 
     @Test
@@ -192,7 +190,7 @@ class DisplaySystemNotificationCommandTest {
                 severity = NotificationSeverity.Critical,
             )
             val notificationRegistry = FakeNotificationRegistry()
-            val notifier = spy(FakeSystemNotificationNotifier(notificationRegistry))
+            val notifier = FakeSystemNotificationNotifier(notificationRegistry)
             val testSubject = createTestSubject(
                 notification = notification,
                 // TODO(#9391): Verify if the app is backgrounded.
@@ -214,9 +212,7 @@ class DisplaySystemNotificationCommandTest {
                         .isEqualTo(notificationRegistry.getValue(notification))
                 }
 
-            verifySuspend(exactly(1)) {
-                notifier.show(notification)
-            }
+            assertThat(notifier.shownNotifications).containsExactly(notification)
         }
 
     @Test
@@ -227,7 +223,7 @@ class DisplaySystemNotificationCommandTest {
                 severity = NotificationSeverity.Information,
             )
             val notificationRegistry = FakeNotificationRegistry()
-            val notifier = spy(FakeSystemNotificationNotifier(notificationRegistry))
+            val notifier = FakeSystemNotificationNotifier(notificationRegistry)
             val testSubject = createTestSubject(
                 notification = notification,
                 // TODO(#9391): Verify if the app is backgrounded.
@@ -249,9 +245,7 @@ class DisplaySystemNotificationCommandTest {
                         .isEqualTo(notificationRegistry.getValue(notification))
                 }
 
-            verifySuspend(exactly(1)) {
-                notifier.show(notification)
-            }
+            assertThat(notifier.shownNotifications).containsExactly(notification)
         }
 
     private fun createTestSubject(

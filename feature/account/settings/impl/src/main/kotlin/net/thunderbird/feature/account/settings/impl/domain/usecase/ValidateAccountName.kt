@@ -1,6 +1,6 @@
 package net.thunderbird.feature.account.settings.impl.domain.usecase
 
-import net.thunderbird.core.outcome.Outcome
+import net.thunderbird.components.core.outcome.Outcome
 import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.UseCase
 import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.ValidateAccountNameError
 

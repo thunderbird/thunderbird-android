@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "version": "5.114",
+  "versioncode": 23113,
+  "date": "2016-10-13",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "User interface tweaks for encryption-related functionality",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed crash caused by new message notifications",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed bug with downloading attachments",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed structure of emails created with K-9 Mail",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed bug where message list was displayed twice",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Updated translations",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

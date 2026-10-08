@@ -30,7 +30,7 @@ import android.util.AttributeSet;
 import androidx.core.content.IntentCompat;
 import androidx.fragment.app.Fragment;
 import androidx.preference.Preference;
-import net.thunderbird.core.logging.legacy.Log;
+import net.thunderbird.legacy.logging.Log;
 import org.openintents.openpgp.OpenPgpApiManager;
 import org.openintents.openpgp.OpenPgpApiManager.OpenPgpApiManagerCallback;
 import org.openintents.openpgp.OpenPgpApiManager.OpenPgpProviderError;
@@ -300,6 +300,7 @@ public class OpenPgpKeyPreference extends Preference implements OpenPgpApiManage
         return (long) a.getInteger(index, NO_KEY);
     }
 
+    @Deprecated
     @Override
     protected void onSetInitialValue(boolean restoreValue, Object defaultValue) {
         if (restoreValue) {

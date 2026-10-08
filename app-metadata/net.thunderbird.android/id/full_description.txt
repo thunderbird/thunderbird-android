@@ -1,0 +1,31 @@
+Thunderbird adalah aplikasi email yang andal dan berfokus pada privasi. Kelola banyak akun email dengan mudah dari satu aplikasi, dengan opsi Kotak Masuk Terpadu untuk produktivitas maksimal. Dibangun di atas teknologi sumber terbuka.
+
+<b>Apa yang bisa Anda lakukan</b>
+<ul>
+  <li>Tinggalkan banyak aplikasi dan webmail. Gunakan satu aplikasi, dengan Kotak Masuk Terpadu opsional, untuk memperlancar aktivitas Anda sepanjang hari.</li>
+  <li>Nikmati klien email yang ramah privasi dan tidak pernah mengumpulkan atau menjual data pribadi Anda. Kami menghubungkan Anda langsung ke penyedia email Anda. Selesai!</li>
+  <li>Tingkatkan privasi Anda ke level berikutnya dengan menggunakan enkripsi email OpenPGP (PGP/MIME) dengan aplikasi “OpenKeychain”, untuk mengenkripsi dan mendekripsi pesan Anda.</li>
+  <li>Pilih untuk menyinkronkan email Anda secara instan, pada interval waktu tertentu, atau sesuai permintaan. Bagaimana pun Anda ingin memeriksa email Anda, itu terserah Anda!</li>
+  <li>Temukan pesan penting Anda menggunakan pencarian lokal dan pencarian sisi server.</li>
+</ul>
+
+<b>Kesesuaian</b>
+<ul>
+  <li>Thunderbird bekerja dengan protokol IMAP dan POP3, mendukung berbagai penyedia email, termasuk Gmail, Outlook, Yahoo Mail, iCloud, dan banyak lagi.</li>
+</ul>
+
+<b>Mengapa menggunakan Thunderbird?</b>
+<ul>
+  <li>Nama terpercaya dalam email selama lebih dari 20 tahun - kini tersedia di Android.</li>
+  <li>Thunderbird sepenuhnya didanai oleh kontribusi sukarela dari para pengguna kami. Kami tidak menggali data pribadi Anda. Anda bukanlah produk.</li>
+  <li>Dibuat oleh tim yang berorientasi pada efisiensi seperti Anda. Kami ingin Anda menghabiskan waktu seminimal mungkin menggunakan aplikasi sambil mendapatkan hasil maksimal.</li>
+  <li>Dengan kontributor dari seluruh dunia, Thunderbird untuk Android telah diterjemahkan ke dalam lebih dari 20 bahasa.</li>
+  <li>Didukung oleh MZLA Technologies Corporation, anak perusahaan yang sepenuhnya dimiliki oleh Mozilla Foundation.</li>
+</ul>
+
+<b>Sumber Terbuka dan Komunitas</b>
+<ul>
+  <li>Thunderbird adalah perangkat lunak gratis dan sumber terbuka, yang berarti kode sumbernya tersedia untuk dilihat, dimodifikasi, digunakan, dan dibagikan secara bebas. Lisensinya juga menjamin bahwa perangkat lunak ini akan tetap gratis selamanya. Anda dapat menganggap Thunderbird sebagai sebuah hadiah.</li>
+  <li>Kami mengembangkan produk secara terbuka dengan pembaruan rutin dan transparan di blog dan milis kami.</li>
+  <li>Dukungan pengguna kami didukung oleh komunitas global kami. Temukan jawaban yang Anda butuhkan, atau berperanlah sebagai kontributor - baik itu menjawab pertanyaan, menerjemahkan aplikasi, atau memberi tahu teman-teman Anda.</li>
+</ul>

@@ -8,6 +8,7 @@ import net.thunderbird.core.ui.setting.SettingValue
 import net.thunderbird.core.ui.setting.dialog.ui.components.list.decoration.CustomItem
 import net.thunderbird.core.ui.setting.dialog.ui.components.list.decoration.SectionDividerItem
 import net.thunderbird.core.ui.setting.dialog.ui.components.list.decoration.SectionHeaderItem
+import net.thunderbird.core.ui.setting.dialog.ui.components.list.value.ActionTextItem
 import net.thunderbird.core.ui.setting.dialog.ui.components.list.value.ColorItem
 import net.thunderbird.core.ui.setting.dialog.ui.components.list.value.IconListItem
 import net.thunderbird.core.ui.setting.dialog.ui.components.list.value.SegmentedButtonItem
@@ -52,6 +53,13 @@ private fun RenderSettingValue(
             TextItem(
                 setting = setting,
                 onClick = onClick,
+                modifier = modifier,
+            )
+        }
+
+        is SettingValue.ActionText -> {
+            ActionTextItem(
+                setting = setting,
                 modifier = modifier,
             )
         }

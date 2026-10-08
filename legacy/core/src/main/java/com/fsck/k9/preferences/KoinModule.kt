@@ -42,18 +42,19 @@ val preferencesModule = module {
             contentResolver = get(),
             preferences = get(),
             folderSettingsProvider = get(),
-            folderRepository = get(),
+            folderQueryRepository = get(),
             notificationSettingsUpdater = get(),
             filePrefixProvider = get(),
         )
     }
-    factory { FolderSettingsProvider(folderRepository = get()) }
+    factory { FolderSettingsProvider(remoteFolderDetailsRepository = get()) }
     factory<LegacyAccountDtoManager> { get<Preferences>() }
     single<PrivacySettingsPreferenceManager> {
         DefaultPrivacySettingsPreferenceManager(
             logger = get(),
             storagePersister = get(),
             storageEditor = get<Preferences>().createStorageEditor(),
+            preferenceChangeBroker = get(),
         )
     }
     single<NotificationPreferenceManager> {
@@ -61,6 +62,7 @@ val preferencesModule = module {
             logger = get(),
             storagePersister = get(),
             storageEditor = get<Preferences>().createStorageEditor(),
+            preferenceChangeBroker = get(),
         )
     }
     single<DisplayCoreSettingsPreferenceManager> {
@@ -68,6 +70,7 @@ val preferencesModule = module {
             logger = get(),
             storagePersister = get(),
             storageEditor = get<Preferences>().createStorageEditor(),
+            preferenceChangeBroker = get(),
         )
     }
     single<DisplayInboxSettingsPreferenceManager> {
@@ -75,6 +78,7 @@ val preferencesModule = module {
             logger = get(),
             storagePersister = get(),
             storageEditor = get<Preferences>().createStorageEditor(),
+            preferenceChangeBroker = get(),
         )
     }
     single<DisplayVisualSettingsPreferenceManager> {
@@ -91,6 +95,7 @@ val preferencesModule = module {
             logger = get(),
             storagePersister = get(),
             storageEditor = get<Preferences>().createStorageEditor(),
+            preferenceChangeBroker = get(),
         )
     }
     single<InteractionSettingsPreferenceManager> {
@@ -98,6 +103,7 @@ val preferencesModule = module {
             logger = get(),
             storagePersister = get(),
             storageEditor = get<Preferences>().createStorageEditor(),
+            preferenceChangeBroker = get(),
         )
     }
     single<DisplaySettingsPreferenceManager> {
@@ -114,6 +120,7 @@ val preferencesModule = module {
             logger = get(),
             storage = get(),
             storageEditor = get(),
+            preferenceChangeBroker = get(),
         )
     }
     single<NetworkSettingsPreferenceManager> {
@@ -121,6 +128,7 @@ val preferencesModule = module {
             logger = get(),
             storagePersister = get(),
             storageEditor = get<Preferences>().createStorageEditor(),
+            preferenceChangeBroker = get(),
         )
     }
     single<DebuggingSettingsPreferenceManager> {
@@ -130,6 +138,7 @@ val preferencesModule = module {
             storageEditor = get<Preferences>().createStorageEditor(),
             logLevelManager = get(),
             platformConfigProvider = get(),
+            preferenceChangeBroker = get(),
         )
     }
     single<PlatformInitializer> {
@@ -165,7 +174,6 @@ val preferencesModule = module {
     } bind GeneralSettingsManager::class
     single {
         DefaultDrawerConfigManager(
-            preferences = get(),
             coroutineScope = get(named("AppCoroutineScope")),
             displayInboxSettingsPreferenceManager = get(),
             displayVisualSettingsPreferenceManager = get(),
@@ -176,7 +184,13 @@ val preferencesModule = module {
 
     factory { GeneralSettingsValidator() }
     factory { GeneralSettingsUpgrader() }
-    factory { GeneralSettingsWriter(preferences = get(), generalSettingsManager = get()) }
+    factory {
+        GeneralSettingsWriter(
+            preferences = get(),
+            generalSettingsManager = get(),
+            changePublisher = get(),
+        )
+    }
 
     factory { AccountSettingsValidator() }
 

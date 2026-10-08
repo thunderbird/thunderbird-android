@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="debug_settings_notifications_loading">Laadin…</string>
+    <string name="debug_settings_notifications_single_mail_sender">Saatja</string>
+    <string name="debug_settings_notifications_single_mail_subject">Kirja pealkiri</string>
+    <string name="debug_settings_notifications_single_mail_summary">Kokkuvõte</string>
+    <string name="debug_settings_notifications_single_mail_preview">Eelvaade</string>
+    <string name="debug_settings_notifications_status">"Olek: "</string>
+    <string name="debug_settings_notifications_clear_status_log">Kustuta olekulogi</string>
+    <string name="debug_settings_feature_flag_unsaved_changes">Salvestamata muudatused</string>
+    <string name="debug_settings_feature_flag_unsaved_changes_content_text">Sa pole kõiki muutusi salvestanud. Kas oled kindel, et soovid lahkuda?</string>
+    <string name="debug_settings_feature_flag_unsaved_changes_stay_button">Jää siia</string>
+    <string name="debug_settings_feature_flag_unsaved_changes_leave_button">Lahku</string>
+    <string name="debug_settings_feature_flag_restore_default_values">Taasta vaikimisi väärtused</string>
+    <string name="debug_settings_feature_flag_apply_changes">Kinnita muudatused</string>
+    <string name="debug_settings_feature_flag_modified_indicator">"* "</string>
+    <string name="debug_settings_feature_flag_overridden">"sürjutatud; "</string>
+    <string name="debug_settings_feature_flag_default_value">vaikimisi väärtus: %1$b</string>
+    <string name="debug_settings_screen_title">Salajane veaotsingu seadistuste vaade</string>
+    <string name="debug_settings_notifications_trigger_notification">Käivita teavitus</string>
+    <string name="debug_settings_notifications_common_notification_information">Üldine teavituse info</string>
+    <string name="debug_settings_notifications_in_app_notification">Rakendusesisene teavitus</string>
+    <string name="debug_settings_notifications_title">Teavitused</string>
+    <string name="debug_settings_notifications_system_notification">Süsteemi teavitus</string>
+    <string name="debug_settings_notifications_preparing_notification">Valmistan ette teavitust: %1$s</string>
+    <string name="debug_settings_notification_status_log">Teavituste olekulogi</string>
+    <string name="debug_settings_feature_flag_title">Omaduste olekuindikaatorid</string>
+</resources>

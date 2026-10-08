@@ -10,11 +10,11 @@ import java.security.cert.X509Certificate;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.thunderbird.core.logging.legacy.Log;
 import com.fsck.k9.mail.CertificateChainException;
 import javax.net.ssl.SSLException;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
+import net.thunderbird.legacy.logging.Log;
 import org.apache.hc.client5.http.ssl.DefaultHostnameVerifier;
 
 public class TrustManagerFactory {

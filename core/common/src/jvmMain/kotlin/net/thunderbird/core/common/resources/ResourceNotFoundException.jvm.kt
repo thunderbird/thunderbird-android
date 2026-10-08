@@ -1,3 +1,5 @@
 package net.thunderbird.core.common.resources
 
-actual typealias ResourceNotFoundException = java.lang.Exception
+import java.lang.Exception
+
+actual typealias ResourceNotFoundException = Exception

@@ -22,8 +22,8 @@ import com.fsck.k9.mail.testing.message.TestMessageBuilder
 import com.fsck.k9.mail.testing.security.TestTrustedSocketFactory
 import com.fsck.k9.mail.transport.mockServer.MockSmtpServer
 import net.thunderbird.core.common.exception.MessagingException
-import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.logging.testing.TestLogger
+import net.thunderbird.legacy.logging.Log
 import org.junit.Before
 import org.junit.Test
 import org.mockito.ArgumentMatchers.anyLong

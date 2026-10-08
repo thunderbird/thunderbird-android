@@ -35,7 +35,6 @@
     <string name="choose_folder_title">Valitse kansio</string>
     <string name="choose_folder_move_title">Siirrä…</string>
     <string name="choose_folder_copy_title">Kopioi…</string>
-    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> valittu</string>
     <string name="send_action">Lähetä</string>
     <string name="empty_subject">Aihe on tyhjä, napsauta uudelleen lähettääksesi silti</string>
     <string name="reply_action">Vastaa</string>
@@ -92,7 +91,7 @@
     <!--Shown in place of the subject when a message has no subject. Showing this in parentheses is customary.-->
     <string name="general_no_subject">(Ei aihetta)</string>
     <string name="general_no_sender">Ei lähettäjää</string>
-    <string name="status_loading_more">Ladataan viestejä\u2026</string>
+    <string name="status_loading_more">Ladataan viestejä…</string>
     <string name="status_network_error">Yhteysvirhe</string>
     <string name="status_invalid_id_error">Viestiä ei löytynyt</string>
     <string name="status_loading_error">Viestin lataamisvirhe</string>
@@ -174,7 +173,7 @@
     <!--Displayed in the message view screen in front of the number of additional recipients (the ones that are not displayed).-->
     <string name="message_view_additional_recipient_prefix">+</string>
     <!--Displayed in the message view screen if the message was addressed to the user. Make sure this works with 'message_view_recipient_prefix'. In English it's "to me".-->
-    <string name="message_view_me_text">minä</string>
+    <string name="message_view_to_me_text">minä</string>
     <!--Text of the button that is displayed below the message header when the message body references one or more remote images-->
     <string name="message_view_show_remote_images_action">Näytä etäkuvat</string>
     <string name="message_view_no_viewer">Tiedostotyypille <xliff:g id="mimetype">%s</xliff:g> ei löydy katseluohjelmaa.</string>
@@ -312,19 +311,19 @@
     <string name="account_notify_contacts_mail_only_summary">Näytä ilmoitukset vain niistä viesteistä, jotka tulevat tunnetuilta yhteystiedoilta</string>
     <string name="account_settings_ignore_chat_messages_label">Älä huomioi keskusteluviestejä</string>
     <string name="account_settings_ignore_chat_messages_summary">Älä näytä ilmoituksia viesteistä, jotka kuuluvat sähköpostikeskusteluun</string>
-    <string name="account_settings_mark_message_as_read_on_view_label">Merkitse viesti luetuksi avattaessa</string>
-    <string name="account_settings_mark_message_as_read_on_view_summary">Merkitse viesti luetuksi, kun se avataan katseltavaksi</string>
+    <string name="account_settings_mark_message_as_read_on_view_label">Merkitse luetuksi, kun avataan</string>
+    <string name="account_settings_mark_message_as_read_on_view_summary">Merkitse viesti luetuksi, kun se on avattu katseluun</string>
     <string name="account_settings_mark_message_as_read_on_delete_label">Merkitse luetuksi poistettaessa</string>
     <string name="account_settings_mark_message_as_read_on_delete_summary">Merkitse viesti luetuksi, kun se poistetaan</string>
     <string name="account_settings_notification_channels_label">Ilmoitusten luokat</string>
     <string name="account_settings_open_notification_settings_messages_summary">Määritä uusien viestien ilmoitukset</string>
     <string name="account_settings_open_notification_settings_miscellaneous_summary">Määritä virhe- ja tilailmoitukset</string>
-    <string name="account_settings_show_pictures_label">Näytä aina kuvat</string>
-    <string name="account_settings_show_pictures_never">Ei koskaan</string>
-    <string name="account_settings_show_pictures_only_from_contacts">Vain yhteystiedoissa olevilta lähettäjiltä</string>
-    <string name="account_settings_show_pictures_always">Keneltä tahansa</string>
+    <string name="account_settings_show_pictures_label">Aina näytä kuvat</string>
+    <string name="account_settings_show_pictures_never">Ei</string>
+    <string name="account_settings_show_pictures_only_from_contacts">Yhteystiedoista</string>
+    <string name="account_settings_show_pictures_always">Kaikilta</string>
     <string name="account_settings_composition">Viestien lähettäminen</string>
-    <string name="account_settings_default_quoted_text_shown_label">Lainaa alkuperäistä viestiä vastattaessa  </string>
+    <string name="account_settings_default_quoted_text_shown_label">Lainaa alkuperäistä viestiä vastattaessa</string>
     <string name="account_settings_default_quoted_text_shown_summary">Alkuperäinen viesti on vastauksessa viesteihin vastattaessa.</string>
     <string name="account_settings_reply_after_quote_label">Vastaa lainauksen jälkeen</string>
     <string name="account_settings_reply_after_quote_summary">Kun viestiin vastataan, alkuperäinen viesti on vastauksesi yläpuolella.</string>
@@ -343,7 +342,7 @@
     <string name="account_settings_upload_sent_messages_label">Lähetä lähetetyt viestit</string>
     <string name="account_settings_upload_sent_messages_summary">Lähetä viestit Lähetetyt-kansioon lähettämisen jälkeen</string>
     <string name="account_settings_general_title">Yleiset asetukset</string>
-    <string name="account_settings_reading_mail">Viestien lukeminen</string>
+    <string name="account_settings_reading_mail">Luetaan postia</string>
     <string name="account_settings_sync">Viestien hakeminen</string>
     <string name="account_settings_folders">Kansiot</string>
     <string name="account_settings_quote_prefix_label">Lainauksen etuliite</string>
@@ -518,7 +517,6 @@
     <string name="account_setup_push_limit_500">500 kansiota</string>
     <string name="account_setup_push_limit_1000">1000 kansiota</string>
     <string name="animations_title">Animaatio</string>
-    <string name="animations_summary">Käytä koreita visuaalisia tehosteita</string>
     <string name="show_unified_inbox_title">Näytä \"Yhdistetty saapuneet\"</string>
     <string name="show_starred_count_title">Näytä tähdellä merkittyjen viestien määrä</string>
     <string name="integrated_inbox_title">Yhdistetty saapuneet</string>
@@ -620,7 +618,7 @@
     <string name="account_settings_remote_search_num_results_entries_250">250</string>
     <string name="account_settings_remote_search_num_results_entries_500">500</string>
     <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
-    <string name="account_settings_remote_search_num_label">Etähaun tulosten rajoitus</string>
+    <string name="account_settings_remote_search_num_label">­Palvelimen hakuraja</string>
     <string name="remote_search_sending_query">Lähetetään pyyntöä palvelimelle</string>
     <plurals name="remote_search_downloading">
         <item quantity="one">Noudetaan %d tulos</item>
@@ -730,7 +728,6 @@
     <string name="crypto_msg_encrypted_insecure">mutta salausta ei mielletä turvalliseksi</string>
     <string name="locked_attach_unlock">Avaa lukitus</string>
     <string name="locked_attach_unencrypted">Tätä osaa ei salattu, joten se saattaa olla epäluotettava.</string>
-    <string name="locked_attach_title">Suojaamaton liite</string>
     <string name="message_progress_text">Ladataan…</string>
     <string name="messageview_decrypt_cancelled">Salauksen purkaminen peruttiin.</string>
     <string name="messageview_decrypt_retry">Yritä uudelleen</string>
@@ -782,12 +779,7 @@
     <string name="ac_transfer_finish">Viimeistelläksesi avaa viesti toisella laitteellasi ja kirjoita asetuskoodi.</string>
     <string name="ac_transfer_show_code">Näytä asetuskoodi</string>
     <string name="ac_transfer_msg_subject">Autocrypt-asetusviesti</string>
-    <string name="ac_transfer_msg_body">Tämä viesti sisältää kaikki tiedot Autocryptin asetusten sekä salausavaimesi siirtämiseksi turvallisesti alkuperäisestä laitteestasi.
-
-Aseta uusi laitteesi käyttämään Autocryptiä noudattamalla ohjeita, jotka uusi laitteesi näyttää.
-
-Voit säilyttää tämän viestin ja käyttää sitä varmuuskopioina salausavaimellesi. Jos haluat tehdä tämän, kirjoita salasana muistiin ja säilytä se turvallisesti.
-</string>
+    <string name="ac_transfer_msg_body">Tämä viesti sisältää kaikki tiedot Autocryptin asetusten sekä salausavaimesi siirtämiseksi turvallisesti alkuperäisestä laitteestasi. Aseta uusi laitteesi käyttämään Autocryptiä noudattamalla ohjeita, jotka uusi laitteesi näyttää. Voit säilyttää tämän viestin ja käyttää sitä varmuuskopioina salausavaimellesi. Jos haluat tehdä tämän, kirjoita salasana muistiin ja säilytä se turvallisesti.</string>
     <string name="ac_transfer_error_send">Viestiä lähettäessä tapahtui virhe. Tarkista verkkoyhteyden tila ja lähtevän postin palvelimen asetukset.</string>
     <string name="switch_on">Päällä</string>
     <string name="switch_off">Pois</string>
@@ -804,25 +796,15 @@ Voit säilyttää tämän viestin ja käyttää sitä varmuuskopioina salausavai
     <string name="push_info_disable_push_text">Jos et tarvitse välitöntä ilmoitusta uudesta viestistä, pushin sijaan on suositeltavaa käyttää pollausta. Pollaus tarkistaa uudet viestit määrätyin aikavälein, eikä tämä vaadi ilmoituksen näyttämistä.</string>
     <string name="push_info_disable_push_action">Poista push käytöstä</string>
     <!--Name of the swipe action to select a message. Try to keep it short.-->
-    <string name="swipe_action_select">Valitse</string>
     <!--Name of the swipe action to deselect a message. Try to keep it short.-->
-    <string name="swipe_action_deselect">Poista valinta</string>
     <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
-    <string name="swipe_action_mark_as_read">Merkitse luetuksi</string>
     <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
-    <string name="swipe_action_mark_as_unread">Merkitse lukemattomaksi</string>
     <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
-    <string name="swipe_action_add_star">Lisää tähti</string>
     <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
-    <string name="swipe_action_remove_star">Poista tähti</string>
     <!--Name of the swipe action to archive a message. Try to keep it short.-->
-    <string name="swipe_action_archive">Arkistoi</string>
     <!--Name of the swipe action to delete a message. Try to keep it short.-->
-    <string name="swipe_action_delete">Poista</string>
     <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
-    <string name="swipe_action_spam">Roskaposti</string>
     <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
-    <string name="swipe_action_move">Siirrä…</string>
     <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
     <string name="general_settings_show_compose_button_title">Näytä kelluva kirjoituspainike</string>
     <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->

@@ -8,6 +8,7 @@ import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.storage.legacy.mapper.LegacyAccountDataMapper
 
+@Suppress("TooManyFunctions")
 internal class DefaultLegacyAccountManager(
     private val accountManager: LegacyAccountDtoManager,
     private val accountDataMapper: LegacyAccountDataMapper,
@@ -22,8 +23,13 @@ internal class DefaultLegacyAccountManager(
             }
     }
 
-    override fun getById(id: AccountId): Flow<LegacyAccount?> {
-        return accountManager.getAccountFlow(id.asRaw()).map { account ->
+    override fun getById(accountId: AccountId): LegacyAccount? {
+        val dto = accountManager.getById(accountId)
+        return dto?.let { accountDataMapper.toDomain(it) }
+    }
+
+    override fun observeById(accountId: AccountId): Flow<LegacyAccount?> {
+        return accountManager.observeById(accountId).map { account ->
             account?.let {
                 accountDataMapper.toDomain(it)
             }
@@ -45,24 +51,15 @@ internal class DefaultLegacyAccountManager(
 
     override fun getAccountsFlow(): Flow<List<LegacyAccount>> = getAll()
 
-    override fun getAccount(accountUuid: String): LegacyAccount? {
-        val dto = accountManager.getAccount(accountUuid)
-        return dto?.let { accountDataMapper.toDomain(it) }
-    }
-
-    override fun getAccountFlow(accountUuid: String): Flow<LegacyAccount?> {
-        return accountManager.getAccountFlow(accountUuid).map { account ->
-            account?.let {
-                accountDataMapper.toDomain(it)
-            }
-        }
-    }
-
     override fun moveAccount(account: LegacyAccount, newPosition: Int) {
         accountManager.moveAccount(accountDataMapper.toDto(account), newPosition)
     }
 
     override fun saveAccount(account: LegacyAccount) {
         accountManager.saveAccount(accountDataMapper.toDto(account))
+    }
+
+    override fun updateSync(account: LegacyAccount) {
+        saveAccount(account)
     }
 }

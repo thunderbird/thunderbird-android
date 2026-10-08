@@ -3,9 +3,8 @@ plugins {
 }
 
 kotlin {
-    androidLibrary {
+    android {
         namespace = "net.thunderbird.core.configstore.backend"
-        withHostTest {}
     }
     sourceSets {
         commonMain.dependencies {
@@ -17,11 +16,10 @@ kotlin {
 
         commonTest.dependencies {
             implementation(projects.core.testing)
-            implementation(libs.assertk)
-        }
-
-        jvmTest.dependencies {
-            implementation(libs.junit)
         }
     }
+}
+
+codeCoverage {
+    branchCoverage = 42
 }

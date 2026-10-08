@@ -1,2 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_server_certificate_warning_title">Advarsel</string>
+    <string name="account_server_certificate_unknown_error_subtitle">Certifikat fejl</string>
+    <string name="account_server_certificate_button_back">Gå tilbage (anbefalet)</string>
+    <string name="account_server_certificate_button_advanced">Avanceret</string>
+    <string name="account_server_certificate_button_continue">Acceptér risiko og fortsæt</string>
+    <string name="account_server_certificate_section_title">Server certifikat</string>
+    <string name="account_server_certificate_not_valid_before">Ikke gyldig før</string>
+    <string name="account_server_certificate_not_valid_after">Ikke gyldig efter</string>
+    <string name="account_server_certificate_subject">Emne</string>
+    <string name="account_server_certificate_issuer">Udsteder</string>
+    <string name="account_server_certificate_fingerprints_section">Fingeraftryk</string>
+</resources>

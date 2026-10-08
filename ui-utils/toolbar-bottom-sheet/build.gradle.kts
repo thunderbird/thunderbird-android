@@ -7,11 +7,15 @@ dependencies {
     api(libs.android.material)
     api(libs.androidx.coordinatorlayout)
 
-    implementation(libs.androidx.annotation)
     implementation(libs.androidx.fragment)
     implementation(libs.androidx.lifecycle.viewmodel)
 }
 
 android {
     namespace = "app.k9mail.ui.utils.bottomsheet"
+}
+
+codeCoverage {
+    branchCoverage = 0
+    lineCoverage = 0
 }

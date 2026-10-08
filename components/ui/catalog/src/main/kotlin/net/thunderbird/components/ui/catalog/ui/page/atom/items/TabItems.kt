@@ -1,0 +1,68 @@
+package net.thunderbird.components.ui.catalog.ui.page.atom.items
+
+import androidx.compose.foundation.lazy.grid.LazyGridScope
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.graphics.vector.ImageVector
+import net.thunderbird.components.ui.bolt.atom.text.TextLabelSmall
+import net.thunderbird.components.ui.bolt.atom.text.TextTitleMedium
+import net.thunderbird.components.ui.bolt.atom.icon.Icon
+import net.thunderbird.components.ui.bolt.atom.icon.Icons
+import net.thunderbird.components.ui.bolt.atom.tab.TabPrimary
+import net.thunderbird.components.ui.bolt.atom.tab.TabSecondary
+import net.thunderbird.components.ui.bolt.molecule.tab.TabRowPrimary
+import net.thunderbird.components.ui.bolt.molecule.tab.TabRowSecondary
+import net.thunderbird.components.ui.catalog.ui.page.common.list.defaultItem
+import net.thunderbird.components.ui.catalog.ui.page.common.list.fullSpanItem
+import net.thunderbird.components.ui.catalog.ui.page.common.list.sectionHeaderItem
+
+fun LazyGridScope.tabItems() {
+    sectionHeaderItem("Primary Tab")
+    fullSpanItem {
+        var selected by remember { mutableStateOf(PrimaryTabItems.TextOnly) }
+        TabRowPrimary(selectedTabIndex = PrimaryTabItems.entries.indexOf(selected)) {
+            PrimaryTabItems.entries.forEach { tabItem ->
+                TabPrimary(
+                    selected = selected == tabItem,
+                    title = { TextTitleMedium(tabItem.name) },
+                    onClick = { selected = tabItem },
+                    icon = {
+                        when (tabItem) {
+                            PrimaryTabItems.TextOnly -> null
+
+                            PrimaryTabItems.TextWithIcon, PrimaryTabItems.TextWithIconAndBadge ->
+                                Icon(imageVector = requireNotNull(tabItem.icon))
+                        }
+                    },
+                    badge = if (tabItem == PrimaryTabItems.TextWithIconAndBadge) {
+                        { TextLabelSmall(text = tabItem.badgeCount.toString()) }
+                    } else {
+                        null
+                    },
+                )
+            }
+        }
+    }
+    sectionHeaderItem("Secondary Tab")
+    defaultItem {
+        TabRowSecondary(selectedTabIndex = 0) {
+            TabSecondary(
+                selected = true,
+                title = { TextTitleMedium("Secondary Tab") },
+                onClick = { },
+            )
+        }
+    }
+}
+
+private enum class PrimaryTabItems(
+    val text: String,
+    val icon: ImageVector?,
+    val badgeCount: Int?,
+) {
+    TextOnly(text = "Text only", icon = null, badgeCount = null),
+    TextWithIcon(text = "Text with Icon", icon = Icons.Filled.Star, badgeCount = null),
+    TextWithIconAndBadge(text = "Text with Icon and Badge", icon = Icons.Outlined.AllInbox, badgeCount = 10),
+}

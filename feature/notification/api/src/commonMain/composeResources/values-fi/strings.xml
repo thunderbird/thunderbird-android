@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="notification_channel_push_title">Synkronoi (Push)</string>
     <string name="notification_channel_push_description">Näytetään kun odotetaan uusia viestejä</string>
@@ -34,4 +34,17 @@
     <string name="notification_action_archive">Arkistoi</string>
     <string name="notification_action_archive_all">Arkistoi kaikki</string>
     <string name="notification_action_spam">Roskaposti</string>
+    <plurals name="notification_new_messages_title">
+        <item quantity="one">%1$d uusi viesti</item>
+        <item quantity="other">%1$d uutta viestiä</item>
+    </plurals>
+    <string name="notification_action_retry">Yritä uudelleen</string>
+    <string name="notification_action_update_server_settings">Päivitä palvelimen asetukset</string>
+    <string name="banner_inline_notification_some_messages_need_attention">Jotkin viestit vaativat huomiotasi.</string>
+    <string name="banner_inline_notification_open_notifications">Avaa ilmoitukset</string>
+    <string name="banner_inline_notification_learn_more">Lue lisää</string>
+    <string name="banner_inline_notification_view_support_article">Näytä tukiartikkeli</string>
+    <string name="sent_folder_not_found_title">Lähetetyt-kansio ei ole saatavilla.</string>
+    <string name="notification_bg_sync_text">%1$s: %2$s</string>
+    <string name="banner_inline_notification_check_error_notifications">Tarkista virheilmoitukset</string>
 </resources>

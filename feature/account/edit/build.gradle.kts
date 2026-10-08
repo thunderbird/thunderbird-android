@@ -16,17 +16,22 @@ android {
 dependencies {
     implementation(projects.core.common)
     implementation(projects.core.validation)
-    implementation(projects.core.ui.compose.designsystem)
-    implementation(projects.core.ui.compose.navigation)
+    implementation(projects.core.ui.contract)
+    implementation(projects.core.ui.navigation)
 
     implementation(projects.mail.common)
 
+    implementation(projects.feature.account.api)
     implementation(projects.feature.account.common)
     implementation(projects.feature.account.oauth)
     implementation(projects.feature.account.server.settings)
     implementation(projects.feature.account.server.certificate)
     implementation(projects.feature.account.server.validation)
-
     testImplementation(projects.core.ui.compose.testing)
     testImplementation(projects.mail.protocols.imap)
+}
+
+codeCoverage {
+    branchCoverage = 2
+    lineCoverage = 8
 }

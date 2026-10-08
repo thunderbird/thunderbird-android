@@ -9,6 +9,7 @@ import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ConnectionSecurity
 import com.fsck.k9.mail.ServerSettings
 import kotlinx.coroutines.test.runTest
+import net.thunderbird.account.fake.FakeAccountData.ACCOUNT_ID
 import net.thunderbird.account.fake.FakeAccountData.ACCOUNT_ID_RAW
 import net.thunderbird.core.android.account.Identity
 import net.thunderbird.core.android.account.LegacyAccountDto
@@ -21,7 +22,7 @@ class AccountStateLoaderTest {
         val accountManager = FakeLegacyAccountDtoManager()
         val testSubject = AccountStateLoader(accountManager)
 
-        val result = testSubject.loadAccountState(ACCOUNT_ID_RAW)
+        val result = testSubject.loadAccountState(ACCOUNT_ID)
 
         assertThat(result).isNull()
     }
@@ -29,7 +30,7 @@ class AccountStateLoaderTest {
     @Test
     fun `loadAccountState() SHOULD return account when present in accountManager`() = runTest {
         val accounts = mutableMapOf(
-            ACCOUNT_ID_RAW to LegacyAccountDto(uuid = ACCOUNT_ID_RAW).apply {
+            ACCOUNT_ID to LegacyAccountDto(id = ACCOUNT_ID).apply {
                 identities = mutableListOf(Identity())
                 email = "emailAddress"
                 incomingServerSettings = INCOMING_SERVER_SETTINGS
@@ -40,11 +41,11 @@ class AccountStateLoaderTest {
         val accountManager = FakeLegacyAccountDtoManager(accounts = accounts)
         val testSubject = AccountStateLoader(accountManager)
 
-        val result = testSubject.loadAccountState(ACCOUNT_ID_RAW)
+        val result = testSubject.loadAccountState(ACCOUNT_ID)
 
         assertThat(result).isEqualTo(
             AccountState(
-                uuid = ACCOUNT_ID_RAW,
+                id = ACCOUNT_ID,
                 emailAddress = "emailAddress",
                 incomingServerSettings = INCOMING_SERVER_SETTINGS,
                 outgoingServerSettings = OUTGOING_SERVER_SETTINGS,

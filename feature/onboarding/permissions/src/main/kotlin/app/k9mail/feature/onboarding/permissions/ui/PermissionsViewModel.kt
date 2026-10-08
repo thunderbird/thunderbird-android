@@ -3,7 +3,6 @@ package app.k9mail.feature.onboarding.permissions.ui
 import androidx.lifecycle.viewModelScope
 import app.k9mail.core.android.permissions.Permission
 import app.k9mail.core.android.permissions.PermissionState
-import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
 import app.k9mail.feature.onboarding.permissions.domain.PermissionsDomainContract.UseCase
 import app.k9mail.feature.onboarding.permissions.ui.PermissionsContract.Effect
 import app.k9mail.feature.onboarding.permissions.ui.PermissionsContract.Event
@@ -14,6 +13,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import net.thunderbird.core.ui.contract.mvi.BaseViewModel
 
 class PermissionsViewModel(
     private val checkPermission: UseCase.CheckPermission,

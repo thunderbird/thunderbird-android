@@ -21,7 +21,9 @@ import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import java.util.Locale
 import net.thunderbird.core.android.account.LegacyAccountDto
-import net.thunderbird.feature.mail.folder.api.FolderType
+import net.thunderbird.feature.account.AccountId
+import net.thunderbird.feature.account.AccountIdFactory
+import net.thunderbird.feature.mail.folder.FolderType
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -74,7 +76,7 @@ class ChooseFolderActivity : BaseActivity() {
         action = intent.action?.toAction() ?: error("Missing Intent action")
 
         val accountUuid = intent.getStringExtra(EXTRA_ACCOUNT) ?: return false
-        account = preferences.getAccount(accountUuid) ?: return false
+        account = preferences.getById(AccountIdFactory.of(accountUuid)) ?: return false
 
         messageReference = intent.getStringExtra(EXTRA_MESSAGE_REFERENCE)
         currentFolderId = intent.getLongExtraOrNull(EXTRA_CURRENT_FOLDER_ID)
@@ -160,6 +162,7 @@ class ChooseFolderActivity : BaseActivity() {
     private fun configureFolderSearchView(menu: Menu) {
         val folderMenuItem = menu.findItem(R.id.filter_folders)
         val folderSearchView = folderMenuItem.actionView as SearchView
+        folderSearchView.maxWidth = Int.MAX_VALUE
         folderSearchView.queryHint = getString(R.string.folder_list_filter_hint)
         folderSearchView.setOnQueryTextListener(
             object : SearchView.OnQueryTextListener {
@@ -250,14 +253,14 @@ class ChooseFolderActivity : BaseActivity() {
         fun buildLaunchIntent(
             context: Context,
             action: Action,
-            accountUuid: String,
+            accountId: AccountId,
             currentFolderId: Long? = null,
             scrollToFolderId: Long? = null,
             messageReference: MessageReference? = null,
         ): Intent {
             return Intent(context, ChooseFolderActivity::class.java).apply {
                 this.action = action.toString()
-                putExtra(EXTRA_ACCOUNT, accountUuid)
+                putExtra(EXTRA_ACCOUNT, accountId.toString())
                 currentFolderId?.let { putExtra(EXTRA_CURRENT_FOLDER_ID, currentFolderId) }
                 scrollToFolderId?.let { putExtra(EXTRA_SCROLL_TO_FOLDER_ID, scrollToFolderId) }
                 messageReference?.let { putExtra(EXTRA_MESSAGE_REFERENCE, it.toIdentityString()) }

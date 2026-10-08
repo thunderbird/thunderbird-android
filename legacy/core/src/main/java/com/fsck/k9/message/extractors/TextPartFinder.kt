@@ -20,7 +20,7 @@ class TextPartFinder {
             } else {
                 findTextPartInMultipart(body)
             }
-        } else if (mimeType == TEXT_PLAIN || mimeType == TEXT_HTML) {
+        } else if (body != null && (mimeType == TEXT_PLAIN || mimeType == TEXT_HTML)) {
             part
         } else {
             null
@@ -41,9 +41,9 @@ class TextPartFinder {
                 }
 
                 htmlPart = candidatePart
-            } else if (mimeType == TEXT_PLAIN) {
+            } else if (body != null && mimeType == TEXT_PLAIN) {
                 return bodyPart
-            } else if (mimeType == TEXT_HTML && htmlPart == null) {
+            } else if (body != null && mimeType == TEXT_HTML && htmlPart == null) {
                 htmlPart = bodyPart
             }
         }
@@ -58,7 +58,7 @@ class TextPartFinder {
 
             if (body is Multipart) {
                 return findFirstTextPart(bodyPart) ?: continue
-            } else if (mimeType == TEXT_PLAIN || mimeType == TEXT_HTML) {
+            } else if (body != null && (mimeType == TEXT_PLAIN || mimeType == TEXT_HTML)) {
                 return bodyPart
             }
         }

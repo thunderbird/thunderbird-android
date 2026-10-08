@@ -110,7 +110,7 @@ fun AccountSettingsContent(
 - Foundational UI elements that implement the design system
 - Consistent visual language across the application
 - Encapsulate styling, theming, and behavior from Material Design 3
-- Located in the `core:ui:compose:designsystem` module for reuse across features
+- Located in the `:components:ui:bolt` module for reuse across features
 - Built using the [Atomic Design Methodology](design-system.md)
 
 Example:
@@ -142,8 +142,8 @@ fun PrimaryButton(
 - Supports light and dark modes
 - Provides consistent visual appearance across the application
 - Implemented using Material Design 3 theming system
-- Located in the `core:ui:compose:theme2` module for reuse across features
-- Provides a `ThunderbirdTheme2` and a `K9MailTheme2` composable that wraps the MaterialTheme with custom color schemes, typography, and shapes
+- Located in the `:components:ui:bolt` module for reuse across features
+- Provides a `ThunderbirdBoltTheme` and a `K9MailBoltTheme` composable that wraps the MaterialTheme with custom color schemes, typography, and shapes
 - Uses Jetpack Compose's `CompositionLocalProvider` as a theme provider to make theme components available throughout the app
 
 For a more detailed explanation of the theming system, including the theme provider implementation, see
@@ -875,71 +875,85 @@ private fun handleResult(result: AccountCreatorResult) {
 
 ## 🧭 Navigation
 
-The application uses the Jetpack Navigation Compose library for navigation between screens:
+The application uses the Jetpack Navigation Compose library with a type-safe approach provided by `core:ui:navigation`:
 
-- **📱 Navigation Graph**: Defines the screens and their relationships
-- **🔗 Navigation Arguments**: Type-safe arguments passed between destinations
+- **📱 Navigation Graph**: Defines the screens and their relationships using `NavGraphBuilder`
+- **🔗 Type-safe Routes**: Uses the `Route` interface for type-safe navigation
 - **🔙 Back Stack Management**: Handles the navigation back stack
-- **↩️ Deep Linking**: Supports deep linking to specific screens
+- **↩️ Deep Linking**: Supports deep linking to specific screens via `deepLinkComposable`
+- **🗄️ Navigation Drawer**: UI components for the navigation drawer are provided by `feature:navigation:drawer`
 
 ### Navigation Setup
 
 To set up navigation in the app, you need to:
 
-1. Define route constants
-2. Create a NavHost with composable destinations
+1. Define a `Route` implementation (usually a `sealed class` or `data class`)
+2. Implement the `Navigation` interface to register routes
 3. Handle navigation callbacks in screens
 4. Use ViewModels to emit navigation effects
 
 Example:
 
 ```kotlin
-// Define route constants
-private const val ROUTE_HOME = "home"
-private const val ROUTE_SETTINGS = "settings"
-private const val ROUTE_DETAILS = "details/{itemId}"
+// Define routes
+sealed interface AppRoute : Route {
+    data object Home : AppRoute {
+        override val basePath = "home"
+        override fun route() = basePath
+    }
 
+    data class Details(val itemId: String) : AppRoute {
+        override val basePath = "details"
+        override fun route() = "$basePath/$itemId"
+    }
+}
+
+// Implement Navigation
+class FeatureNavigation : Navigation<AppRoute> {
+    override fun registerRoutes(
+        navGraphBuilder: NavGraphBuilder,
+        onBack: () -> Unit,
+        onFinish: (AppRoute) -> Unit,
+    ) {
+        navGraphBuilder.composable<AppRoute.Home> {
+            HomeScreen(
+                onNavigateToDetails = { itemId -> onFinish(AppRoute.Details(itemId)) },
+            )
+        }
+
+        navGraphBuilder.composable<AppRoute.Details> { backStackEntry ->
+            val route = backStackEntry.toRoute<AppRoute.Details>()
+            DetailsScreen(
+                itemId = route.itemId,
+                onBack = onBack,
+            )
+        }
+    }
+}
+```
+
+### Navigation Integration
+
+To integrate the feature navigation into your application, call `registerRoutes` within a `NavHost`:
+
+```kotlin
 @Composable
 fun AppNavHost(
-    onFinish: () -> Unit,
+    navController: NavHostController,
+    featureNavigation: FeatureNavigation,
 ) {
-    val navController = rememberNavController()
-
     NavHost(
         navController = navController,
-        startDestination = ROUTE_HOME,
+        startDestination = AppRoute.Home,
     ) {
-        composable(route = ROUTE_HOME) {
-            HomeScreen(
-                onNavigateToSettings = { navController.navigate(ROUTE_SETTINGS) },
-                onNavigateToDetails = { itemId -> 
-                    navController.navigate("details/$itemId") 
-                },
-                viewModel = koinViewModel(),
-            )
-        }
-
-        composable(route = ROUTE_SETTINGS) {
-            SettingsScreen(
-                onBack = { navController.popBackStack() },
-                onFinish = onFinish,
-                viewModel = koinViewModel(),
-            )
-        }
-
-        composable(
-            route = ROUTE_DETAILS,
-            arguments = listOf(
-                navArgument("itemId") { type = NavType.StringType }
-            )
-        ) { backStackEntry ->
-            val itemId = backStackEntry.arguments?.getString("itemId") ?: ""
-            DetailsScreen(
-                itemId = itemId,
-                onBack = { navController.popBackStack() },
-                viewModel = koinViewModel(),
-            )
-        }
+        featureNavigation.registerRoutes(
+            navGraphBuilder = this,
+            onBack = { navController.popBackStack() },
+            onFinish = { route -> 
+                // Handle navigation to other features or finishing the flow
+                navController.navigate(route) 
+            },
+        )
     }
 }
 ```

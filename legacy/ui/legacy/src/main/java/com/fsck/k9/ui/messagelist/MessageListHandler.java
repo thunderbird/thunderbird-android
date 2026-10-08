@@ -21,9 +21,9 @@ public class MessageListHandler extends Handler {
     private static final int ACTION_PROGRESS = 3;
     private static final int ACTION_REMOTE_SEARCH_FINISHED = 4;
 
-    private WeakReference<BaseMessageListFragment> mFragment;
+    private WeakReference<MessageListFragmentBridgeContract> mFragment;
 
-    public MessageListHandler(BaseMessageListFragment fragment) {
+    public MessageListHandler(MessageListFragmentBridgeContract fragment) {
         mFragment = new WeakReference<>(fragment);
     }
     public void folderLoading(long folderId, boolean loading) {
@@ -52,7 +52,7 @@ public class MessageListHandler extends Handler {
         post(new Runnable() {
             @Override
             public void run() {
-                BaseMessageListFragment fragment = mFragment.get();
+                MessageListFragmentBridgeContract fragment = mFragment.get();
                 if (fragment != null) {
                     fragment.updateFooterText(message);
                 }
@@ -62,7 +62,7 @@ public class MessageListHandler extends Handler {
 
     @Override
     public void handleMessage(android.os.Message msg) {
-        BaseMessageListFragment fragment = mFragment.get();
+        MessageListFragmentBridgeContract fragment = mFragment.get();
         if (fragment == null) {
             return;
         }
@@ -76,7 +76,7 @@ public class MessageListHandler extends Handler {
         }
 
         // Discard messages if the fragment isn't attached to an activity anymore.
-        Activity activity = fragment.getActivity();
+        Activity activity = fragment.getFragmentActivity();
         if (activity == null) {
             return;
         }

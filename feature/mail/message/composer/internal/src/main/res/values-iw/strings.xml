@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sent_folder_not_found_dialog_title">תיקיית פריטים שנשלחו לא נמצאה</string>
+    <string name="sent_folder_not_found_dialog_supporting_text">על מנת לשמור את ההודעה הזו לאחר השליחה, הגדר תיקיית \'פריטים שנשלחו\' בהגדרות חשבון.</string>
+    <string name="sent_folder_not_found_dialog_assign_folder_action">הקצה תיקיית \'פריטים שנשלחו\'</string>
+    <string name="sent_folder_not_found_dialog_cancel_action">בטל</string>
+    <string name="sent_folder_not_found_dialog_send_and_delete_action">שלח ומחק</string>
+</resources>

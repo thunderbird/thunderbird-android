@@ -6,4 +6,5 @@
     <string name="migration_qrcode_go_to_settings_button_text">Pojdite v nastavitve.</string>
     <string name="migration_qrcode_scanning_progress">Prebrano %1$s od %2$s.</string>
     <string name="migration_qrcode_done_button_text">Končaj</string>
+    <string name="migration_qrcode_unsupported_code">Zaznana je bila koda QR, vendar vsebuje neveljavne ali nepodprte podatke.</string>
 </resources>

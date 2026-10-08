@@ -1,7 +1,6 @@
 package app.k9mail.feature.account.setup.ui.specialfolders
 
 import androidx.lifecycle.viewModelScope
-import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
 import app.k9mail.feature.account.common.domain.AccountDomainContract
 import app.k9mail.feature.account.common.domain.entity.SpecialFolderOptions
 import app.k9mail.feature.account.common.domain.entity.SpecialFolderSettings
@@ -16,8 +15,9 @@ import com.fsck.k9.mail.folders.FolderFetcherException
 import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import net.thunderbird.core.logging.legacy.Log
-import net.thunderbird.core.outcome.Outcome
+import net.thunderbird.components.core.outcome.Outcome
+import net.thunderbird.core.ui.contract.mvi.BaseViewModel
+import net.thunderbird.legacy.logging.Log
 
 class SpecialFoldersViewModel(
     private val formUiModel: SpecialFoldersContract.FormUiModel,
@@ -31,9 +31,7 @@ class SpecialFoldersViewModel(
     override fun event(event: Event) {
         when (event) {
             Event.LoadSpecialFolderOptions -> handleOneTimeEvent(event, ::onLoadSpecialFolderOptions)
-
             is FormEvent -> onFormEvent(event)
-
             Event.OnNextClicked -> onNextClicked()
             Event.OnBackClicked -> onBackClicked()
             Event.OnRetryClicked -> onRetryClicked()

@@ -35,7 +35,7 @@ import com.fsck.k9.ui.message.LocalMessageExtractorLoader;
 import com.fsck.k9.ui.message.LocalMessageLoader;
 import net.thunderbird.core.android.account.LegacyAccountDto;
 import org.openintents.openpgp.OpenPgpDecryptionResult;
-import net.thunderbird.core.logging.legacy.Log;
+import net.thunderbird.legacy.logging.Log;
 
 
 /** This class is responsible for loading a message start to finish, and
@@ -114,7 +114,7 @@ public class MessageLoaderHelper {
     public void asyncStartOrResumeLoadingMessage(MessageReference messageReference, Parcelable cachedDecryptionResult) {
         onlyLoadMetadata = false;
         this.messageReference = messageReference;
-        this.account = Preferences.getPreferences().getAccount(messageReference.getAccountUuid());
+        this.account = Preferences.getPreferences().getById(messageReference.getAccountId());
 
         if (cachedDecryptionResult != null) {
             if (cachedDecryptionResult instanceof OpenPgpDecryptionResult) {
@@ -131,7 +131,7 @@ public class MessageLoaderHelper {
     public void asyncStartOrResumeLoadingMessageMetadata(MessageReference messageReference) {
         onlyLoadMetadata = true;
         this.messageReference = messageReference;
-        this.account = Preferences.getPreferences().getAccount(messageReference.getAccountUuid());
+        this.account = Preferences.getPreferences().getById(messageReference.getAccountId());
 
         startOrResumeLocalMessageLoader();
     }
@@ -491,7 +491,7 @@ public class MessageLoaderHelper {
         @Override
         public void loadMessageRemoteFinished(final LegacyAccountDto account, final long folderId, final String uid) {
             handler.post(() -> {
-                if (!messageReference.equals(account.getUuid(), folderId, uid)) {
+                if (!messageReference.equals(account.getId(), folderId, uid)) {
                     return;
                 }
                 onMessageDownloadFinished();

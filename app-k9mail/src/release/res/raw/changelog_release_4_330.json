@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "version": "4.330",
+  "versioncode": 17031,
+  "date": "2013-03-19",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Changed appearance of the unread widget",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed crash when opening the app from notifications",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Updated Finnish, Catalan translations",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Multiple bug fixes",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

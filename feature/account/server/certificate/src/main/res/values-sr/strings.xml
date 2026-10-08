@@ -7,8 +7,7 @@
     <string name="account_server_certificate_subject_alternative_names">Алтернативни називи субјекта</string>
     <string name="account_server_certificate_warning_title">Упозорење</string>
     <string name="account_server_certificate_unknown_error_subtitle">Грешка сертификата</string>
-    <string name="account_server_certificate_unknown_error_description_format">Апликација је открила потенцијалну безбедносну претњу и није наставила са повезивањем на <xliff:g id="serverName">%s</xliff:g>.
-\nАко наставите, нападачи би могли покушати да украду информације као што су ваша лозинка или имејлови.</string>
+    <string name="account_server_certificate_unknown_error_description_format">Апликација је открила потенцијалну безбедносну претњу и није наставила са повезивањем на <xliff:g id="serverName">%s</xliff:g>. \nАко наставите, нападачи би могли покушати да украду информације као што су ваша лозинка или имејлови.</string>
     <string name="account_server_certificate_button_back">Врати се назад (препоручено)</string>
     <string name="account_server_certificate_not_valid_after">Није важеће после</string>
     <string name="account_server_certificate_subject">Субјект</string>

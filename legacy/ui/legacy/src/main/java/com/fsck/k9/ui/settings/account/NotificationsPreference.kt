@@ -43,7 +43,7 @@ constructor(
                 }
             }
             intent.putExtra(Settings.EXTRA_APP_PACKAGE, this.context.packageName)
-            startActivity(this.context, intent, null)
+            context.startActivity(intent)
         }
     }
 

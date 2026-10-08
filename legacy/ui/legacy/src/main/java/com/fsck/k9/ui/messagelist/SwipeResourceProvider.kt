@@ -12,6 +12,7 @@ import com.fsck.k9.ui.R
 import com.google.android.material.color.ColorRoles
 import com.google.android.material.color.MaterialColors
 import net.thunderbird.core.common.action.SwipeAction
+import net.thunderbird.feature.mail.message.list.R as MessageListR
 
 class SwipeResourceProvider(private val context: Context) {
 
@@ -70,15 +71,15 @@ class SwipeResourceProvider(private val context: Context) {
         return context.loadString(
             when (action) {
                 SwipeAction.None -> error("action == SwipeAction.None")
-                SwipeAction.ToggleSelection -> R.string.swipe_action_select
-                SwipeAction.ToggleRead -> R.string.swipe_action_mark_as_read
-                SwipeAction.ToggleStar -> R.string.swipe_action_add_star
-                SwipeAction.Archive -> R.string.swipe_action_archive
-                SwipeAction.ArchiveSetupArchiveFolder -> R.string.swipe_action_archive_folder_not_set
-                SwipeAction.ArchiveDisabled -> R.string.swipe_action_change_swipe_gestures
-                SwipeAction.Delete -> R.string.swipe_action_delete
-                SwipeAction.Spam -> R.string.swipe_action_spam
-                SwipeAction.Move -> R.string.swipe_action_move
+                SwipeAction.ToggleSelection -> MessageListR.string.swipe_action_select
+                SwipeAction.ToggleRead -> MessageListR.string.swipe_action_mark_as_read
+                SwipeAction.ToggleStar -> MessageListR.string.swipe_action_add_star
+                SwipeAction.Archive -> MessageListR.string.swipe_action_archive
+                SwipeAction.ArchiveSetupArchiveFolder -> MessageListR.string.swipe_action_archive_folder_not_set
+                SwipeAction.ArchiveDisabled -> MessageListR.string.swipe_action_change_swipe_gestures
+                SwipeAction.Delete -> MessageListR.string.swipe_action_delete
+                SwipeAction.Spam -> MessageListR.string.swipe_action_spam
+                SwipeAction.Move -> MessageListR.string.swipe_action_move
             },
         )
     }
@@ -86,9 +87,9 @@ class SwipeResourceProvider(private val context: Context) {
     fun getActionNameToggled(action: SwipeAction): String? {
         return when (action) {
             SwipeAction.None -> error("action == SwipeAction.None")
-            SwipeAction.ToggleSelection -> context.loadString(R.string.swipe_action_deselect)
-            SwipeAction.ToggleRead -> context.loadString(R.string.swipe_action_mark_as_unread)
-            SwipeAction.ToggleStar -> context.loadString(R.string.swipe_action_remove_star)
+            SwipeAction.ToggleSelection -> context.loadString(MessageListR.string.swipe_action_deselect)
+            SwipeAction.ToggleRead -> context.loadString(MessageListR.string.swipe_action_mark_as_unread)
+            SwipeAction.ToggleStar -> context.loadString(MessageListR.string.swipe_action_remove_star)
 
             else -> null
         }

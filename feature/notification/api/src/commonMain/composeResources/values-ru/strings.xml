@@ -7,9 +7,7 @@
     <string name="notification_channel_miscellaneous_title">Разное</string>
     <string name="notification_channel_miscellaneous_description">Различные уведомления, например, об ошибках и т.д.</string>
     <string name="notification_notify_error_title">Ошибка уведомления</string>
-    <string name="notification_notify_error_text">При попытке создать системное уведомление для нового сообщения произошла ошибка. Причина, скорее всего, заключается в отсутствующем звуке уведомления.
-\n
-\nНажмите, чтобы открыть настройки уведомлений.</string>
+    <string name="notification_notify_error_text">При попытке создать системное уведомление для нового сообщения произошла ошибка. Причина, скорее всего, заключается в отсутствующем звуке уведомления. \n \nНажмите, чтобы открыть настройки уведомлений.</string>
     <string name="notification_authentication_error_title">Ошибка аутентификации</string>
     <string name="notification_certificate_error_public">Ошибка сертификата</string>
     <string name="notification_certificate_error_title">Сбой сертификата %1$s</string>
@@ -50,7 +48,7 @@
     <string name="notification_bg_sync_text">%1$s: %2$s</string>
     <string name="banner_inline_notification_learn_more">Узнать больше</string>
     <string name="banner_inline_notification_view_support_article">Открыть статью поддержки</string>
-    <string name="sent_folder_not_found_title">Папка "Отправленные" недоступна.</string>
+    <string name="sent_folder_not_found_title">Папка Отправленные недоступна.</string>
     <string name="banner_inline_notification_check_error_notifications">Проверка уведомлений об ошибках</string>
     <string name="banner_inline_notification_some_messages_need_attention">Некоторые сообщения требуют вашего внимания.</string>
     <string name="banner_inline_notification_open_notifications">Открыть уведомления</string>

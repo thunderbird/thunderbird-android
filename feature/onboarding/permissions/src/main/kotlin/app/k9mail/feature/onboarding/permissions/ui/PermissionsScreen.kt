@@ -8,12 +8,12 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts.RequestPermission
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import app.k9mail.core.ui.compose.common.mvi.observe
 import app.k9mail.feature.onboarding.permissions.ui.PermissionsContract.Effect
 import app.k9mail.feature.onboarding.permissions.ui.PermissionsContract.Event
 import net.thunderbird.core.common.provider.BrandNameProvider
-import org.koin.androidx.compose.koinViewModel
+import net.thunderbird.core.ui.contract.mvi.observe
 import org.koin.compose.koinInject
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun PermissionsScreen(

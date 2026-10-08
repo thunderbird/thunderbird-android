@@ -10,7 +10,7 @@
     <string name="account_setup_options_email_signature_error_blank">El nom de la signatura de correu electrònic no pot estar en blanc.</string>
     <string name="account_setup_auto_discovery_result_approval_error_approval_required">És necessari aprovar la configuració.</string>
     <string name="account_setup_auto_discovery_connection_security_start_tls">StartTLS</string>
-    <string name="account_setup_auto_discovery_result_disclaimer_untrusted_configuration">Hem rebut la configuració del vostre servidor de correu electrònic a través d\'una connexió que no és tan segura com ens agradaria. Això significa que hi ha una petita possibilitat que algú la pugui haver modificat. Podríeu comprovar la configuració proporcionada per assegurar-vos que és com hauria de ser\?</string>
+    <string name="account_setup_auto_discovery_result_disclaimer_untrusted_configuration">Hem rebut la configuració del vostre servidor de correu electrònic a través d\'una connexió que no és tan segura com ens agradaria. Això significa que hi ha una petita possibilitat que algú la pugui haver modificat. Podríeu comprovar la configuració proporcionada per assegurar-vos que és com hauria de ser?</string>
     <string name="account_setup_auto_discovery_result_edit_configuration_button_label">Edita la configuració</string>
     <string name="account_setup_error_unknown">Error desconegut</string>
     <string name="account_setup_auto_discovery_connection_security_ssl">SSL/TLS</string>

@@ -16,7 +16,7 @@
     <string name="notification_bg_sync_title">正在检查邮件</string>
     <string name="notification_bg_send_ticker">正在发送邮件：%1$s</string>
     <string name="notification_bg_send_title">正在发送邮件</string>
-    <string name="send_failure_subject">无法发送某些邮件</string>
+    <string name="send_failure_subject">无法发送部分邮件</string>
     <string name="notification_additional_messages">加载 %2$s 上的另外 %1$d 封邮件</string>
     <string name="push_notification_state_initializing">正在初始化…</string>
     <string name="push_notification_state_listening">正在等待新电子邮件</string>

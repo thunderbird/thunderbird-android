@@ -1,11 +1,11 @@
 package app.k9mail.feature.account.server.validation.ui
 
-import app.k9mail.core.ui.compose.common.mvi.UnidirectionalViewModel
 import app.k9mail.feature.account.oauth.domain.entity.OAuthResult
 import app.k9mail.feature.account.oauth.ui.AccountOAuthContract
 import com.fsck.k9.mail.ServerSettings
 import java.io.IOException
 import java.security.cert.X509Certificate
+import net.thunderbird.core.ui.contract.mvi.UnidirectionalViewModel
 
 interface ServerValidationContract {
 

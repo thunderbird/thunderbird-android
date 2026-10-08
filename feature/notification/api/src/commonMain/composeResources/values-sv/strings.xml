@@ -20,11 +20,11 @@
     <string name="notification_additional_messages">+ %1$d fler på %2$s</string>
     <string name="push_notification_state_initializing">Initierar…</string>
     <string name="push_notification_state_listening">Väntar på nya e-postmeddelanden</string>
-    <string name="push_notification_state_wait_background_sync">Sover tills bakgrundssynkronisering är tillåten</string>
-    <string name="push_notification_state_wait_network">Sover tills nätverket är tillgängligt</string>
-    <string name="push_notification_state_alarm_permission_missing">Saknar behörigheter för att schemalägga larm</string>
+    <string name="push_notification_state_wait_background_sync">Vilar tills bakgrundssynkronisering är tillåten</string>
+    <string name="push_notification_state_wait_network">Vilar tills nätverket är tillgängligt</string>
+    <string name="push_notification_state_alarm_permission_missing">Saknar behörighet för att schemalägga larm</string>
     <string name="push_notification_info">Tryck för att läsa mer.</string>
-    <string name="push_notification_grant_alarm_permission">Tryck för att ge behörigheter.</string>
+    <string name="push_notification_grant_alarm_permission">Tryck för att ge behörighet.</string>
     <string name="push_info_disable_push_action">Inaktivera Push</string>
     <string name="notification_action_reply">Svara</string>
     <string name="notification_action_mark_as_read">Markera som läst</string>

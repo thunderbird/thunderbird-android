@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "version": "4.902",
+  "versioncode": 21005,
+  "date": "2014-02-23",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Avoid adding the same recipient twice when using \"reply to all\"",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed a bug with bitcoin URIs",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Added mailbox.org to the list of providers",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

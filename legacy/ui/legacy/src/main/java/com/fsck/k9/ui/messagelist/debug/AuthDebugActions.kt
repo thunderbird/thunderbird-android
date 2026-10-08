@@ -4,7 +4,8 @@ import com.fsck.k9.mail.oauth.AuthStateStorage
 import com.fsck.k9.mail.oauth.OAuth2TokenProviderFactory
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.LegacyAccountManager
-import net.thunderbird.core.outcome.Outcome
+import net.thunderbird.components.core.outcome.Outcome
+import net.thunderbird.feature.account.AccountId
 
 /**
  * Encapsulates debug-only authentication test actions.
@@ -22,8 +23,8 @@ class AuthDebugActions(
         data object AlreadyModified : Error
     }
 
-    fun invalidateAccessTokenLocal(accountUuid: String): Outcome<Unit, Error> {
-        val account = accountManager.getAccount(accountUuid)
+    fun invalidateAccessTokenLocal(accountId: AccountId): Outcome<Unit, Error> {
+        val account = accountManager.getById(accountId)
 
         return when {
             account == null -> Outcome.failure(Error.AccountNotFound)
@@ -43,8 +44,8 @@ class AuthDebugActions(
         }
     }
 
-    fun invalidateAccessTokenServer(accountUuid: String): Outcome<Unit, Error> {
-        val account = accountManager.getAccount(accountUuid)
+    fun invalidateAccessTokenServer(accountId: AccountId): Outcome<Unit, Error> {
+        val account = accountManager.getById(accountId)
         return when {
             account == null -> Outcome.failure(Error.AccountNotFound)
             account.oAuthState == null -> Outcome.failure(Error.NoOAuthState)
@@ -65,8 +66,8 @@ class AuthDebugActions(
         }
     }
 
-    fun forceAuthFailure(accountUuid: String): Outcome<Unit, Error> {
-        val account: LegacyAccount = accountManager.getAccount(accountUuid)
+    fun forceAuthFailure(accountId: AccountId): Outcome<Unit, Error> {
+        val account: LegacyAccount = accountManager.getById(accountId)
             ?: return Outcome.failure(Error.AccountNotFound)
         // Clear OAuth state to force immediate authentication failure
         val updated = account.copy(oAuthState = null)

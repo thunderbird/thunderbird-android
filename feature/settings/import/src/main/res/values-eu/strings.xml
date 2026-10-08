@@ -7,9 +7,9 @@
     <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
     <string name="settings_import_password_required">Sartu pasahitzak</string>
     <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
-    <string name="settings_import_authorization_required">Mesedez saioa hasi</string>
+    <string name="settings_import_authorization_required">Mesedez hasi saioa</string>
     <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
-    <string name="settings_import_authorization_and_password_required">Mesedez saioa hasi eta sartu pasahitza</string>
+    <string name="settings_import_authorization_and_password_required">Mesedez hasi saioa eta sartu pasahitza</string>
     <string name="settings_import_failure">Ezin izan dira ezarpenak inportatu</string>
     <string name="settings_import_read_failure">Ezin izan da ezarpenen fitxategia irakurri</string>
     <string name="settings_import_partial_failure">Ezin izan dira ezarpen batzuk inportatu</string>
@@ -30,8 +30,8 @@
     <string name="settings_import_use_same_password_for_outgoing_server">Erabili pasahitz bera irteera zerbitzariarentzat</string>
     <string name="settings_import_server_name_format">Zerbitzari-izena: <xliff:g id="hostname">%s</xliff:g></string>
     <string name="settings_import_oauth_description">Posta elektronikoko kontu hau erabiltzeko, saioa hasi eta aplikazioari zure mezu elektronikoetarako sarbidea eman behar diozu.</string>
-    <string name="settings_import_oauth_sign_in">Saioa hasi</string>
-    <string name="settings_import_oauth_sign_in_with_google">Saioa hasi Googlerekin</string>
+    <string name="settings_import_oauth_sign_in">Hasi saioa</string>
+    <string name="settings_import_oauth_sign_in_with_google">Hasi saioa Googlerekin</string>
     <string name="settings_import_oauth_error_oauth_flow_canceled">baimena bertan behera utzi da</string>
     <string name="settings_import_oauth_error_oauth_flow_failed">Baimenak huts egin du errore honekin: <xliff:g id="error">%s</xliff:g></string>
     <string name="settings_import_oauth_error_oauth_not_supported">OAuth 2.0 une honetan ez dago hornitzaile honekin onartuta.</string>

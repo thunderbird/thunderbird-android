@@ -1,0 +1,19 @@
+---
+name: Build - Daily App
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '8 13 * * *'
+
+permissions:
+  contents: read
+
+jobs:
+  build-daily:
+    if: ${{ github.repository_owner == 'thunderbird' }}
+    uses: ./.github/workflows/shippable_builds.yml
+    secrets: inherit
+    permissions:
+      id-token: write # For GCS publishing (ftp.mo)
+      contents: read

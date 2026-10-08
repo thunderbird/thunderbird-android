@@ -1,15 +1,11 @@
 package net.thunderbird.feature.debug.settings.featureflag
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
@@ -20,27 +16,18 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.withStyle
-import app.k9mail.core.ui.compose.common.mvi.observe
-import app.k9mail.core.ui.compose.designsystem.atom.DividerHorizontal
-import app.k9mail.core.ui.compose.designsystem.atom.Switch
-import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonFilled
-import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonText
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyLarge
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextLabelSmall
-import app.k9mail.core.ui.compose.designsystem.organism.AlertDialog
-import app.k9mail.core.ui.compose.theme2.MainTheme
 import kotlinx.collections.immutable.ImmutableMap
-import net.thunderbird.core.featureflag.FeatureFlag
+import net.thunderbird.components.ui.bolt.atom.button.ButtonFilled
+import net.thunderbird.components.ui.bolt.atom.button.ButtonText
+import net.thunderbird.components.ui.bolt.organism.AlertDialog
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.core.featureflag.FeatureFlagKey
+import net.thunderbird.core.featureflag.ui.component.molecule.FeatureFlagItem
+import net.thunderbird.core.ui.contract.mvi.observe
 import net.thunderbird.feature.debug.settings.R
 import net.thunderbird.feature.debug.settings.navigation.SecretDebugSettingsRoute
-import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun DebugFeatureFlagSection(
@@ -65,7 +52,7 @@ fun DebugFeatureFlagSection(
         state = state.value,
         showUnsavedChangesDialog = showUnsavedChangesDialog,
         onNavigateBack = onNavigateBack,
-        onToggleFlagChange = { dispatchEvent(DebugFeatureFlagSectionContract.Event.OnToggle(flag = it)) },
+        onToggleFlagChange = { dispatchEvent(DebugFeatureFlagSectionContract.Event.OnToggle(key = it)) },
         onApplyChangesClick = { dispatchEvent(DebugFeatureFlagSectionContract.Event.ApplyChanges) },
         onRestoreDefaultClick = { dispatchEvent(DebugFeatureFlagSectionContract.Event.RestoreDefaults) },
         onStayClick = onStayClick,
@@ -79,7 +66,7 @@ internal fun DebugFeatureFlagSection(
     showUnsavedChangesDialog: Boolean,
     modifier: Modifier = Modifier,
     onNavigateBack: () -> Unit = {},
-    onToggleFlagChange: (FeatureFlag) -> Unit = {},
+    onToggleFlagChange: (FeatureFlagKey) -> Unit = {},
     onApplyChangesClick: () -> Unit = {},
     onRestoreDefaultClick: () -> Unit = {},
     onStayClick: () -> Unit = {},
@@ -120,24 +107,24 @@ internal fun DebugFeatureFlagSection(
 
         val flags = remember(state.defaults) { state.defaults.toList() }
         LazyColumn(
-            verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.default),
+            verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.default),
             contentPadding = PaddingValues(
-                start = MainTheme.spacings.default,
-                end = MainTheme.spacings.default,
-                bottom = MainTheme.spacings.triple,
+                start = BoltTheme.spacings.default,
+                end = BoltTheme.spacings.default,
+                bottom = BoltTheme.spacings.triple,
             ),
         ) {
-            itemsIndexed(items = flags) { index, (key, flag) ->
+            itemsIndexed(items = flags) { index, (key, flagEnabled) ->
                 val isOverridden = remember(state.overrides, state.pendingOverrides) {
                     val override = state.pendingOverrides[key] ?: state.overrides[key]
-                    override != null && override != flag.enabled
+                    override != null && override != flagEnabled
                 }
                 FeatureFlagItem(
-                    state = state,
                     key = key,
-                    flag = flag,
+                    overrides = state.overrides,
+                    pendingOverrides = state.pendingOverrides,
+                    flagEnabled = flagEnabled,
                     isOverridden = isOverridden,
-                    showDivider = index > 0,
                     onToggleFlagChange = onToggleFlagChange,
                 )
             }
@@ -184,71 +171,5 @@ private fun ButtonRow(
             onClick = onApplyChangesClick,
             enabled = state.pendingOverrides.isNotEmpty(),
         )
-    }
-}
-
-@Composable
-private fun FeatureFlagItem(
-    state: DebugFeatureFlagSectionContract.State,
-    key: FeatureFlagKey,
-    flag: FeatureFlag,
-    isOverridden: Boolean,
-    showDivider: Boolean,
-    onToggleFlagChange: (FeatureFlag) -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    Column(modifier = modifier.fillMaxWidth()) {
-        if (showDivider) {
-            DividerHorizontal(modifier = Modifier.padding(bottom = MainTheme.spacings.default))
-        }
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .clickable(role = Role.Switch, onClick = { onToggleFlagChange(flag) })
-                .padding(start = MainTheme.spacings.default),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            val context = LocalContext.current
-            Column(
-                modifier = Modifier.weight(1f),
-                verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.half),
-            ) {
-                val modifiedIndicator = stringResource(R.string.debug_settings_feature_flag_modified_indicator)
-                TextBodyLarge(
-                    text = buildAnnotatedString {
-                        if (state.pendingOverrides.containsKey(key)) {
-                            withStyle(SpanStyle(color = MainTheme.colors.error)) {
-                                append(modifiedIndicator)
-                            }
-                        }
-                        append(key.key)
-                    },
-                )
-                if (isOverridden) {
-                    TextLabelSmall(
-                        text = buildAnnotatedString {
-                            append(
-                                context.getString(R.string.debug_settings_feature_flag_overridden),
-                            )
-                            withStyle(SpanStyle(color = MainTheme.colors.info)) {
-                                append(
-                                    context.getString(
-                                        R.string.debug_settings_feature_flag_default_value,
-                                        flag.enabled,
-                                    ),
-                                )
-                            }
-                        },
-                    )
-                }
-            }
-            Spacer(modifier = Modifier.width(MainTheme.spacings.double))
-            Switch(
-                checked = state.pendingOverrides[key] ?: state.overrides[key] ?: flag.enabled,
-                onCheckedChange = { onToggleFlagChange(flag) },
-                modifier = Modifier.padding(end = MainTheme.spacings.default),
-            )
-        }
     }
 }

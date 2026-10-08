@@ -1,8 +1,8 @@
 package net.thunderbird.feature.mail.message.list.ui.dialog
 
 import androidx.compose.runtime.Stable
-import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
-import app.k9mail.core.ui.compose.common.mvi.UnidirectionalViewModel
+import net.thunderbird.core.ui.contract.mvi.BaseViewModel
+import net.thunderbird.core.ui.contract.mvi.UnidirectionalViewModel
 import net.thunderbird.feature.mail.folder.api.RemoteFolder
 
 sealed interface SetupArchiveFolderDialogContract {

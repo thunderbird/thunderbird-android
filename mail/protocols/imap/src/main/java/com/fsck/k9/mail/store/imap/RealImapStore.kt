@@ -16,7 +16,7 @@ import java.util.Deque
 import java.util.LinkedList
 import net.thunderbird.core.common.exception.MessagingException
 import net.thunderbird.core.common.mail.Flag
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.legacy.logging.Log
 
 private const val LAST_ASCII_CODE = 127
 

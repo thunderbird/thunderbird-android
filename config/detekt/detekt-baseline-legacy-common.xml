@@ -1,9 +1,0 @@
-<?xml version="1.0" ?>
-<SmellBaseline>
-  <ManuallySuppressedIssues></ManuallySuppressedIssues>
-  <CurrentIssues>
-    <ID>TooManyFunctions:K9CoreResourceProvider.kt$K9CoreResourceProvider : CoreResourceProvider</ID>
-    <ID>TooManyFunctions:K9NotificationActionCreator.kt$K9NotificationActionCreator : NotificationActionCreator</ID>
-    <ID>TooManyFunctions:K9NotificationResourceProvider.kt$K9NotificationResourceProvider : NotificationResourceProvider</ID>
-  </CurrentIssues>
-</SmellBaseline>

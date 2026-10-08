@@ -10,22 +10,33 @@ The application follows a modular architecture with clear separation between dif
 - **🔀 Separation of Concerns**: Each module focuses on a specific aspect of the application
 - **⬇️ Dependency Inversion**: Higher-level modules do not depend on lower-level modules directly
 - **🎯 Single Responsibility**: Each component has a single responsibility
-- **🔄 API/Implementation Separation**: Clear separation between public APIs and implementation details
+- **🔄 API/Internal Separation**: Clear separation between public APIs and internal implementation details
 - **🧹 Clean Architecture**: Separation of UI, domain, and data layers
 - **🧪 Testability**: The architecture facilitates comprehensive testing at all levels
 
 ## 📝 Architecture Decision Records
 
-The [Architecture Decision Records](adr/README.md) document the architectural decisions made during the development of the
+The [Architecture Decision Records](../engineering/adr/README.md) document the architectural decisions made during the development of the
 project, providing context and rationale for key technical choices. Reading through these decisions will improve your
 contributions and ensure long-term maintainability of the project.
+
+## 🏗️ Engineering Process
+
+We use a structured engineering process to propose, decide, and deliver technical changes. This includes:
+
+- **[RFCs](../engineering/rfcs/README.md)** for proposing technical direction and reaching consensus.
+- **[Technical Designs](../engineering/technical-designs/README.md)** for detailing implementation plans.
+- **[ADRs](../engineering/adr/README.md)** for recording durable architectural decisions.
+
+For more details on how these artifacts work together, see the [Engineering](../engineering/README.md) documentation.
 
 ## 📦 Module Structure
 
 The application is organized into several module types:
 
 - **📱 App Modules**: `app-thunderbird` and `app-k9mail` - Application entry points
-- **🔄 App Common**: `app-common` - Shared code between applications
+- **🧩 App Composition**: `app-composition` - Shared Kotlin Multiplatform application bindings
+- **🔄 App Common**: `app-common` - Android integration and legacy bridges
 - **✨ Feature Modules**: `feature:*` - Independent feature modules
 - **🧰 Core Modules**: `core:*` - Foundational components and utilities used across multiple features
 - **📚 Library Modules**: `library:*` - Specific implementations for reuse
@@ -38,18 +49,18 @@ For more details on the module organization and structure, see the [Module Organ
 
 The architecture follows several key patterns to ensure maintainability, testability, and separation of concerns:
 
-### 🔄 API/Implementation Separation
+### 🔄 API/Internal Separation
 
-Each module should be split into two main parts: **API** and **implementation**. This separation provides clear
+Each module should be split into two main parts: **API** and **internal**. This separation provides clear
 boundaries between what a module exposes to other modules and how it implements its functionality internally:
 
 - **📝 API**: Public interfaces, models, and contracts
-- **⚙️ Implementation**: Concrete implementations of the interfaces
+- **⚙️ Internal**: Concrete implementations of the interfaces, private to the module
 
 This separation provides clear boundaries, improves testability, and enables flexibility.
 
 See [API Module](module-structure.md#-api-module) and
-[Implementation Module](module-structure.md#-implementation-module) for more details.
+[Internal Module](module-structure.md#-internal-module) for more details.
 
 ### Clean Architecture
 
@@ -162,9 +173,11 @@ graph TB
 The data layer is responsible for data retrieval, storage, and synchronization.
 
 **Key Components:**
-- **📦 Repository implementations**: Implement repository interfaces from the domain layer
+- **📦 Repository implementations**: Internal implementations of repository interfaces from the domain layer
 - **🔌 Data Sources**: Provide data from specific sources (API, database, preferences)
 - **📄 Data Transfer Objects**: Represent data at the data layer
+
+See the [Repository Pattern](repository-pattern.md) guide for repository responsibilities and API conventions.
 
 **Pattern: Data Source Pattern**
 - 🔍 Abstracts data sources behind a clean API
@@ -292,7 +305,7 @@ The offline-first approach is implemented across all layers of the application:
 1. **💾 Data Layer**:
    - 📊 Local database as the primary data source
    - 🌐 Remote data source for server communication
-   - 📦 Repository pattern to coordinate between data sources
+   - 📦 Repository pattern to coordinate between data sources in the internal module
    - 🔄 Synchronization manager to handle data syncing
 2. **🧠 Domain Layer**:
    - ⚙️ Use cases handle both online and offline scenarios
@@ -331,7 +344,8 @@ maintainability an reliability.
 In Thunderbird for Android, several cross-cutting concerns are implemented as dedicated core modules to provide
 standardized solutions that can be reused across the application:
 
-- **⚠️ Error Handling**: Comprehensive error handling (`core/outcome`) transforms exceptions into domain-specific errors and provides user-friendly feedback.
+- **⚠️ Error Handling**: The Thunderbird Mobile Components `outcome` artifact transforms exceptions into domain-specific
+  errors and provides user-friendly feedback.
 - **📋 Logging**: Centralized logging system (`core/logging`) ensures consistent log formatting, levels, and storage.
 - **🔒 Security**: Modules like `core/security` handle encryption, authentication, and secure data storage.
 

@@ -35,7 +35,6 @@
     <string name="choose_folder_title">Scegli cartella</string>
     <string name="choose_folder_move_title">Sposta in…</string>
     <string name="choose_folder_copy_title">Copia in…</string>
-    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> selezionati</string>
     <string name="send_action">Invia</string>
     <string name="empty_subject">Oggetto vuoto, clicca di nuovo per inviare comunque</string>
     <string name="reply_action">Rispondi</string>
@@ -176,7 +175,7 @@
     <!--Displayed in the message view screen in front of the number of additional recipients (the ones that are not displayed).-->
     <string name="message_view_additional_recipient_prefix">+</string>
     <!--Displayed in the message view screen if the message was addressed to the user. Make sure this works with 'message_view_recipient_prefix'. In English it's "to me".-->
-    <string name="message_view_me_text">me</string>
+    <string name="message_view_to_me_text">me</string>
     <!--Text of the button that is displayed below the message header when the message body references one or more remote images-->
     <string name="message_view_show_remote_images_action">Mostra immagini remote</string>
     <string name="message_view_no_viewer">Impossibile trovare un visualizzatore per <xliff:g id="mimetype">%s</xliff:g>.</string>
@@ -345,7 +344,7 @@
     <string name="account_settings_upload_sent_messages_label">Carica messaggi inviati</string>
     <string name="account_settings_upload_sent_messages_summary">Dopo l\'invio carica i messaggi nella cartella Posta inviata</string>
     <string name="account_settings_general_title">Impostazioni generali</string>
-    <string name="account_settings_reading_mail">Lettura messaggi</string>
+    <string name="account_settings_reading_mail">Lettura e-mail</string>
     <string name="account_settings_sync">Recupero messaggi</string>
     <string name="account_settings_folders">Cartelle</string>
     <string name="account_settings_quote_prefix_label">Prefisso testo citato</string>
@@ -380,10 +379,10 @@
     <string name="account_settings_message_age_label">Sincronizza messaggi da</string>
     <string name="account_settings_message_age_any">qualsiasi data (senza limite)</string>
     <string name="account_settings_message_age_0">oggi</string>
-    <string name="account_settings_message_age_1">ultimi 2 giorni</string>
-    <string name="account_settings_message_age_2">ultimi 3 giorni</string>
-    <string name="account_settings_message_age_7">ultima settimana</string>
-    <string name="account_settings_message_age_14">ultime 2 settimane</string>
+    <string name="account_settings_message_age_1">gli ultimi 2 giorni</string>
+    <string name="account_settings_message_age_2">gli ultimi 3 giorni</string>
+    <string name="account_settings_message_age_7">l\'ultima settimana</string>
+    <string name="account_settings_message_age_14">le ultime 2 settimane</string>
     <string name="account_settings_message_age_21">ultime 3 settimane</string>
     <string name="account_settings_message_age_1_month">ultimo mese</string>
     <string name="account_settings_message_age_2_months">ultimi 2 mesi</string>
@@ -392,12 +391,12 @@
     <string name="account_settings_message_age_1_year">ultimo anno</string>
     <string name="account_settings_sync_remote_deletetions_label">Sincronizza eliminazioni del server</string>
     <string name="account_settings_sync_remote_deletetions_summary">Rimuovi i messaggi eliminati dal server</string>
-    <string name="account_settings_openpgp_missing">Applicazione OpenPGP non trovata, è stata disinstallata\?</string>
+    <string name="account_settings_openpgp_missing">Applicazione OpenPGP non trovata, è stata disinstallata?</string>
     <string name="folder_settings_title">Impostazioni cartella</string>
     <string name="folder_settings_in_top_group_label">Mostra in alto</string>
     <string name="folder_settings_clear_local_folder_action">Pulisci messaggi locali</string>
     <string name="account_settings_incoming_label">Server posta in arrivo</string>
-    <string name="account_settings_incoming_summary">Configura server della posta in arrivo</string>
+    <string name="account_settings_incoming_summary">Configura il server di posta in arrivo</string>
     <string name="account_settings_outgoing_label">Server posta in uscita</string>
     <string name="account_settings_outgoing_summary">Configura server della posta in uscita (SMTP)</string>
     <string name="account_settings_name_label">Il tuo nome</string>
@@ -520,7 +519,6 @@
     <string name="account_setup_push_limit_500">500 cartelle</string>
     <string name="account_setup_push_limit_1000">1000 cartelle</string>
     <string name="animations_title">Animazione</string>
-    <string name="animations_summary">Usa effetti visivi</string>
     <string name="show_unified_inbox_title">Mostra posta combinata</string>
     <string name="show_starred_count_title">Mostra conteggio Speciali</string>
     <string name="integrated_inbox_title">Posta combinata</string>
@@ -555,16 +553,16 @@
     <string name="font_size_larger">Più grande</string>
     <string name="error_activity_not_found">Nessuna app trovata per questa azione</string>
     <string name="send_failed_reason">Invio non riuscito: %s</string>
-    <string name="save_or_discard_draft_message_dlg_title">Vuoi salvare la bozza\?</string>
-    <string name="save_or_discard_draft_message_instructions_fmt">Salvare o ignorare questo messaggio\?</string>
-    <string name="save_or_discard_draft_message_changes">Salvare o ignorare le modifiche\?</string>
-    <string name="confirm_discard_draft_message_title">Ignorare il messaggio\?</string>
-    <string name="confirm_discard_draft_message">Sei sicuro di voler ignorare questo messaggio\?</string>
-    <string name="dialog_confirm_clear_local_folder_title">Pulire i messaggi locali\?</string>
+    <string name="save_or_discard_draft_message_dlg_title">Vuoi salvare la bozza?</string>
+    <string name="save_or_discard_draft_message_instructions_fmt">Salvare o ignorare questo messaggio?</string>
+    <string name="save_or_discard_draft_message_changes">Salvare o ignorare le modifiche?</string>
+    <string name="confirm_discard_draft_message_title">Ignorare il messaggio?</string>
+    <string name="confirm_discard_draft_message">Sei sicuro di voler ignorare questo messaggio?</string>
+    <string name="dialog_confirm_clear_local_folder_title">Pulire i messaggi locali?</string>
     <string name="dialog_confirm_clear_local_folder_message">Rimuoverà tutti i messaggi locali dalla cartella. Nessun messaggio sarà eliminato dal server.</string>
     <string name="dialog_confirm_clear_local_folder_action">Pulisci messaggi</string>
     <string name="dialog_confirm_delete_title">Conferma eliminazione</string>
-    <string name="dialog_confirm_delete_message">Vuoi eliminare questo messaggio\?</string>
+    <string name="dialog_confirm_delete_message">Vuoi eliminare questo messaggio?</string>
     <plurals name="dialog_confirm_delete_messages">
         <item quantity="one">Vuoi davvero eliminare questo messaggio?</item>
         <item quantity="many">Vuoi davvero eliminare i <xliff:g id="message_count">%1$d</xliff:g> messaggi selezionati?</item>
@@ -573,9 +571,9 @@
     <string name="dialog_confirm_delete_confirm_button">Sì</string>
     <string name="dialog_confirm_delete_cancel_button">No</string>
     <string name="dialog_confirm_mark_all_as_read_title">Conferma di segnare tutti come letti</string>
-    <string name="dialog_confirm_mark_all_as_read_message">Vuoi segnare tutti i messaggi come letti\?</string>
+    <string name="dialog_confirm_mark_all_as_read_message">Vuoi segnare tutti i messaggi come letti?</string>
     <string name="dialog_confirm_empty_trash_title">Conferma svuotamento cestino</string>
-    <string name="dialog_confirm_empty_trash_message">Vuoi svuotare il cestino\?</string>
+    <string name="dialog_confirm_empty_trash_message">Vuoi svuotare il cestino?</string>
     <string name="dialog_confirm_mark_all_as_read_confirm_button">Sì</string>
     <string name="dialog_confirm_mark_all_as_read_cancel_button">No</string>
     <string name="dialog_confirm_spam_title">Conferma spostamento nella cartella spam</string>
@@ -616,7 +614,7 @@
     <string name="webview_contextmenu_email_save_action">Salva nei contatti</string>
     <string name="webview_contextmenu_email_copy_action">Copia indirizzo negli appunti</string>
     <string name="webview_contextmenu_email_clipboard_label">Indirizzo email</string>
-    <string name="account_settings_remote_search_num_results_entries_all">Tutti</string>
+    <string name="account_settings_remote_search_num_results_entries_all">Tutte</string>
     <string name="account_settings_remote_search_num_results_entries_10">10</string>
     <string name="account_settings_remote_search_num_results_entries_25">25</string>
     <string name="account_settings_remote_search_num_results_entries_50">50</string>
@@ -624,7 +622,7 @@
     <string name="account_settings_remote_search_num_results_entries_250">250</string>
     <string name="account_settings_remote_search_num_results_entries_500">500</string>
     <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
-    <string name="account_settings_remote_search_num_label">Limite risultati di ricerca sul server</string>
+    <string name="account_settings_remote_search_num_label">Limite di ricerca sul server</string>
     <string name="remote_search_sending_query">Invio richiesta al server</string>
     <plurals name="remote_search_downloading">
         <item quantity="one">Recupero di %d risultato</item>
@@ -736,7 +734,6 @@
     <string name="crypto_msg_encrypted_insecure">ma la crittografia non è considerata sicura</string>
     <string name="locked_attach_unlock">Sblocca</string>
     <string name="locked_attach_unencrypted">Questa parte non è criptata e potrebbe non essere sicura</string>
-    <string name="locked_attach_title">Allegato non protetto</string>
     <string name="message_progress_text">Caricamento…</string>
     <string name="messageview_decrypt_cancelled">La decrittografia è stata annullata</string>
     <string name="messageview_decrypt_retry">Riprova</string>
@@ -805,25 +802,15 @@
     <string name="push_info_disable_push_text">Se non hai bisogno di notifiche istantanee di nuovi messaggi, disabilita Push e usa Polling. Il polling verifica la presenza di nuova posta a intervalli regolari e non necessita di notifica.</string>
     <string name="push_info_disable_push_action">Disabilita Push</string>
     <!--Name of the swipe action to select a message. Try to keep it short.-->
-    <string name="swipe_action_select">Seleziona</string>
     <!--Name of the swipe action to deselect a message. Try to keep it short.-->
-    <string name="swipe_action_deselect">Deseleziona</string>
     <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
-    <string name="swipe_action_mark_as_read">Letto</string>
     <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
-    <string name="swipe_action_mark_as_unread">Non letto</string>
     <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
-    <string name="swipe_action_add_star">Aggiungi stella</string>
     <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
-    <string name="swipe_action_remove_star">Rimuovi stella</string>
     <!--Name of the swipe action to archive a message. Try to keep it short.-->
-    <string name="swipe_action_archive">Archivia</string>
     <!--Name of the swipe action to delete a message. Try to keep it short.-->
-    <string name="swipe_action_delete">Elimina</string>
     <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
-    <string name="swipe_action_spam">Spam</string>
     <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
-    <string name="swipe_action_move">Sposta…</string>
     <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
     <string name="general_settings_show_compose_button_title">Mostra pulsante flottante Componi</string>
     <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
@@ -891,19 +878,17 @@
     <string name="settings_list_action_support">Supporta <xliff:g id="app_name">%s</xliff:g></string>
     <string name="volume_navigation_title_short">Naviga con i tasti del volume</string>
     <string name="expand_content_description">Espandi</string>
-    <string name="empty_spam_action">Spam vuota</string>
+    <string name="empty_spam_action">Svuota Spam</string>
     <string name="dialog_confirm_empty_spam_title">Conferma spam vuota</string>
     <string name="dialog_confirm_empty_spam_message">Vuoi svuotare la cartella spam?</string>
     <string name="camera_permission_denied">Autorizzazione fotocamera negata! Impossibile scattare foto</string>
     <string name="attach_file">Allega il file</string>
     <string name="debug_sync_export_logs_title">Esporta i registri di sincronizzazione</string>
     <string name="archiving_not_available_for_this_account">L\'archiviazione non è disponibile per questo account.</string>
-    <string name="swipe_action_archive_folder_not_set">Imposta la cartella di archivio</string>
     <string name="open_camera">Apri Fotocamera</string>
     <string name="debug_enable_sync_debug_logging_title">Abilita la registrazione del debug di sincronizzazione</string>
     <string name="debug_enable_sync_debug_logging_summary">Registra le informazioni diagnostiche di sincronizzazione per 24 ore</string>
     <string name="debug_open_secret_debug_screen">Apri la schermata di debug segreta</string>
-    <string name="swipe_action_change_swipe_gestures">Cambia\nGesti di Scorrimento</string>
     <string name="debug_invalidate_access_token_already_modified">Token di accesso memorizzato già modificato.</string>
     <string name="set_format_html_action">Usa formattazione originale</string>
     <string name="set_format_html_condensed_action">Mostra formattato</string>
@@ -929,4 +914,37 @@
     <string name="global_settings_messageview_body_content_type_title">Corpo del messaggio come</string>
     <string name="debug_feature_flags">DEBUG: Flag Caratteristiche</string>
     <string name="print_message_action">Stampa</string>
+    <string name="global_settings_splitview_when_unfolded">Quando il dispositivo è aperto</string>
+    <string name="general_settings_message_list_date_time_format_title">Data Lista Messaggi/Ora formato titolo</string>
+    <string name="general_settings_message_list_date_time_format_contextual">Contestuale</string>
+    <string name="general_settings_message_list_date_time_format_full">Data Lista Messaggi/Impostazione opzione formato ora: completo</string>
+    <string name="sort_by_then_by">Poi da…</string>
+    <string name="message_view_single_attachment_summary"><xliff:g id="nome">%1$s</xliff:g> (<xliff:g id="size">%2$s</xliff:g>)</string>
+    <string name="message_view_attachments_view_all">Vedi tutto</string>
+    <string name="message_view_attachments_view">Vedi</string>
+    <string name="message_view_attachments_title">Allegati</string>
+    <string name="message_view_attachments_save_all">Salva tutti</string>
+    <string name="general_settings_message_list_date_time_format_iso">ISO</string>
+    <plurals name="message_view_attachment_summary">
+        <item quantity="one"><xliff:g id="count">%1$d</xliff:g> Allegato (<xliff:g id="size">%2$s</xliff:g>)</item>
+        <item quantity="many"><xliff:g id="count">%1$d</xliff:g> Allegati (<xliff:g id="size">%2$s</xliff:g>)</item>
+        <item quantity="other"><xliff:g id="count">%1$d</xliff:g> Allegati (<xliff:g id="size">%2$s</xliff:g>)</item>
+    </plurals>
+    <string name="no_network_message_will_be_sent_later_toast">Offline. Il messaggio sarà inviato quando la connessione sarà disponibile</string>
+    <string name="notification_actions_settings_title">Azioni di notifica</string>
+    <string name="notification_actions_settings_summary">Scegli quali azioni vengono visualizzate nelle notifiche e-mail</string>
+    <string name="notification_summary_delete_title">Mostra Elimina nelle notifiche multi-messaggio</string>
+    <string name="notification_summary_delete_summary">Aggiunge un\'azione Elimina alle notifiche che riassumono più nuovi messaggi</string>
+    <string name="notification_actions_settings_description">Riordina le azioni di notifica.</string>
+    <string name="notification_actions_cutoff_description">Interruzione delle azioni mostrate</string>
+    <string name="notification_actions_cutoff_state">Le azioni sopra questa riga sono mostrate nella notifica</string>
+    <string name="notification_actions_shown_state">Mostrato nella notifica</string>
+    <string name="notification_actions_hidden_state">Non mostrato nella notifica</string>
+    <string name="accessibility_move_up">Sposta su</string>
+    <string name="accessibility_move_down">Sposta giù</string>
+    <string name="accessibility_move_item_up">Sposta <xliff:g id="item">%1$s</xliff:g> su</string>
+    <string name="accessibility_move_item_down">Sposta <xliff:g id="item">%1$s</xliff:g> giù</string>
+    <string name="accessibility_move_cutoff_up">Sposta su le azioni mostrate interrompendole</string>
+    <string name="accessibility_move_cutoff_down">Sposta giù le azioni mostrate interrompendole</string>
+    <string name="notification_action_star">Stella</string>
 </resources>

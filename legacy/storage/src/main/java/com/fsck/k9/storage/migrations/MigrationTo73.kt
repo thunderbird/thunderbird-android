@@ -13,7 +13,7 @@ import com.fsck.k9.controller.MessagingControllerCommands.PendingMoveOrCopy
 import com.fsck.k9.controller.MessagingControllerCommands.PendingSetFlag
 import com.fsck.k9.controller.PendingCommandSerializer
 import com.squareup.moshi.Moshi
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.legacy.logging.Log
 
 internal class MigrationTo73(private val db: SQLiteDatabase) {
     private val serializer = PendingCommandSerializer.getInstance()

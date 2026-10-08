@@ -6,4 +6,5 @@
     <string name="migration_qrcode_scanning_progress">Scanat %1$s din %2$s</string>
     <string name="migration_qrcode_done_button_text">Gata</string>
     <string name="migration_qrcode_scanning_instructions">Îndreptați camera către codul QR furnizat de către versiunea Thunderbird de calculator pentru a începe</string>
+    <string name="migration_qrcode_unsupported_code">Codul QR a fost detectat, dar conține date nevalide sau neacceptate.</string>
 </resources>

@@ -3,7 +3,7 @@ package com.fsck.k9.autocrypt
 import androidx.annotation.VisibleForTesting
 import com.fsck.k9.mail.Message
 import com.fsck.k9.mail.internet.MimeUtility
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.legacy.logging.Log
 import okio.ByteString.Companion.decodeBase64
 
 internal object AutocryptHeaderParser {

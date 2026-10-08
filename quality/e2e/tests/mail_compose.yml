@@ -1,0 +1,30 @@
+appId: ${MAESTRO_APP_ID}
+---
+
+# Compose email sequence
+#
+# Assumes user is on the mail list screen
+# Opens compose, fills form, and sends email
+#
+# Required env vars:
+#   - TO_EMAIL: recipient email address
+#   - SUBJECT: email subject line
+#   - BODY: email body text
+#   - IDENTITY: sender email/identity
+
+## Open compose screen
+- runFlow:
+    file: ../flows/mail/composer_open.yml
+
+## Fill compose form
+- runFlow:
+    file: ../flows/mail/composer_fill.yml
+    env:
+      TO_EMAIL: ${TO_EMAIL}
+      SUBJECT: ${SUBJECT}
+      BODY: ${BODY}
+      IDENTITY: ${IDENTITY}
+
+## Send email
+- runFlow:
+    file: ../flows/mail/composer_send.yml

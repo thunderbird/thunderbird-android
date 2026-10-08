@@ -5,8 +5,8 @@ import assertk.assertThat
 import assertk.assertions.isEqualTo
 import com.fsck.k9.K9RobolectricTest
 import com.fsck.k9.ui.R
-import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.logging.testing.TestLogger
+import net.thunderbird.legacy.logging.Log
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith

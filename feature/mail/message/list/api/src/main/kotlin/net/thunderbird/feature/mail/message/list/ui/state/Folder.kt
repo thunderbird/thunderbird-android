@@ -1,6 +1,7 @@
 package net.thunderbird.feature.mail.message.list.ui.state
 
-import net.thunderbird.feature.mail.folder.api.FolderType
+import androidx.compose.runtime.Immutable
+import net.thunderbird.feature.mail.folder.FolderType
 
 /**
  * Represents a folder in the mail account hierarchy.
@@ -17,6 +18,7 @@ import net.thunderbird.feature.mail.folder.api.FolderType
  *  itself or unassigned.
  * @property canExpunge `true` if the current folder can be expunged; `false` otherwise.
  */
+@Immutable
 data class Folder(
     val id: String,
     val account: Account,

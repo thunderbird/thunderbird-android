@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="notification_channel_push_title">Συγχρονισμός (Push)</string>
     <string name="notification_channel_push_description">Εμφανίζεται κατά την αναμονή για νέα μηνύματα</string>
@@ -12,7 +12,7 @@
     <string name="notification_certificate_error_public">Σφάλμα πιστοποιητικού</string>
     <string name="notification_certificate_error_title">Σφάλμα πιστοποιητικού για %1$s</string>
     <string name="notification_certificate_error_text">Ελέγξτε τις ρυθμίσεις του διακομιστή σας</string>
-    <string name="notification_bg_sync_ticker">Έλεγχος μηνύματος: %1$s:%2$s</string>
+    <string name="notification_bg_sync_ticker">Έλεγχος email: %1$s: %2$s</string>
     <string name="notification_bg_sync_title">Έλεγχος μηνύματος</string>
     <string name="notification_bg_send_ticker">Αποστολή μηνύματος: %1$s</string>
     <string name="notification_bg_send_title">Αποστολή μηνύματος</string>
@@ -34,4 +34,20 @@
     <string name="notification_action_archive">Αρχειοθέτηση</string>
     <string name="notification_action_archive_all">Αρχειοθέτηση όλων</string>
     <string name="notification_action_spam">Ανεπιθύμητα</string>
+    <plurals name="notification_new_messages_title">
+        <item quantity="one">%1$d νέο μήνυμα</item>
+        <item quantity="other">%1$d νέα μηνύματα</item>
+    </plurals>
+    <string name="notification_action_retry">Δοκιμή ξανά</string>
+    <string name="notification_bg_sync_text">%1$s: %2$s</string>
+    <string name="notification_action_assign_sent_folder">Ορισμός φακέλου</string>
+    <string name="banner_inline_notification_open_notifications">Άνοιγμα ειδοποιήσεων</string>
+    <string name="banner_inline_notification_learn_more">Μάθετε περισσότερα</string>
+    <string name="notification_action_update_server_settings">Ενημέρωση ρυθμίσεων διακομιστή</string>
+    <string name="banner_inline_notification_check_error_notifications">Έλεγχος ειδοποιήσεων σφαλμάτων</string>
+    <string name="banner_inline_notification_view_support_article">Προβολή άρθρου υποστήριξης</string>
+    <string name="sent_folder_not_found_title">Μη διαθέσιμος φάκελος απεσταλμένων.</string>
+    <string name="notification_authentication_incoming_server_error_text">Αποτυχία ταυτοποίησης για το %1$s. Ενημερώστε τις ρυθμίσεις του διακομιστή εισερχομένων σας.</string>
+    <string name="notification_authentication_outgoing_server_error_text">Αποτυχία ταυτοποίησης για το %1$s. Ενημερώστε τις ρυθμίσεις του διακομιστή εξερχομένων σας.</string>
+    <string name="banner_inline_notification_some_messages_need_attention">Ορισμένα μηνύματα χρειάζονται την προσοχή σας.</string>
 </resources>

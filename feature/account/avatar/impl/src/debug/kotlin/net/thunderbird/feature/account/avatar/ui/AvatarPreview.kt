@@ -6,8 +6,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import app.k9mail.core.ui.compose.common.koin.koinPreview
-import app.k9mail.core.ui.compose.designsystem.PreviewWithTheme
-import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
+import net.thunderbird.components.ui.bolt.PreviewWithTheme
+import net.thunderbird.components.ui.bolt.atom.icon.Icons
 import net.thunderbird.feature.account.avatar.Avatar
 import net.thunderbird.feature.account.avatar.AvatarIcon
 import net.thunderbird.feature.account.avatar.AvatarIconCatalog

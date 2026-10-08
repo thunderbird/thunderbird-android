@@ -20,7 +20,6 @@ interface IOpenPgpService {
 
     /**
      * do NOT use this, data returned from the service through "output" may be truncated
-     * @deprecated
      */
     Intent execute(in Intent data, in ParcelFileDescriptor input, in ParcelFileDescriptor output);
 

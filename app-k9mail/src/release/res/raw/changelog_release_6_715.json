@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "version": "6.715",
+  "versioncode": 37015,
+  "date": "2024-02-01",
+  "notes": [
+    {
+      "type": "new",
+      "text": "Added image handling within the context menu for hyperlinks",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Added ability to forward opened attachments to new emails",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Improved certificate error screen during account setup",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Improved settings import during account setup",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Improved account setup UI/UX",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Improved account setup rendering on small screens",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Improved edit account server settings UI/UX",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed AlarmManager crash on Android 14",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Internal changes",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Updated translations",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

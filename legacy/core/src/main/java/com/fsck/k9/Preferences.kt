@@ -24,11 +24,13 @@ import net.thunderbird.core.android.account.AccountsChangeListener
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.account.LegacyAccountDtoManager
 import net.thunderbird.core.common.exception.MessagingException
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.legacy.logging.Log
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.storage.Storage
 import net.thunderbird.core.preference.storage.StorageEditor
 import net.thunderbird.core.preference.storage.StoragePersister
+import net.thunderbird.feature.account.AccountId
+import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.account.storage.legacy.AccountDtoStorageHandler
 import org.koin.java.KoinJavaComponent.inject
 
@@ -46,7 +48,7 @@ class Preferences internal constructor(
     private val storageLock = Any()
 
     @GuardedBy("accountLock")
-    private var accountsMap: MutableMap<String, LegacyAccountDto>? = null
+    private var accountsMap: MutableMap<AccountId, LegacyAccountDto>? = null
 
     @GuardedBy("accountLock")
     private var accountsInOrder = mutableListOf<LegacyAccountDto>()
@@ -84,27 +86,30 @@ class Preferences internal constructor(
 
     fun loadAccounts() {
         synchronized(accountLock) {
-            val accounts = mutableMapOf<String, LegacyAccountDto>()
+            val accounts = mutableMapOf<AccountId, LegacyAccountDto>()
             val accountsInOrder = mutableListOf<LegacyAccountDto>()
 
             val accountUuids = storage.getStringOrNull("accountUuids")
             if (!accountUuids.isNullOrEmpty()) {
                 accountUuids.split(",").forEach { uuid ->
-                    val existingAccount = accountsMap?.get(uuid)
+                    val accountId = AccountIdFactory.of(uuid)
+                    val existingAccount = accountsMap?.get(accountId)
                     val account = existingAccount ?: LegacyAccountDto(
-                        uuid,
-                        { generalSettingsManager.getConfig().debugging.isSensitiveLoggingEnabled },
+                        id = accountId,
+                        isSensitiveDebugLoggingEnabled = {
+                            generalSettingsManager.getConfig().debugging.isSensitiveLoggingEnabled
+                        },
                     )
                     legacyAccountStorageHandler.load(account, storage)
 
-                    accounts[uuid] = account
+                    accounts[accountId] = account
                     accountsInOrder.add(account)
                     accountDefaultsProvider.applyOverwrites(account, storage)
                 }
             }
 
             newAccount?.takeIf { it.accountNumber != -1 }?.let { newAccount ->
-                accounts[newAccount.uuid] = newAccount
+                accounts[newAccount.id] = newAccount
                 if (newAccount !in accountsInOrder) {
                     accountsInOrder.add(newAccount)
                 }
@@ -129,19 +134,19 @@ class Preferences internal constructor(
     private val completeAccounts: List<LegacyAccountDto>
         get() = getAccounts().filter { it.isFinishedSetup }
 
-    override fun getAccount(accountUuid: String): LegacyAccountDto? {
+    override fun getById(accountId: AccountId): LegacyAccountDto? {
         synchronized(accountLock) {
             if (accountsMap == null) {
                 loadAccounts()
             }
 
-            return accountsMap!![accountUuid]
+            return accountsMap!![accountId]
         }
     }
 
-    override fun getAccountFlow(accountUuid: String): Flow<LegacyAccountDto> {
+    override fun observeById(accountId: AccountId): Flow<LegacyAccountDto?> {
         return callbackFlow {
-            val initialAccount = getAccount(accountUuid)
+            val initialAccount = getById(accountId)
             if (initialAccount == null) {
                 close()
                 return@callbackFlow
@@ -150,7 +155,7 @@ class Preferences internal constructor(
             send(initialAccount)
 
             val listener = AccountsChangeListener {
-                val account = getAccount(accountUuid)
+                val account = getById(accountId)
                 if (account != null) {
                     trySendBlocking(account)
                 } else {
@@ -184,18 +189,18 @@ class Preferences internal constructor(
     }
 
     fun newAccount(): LegacyAccountDto {
-        val accountUuid = UUID.randomUUID().toString()
-        return newAccount(accountUuid)
+        val accountId = AccountIdFactory.create()
+        return newAccount(accountId)
     }
 
-    fun newAccount(accountUuid: String): LegacyAccountDto {
+    fun newAccount(accountId: AccountId): LegacyAccountDto {
         val account =
-            LegacyAccountDto(accountUuid, { generalSettingsManager.getConfig().debugging.isSensitiveLoggingEnabled })
+            LegacyAccountDto(accountId, { generalSettingsManager.getConfig().debugging.isSensitiveLoggingEnabled })
         accountDefaultsProvider.applyDefaults(account)
 
         synchronized(accountLock) {
             newAccount = account
-            accountsMap!![account.uuid] = account
+            accountsMap!![account.id] = account
             accountsInOrder.add(account)
         }
 
@@ -204,7 +209,7 @@ class Preferences internal constructor(
 
     fun deleteAccount(account: LegacyAccountDto) {
         synchronized(accountLock) {
-            accountsMap?.remove(account.uuid)
+            accountsMap?.remove(account.id)
             accountsInOrder.remove(account)
 
             val storageEditor = createStorageEditor()
@@ -219,9 +224,6 @@ class Preferences internal constructor(
         notifyAccountRemovedListeners(account)
         notifyAccountsChangeListeners()
     }
-
-    val defaultAccount: LegacyAccountDto?
-        get() = getAccounts().firstOrNull()
 
     override fun saveAccount(account: LegacyAccountDto) {
         ensureAssignedAccountNumber(account)
@@ -287,13 +289,13 @@ class Preferences internal constructor(
 
     private fun moveToPosition(account: LegacyAccountDto, storage: Storage, editor: StorageEditor, newPosition: Int) {
         val accountUuids = storage.getStringOrDefault("accountUuids", "").split(",").filter { it.isNotEmpty() }
-        val oldPosition = accountUuids.indexOf(account.uuid)
+        val oldPosition = accountUuids.indexOf(account.id.toString())
         if (oldPosition == -1 || oldPosition == newPosition) return
 
         val newAccountUuidsString = accountUuids.toMutableList()
             .apply {
                 removeAt(oldPosition)
-                add(newPosition, account.uuid)
+                add(newPosition, account.id.toString())
             }
             .joinToString(separator = ",")
 

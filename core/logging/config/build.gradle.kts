@@ -3,7 +3,7 @@ plugins {
 }
 
 kotlin {
-    androidLibrary {
+    android {
         namespace = "net.thunderbird.core.logging.config"
     }
     sourceSets {
@@ -15,5 +15,13 @@ kotlin {
             implementation(projects.core.logging.implComposite)
             implementation(projects.core.logging.implFile)
         }
+        commonTest.dependencies {
+            implementation(projects.core.testing)
+        }
     }
+}
+
+codeCoverage {
+    branchCoverage = 0
+    lineCoverage = 0
 }

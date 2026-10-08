@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "version": "5.704",
+  "versioncode": 27004,
+  "date": "2020-01-09",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Changed background color of the app icon",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Added setting to mark a message as read when it is deleted (enabled by default)",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed crash when trying to reply to encrypted messages",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed configuration of special folders that lead to Inbox not being checked for new messages automatically",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

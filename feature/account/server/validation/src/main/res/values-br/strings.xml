@@ -2,5 +2,5 @@
 <resources>
     <string name="account_server_validation_error_authentication">Dilesadur fazi</string>
     <string name="account_server_validation_error_network">Fazi rouedad</string>
-    <string name="account_server_validation_error_server">Fazi dafariat</string>
+    <string name="account_server_validation_error_server">Fazi servijer</string>
 </resources>

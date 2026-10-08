@@ -16,6 +16,7 @@ fun <T> Assert<T>.isOneOf(vararg expectedValues: T) = given { actual ->
 /**
  * Asserts that the value is one of the expected values.
  */
+@Suppress("SpreadOperator")
 inline fun <reified T> Assert<T>.isOneOf(expectedValues: Collection<T>) {
     isOneOf(*expectedValues.toTypedArray())
 }

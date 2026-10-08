@@ -4,9 +4,12 @@ package com.fsck.k9.ui.compose;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.EditorInfo;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.EditText;
+import android.graphics.Typeface;
+import android.os.Build;
 
 import app.k9mail.legacy.di.DI;
 import com.fsck.k9.FontSizes;
@@ -21,11 +24,13 @@ import com.fsck.k9.ui.helper.DisplayHtmlUiFactory;
 import com.fsck.k9.view.MessageWebView;
 import com.fsck.k9.view.WebViewConfigProvider;
 import com.google.android.material.button.MaterialButton;
+import net.thunderbird.core.preference.GeneralSettingsManager;
 
 
 public class QuotedMessageMvpView {
     private final DisplayHtml displayHtml = DI.get(DisplayHtmlUiFactory.class).createForMessageCompose();
     private final WebViewConfigProvider webViewConfigProvider = DI.get(WebViewConfigProvider.class);
+    private final GeneralSettingsManager generalSettingsManager = DI.get(GeneralSettingsManager.class);
 
     private final MaterialButton mQuotedTextShow;
     private final View mQuotedTextBar;
@@ -42,7 +47,13 @@ public class QuotedMessageMvpView {
         mQuotedTextEdit = messageCompose.findViewById(R.id.quoted_text_edit);
         mQuotedTextDelete = messageCompose.findViewById(R.id.quoted_text_delete);
         mQuotedText = messageCompose.findViewById(R.id.quoted_text);
+        if(generalSettingsManager.getConfig().getDisplay().getVisualSettings().isUseMessageViewFixedWidthFont())
+            mQuotedText.setTypeface(Typeface.MONOSPACE);
         mQuotedText.getInputExtras(true).putBoolean("allowEmoji", true);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
+                && generalSettingsManager.getConfig().getPrivacy().isIncognitoKeyboardEnabled()) {
+            mQuotedText.setImeOptions(mQuotedText.getImeOptions() | EditorInfo.IME_FLAG_NO_PERSONALIZED_LEARNING);
+        }
 
         mQuotedHTML = messageCompose.findViewById(R.id.quoted_html);
         mQuotedHTML.configure(webViewConfigProvider.createForMessageCompose());

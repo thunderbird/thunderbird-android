@@ -14,19 +14,17 @@ import androidx.recyclerview.widget.RecyclerView
 import app.k9mail.core.android.common.contact.ContactRepository
 import app.k9mail.legacy.message.controller.MessageReference
 import com.fsck.k9.contacts.ContactPictureLoader
-import com.fsck.k9.ui.helper.RelativeDateTimeFormatter
 import com.fsck.k9.ui.messagelist.item.BannerInlineListInAppNotificationViewHolder
 import com.fsck.k9.ui.messagelist.item.ComposableMessageViewHolder
 import com.fsck.k9.ui.messagelist.item.FooterViewHolder
 import com.fsck.k9.ui.messagelist.item.MessageListViewHolder
 import com.fsck.k9.ui.messagelist.item.MessageViewHolder
 import com.fsck.k9.ui.messagelist.item.MessageViewHolderColors
-import net.thunderbird.core.featureflag.FeatureFlagKey
 import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.featureflag.FeatureFlagResult
+import net.thunderbird.core.featureflag.keys.GeneratedFeatureFlagKey
 import net.thunderbird.core.ui.theme.api.FeatureThemeProvider
 import net.thunderbird.feature.account.avatar.AvatarMonogramCreator
-import net.thunderbird.feature.mail.message.list.MessageListFeatureFlags.UseComposeForMessageListItems
 import net.thunderbird.feature.notification.api.content.InAppNotification
 import net.thunderbird.feature.notification.api.ui.action.NotificationAction
 
@@ -44,12 +42,12 @@ class MessageListAdapter internal constructor(
     private val layoutInflater: LayoutInflater,
     private val contactsPictureLoader: ContactPictureLoader,
     private val listItemListener: MessageListItemActionListener,
-    private val appearance: MessageListAppearance,
-    private val relativeDateTimeFormatter: RelativeDateTimeFormatter,
+    private val appearance: () -> MessageListAppearance,
     private val themeProvider: FeatureThemeProvider,
     private val featureFlagProvider: FeatureFlagProvider,
     private val contactRepository: ContactRepository,
     private val avatarMonogramCreator: AvatarMonogramCreator,
+    private val formatDate: (Long) -> String,
 ) : RecyclerView.Adapter<MessageListViewHolder>() {
 
     val colors: MessageViewHolderColors = MessageViewHolderColors.resolveColors(theme)
@@ -61,7 +59,7 @@ class MessageListAdapter internal constructor(
 
             field = value
             val messages = value.filterMessageListItem()
-            accountUuids = messages.map { it.account.uuid }.toSet()
+            accountUuids = messages.map { it.account.id.toString() }.toSet()
             messagesMap = messages.associateBy { it.uniqueId }
 
             if (selected.isNotEmpty()) {
@@ -156,7 +154,8 @@ class MessageListAdapter internal constructor(
     }
 
     private val isInAppNotificationEnabled: Boolean
-        get() = featureFlagProvider.provide(FeatureFlagKey.DisplayInAppNotifications) == FeatureFlagResult.Enabled
+        get() = featureFlagProvider
+            .provide(GeneratedFeatureFlagKey.DISPLAY_IN_APP_NOTIFICATIONS) == FeatureFlagResult.Enabled
 
     init {
         setHasStableIds(true)
@@ -172,6 +171,10 @@ class MessageListAdapter internal constructor(
         return viewItems[position].viewType
     }
 
+    fun refreshFormattedDates() {
+        notifyItemRangeChanged(0, itemCount)
+    }
+
     private fun getItem(position: Int): MessageListItem = (viewItems[position] as MessageListViewItem.Message).item
 
     fun getItemById(uniqueId: Long): MessageListItem? {
@@ -182,7 +185,7 @@ class MessageListAdapter internal constructor(
         return viewItems
             .filterMessageListItem()
             .firstOrNull {
-                it.account.uuid == messageReference.accountUuid &&
+                it.account.id == messageReference.accountId &&
                     it.folderId == messageReference.folderId &&
                     it.messageUid == messageReference.uid
             }
@@ -201,7 +204,7 @@ class MessageListAdapter internal constructor(
             .map { (it as? MessageListViewItem.Message)?.item }
             .indexOfFirst {
                 it != null &&
-                    messageReference.equals(it.account.uuid, it.folderId, it.messageUid)
+                    messageReference.equals(it.account.id, it.folderId, it.messageUid)
             }
             .takeIf { it != -1 }
     }
@@ -209,7 +212,7 @@ class MessageListAdapter internal constructor(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MessageListViewHolder {
         return when (viewType) {
             TYPE_MESSAGE -> {
-                val result = featureFlagProvider.provide(UseComposeForMessageListItems)
+                val result = featureFlagProvider.provide(GeneratedFeatureFlagKey.USE_COMPOSE_FOR_MESSAGE_LIST_ITEMS)
                 if (result.isEnabled()) {
                     createComposableMessageViewHolder(parent)
                 } else {
@@ -237,7 +240,6 @@ class MessageListAdapter internal constructor(
             appearance = appearance,
             res = res,
             contactsPictureLoader = contactsPictureLoader,
-            relativeDateTimeFormatter = relativeDateTimeFormatter,
             colors = colors,
             theme = theme,
             onClickListener = messageClickedListener,
@@ -266,18 +268,19 @@ class MessageListAdapter internal constructor(
 
             TYPE_MESSAGE -> {
                 val messageListItem = getItem(position)
-                val result = featureFlagProvider.provide(UseComposeForMessageListItems)
+                val formattedMessageListItem = messageListItem.withFormattedDate()
+                val result = featureFlagProvider.provide(GeneratedFeatureFlagKey.USE_COMPOSE_FOR_MESSAGE_LIST_ITEMS)
                 if (result.isEnabled()) {
                     val messageViewHolder = holder as ComposableMessageViewHolder
                     messageViewHolder.bind(
-                        item = messageListItem,
+                        item = formattedMessageListItem,
                         isActive = isActiveMessage(messageListItem),
                         isSelected = isSelected(messageListItem),
                     )
                 } else {
                     val messageViewHolder = holder as MessageViewHolder
                     messageViewHolder.bind(
-                        messageListItem = messageListItem,
+                        messageListItem = formattedMessageListItem,
                         isActive = isActiveMessage(messageListItem),
                         isSelected = isSelected(messageListItem),
                     )
@@ -299,9 +302,13 @@ class MessageListAdapter internal constructor(
     private fun isActiveMessage(item: MessageListItem): Boolean {
         val activeMessage = this.activeMessage ?: return false
 
-        return item.account.uuid == activeMessage.accountUuid &&
+        return item.account.id == activeMessage.accountId &&
             item.folderId == activeMessage.folderId &&
             item.messageUid == activeMessage.uid
+    }
+
+    private fun MessageListItem.withFormattedDate(): MessageListItem {
+        return copy(displayMessageDateTime = formatDate(messageDate))
     }
 
     fun isSelected(item: MessageListItem): Boolean {
@@ -350,7 +357,7 @@ class MessageListAdapter internal constructor(
     private fun calculateSelectionCount(): Int {
         return when {
             selected.isEmpty() -> 0
-            !appearance.showingThreadedList -> selected.size
+            !appearance().showingThreadedList -> selected.size
             else ->
                 viewItems
                     .asSequence()
@@ -362,7 +369,7 @@ class MessageListAdapter internal constructor(
     }
 
     private fun getItemFromView(view: View): MessageListItem? {
-        if (featureFlagProvider.provide(UseComposeForMessageListItems).isEnabled()) {
+        if (featureFlagProvider.provide(GeneratedFeatureFlagKey.USE_COMPOSE_FOR_MESSAGE_LIST_ITEMS).isEnabled()) {
             val messageViewHolder = view.tag as ComposableMessageViewHolder
             return getItemById(messageViewHolder.uniqueId)
         } else {
@@ -389,10 +396,10 @@ private class MessageListDiffCallback(
         val newItem = newMessageList[newItemPosition]
         return when (oldItem) {
             is MessageListViewItem.InAppNotificationBannerList
-            if newItem is MessageListViewItem.InAppNotificationBannerList -> true
+                if newItem is MessageListViewItem.InAppNotificationBannerList -> true
 
             is MessageListViewItem.Message
-            if newItem is MessageListViewItem.Message -> oldItem.item.uniqueId == newItem.item.uniqueId
+                if newItem is MessageListViewItem.Message -> oldItem.item.uniqueId == newItem.item.uniqueId
 
             is MessageListViewItem.Footer if newItem is MessageListViewItem.Footer -> true
             else -> false

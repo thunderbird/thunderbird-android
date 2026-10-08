@@ -28,12 +28,10 @@ import kotlinx.coroutines.test.runTest
 import net.thunderbird.core.android.account.Identity
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.LegacyAccountManager
-import net.thunderbird.core.architecture.model.Id
 import net.thunderbird.core.common.cache.TimeLimitedCache
 import net.thunderbird.core.common.exception.MessagingException
 import net.thunderbird.core.logging.testing.TestLogger
-import net.thunderbird.core.outcome.Outcome
-import net.thunderbird.feature.account.Account
+import net.thunderbird.components.core.outcome.Outcome
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.account.storage.profile.AvatarDto
@@ -285,8 +283,8 @@ class DefaultOutboxFolderManagerTest {
         assertThat(result).isFalse()
     }
 
-    private fun createAccountPair(): Pair<Id<Account>, LegacyAccount> {
-        val accountId = AccountIdFactory.of(Uuid.random().toString())
+    private fun createAccountPair(): Pair<AccountId, LegacyAccount> {
+        val accountId: AccountId = AccountIdFactory.of(Uuid.random().toString())
         val profile = ProfileDto(
             id = accountId,
             name = "name",
@@ -371,27 +369,28 @@ private class FakeLegacyAccountManager(
 
     override fun getAll(): Flow<List<LegacyAccount>> = accountsState
 
-    override fun getById(id: AccountId): Flow<LegacyAccount?> =
-        accountsState.map { list -> list.find { it.id == id } }
-
     override suspend fun update(account: LegacyAccount) {
         accountsState.update { currentList ->
             currentList.toMutableList().apply {
-                removeIf { it.uuid == account.uuid }
+                removeIf { it.id == account.id }
                 add(account)
             }
         }
+    }
+
+    override fun updateSync(account: LegacyAccount) {
+        // no-op for tests
     }
 
     override fun getAccounts(): List<LegacyAccount> = accountsState.value
 
     override fun getAccountsFlow(): Flow<List<LegacyAccount>> = accountsState
 
-    override fun getAccount(accountUuid: String): LegacyAccount? =
-        accountsState.value.find { it.uuid == accountUuid }
+    override fun getById(accountId: AccountId): LegacyAccount? =
+        accountsState.value.find { it.id == accountId }
 
-    override fun getAccountFlow(accountUuid: String): Flow<LegacyAccount?> =
-        accountsState.map { list -> list.find { it.uuid == accountUuid } }
+    override fun observeById(accountId: AccountId): Flow<LegacyAccount?> =
+        accountsState.map { list -> list.find { it.id == accountId } }
 
     override fun moveAccount(account: LegacyAccount, newPosition: Int) {
         // no-op for tests

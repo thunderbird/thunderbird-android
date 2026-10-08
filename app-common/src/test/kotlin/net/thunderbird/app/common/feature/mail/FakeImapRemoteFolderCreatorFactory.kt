@@ -3,15 +3,15 @@ package net.thunderbird.app.common.feature.mail
 import net.thunderbird.backend.api.folder.RemoteFolderCreationOutcome
 import net.thunderbird.backend.api.folder.RemoteFolderCreator
 import net.thunderbird.backend.imap.ImapRemoteFolderCreatorFactory
-import net.thunderbird.core.outcome.Outcome
-import net.thunderbird.feature.mail.account.api.BaseAccount
+import net.thunderbird.components.core.outcome.Outcome
+import net.thunderbird.feature.account.AccountId
 
 class FakeImapRemoteFolderCreatorFactory : ImapRemoteFolderCreatorFactory {
 
-    var lastAccount: BaseAccount? = null
+    var lastAccountId: AccountId? = null
 
-    override fun create(account: BaseAccount): RemoteFolderCreator {
-        lastAccount = account
+    override suspend fun create(accountId: AccountId): RemoteFolderCreator {
+        lastAccountId = accountId
 
         return object : RemoteFolderCreator {
             override suspend fun create(

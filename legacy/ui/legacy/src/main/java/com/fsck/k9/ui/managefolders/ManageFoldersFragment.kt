@@ -26,6 +26,7 @@ import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import java.util.Locale
 import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.feature.account.AccountIdFactory
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -45,7 +46,7 @@ class ManageFoldersFragment : Fragment() {
 
         val arguments = arguments ?: error("Missing arguments")
         val accountUuid = arguments.getString(EXTRA_ACCOUNT) ?: error("Missing argument '$EXTRA_ACCOUNT'")
-        account = preferences.getAccount(accountUuid) ?: error("Missing account: $accountUuid")
+        account = preferences.getById(AccountIdFactory.of(accountUuid)) ?: error("Missing account: $accountUuid")
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -117,7 +118,7 @@ class ManageFoldersFragment : Fragment() {
 
     private fun openFolderSettings(folderId: Long) {
         val folderSettingsArguments = bundleOf(
-            FolderSettingsFragment.EXTRA_ACCOUNT to account.uuid,
+            FolderSettingsFragment.EXTRA_ACCOUNT to account.id.toString(),
             FolderSettingsFragment.EXTRA_FOLDER_ID to folderId,
         )
         findNavController().navigate(R.id.action_manageFoldersScreen_to_folderSettingsScreen, folderSettingsArguments)
@@ -126,6 +127,7 @@ class ManageFoldersFragment : Fragment() {
     private fun configureFolderSearchView(menu: Menu) {
         val folderMenuItem = menu.findItem(R.id.filter_folders)
         val folderSearchView = folderMenuItem.actionView as SearchView
+        folderSearchView.maxWidth = Int.MAX_VALUE
         folderSearchView.queryHint = getString(R.string.folder_list_filter_hint)
         folderSearchView.setOnQueryTextListener(
             object : SearchView.OnQueryTextListener {

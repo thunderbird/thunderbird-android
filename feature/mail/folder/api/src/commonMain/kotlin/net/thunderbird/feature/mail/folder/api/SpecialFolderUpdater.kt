@@ -1,17 +1,23 @@
 package net.thunderbird.feature.mail.folder.api
 
-import net.thunderbird.feature.mail.account.api.BaseAccount
+import net.thunderbird.feature.account.AccountId
+import net.thunderbird.feature.mail.folder.FolderType
 
 // TODO move to ???
-interface SpecialFolderUpdater {
+public interface SpecialFolderUpdater {
     /**
      * Updates all account's special folders. If POP3, only Inbox is updated.
      */
-    fun updateSpecialFolders()
+    public fun updateSpecialFolders()
 
-    fun setSpecialFolder(type: FolderType, folderId: Long?, selection: SpecialFolderSelection)
+    /**
+     * Updates all account's special folders synchronously. If POP3, only Inbox is updated.
+     */
+    public fun updateSpecialFoldersSync()
 
-    interface Factory<TAccount : BaseAccount> {
-        fun create(account: TAccount): SpecialFolderUpdater
+    public fun setSpecialFolder(type: FolderType, folderId: Long?, selection: SpecialFolderSelection)
+
+    public interface Factory {
+        public fun create(accountId: AccountId): SpecialFolderUpdater
     }
 }

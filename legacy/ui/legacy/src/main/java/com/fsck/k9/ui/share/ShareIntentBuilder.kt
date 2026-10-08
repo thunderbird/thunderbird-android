@@ -92,5 +92,5 @@ class ShareIntentBuilder(
         }
     }
 
-    private fun Array<Address>.displayString() = Address.toString(this)?.let { if (it.isEmpty()) null else it }
+    private fun Array<Address>.displayString() = Address.toString(this).let { it.ifEmpty { null } }
 }

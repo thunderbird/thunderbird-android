@@ -1,0 +1,25 @@
+---
+name: Validate - Milestones
+
+on:
+  pull_request:
+    branches: [main, beta, release]
+  workflow_dispatch:
+
+permissions:
+  issues: read
+
+jobs:
+  validate-milestones:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ensure there are exactly 3 milestones open
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          MILESTONE_COUNT=$(gh api repos/$GITHUB_REPOSITORY/milestones --jq "
+            map(select(.state == \"open\" and .due_on != null)) | length")
+          if [ "$MILESTONE_COUNT" -ne 3 ]; then
+            echo "::error::Expected exactly 3 open milestones with due dates, but found ${MILESTONE_COUNT}. Please contact the release operations team."
+            exit 1
+          fi

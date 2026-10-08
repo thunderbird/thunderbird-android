@@ -2,4 +2,5 @@
 <resources>
     <string name="okay_action">ठीक है</string>
     <string name="cancel_action">कैंसिल करें</string>
+    <string name="star_button_description">स्टार</string>
 </resources>

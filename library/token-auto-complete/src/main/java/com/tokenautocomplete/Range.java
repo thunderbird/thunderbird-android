@@ -2,6 +2,9 @@ package com.tokenautocomplete;
 
 import java.util.Locale;
 
+import androidx.annotation.NonNull;
+
+
 class Range {
     public final int start;
     public final int end;
@@ -21,7 +24,7 @@ class Range {
 
     @Override
     public boolean equals(Object obj) {
-        if (null == obj || !(obj instanceof Range)) {
+        if (!(obj instanceof Range)) {
             return false;
         }
 
@@ -30,7 +33,14 @@ class Range {
     }
 
     @Override
-    public String toString() {
+    public int hashCode() {
+        int result = start;
+        result = 31 * result + end;
+        return result;
+    }
+
+    @Override
+    public @NonNull String toString() {
         return String.format(Locale.US, "[%d..%d]", start, end);
     }
 }

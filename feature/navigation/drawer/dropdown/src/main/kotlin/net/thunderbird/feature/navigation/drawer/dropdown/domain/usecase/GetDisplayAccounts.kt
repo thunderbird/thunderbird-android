@@ -18,8 +18,8 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.account.LegacyAccountDtoManager
-import net.thunderbird.core.featureflag.FeatureFlagKey
 import net.thunderbird.core.featureflag.FeatureFlagProvider
+import net.thunderbird.core.featureflag.keys.GeneratedFeatureFlagKey
 import net.thunderbird.feature.account.storage.mapper.AvatarDataMapper
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.DomainContract.UseCase
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayAccount
@@ -53,7 +53,7 @@ internal class GetDisplayAccounts(
                     val displayAccounts = messageCountsList.mapIndexed { index, messageCounts ->
                         val account = accounts[index]
                         MailDisplayAccount(
-                            id = account.uuid,
+                            id = account.id.toString(),
                             name = account.displayName,
                             email = account.email,
                             color = account.chipColor,
@@ -61,6 +61,7 @@ internal class GetDisplayAccounts(
                             unreadMessageCount = messageCounts.unread,
                             starredMessageCount = messageCounts.starred,
                             hasError = accountsMap[account] == true,
+                            hasAutoExpandFolder = account.autoExpandFolderId != null,
                         )
                     }
 
@@ -74,19 +75,22 @@ internal class GetDisplayAccounts(
     }
 
     private fun List<LegacyAccountDto>.associateWithAuthErrorIndication(): Flow<Map<LegacyAccountDto, Boolean>> {
-        return if (featureFlagProvider.provide(FeatureFlagKey.DisplayInAppNotifications).isDisabledOrUnavailable()) {
+        return if (
+            featureFlagProvider.provide(GeneratedFeatureFlagKey.DISPLAY_IN_APP_NOTIFICATIONS)
+                .isDisabledOrUnavailable()
+        ) {
             flowOf(associateWith { false })
         } else {
-            val uuids = map { it.uuid }
+            val ids = map { it.id }
             notificationStream
                 .notifications
                 .map { notifications ->
                     notifications
-                        .filter { it is AuthenticationErrorNotification && it.accountUuid in uuids }
-                        .associateBy { it.accountUuid }
+                        .filter { it is AuthenticationErrorNotification && it.accountId in ids }
+                        .associateBy { it.accountId }
                 }
                 .map { notifications ->
-                    associateWith { account -> notifications[account.uuid] != null }
+                    associateWith { account -> notifications[account.id] != null }
                 }
         }
     }
@@ -110,7 +114,7 @@ internal class GetDisplayAccounts(
                     send(messageCountsProvider.getMessageCounts(account))
                 }
             }
-            messageListRepository.addListener(account.uuid, listener)
+            messageListRepository.addListener(account.id, listener)
 
             awaitClose {
                 messageListRepository.removeListener(listener)

@@ -6,7 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import androidx.core.content.ContextCompat
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.legacy.logging.Log
 import net.thunderbird.core.preference.BackgroundOps
 import net.thunderbird.core.preference.GeneralSettingsManager
 

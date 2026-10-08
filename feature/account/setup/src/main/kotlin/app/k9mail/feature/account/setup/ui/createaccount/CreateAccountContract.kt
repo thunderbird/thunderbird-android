@@ -1,9 +1,9 @@
 package app.k9mail.feature.account.setup.ui.createaccount
 
-import app.k9mail.core.ui.compose.common.mvi.UnidirectionalViewModel
-import app.k9mail.core.ui.compose.designsystem.molecule.LoadingErrorState
 import app.k9mail.feature.account.setup.AccountSetupExternalContract.AccountCreator.AccountCreatorResult.Error
-import app.k9mail.feature.account.setup.domain.entity.AccountUuid
+import net.thunderbird.components.ui.bolt.molecule.LoadingErrorState
+import net.thunderbird.core.ui.contract.mvi.UnidirectionalViewModel
+import net.thunderbird.feature.account.AccountId
 
 interface CreateAccountContract {
 
@@ -20,7 +20,7 @@ interface CreateAccountContract {
     }
 
     sealed interface Effect {
-        data class NavigateNext(val accountUuid: AccountUuid) : Effect
+        data class NavigateNext(val accountId: AccountId) : Effect
         data object NavigateBack : Effect
     }
 }

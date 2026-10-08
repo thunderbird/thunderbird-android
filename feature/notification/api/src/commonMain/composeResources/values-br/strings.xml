@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="notification_channel_push_title">Goubredañ (bountañ)</string>
     <string name="notification_channel_push_description">Skrammet pa vez gortozet posteloù nevez</string>
@@ -19,11 +19,11 @@
     <string name="send_failure_subject">C’hwitadenn en ur gas kemennadennoù ’zo</string>
     <string name="notification_additional_messages">+ %1$d ouzhpenn war %2$s</string>
     <string name="push_notification_state_initializing">O teraouekaat…</string>
-    <string name="push_notification_state_listening">O c\'hortoz posteloù nevez</string>
+    <string name="push_notification_state_listening">O c\\'hortoz posteloù nevez</string>
     <string name="push_notification_state_wait_background_sync">O kousket betek ma vefe gweredekaet ar goubredañ en-dro</string>
     <string name="push_notification_state_wait_network">O kousket betek ma vefe kennasket ar rouedad</string>
     <string name="push_notification_state_alarm_permission_missing">Mankout a ra un aotren evit programmiñ galvoù-diwall</string>
-    <string name="push_notification_info">Stokit da zeskiñ muioc\'h.</string>
+    <string name="push_notification_info">Stokit da zeskiñ muioc\\'h.</string>
     <string name="push_notification_grant_alarm_permission">Stokit da reiñ an aotre.</string>
     <string name="push_info_disable_push_action">Diweredekaat ar bountañ</string>
     <string name="notification_action_reply">Respont</string>

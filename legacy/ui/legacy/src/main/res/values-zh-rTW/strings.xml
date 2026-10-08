@@ -15,7 +15,7 @@
     <string name="license">授權</string>
     <string name="changelog_title">變更記錄</string>
     <string name="changelog_loading_error">無法載入變更記錄。</string>
-    <string name="changelog_version_title">第%s版</string>
+    <string name="changelog_version_title">版本 %s</string>
     <string name="changelog_recent_changes_title">最新變化</string>
     <string name="changelog_show_recent_changes">顯示應用程式更新後的最新變更</string>
     <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
@@ -35,7 +35,6 @@
     <string name="choose_folder_title">選取信件匣</string>
     <string name="choose_folder_move_title">移至…</string>
     <string name="choose_folder_copy_title">複製至…</string>
-    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> 已選擇</string>
     <string name="send_action">寄送</string>
     <string name="empty_subject">主旨空白，再次按一下以繼續寄送</string>
     <string name="reply_action">回覆</string>
@@ -172,7 +171,7 @@
     <!--Displayed in the message view screen in front of the number of additional recipients (the ones that are not displayed).-->
     <string name="message_view_additional_recipient_prefix">+</string>
     <!--Displayed in the message view screen if the message was addressed to the user. Make sure this works with 'message_view_recipient_prefix'. In English it's "to me".-->
-    <string name="message_view_me_text">我</string>
+    <string name="message_view_to_me_text">我</string>
     <!--Text of the button that is displayed below the message header when the message body references one or more remote images-->
     <string name="message_view_show_remote_images_action">顯示遠端圖片</string>
     <string name="message_view_no_viewer">無法開啟<xliff:g id="mimetype">%s</xliff:g>。找不到可以開啟該附件的程式。</string>
@@ -516,7 +515,6 @@
     <string name="account_setup_push_limit_500">500個信件匣</string>
     <string name="account_setup_push_limit_1000">1000個信件匣</string>
     <string name="animations_title">動畫</string>
-    <string name="animations_summary">使用絢麗的視覺特效</string>
     <string name="show_unified_inbox_title">顯示統一收件匣</string>
     <string name="show_starred_count_title">顯示有標記星號的數量</string>
     <string name="integrated_inbox_title">統一收件匣</string>
@@ -724,7 +722,6 @@
     <string name="crypto_msg_encrypted_insecure">但加密不被視為安全</string>
     <string name="locked_attach_unlock">解除鎖定</string>
     <string name="locked_attach_unencrypted">這部分還未加密，可能不安全。</string>
-    <string name="locked_attach_title">不受保護的連接</string>
     <string name="message_progress_text">載入中…</string>
     <string name="messageview_decrypt_cancelled">解密被取消了。</string>
     <string name="messageview_decrypt_retry">重試</string>
@@ -776,12 +773,7 @@
     <string name="ac_transfer_finish">請在你的其他裝置上開啟訊息，並輸入設定代碼以完成設定精靈。</string>
     <string name="ac_transfer_show_code">顯示設定代碼</string>
     <string name="ac_transfer_msg_subject">Autocrypt設定訊息</string>
-    <string name="ac_transfer_msg_body">這條訊息包括所有你的舊裝置上的 Autocrypt 設定與你的私鑰。
-
-要在你的新裝置上設定自動加密，請按您的新裝置上的提示操作。
-
-你可以儲存這條訊息，並用作你的私鑰的備份。如果你想這樣做，您應該寫下密碼並安全保管。
-</string>
+    <string name="ac_transfer_msg_body">這條訊息包括所有你的舊裝置上的 Autocrypt 設定與你的私鑰。 要在你的新裝置上設定自動加密，請按您的新裝置上的提示操作。 你可以儲存這條訊息，並用作你的私鑰的備份。如果你想這樣做，您應該寫下密碼並安全保管。</string>
     <string name="ac_transfer_error_send">寄送訊息時出現錯誤。請檢查您的網路連線與外寄伺服器設定。</string>
     <string name="switch_on">開</string>
     <string name="switch_off">關</string>
@@ -798,25 +790,15 @@
     <string name="push_info_disable_push_text">如果你不需要新郵件的即時通知，則應停用推送並使用輪詢。輪詢會定期檢查新郵件，不需要通知權限。</string>
     <string name="push_info_disable_push_action">停用推播</string>
     <!--Name of the swipe action to select a message. Try to keep it short.-->
-    <string name="swipe_action_select">選擇</string>
     <!--Name of the swipe action to deselect a message. Try to keep it short.-->
-    <string name="swipe_action_deselect">取消選擇</string>
     <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
-    <string name="swipe_action_mark_as_read">標記為已讀</string>
     <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
-    <string name="swipe_action_mark_as_unread">標記為未讀</string>
     <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
-    <string name="swipe_action_add_star">加上星號</string>
     <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
-    <string name="swipe_action_remove_star">移除星號</string>
     <!--Name of the swipe action to archive a message. Try to keep it short.-->
-    <string name="swipe_action_archive">封存</string>
     <!--Name of the swipe action to delete a message. Try to keep it short.-->
-    <string name="swipe_action_delete">刪除</string>
     <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
-    <string name="swipe_action_spam">標記為垃圾郵件</string>
     <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
-    <string name="swipe_action_move">移動…</string>
     <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
     <string name="general_settings_show_compose_button_title">顯示懸浮「寫郵件」按鈕</string>
     <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
@@ -894,8 +876,6 @@
     <string name="debug_enable_sync_debug_logging_summary">記錄 24 小時的同步診斷資訊</string>
     <string name="debug_sync_export_logs_title">匯出同步記錄</string>
     <string name="debug_open_secret_debug_screen">開啟秘密除錯畫面</string>
-    <string name="swipe_action_archive_folder_not_set">設置歸檔文件夾</string>
-    <string name="swipe_action_change_swipe_gestures">更改\n滑動手勢</string>
     <string name="archiving_not_available_for_this_account">該帳號無法使用歸檔功能。</string>
     <string name="message_view_menu_action_export_eml">匯出為 EML</string>
     <string name="set_format_html_action">使用原來的格式</string>

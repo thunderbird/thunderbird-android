@@ -13,7 +13,7 @@ For full details, see:
 - Follow [Module Organization](../architecture/module-organization.md) and [Module Structure](../architecture/module-structure.md)
 - Place new code in `feature:*`, `core:*`, or `library:*` modules
 - **Do not** add new code in `legacy:*` modules
-- Keep **API/impl separation** in all modules
+- Keep **API/internal separation** in all modules
 
 ## 🏛️ Architecture
 
@@ -21,7 +21,7 @@ For full details, see:
 - Dependencies must flow in **one direction only**
 - UI built with **Jetpack Compose** + **MVI pattern**
 - Domain logic implemented in **Use Cases**
-- Data handled via **Repository pattern**
+- Data handled via the [**Repository pattern**](../architecture/repository-pattern.md)
 
 ## ⚙️ Dependency Injection
 

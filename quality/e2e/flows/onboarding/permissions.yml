@@ -1,0 +1,39 @@
+appId: ${MAESTRO_APP_ID}
+---
+# Permissions - Verify and handle permission screen
+
+# Verify presence (either Skip or Next may be shown depending on device state)
+- runFlow:
+    when:
+      visible:
+        id: "onboarding_permissions_skip_button"
+    commands:
+      - assertVisible:
+          id: "onboarding_permissions_skip_button"
+- runFlow:
+    when:
+      visible:
+        id: "onboarding_permissions_next_button"
+    commands:
+      - assertVisible:
+          id: "onboarding_permissions_next_button"
+
+# Act
+- waitForAnimationToEnd:
+    timeout: 500
+- runFlow:
+    when:
+      visible:
+        id: "onboarding_permissions_skip_button"
+    commands:
+      - tapOn:
+          id: "onboarding_permissions_skip_button"
+- runFlow:
+    when:
+      visible:
+        id: "onboarding_permissions_next_button"
+    commands:
+      - tapOn:
+          id: "onboarding_permissions_next_button"
+- waitForAnimationToEnd:
+    timeout: 500

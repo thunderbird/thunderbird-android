@@ -6,7 +6,7 @@ import androidx.annotation.VisibleForTesting
 import androidx.annotation.WorkerThread
 import androidx.core.content.IntentCompat
 import java.io.InputStream
-import net.thunderbird.core.logging.legacy.Log.w
+import net.thunderbird.legacy.logging.Log.w
 import org.openintents.openpgp.OpenPgpError
 import org.openintents.openpgp.util.OpenPgpApi
 

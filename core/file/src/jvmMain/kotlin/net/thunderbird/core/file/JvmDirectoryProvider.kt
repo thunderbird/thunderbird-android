@@ -18,6 +18,7 @@ class JvmDirectoryProvider(
 
     private val appDir: File = when {
         os.contains("mac") -> File(userHome, "Library/Application Support/$appName")
+
         os.contains("win") -> {
             val roaming = System.getenv("APPDATA")
             if (roaming != null) {
@@ -32,6 +33,7 @@ class JvmDirectoryProvider(
 
     private val cacheDir = when {
         os.contains("mac") -> File(userHome, "Library/Caches/$appName")
+
         os.contains("win") -> {
             val localAppData = System.getenv("LOCALAPPDATA")
             if (localAppData != null) {

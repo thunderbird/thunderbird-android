@@ -8,10 +8,16 @@ android {
 }
 
 dependencies {
-    implementation(projects.core.ui.compose.designsystem)
     implementation(projects.core.common)
+
+    implementation(projects.feature.account.api)
 
     implementation(projects.mail.common)
 
     testImplementation(projects.core.ui.compose.testing)
+}
+
+codeCoverage {
+    branchCoverage = 0
+    lineCoverage = 0
 }

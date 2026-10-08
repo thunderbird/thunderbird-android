@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="funding_reminder_title">Help Keep %1$s Alive</string>
+    <string name="funding_reminder_appeal_content">Every update, fix and feature you experience here is made possible by users around the world who choose to support this app. If you’re enjoying %1$s, please help keep us going by donating today.</string>
+    <string name="funding_reminder_decline">Not now</string>
+    <string name="funding_reminder_donate">Donate</string>
+    <string name="funding_reminder_roc_banner_content_description">Illustration of the Thunderbird mascot, Roc, carrying a letter in an envelope in the sky, surrounded by illustrations of hearts.</string>
+    <string name="funding_reminder_thunderbird_for_android">Thunderbird for Android</string>
+</resources>

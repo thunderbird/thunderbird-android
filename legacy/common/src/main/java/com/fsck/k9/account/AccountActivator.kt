@@ -6,6 +6,7 @@ import com.fsck.k9.Core
 import com.fsck.k9.Preferences
 import com.fsck.k9.controller.MessagingController
 import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.feature.account.AccountId
 
 /**
  * Activate account after server password(s) have been provided on settings import.
@@ -15,15 +16,15 @@ class AccountActivator(
     private val preferences: Preferences,
     private val messagingController: MessagingController,
 ) : SettingsImportExternalContract.AccountActivator {
-    override fun enableAccount(accountUuid: String, incomingServerPassword: String?, outgoingServerPassword: String?) {
-        val account = preferences.getAccount(accountUuid) ?: error("Account $accountUuid not found")
+    override fun enableAccount(accountId: AccountId, incomingServerPassword: String?, outgoingServerPassword: String?) {
+        val account = preferences.getById(accountId) ?: error("Account $accountId not found")
 
         setAccountPasswords(account, incomingServerPassword, outgoingServerPassword)
         enableAccount(account)
     }
 
-    override fun enableAccount(accountUuid: String) {
-        val account = preferences.getAccount(accountUuid) ?: error("Account $accountUuid not found")
+    override fun enableAccount(accountId: AccountId) {
+        val account = preferences.getById(accountId) ?: error("Account $accountId not found")
 
         enableAccount(account)
     }

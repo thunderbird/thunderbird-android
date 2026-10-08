@@ -1,26 +1,39 @@
 package net.thunderbird.app.common
 
 import com.fsck.k9.legacyCommonAppModules
-import com.fsck.k9.legacyCoreModules
+import com.fsck.k9.legacyCoreModule
 import com.fsck.k9.legacyUiModules
 import net.thunderbird.app.common.account.appCommonAccountModule
+import net.thunderbird.app.common.activity.DefaultActivityProvider
 import net.thunderbird.app.common.appConfig.AndroidPlatformConfigProvider
 import net.thunderbird.app.common.core.appCommonCoreModule
 import net.thunderbird.app.common.feature.appCommonFeatureModule
+import net.thunderbird.app.common.startup.appCommonStartupModule
+import net.thunderbird.app.composition.appCompositionModule
+import net.thunderbird.core.android.common.activity.ActivityProvider
 import net.thunderbird.core.common.appConfig.PlatformConfigProvider
+import org.koin.android.ext.koin.androidApplication
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
 val appCommonModule: Module = module {
     includes(legacyCommonAppModules)
-    includes(legacyCoreModules)
+    includes(legacyCoreModule)
     includes(legacyUiModules)
 
     includes(
+        appCompositionModule,
         appCommonAccountModule,
         appCommonCoreModule,
         appCommonFeatureModule,
+        appCommonStartupModule,
     )
 
     single<PlatformConfigProvider> { AndroidPlatformConfigProvider() }
+    single<ActivityProvider>(createdAtStart = true) {
+        DefaultActivityProvider(
+            application = androidApplication(),
+            logger = get(),
+        )
+    }
 }

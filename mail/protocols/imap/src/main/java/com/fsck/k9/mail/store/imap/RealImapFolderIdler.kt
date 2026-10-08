@@ -3,7 +3,7 @@ package com.fsck.k9.mail.store.imap
 import com.fsck.k9.mail.power.WakeLock
 import java.io.IOException
 import net.thunderbird.core.common.exception.MessagingException
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.legacy.logging.Log
 
 private const val SOCKET_EXTRA_TIMEOUT_MS = 2 * 60 * 1000L
 

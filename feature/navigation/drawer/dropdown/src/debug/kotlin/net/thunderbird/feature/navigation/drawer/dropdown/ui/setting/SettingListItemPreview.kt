@@ -2,8 +2,8 @@ package net.thunderbird.feature.navigation.drawer.dropdown.ui.setting
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import app.k9mail.core.ui.compose.designsystem.PreviewWithThemes
-import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
+import net.thunderbird.components.ui.bolt.PreviewWithThemes
+import net.thunderbird.components.ui.bolt.atom.icon.Icons
 
 @Composable
 @Preview(showBackground = true)

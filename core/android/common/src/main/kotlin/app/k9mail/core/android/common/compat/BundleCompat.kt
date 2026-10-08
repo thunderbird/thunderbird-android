@@ -12,6 +12,7 @@ object BundleCompat {
     @JvmStatic
     fun <T : Serializable> getSerializable(bundle: Bundle, key: String?, clazz: Class<T>): T? = when {
         Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE -> bundle.getSerializable(key, clazz)
+
         else -> {
             @Suppress("DEPRECATION")
             val serializable = bundle.getSerializable(key)

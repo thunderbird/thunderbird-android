@@ -3,7 +3,6 @@ package app.k9mail.feature.settings.import.ui
 import android.app.Application
 import android.content.ContentResolver
 import androidx.core.net.toUri
-import androidx.lifecycle.viewmodel.compose.viewModel
 import app.k9mail.feature.settings.import.SettingsImportExternalContract.AccountActivator
 import assertk.all
 import assertk.assertThat
@@ -261,7 +260,7 @@ class SettingsImportViewModelTest {
         assertThat(uiModelLiveData.value!!.statusText).isEqualTo(StatusText.IMPORTING_PROGRESS)
 
         settingsImporter.stub {
-            onBlocking { importSettings(inputStream, false, listOf("uuid-1")) } doReturn ImportResults(
+            on { importSettings(inputStream, false, listOf("uuid-1")) } doReturn ImportResults(
                 globalSettings = false,
                 importedAccounts = listOf(
                     AccountDescriptionPair(

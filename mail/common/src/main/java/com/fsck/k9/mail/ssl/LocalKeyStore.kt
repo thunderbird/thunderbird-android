@@ -11,7 +11,7 @@ import java.security.NoSuchAlgorithmException
 import java.security.cert.Certificate
 import java.security.cert.CertificateException
 import java.security.cert.X509Certificate
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.legacy.logging.Log
 
 private const val KEY_STORE_FILE_VERSION = 1
 private val PASSWORD = charArrayOf()

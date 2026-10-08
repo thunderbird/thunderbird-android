@@ -1,0 +1,10 @@
+appId: ${MAESTRO_APP_ID}
+---
+# Close message details
+- assertVisible:
+    id: "message_details_list"
+- swipe:
+    from:
+      id: "message_details_list"
+    direction: DOWN
+    duration: 200

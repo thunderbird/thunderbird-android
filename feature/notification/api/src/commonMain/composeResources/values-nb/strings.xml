@@ -7,9 +7,7 @@
     <string name="notification_channel_miscellaneous_title">Diverse</string>
     <string name="notification_channel_miscellaneous_description">Forskjellige varslinger, som feil, etc.</string>
     <string name="notification_notify_error_title">Merknadsfeil</string>
-    <string name="notification_notify_error_text">Kunne ikke opprette systemmerknad for ny melding. Dette skyldes antagelig merknadslyden.
-\n
-\nTrykk for å åpne merknadsinnstillinger.</string>
+    <string name="notification_notify_error_text">Kunne ikke opprette systemmerknad for ny melding. Dette skyldes antagelig merknadslyden. \n \nTrykk for å åpne merknadsinnstillinger.</string>
     <string name="notification_authentication_error_title">Autentisering feilet</string>
     <string name="notification_certificate_error_public">Sertifikatsfeil</string>
     <string name="notification_certificate_error_title">Sertifikatfeil for %1$s</string>

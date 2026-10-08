@@ -14,3 +14,8 @@ dependencies {
     implementation(libs.clikt)
     implementation(libs.okio)
 }
+
+codeCoverage {
+    branchCoverage = 0
+    lineCoverage = 0
+}

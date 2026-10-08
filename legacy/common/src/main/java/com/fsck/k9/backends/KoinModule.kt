@@ -5,18 +5,19 @@ import com.fsck.k9.backend.imap.BackendIdleRefreshManager
 import com.fsck.k9.backend.imap.SystemAlarmManager
 import com.fsck.k9.mail.oauth.OAuth2TokenProviderFactory
 import com.fsck.k9.mail.store.imap.IdleRefreshManager
+import net.thunderbird.backend.api.BackendFactory
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
-import com.fsck.k9.backend.BackendFactory as LegacyBackendFactory
 
 val backendsModule = module {
     single {
-        val developmentBackends = get<Map<String, LegacyBackendFactory>>(named("developmentBackends"))
+        val developmentBackends = get<Map<String, BackendFactory>>(named("developmentBackends"))
         BackendManager(
-            mapOf(
+            backendFactories = mapOf(
                 "imap" to get<ImapBackendFactory>(),
                 "pop3" to get<Pop3BackendFactory>(),
             ) + developmentBackends,
+            accountManager = get(),
         )
     }
     single<ImapBackendFactory> {
@@ -33,6 +34,12 @@ val backendsModule = module {
     }
     single<SystemAlarmManager> { AndroidAlarmManager(context = get(), alarmManager = get()) }
     single<IdleRefreshManager> { BackendIdleRefreshManager(alarmManager = get()) }
-    single { Pop3BackendFactory(get(), get()) }
+    single<Pop3BackendFactory> {
+        DefaultPop3BackendFactory(
+            accountManager = get(),
+            backendStorageFactory = get(),
+            trustedSocketFactory = get(),
+        )
+    }
     single<OAuth2TokenProviderFactory> { RealOAuth2TokenProviderFactory(context = get()) }
 }

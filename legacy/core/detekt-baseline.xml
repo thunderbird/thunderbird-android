@@ -1,0 +1,73 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues/>
+  <CurrentIssues>
+    <ID>ComplexCondition:HttpUriParser.kt:HttpUriParser$!compressionEnabled &amp;&amp; beginSegmentsCount + endSegmentsCount == 8 || compressionEnabled &amp;&amp; beginSegmentsCount + endSegmentsCount &lt; 8</ID>
+    <ID>ForbiddenComment:K9BackendFolderTest.kt:K9BackendFolderTest$// FIXME: This is a hack to get Preferences into a state where it's safe to call newAccount()</ID>
+    <ID>LongMethod:MessageListRepositoryTest.kt:MessageListRepositoryTest$@Test fun `getThread() should use flag values from the cache`</ID>
+    <ID>LongMethod:TextBodyBuilderTest.kt:TextBodyBuilderTest.Companion$@JvmStatic @Parameterized.Parameters(name = "{index}: {0}") fun data: Collection&lt;TestData&gt;</ID>
+    <ID>LoopWithTooManyJumpStatements:HttpUriParser.kt:HttpUriParser$while</ID>
+    <ID>LoopWithTooManyJumpStatements:SettingsExporter.kt:SettingsExporter$for</ID>
+    <ID>MagicNumber:CollectionExtensions.kt:0.75F</ID>
+    <ID>MagicNumber:CollectionExtensions.kt:3</ID>
+    <ID>MagicNumber:EmailTextToHtml.kt:EmailTextToHtml$3</ID>
+    <ID>MagicNumber:EmailTextToHtml.kt:EmailTextToHtml$4</ID>
+    <ID>MagicNumber:EmailTextToHtml.kt:EmailTextToHtml$5</ID>
+    <ID>MagicNumber:HttpUriParser.kt:HttpUriParser$10</ID>
+    <ID>MagicNumber:HttpUriParser.kt:HttpUriParser$255</ID>
+    <ID>MagicNumber:HttpUriParser.kt:HttpUriParser$4</ID>
+    <ID>MagicNumber:HttpUriParser.kt:HttpUriParser$5</ID>
+    <ID>MagicNumber:HttpUriParser.kt:HttpUriParser$65535</ID>
+    <ID>MagicNumber:HttpUriParser.kt:HttpUriParser$7</ID>
+    <ID>MagicNumber:HttpUriParser.kt:HttpUriParser$8</ID>
+    <ID>MagicNumber:NotificationLightDecoder.kt:NotificationLightDecoder$0x0000FF</ID>
+    <ID>MagicNumber:NotificationLightDecoder.kt:NotificationLightDecoder$0x00FF00</ID>
+    <ID>MagicNumber:NotificationLightDecoder.kt:NotificationLightDecoder$0x00FFFF</ID>
+    <ID>MagicNumber:NotificationLightDecoder.kt:NotificationLightDecoder$0x00FFFFFF</ID>
+    <ID>MagicNumber:NotificationLightDecoder.kt:NotificationLightDecoder$0xFF0000</ID>
+    <ID>MagicNumber:NotificationLightDecoder.kt:NotificationLightDecoder$0xFF00FF</ID>
+    <ID>MagicNumber:NotificationLightDecoder.kt:NotificationLightDecoder$0xFFFF00</ID>
+    <ID>MagicNumber:NotificationLightDecoder.kt:NotificationLightDecoder$0xFFFFFF</ID>
+    <ID>MagicNumber:SettingsExporter.kt:SettingsExporter$3</ID>
+    <ID>MayBeConstant:SummaryNotificationDataCreatorTest.kt:private val TIMESTAMP = 0L</ID>
+    <ID>ReturnCount:AutocryptDraftStateHeaderParser.kt:AutocryptDraftStateHeaderParser$fun parseAutocryptDraftStateHeader: AutocryptDraftStateHeader?</ID>
+    <ID>ReturnCount:EmailSection.kt:EmailSection$override fun subSequence: CharSequence</ID>
+    <ID>ReturnCount:HtmlSignatureRemover.kt:HtmlSignatureRemover.StripSignatureFilter$override fun head: HeadFilterDecision</ID>
+    <ID>ReturnCount:HtmlSignatureRemover.kt:HtmlSignatureRemover.StripSignatureFilter$private fun Node.findPrecedingLineBreak: Node?</ID>
+    <ID>ReturnCount:HtmlSignatureRemover.kt:HtmlSignatureRemover.StripSignatureFilter$private fun Node.isFollowedByLineBreak: Boolean</ID>
+    <ID>ReturnCount:HttpUriParser.kt:HttpUriParser$override fun parseUri: UriMatch?</ID>
+    <ID>ReturnCount:HttpUriParser.kt:HttpUriParser$private fun tryMatchAuthority: Int</ID>
+    <ID>ReturnCount:HttpUriParser.kt:HttpUriParser$private fun tryMatchDomainName: Int</ID>
+    <ID>ReturnCount:HttpUriParser.kt:HttpUriParser$private fun tryMatchIpv4Address: Int</ID>
+    <ID>ReturnCount:ListUnsubscribeHelper.kt:ListUnsubscribeHelper$fun getPreferredListUnsubscribeUri: UnsubscribeUri?</ID>
+    <ID>ReturnCount:ListUnsubscribeHelper.kt:ListUnsubscribeHelper$private fun extractUri: Uri?</ID>
+    <ID>ReturnCount:MailSyncWorker.kt:MailSyncWorker$override fun doWork: Result</ID>
+    <ID>ReturnCount:MessageHelper.kt:MessageHelper.Companion$@JvmStatic fun toFriendly: CharSequence</ID>
+    <ID>ReturnCount:MessageRepository.kt:MessageRepository$private fun List&lt;Header&gt;.parseDate: MessageDate</ID>
+    <ID>ReturnCount:PreviewTextExtractor.kt:PreviewTextExtractor$private fun extractUnquotedText: String</ID>
+    <ID>ReturnCount:TextPartFinder.kt:TextPartFinder$private fun findTextPartInMultipart: Part?</ID>
+    <ID>ReturnCount:TextPartFinder.kt:TextPartFinder$private fun findTextPartInMultipartAlternative: Part?</ID>
+    <ID>SwallowedException:MessageRepository.kt:MessageRepository$e: Exception</ID>
+    <ID>SwallowedException:QuoteDateFormatter.kt:QuoteDateFormatter$e: Exception</ID>
+    <ID>SwallowedException:SettingsExporter.kt:SettingsExporter$e: InvalidSettingValueException</ID>
+    <ID>TooGenericExceptionCaught:BootCompleteReceiver.kt:BootCompleteManager$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:K9.kt:K9$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:MessageRepository.kt:MessageRepository$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:PushServiceManager.kt:PushServiceManager$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:QuoteDateFormatter.kt:QuoteDateFormatter$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:SettingsExporter.kt:SettingsExporter$e: Exception</ID>
+    <ID>TooManyFunctions:CoreResourceProvider.kt:CoreResourceProvider</ID>
+    <ID>TooManyFunctions:HttpUriParser.kt:HttpUriParser : UriParser</ID>
+    <ID>TooManyFunctions:K9BackendFolder.kt:K9BackendFolder : BackendFolder</ID>
+    <ID>TooManyFunctions:MessageListCache.kt:MessageListCache</ID>
+    <ID>TooManyFunctions:NotificationActionCreator.kt:NotificationActionCreator</ID>
+    <ID>TooManyFunctions:NotificationChannelManager.kt:NotificationChannelManager</ID>
+    <ID>TooManyFunctions:NotificationController.kt:NotificationController</ID>
+    <ID>TooManyFunctions:NotificationResourceProvider.kt:NotificationResourceProvider</ID>
+    <ID>TooManyFunctions:PushController.kt:PushController</ID>
+    <ID>TooManyFunctions:SettingsExporter.kt:SettingsExporter</ID>
+    <ID>TooManyFunctions:SingleMessageNotificationCreator.kt:SingleMessageNotificationCreator</ID>
+    <ID>TooManyFunctions:SummaryNotificationCreator.kt:SummaryNotificationCreator</ID>
+    <ID>UnusedParameter:Contacts.kt:Contacts$addresses: Array&lt;Address?&gt;?</ID>
+  </CurrentIssues>
+</SmellBaseline>

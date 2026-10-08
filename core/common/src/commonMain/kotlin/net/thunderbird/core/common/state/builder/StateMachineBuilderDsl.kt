@@ -45,7 +45,6 @@ annotation class StateMachineBuilderDsl
  *             structure (states, transitions, etc.) is defined.
  * @return The configured and built [StateMachine] instance, ready to process events.
  */
-@StateMachineBuilderDsl
 fun <TState : Any, TEvent : Any> stateMachine(
     scope: CoroutineScope,
     init: StateMachineBuilder<TState, TEvent>.() -> Unit,

@@ -8,7 +8,7 @@ import kotlinx.coroutines.Dispatchers;
 import kotlinx.coroutines.test.TestCoroutineDispatchersKt;
 import kotlinx.coroutines.test.TestDispatcher;
 import kotlinx.coroutines.test.TestDispatchers;
-import net.thunderbird.core.outcome.Outcome;
+import net.thunderbird.components.core.outcome.Outcome;
 import net.thunderbird.feature.notification.api.command.NotificationCommandException;
 import net.thunderbird.feature.notification.api.command.outcome.CommandExecutionFailed;
 import net.thunderbird.feature.notification.api.command.outcome.Failure;

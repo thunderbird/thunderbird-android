@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import net.thunderbird.core.android.logging.LogFileWriter
 import net.thunderbird.core.logging.file.FileLogSink
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.legacy.logging.Log
 
 class GeneralSettingsViewModel(
     private val logFileWriter: LogFileWriter,

@@ -1,6 +1,11 @@
 package net.thunderbird.feature.navigation.drawer.dropdown.ui
 
+import android.provider.Settings
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.ContentTransform
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.snap
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
@@ -9,16 +14,20 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.IntOffset
-import app.k9mail.core.ui.compose.designsystem.atom.DividerHorizontal
-import app.k9mail.core.ui.compose.designsystem.atom.Surface
-import app.k9mail.core.ui.compose.theme2.MainTheme
-import net.thunderbird.core.ui.compose.common.modifier.testTagAsResourceId
+import androidx.compose.ui.unit.dp
+import net.thunderbird.components.ui.bolt.atom.DividerHorizontal
+import net.thunderbird.components.ui.bolt.atom.Surface
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayAccount
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.UnifiedDisplayAccount
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.DrawerContract.Event
@@ -31,7 +40,34 @@ import net.thunderbird.feature.navigation.drawer.dropdown.ui.folder.FolderList
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.setting.AccountSettingList
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.setting.FolderSettingList
 
-private const val ANIMATION_DURATION_MS = 200
+private const val ANIMATION_DURATION_MS = 300
+
+@Composable
+private fun areSystemAnimationsEnabled(): Boolean {
+    return Settings.Global.getFloat(
+        LocalContext.current.contentResolver,
+        Settings.Global.ANIMATOR_DURATION_SCALE,
+        1f,
+    ) != 0f
+}
+
+private fun accountSelectorTransitionSpec(
+    areAnimationsEnabled: Boolean,
+): AnimatedContentTransitionScope<Boolean>.() -> ContentTransform = {
+    if (areAnimationsEnabled) {
+        val animationSpec = tween<IntOffset>(durationMillis = ANIMATION_DURATION_MS, easing = FastOutSlowInEasing)
+        if (targetState) {
+            slideInVertically(animationSpec = animationSpec) { -it } togetherWith
+                slideOutVertically(animationSpec = animationSpec) { it }
+        } else {
+            slideInVertically(animationSpec = animationSpec) { it } togetherWith
+                slideOutVertically(animationSpec = animationSpec) { -it }
+        }
+    } else {
+        slideInVertically(animationSpec = snap()) { 0 } togetherWith
+            slideOutVertically(animationSpec = snap()) { 0 }
+    }
+}
 
 @Composable
 internal fun DrawerContent(
@@ -40,13 +76,14 @@ internal fun DrawerContent(
     modifier: Modifier = Modifier,
 ) {
     val additionalWidth = getAdditionalWidth()
+    val areAnimationsEnabled = areSystemAnimationsEnabled()
 
     Surface(
         modifier = modifier
             .width(DRAWER_WIDTH + additionalWidth)
             .fillMaxHeight()
-            .testTagAsResourceId("DrawerContent"),
-        color = MainTheme.colors.surfaceContainerLow,
+            .testTag("DrawerContent"),
+        color = BoltTheme.colors.surfaceContainerLow,
     ) {
         val selectedAccount = state.accounts.firstOrNull { it.id == state.selectedAccountId }
 
@@ -59,6 +96,7 @@ internal fun DrawerContent(
                     onClick = { onEvent(Event.OnAccountSelectorClick) },
                     onAvatarClick = { onEvent(Event.OnAccountViewClick(selectedAccount)) },
                     showAccountSelection = state.showAccountSelection,
+                    isShowAnimations = areAnimationsEnabled,
                 )
 
                 DividerHorizontal()
@@ -66,16 +104,7 @@ internal fun DrawerContent(
             AnimatedContent(
                 targetState = state.showAccountSelection,
                 label = "AccountSelectorVisibility",
-                transitionSpec = {
-                    val animationSpec = tween<IntOffset>(durationMillis = ANIMATION_DURATION_MS)
-                    if (targetState) {
-                        slideInVertically(animationSpec = animationSpec) { -it } togetherWith
-                            slideOutVertically(animationSpec = animationSpec) { it }
-                    } else {
-                        slideInVertically(animationSpec = animationSpec) { it } togetherWith
-                            slideOutVertically(animationSpec = animationSpec) { -it }
-                    }
-                },
+                transitionSpec = accountSelectorTransitionSpec(areAnimationsEnabled),
             ) { targetState ->
                 if (targetState) {
                     AccountContent(
@@ -101,7 +130,7 @@ private fun AccountContent(
     selectedAccount: DisplayAccount?,
 ) {
     Surface(
-        color = MainTheme.colors.surfaceContainerLow,
+        color = BoltTheme.colors.surfaceContainerLow,
     ) {
         Column(
             modifier = Modifier.fillMaxSize(),
@@ -132,7 +161,7 @@ private fun FolderContent(
     val isUnifiedAccount = state.accounts.firstOrNull { it.id == state.selectedAccountId } is UnifiedDisplayAccount
 
     Surface(
-        color = MainTheme.colors.surfaceContainerLow,
+        color = BoltTheme.colors.surfaceContainerLow,
     ) {
         Column(
             modifier = Modifier.fillMaxSize(),

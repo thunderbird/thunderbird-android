@@ -12,9 +12,10 @@ import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.logging.Logger
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.legacy.logging.Log
 import net.thunderbird.core.preference.BackgroundOps
 import net.thunderbird.core.preference.GeneralSettingsManager
+import net.thunderbird.feature.account.AccountId
 
 class MailSyncWorkerManager
 @OptIn(ExperimentalTime::class)
@@ -27,7 +28,7 @@ constructor(
 
     fun cancelMailSync(account: LegacyAccountDto) {
         Log.v("Canceling mail sync worker for %s", account)
-        val uniqueWorkName = createUniqueWorkName(account.uuid)
+        val uniqueWorkName = createUniqueWorkName(account.id)
         workManager.cancelUniqueWork(uniqueWorkName)
     }
 
@@ -53,7 +54,7 @@ constructor(
             Log.v("  initial delay: %d ms", initialDelay)
             syncDebugLogger.info(null, null) { "  initial delay: $initialDelay ms" }
 
-            val data = workDataOf(MailSyncWorker.EXTRA_ACCOUNT_UUID to account.uuid)
+            val data = workDataOf(MailSyncWorker.EXTRA_ACCOUNT_UUID to account.id.toString())
 
             val mailSyncRequest = PeriodicWorkRequestBuilder<MailSyncWorker>(syncIntervalMinutes, TimeUnit.MINUTES)
                 .setInitialDelay(initialDelay, TimeUnit.MILLISECONDS)
@@ -63,7 +64,7 @@ constructor(
                 .addTag(MAIL_SYNC_TAG)
                 .build()
 
-            val uniqueWorkName = createUniqueWorkName(account.uuid)
+            val uniqueWorkName = createUniqueWorkName(account.id)
             workManager.enqueueUniquePeriodicWork(
                 uniqueWorkName,
                 ExistingPeriodicWorkPolicy.REPLACE,
@@ -96,8 +97,8 @@ constructor(
         }
     }
 
-    private fun createUniqueWorkName(accountUuid: String): String {
-        return "$MAIL_SYNC_TAG:$accountUuid"
+    private fun createUniqueWorkName(accountId: AccountId): String {
+        return "$MAIL_SYNC_TAG:$accountId"
     }
 
     companion object {

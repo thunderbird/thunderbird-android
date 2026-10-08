@@ -1,7 +1,7 @@
 {% for tag, long_notes in notes.items() %}
 {{ tag }}:
 {%- for note in long_notes %}
-- {{ note }}
+- {{ note.text }}{% if note.issues %} ({% for issue in note.issues %}#{{ issue }}{% if not loop.last %}, {% endif %}{% endfor %}){% endif %}
 {%- endfor %}
 
 {% endfor %}

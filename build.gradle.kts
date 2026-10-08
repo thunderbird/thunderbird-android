@@ -5,54 +5,54 @@ plugins {
     alias(libs.plugins.android.lint) apply false
     alias(libs.plugins.android.test) apply false
     alias(libs.plugins.compose) apply false
-    alias(libs.plugins.kotlin.android) apply false
     alias(libs.plugins.kotlin.jvm) apply false
     alias(libs.plugins.kotlin.multiplatform) apply false
     alias(libs.plugins.kotlin.parcelize) apply false
     alias(libs.plugins.kotlin.serialization) apply false
     alias(libs.plugins.ksp) apply false
     alias(libs.plugins.jetbrains.compose) apply false
+    alias(libs.plugins.buildconfig) apply false
 
-    id("thunderbird.quality.spotless.root")
     id("thunderbird.dependency.check")
+    id("net.thunderbird.gradle.plugin.quality.coverage")
+    id("net.thunderbird.gradle.plugin.quality.spotless")
+    alias(libs.plugins.tb.featureflag.root)
 }
 
-val propertyTestCoverage: String? by extra
-
-allprojects {
-    extra.apply {
-        set("testCoverageEnabled", propertyTestCoverage != null)
-    }
-
-    tasks.withType<Test> {
-        testLogging {
-            exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
-            showCauses = true
-            showExceptions = true
-            showStackTraces = true
-        }
-    }
+featureFlag {
+    val dir = project.layout.projectDirectory
+    schema.set(dir.file("config/featureflag/thunderbird_mobile_featureflag.schema.json"))
+    catalog.set(dir.file("config/featureflag/thunderbird_mobile_featureflag.catalog.json"))
 }
 
-tasks.register("testsOnCi") {
-    val skipTests = setOf("testReleaseUnitTest")
-
-    dependsOn(
-        subprojects
-            .filterNot { it.path == ":quality:konsist" } // Konsist tests should be run separately
-            .flatMap { it.tasks.withType(Test::class.java) }
-            .filterNot { it.name in skipTests },
-    )
+tasks.withType<Test>().configureEach {
+    testLogging {
+        exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
+        showCauses = true
+        showExceptions = true
+        showStackTraces = true
+    }
 }
 
 tasks.register("buildCliTools") {
-    val cliToolsProjects = subprojects.filter { it.path.startsWith(":cli:") }
+    description = "Builds all CLI tools"
+    // Keep this list up to date with the CLI tools in the project. This is used by the CI to build all CLI tools.
     dependsOn(
-        cliToolsProjects.map { project -> project.tasks.named("build") },
+        ":cli:autodiscovery-cli:build",
+        ":cli:html-cleaner-cli:build",
+        ":cli:resource-mover-cli:build",
+        ":cli:translation-cli:build",
+        ":cli:weblate-cli:build",
     )
 }
 
 tasks.named<Wrapper>("wrapper") {
     gradleVersion = libs.versions.gradle.get()
     distributionType = Wrapper.DistributionType.ALL
+    distributionSha256Sum = libs.versions.gradleSha256.get()
+}
+
+codeCoverage {
+    branchCoverage = 26
+    lineCoverage = 31
 }

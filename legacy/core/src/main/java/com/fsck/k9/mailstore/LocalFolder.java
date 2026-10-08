@@ -7,7 +7,6 @@ import android.database.sqlite.SQLiteDatabase;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import app.k9mail.legacy.mailstore.MoreMessages;
-import com.fsck.k9.K9;
 import app.k9mail.legacy.message.controller.MessageReference;
 import com.fsck.k9.helper.FileHelper;
 import com.fsck.k9.helper.Utility;
@@ -34,6 +33,8 @@ import com.fsck.k9.message.extractors.AttachmentInfoExtractor;
 
 import net.thunderbird.core.android.account.LegacyAccountDto;
 import net.thunderbird.core.preference.GeneralSettingsManager;
+import net.thunderbird.feature.account.AccountId;
+import net.thunderbird.feature.mail.message.list.LocalMessageUidPrefixProvider;
 import org.apache.commons.io.IOUtils;
 import org.apache.james.mime4j.util.MimeUtil;
 
@@ -53,7 +54,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
-import net.thunderbird.core.logging.legacy.Log;
+import net.thunderbird.legacy.logging.Log;
 
 
 public class LocalFolder {
@@ -63,8 +64,8 @@ public class LocalFolder {
 
     private final LocalStore localStore;
     private final AttachmentInfoExtractor attachmentInfoExtractor;
-    private GeneralSettingsManager generalSettingsManager;
-
+    private final GeneralSettingsManager generalSettingsManager;
+    private final LocalMessageUidPrefixProvider localMessageUidPrefixProvider;
 
     private String status = null;
     private long lastChecked = 0;
@@ -85,28 +86,35 @@ public class LocalFolder {
     private boolean localOnly = false;
 
 
-    public LocalFolder(LocalStore localStore, String serverId, GeneralSettingsManager generalSettingsManager) {
-        this(localStore, serverId, null, generalSettingsManager);
+    public LocalFolder(LocalStore localStore, String serverId, GeneralSettingsManager generalSettingsManager,
+        LocalMessageUidPrefixProvider localMessageUidPrefixProvider) {
+        this(localStore, serverId, null, generalSettingsManager, localMessageUidPrefixProvider);
     }
 
-    public LocalFolder(LocalStore localStore, String serverId, String name, GeneralSettingsManager generalSettingsManager) {
-        this(localStore, serverId, name, FolderType.REGULAR, generalSettingsManager);
+    public LocalFolder(LocalStore localStore, String serverId, String name, GeneralSettingsManager generalSettingsManager,
+        LocalMessageUidPrefixProvider localMessageUidPrefixProvider) {
+        this(localStore, serverId, name, FolderType.REGULAR, generalSettingsManager, localMessageUidPrefixProvider);
     }
 
-    public LocalFolder(LocalStore localStore, String serverId, String name, FolderType type, GeneralSettingsManager generalSettingsManager) {
+    public LocalFolder(LocalStore localStore, String serverId, String name, FolderType type,
+        GeneralSettingsManager generalSettingsManager, LocalMessageUidPrefixProvider localMessageUidPrefixProvider) {
         this.localStore = localStore;
         this.serverId = serverId;
         this.name = name;
         this.type = type;
         this.generalSettingsManager = generalSettingsManager;
         attachmentInfoExtractor = localStore.getAttachmentInfoExtractor();
+        this.localMessageUidPrefixProvider = localMessageUidPrefixProvider;
     }
 
-    public LocalFolder(LocalStore localStore, long databaseId, GeneralSettingsManager generalSettingsManager) {
+    public LocalFolder(LocalStore localStore, long databaseId, GeneralSettingsManager generalSettingsManager,
+        LocalMessageUidPrefixProvider localMessageUidPrefixProvider) {
         super();
         this.localStore = localStore;
         this.databaseId = databaseId;
         attachmentInfoExtractor = localStore.getAttachmentInfoExtractor();
+        this.generalSettingsManager = generalSettingsManager;
+        this.localMessageUidPrefixProvider = localMessageUidPrefixProvider;
     }
 
     public FolderType getType() {
@@ -121,9 +129,9 @@ public class LocalFolder {
         return databaseId;
     }
 
-    public String getAccountUuid()
+    public AccountId getAccountId()
     {
-        return getAccount().getUuid();
+        return getAccount().getId();
     }
 
     public boolean getSignatureUse() {
@@ -406,11 +414,11 @@ public class LocalFolder {
 
             String parentMimeType = parentPart.getMimeType();
             if (MimeUtility.isMultipart(parentMimeType)) {
-                BodyPart bodyPart = new LocalBodyPart(getAccountUuid(), message, id, size);
+                BodyPart bodyPart = new LocalBodyPart(getAccountId().toString(), message, id, size);
                 ((Multipart) parentPart.getBody()).addBodyPart(bodyPart);
                 part = bodyPart;
             } else if (MimeUtility.isMessage(parentMimeType)) {
-                Message innerMessage = new LocalMimeMessage(getAccountUuid(), message, id);
+                Message innerMessage = new LocalMimeMessage(getAccountId().toString(), message, id);
                 parentPart.setBody(innerMessage);
                 part = innerMessage;
             } else {
@@ -479,7 +487,11 @@ public class LocalFolder {
             @Override
             public LocalMessage doDbWork(final SQLiteDatabase db) throws MessagingException {
                 open();
-                LocalMessage message = new LocalMessage(LocalFolder.this.localStore, uid, LocalFolder.this, generalSettingsManager);
+                final LocalMessage message = new LocalMessage(LocalFolder.this.localStore,
+                    uid,
+                    LocalFolder.this,
+                    generalSettingsManager,
+                    localMessageUidPrefixProvider);
                 Cursor cursor = null;
 
                 try {
@@ -508,7 +520,11 @@ public class LocalFolder {
     public LocalMessage getMessage(long messageId) throws MessagingException {
         return localStore.getDatabase().execute(false, db -> {
             open();
-            LocalMessage message = new LocalMessage(localStore, messageId, LocalFolder.this, generalSettingsManager);
+            final LocalMessage message = new LocalMessage(localStore,
+                messageId,
+                LocalFolder.this,
+                generalSettingsManager,
+                localMessageUidPrefixProvider);
 
             Cursor cursor = db.rawQuery(
                     "SELECT " +
@@ -570,12 +586,12 @@ public class LocalFolder {
             throws MessagingException {
         open();
 
-        String accountUuid = getAccountUuid();
+        AccountId accountId = getAccountId();
         long folderId = getDatabaseId();
 
         List<LocalMessage> messages = new ArrayList<>();
         for (MessageReference messageReference : messageReferences) {
-            if (!accountUuid.equals(messageReference.getAccountUuid())) {
+            if (!accountId.equals(messageReference.getAccountId())) {
                 throw new IllegalArgumentException("all message references must belong to this Account!");
             }
             if (folderId != messageReference.getFolderId()) {
@@ -904,7 +920,7 @@ public class LocalFolder {
     }
 
     public void destroyLocalOnlyMessages() throws MessagingException {
-        destroyMessages("uid LIKE '" + K9.LOCAL_UID_PREFIX + "%'");
+        destroyMessages("uid LIKE '" + localMessageUidPrefixProvider.get() + "%'");
     }
 
     public void destroyDeletedMessages() throws MessagingException {

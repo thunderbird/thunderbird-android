@@ -6,4 +6,5 @@
     <string name="migration_qrcode_scanning_progress">Skaneeritud %1$s/%2$s</string>
     <string name="migration_qrcode_done_button_text">Valmis</string>
     <string name="migration_qrcode_scanning_instructions">Joonda Thunderbird töölauaversiooni pakutud QR-kood</string>
+    <string name="migration_qrcode_unsupported_code">QR-koodi sisu on tuvastatud, kui selle leiduvad andmed on kas vigased või mittetoetatud.</string>
 </resources>

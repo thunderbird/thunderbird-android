@@ -2,6 +2,7 @@ package net.thunderbird.feature.notification.testing.fake
 
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
+import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.notification.api.NotificationSeverity
 import net.thunderbird.feature.notification.api.content.AppNotification
 import net.thunderbird.feature.notification.api.content.InAppNotification
@@ -10,7 +11,7 @@ import net.thunderbird.feature.notification.api.ui.icon.NotificationIcon
 import net.thunderbird.feature.notification.api.ui.style.InAppNotificationStyle
 
 data class FakeInAppOnlyNotification(
-    override val accountUuid: String? = null,
+    override val accountId: AccountId? = null,
     override val title: String = "fake title",
     override val contentText: String? = "fake content",
     override val severity: NotificationSeverity = NotificationSeverity.Information,

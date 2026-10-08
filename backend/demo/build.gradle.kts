@@ -8,12 +8,18 @@ plugins {
 
 dependencies {
     api(projects.backend.api)
+
     implementation(projects.core.common)
     implementation(projects.feature.mail.folder.api)
 
     implementation(libs.kotlinx.serialization.json)
 
     testImplementation(projects.mail.testing)
+}
+
+codeCoverage {
+    branchCoverage = 0
+    lineCoverage = 0
 }
 
 tasks.register<UpdateDemoMailbox>("updateDemoMailbox") {

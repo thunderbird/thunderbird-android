@@ -12,8 +12,6 @@ import android.content.Context;
 import app.k9mail.feature.telemetry.api.TelemetryManager;
 import app.k9mail.legacy.di.DI;
 import com.fsck.k9.FontSizes;
-import com.fsck.k9.K9.NotificationQuickDelete;
-import com.fsck.k9.K9.PostMarkAsUnreadNavigation;
 import com.fsck.k9.core.R;
 import com.fsck.k9.preferences.Settings.BooleanSetting;
 import com.fsck.k9.preferences.Settings.ColorSetting;
@@ -31,22 +29,28 @@ import com.fsck.k9.preferences.upgrader.GeneralSettingsUpgraderTo58;
 import com.fsck.k9.preferences.upgrader.GeneralSettingsUpgraderTo69;
 import com.fsck.k9.preferences.upgrader.GeneralSettingsUpgraderTo79;
 import com.fsck.k9.preferences.upgrader.GeneralSettingsUpgraderTo89;
+import com.fsck.k9.preferences.upgrader.GeneralSettingsUpgraderTo111;
 import net.thunderbird.core.android.account.AccountDefaultsProvider;
 import net.thunderbird.core.android.account.SortType;
 import net.thunderbird.core.common.action.SwipeAction;
+import net.thunderbird.core.preference.AnimationPreference;
 import net.thunderbird.core.preference.AppTheme;
 import net.thunderbird.core.preference.BackgroundOps;
 import net.thunderbird.core.preference.GeneralSettingsManager;
 import net.thunderbird.core.preference.BodyContentType;
+import net.thunderbird.core.preference.LockScreenNotificationVisibility;
+import net.thunderbird.core.preference.NotificationQuickDelete;
 import net.thunderbird.core.preference.SplitViewMode;
 import net.thunderbird.core.preference.SubTheme;
 import net.thunderbird.core.preference.display.coreSettings.DisplayCoreSettingsKt;
+import net.thunderbird.core.preference.display.visualSettings.DisplayVisualSettingsKt;
+import net.thunderbird.core.preference.display.visualSettings.message.list.MessageListDateTimeFormat;
+import net.thunderbird.core.preference.interaction.PostMarkAsUnreadNavigation;
 import net.thunderbird.core.preference.interaction.PostRemoveNavigation;
 import net.thunderbird.core.preference.network.NetworkSettingsKt;
 import net.thunderbird.core.preference.storage.Storage;
 import net.thunderbird.core.preference.display.visualSettings.message.list.UiDensity;
 
-import static com.fsck.k9.K9.LockScreenNotificationVisibility;
 import static net.thunderbird.core.preference.display.inboxSettings.DisplayInboxSettingsKt.DISPLAY_SETTINGS_DEFAULT_IS_MESSAGE_LIST_SENDER_ABOVE_SUBJECT;
 import static net.thunderbird.core.preference.display.inboxSettings.DisplayInboxSettingsKt.DISPLAY_SETTINGS_DEFAULT_IS_SHOW_COMPOSE_BUTTON_ON_MESSAGE_LIST;
 import static net.thunderbird.core.preference.display.inboxSettings.DisplayInboxSettingsKt.DISPLAY_SETTINGS_DEFAULT_IS_SHOW_MESSAGE_LIST_STAR;
@@ -56,7 +60,6 @@ import static net.thunderbird.core.preference.display.miscSettings.DisplayMiscSe
 import static net.thunderbird.core.preference.display.miscSettings.DisplayMiscSettingsKt.DISPLAY_SETTINGS_DEFAULT_SHOW_RECENT_CHANGES;
 import static net.thunderbird.core.preference.display.visualSettings.DisplayVisualSettingsKt.DISPLAY_SETTINGS_DEFAULT_IS_AUTO_FIT_WIDTH;
 import static net.thunderbird.core.preference.display.visualSettings.message.list.DisplayMessageListSettingsKt.MESSAGE_LIST_SETTINGS_DEFAULT_IS_CHANGE_CONTACT_NAME_COLOR;
-import static net.thunderbird.core.preference.display.visualSettings.DisplayVisualSettingsKt.DISPLAY_SETTINGS_DEFAULT_IS_SHOW_ANIMATION;
 import static net.thunderbird.core.preference.display.visualSettings.message.list.DisplayMessageListSettingsKt.MESSAGE_LIST_SETTINGS_DEFAULT_IS_SHOW_CONTACT_NAME;
 import static net.thunderbird.core.preference.display.visualSettings.message.list.DisplayMessageListSettingsKt.MESSAGE_LIST_SETTINGS_DEFAULT_IS_SHOW_CONTACT_PICTURE;
 import static net.thunderbird.core.preference.display.visualSettings.message.list.DisplayMessageListSettingsKt.MESSAGE_LIST_SETTINGS_DEFAULT_IS_SHOW_CORRESPONDENT_NAMES;
@@ -84,7 +87,8 @@ class GeneralSettingsDescriptions {
          */
 
         s.put("animations", Settings.versions(
-            new V(1, new BooleanSetting(DISPLAY_SETTINGS_DEFAULT_IS_SHOW_ANIMATION))
+            new V(1, new BooleanSetting(true)),
+            new V(111, new EnumSetting<>(AnimationPreference.class, AnimationPreference.FOLLOW_SYSTEM))
         ));
         s.put("backgroundOperations", Settings.versions(
             new V(1, new EnumSetting<>(BackgroundOps.class, BackgroundOps.WHEN_CHECKED_AUTO_SYNC)),
@@ -340,6 +344,9 @@ class GeneralSettingsDescriptions {
         s.put("messageViewBodyContentType", Settings.versions(
             new V(109, new EnumSetting<>(BodyContentType.class, BodyContentType.TEXT_HTML))
         ));
+        s.put("messageListDateTimeFormat", Settings.versions(
+            new V(110, new EnumSetting<>(MessageListDateTimeFormat.class, MessageListDateTimeFormat.Contextual))
+        ));
 
         // TODO: Add a way to properly support feature-specific settings.
         if (telemetryManager.isTelemetryFeatureIncluded()) {
@@ -357,6 +364,7 @@ class GeneralSettingsDescriptions {
         u.put(69, new GeneralSettingsUpgraderTo69());
         u.put(79, new GeneralSettingsUpgraderTo79());
         u.put(89, new GeneralSettingsUpgraderTo89());
+        u.put(111, new GeneralSettingsUpgraderTo111());
 
         UPGRADERS = Collections.unmodifiableMap(u);
     }

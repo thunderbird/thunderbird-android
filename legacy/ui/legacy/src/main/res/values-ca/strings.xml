@@ -35,7 +35,6 @@
     <string name="choose_folder_title">Trieu una carpeta</string>
     <string name="choose_folder_move_title">Mou a…</string>
     <string name="choose_folder_copy_title">Copia a…</string>
-    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> seleccionats</string>
     <string name="send_action">Envia</string>
     <string name="empty_subject">L\'assumpte és buit, feu clic un altre cop per enviar-lo així</string>
     <string name="reply_action">Respon</string>
@@ -118,15 +117,13 @@
     <string name="notification_action_spam">Correu brossa</string>
     <string name="notification_certificate_error_public">Error de certificat</string>
     <string name="notification_certificate_error_title">Error al certificat de <xliff:g id="account">%s</xliff:g></string>
-    <string name="notification_certificate_error_text">Comproveu la configuració del servidor</string>
+    <string name="notification_certificate_error_text">Comprova la configuració del servidor</string>
     <string name="notification_authentication_error_title">Ha fallat l\'autenticació</string>
     <string name="notification_authentication_error_text">Ha fallat l\'autenticació de <xliff:g id="account">%s</xliff:g>. Actualitzeu la configuració del servidor.</string>
     <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
     <string name="notification_notify_error_title">Error de notificació</string>
     <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
-    <string name="notification_notify_error_text">S\'ha produït un error en intentar crear una notificació del sistema per a un missatge nou. El motiu més probable és que falti un so de notificació.
-\n
-\nToqueu per obrir la configuració de notificació.</string>
+    <string name="notification_notify_error_text">S\'ha produït un error en intentar crear una notificació del sistema per a un missatge nou. El motiu més probable és que falti un so de notificació. \n \nToqueu per obrir la configuració de notificació.</string>
     <string name="notification_bg_sync_ticker">S\'està comprovant el correu: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
     <string name="notification_bg_sync_title">S\'està comprovant el correu</string>
     <string name="notification_bg_send_ticker">S\'està enviant correu: <xliff:g id="account">%s</xliff:g></string>
@@ -178,7 +175,7 @@
     <!--Displayed in the message view screen in front of the number of additional recipients (the ones that are not displayed).-->
     <string name="message_view_additional_recipient_prefix">+</string>
     <!--Displayed in the message view screen if the message was addressed to the user. Make sure this works with 'message_view_recipient_prefix'. In English it's "to me".-->
-    <string name="message_view_me_text">mi</string>
+    <string name="message_view_to_me_text">mi</string>
     <!--Text of the button that is displayed below the message header when the message body references one or more remote images-->
     <string name="message_view_show_remote_images_action">Mostra les imatges remotes</string>
     <string name="message_view_no_viewer">No s\'ha pogut trobar un visualitzador per <xliff:g id="mimetype">%s</xliff:g>.</string>
@@ -394,7 +391,7 @@
     <string name="account_settings_message_age_1_year">del darrer any</string>
     <string name="account_settings_sync_remote_deletetions_label">Sincronitza els elements suprimits al servidor</string>
     <string name="account_settings_sync_remote_deletetions_summary">Elimina els missatges quan se suprimeixin al servidor</string>
-    <string name="account_settings_openpgp_missing">Falta una aplicació d\'OpenPGP. S\'ha desinstal·lat\?</string>
+    <string name="account_settings_openpgp_missing">Falta una aplicació d\'OpenPGP. S\'ha desinstal·lat?</string>
     <string name="folder_settings_title">Configuració de les carpetes</string>
     <string name="folder_settings_in_top_group_label">Mostra al grup superior</string>
     <string name="folder_settings_clear_local_folder_action">Neteja els missatges locals</string>
@@ -522,7 +519,6 @@
     <string name="account_setup_push_limit_500">500 carpetes</string>
     <string name="account_setup_push_limit_1000">1000 carpetes</string>
     <string name="animations_title">Animació</string>
-    <string name="animations_summary">Fes servir efectes visuals cridaners</string>
     <string name="show_unified_inbox_title">Mostra la safata d\'entrada unificada</string>
     <string name="show_starred_count_title">Mostra el recompte de destacats</string>
     <string name="integrated_inbox_title">Bústia d\'entrada unificada</string>
@@ -557,16 +553,16 @@
     <string name="font_size_larger">Més gros</string>
     <string name="error_activity_not_found">No s\'ha trobat cap aplicació idònia per a aquesta acció.</string>
     <string name="send_failed_reason">Ha fallat l\'enviament: %s</string>
-    <string name="save_or_discard_draft_message_dlg_title">Deso l\'esborrany\?</string>
-    <string name="save_or_discard_draft_message_instructions_fmt">Deso o descarto aquest missatge\?</string>
-    <string name="save_or_discard_draft_message_changes">Voleu desar o descartar els canvis\?</string>
-    <string name="confirm_discard_draft_message_title">Descarto el missatge\?</string>
-    <string name="confirm_discard_draft_message">Segur que voleu descartar aquest missatge\?</string>
+    <string name="save_or_discard_draft_message_dlg_title">Deso l\'esborrany?</string>
+    <string name="save_or_discard_draft_message_instructions_fmt">Deso o descarto aquest missatge?</string>
+    <string name="save_or_discard_draft_message_changes">Voleu desar o descartar els canvis?</string>
+    <string name="confirm_discard_draft_message_title">Descarto el missatge?</string>
+    <string name="confirm_discard_draft_message">Segur que voleu descartar aquest missatge?</string>
     <string name="dialog_confirm_clear_local_folder_title">Voleu netejar els missatges locals?</string>
     <string name="dialog_confirm_clear_local_folder_message">Això eliminarà tots els missatges locals de la carpeta. No se suprimirà cap missatge del servidor.</string>
     <string name="dialog_confirm_clear_local_folder_action">Neteja els missatges</string>
     <string name="dialog_confirm_delete_title">Confirmeu l\'eliminació</string>
-    <string name="dialog_confirm_delete_message">Voleu suprimir aquest missatge\?</string>
+    <string name="dialog_confirm_delete_message">Voleu suprimir aquest missatge?</string>
     <plurals name="dialog_confirm_delete_messages">
         <item quantity="one">Realment voleu suprimir aquest missatge?</item>
         <item quantity="many">Realment voleu suprimir <xliff:g id="message_count">%1$d</xliff:g> missatges?</item>
@@ -575,9 +571,9 @@
     <string name="dialog_confirm_delete_confirm_button">Sí</string>
     <string name="dialog_confirm_delete_cancel_button">No</string>
     <string name="dialog_confirm_mark_all_as_read_title">Confirmeu marcar-ho tot com a llegit</string>
-    <string name="dialog_confirm_mark_all_as_read_message">Voleu marcar tots els missatges com a llegits\?</string>
+    <string name="dialog_confirm_mark_all_as_read_message">Voleu marcar tots els missatges com a llegits?</string>
     <string name="dialog_confirm_empty_trash_title">Confirmeu buidar la paperera</string>
-    <string name="dialog_confirm_empty_trash_message">Voleu buidar la carpeta de la paperera\?</string>
+    <string name="dialog_confirm_empty_trash_message">Voleu buidar la carpeta de la paperera?</string>
     <string name="dialog_confirm_mark_all_as_read_confirm_button">Sí</string>
     <string name="dialog_confirm_mark_all_as_read_cancel_button">No</string>
     <string name="dialog_confirm_spam_title">Confirmeu moure-ho a la carpeta brossa</string>
@@ -690,8 +686,7 @@
     <string name="enable_sign_only">Habilita PGP de només signar</string>
     <string name="disable_sign_only">Inhabilita PGP de només signar</string>
     <string name="openpgp_inline_title">Mode PGP/INLINE</string>
-    <string name="openpgp_inline_text">El missatge s\'envia en format PGP/INLINE.
-\nAixò només s\'hauria de fer servir per compatibilitat:</string>
+    <string name="openpgp_inline_text">El missatge s\'envia en format PGP/INLINE. \nAixò només s\'hauria de fer servir per compatibilitat:</string>
     <string name="openpgp_inline_plus_compat">Alguns clients només admeten aquest format</string>
     <string name="openpgp_inline_minus_transit">Les signatures es poden trencar durant el trànsit</string>
     <string name="openpgp_inline_minus_attach">Els adjunts no s\'admeten</string>
@@ -739,7 +734,6 @@
     <string name="crypto_msg_encrypted_insecure">però l\'encriptació no es considera segura</string>
     <string name="locked_attach_unlock">Desbloqueja</string>
     <string name="locked_attach_unencrypted">Aquesta part no estava encriptada i pot no ser segura.</string>
-    <string name="locked_attach_title">Adjunt no protegit</string>
     <string name="message_progress_text">S\'està carregant…</string>
     <string name="messageview_decrypt_cancelled">S\'ha cancel·lat la desencriptació.</string>
     <string name="messageview_decrypt_retry">Torna-hi</string>
@@ -753,8 +747,7 @@
     <string name="error_sign_only_no_encryption">Encriptació no disponible en mode de només signar!</string>
     <string name="unsigned_text_divider_label">Text no signat</string>
     <string name="crypto_no_provider_title">Aquest missatge està encriptat</string>
-    <string name="crypto_no_provider_message">Aquest missatge ha estat encriptat amb OpenPGP.
-\nPer llegir-lo, us caldrà instal·lar i configurar una aplicació d\'OpenPGP compatible.</string>
+    <string name="crypto_no_provider_message">Aquest missatge ha estat encriptat amb OpenPGP. \nPer llegir-lo, us caldrà instal·lar i configurar una aplicació d\'OpenPGP compatible.</string>
     <string name="crypto_no_provider_button">Ves a la configuració</string>
     <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
     <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
@@ -809,25 +802,15 @@
     <string name="push_info_disable_push_text">Si no necessiteu notificacions instantànies sobre missatges nous, haureu de desactivar Tramesa i utilitzar Sondeig. El sondeig comprova si hi ha correus nous a intervals regulars i no necessita la notificació.</string>
     <string name="push_info_disable_push_action">Desactiva la Tramesa</string>
     <!--Name of the swipe action to select a message. Try to keep it short.-->
-    <string name="swipe_action_select">Selecciona</string>
     <!--Name of the swipe action to deselect a message. Try to keep it short.-->
-    <string name="swipe_action_deselect">Desselecciona</string>
     <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
-    <string name="swipe_action_mark_as_read">Marca com a llegit</string>
     <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
-    <string name="swipe_action_mark_as_unread">Marca com a no llegit</string>
     <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
-    <string name="swipe_action_add_star">Afegeix un estel</string>
     <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
-    <string name="swipe_action_remove_star">Elimina l\'estel</string>
     <!--Name of the swipe action to archive a message. Try to keep it short.-->
-    <string name="swipe_action_archive">Arxiva</string>
     <!--Name of the swipe action to delete a message. Try to keep it short.-->
-    <string name="swipe_action_delete">Suprimeix</string>
     <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
-    <string name="swipe_action_spam">Correu brossa</string>
     <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
-    <string name="swipe_action_move">Mou…</string>
     <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
     <string name="general_settings_show_compose_button_title">Mostra el botó d\'escriptura flotant</string>
     <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
@@ -905,7 +888,47 @@
     <string name="debug_enable_sync_debug_logging_summary">El registre sincronitza informació de diagnòstic durant 24 hores</string>
     <string name="debug_sync_export_logs_title">Exportar registres de sincronització</string>
     <string name="archiving_not_available_for_this_account">Arxivar no està disponible per aquest compte.</string>
-    <string name="swipe_action_archive_folder_not_set">Establir carpeta d\'arxiu</string>
-    <string name="swipe_action_change_swipe_gestures">Gestos en lliscar</string>
     <string name="debug_open_secret_debug_screen">Obrir la pantalla secreta per desenvolupadors</string>
+    <string name="print_message_action">Imprimeix</string>
+    <string name="account_setup_auto_select_folder">Selecciona la carpeta automàticament</string>
+    <string name="navigation_drawer_preferences">Menú lateral</string>
+    <string name="expand_folders">Expandeix les carpetes</string>
+    <string name="set_format_html_condensed_action">Mostra amb format</string>
+    <string name="set_format_plain_condensed_action">Mostra sense format</string>
+    <string name="global_settings_messageview_body_content_type_text_html">HTML (text/html)</string>
+    <string name="message_view_menu_action_export_eml">Exporta com a EML</string>
+    <string name="set_format_html_action">Utilitzar el format original</string>
+    <string name="set_format_plain_action">Mostra el missatge sense format</string>
+    <string name="global_settings_messageview_body_content_type_text_plain">Text pla (text/plain)</string>
+    <plurals name="message_view_attachment_summary">
+        <item quantity="one"><xliff:g id="count">%1$d</xliff:g> Adjunt (<xliff:g id="size">%2$s</xliff:g>)</item>
+        <item quantity="many"><xliff:g id="count">%1$d</xliff:g> Adjunts (<xliff:g id="size">%2$s</xliff:g>)</item>
+        <item quantity="other"><xliff:g id="count">%1$d</xliff:g> Adjunts (<xliff:g id="size">%2$s</xliff:g>)</item>
+    </plurals>
+    <string name="message_view_single_attachment_summary"><xliff:g id="name">%1$s</xliff:g> (<xliff:g id="size">%2$s</xliff:g>)</string>
+    <string name="message_view_attachments_view_all">Mostrar tot</string>
+    <string name="message_view_attachments_view">Vista</string>
+    <string name="message_view_attachments_title">Adjunts</string>
+    <string name="message_view_attachments_save_all">Desar tot</string>
+    <string name="global_settings_messageview_body_content_type_title">Content-Type del cos</string>
+    <string name="general_settings_message_list_date_time_format_title">Format de la Data/hora</string>
+    <string name="general_settings_message_list_date_time_format_contextual">Contextual</string>
+    <string name="general_settings_message_list_date_time_format_full">Sencer</string>
+    <string name="general_settings_message_list_date_time_format_iso">ISO</string>
+    <string name="sort_by_then_by">Després per…</string>
+    <string name="global_settings_splitview_when_unfolded">Quan el dispositiu està desplegat</string>
+    <string name="debug_invalidate_access_token">Test: Invalidar el token d\'accés</string>
+    <string name="debug_invalidate_access_token_done">Token d\'accés anul·lat. La propera sol·licitud l\'actualitzarà.</string>
+    <string name="debug_invalidate_access_token_unavailable">Token OAuth no disponible per aquest compte.</string>
+    <string name="debug_invalidate_access_token_local">Test: Invalidar el token d\'accés (local)</string>
+    <string name="debug_invalidate_access_token_local_done">Sol·licitud d\'invalidació local. La següent sol·licitud obtindrà un token nou.</string>
+    <string name="debug_invalidate_access_token_server">Test: Invalidar el token d\'accés (servidor)</string>
+    <string name="debug_invalidate_access_token_server_done">Token d\'accés emmagatzemat corromput. La següent sol·licitud fallarà i llavors s\'actualitzarà.</string>
+    <string name="debug_invalidate_access_token_cannot_modify">No s\'ha pogut modificar el token d\'accés emmagatzemat. Intenta la invalidació local.</string>
+    <string name="debug_invalidate_access_token_already_modified">S\'ha modificat el token d\'accés emmagatzemat.</string>
+    <string name="debug_force_auth_failure">Prova: Forçar una fallada d\'autenticació</string>
+    <string name="debug_force_auth_failure_done">Estat de OAuth esborrat. La propera petició fallarà.</string>
+    <string name="debug_force_auth_failure_unavailable">Aquesta compta no té cap configuració d\'OAuth disponible.</string>
+    <string name="debug_feature_flags">DEPURACIÓ: Indicadors de característiques</string>
+    <string name="no_network_message_will_be_sent_later_toast">Sense connexió. El missatge s\'enviarà quan et connectis</string>
 </resources>

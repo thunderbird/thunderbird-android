@@ -1,11 +1,11 @@
 package app.k9mail.feature.account.server.settings.ui.incoming
 
-import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
 import app.k9mail.feature.account.common.domain.entity.InteractionMode
 import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSettingsContract.Effect
 import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSettingsContract.Event
 import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSettingsContract.State
 import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSettingsContract.ViewModel
+import net.thunderbird.core.ui.contract.mvi.BaseViewModel
 
 class FakeIncomingServerSettingsViewModel(
     override val mode: InteractionMode = InteractionMode.Create,

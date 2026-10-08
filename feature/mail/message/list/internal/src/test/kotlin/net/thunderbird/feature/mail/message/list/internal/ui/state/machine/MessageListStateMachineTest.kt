@@ -1,0 +1,544 @@
+package net.thunderbird.feature.mail.message.list.internal.ui.state.machine
+
+import app.cash.turbine.test
+import assertk.all
+import assertk.assertThat
+import assertk.assertions.containsExactly
+import assertk.assertions.isEqualTo
+import assertk.assertions.isInstanceOf
+import assertk.assertions.isNotNull
+import assertk.assertions.isNull
+import assertk.assertions.isTrue
+import assertk.assertions.prop
+import kotlin.test.Test
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.advanceUntilIdle
+import kotlinx.coroutines.test.runTest
+import net.thunderbird.core.common.action.SwipeAction
+import net.thunderbird.core.common.action.SwipeActions
+import net.thunderbird.core.preference.display.visualSettings.message.list.UiDensity
+import net.thunderbird.feature.account.AccountId
+import net.thunderbird.feature.account.AccountIdFactory
+import net.thunderbird.feature.mail.message.list.domain.model.SortCriteria
+import net.thunderbird.feature.mail.message.list.domain.model.SortType
+import net.thunderbird.feature.mail.message.list.internal.fakes.RecordingFunction
+import net.thunderbird.feature.mail.message.list.preferences.MessageListPreferences
+import net.thunderbird.feature.mail.message.list.ui.event.FolderEvent
+import net.thunderbird.feature.mail.message.list.ui.event.MessageItemEvent
+import net.thunderbird.feature.mail.message.list.ui.event.MessageListEvent
+import net.thunderbird.feature.mail.message.list.ui.event.MessageListSearchEvent
+import net.thunderbird.feature.mail.message.list.ui.state.Folder
+import net.thunderbird.feature.mail.message.list.ui.state.MessageListMetadata
+import net.thunderbird.feature.mail.message.list.ui.state.MessageListState
+
+@Suppress("MaxLineLength")
+@OptIn(ExperimentalCoroutinesApi::class)
+class MessageListStateMachineTest : BaseMessageListStateMachineTest() {
+
+    // region [WarmingUp state]
+    @Test
+    fun `stateMachine should trigger LoadConfigurations event when it is initialized`() = runTest {
+        // Arrange
+        val dispatch = RecordingFunction<MessageListEvent>()
+        // Act
+        createStateMachine(dispatch.function)
+        advanceUntilIdle()
+        // Assert
+        assertThat(dispatch.calls).containsExactly(MessageListEvent.LoadConfigurations)
+    }
+
+    @Test
+    fun `process() should stay on WarmingUp state when state is WarmingUp and event is LoadConfigurations`() =
+        runTest {
+            // Arrange
+            val stateMachine = createStateMachine()
+            advanceUntilIdle()
+
+            // Act
+            stateMachine.process(event = MessageListEvent.LoadConfigurations)
+
+            // Assert
+            stateMachine.currentState.test {
+                val state = awaitItem()
+                expectNoEvents()
+                assertThat(state).isInstanceOf<MessageListState.WarmingUp>()
+            }
+        }
+
+    @Test
+    fun `process() should stay on WarmingUp state when state is WarmingUp and event is UpdatePreferences`() =
+        runTest {
+            // Arrange
+            val stateMachine = createStateMachine()
+            advanceUntilIdle()
+
+            // Act
+            stateMachine.process(
+                event = MessageListEvent.UpdatePreferences(
+                    preferences = createMessageListPreferences(),
+                ),
+            )
+
+            // Assert
+            stateMachine.currentState.test {
+                val state = awaitItem()
+                expectNoEvents()
+                assertThat(state).isInstanceOf<MessageListState.WarmingUp>()
+            }
+        }
+
+    @Test
+    fun `process() should stay on WarmingUp state when state is WarmingUp and event is SortTypesLoaded`() =
+        runTest {
+            // Arrange
+            val stateMachine = createStateMachine()
+            advanceUntilIdle()
+
+            // Act
+            stateMachine.process(event = MessageListEvent.SortCriteriaLoaded(emptyMap()))
+
+            // Assert
+            stateMachine.currentState.test {
+                val state = awaitItem()
+                expectNoEvents()
+                assertThat(state).isInstanceOf<MessageListState.WarmingUp>()
+            }
+        }
+
+    @Test
+    fun `process() should not change state to LoadedMessages when event is AllConfigsReady but state is not ready`() =
+        runTest {
+            // Arrange
+            val stateMachine = createStateMachine()
+            advanceUntilIdle()
+
+            // Act
+            stateMachine.process(event = MessageListEvent.AllConfigsReady)
+
+            // Assert
+            stateMachine.currentState.test {
+                val state = awaitItem()
+                expectNoEvents()
+                assertThat(state).isInstanceOf<MessageListState.WarmingUp>()
+            }
+        }
+
+    @Test
+    fun `process() should change state to LoadedMessages when event is AllConfigsReady`() = runTest {
+        // Arrange
+        val stateMachine = createStateMachine()
+        val preferences = createMessageListPreferences()
+        val sortCriteriaPerAccount = mapOf<AccountId?, SortCriteria>(null to SortCriteria(SortType.DateDesc))
+        val swipeActions = mapOf(
+            AccountIdFactory.create() to SwipeActions(SwipeAction.None, SwipeAction.None),
+        )
+        val expectedFolderId = "this-is-my-folder"
+        val folder = createFolder(id = expectedFolderId)
+        advanceUntilIdle()
+
+        // Act
+        stateMachine.process(event = MessageListEvent.AllConfigsReady)
+
+        // Assert
+        stateMachine.currentState.test {
+            assertThat(awaitItem()).isInstanceOf<MessageListState.WarmingUp>()
+
+            stateMachine.process(MessageListEvent.UpdatePreferences(preferences))
+            assertThat(awaitItem()).isInstanceOf<MessageListState.WarmingUp>()
+
+            stateMachine.process(MessageListEvent.SortCriteriaLoaded(sortCriteriaPerAccount))
+            assertThat(awaitItem()).isInstanceOf<MessageListState.WarmingUp>()
+
+            stateMachine.process(MessageListEvent.SwipeActionsLoaded(swipeActions))
+            assertThat(awaitItem()).isInstanceOf<MessageListState.WarmingUp>()
+
+            stateMachine.process(FolderEvent.FolderLoaded(folder = folder))
+            assertThat(awaitItem()).isInstanceOf<MessageListState.WarmingUp>()
+
+            stateMachine.process(event = MessageListEvent.AllConfigsReady)
+            assertThat(awaitItem())
+                .isInstanceOf<MessageListState.LoadingMessages>()
+                .all {
+                    prop(MessageListState.LoadingMessages::preferences).isEqualTo(preferences)
+                    prop(MessageListState.LoadingMessages::progress).isEqualTo(0f)
+                    transform { it.metadata }.all {
+                        prop(MessageListMetadata::swipeActions).isEqualTo(swipeActions)
+                        prop(MessageListMetadata::sortCriteriaPerAccount).isEqualTo(sortCriteriaPerAccount)
+                        prop(MessageListMetadata::folder)
+                            .isNotNull()
+                            .prop(Folder::id)
+                            .isEqualTo(expectedFolderId)
+                    }
+                }
+
+            expectNoEvents()
+        }
+    }
+    // endregion [WarmingUp state]
+
+    // region [LoadingMessages state]
+    @Test
+    fun `process() should update LoadingMessages state with progress when state is LoadingMessages and event is UpdateLoadingProgress`() =
+        runTest {
+            // Arrange
+            val firstExpectedProgress = .3f
+            val secondExpectedProgress = .5f
+            val lastExpectedProgress = 1f
+            val stateMachine = createStateMachineOnLoadingState()
+            advanceUntilIdle()
+
+            stateMachine.currentState.test {
+                // enforce correct state before acting.
+                assertThat(expectMostRecentItem()).isInstanceOf<MessageListState.LoadingMessages>()
+
+                // Act (Phase 1)
+                stateMachine.process(MessageListEvent.UpdateLoadingProgress(progress = firstExpectedProgress))
+
+                // Assert (Phase 1)
+                assertThat(awaitItem())
+                    .isInstanceOf<MessageListState.LoadingMessages>()
+                    .prop(MessageListState.LoadingMessages::progress)
+                    .isEqualTo(firstExpectedProgress)
+
+                // Act (Phase 2)
+                stateMachine.process(MessageListEvent.UpdateLoadingProgress(progress = secondExpectedProgress))
+
+                // Assert (Phase 2)
+                assertThat(awaitItem())
+                    .isInstanceOf<MessageListState.LoadingMessages>()
+                    .prop(MessageListState.LoadingMessages::progress)
+                    .isEqualTo(secondExpectedProgress)
+
+                // Act (Phase 3)
+                stateMachine.process(MessageListEvent.UpdateLoadingProgress(progress = lastExpectedProgress))
+
+                // Assert (Phase 3)
+                assertThat(awaitItem())
+                    .isInstanceOf<MessageListState.LoadingMessages>()
+                    .prop(MessageListState.LoadingMessages::progress)
+                    .isEqualTo(lastExpectedProgress)
+
+                expectNoEvents()
+            }
+        }
+
+    @Test
+    fun `process() should not move to LoadedMessages state when state is LoadingMessages, event is MessagesLoaded but progress is not 1f`() =
+        runTest {
+            // Arrange
+            val stateMachine = createStateMachineOnLoadingState()
+            advanceUntilIdle()
+
+            stateMachine.currentState.test {
+                // enforce correct state before acting.
+                assertThat(expectMostRecentItem()).isInstanceOf<MessageListState.LoadingMessages>()
+
+                // Act (Phase 1)
+                stateMachine.process(MessageListEvent.UpdateLoadingProgress(progress = .5f))
+
+                // Assert (Phase 1)
+                assertThat(awaitItem())
+                    .isInstanceOf<MessageListState.LoadingMessages>()
+
+                // Act (Phase 2)
+                stateMachine.process(MessageListEvent.MessagesLoaded(messages = emptyList()))
+
+                // Assert (Phase 2)
+                expectNoEvents()
+            }
+        }
+
+    @Test
+    fun `process() should move to LoadedMessages state when state is LoadingMessages, progress is 1f, and event is MessagesLoaded`() =
+        runTest {
+            // Arrange
+            val accountId = AccountIdFactory.create()
+            val messages = createMessageUiItemList(size = 10, accountId = accountId)
+            val preferences: MessageListPreferences = createMessageListPreferences(
+                density = UiDensity.Compact,
+            )
+            val sortCriteriaPerAccount: Map<AccountId?, SortCriteria> =
+                mapOf(accountId to SortCriteria(SortType.DateDesc))
+            val swipeActions: Map<AccountId, SwipeActions> = mapOf(
+                accountId to SwipeActions(SwipeAction.None, SwipeAction.None),
+            )
+            val stateMachine = createStateMachineOnLoadingState(
+                preferences = preferences,
+                sortCriteriaPerAccount = sortCriteriaPerAccount,
+                swipeActions = swipeActions,
+            )
+            advanceUntilIdle()
+
+            stateMachine.currentState.test {
+                // enforce correct state before acting.
+                assertThat(expectMostRecentItem()).isInstanceOf<MessageListState.LoadingMessages>()
+
+                // Act (Phase 1)
+                stateMachine.process(MessageListEvent.UpdateLoadingProgress(progress = 1f))
+
+                // Assert (Phase 1)
+                assertThat(awaitItem()).isInstanceOf<MessageListState.LoadingMessages>()
+
+                // Act (Phase 2)
+                stateMachine.process(MessageListEvent.MessagesLoaded(messages = messages))
+
+                // Assert (Phase 2)
+                assertThat(awaitItem())
+                    .isInstanceOf<MessageListState.LoadedMessages>()
+                    .all {
+                        prop(MessageListState.LoadedMessages::preferences).isEqualTo(preferences)
+                        prop(MessageListState.LoadedMessages::messages).isEqualTo(messages)
+                        transform { it.metadata }.all {
+                            prop(MessageListMetadata::folder).isNotNull()
+                            prop(MessageListMetadata::activeMessage).isNull()
+                            prop(MessageListMetadata::swipeActions).isEqualTo(swipeActions)
+                            prop(MessageListMetadata::sortCriteriaPerAccount).isEqualTo(sortCriteriaPerAccount)
+                        }
+                    }
+            }
+        }
+    // endregion [LoadingMessages state]
+
+    // region [LoadedMessages state]
+    @Test
+    fun `process() should move to SelectingMessages when event is ToggleSelectMessages`() =
+        runTest {
+            // Arrange
+            val messages = createMessageUiItemList(size = 20)
+            val toggleSelection = messages.take(5)
+            val stateMachine = createStateMachineOnLoadedState(messages = messages)
+            advanceUntilIdle()
+
+            stateMachine.currentState.test {
+                // enforce correct state before acting.
+                assertThat(expectMostRecentItem()).isInstanceOf<MessageListState.LoadedMessages>()
+
+                // Act
+                stateMachine.process(MessageItemEvent.ToggleSelectMessages(messages = toggleSelection))
+
+                // Assert
+                assertThat(awaitItem())
+                    .isInstanceOf<MessageListState.SelectingMessages>()
+                    .transform { it.messages }
+                    .isEqualTo(
+                        messages.mapIndexed { index, message ->
+                            if (index in toggleSelection.indices) {
+                                message.copy(selected = !message.selected)
+                            } else {
+                                message
+                            }
+                        },
+                    )
+
+                expectNoEvents()
+            }
+        }
+
+    @Test
+    fun `process() should move to SelectingMessages when event is EnterSelectionMode`() =
+        runTest {
+            // Arrange
+            val messages = createMessageUiItemList(size = 5)
+            val stateMachine = createStateMachineOnLoadedState(messages = messages)
+            advanceUntilIdle()
+
+            stateMachine.currentState.test {
+                // enforce correct state before acting.
+                assertThat(expectMostRecentItem()).isInstanceOf<MessageListState.LoadedMessages>()
+
+                // Act
+                stateMachine.process(MessageListEvent.EnterSelectionMode)
+
+                // Assert
+                assertThat(awaitItem())
+                    .isInstanceOf<MessageListState.SelectingMessages>()
+                    .prop(MessageListState.SelectingMessages::messages).isEqualTo(messages)
+
+                expectNoEvents()
+            }
+        }
+
+    @Test
+    fun `process() should move to SearchingMessages when event is EnterSearchMode`() =
+        runTest {
+            // Arrange
+            val messages = createMessageUiItemList(size = 10)
+            val stateMachine = createStateMachineOnLoadedState(messages = messages)
+            advanceUntilIdle()
+
+            stateMachine.currentState.test {
+                // enforce correct state before acting.
+                assertThat(expectMostRecentItem()).isInstanceOf<MessageListState.LoadedMessages>()
+
+                // Act
+                stateMachine.process(MessageListSearchEvent.EnterSearchMode)
+
+                // Assert
+                assertThat(awaitItem())
+                    .isInstanceOf<MessageListState.SearchingMessages>().all {
+                        prop(MessageListState.SearchingMessages::searchQuery).isEqualTo("")
+                        prop(MessageListState.SearchingMessages::isServerSearch).isEqualTo(false)
+                        prop(MessageListState.SearchingMessages::messages).isEqualTo(messages)
+                    }
+
+                expectNoEvents()
+            }
+        }
+    // endregion [LoadedMessages state]
+
+    // region [SelectingMessages state]
+    @Test
+    fun `process() should update SelectingMessages's message selection when event is ToggleSelectMessages`() =
+        runTest {
+            // Arrange
+            val messages = createMessageUiItemList(size = 20)
+            val toggleSelection = messages.take(5)
+            val stateMachine = createStateMachineOnSelectingMessages(messages = messages)
+            advanceUntilIdle()
+
+            stateMachine.currentState.test {
+                // enforce correct state before acting.
+                assertThat(expectMostRecentItem()).isInstanceOf<MessageListState.SelectingMessages>()
+
+                // Act
+                stateMachine.process(MessageItemEvent.ToggleSelectMessages(messages = toggleSelection))
+
+                // Assert
+                assertThat(awaitItem())
+                    .isInstanceOf<MessageListState.SelectingMessages>()
+                    .transform { it.messages }
+                    .isEqualTo(
+                        messages.mapIndexed { index, message ->
+                            if (index in toggleSelection.indices) {
+                                message.copy(selected = !message.selected)
+                            } else {
+                                message
+                            }
+                        },
+                    )
+
+                expectNoEvents()
+            }
+        }
+
+    @Test
+    fun `process() should move to LoadedMessages when state is SelectingMessages and event is ExitSelectionMode`() =
+        runTest {
+            // Arrange
+            val messages = createMessageUiItemList(size = 20)
+                .mapIndexed { index, message -> if (index < 5) message.copy(selected = true) else message }
+            val stateMachine = createStateMachineOnSelectingMessages(messages = messages)
+            advanceUntilIdle()
+
+            stateMachine.currentState.test {
+                // enforce correct state before acting.
+                assertThat(expectMostRecentItem()).isInstanceOf<MessageListState.SelectingMessages>()
+
+                // Act
+                stateMachine.process(MessageListEvent.ExitSelectionMode)
+
+                // Assert
+                assertThat(awaitItem())
+                    .isInstanceOf<MessageListState.LoadedMessages>()
+                    .prop(MessageListState.LoadedMessages::messages)
+                    .isEqualTo(messages.map { it.copy(selected = false) })
+
+                expectNoEvents()
+            }
+        }
+    // endregion [SelectingMessages state]
+
+    // region [SearchingMessages state]
+    @Test
+    fun `process() should update SearchingMessages's searchQuery when event is UpdateSearchQuery`() =
+        runTest {
+            // Arrange
+            val firstQuery = "first query"
+            val secondQuery = "second query"
+            val lastQuery = "last query"
+            val messages = createMessageUiItemList(size = 20)
+            val stateMachine = createStateMachineOnSearchingMessages(messages = messages)
+            advanceUntilIdle()
+
+            stateMachine.currentState.test {
+                // enforce correct state before acting.
+                assertThat(expectMostRecentItem()).isInstanceOf<MessageListState.SearchingMessages>()
+
+                // Act (Phase 1)
+                stateMachine.process(MessageListSearchEvent.UpdateSearchQuery(query = firstQuery))
+
+                // Assert (Phase 1)
+                assertThat(awaitItem())
+                    .isInstanceOf<MessageListState.SearchingMessages>()
+                    .prop(MessageListState.SearchingMessages::searchQuery).isEqualTo(firstQuery)
+
+                // Act (Phase 2)
+                stateMachine.process(MessageListSearchEvent.UpdateSearchQuery(query = secondQuery))
+
+                // Assert (Phase 2)
+                assertThat(awaitItem())
+                    .isInstanceOf<MessageListState.SearchingMessages>()
+                    .prop(MessageListState.SearchingMessages::searchQuery).isEqualTo(secondQuery)
+
+                // Act (Phase 3)
+                stateMachine.process(MessageListSearchEvent.UpdateSearchQuery(query = lastQuery))
+
+                // Assert (Phase 3)
+                assertThat(awaitItem())
+                    .isInstanceOf<MessageListState.SearchingMessages>()
+                    .prop(MessageListState.SearchingMessages::searchQuery).isEqualTo(lastQuery)
+
+                expectNoEvents()
+            }
+        }
+
+    @Test
+    fun `process() should update SearchingMessages's isServerSearch when event is SearchRemotely`() =
+        runTest {
+            // Arrange
+            val messages = createMessageUiItemList(size = 20)
+            val stateMachine = createStateMachineOnSearchingMessages(messages = messages)
+            advanceUntilIdle()
+
+            stateMachine.currentState.test {
+                // enforce correct state before acting.
+                assertThat(expectMostRecentItem()).isInstanceOf<MessageListState.SearchingMessages>()
+
+                // Act
+                stateMachine.process(MessageListSearchEvent.SearchRemotely)
+
+                // Assert
+                assertThat(awaitItem())
+                    .isInstanceOf<MessageListState.SearchingMessages>()
+                    .prop(MessageListState.SearchingMessages::isServerSearch).isTrue()
+
+                expectNoEvents()
+            }
+        }
+
+    @Test
+    fun `process() should move to LoadedMessages when state is SearchingMessages and event is ExitSearchMode`() =
+        runTest {
+            // Arrange
+            val messages = createMessageUiItemList(size = 20)
+            val stateMachine = createStateMachineOnSearchingMessages(messages = messages)
+            advanceUntilIdle()
+
+            stateMachine.currentState.test {
+                // enforce correct state before acting.
+                assertThat(expectMostRecentItem()).isInstanceOf<MessageListState.SearchingMessages>()
+
+                // Act
+                stateMachine.process(MessageListSearchEvent.ExitSearchMode)
+
+                // Assert
+                assertThat(awaitItem())
+                    .isInstanceOf<MessageListState.LoadedMessages>()
+                    .prop(MessageListState.LoadedMessages::messages)
+                    .isEqualTo(messages)
+
+                expectNoEvents()
+            }
+        }
+    // endregion [SearchingMessages state]
+}

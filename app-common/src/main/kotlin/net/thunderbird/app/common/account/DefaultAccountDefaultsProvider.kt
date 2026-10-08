@@ -25,7 +25,7 @@ import net.thunderbird.core.android.account.Identity
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.account.ShowPictures
 import net.thunderbird.core.featureflag.FeatureFlagProvider
-import net.thunderbird.core.featureflag.toFeatureFlagKey
+import net.thunderbird.core.featureflag.keys.GeneratedFeatureFlagKey
 import net.thunderbird.core.preference.storage.Storage
 import net.thunderbird.feature.mail.folder.api.SpecialFolderSelection
 import net.thunderbird.feature.notification.NotificationLight
@@ -43,19 +43,19 @@ internal class DefaultAccountDefaultsProvider(
     }
 
     override fun applyOverwrites(account: LegacyAccountDto, storage: Storage) = with(account) {
-        if (storage.contains("${account.uuid}.notifyNewMail")) {
-            isNotifyNewMail = storage.getBoolean("${account.uuid}.notifyNewMail", false)
-            isNotifySelfNewMail = storage.getBoolean("${account.uuid}.notifySelfNewMail", true)
+        if (storage.contains("${account.id}.notifyNewMail")) {
+            isNotifyNewMail = storage.getBoolean("${account.id}.notifyNewMail", false)
+            isNotifySelfNewMail = storage.getBoolean("${account.id}.notifySelfNewMail", true)
         } else {
             isNotifyNewMail = featureFlagProvider.provide(
-                "email_notification_default".toFeatureFlagKey(),
+                GeneratedFeatureFlagKey.EMAIL_NOTIFICATION_DEFAULT,
             ).whenEnabledOrNot(
                 onEnabled = { true },
                 onDisabledOrUnavailable = { false },
             )
 
             isNotifySelfNewMail = featureFlagProvider.provide(
-                "email_notification_default".toFeatureFlagKey(),
+                GeneratedFeatureFlagKey.EMAIL_NOTIFICATION_DEFAULT,
             ).whenEnabledOrNot(
                 onEnabled = { true },
                 onDisabledOrUnavailable = { false },

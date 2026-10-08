@@ -1,7 +1,7 @@
 package app.k9mail.feature.account.edit.navigation
 
-import app.k9mail.core.ui.compose.navigation.Route
 import kotlinx.serialization.Serializable
+import net.thunderbird.core.ui.navigation.Route
 
 sealed interface AccountEditRoute : Route {
 

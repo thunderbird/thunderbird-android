@@ -19,6 +19,8 @@ import com.fsck.k9.Preferences
 import com.fsck.k9.ui.choosefolder.ChooseFolderActivity
 import com.fsck.k9.ui.choosefolder.ChooseFolderResultContract
 import com.takisoft.preferencex.PreferenceFragmentCompat
+import net.thunderbird.feature.account.AccountId
+import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.search.legacy.SearchAccount
 import org.koin.android.ext.android.inject
 
@@ -74,7 +76,7 @@ class UnreadWidgetConfigurationFragment : PreferenceFragmentCompat() {
         unreadFolder.onPreferenceClickListener = Preference.OnPreferenceClickListener {
             chooseFolderLauncher.launch(
                 input = ChooseFolderResultContract.Input(
-                    accountUuid = selectedAccountUuid!!,
+                    accountId = AccountIdFactory.of(selectedAccountUuid!!),
                 ),
             )
             false
@@ -106,6 +108,7 @@ class UnreadWidgetConfigurationFragment : PreferenceFragmentCompat() {
                             }
                             true
                         }
+
                         else -> false
                     }
                 }
@@ -163,7 +166,7 @@ class UnreadWidgetConfigurationFragment : PreferenceFragmentCompat() {
     }
 
     private fun handleRegularSearch() {
-        val selectedAccount = preferences.getAccount(selectedAccountUuid!!)
+        val selectedAccount = preferences.getById(AccountIdFactory.of(selectedAccountUuid!!))
             ?: error("Account $selectedAccountUuid not found")
 
         unreadAccount.summary = selectedAccount.displayName

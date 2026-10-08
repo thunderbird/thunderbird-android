@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "version": "6.602",
+  "versioncode": 36002,
+  "date": "2023-05-11",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Change primary action in message view header from \"reply all\" to \"reply\"",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

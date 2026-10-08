@@ -1,15 +1,19 @@
 plugins {
     id("com.android.application")
-    id("org.jetbrains.kotlin.android")
-    id("thunderbird.quality.detekt.typed")
-    id("thunderbird.quality.spotless")
+    id("net.thunderbird.gradle.plugin.quality.coverage")
+    id("net.thunderbird.gradle.plugin.quality.detekt")
+    id("net.thunderbird.gradle.plugin.quality.spotless")
 }
 
 android {
-    configureSharedConfig(project)
+    compileSdk = ThunderbirdProjectConfig.Android.sdkCompile
 
     defaultConfig {
+        minSdk = ThunderbirdProjectConfig.Android.sdkMin
         targetSdk = ThunderbirdProjectConfig.Android.sdkTarget
+
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
     }
 
     buildFeatures {
@@ -18,6 +22,8 @@ android {
 
     compileOptions {
         isCoreLibraryDesugaringEnabled = true
+        sourceCompatibility = ThunderbirdProjectConfig.Compiler.javaCompatibility
+        targetCompatibility = ThunderbirdProjectConfig.Compiler.javaCompatibility
     }
 
     dependenciesInfo {
@@ -25,7 +31,37 @@ android {
         includeInBundle = false
     }
 
-    disableC2CompilerForRobolectric()
+    lint {
+        warningsAsErrors = false
+        abortOnError = true
+        checkDependencies = true
+        @Suppress("UnstableApiUsage")
+        lintConfig = isolated.rootProject.projectDirectory.file("config/lint/lint.xml").asFile
+        checkReleaseBuilds = System.getenv("CI_CHECK_RELEASE_BUILDS")?.toBoolean() ?: true
+    }
+
+    packaging {
+        resources {
+            excludes += listOf(
+                "/META-INF/{AL2.0,LGPL2.1}",
+                "/META-INF/DEPENDENCIES",
+                "/META-INF/LICENSE",
+                "/META-INF/LICENSE.txt",
+                "/META-INF/NOTICE",
+                "/META-INF/NOTICE.txt",
+                "/META-INF/README",
+                "/META-INF/README.md",
+                "/META-INF/CHANGES",
+                "/LICENSE.txt",
+            )
+        }
+    }
+
+    testOptions {
+        unitTests.all {
+            it.jvmArgs(ThunderbirdProjectConfig.Testing.robolectricJvmArgs)
+        }
+    }
 }
 
 kotlin {
@@ -40,7 +76,15 @@ dependencies {
     implementation(platform(libs.kotlin.bom))
     implementation(platform(libs.koin.bom))
 
-    implementation(libs.bundles.shared.jvm.android.app)
+    implementation(libs.bundles.shared.android.app)
 
-    testImplementation(libs.bundles.shared.jvm.test)
+    testImplementation(libs.bundles.shared.android.app.test)
+}
+
+tasks.register("testsOnCi") {
+    dependsOn(
+        tasks.withType<Test>().matching {
+            it.name != "testReleaseUnitTest"
+        }
+    )
 }

@@ -2,9 +2,9 @@ package net.thunderbird.feature.account.settings.impl.domain.usecase
 
 import com.eygraber.uri.Uri
 import java.io.IOException
+import net.thunderbird.components.core.outcome.Outcome
 import net.thunderbird.core.file.MimeType
 import net.thunderbird.core.file.MimeTypeResolver
-import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.avatar.Avatar
 import net.thunderbird.feature.account.avatar.AvatarImageRepository
@@ -22,10 +22,11 @@ internal class UpdateAvatarImage(
     ): Outcome<Avatar.Image, AccountSettingError> {
         val mimeType = mimeTypeResolver.getMimeType(imageUri)
 
-        if (mimeType == null || mimeType != MimeType.JPEG) {
+        // Check for both JPEG and PNG
+        if (mimeType == null || (mimeType != MimeType.JPEG && mimeType != MimeType.PNG)) {
             return Outcome.Failure(
                 AccountSettingError.UnsupportedFormat(
-                    message = "Only JPEG images are supported. Found: ${mimeType ?: "unknown"}",
+                    message = "Only JPEG and PNG images are supported. Found: ${mimeType ?: "unknown"}",
                 ),
             )
         }

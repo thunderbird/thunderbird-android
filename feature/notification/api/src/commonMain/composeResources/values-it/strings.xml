@@ -24,7 +24,7 @@
     <string name="push_notification_state_wait_network">Inattivo fino a quando la rete non sarà disponibile</string>
     <string name="push_notification_state_alarm_permission_missing">Autorizzazione mancante per pianificare gli allarmi</string>
     <string name="push_notification_info">Tocca per saperne di più.</string>
-    <string name="push_notification_grant_alarm_permission">Tocca per concedere l\'autorizzazione.</string>
+    <string name="push_notification_grant_alarm_permission">Tocca per concedere l\\'autorizzazione.</string>
     <string name="push_info_disable_push_action">Disabilita Push</string>
     <string name="notification_action_reply">Rispondi</string>
     <string name="notification_action_mark_as_read">Letto</string>

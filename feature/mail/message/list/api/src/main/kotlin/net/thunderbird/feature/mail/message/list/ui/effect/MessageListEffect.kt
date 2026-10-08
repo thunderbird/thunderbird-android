@@ -1,6 +1,8 @@
 package net.thunderbird.feature.mail.message.list.ui.effect
 
 import net.thunderbird.feature.account.AccountId
+import net.thunderbird.feature.mail.message.list.ui.state.MessageItemUi
+import net.thunderbird.feature.mail.message.list.ui.state.MessageListState
 
 /**
  * Represents one-time side effects that can be triggered from the message list screen.
@@ -8,6 +10,13 @@ import net.thunderbird.feature.account.AccountId
  * or showing transient messages.
  */
 sealed interface MessageListEffect {
+    /**
+     * Effect to trigger a refresh of the message list. This can be used to manually
+     * reload the list of messages from the data source, for instance, after a pull-to-refresh
+     * gesture or a programmatic trigger.
+     */
+    data class RefreshMessageList(val currentState: MessageListState) : MessageListEffect
+
     /**
      * Effect to navigate back from the current screen.
      */
@@ -73,4 +82,26 @@ sealed interface MessageListEffect {
      * that have been discarded for that account.
      */
     data class DraftsDiscarded(val messagesIdByAccountId: Map<AccountId, List<Long>>) : MessageListEffect
+
+    /**
+     * Effect to update the state and appearance of the contextual action mode toolbar.
+     *
+     * @param title The text to be displayed in the action mode toolbar, usually indicating
+     * the number of currently selected messages.
+     * @param isAllSelected Whether all available messages in the current list are selected.
+     */
+    data class UpdateToolbarActionMode(
+        val title: String,
+        val isAllSelected: Boolean,
+    ) : MessageListEffect
+
+    data object ResetToolbarActionMode : MessageListEffect
+
+    data class ScrollToMessage(val message: MessageItemUi) : MessageListEffect
+
+    data class OpenMessage(val message: MessageItemUi) : MessageListEffect
+
+    // region [ Legacy Support ]
+    data object TriggerOnFooterClicked : MessageListEffect
+    // endregion [ Legacy Support ]
 }

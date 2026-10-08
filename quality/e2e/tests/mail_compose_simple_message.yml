@@ -1,0 +1,18 @@
+appId: ${MAESTRO_APP_ID}
+---
+
+## Compose an email and send it
+- runFlow:
+    when:
+      visible:
+        id: "onboarding_welcome_start_button"
+    file: init_with_account.yml
+
+## Compose and send email
+- runFlow:
+    file: mail_compose.yml
+    env:
+      TO_EMAIL: "simple_compose@example.com"
+      SUBJECT: "Simple compose test"
+      BODY: "Lorem ipsum dolor sit amet."
+      IDENTITY: "johntest5890@gmail.com"

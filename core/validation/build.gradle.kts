@@ -3,13 +3,19 @@ plugins {
 }
 
 kotlin {
-    androidLibrary {
+    android {
         namespace = "net.thunderbird.core.validation"
-        withHostTest {}
     }
     sourceSets {
         commonMain.dependencies {
-            api(projects.core.outcome)
+            api(libs.tb.mobile.components.core.outcome)
+        }
+        commonTest.dependencies {
+            implementation(libs.kotlin.reflect)
         }
     }
+}
+
+codeCoverage {
+    branchCoverage = 68
 }

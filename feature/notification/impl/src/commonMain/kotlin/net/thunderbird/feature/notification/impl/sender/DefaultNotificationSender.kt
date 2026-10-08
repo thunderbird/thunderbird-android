@@ -2,9 +2,9 @@ package net.thunderbird.feature.notification.impl.sender
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import net.thunderbird.components.core.outcome.Outcome
 import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.logging.Logger
-import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.feature.notification.api.command.NotificationCommand
 import net.thunderbird.feature.notification.api.command.outcome.CommandNotCreated
 import net.thunderbird.feature.notification.api.command.outcome.NotificationCommandOutcome

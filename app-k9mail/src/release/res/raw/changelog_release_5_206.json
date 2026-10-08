@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "version": "5.206",
+  "versioncode": 23260,
+  "date": "2017-03-15",
+  "notes": [
+    {
+      "type": "fixed",
+      "text": "Fixed crash when starting the app from the unread widget",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

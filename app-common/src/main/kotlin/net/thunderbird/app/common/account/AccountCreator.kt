@@ -6,10 +6,13 @@ import app.k9mail.feature.account.common.domain.entity.SpecialFolderOption
 import app.k9mail.feature.account.common.domain.entity.SpecialFolderSettings
 import app.k9mail.feature.account.setup.AccountSetupExternalContract
 import app.k9mail.feature.account.setup.AccountSetupExternalContract.AccountCreator.AccountCreatorResult
+import app.k9mail.legacy.mailstore.domain.GetFolderIdsForTypeUseCase
+import app.k9mail.legacy.mailstore.domain.SetPushForFolderUseCase
 import com.fsck.k9.Core
 import com.fsck.k9.Preferences
 import com.fsck.k9.account.DeletePolicyProvider
 import com.fsck.k9.controller.MessagingController
+import com.fsck.k9.mail.FolderType
 import com.fsck.k9.mail.ServerSettings
 import com.fsck.k9.mail.store.imap.ImapStoreSettings.autoDetectNamespace
 import com.fsck.k9.mail.store.imap.ImapStoreSettings.createExtra
@@ -23,11 +26,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.common.mail.Protocols
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.core.featureflag.FeatureFlagProvider
+import net.thunderbird.core.featureflag.keys.GeneratedFeatureFlagKey
+import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.avatar.AvatarMonogramCreator
 import net.thunderbird.feature.account.storage.profile.AvatarDto
 import net.thunderbird.feature.account.storage.profile.AvatarTypeDto
 import net.thunderbird.feature.mail.folder.api.SpecialFolderSelection
+import net.thunderbird.legacy.logging.Log
 
 // TODO Move to feature/account/setup
 @Suppress("LongParameterList")
@@ -40,6 +46,9 @@ internal class AccountCreator(
     private val deletePolicyProvider: DeletePolicyProvider,
     private val avatarMonogramCreator: AvatarMonogramCreator,
     private val unifiedInboxConfigurator: UnifiedInboxConfigurator,
+    private val featureFlagProvider: FeatureFlagProvider,
+    private val getFolderIdsForTypeUseCase: GetFolderIdsForTypeUseCase,
+    private val setPushForFolderUseCase: SetPushForFolderUseCase,
     private val coroutineDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : AccountSetupExternalContract.AccountCreator {
 
@@ -54,14 +63,17 @@ internal class AccountCreator(
         }
     }
 
-    private suspend fun create(account: Account): String {
-        val newAccount = preferences.newAccount(account.uuid)
+    private suspend fun create(account: Account): AccountId {
+        val newAccount = preferences.newAccount(account.id)
 
         newAccount.email = account.emailAddress
 
         newAccount.avatar = AvatarDto(
             avatarType = AvatarTypeDto.MONOGRAM,
-            avatarMonogram = avatarMonogramCreator.create(account.options.accountName, account.emailAddress),
+            avatarMonogram = avatarMonogramCreator.create(
+                name = account.options.accountName,
+                email = account.emailAddress,
+            ),
             avatarImageUri = null,
             avatarIconName = null,
         )
@@ -100,11 +112,23 @@ internal class AccountCreator(
 
         messagingController.refreshFolderListBlocking(newAccount)
 
+        featureFlagProvider.provide(GeneratedFeatureFlagKey.PUSH_ENABLED_ON_INBOX_BY_DEFAULT)
+            .onEnabled {
+                // The AccountCreator is only called when not importing settings.
+                // We can update inbox push here by default, as it's always a new account.
+                getFolderIdsForTypeUseCase(
+                    newAccount.id,
+                    FolderType.INBOX,
+                ).firstOrNull()?.let { inboxFolderId ->
+                    setPushForFolderUseCase(accountUuid = newAccount.id, folderId = inboxFolderId, enabled = true)
+                }
+            }
+
         if (account.options.checkFrequencyInMinutes == -1) {
             messagingController.checkMail(newAccount, false, true, false, null)
         }
 
-        return newAccount.uuid
+        return newAccount.id
     }
 
     /**
@@ -143,9 +167,11 @@ internal class AccountCreator(
             is SpecialFolderOption.None -> {
                 if (isAutomatic) SpecialFolderSelection.AUTOMATIC else SpecialFolderSelection.MANUAL
             }
+
             is SpecialFolderOption.Regular -> {
                 SpecialFolderSelection.MANUAL
             }
+
             is SpecialFolderOption.Special -> {
                 if (isAutomatic) SpecialFolderSelection.AUTOMATIC else SpecialFolderSelection.MANUAL
             }

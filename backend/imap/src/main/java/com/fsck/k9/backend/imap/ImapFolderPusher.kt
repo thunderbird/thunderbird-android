@@ -7,7 +7,7 @@ import com.fsck.k9.mail.store.imap.IdleResult
 import com.fsck.k9.mail.store.imap.ImapFolderIdler
 import com.fsck.k9.mail.store.imap.ImapStore
 import kotlin.concurrent.thread
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.legacy.logging.Log
 
 /**
  * Listens for changes to an IMAP folder in a dedicated thread.

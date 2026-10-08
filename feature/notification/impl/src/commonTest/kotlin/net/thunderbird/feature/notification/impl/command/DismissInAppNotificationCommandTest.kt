@@ -2,20 +2,19 @@ package net.thunderbird.feature.notification.impl.command
 
 import assertk.all
 import assertk.assertThat
+import assertk.assertions.containsExactly
+import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
 import assertk.assertions.prop
-import dev.mokkery.matcher.any
-import dev.mokkery.spy
-import dev.mokkery.verify.VerifyMode.Companion.exactly
-import dev.mokkery.verifySuspend
 import kotlin.test.Test
 import kotlinx.coroutines.test.runTest
+import net.thunderbird.components.core.outcome.Outcome
 import net.thunderbird.core.featureflag.FeatureFlagKey
 import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.featureflag.FeatureFlagResult
+import net.thunderbird.core.featureflag.keys.GeneratedFeatureFlagKey
 import net.thunderbird.core.logging.testing.TestLogger
-import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.feature.notification.api.NotificationRegistry
 import net.thunderbird.feature.notification.api.command.outcome.CommandExecutionFailed
 import net.thunderbird.feature.notification.api.command.outcome.Success
@@ -34,7 +33,7 @@ class DismissInAppNotificationCommandTest {
             val testSubject = createTestSubject(
                 featureFlagProvider = { key ->
                     when (key) {
-                        FeatureFlagKey.DisplayInAppNotifications -> FeatureFlagResult.Disabled
+                        GeneratedFeatureFlagKey.DISPLAY_IN_APP_NOTIFICATIONS -> FeatureFlagResult.Disabled
                         else -> FeatureFlagResult.Enabled
                     }
                 },
@@ -54,7 +53,7 @@ class DismissInAppNotificationCommandTest {
                     prop(UnsupportedCommand<InAppNotification>::reason)
                         .isInstanceOf<UnsupportedCommand.Reason.FeatureFlagDisabled>()
                         .prop(UnsupportedCommand.Reason.FeatureFlagDisabled::key)
-                        .isEqualTo(FeatureFlagKey.DisplayInAppNotifications)
+                        .isEqualTo(GeneratedFeatureFlagKey.DISPLAY_IN_APP_NOTIFICATIONS)
                 }
         }
 
@@ -65,7 +64,7 @@ class DismissInAppNotificationCommandTest {
             val testSubject = createTestSubject(
                 featureFlagProvider = { key ->
                     when (key) {
-                        FeatureFlagKey.DisplayInAppNotifications -> FeatureFlagResult.Unavailable
+                        GeneratedFeatureFlagKey.DISPLAY_IN_APP_NOTIFICATIONS -> FeatureFlagResult.Unavailable
                         else -> FeatureFlagResult.Enabled
                     }
                 },
@@ -85,7 +84,7 @@ class DismissInAppNotificationCommandTest {
                     prop(UnsupportedCommand<InAppNotification>::reason)
                         .isInstanceOf<UnsupportedCommand.Reason.FeatureFlagDisabled>()
                         .prop(UnsupportedCommand.Reason.FeatureFlagDisabled::key)
-                        .isEqualTo(FeatureFlagKey.DisplayInAppNotifications)
+                        .isEqualTo(GeneratedFeatureFlagKey.DISPLAY_IN_APP_NOTIFICATIONS)
                 }
         }
 
@@ -96,7 +95,7 @@ class DismissInAppNotificationCommandTest {
         val registry = FakeNotificationRegistry().apply {
             register(notification)
         }
-        val notifier = spy(FakeInAppNotificationNotifier())
+        val notifier = FakeInAppNotificationNotifier()
         val testSubject = createTestSubject(
             notification = notification,
             notifier = notifier,
@@ -118,7 +117,7 @@ class DismissInAppNotificationCommandTest {
                     .isEqualTo(expectedId)
             }
 
-        verifySuspend(exactly(1)) { notifier.dismiss(expectedId) }
+        assertThat(notifier.dismissedNotificationIds).containsExactly(expectedId)
     }
 
     @Test
@@ -126,7 +125,7 @@ class DismissInAppNotificationCommandTest {
         // Arrange
         val notification = FakeNotification()
         val registry = FakeNotificationRegistry() // empty, not registered
-        val notifier = spy(FakeInAppNotificationNotifier())
+        val notifier = FakeInAppNotificationNotifier()
         val testSubject = createTestSubject(
             notification = notification,
             notifier = notifier,
@@ -147,7 +146,7 @@ class DismissInAppNotificationCommandTest {
                     .isEqualTo("Notification is not registered in the NotificationRegistry.")
             }
 
-        verifySuspend(exactly(0)) { notifier.dismiss(any()) }
+        assertThat(notifier.dismissedNotificationIds).isEmpty()
     }
 
     private fun createTestSubject(

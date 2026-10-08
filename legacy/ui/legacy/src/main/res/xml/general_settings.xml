@@ -192,9 +192,12 @@
 
             </PreferenceScreen>
 
-            <CheckBoxPreference
+            <ListPreference
+                android:dialogTitle="@string/animations_title"
+                android:entries="@array/animation_entries"
+                android:entryValues="@array/animation_values"
                 android:key="animations"
-                android:summary="@string/animations_summary"
+                app:useSimpleSummaryProvider="true"
                 android:title="@string/animations_title"
                 />
 
@@ -250,6 +253,15 @@
                 android:key="messagelist_preview_lines"
                 app:useSimpleSummaryProvider="true"
                 android:title="@string/global_settings_preview_lines_label"
+                />
+
+            <ListPreference
+                android:dialogTitle="@string/general_settings_message_list_date_time_format_title"
+                android:entries="@array/message_list_date_time_format_entries"
+                android:entryValues="@array/message_list_date_time_format_values"
+                android:key="message_list_date_time_format"
+                app:useSimpleSummaryProvider="true"
+                android:title="@string/general_settings_message_list_date_time_format_title"
                 />
 
             <CheckBoxPreference
@@ -476,21 +488,30 @@
             />
 
         <ListPreference
-            android:dialogTitle="@string/global_settings_notification_quick_delete_title"
-            android:entries="@array/notification_quick_delete_entries"
-            android:entryValues="@array/notification_quick_delete_values"
-            android:key="notification_quick_delete"
-            app:useSimpleSummaryProvider="true"
-            android:title="@string/global_settings_notification_quick_delete_title"
-            />
-
-        <ListPreference
             android:dialogTitle="@string/global_settings_lock_screen_notification_visibility_title"
             android:entries="@array/lock_screen_notification_visibility_entries"
             android:entryValues="@array/lock_screen_notification_visibility_values"
             android:key="lock_screen_notification_visibility"
             app:useSimpleSummaryProvider="true"
             android:title="@string/global_settings_lock_screen_notification_visibility_title"
+            />
+
+        <Preference
+            android:key="notification_actions_settings"
+            android:title="@string/notification_actions_settings_title"
+            android:summary="@string/notification_actions_settings_summary"
+            />
+
+        <CheckBoxPreference
+            android:key="notification_summary_delete"
+            android:title="@string/notification_summary_delete_title"
+            android:summary="@string/notification_summary_delete_summary"
+            />
+
+        <SwitchPreferenceCompat
+            android:key="notification_show_contact_picture"
+            android:title="@string/notification_show_contact_picture_title"
+            android:summary="@string/notification_show_contact_picture_summary"
             />
 
     </PreferenceScreen>
@@ -530,6 +551,12 @@
             android:key="privacy_hide_timezone"
             android:summary="@string/global_settings_privacy_hide_timezone_detail"
             android:title="@string/global_settings_privacy_hide_timezone"
+            />
+
+        <CheckBoxPreference
+            android:key="privacy_incognito_keyboard"
+            android:summary="@string/global_settings_privacy_incognito_keyboard_detail"
+            android:title="@string/global_settings_privacy_incognito_keyboard"
             />
 
     </PreferenceScreen>
@@ -578,5 +605,10 @@
             android:title="@string/debug_open_secret_debug_screen" />
 
     </PreferenceScreen>
+
+    <Preference
+        android:icon="@drawable/ic_remote_feature_flag"
+        android:key="remote_feature_flag"
+        android:title="@string/remote_feature_flag_preferences"/>
 
 </PreferenceScreen>

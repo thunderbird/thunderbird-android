@@ -35,7 +35,6 @@ internal abstract class ImportListItem<VH : ImportCheckBoxViewHolder>(
                 ImportStatus.IMPORT_SUCCESS_AUTHORIZATION_REQUIRED -> 2
                 ImportStatus.NOT_SELECTED -> 3
                 ImportStatus.IMPORT_FAILURE -> 4
-                else -> error("Unexpected import status: $importStatus")
             }
             holder.statusIcon.setImageLevel(imageLevel)
 
@@ -45,7 +44,6 @@ internal abstract class ImportListItem<VH : ImportCheckBoxViewHolder>(
                 ImportStatus.IMPORT_SUCCESS_AUTHORIZATION_REQUIRED -> R.string.settings_import_status_log_in_required
                 ImportStatus.NOT_SELECTED -> R.string.settings_import_status_not_imported
                 ImportStatus.IMPORT_FAILURE -> R.string.settings_import_status_error
-                else -> error("Unexpected import status: $importStatus")
             }
             val context = holder.statusIcon.context
             holder.statusIcon.contentDescription = context.getString(contentDescriptionStringResId)

@@ -6,12 +6,13 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import net.thunderbird.components.core.outcome.handle
+import net.thunderbird.components.core.outcome.handleAsync
 import net.thunderbird.core.common.resources.StringsResourceManager
 import net.thunderbird.core.logging.Logger
-import net.thunderbird.core.outcome.handle
-import net.thunderbird.core.outcome.handleAsync
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.update
+import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.mail.folder.api.RemoteFolder
 import net.thunderbird.feature.mail.message.list.domain.CreateArchiveFolderOutcome
 import net.thunderbird.feature.mail.message.list.domain.DomainContract
@@ -23,7 +24,7 @@ import net.thunderbird.feature.mail.message.list.ui.dialog.SetupArchiveFolderDia
 import net.thunderbird.feature.mail.message.list.ui.dialog.SetupArchiveFolderDialogContract.ViewModel
 
 internal class SetupArchiveFolderDialogViewModel(
-    private val accountUuid: String,
+    private val accountId: AccountId,
     private val logger: Logger,
     private val getAccountFolders: DomainContract.UseCase.GetAccountFolders,
     private val createArchiveFolder: DomainContract.UseCase.CreateArchiveFolder,
@@ -41,15 +42,10 @@ internal class SetupArchiveFolderDialogViewModel(
     override fun event(event: Event) {
         when (event) {
             Event.MoveNext -> onNext(state = state.value)
-
             Event.OnDoneClicked -> onDoneClicked(state = state.value)
-
             Event.OnDismissClicked -> onDismissClicked()
-
             is Event.OnDoNotShowDialogAgainChanged -> onDoNotShowDialogAgainChanged(isChecked = event.isChecked)
-
             is Event.OnCreateFolderClicked -> onCreateFolderClicked(newFolderName = event.newFolderName)
-
             is Event.OnFolderSelected -> onFolderSelected(folder = event.folder)
         }
     }
@@ -63,7 +59,7 @@ internal class SetupArchiveFolderDialogViewModel(
             is State.EmailCantBeArchived -> {
                 updateState { State.ChooseArchiveFolder(isLoadingFolders = true) }
                 viewModelScope.launch {
-                    getAccountFolders(accountUuid = accountUuid).handle(
+                    getAccountFolders(accountId = accountId).handle(
                         onSuccess = { folders ->
                             updateState {
                                 State.ChooseArchiveFolder(
@@ -95,7 +91,7 @@ internal class SetupArchiveFolderDialogViewModel(
         }
 
         viewModelScope.launch {
-            setArchiveFolder(accountUuid = accountUuid, folder = selectedFolder).handle(
+            setArchiveFolder(accountId = accountId, folder = selectedFolder).handle(
                 onSuccess = {
                     updateState { State.Closed() }
                     emitEffect(Effect.DismissDialog)
@@ -107,7 +103,7 @@ internal class SetupArchiveFolderDialogViewModel(
                                 state.copy(
                                     errorMessage = resourceManager.stringResource(
                                         R.string.setup_archive_folder_set_archive_error_account_not_found,
-                                        accountUuid,
+                                        accountId,
                                     ),
                                 )
 
@@ -168,7 +164,7 @@ internal class SetupArchiveFolderDialogViewModel(
             }
         }
 
-        createArchiveFolder(accountUuid = accountUuid, folderName = newFolderName)
+        createArchiveFolder(accountId = accountId, folderName = newFolderName)
             .onEach { outcome ->
                 outcome.handleAsync(
                     onSuccess = ::onCreateArchiveFolderSuccess,
@@ -248,7 +244,7 @@ internal class SetupArchiveFolderDialogViewModel(
             CreateArchiveFolderOutcome.Error.AccountNotFound ->
                 resourceManager.stringResource(
                     R.string.setup_archive_folder_create_archive_folder_account_not_found,
-                    accountUuid,
+                    accountId,
                 ).also {
                     logger.error { it }
                 }

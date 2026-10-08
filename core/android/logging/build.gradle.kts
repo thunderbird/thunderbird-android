@@ -9,4 +9,11 @@ android {
 dependencies {
     implementation(libs.timber)
     implementation(libs.commons.io)
+
+    testImplementation(libs.mockito.kotlin)
+}
+
+codeCoverage {
+    branchCoverage = 50
+    lineCoverage = 48
 }

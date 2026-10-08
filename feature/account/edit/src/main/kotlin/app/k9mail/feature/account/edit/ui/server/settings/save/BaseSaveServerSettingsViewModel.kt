@@ -1,7 +1,6 @@
 package app.k9mail.feature.account.edit.ui.server.settings.save
 
 import androidx.lifecycle.viewModelScope
-import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
 import app.k9mail.feature.account.common.ui.WizardConstants
 import app.k9mail.feature.account.edit.domain.AccountEditDomainContract
 import app.k9mail.feature.account.edit.ui.server.settings.save.SaveServerSettingsContract.Effect
@@ -12,9 +11,11 @@ import app.k9mail.feature.account.edit.ui.server.settings.save.SaveServerSetting
 import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import net.thunderbird.core.ui.contract.mvi.BaseViewModel
+import net.thunderbird.feature.account.AccountId
 
 abstract class BaseSaveServerSettingsViewModel(
-    val accountUuid: String,
+    val accountId: AccountId,
     override val isIncoming: Boolean,
     private val saveServerSettings: AccountEditDomainContract.UseCase.SaveServerSettings,
     initialState: State = State(),
@@ -32,7 +33,7 @@ abstract class BaseSaveServerSettingsViewModel(
     private fun onSaveServerSettings() {
         viewModelScope.launch {
             try {
-                saveServerSettings.execute(accountUuid, isIncoming)
+                saveServerSettings.execute(accountId, isIncoming)
                 updateSuccess()
             } catch (e: Exception) {
                 updateFailure(Failure.SaveServerSettingsFailed(e.message ?: "Unknown error"))

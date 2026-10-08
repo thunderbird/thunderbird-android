@@ -15,7 +15,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import net.thunderbird.core.common.exception.MessagingException
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.legacy.logging.Log
 
 private const val IO_ERROR_TIMEOUT = 5 * 60 * 1000L
 private const val UNEXPECTED_ERROR_TIMEOUT = 60 * 60 * 1000L
@@ -172,13 +172,13 @@ internal class ImapBackendPusher(
 
     private fun createImapFolderPusher(folderServerId: String): ImapFolderPusher {
         return ImapFolderPusher(
-            imapStore,
-            powerManager,
-            idleRefreshManager,
-            this,
-            accountName,
-            folderServerId,
-            idleRefreshTimeoutProvider,
+            imapStore = imapStore,
+            powerManager = powerManager,
+            idleRefreshManager = idleRefreshManager,
+            callback = this,
+            accountName = accountName,
+            folderServerId = folderServerId,
+            idleRefreshTimeoutProvider = idleRefreshTimeoutProvider,
         )
     }
 
@@ -226,7 +226,9 @@ internal class ImapBackendPusher(
     }
 
     override fun onPushNotSupported() {
-        callback.onPushNotSupported()
+        coroutineScope.launch {
+            callback.onPushNotSupported()
+        }
     }
 
     private fun startRetryTimer(folderServerId: String, timeout: Long) {

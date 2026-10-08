@@ -1,0 +1,130 @@
+package net.thunderbird.feature.funding.googleplay.ui.contribution
+
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import net.thunderbird.components.ui.bolt.atom.Surface
+import net.thunderbird.components.ui.bolt.atom.icon.Icon
+import net.thunderbird.components.ui.bolt.atom.icon.Icons
+import net.thunderbird.components.ui.bolt.atom.text.TextBodyLarge
+import net.thunderbird.components.ui.bolt.atom.text.TextBodySmall
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
+import net.thunderbird.feature.funding.googleplay.R
+import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract.ContributionError
+
+@Composable
+internal fun ContributionError(
+    error: ContributionError?,
+    onDismissClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    when (error) {
+        is ContributionError.DeveloperError,
+        is ContributionError.PurchaseFailed,
+        is ContributionError.ServiceDisconnected,
+        is ContributionError.UnknownError,
+        -> ContributionErrorView(
+            title = mapErrorToTitle(error),
+            description = error.message,
+            onDismissClick = onDismissClick,
+            modifier = modifier,
+        )
+
+        is ContributionError.UserCancelled -> Unit
+
+        // could be ignored
+        null -> Unit
+    }
+}
+
+@Composable
+private fun ContributionErrorView(
+    title: String,
+    description: String,
+    onDismissClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val showDetails = remember { mutableStateOf(false) }
+
+    Surface(
+        modifier = modifier
+            .fillMaxWidth(),
+        color = BoltTheme.colors.errorContainer,
+        shape = BoltTheme.shapes.medium,
+    ) {
+        Column(
+            modifier = Modifier.padding(
+                horizontal = BoltTheme.spacings.double,
+                vertical = BoltTheme.spacings.default,
+            ),
+            verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.default),
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(BoltTheme.spacings.half),
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                TextBodyLarge(
+                    text = title,
+                    color = BoltTheme.colors.onErrorContainer,
+                    modifier = Modifier.weight(1f),
+                )
+                if (description.isNotEmpty()) {
+                    Icon(
+                        imageVector = if (showDetails.value) Icons.Outlined.ExpandLess else Icons.Outlined.ExpandMore,
+                        contentDescription = stringResource(R.string.funding_googleplay_contribution_error_show_more),
+                        modifier = Modifier
+                            .clickable { showDetails.value = !showDetails.value }
+                            .padding(BoltTheme.spacings.quarter),
+                    )
+                }
+                Icon(
+                    imageVector = Icons.Outlined.Close,
+                    contentDescription = stringResource(R.string.funding_googleplay_contribution_error_dismiss_button),
+                    modifier = Modifier
+                        .clickable { onDismissClick() }
+                        .padding(BoltTheme.spacings.quarter),
+                )
+            }
+
+            AnimatedVisibility(visible = showDetails.value) {
+                TextBodySmall(
+                    text = description,
+                    color = BoltTheme.colors.onErrorContainer,
+                    modifier = Modifier.fillMaxWidth(),
+                )
+            }
+        }
+    }
+}
+
+@Composable
+internal fun mapErrorToTitle(error: ContributionError): String {
+    return when (error) {
+        is ContributionError.PurchaseFailed -> {
+            stringResource(R.string.funding_googleplay_contribution_error_purchase_failed)
+        }
+
+        is ContributionError.ServiceDisconnected -> {
+            stringResource(R.string.funding_googleplay_contribution_error_service_disconnected)
+        }
+
+        is ContributionError.DeveloperError,
+        is ContributionError.UnknownError,
+        -> {
+            stringResource(R.string.funding_googleplay_contribution_error_unknown)
+        }
+
+        is ContributionError.UserCancelled -> error("User cancelled not supported")
+    }
+}

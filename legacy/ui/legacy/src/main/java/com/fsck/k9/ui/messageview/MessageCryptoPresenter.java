@@ -15,7 +15,7 @@ import com.fsck.k9.mailstore.CryptoResultAnnotation;
 import com.fsck.k9.mailstore.MessageViewInfo;
 import com.fsck.k9.view.MessageCryptoDisplayStatus;
 import net.thunderbird.core.android.account.LegacyAccountDto;
-import net.thunderbird.core.logging.legacy.Log;
+import net.thunderbird.legacy.logging.Log;
 
 
 @SuppressWarnings("WeakerAccess")

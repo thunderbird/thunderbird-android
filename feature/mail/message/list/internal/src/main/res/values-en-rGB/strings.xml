@@ -1,3 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="setup_archive_folder_dialog_dont_show_again">Do not show this message again</string>
+    <string name="setup_archive_folder_dialog_email_can_not_be_archived">Email can not be archived</string>
+    <string name="setup_archive_folder_dialog_configure_archive_folder">Configure archive folder now</string>
+    <string name="setup_archive_folder_dialog_skip_for_now">Skip for now</string>
+    <string name="setup_archive_folder_dialog_set_archive_folder">Set archive folder</string>
+    <string name="setup_archive_folder_dialog_error_retrieve_folders">Oops, something went wrong while retrieving account folders!</string>
+    <string name="setup_archive_folder_dialog_error_retrieve_folders_detailed_message">Error details: %1$s</string>
+    <string name="setup_archive_folder_dialog_create_new_folder">Create new folder</string>
+    <string name="setup_archive_folder_dialog_done">Done</string>
+    <string name="setup_archive_folder_dialog_cancel">Cancel</string>
+    <string name="setup_archive_folder_dialog_create_and_set_new_folder"><![CDATA[Create &amp; set new folder]]></string>
+    <string name="setup_archive_folder_set_archive_error_account_not_found">Couldn\'t find an account associated to the \'%1$s\' UUID</string>
+    <string name="setup_archive_folder_unhandled_error">Unhandled error: %1$s</string>
+    <string name="setup_archive_folder_create_archive_folder_syncing">Syncing…</string>
 </resources>

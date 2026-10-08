@@ -15,6 +15,10 @@ dependencies {
     api(libs.androidx.preference)
     api(libs.androidx.fragment)
 
-    implementation(projects.core.logging.implLegacy)
-    implementation(libs.androidx.annotation)
+    implementation(projects.legacy.logging)
+}
+
+codeCoverage {
+    branchCoverage = 0
+    lineCoverage = 0
 }

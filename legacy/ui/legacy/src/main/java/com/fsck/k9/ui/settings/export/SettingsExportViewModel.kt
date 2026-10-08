@@ -15,7 +15,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import net.thunderbird.core.android.account.LegacyAccountDtoManager
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.legacy.logging.Log
 
 private typealias AccountUuid = String
 private typealias AccountNumber = Int
@@ -59,7 +59,7 @@ class SettingsExportViewModel(
             viewModelScope.launch {
                 val accounts = withContext(Dispatchers.IO) { accountManager.getAccounts() }
 
-                accountsMap = accounts.map { it.accountNumber to it.uuid }.toMap()
+                accountsMap = accounts.map { it.accountNumber to it.id.toString() }.toMap()
 
                 val listItems = savedSelection.let { savedState ->
                     val generalSettings = SettingsListItem.GeneralSettings.apply {
@@ -68,7 +68,7 @@ class SettingsExportViewModel(
 
                     val accountListItems = accounts.map { account ->
                         SettingsListItem.Account(account.accountNumber, account.displayName, account.email).apply {
-                            selected = savedState == null || account.uuid in savedState.selectedAccountUuids
+                            selected = savedState == null || account.id.toString() in savedState.selectedAccountUuids
                         }
                     }
 

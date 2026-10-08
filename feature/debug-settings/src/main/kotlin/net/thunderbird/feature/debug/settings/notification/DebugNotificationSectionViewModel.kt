@@ -2,7 +2,6 @@ package net.thunderbird.feature.debug.settings.notification
 
 import androidx.lifecycle.viewModelScope
 import app.k9mail.core.android.common.provider.NotificationIconResourceProvider
-import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
 import kotlin.reflect.KClass
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
@@ -14,6 +13,8 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import net.thunderbird.core.common.resources.StringsResourceManager
+import net.thunderbird.core.ui.contract.mvi.BaseViewModel
+import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.debug.settings.R
 import net.thunderbird.feature.debug.settings.notification.DebugNotificationSectionContract.Effect
 import net.thunderbird.feature.debug.settings.notification.DebugNotificationSectionContract.Event
@@ -219,30 +220,30 @@ internal class DebugNotificationSectionViewModel(
     ): Notification? = when (notificationType) {
         AuthenticationErrorNotification::class -> AuthenticationErrorNotification(
             isIncomingServerError = true,
-            accountUuid = selectedAccount.uuid,
+            accountId = selectedAccount.id,
             accountDisplayName = accountDisplay,
             accountNumber = 0,
         )
 
         CertificateErrorNotification::class -> CertificateErrorNotification(
             isIncomingServerError = true,
-            accountUuid = selectedAccount.uuid,
+            accountId = selectedAccount.id,
             accountDisplayName = accountDisplay,
             accountNumber = 0,
         )
 
         FailedToCreateNotification::class -> FailedToCreateNotification(
-            accountUuid = selectedAccount.uuid,
+            accountId = selectedAccount.id,
             failedNotification = AuthenticationErrorNotification(
                 isIncomingServerError = true,
-                accountUuid = selectedAccount.uuid,
+                accountId = selectedAccount.id,
                 accountDisplayName = accountDisplay,
                 accountNumber = 0,
             ),
         )
 
         MailNotification.Fetching::class -> MailNotification.Fetching(
-            accountUuid = selectedAccount.uuid,
+            accountId = selectedAccount.id,
             accountDisplayName = accountDisplay,
             folderName = state.folderName,
         )
@@ -253,7 +254,7 @@ internal class DebugNotificationSectionViewModel(
         )
 
         MailNotification.NewMailSummaryMail::class -> MailNotification.NewMailSummaryMail(
-            accountUuid = selectedAccount.uuid,
+            accountId = selectedAccount.id,
             accountDisplayName = accountDisplay,
             messagesNotificationChannelSuffix = "",
             newMessageCount = 10,
@@ -265,12 +266,12 @@ internal class DebugNotificationSectionViewModel(
         )
 
         MailNotification.SendFailed::class -> MailNotification.SendFailed(
-            accountUuid = selectedAccount.uuid,
+            accountId = selectedAccount.id,
             exception = Exception("What a failure"),
         )
 
         MailNotification.Sending::class -> MailNotification.Sending(
-            accountUuid = selectedAccount.uuid,
+            accountId = selectedAccount.id,
             accountDisplayName = accountDisplay,
         )
 
@@ -295,7 +296,7 @@ internal class DebugNotificationSectionViewModel(
         selectedAccount: BaseAccount,
         accountDisplay: String,
     ): MailNotification.NewMailSingleMail? = MailNotification.NewMailSingleMail(
-        accountUuid = selectedAccount.uuid,
+        accountId = selectedAccount.id,
         accountName = accountDisplay,
         messagesNotificationChannelSuffix = "",
         summary = singleNotificationData.summary,
@@ -314,7 +315,7 @@ internal val KClass<out Notification>.realName: String
         val clazz = java
 
         return clazz.name
-            .replace(clazz.`package`?.name.orEmpty(), "")
+            .replace(oldValue = clazz.`package`?.name.orEmpty(), newValue = "")
             .removePrefix(".")
-            .replace("$", ".")
+            .replace(oldValue = "$", newValue = ".")
     }

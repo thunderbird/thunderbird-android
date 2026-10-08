@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "version": "5.718",
+  "versioncode": 27018,
+  "date": "2020-08-18",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Hide empty footer view in message list",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Don't show standard message actions for messages in the Outbox",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Tweaked UX of recipient chips",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Refresh the list of folders when refreshing a folder",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Apply global display settings to the message list when returning from settings screen",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Many internal changes",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Updated translations",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

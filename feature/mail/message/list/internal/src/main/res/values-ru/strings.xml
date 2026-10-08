@@ -23,4 +23,13 @@
     <string name="setup_archive_folder_create_archive_folder_failed_sync_folder">Невозможно синхронизировать папку \"%1$s\" с удалённым сервером. Сообщение: %2$s</string>
     <string name="setup_archive_folder_create_archive_folder_error_folder_name_blank">Имя папки не может быть пустым</string>
     <string name="setup_archive_folder_create_archive_folder_invalid_folder_name">Недопустимое имя папки \"%1$s\"</string>
+    <string name="message_list_state_new_message_description">Новое</string>
+    <string name="message_list_state_unread_message_description">Непрочитанное</string>
+    <string name="message_list_state_read_message_description">Прочитанное</string>
+    <string name="message_list_state_active_new_message_description">Активное, новое</string>
+    <string name="message_list_state_active_read_message_description">Активное, прочитанное</string>
+    <string name="message_list_state_active_unread_message_description">Активное, непрочитанное</string>
+    <string name="message_list_state_selected_new_message_description">Выбранное, новое</string>
+    <string name="message_list_state_selected_read_message_description">Выбранное, прочитанное</string>
+    <string name="message_list_state_selected_unread_message_description">Выбранное, непрочитанное</string>
 </resources>

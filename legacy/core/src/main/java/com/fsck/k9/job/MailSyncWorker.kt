@@ -8,9 +8,11 @@ import com.fsck.k9.Preferences
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.mail.AuthType
 import net.thunderbird.core.android.account.LegacyAccountDto
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.legacy.logging.Log
 import net.thunderbird.core.preference.BackgroundOps
 import net.thunderbird.core.preference.GeneralSettingsManager
+import net.thunderbird.feature.account.AccountId
+import net.thunderbird.feature.account.AccountIdFactory
 
 // IMPORTANT: Update K9WorkerFactory when moving this class and the FQCN no longer starts with "com.fsck.k9".
 class MailSyncWorker(
@@ -22,19 +24,19 @@ class MailSyncWorker(
 ) : Worker(context, parameters) {
 
     override fun doWork(): Result {
-        val accountUuid = inputData.getString(EXTRA_ACCOUNT_UUID)
-        requireNotNull(accountUuid)
+        val accountId = inputData.getString(EXTRA_ACCOUNT_UUID)?.let { AccountIdFactory.of(it) }
+        requireNotNull(accountId)
 
-        Log.d("Executing periodic mail sync for account %s", accountUuid)
+        Log.d("Executing periodic mail sync for account %s", accountId)
 
         if (isBackgroundSyncDisabled()) {
             Log.d("Background sync is disabled. Skipping mail sync.")
             return Result.success()
         }
 
-        val account = preferences.getAccount(accountUuid)
+        val account = preferences.getById(accountId)
         if (account == null) {
-            Log.e("Account %s not found. Can't perform mail sync.", accountUuid)
+            Log.e("Account %s not found. Can't perform mail sync.", accountId)
             return Result.failure()
         }
 

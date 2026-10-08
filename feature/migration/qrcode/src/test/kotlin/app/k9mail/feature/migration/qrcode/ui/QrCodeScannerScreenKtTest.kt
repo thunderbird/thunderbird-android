@@ -9,7 +9,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
-import app.k9mail.core.ui.compose.theme2.k9mail.K9MailTheme2
 import app.k9mail.feature.migration.qrcode.ui.QrCodeScannerContract.Effect
 import app.k9mail.feature.migration.qrcode.ui.QrCodeScannerContract.Event
 import app.k9mail.feature.migration.qrcode.ui.QrCodeScannerContract.State
@@ -20,6 +19,7 @@ import assertk.assertions.isEqualTo
 import assertk.assertions.isNotNull
 import kotlin.test.Ignore
 import kotlinx.coroutines.test.runTest
+import net.thunderbird.components.ui.bolt.theme.k9mail.K9MailBoltTheme
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -117,7 +117,7 @@ class QrCodeScannerScreenKtTest {
 
     private fun setContentWithTheme(content: @Composable () -> Unit) {
         composeTestRule.setContent {
-            K9MailTheme2 {
+            K9MailBoltTheme {
                 content()
             }
         }

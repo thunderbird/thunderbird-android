@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "version": "4.905",
+  "versioncode": 21008,
+  "date": "2014-09-10",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Dropped support for Android versions older than 4.0.3",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Added ability to use client certificates for authentication",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Enabled support for TLSv1.1 and TLSv1.2",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Added SSL/TLS session caching",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Finer grained control for notifications",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Added support for delete confirmations in the message list",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Added the option to show the password when setting up new accounts",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Added privacy setting to omit the User-Agent header",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Added privacy setting to use UTC as timezone in mail headers",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Added auto configuration settings for various providers",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed HELO/EHLO with IPv6 address literals",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Various bug fixes",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Added translations: Latvian, Estonian, Norwegian Bokmål, Galician (Spain)",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

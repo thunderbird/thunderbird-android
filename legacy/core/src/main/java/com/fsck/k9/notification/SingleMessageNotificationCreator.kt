@@ -1,9 +1,12 @@
 package com.fsck.k9.notification
 
+import android.app.Application
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationCompat.WearableExtender
+import androidx.core.graphics.drawable.IconCompat
 import com.fsck.k9.notification.NotificationChannelManager.ChannelType
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.legacy.logging.Log
+import net.thunderbird.core.preference.notification.NotificationPreferenceManager
 import androidx.core.app.NotificationCompat.Builder as NotificationBuilder
 
 internal class SingleMessageNotificationCreator(
@@ -11,6 +14,8 @@ internal class SingleMessageNotificationCreator(
     private val actionCreator: NotificationActionCreator,
     private val resourceProvider: NotificationResourceProvider,
     private val lockScreenNotificationCreator: LockScreenNotificationCreator,
+    private val notificationPreferenceManager: NotificationPreferenceManager,
+    private val application: Application,
 ) {
     fun createSingleNotification(
         baseNotificationData: BaseNotificationData,
@@ -27,10 +32,11 @@ internal class SingleMessageNotificationCreator(
             .setGroupSummary(isGroupSummary)
             .setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_SUMMARY)
             .setSmallIcon(resourceProvider.iconNewMail)
+            .setAvatar(singleNotificationData.content)
             .setColor(baseNotificationData.color)
             .setWhen(singleNotificationData.timestamp)
             .setTicker(content.summary)
-            .setContentTitle(content.sender)
+            .setContentTitle(content.sender.personal)
             .setContentText(content.subject)
             .setSubText(baseNotificationData.accountName)
             .setBigText(content.preview)
@@ -52,6 +58,14 @@ internal class SingleMessageNotificationCreator(
         notificationHelper.notify(account, notificationId, notification)
     }
 
+    private fun NotificationBuilder.setAvatar(content: NotificationContent) = apply {
+        if (!notificationPreferenceManager.getConfig().isShowContactPictureInNotification) return@apply
+
+        resourceProvider.avatar(content.sender)?.let {
+            setLargeIcon(IconCompat.createWithAdaptiveBitmap(it).toIcon(application))
+        }
+    }
+
     private fun NotificationBuilder.setBigText(text: CharSequence) = apply {
         setStyle(NotificationCompat.BigTextStyle().bigText(text))
     }
@@ -63,6 +77,9 @@ internal class SingleMessageNotificationCreator(
                 NotificationAction.Reply -> addReplyAction(notificationData)
                 NotificationAction.MarkAsRead -> addMarkAsReadAction(notificationData)
                 NotificationAction.Delete -> addDeleteAction(notificationData)
+                NotificationAction.Archive -> addArchiveAction(notificationData)
+                NotificationAction.Spam -> addMarkAsSpamAction(notificationData)
+                NotificationAction.Star -> addStarAction(notificationData)
             }
         }
     }
@@ -93,6 +110,33 @@ internal class SingleMessageNotificationCreator(
         val content = notificationData.content
         val messageReference = content.messageReference
         val action = actionCreator.createDeleteMessagePendingIntent(messageReference)
+
+        addAction(icon, title, action)
+    }
+
+    private fun NotificationBuilder.addArchiveAction(notificationData: SingleNotificationData) {
+        val icon = resourceProvider.iconArchive
+        val title = resourceProvider.actionArchive()
+        val messageReference = notificationData.content.messageReference
+        val action = actionCreator.createArchiveMessagePendingIntent(messageReference)
+
+        addAction(icon, title, action)
+    }
+
+    private fun NotificationBuilder.addMarkAsSpamAction(notificationData: SingleNotificationData) {
+        val icon = resourceProvider.iconMarkAsSpam
+        val title = resourceProvider.actionMarkAsSpam()
+        val messageReference = notificationData.content.messageReference
+        val action = actionCreator.createMarkMessageAsSpamPendingIntent(messageReference)
+
+        addAction(icon, title, action)
+    }
+
+    private fun NotificationBuilder.addStarAction(notificationData: SingleNotificationData) {
+        val icon = resourceProvider.iconStar
+        val title = resourceProvider.actionStar()
+        val messageReference = notificationData.content.messageReference
+        val action = actionCreator.createMarkMessageAsStarPendingIntent(messageReference)
 
         addAction(icon, title, action)
     }

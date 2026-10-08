@@ -2,7 +2,7 @@ package app.k9mail.feature.account.common.ui
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import app.k9mail.core.ui.compose.designsystem.organism.TopAppBar
+import net.thunderbird.components.ui.bolt.organism.TopAppBar
 
 /**
  * Top app bar for the account screens.

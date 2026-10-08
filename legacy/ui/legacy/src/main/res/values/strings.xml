@@ -8,6 +8,7 @@
     <string name="open_camera">Open Camera</string>
     <string name="attach_file">Attach File</string>
     <string name="camera_permission_denied">Camera Permission Denied! Unable to take photo</string>
+    <string name="camera_capture_lost">Captured image was lost because the app was closed. Please try again.</string>
     <string name="source_code">Source code</string>
     <string name="app_license">Apache License, Version 2.0</string>
     <string name="about_project_title">Open Source Project</string>
@@ -25,6 +26,10 @@
     <string name="changelog_snackbar_text">Find out what\'s new in this release</string>
     <!-- Button text of the "snack bar" that is displayed when the app was updated. -->
     <string name="changelog_snackbar_button_text">View</string>
+    <string name="changelog_latest_label_text">LATEST</string>
+    <string name="changelog_type_new_text">NEW</string>
+    <string name="changelog_type_changed_text">CHANGED</string>
+    <string name="changelog_type_fixed_text">FIXED</string>
 
     <!-- General strings that include the app name -->
     <string name="account_delete_dlg_instructions_fmt">The account \"<xliff:g id="account">%1$s</xliff:g>\" will be removed from <xliff:g id="app_name">%2$s</xliff:g>.</string>
@@ -47,7 +52,6 @@
     <string name="choose_folder_move_title">Move to…</string>
     <string name="choose_folder_copy_title">Copy to…</string>
 
-    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> selected</string>
     <string name="send_action">Send</string>
     <string name="empty_subject">Subject is empty, click again to send anyway</string>
     <string name="reply_action">Reply</string>
@@ -141,7 +145,25 @@
     <string name="notification_action_reply">Reply</string>
     <string name="notification_action_mark_as_read">Mark Read</string>
     <string name="notification_action_mark_all_as_read">Mark All Read</string>
+    <string name="notification_actions_settings_title">Notification actions</string>
+    <string name="notification_actions_settings_summary">Choose which actions appear in email notifications</string>
+    <string name="notification_summary_delete_title">Show Delete on multi-message notifications</string>
+    <string name="notification_summary_delete_summary">Adds a Delete action to notifications that summarize multiple new messages</string>
+    <string name="notification_show_contact_picture_title">Show contact pictures in notifications</string>
+    <string name="notification_show_contact_picture_summary">Display sender avatars in new message notifications</string>
+    <string name="notification_actions_settings_description">Reorder notification actions.</string>
+    <string name="notification_actions_cutoff_description">Shown actions cutoff</string>
+    <string name="notification_actions_cutoff_state">Actions above this line are shown in the notification</string>
+    <string name="notification_actions_shown_state">Shown in the notification</string>
+    <string name="notification_actions_hidden_state">Not shown in the notification</string>
+    <string name="accessibility_move_up">Move up</string>
+    <string name="accessibility_move_down">Move down</string>
+    <string name="accessibility_move_item_up">Move <xliff:g id="item">%1$s</xliff:g> up</string>
+    <string name="accessibility_move_item_down">Move <xliff:g id="item">%1$s</xliff:g> down</string>
+    <string name="accessibility_move_cutoff_up">Move shown actions cutoff up</string>
+    <string name="accessibility_move_cutoff_down">Move shown actions cutoff down</string>
     <string name="notification_action_delete">Delete</string>
+    <string name="notification_action_star">Star</string>
     <string name="notification_action_delete_all">Delete All</string>
     <string name="notification_action_archive">Archive</string>
     <string name="notification_action_archive_all">Archive All</string>
@@ -213,6 +235,16 @@
     <string name="remove_attachment_action">Remove attachment</string>
     <string name="save_attachment_action">Save attachment</string>
 
+    <plurals name="message_view_attachment_summary">
+        <item quantity="one"><xliff:g id="count">%1$d</xliff:g> Attachment (<xliff:g id="size">%2$s</xliff:g>)</item>
+        <item quantity="other"><xliff:g id="count">%1$d</xliff:g> Attachments (<xliff:g id="size">%2$s</xliff:g>)</item>
+    </plurals>
+    <string name="message_view_single_attachment_summary"><xliff:g id="name">%1$s</xliff:g> (<xliff:g id="size">%2$s</xliff:g>)</string>
+    <string name="message_view_attachments_view_all">View all</string>
+    <string name="message_view_attachments_view">View</string>
+    <string name="message_view_attachments_title">Attachments</string>
+    <string name="message_view_attachments_save_all">Save all</string>
+
     <string name="message_to_label">To:</string>
     <string name="message_view_cc_label">Cc:</string>
     <string name="message_view_bcc_label">Bcc:</string>
@@ -223,7 +255,9 @@
     <!-- Displayed in the message view screen in front of the number of additional recipients (the ones that are not displayed). -->
     <string name="message_view_additional_recipient_prefix">+</string>
     <!-- Displayed in the message view screen if the message was addressed to the user. Make sure this works with 'message_view_recipient_prefix'. In English it's "to me". -->
-    <string name="message_view_me_text">me</string>
+    <string name="message_view_to_me_text">me</string>
+    <!-- Displayed in the message details screen when the message was sent by the user. This is shown after the "From" label. Languages may require a different grammatical form than message_view_to_me_text. In English, both are "me". -->
+    <string name="message_view_from_me_text">me</string>
 
     <!-- Text of the button that is displayed below the message header when the message body references one or more remote images -->
     <string name="message_view_show_remote_images_action">Show remote images</string>
@@ -314,10 +348,21 @@
     <!-- Value for the message list density setting. Uses more whitespace than the default to separate list items. -->
     <string name="general_settings_ui_density_relaxed">Relaxed</string>
 
+    <!-- Message List Date/Time format title -->
+    <string name="general_settings_message_list_date_time_format_title">Date/Time Format</string>
+    <!-- Message List Date/Time format default setting option: contextual -->
+    <string name="general_settings_message_list_date_time_format_contextual">Contextual</string>
+    <!-- Message List Date/Time format setting option: full -->
+    <string name="general_settings_message_list_date_time_format_full">Full</string>
+    <!-- Message List Date/Time format setting option: ISO -->
+    <string name="general_settings_message_list_date_time_format_iso">ISO</string>
+
     <string name="global_settings_privacy_hide_useragent">Hide mail client</string>
     <string name="global_settings_privacy_hide_useragent_detail">Remove User-Agent from mail headers</string>
     <string name="global_settings_privacy_hide_timezone">Hide timezone</string>
     <string name="global_settings_privacy_hide_timezone_detail">Use UTC instead of local timezone in mail headers and reply header</string>
+    <string name="global_settings_privacy_incognito_keyboard">Incognito keyboard</string>
+    <string name="global_settings_privacy_incognito_keyboard_detail">Ask the keyboard not to learn from what you type when composing messages</string>
 
     <string name="global_settings_notification_quick_delete_title">Show \'Delete\' button</string>
     <string name="global_settings_notification_quick_delete_never">Never</string>
@@ -581,6 +626,12 @@
 
     <string name="account_settings_signature_use_label">Use Signature</string>
     <string name="account_settings_signature_label">Signature</string>
+    <string name="account_settings_signature_html_label">HTML Signature</string>
+    <string name="account_settings_signature_is_html_label">Save signature as HTML</string>
+    <string name="account_settings_signature_is_html_summary">Interpret the signature as HTML. Scripts and event handlers will be removed for security.</string>
+    <string name="account_settings_signature_preview">Signature preview</string>
+    <string name="account_settings_signature_preview_empty">Your signature preview will appear here</string>
+    <string name="account_settings_signature_clear_label">Clear Signature</string>
 
     <string name="default_identity_description">Initial identity</string>
     <string name="choose_identity_title">Choose identity</string>
@@ -603,6 +654,7 @@
     <string name="sort_unattached_first">Messages without attachments first</string>
 
     <string name="sort_by">Sort by…</string>
+    <string name="sort_by_then_by">Then by…</string>
     <string name="sort_by_date">Date</string>
     <string name="sort_by_arrival">Arrival</string>
     <string name="sort_by_subject">Subject</string>
@@ -610,6 +662,7 @@
     <string name="sort_by_flag">Star</string>
     <string name="sort_by_unread">Read/unread</string>
     <string name="sort_by_attach">Attachments</string>
+    <string name="sort_by_indicator">•</string>
 
     <string name="account_delete_dlg_title">Remove Account</string>
 
@@ -633,6 +686,7 @@
     <string name="navigation_drawer_preferences">Side Menu</string>
     <string name="messagelist_preferences">Message lists</string>
     <string name="messageview_preferences">Messages</string>
+    <string name="remote_feature_flag_preferences">Remote Feature Flags</string>
     <string name="settings_theme_label">Theme</string>
     <string name="settings_message_theme_label">Message view theme</string>
     <string name="settings_compose_theme_label">Composer theme</string>
@@ -664,7 +718,9 @@
     <string name="account_setup_push_limit_1000">1000 folders</string>
 
     <string name="animations_title">Animation</string>
-    <string name="animations_summary">Use gaudy visual effects</string>
+    <string name="animation_setting_on">On</string>
+    <string name="animation_setting_off">Off</string>
+    <string name="animation_setting_follow_system">Use system default</string>
 
     <string name="volume_navigation_title_short">Volume key navigation</string>
     <string name="volume_navigation_summary">Navigate between messages using the volume keys in message view</string>
@@ -833,6 +889,7 @@
     <string name="global_settings_splitview_always">Always</string>
     <string name="global_settings_splitview_never">Never</string>
     <string name="global_settings_splitview_when_in_landscape">When in Landscape orientation</string>
+    <string name="global_settings_splitview_when_unfolded">When device is unfolded</string>
 
     <string name="message_view_empty">Please select a message on the left</string>
 
@@ -851,6 +908,7 @@
     <string name="fetching_attachment_dialog_title_send">Sending message</string>
     <string name="fetching_attachment_dialog_title_save">Saving draft</string>
     <string name="fetching_attachment_dialog_message">Fetching attachment…</string>
+    <string name="message_compose_encrypting_message">Encrypting message…</string>
 
     <!-- Note: This references message_view_download_remainder -->
     <string name="preview_encrypted">*Encrypted*</string>
@@ -934,7 +992,6 @@
 
     <string name="locked_attach_unlock">Unlock</string>
     <string name="locked_attach_unencrypted">This part was not encrypted, and may be insecure.</string>
-    <string name="locked_attach_title">Unprotected Attachment</string>
     <string name="message_progress_text">Loading…</string>
     <string name="messageview_decrypt_cancelled">Decryption was cancelled.</string>
     <string name="messageview_decrypt_retry">Retry</string>
@@ -1025,27 +1082,15 @@ You can keep this message and use it as a backup for your secret key. If you wan
     <string name="push_info_disable_push_action">Disable Push</string>
 
     <!-- Name of the swipe action to select a message. Try to keep it short. -->
-    <string name="swipe_action_select">Select</string>
     <!-- Name of the swipe action to deselect a message. Try to keep it short. -->
-    <string name="swipe_action_deselect">Deselect</string>
     <!-- Name of the swipe action to mark a message as read. Try to keep it short. -->
-    <string name="swipe_action_mark_as_read">Mark read</string>
     <!-- Name of the swipe action to mark a message as unread. Try to keep it short. -->
-    <string name="swipe_action_mark_as_unread">Mark unread</string>
     <!-- Name of the swipe action to add the star to a message. Try to keep it short. -->
-    <string name="swipe_action_add_star">Add star</string>
     <!-- Name of the swipe action to remove the star from a message. Try to keep it short. -->
-    <string name="swipe_action_remove_star">Remove star</string>
     <!-- Name of the swipe action to archive a message. Try to keep it short. -->
-    <string name="swipe_action_archive">Archive</string>
-    <string name="swipe_action_archive_folder_not_set">Set Up Archive Folder</string>
-    <string name="swipe_action_change_swipe_gestures">Change \nSwipe Gestures</string>
     <!-- Name of the swipe action to delete a message. Try to keep it short. -->
-    <string name="swipe_action_delete">Delete</string>
     <!-- Name of the swipe action to move a message to the Spam folder. Try to keep it short. -->
-    <string name="swipe_action_spam">Spam</string>
     <!-- Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short. -->
-    <string name="swipe_action_move">Move…</string>
 
     <!-- Name of setting to configure whether to show a "compose" floating action button on top of the message list -->
     <string name="general_settings_show_compose_button_title">Show floating compose button</string>
@@ -1077,6 +1122,7 @@ You can keep this message and use it as a backup for your secret key. If you wan
 
     <!-- Name of the action to add a person to contacts. Usually displayed in a menu or in a tooltip when long-pressing the associated icon. -->
     <string name="action_add_to_contacts">Add to contacts</string>
+    <string name="error_no_contact_provider">No contacts app was found. Install a contacts app to add this address.</string>
     <!-- Name of the action to compose a new message to a particular address. Usually displayed in a menu or in a tooltip when long-pressing the associated icon. -->
     <string name="action_compose_message_to">Compose message to</string>
     <!-- Name of the action to copy an email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon. -->
@@ -1116,4 +1162,5 @@ You can keep this message and use it as a backup for your secret key. If you wan
     <string name="debug_invalidate_access_token_cannot_modify">Could not modify stored access token. Try local invalidation.</string>
     <string name="debug_invalidate_access_token_already_modified">Stored access token already modified.</string>
     <string name="debug_feature_flags">DEBUG: Feature Flags</string>
+    <string name="no_network_message_will_be_sent_later_toast">Offline. Message will be sent once connection is available</string>
 </resources>

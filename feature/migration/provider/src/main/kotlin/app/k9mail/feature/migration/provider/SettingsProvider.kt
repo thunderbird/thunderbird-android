@@ -13,8 +13,9 @@ import com.fsck.k9.helper.MimeTypeUtil
 import com.fsck.k9.helper.mapToSet
 import com.fsck.k9.preferences.SettingsExporter
 import kotlin.concurrent.thread
+import kotlinx.coroutines.runBlocking
 import net.thunderbird.core.android.account.LegacyAccountDtoManager
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.legacy.logging.Log
 import okio.ByteString.Companion.toByteString
 import org.koin.android.ext.android.inject
 import org.koin.core.component.KoinComponent
@@ -47,14 +48,16 @@ class SettingsProvider : ContentProvider(), KoinComponent {
         val (readFileDescriptor, writeFileDescriptor) = ParcelFileDescriptor.createPipe()
 
         thread {
-            val accountUuids = accountManager.getAccounts().mapToSet { it.uuid }
+            val accountIds = accountManager.getAccounts().mapToSet { it.id.toString() }
             ParcelFileDescriptor.AutoCloseOutputStream(writeFileDescriptor).use { outputStream ->
-                settingsExporter.exportPreferences(
-                    outputStream,
-                    includeGlobals = true,
-                    accountUuids,
-                    includePasswords = true,
-                )
+                runBlocking {
+                    settingsExporter.exportPreferences(
+                        outputStream,
+                        includeGlobals = true,
+                        accountIds,
+                        includePasswords = true,
+                    )
+                }
             }
         }
 

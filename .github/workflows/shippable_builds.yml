@@ -4,6 +4,12 @@ on:
   workflow_call:
   workflow_dispatch:
     inputs:
+      pointRelease:
+        type: boolean
+        description: Bump minor versionName (e.g. 21.0 -> 21.1) for a point release
+      skipBetaBump:
+        type: boolean
+        description: Skip version bump (beta)
       skipThunderbird:
         type: boolean
         description: Skip building Thunderbird
@@ -13,9 +19,6 @@ on:
       skipTests:
         type: boolean
         description: Skip running tests
-      skipBetaBump:
-        type: boolean
-        description: Skip version bump (beta)
       skipGooglePlay:
         type: boolean
         description: Skip Google Play publish
@@ -39,7 +42,7 @@ jobs:
     outputs:
       releaseEnv: ${{ steps.releaseEnv.outputs.result }}
     steps:
-      - uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8.0.0
+      - uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
         id: releaseEnv
         with:
           result-encoding: string
@@ -68,15 +71,16 @@ jobs:
       releaseType: ${{ vars.RELEASE_TYPE }}
     steps:
       - name: Show Environment
-        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8.0.0
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
         id: dump
         env:
           matrixInclude: ${{ vars.MATRIX_INCLUDE }}
           releaseType: ${{ vars.RELEASE_TYPE }}
+          pointRelease: ${{ inputs.pointRelease }}
+          skipBetaBump: ${{ inputs.skipBetaBump }}
           skipThunderbird: ${{ inputs.skipThunderbird }}
           skipK9Mail: ${{ inputs.skipK9Mail }}
           skipTests: ${{ inputs.skipTests }}
-          skipBetaBump: ${{ inputs.skipBetaBump }}
           skipGooglePlay: ${{ inputs.skipGooglePlay }}
           draftGooglePlay: ${{ inputs.draftGooglePlay }}
           skipFtp: ${{ inputs.skipFtp }}
@@ -125,6 +129,12 @@ jobs:
               ])
               .write();
 
+              if (process.env.pointRelease == "true" && process.env.releaseType == "release") {
+                await core.summary.addList(["Point release: minor versionName will be bumped"]).write();
+              }
+              if (process.env.skipBetaBump == "true" && process.env.releaseType == "beta") {
+                await core.summary.addList(["Beta bump is being skipped"]).write();
+              }
               if (skipThunderbird) {
                 await core.summary.addList(["Thunderbird build is being skipped"]).write();
               }
@@ -133,9 +143,6 @@ jobs:
               }
               if (process.env.skipTests == "true") {
                 await core.summary.addList(["Tests are being skipped"]).write();
-              }
-              if (process.env.skipBetaBump == "true" && process.env.releaseType == "beta") {
-                await core.summary.addList(["Beta bump is being skipped"]).write();
               }
               if (process.env.skipGooglePlay == "true") {
                 await core.summary.addList(["Play Store upload is being skipped"]).write();
@@ -163,7 +170,7 @@ jobs:
     steps:
       - name: Triggering Actor Link
         id: actorLink
-        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8.0.0
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
         env:
           userMap: ${{ vars.MATRIX_NOTIFY_USER_MAP }}
         with:
@@ -200,22 +207,22 @@ jobs:
     outputs:
       k9mail_sha: ${{ steps.commit.outputs.k9mail_sha }}
       thunderbird_sha: ${{ steps.commit.outputs.thunderbird_sha }}
-      k9mail_github_notes: ${{ steps.render_notes.outputs.k9mail_github_notes }}
-      thunderbird_github_notes: ${{ steps.render_notes.outputs.thunderbird_github_notes }}
+      k9mail_github_notes: ${{ steps.append_contributors.outputs.k9mail_github_notes }}
+      thunderbird_github_notes: ${{ steps.append_contributors.outputs.thunderbird_github_notes }}
       old_version_code: ${{ steps.new_version_code.outputs.old_version_code }}
       new_version_code: ${{ steps.new_version_code.outputs.new_version_code }}
     steps:
       - name: App Token Generate
-        uses: actions/create-github-app-token@29824e69f54612133e76f7eaac726eef6c875baf # v2.2.1
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
         if: ${{ vars.BOT_CLIENT_ID }}
         id: app-token
         with:
-          app-id: ${{ vars.BOT_CLIENT_ID }}
+          client-id: ${{ vars.BOT_CLIENT_ID }}
           private-key: ${{ secrets.BOT_PRIVATE_KEY }}
 
       - name: Checkout repository
         if: ${{ contains(matrix.releaseTarget, 'github') || needs.dump_config.outputs.releaseType == 'daily' }}
-        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
           token: ${{ steps.app-token.outputs.token || github.token }}
@@ -267,22 +274,12 @@ jobs:
             echo "${year}${day}${time}"
           }
           # Android version codes max out at 2100000000. If we accidentally reach that number then
-          # all we can do is start with a new application id. These protections are meant to avoid
-          # unexpected edge cases. If the build fails here please double check the generated version
-          # code and bump it a year into the future.
+          # all we can do is start with a new application id.
+          MAX_VERSION_CODE="2100000000"
           if [[ "$RELEASE_TYPE" = "beta" || "$RELEASE_TYPE" = "release" ]]; then
             NEW_VERSION_CODE=$(($OLD_VERSION_CODE + 1))
-            if [[ "$APP_NAME" = "thunderbird" ]]; then
-                # Estimated max version code to get through 2025 is "30"
-                MAX_VERSION_CODE="52"
-            else
-                # Estimated max version code to get through 2025 is "39037"
-                MAX_VERSION_CODE="39059"
-            fi
           elif [[ "$RELEASE_TYPE" = "daily" ]]; then
             NEW_VERSION_CODE=$(date_version_code "$RELEASE_DATE")
-            # Max version code for "2026-11-30 23:59" is "33342359"
-            MAX_VERSION_CODE="33342359"
           fi
           if [[ "$NEW_VERSION_CODE" -gt "$MAX_VERSION_CODE" ]]; then
             echo "New version code ${NEW_VERSION_CODE} is greater than ${MAX_VERSION_CODE}"
@@ -314,6 +311,24 @@ jobs:
 
           cat $GITHUB_OUTPUT
 
+      - name: Bump version name (point release)
+        id: bump_version_name
+        if: ${{ inputs.pointRelease && contains(matrix.releaseTarget, 'github') && vars.RELEASE_TYPE == 'release' }}
+        shell: bash
+        env:
+          APP_NAME: ${{ matrix.appName }}
+          OLD_VERSION_NAME: ${{ steps.appinfo.outputs.VERSION_NAME }}
+        run: |
+          NEW_VERSION_NAME=$(echo "$OLD_VERSION_NAME" | awk -F '.' '{print $1"."$2+1}')
+          sed "s/versionName = \"$OLD_VERSION_NAME\"/versionName = \"$NEW_VERSION_NAME\"/" app-${APP_NAME}/build.gradle.kts > tmp_gradle_kts
+
+          ! diff -u app-${APP_NAME}/build.gradle.kts tmp_gradle_kts # flip return value to force error if no bump
+          mv tmp_gradle_kts app-${APP_NAME}/build.gradle.kts
+
+          echo "VERSION_NAME=${NEW_VERSION_NAME}" >> $GITHUB_OUTPUT
+
+          cat $GITHUB_OUTPUT
+
       - name: Render Release Notes
         id: render_notes
         if: "${{ contains(matrix.releaseTarget, 'github') && contains(fromJSON('[\"beta\", \"release\"]'), needs.dump_config.outputs.releaseType) }}"
@@ -323,7 +338,7 @@ jobs:
           APPLICATION_ID: ${{ steps.appinfo.outputs.APPLICATION_ID }}
           APPLICATION_LABEL: ${{ steps.appinfo.outputs.APPLICATION_LABEL }}
           VERSION_CODE: ${{ steps.new_version_code.outputs.new_version_code }}
-          FULL_VERSION_NAME: ${{ steps.appinfo.outputs.VERSION_NAME }}${{ steps.bump_version_suffix.outputs.SUFFIX || steps.appinfo.outputs.VERSION_NAME_SUFFIX }}
+          FULL_VERSION_NAME: ${{ steps.bump_version_name.outputs.VERSION_NAME || steps.appinfo.outputs.VERSION_NAME }}${{ steps.bump_version_suffix.outputs.SUFFIX || steps.appinfo.outputs.VERSION_NAME_SUFFIX }}
         run: |
           mkdir -p ./app-metadata/${APPLICATION_ID}/en-US/changelogs
           GITHUB_NOTES_FILE="$(mktemp -d)/long-notes.txt"
@@ -363,7 +378,7 @@ jobs:
           APPLICATION_LABEL: ${{ steps.appinfo.outputs.APPLICATION_LABEL }}
           APPLICATION_ID: ${{ steps.appinfo.outputs.APPLICATION_ID }}
           APP_NAME: ${{ matrix.appName }}
-          FULL_VERSION_NAME: ${{ steps.appinfo.outputs.VERSION_NAME }}${{ steps.bump_version_suffix.outputs.SUFFIX || steps.appinfo.outputs.VERSION_NAME_SUFFIX }}
+          FULL_VERSION_NAME: ${{ steps.bump_version_name.outputs.VERSION_NAME || steps.appinfo.outputs.VERSION_NAME }}${{ steps.bump_version_suffix.outputs.SUFFIX || steps.appinfo.outputs.VERSION_NAME_SUFFIX }}
           RELEASE_TYPE: ${{ vars.RELEASE_TYPE }}
           APP_SLUG: ${{ steps.app-token.outputs.app-slug || 'github-actions'}}
           APP_USER_ID: ${{ vars.BOT_USER_ID || '41898282' }}
@@ -400,15 +415,63 @@ jobs:
           echo "${APP_NAME}_sha=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
           echo "sha=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
 
+      - name: Append Contributors
+        id: append_contributors
+        if: "${{ contains(matrix.releaseTarget, 'github') && contains(fromJSON('[\"beta\", \"release\"]'), needs.dump_config.outputs.releaseType) }}"
+        shell: bash
+        env:
+          APP_NAME: ${{ matrix.appName }}
+          RELEASE_TYPE: ${{ vars.RELEASE_TYPE }}
+          APPLICATION_LABEL: ${{ steps.appinfo.outputs.APPLICATION_LABEL }}
+          VERSION_CODE: ${{ steps.new_version_code.outputs.new_version_code }}
+          FULL_VERSION_NAME: ${{ steps.bump_version_name.outputs.VERSION_NAME || steps.appinfo.outputs.VERSION_NAME }}${{ steps.bump_version_suffix.outputs.SUFFIX || steps.appinfo.outputs.VERSION_NAME_SUFFIX }}
+          K9MAIL_GITHUB_NOTES: ${{ steps.render_notes.outputs.k9mail_github_notes }}
+          THUNDERBIRD_GITHUB_NOTES: ${{ steps.render_notes.outputs.thunderbird_github_notes }}
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          case "${APP_NAME}:${RELEASE_TYPE}" in
+            thunderbird:beta) TAG_REGEX='^THUNDERBIRD_[0-9]+_0b[0-9]+$'
+                              GITHUB_NOTES=$THUNDERBIRD_GITHUB_NOTES
+                              ;;
+            thunderbird:*) TAG_REGEX='^THUNDERBIRD_[0-9]+_[0-9]+$'
+                           GITHUB_NOTES=$THUNDERBIRD_GITHUB_NOTES
+                           ;;
+            k9mail:*) TAG_REGEX='^K9MAIL_[0-9]+_[0-9]+$'
+                      GITHUB_NOTES=$K9MAIL_GITHUB_NOTES
+                      ;;
+          esac
+
+          TAG_NAME="${APP_NAME^^}_${FULL_VERSION_NAME//./_}"
+          NOTES_FILE="$(mktemp -d)/github_notes.txt"
+          CONTRIBUTORS_FILE="$(mktemp -d)/contributors.txt"
+          echo "${GITHUB_NOTES}" >> "${NOTES_FILE}"
+
+          python ./scripts/ci/contributor_list.py \
+            --regex "$TAG_REGEX" \
+            --head "HEAD" \
+            --changelog-head "$TAG_NAME" \
+          "$CONTRIBUTORS_FILE"
+
+          cat "${CONTRIBUTORS_FILE}" >> "${NOTES_FILE}"
+
+          echo "${APP_NAME}_github_notes<<EOF" >> $GITHUB_OUTPUT
+          cat $NOTES_FILE >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+          echo "<h2>${APPLICATION_LABEL} ${FULL_VERSION_NAME} Contributors (${VERSION_CODE})</h2>" | tee -a $GITHUB_STEP_SUMMARY
+          echo -e "\n\n\`\`\`" | tee -a $GITHUB_STEP_SUMMARY
+          cat $CONTRIBUTORS_FILE | tee -a $GITHUB_STEP_SUMMARY
+          echo -e "\`\`\`" | tee -a $GITHUB_STEP_SUMMARY
+
       - name: Summary
         if: ${{ contains(matrix.releaseTarget, 'github') || needs.dump_config.outputs.releaseType == 'daily' }}
-        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8.0.0
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
         env:
           bump_sha: ${{ steps.commit.outputs.sha }}
           applicationId: ${{ steps.appinfo.outputs.APPLICATION_ID }}
           oldFullVersion: ${{ steps.appinfo.outputs.VERSION_NAME }}${{ steps.appinfo.outputs.VERSION_NAME_SUFFIX }}
           oldVersionCode: ${{ steps.new_version_code.outputs.old_version_code }}
-          newFullVersion: ${{ steps.appinfo.outputs.VERSION_NAME }}${{ steps.bump_version_suffix.outputs.SUFFIX || steps.appinfo.outputs.VERSION_NAME_SUFFIX }}
+          newFullVersion: ${{ steps.bump_version_name.outputs.VERSION_NAME || steps.appinfo.outputs.VERSION_NAME }}${{ steps.bump_version_suffix.outputs.SUFFIX || steps.appinfo.outputs.VERSION_NAME_SUFFIX }}
           newVersionCode: ${{ steps.new_version_code.outputs.new_version_code }}
           releaseType: ${{ vars.RELEASE_TYPE }}
         with:
@@ -455,7 +518,7 @@ jobs:
           cat $GITHUB_OUTPUT
 
       - name: Checkout repository
-        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           ref: ${{ steps.sha.outputs.app_sha }}
 
@@ -494,7 +557,7 @@ jobs:
           fi
 
           echo "BUILDING: :app-${APP_NAME}:${BUILD_COMMAND}"
-          ./gradlew clean :app-${APP_NAME}:${BUILD_COMMAND} --no-build-cache --no-configuration-cache
+          ./gradlew clean :app-${APP_NAME}:${BUILD_COMMAND} --no-build-cache
           echo "Status: $?"
 
       - name: Test It
@@ -543,7 +606,7 @@ jobs:
           ls -l ${UPLOAD_PATH}/
 
       - name: Upload unsigned
-        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         env:
           UPLOAD_PATH: "uploads"
         with:
@@ -563,7 +626,7 @@ jobs:
     env:
       RELEASE_TYPE: ${{ needs.dump_config.outputs.releaseType }}
     steps:
-      - uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           name: unsigned-${{ matrix.appName }}-${{ matrix.packageFormat }}-${{ matrix.packageFlavor }}
           path: uploads/
@@ -592,7 +655,7 @@ jobs:
           rm -f uploads/*.jks
 
       - name: Upload signed
-        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: signed-${{ matrix.appName }}-${{ matrix.packageFormat }}-${{ matrix.packageFlavor }}
           if-no-files-found: error
@@ -679,12 +742,12 @@ jobs:
           cat $GITHUB_OUTPUT
 
       - name: Checkout repository
-        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           ref: ${{ steps.shanotes.outputs.app_sha }}
 
       - name: Download Artifacts
-        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           name: signed-${{ matrix.appName }}-${{ matrix.packageFormat }}-${{ matrix.packageFlavor }}
           path: "uploads/"
@@ -745,17 +808,17 @@ jobs:
           ls -l uploads/${PKG_FILE_PRETTY}
 
       - name: App Token Generate
-        uses: actions/create-github-app-token@29824e69f54612133e76f7eaac726eef6c875baf  # v2.2.1
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1  # v3.2.0
         if: ${{ contains(matrix.releaseTarget, 'github') && vars.BOT_CLIENT_ID }}
         id: app-token
         with:
-          app-id: ${{ vars.BOT_CLIENT_ID }}
+          client-id: ${{ vars.BOT_CLIENT_ID }}
           private-key: ${{ secrets.BOT_PRIVATE_KEY }}
 
       - name: Publish to GitHub Releases
         id: publish_gh
         if: ${{ contains(matrix.releaseTarget, 'github') }}
-        uses: softprops/action-gh-release@a06a81a03ee405af7f2048a818ed3f03bbf83c7b  # v2.5.0
+        uses: softprops/action-gh-release@efb35369e0ad2afab669f228072c1b0d510eae64  # v3.0.3
         with:
           token: ${{ steps.app-token.outputs.token || github.token }}
           target_commitish: ${{ steps.shanotes.outputs.app_sha }}
@@ -800,7 +863,7 @@ jobs:
 
       - name: Publish to Google Play
         id: publish_play
-        uses: r0adkll/upload-google-play@935ef9c68bb393a8e6116b1575626a7f5be3a7fb # v1.1.3
+        uses: r0adkll/upload-google-play@e738b9dd8f2476ea806d921b64aacd24f34515a5 # v1.1.5
         if: ${{ !inputs.skipGooglePlay && contains(matrix.releaseTarget, 'play') && matrix.playTargetTrack }}
         with:
           serviceAccountJsonPlainText: ${{ secrets.PLAY_STORE_ACCOUNT }}
@@ -931,8 +994,27 @@ jobs:
           destination: ${{ steps.prepare_ftp.outputs.FTP_DESTINATION_NIGHTLY_LATEST }}
           gzip: false
 
+      - name: Set up Cloud SDK for pruning
+        if: ${{ !inputs.skipFtp && contains(matrix.releaseTarget, 'ftp') && matrix.packageFormat == 'apk' && needs.dump_config.outputs.releaseType == 'daily' }}
+        uses: google-github-actions/setup-gcloud@aa5489c8933f4cc7a4f7d45035b3b1440c9c10db # v3.0.1
+
+      - name: Prune FTP Nightly Latest
+        continue-on-error: true
+        if: ${{ !inputs.skipFtp && contains(matrix.releaseTarget, 'ftp') && matrix.packageFormat == 'apk' && needs.dump_config.outputs.releaseType == 'daily' }}
+        shell: bash
+        env:
+          FTP_DESTINATION_NIGHTLY_LATEST: ${{ steps.prepare_ftp.outputs.FTP_DESTINATION_NIGHTLY_LATEST }}
+          PKG_FILE: ${{ steps.rename.outputs.PKG_FILE }}
+          FTP_TAR_FILENAME: ${{ steps.generate_tar.outputs.FTP_TAR_FILENAME }}
+        run: |
+          set -x
+          gcloud storage ls "gs://${FTP_DESTINATION_NIGHTLY_LATEST}/" \
+            | grep -vF "${PKG_FILE}" \
+            | grep -vF "${FTP_TAR_FILENAME}" \
+            | xargs -r gcloud storage rm
+
       - name: Summary
-        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8.0.0
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
         id: summary
         env:
           tagName: ${{ steps.pkginfo.outputs.TAG_NAME }}
@@ -1002,13 +1084,13 @@ jobs:
     environment: notify_matrix
     steps:
       - name: Get previous workflow status
-        uses: Mercymeilya/last-workflow-status@3418710aefe8556d73b6f173a0564d38bcfd9a43
+        uses: Mercymeilya/last-workflow-status@f86bce177498d6fdd3bda4113d7d93266cfc3fca
         id: last_status
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Info
-        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8.0.0
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
         id: info
         env:
           needs: ${{ toJSON(needs) }}

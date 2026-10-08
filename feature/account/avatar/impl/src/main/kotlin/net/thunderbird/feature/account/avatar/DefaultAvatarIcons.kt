@@ -1,7 +1,7 @@
 package net.thunderbird.feature.account.avatar
 
 import androidx.compose.ui.graphics.vector.ImageVector
-import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
+import net.thunderbird.components.ui.bolt.atom.icon.Icons
 
 /**
  * An enumeration of avatar icons represented as [ImageVector]s.

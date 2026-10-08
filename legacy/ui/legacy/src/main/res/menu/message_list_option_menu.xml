@@ -62,7 +62,7 @@
         android:id="@+id/compose"
         android:icon="@drawable/ic_edit"
         android:title="@string/compose_action"
-        app:showAsAction="never"
+        app:showAsAction="always"
         />
 
     <item

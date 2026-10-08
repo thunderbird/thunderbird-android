@@ -61,7 +61,7 @@ class ImapCommandSplitterTest {
         val sortedIds: Set<Long> = TreeSet(ids)
         val expectedCommandBuilder = StringBuilder(COMMAND_PREFIX)
             .append(" ")
-            .append(ImapUtility.join(",", sortedIds))
+            .append(sortedIds.joinToString(","))
         if (idGroupString != null) {
             expectedCommandBuilder.append(',').append(idGroupString)
         }

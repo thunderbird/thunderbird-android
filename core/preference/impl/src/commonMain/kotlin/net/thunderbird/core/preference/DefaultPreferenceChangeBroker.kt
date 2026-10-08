@@ -18,11 +18,11 @@ class DefaultPreferenceChangeBroker(
         }
     }
 
-    override fun publish() {
+    override fun publish(scope: PreferenceScope) {
         val currentSubscribers = synchronized(lock) { HashSet(subscribers) }
 
         for (subscriber in currentSubscribers) {
-            subscriber.receive()
+            subscriber.receive(scope)
         }
     }
 }

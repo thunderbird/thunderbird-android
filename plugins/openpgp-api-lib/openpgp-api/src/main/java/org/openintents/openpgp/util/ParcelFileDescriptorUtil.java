@@ -28,7 +28,7 @@ import android.os.ParcelFileDescriptor.AutoCloseInputStream;
 import android.system.ErrnoException;
 import android.system.OsConstants;
 
-import net.thunderbird.core.logging.legacy.Log;
+import net.thunderbird.legacy.logging.Log;
 import org.openintents.openpgp.util.OpenPgpApi.OpenPgpDataSink;
 import org.openintents.openpgp.util.OpenPgpApi.OpenPgpDataSource;
 

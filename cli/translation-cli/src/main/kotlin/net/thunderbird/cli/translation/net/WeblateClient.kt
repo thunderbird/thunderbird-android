@@ -5,7 +5,6 @@ import io.ktor.client.call.body
 import io.ktor.client.engine.cio.CIO
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.logging.DEFAULT
-import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.request.get
@@ -15,8 +14,8 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
 
 class WeblateClient(
-    private val client: HttpClient = createClient(),
     private val config: WeblateConfig = WeblateConfig(),
+    private val client: HttpClient = createClient(config),
 ) {
     fun loadLanguages(token: String): List<Language> {
         val languages: List<Language>
@@ -63,11 +62,11 @@ class WeblateClient(
     }
 
     private companion object {
-        fun createClient(): HttpClient {
+        fun createClient(config: WeblateConfig): HttpClient {
             return HttpClient(CIO) {
                 install(Logging) {
                     logger = Logger.DEFAULT
-                    level = LogLevel.NONE
+                    level = config.logLevel
                 }
                 install(ContentNegotiation) {
                     json(

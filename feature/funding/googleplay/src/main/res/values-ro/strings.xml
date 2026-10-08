@@ -54,4 +54,6 @@
     <string name="funding_googleplay_contribution_reminder_statement_point_1">Nu afișăm reclame.</string>
     <string name="funding_googleplay_contribution_reminder_statement_point_2">Noi nu vă vindem datele.</string>
     <string name="funding_googleplay_contribution_reminder_claim">Suntem finanțați exclusiv de utilizatori ca tine.</string>
+    <string name="funding_googleplay_contribution_footer_payment_processing_button">Se procesează achiziția…</string>
+    <string name="funding_googleplay_contribution_footer_payment_cancel_button">Anulează</string>
 </resources>

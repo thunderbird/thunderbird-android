@@ -1,4 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="account_oauth_sign_in_description">সাইন ইন করতে আমরা আপনাকে আপনার ইমেল প্রোভাইডারের কাছে পাঠিয়ে দেব।আপনাকে অ্যাপটিকে আপনার ইমেল অ্যাকাউন্ট ব্যবহারের অনুমতি দিতে হবে।</string>
+    <string name="account_oauth_sign_in_button">সাইন ইন</string>
+    <string name="account_oauth_sign_in_with_google_button">Google দিয়ে সাইন ইন করুন</string>
+    <string name="account_oauth_loading_message">OAuth দিয়ে সাইন ইন করুন</string>
+    <string name="account_oauth_loading_error">OAuth দিয়ে সাইন ইন ব্যর্থ</string>
+    <string name="account_oauth_error_canceled">অনুমোদন বাতিল করা হয়েছে</string>
+    <string name="account_oauth_error_failed">নিম্নলিখিত ত্রুটির কারণে অনুমোদন ব্যর্থ হয়েছে: <xliff:g id="error">%s</xliff:g></string>
+    <string name="account_oauth_error_not_supported">এই প্রোভাইডারের সাথে বর্তমানে OAuth 2.0 সমর্থিত নয়।</string>
+    <string name="account_oauth_error_browser_not_available">আপনার অ্যাকাউন্টে প্রবেশাধিকার দেওয়ার জন্য অ্যাপটি কোনো ব্রাউজার খুঁজে পায়নি।</string>
+    <string name="account_oauth_google_sign_in_support_text">Google দিয়ে সাইন ইন করতে যদি কোনো সমস্যা হয়, তাহলে অনুগ্রহ করে আমাদের সাথে পরামর্শ করুন {placeHolder}।</string>
+    <string name="account_oauth_google_sign_in_support_text_link_text">সহায়ক নিবন্ধ</string>
 </resources>

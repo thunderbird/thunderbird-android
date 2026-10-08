@@ -1,10 +1,16 @@
 package com.fsck.k9.notification
 
+import android.graphics.Bitmap
+import com.fsck.k9.mail.Address
+
 class TestNotificationResourceProvider : NotificationResourceProvider {
     override val iconWarning: Int = 1
     override val iconMarkAsRead: Int = 2
     override val iconDelete: Int = 3
     override val iconReply: Int = 4
+    override val iconArchive: Int = 14
+    override val iconMarkAsSpam: Int = 15
+    override val iconStar: Int = 16
     override val iconNewMail: Int = 5
     override val iconSendingMail: Int = 6
     override val iconCheckingMail: Int = 7
@@ -35,6 +41,8 @@ class TestNotificationResourceProvider : NotificationResourceProvider {
             "\n" +
             "Tap to open notification settings."
     }
+
+    override fun avatar(address: Address): Bitmap? = null
 
     override fun certificateErrorTitle(): String = "Certificate error"
 
@@ -80,6 +88,8 @@ class TestNotificationResourceProvider : NotificationResourceProvider {
     override fun actionDeleteAll(): String = "Delete All"
 
     override fun actionReply(): String = "Reply"
+
+    override fun actionStar(): String = "Star"
 
     override fun actionArchive(): String = "Archive"
 

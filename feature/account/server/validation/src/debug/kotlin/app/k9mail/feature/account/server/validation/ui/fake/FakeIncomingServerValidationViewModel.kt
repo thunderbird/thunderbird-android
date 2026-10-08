@@ -1,6 +1,5 @@
 package app.k9mail.feature.account.server.validation.ui.fake
 
-import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
 import app.k9mail.feature.account.oauth.ui.AccountOAuthContract
 import app.k9mail.feature.account.oauth.ui.fake.FakeAccountOAuthViewModel
 import app.k9mail.feature.account.server.validation.ui.ServerValidationContract
@@ -8,6 +7,7 @@ import app.k9mail.feature.account.server.validation.ui.ServerValidationContract.
 import app.k9mail.feature.account.server.validation.ui.ServerValidationContract.Event
 import app.k9mail.feature.account.server.validation.ui.ServerValidationContract.State
 import app.k9mail.feature.account.server.validation.ui.ServerValidationContract.ViewModel
+import net.thunderbird.core.ui.contract.mvi.BaseViewModel
 
 class FakeIncomingServerValidationViewModel(
     override val oAuthViewModel: AccountOAuthContract.ViewModel = FakeAccountOAuthViewModel(),

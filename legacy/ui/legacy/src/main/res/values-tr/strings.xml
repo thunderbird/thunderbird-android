@@ -34,7 +34,6 @@
     <string name="choose_folder_title">Klasör Seç</string>
     <string name="choose_folder_move_title">Buraya taşı…</string>
     <string name="choose_folder_copy_title">Buraya kopyala…</string>
-    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> tane seçildi</string>
     <string name="send_action">Gönder</string>
     <string name="empty_subject">Konu boş. Yine de göndermek için tıklayın</string>
     <string name="reply_action">Yanıtla</string>
@@ -131,7 +130,7 @@
     <string name="notification_channel_messages_title">İletiler</string>
     <string name="notification_channel_messages_description">İletilerle ilgili bildirimler</string>
     <string name="notification_channel_miscellaneous_title">Çeşitli</string>
-    <string name="notification_channel_miscellaneous_description">Hatalar vb. çeşitli bildirimler.</string>
+    <string name="notification_channel_miscellaneous_description">Hatalar vb. çeşitli bildirimler</string>
     <string name="send_failure_subject">Bazı iletiler gönderilemedi</string>
     <string name="version">Sürüm</string>
     <string name="debug_enable_debug_logging_title">Hata ayıklama günlüğünü etkinleştir</string>
@@ -505,7 +504,6 @@
     <string name="account_setup_push_limit_500">500 klasör</string>
     <string name="account_setup_push_limit_1000">1000 klasör</string>
     <string name="animations_title">Animasyon</string>
-    <string name="animations_summary">Gösterişli görsel efektleri kullan</string>
     <string name="show_unified_inbox_title">Birleşik gelen kutusunu göster</string>
     <string name="show_starred_count_title">Yıldızlı sayısını göster</string>
     <string name="integrated_inbox_title">Birleşik Gelen Kutusu</string>
@@ -606,7 +604,7 @@
     <string name="account_settings_remote_search_num_results_entries_250">250</string>
     <string name="account_settings_remote_search_num_results_entries_500">500</string>
     <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
-    <string name="account_settings_remote_search_num_label">Sunucu arama limiti</string>
+    <string name="account_settings_remote_search_num_label">Sunucu arama sınırı</string>
     <string name="remote_search_sending_query">Sorgu sunucuya gönderiliyor</string>
     <plurals name="remote_search_downloading">
         <item quantity="one">%d sonuç getiriliyor</item>
@@ -716,7 +714,6 @@
     <string name="crypto_msg_encrypted_insecure">ama şifreleme güvenli olarak değerlendirilmedi</string>
     <string name="locked_attach_unlock">Kilidi aç</string>
     <string name="locked_attach_unencrypted">Bu kısım şifrelenmemiş ve güvensiz olabilir.</string>
-    <string name="locked_attach_title">Korunmasız Ek</string>
     <string name="message_progress_text">Yükleniyor…</string>
     <string name="messageview_decrypt_cancelled">Şifre çözme iptal edildi.</string>
     <string name="messageview_decrypt_retry">Yeniden dene</string>
@@ -782,25 +779,15 @@
     <string name="push_info_learn_more_text">Bilgi alın</string>
     <string name="push_info_configure_notification_action">Bildirimi yapılandır</string>
     <!--Name of the swipe action to select a message. Try to keep it short.-->
-    <string name="swipe_action_select">Seç</string>
     <!--Name of the swipe action to deselect a message. Try to keep it short.-->
-    <string name="swipe_action_deselect">Seçimi kaldır</string>
     <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
-    <string name="swipe_action_mark_as_read">Okundu olarak işaretle</string>
     <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
-    <string name="swipe_action_mark_as_unread">Okunmadı olarak işaretle</string>
     <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
-    <string name="swipe_action_add_star">Yıldız ekle</string>
     <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
-    <string name="swipe_action_remove_star">Yıldızı kaldır</string>
     <!--Name of the swipe action to archive a message. Try to keep it short.-->
-    <string name="swipe_action_archive">Arşivle</string>
     <!--Name of the swipe action to delete a message. Try to keep it short.-->
-    <string name="swipe_action_delete">Sil</string>
     <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
-    <string name="swipe_action_spam">Gereksiz</string>
     <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
-    <string name="swipe_action_move">Taşı…</string>
     <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
     <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
     <string name="message_list_error_title">Hata</string>
@@ -830,7 +817,7 @@
     <!--A user visible label for the name and email address copied to the clipboard-->
     <!--Might be displayed in a notification when deleting an account (in the background)-->
     <string name="action_copy_email_address">E-posta adresini kopyala</string>
-    <string name="message_view_me_text">ben</string>
+    <string name="message_view_to_me_text">ben</string>
     <string name="action_compose_message_to">Bu kişiye ileti oluştur</string>
     <string name="account_settings_vibrate_pattern_label">Titreşim şablonu</string>
     <string name="message_list_content_description_unread_prefix">okunmadı, %s</string>
@@ -849,7 +836,7 @@
     <string name="message_view_recipients_format">Alıcı: <xliff:g id="recipients">%s</xliff:g></string>
     <string name="push_info_title">Anında İlet Bilgileri</string>
     <string name="general_settings_ui_density_relaxed">Geniş</string>
-    <string name="changelog_snackbar_button_text">Göster</string>
+    <string name="changelog_snackbar_button_text">Görüntüle</string>
     <string name="account_settings_ignore_chat_messages_summary">E-posta sohbetlerine ait iletiler için bildirim gösterme</string>
     <string name="message_details_loading_error">İleti ayrıntıları yüklenirken bir hata oluştu.</string>
     <string name="action_add_to_contacts">Kişilere ekle</string>
@@ -894,19 +881,85 @@
     <string name="debug_enable_sync_debug_logging_summary">Eşitleme tanılama bilgilerini 24 saat boyunca günlüğe kaydet</string>
     <string name="debug_sync_export_logs_title">Eşitleme günlüklerini dışa aktar</string>
     <string name="debug_open_secret_debug_screen">Gizli hata ayıklama ekranını aç</string>
-    <string name="swipe_action_archive_folder_not_set">Arşiv klasörünü ayarla</string>
-    <string name="swipe_action_change_swipe_gestures">Kaydırma\nHareketlerini Değiştir</string>
     <string name="archiving_not_available_for_this_account">Bu hesapta arşivleme kullanılamıyor.</string>
     <string name="debug_invalidate_access_token">Test: Erişim belirtecini geçersiz kıl</string>
-    <string name="debug_invalidate_access_token_done">Erişim belirteci geçersiz kılındı. Bir sonraki istek yenileyecektir.</string>
+    <string name="debug_invalidate_access_token_done">Erişim belirteci geçersiz kılındı. Bir sonraki istekte yenilenecektir.</string>
     <string name="debug_invalidate_access_token_unavailable">Bu hesap için OAuth belirteci yok.</string>
     <string name="debug_invalidate_access_token_local">Test: Erişim belirtecini geçersiz kıl (yerel)</string>
     <string name="debug_invalidate_access_token_local_done">Yerel geçersiz kılma istendi. Bir sonraki istek yeni bir belirteç alacak.</string>
     <string name="debug_invalidate_access_token_server">Test: Erişim belirtecini geçersiz kıl (sunucu)</string>
-    <string name="debug_invalidate_access_token_server_done">Saklanan erişim belirteci bozuldu. Bir sonraki istek başarısız olacak, ardından yenileyecektir.</string>
+    <string name="debug_invalidate_access_token_server_done">Saklanan erişim belirteci hasarlı. Bir sonraki istek başarısız olacak, ardından belirteç yenilenecektir.</string>
     <string name="debug_force_auth_failure">Test: Şimdi kimlik doğrulama hatasına zorla</string>
     <string name="debug_force_auth_failure_done">OAuth durumu silindi. Bir sonraki istek başarısız olacak.</string>
     <string name="debug_force_auth_failure_unavailable">Bu hesap için OAuth yapılandırması yok.</string>
     <string name="debug_invalidate_access_token_cannot_modify">Saklanan erişim belirteci değiştirilemedi. Yerel geçersiz kılmayı deneyin.</string>
     <string name="debug_invalidate_access_token_already_modified">Saklanan erişim belirteci zaten değiştirildi.</string>
+    <string name="message_view_menu_action_export_eml">EML olarak dışa aktar</string>
+    <string name="print_message_action">Yazdır</string>
+    <string name="set_format_html_action">Orijinal biçimlendirmeyi kullan</string>
+    <string name="set_format_html_condensed_action">Biçimlendirilmiş olarak göster</string>
+    <string name="set_format_plain_action">Biçimlendirilmemiş iletiyi göster</string>
+    <string name="set_format_plain_condensed_action">Biçimlendirilmemiş olarak göster</string>
+    <string name="global_settings_messageview_body_content_type_title">Body Content-Type</string>
+    <string name="global_settings_messageview_body_content_type_text_html">HTML (text/html)</string>
+    <string name="global_settings_messageview_body_content_type_text_plain">Düz metin (text/plain)</string>
+    <string name="account_setup_auto_select_folder">Klasörü otomatik seç</string>
+    <string name="navigation_drawer_preferences">Yan Menü</string>
+    <string name="expand_folders">Klasörleri genişlet</string>
+    <string name="debug_feature_flags">HATA AYIKLAMA: Özellik bayrakları</string>
+    <string name="general_settings_message_list_date_time_format_title">Tarih/saat biçimi</string>
+    <string name="general_settings_message_list_date_time_format_contextual">Bağlamsal</string>
+    <string name="general_settings_message_list_date_time_format_full">Tam</string>
+    <string name="global_settings_splitview_when_unfolded">Cihazın kapağı açıldığında</string>
+    <string name="sort_by_then_by">Sonra…</string>
+    <plurals name="message_view_attachment_summary">
+        <item quantity="one"><xliff:g id="count">%1$d</xliff:g> ek (<xliff:g id="size">%2$s</xliff:g>)</item>
+        <item quantity="other"><xliff:g id="count">%1$d</xliff:g> ek (<xliff:g id="size">%2$s</xliff:g>)</item>
+    </plurals>
+    <string name="message_view_single_attachment_summary"><xliff:g id="name">%1$s</xliff:g> (<xliff:g id="size">%2$s</xliff:g>)</string>
+    <string name="message_view_attachments_view_all">Tümünü görüntüle</string>
+    <string name="message_view_attachments_view">Görüntüle</string>
+    <string name="message_view_attachments_title">Ekler</string>
+    <string name="message_view_attachments_save_all">Tümünü kaydet</string>
+    <string name="general_settings_message_list_date_time_format_iso">ISO</string>
+    <string name="no_network_message_will_be_sent_later_toast">Çevrim dışı. Bağlantı kurulduğunda ileti gönderilecek</string>
+    <string name="changelog_latest_label_text">EN SON</string>
+    <string name="changelog_type_new_text">YENİ</string>
+    <string name="changelog_type_changed_text">DEĞİŞTİ</string>
+    <string name="changelog_type_fixed_text">DÜZELTİLDİ</string>
+    <string name="notification_actions_settings_title">Bildirim eylemleri</string>
+    <string name="notification_actions_settings_summary">E-posta bildirimlerinde hangi eylemlerin görüneceğini seçin</string>
+    <string name="notification_summary_delete_title">Birden fazla ileti içeren bildirimlerde Sil seçeneğini göster</string>
+    <string name="notification_summary_delete_summary">Birden fazla yeni iletiyi özetleyen bildirimlere Sil eylemi ekler</string>
+    <string name="notification_show_contact_picture_title">Bildirimlerde kişi resimlerini göster</string>
+    <string name="notification_show_contact_picture_summary">Yeni ileti bildirimlerinde gönderenin avatarlarını görüntüle</string>
+    <string name="notification_actions_settings_description">Bildirim eylemlerini yeniden sırala.</string>
+    <string name="notification_actions_cutoff_description">Gösterilen eylemlerin kesilmesi</string>
+    <string name="notification_actions_cutoff_state">Bu satırın üzerindeki eylemler bildirimde gösterilir</string>
+    <string name="notification_actions_shown_state">Bildirimde gösterilir</string>
+    <string name="notification_actions_hidden_state">Bildirimde gösterilmez</string>
+    <string name="accessibility_move_up">Yukarı taşı</string>
+    <string name="accessibility_move_down">Aşağı taşı</string>
+    <string name="accessibility_move_item_up"><xliff:g id="item">%1$s</xliff:g> ögesini yukarı taşı</string>
+    <string name="accessibility_move_item_down"><xliff:g id="item">%1$s</xliff:g> ögesini aşağı taşı</string>
+    <string name="accessibility_move_cutoff_up">Gösterilen eylemlerin kesilmesini yukarı taşı</string>
+    <string name="accessibility_move_cutoff_down">Gösterilen eylemlerin kesilmesini aşağı taşı</string>
+    <string name="notification_action_star">Yıldız</string>
+    <string name="animation_setting_on">Açık</string>
+    <string name="animation_setting_off">Kapalı</string>
+    <string name="animation_setting_follow_system">Sistem varsayılanını kullan</string>
+    <string name="global_settings_privacy_incognito_keyboard">Gizli klavye</string>
+    <string name="global_settings_privacy_incognito_keyboard_detail">İleti oluştururken klavyenin yazdıklarınızı öğrenmemesini isteyin</string>
+    <string name="sort_by_indicator">•</string>
+    <string name="camera_capture_lost">Uygulama kapatıldığı için yakalanan resim kayboldu. Lütfen tekrar deneyin.</string>
+    <string name="account_settings_signature_html_label">HTML İmza</string>
+    <string name="account_settings_signature_is_html_label">İmzayı HTML olarak kaydet</string>
+    <string name="account_settings_signature_is_html_summary">İmzayı HTML olarak yorumla. Güvenlik nedeniyle betikler ve olay işleyicileri kaldırılacaktır.</string>
+    <string name="account_settings_signature_preview">İmza ön izlemesi</string>
+    <string name="account_settings_signature_clear_label">İmzayı Temizle</string>
+    <string name="message_compose_encrypting_message">İleti şifreleniyor…</string>
+    <string name="message_view_from_me_text">ben</string>
+    <string name="account_settings_signature_preview_empty">İmzanızın ön izlemesi burada görünecek</string>
+    <string name="error_no_contact_provider">Kişiler uygulaması bulunamadı. Bu adresi eklemek için bir kişiler uygulaması kurun.</string>
+    <string name="remote_feature_flag_preferences">Uzak Özellik Bayrakları</string>
 </resources>

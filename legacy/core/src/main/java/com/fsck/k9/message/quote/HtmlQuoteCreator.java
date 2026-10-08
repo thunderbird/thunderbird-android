@@ -8,7 +8,7 @@ import com.fsck.k9.CoreResourceProvider;
 import app.k9mail.legacy.di.DI;
 import com.fsck.k9.message.html.HTMLTag;
 import net.thunderbird.core.android.account.QuoteStyle;
-import net.thunderbird.core.logging.legacy.Log;
+import net.thunderbird.legacy.logging.Log;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Message.RecipientType;

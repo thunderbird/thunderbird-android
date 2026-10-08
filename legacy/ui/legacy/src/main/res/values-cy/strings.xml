@@ -34,7 +34,6 @@
     <string name="choose_folder_title">Dewis Ffolder</string>
     <string name="choose_folder_move_title">Symud i…</string>
     <string name="choose_folder_copy_title">Copïo i…</string>
-    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> wedi\'i dewis</string>
     <string name="send_action">Anfon</string>
     <string name="empty_subject">Does dim pwnc, cliciwch eto i\'w anfon beth bynnag</string>
     <string name="reply_action">Ateb</string>
@@ -307,7 +306,7 @@
     <string name="account_settings_ignore_chat_messages_label">Anwybyddu ceisiadau i sgwrsio</string>
     <string name="account_settings_ignore_chat_messages_summary">Peidio â dangos hysbysiadau am negeseuon sy\'n perthyn i sgwrs e-bost</string>
     <string name="account_settings_mark_message_as_read_on_view_label">Marcio fel wedi ei darllen wrth ei hagor</string>
-    <string name="account_settings_mark_message_as_read_on_view_summary">Marcio neges fel ei bod wedi ei darllen wrth ei hagor i\'w darllen</string>
+    <string name="account_settings_mark_message_as_read_on_view_summary">Marcio neges fel wedi\'i darllen pan fydd wedi\'i hagor i\'w gweld</string>
     <string name="account_settings_mark_message_as_read_on_delete_label">Nodi wedi\'i darllen ar ôl ei dileu</string>
     <string name="account_settings_mark_message_as_read_on_delete_summary">Nodi neges wedi\'i darllen wrth ei dileu</string>
     <string name="account_settings_notification_channels_label">Categorïau hysbysiadau</string>
@@ -353,7 +352,7 @@
     <string name="account_settings_crypto_encrypt_all_drafts_off">Amgryptio negeseuon drafft dim ond os yw amgryptio wedi\'i alluogi</string>
     <string name="account_settings_mail_check_frequency_label">Amlder gwirio ffolderi</string>
     <string name="account_settings_mail_display_count_label">Maint ffolder lleol</string>
-    <string name="account_settings_autodownload_message_size_label">Nôl negeseuon hyd at</string>
+    <string name="account_settings_autodownload_message_size_label">Estyn negeseuon hyd at</string>
     <string name="account_settings_autodownload_message_size_1">1 KiB</string>
     <string name="account_settings_autodownload_message_size_2">2 KiB</string>
     <string name="account_settings_autodownload_message_size_4">4 KiB</string>
@@ -375,7 +374,7 @@
     <string name="account_settings_message_age_1">y 2 ddiwrnod diwethaf</string>
     <string name="account_settings_message_age_2">y 3 diwrnod diwethaf</string>
     <string name="account_settings_message_age_7">yr wythnos diwethaf</string>
-    <string name="account_settings_message_age_14">y 2 wythnos diwethaf</string>
+    <string name="account_settings_message_age_14">y pythefnos diwethaf</string>
     <string name="account_settings_message_age_21">y 3 wythnos diwethaf</string>
     <string name="account_settings_message_age_1_month">y mis diwethaf</string>
     <string name="account_settings_message_age_2_months">y 2 fis diwethaf</string>
@@ -389,7 +388,7 @@
     <string name="folder_settings_in_top_group_label">Dangos yn y grŵp uchaf</string>
     <string name="folder_settings_clear_local_folder_action">Clirio negeseuon lleol</string>
     <string name="account_settings_incoming_label">Gweinydd Derbyn</string>
-    <string name="account_settings_incoming_summary">Ffurfweddu\'r gweinydd Derbyn</string>
+    <string name="account_settings_incoming_summary">Ffurfweddu\'r gweinydd derbyn</string>
     <string name="account_settings_outgoing_label">Gweinydd Anfon</string>
     <string name="account_settings_outgoing_summary">Ffurfweddu\'r gweinydd Anfon (SMTP)</string>
     <string name="account_settings_name_label">Eich enw</string>
@@ -512,7 +511,6 @@
     <string name="account_setup_push_limit_500">500 ffolder</string>
     <string name="account_setup_push_limit_1000">1000 ffolder</string>
     <string name="animations_title">Animeiddiad</string>
-    <string name="animations_summary">Defnyddio effeithiau gweledol lliwgar</string>
     <string name="show_unified_inbox_title">Dangos Blwch Derbyn Cyfun</string>
     <string name="show_starred_count_title">Dangos cyfrif serennog</string>
     <string name="integrated_inbox_title">Blwch Derbyn Cyfun</string>
@@ -613,7 +611,7 @@
     <string name="webview_contextmenu_email_save_action">Cadw i\'r Cysylltiadau</string>
     <string name="webview_contextmenu_email_copy_action">Copïo\'r cyfeiriad i\'r clipfwrdd</string>
     <string name="webview_contextmenu_email_clipboard_label">Cyfeiriad e-bost</string>
-    <string name="account_settings_remote_search_num_results_entries_all">Y Cyfan</string>
+    <string name="account_settings_remote_search_num_results_entries_all">Popeth</string>
     <string name="account_settings_remote_search_num_results_entries_10">10</string>
     <string name="account_settings_remote_search_num_results_entries_25">25</string>
     <string name="account_settings_remote_search_num_results_entries_50">50</string>
@@ -739,7 +737,6 @@
     <string name="crypto_msg_encrypted_insecure">ond dyw\'r amgryptiad ddim yn ymddangos yn ddiogel</string>
     <string name="locked_attach_unlock">Datgloi</string>
     <string name="locked_attach_unencrypted">Chafodd y rhan hwn ddim ei amgryptio a gall fod yn anniogel.</string>
-    <string name="locked_attach_title">Atodiad heb ei Ddiogelu</string>
     <string name="message_progress_text">Yn llwytho…</string>
     <string name="messageview_decrypt_cancelled">Diddymwyd yr amgryptio.</string>
     <string name="messageview_decrypt_retry">Ceisio eto</string>
@@ -808,22 +805,14 @@
     <string name="push_info_disable_push_text">Os nad ydych angen hysbysiadau ar unwaith am negeseuon newydd, analluogwch Gwthio a defnyddio Gwirio. Mae Gwirio yn edrych am negeseuon newydd ar gyfnodau rheolaidd heb fod angen yr hysbysiad parhaus.</string>
     <string name="push_info_disable_push_action">Analluogi Gwthio</string>
     <!--Name of the swipe action to select a message. Try to keep it short.-->
-    <string name="swipe_action_select">Dewis</string>
     <!--Name of the swipe action to deselect a message. Try to keep it short.-->
-    <string name="swipe_action_deselect">Dad-ddewis</string>
     <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
     <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
-    <string name="swipe_action_mark_as_unread">Marcio heb ei darllen</string>
     <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
-    <string name="swipe_action_add_star">Ychwanegu seren</string>
     <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
-    <string name="swipe_action_remove_star">Tynnu seren</string>
     <!--Name of the swipe action to archive a message. Try to keep it short.-->
-    <string name="swipe_action_archive">Archif</string>
     <!--Name of the swipe action to delete a message. Try to keep it short.-->
-    <string name="swipe_action_delete">Dileu</string>
     <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
-    <string name="swipe_action_spam">Sbam</string>
     <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
     <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
     <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
@@ -874,7 +863,7 @@
     <string name="save_attachment_action">Cadw atodiad</string>
     <string name="message_view_recipients_format">at <xliff:g id="recipients">%s</xliff:g></string>
     <string name="message_view_additional_recipient_prefix">+</string>
-    <string name="message_view_me_text">fi</string>
+    <string name="message_view_to_me_text">fi</string>
     <string name="message_view_show_remote_images_action">Dangos delweddau pell</string>
     <string name="global_settings_messageview_body_content_type_title">Corff Math o Gynnwys</string>
     <string name="global_settings_messageview_body_content_type_text_html">HTML (testun/html)</string>
@@ -912,10 +901,6 @@
     <string name="expand_content_description">Ehangu</string>
     <string name="push_notification_state_alarm_permission_missing">Caniatâd coll i amserlennu larymau</string>
     <string name="push_notification_grant_alarm_permission">Tapio i roi caniatâd.</string>
-    <string name="swipe_action_mark_as_read">Marcio wedi\'i ddarllen</string>
-    <string name="swipe_action_archive_folder_not_set">Gosod Ffolder Archif</string>
-    <string name="swipe_action_change_swipe_gestures">Newid \nYstumiau Llusgo</string>
-    <string name="swipe_action_move">Symud…</string>
     <string name="general_settings_show_compose_button_title">Dangos botwm ysgrifennu symudol</string>
     <string name="message_list_error_title">Gwall</string>
     <string name="message_list_error_folder_not_found">Heb ganfod ffolder</string>
@@ -947,4 +932,52 @@
     <string name="debug_invalidate_access_token_already_modified">Mae tocyn mynediad wedi\'i storio eisoes wedi\'i addasu.</string>
     <string name="debug_feature_flags">DADFYGIO: Baneri Nodwedd</string>
     <string name="print_message_action">Argraffu</string>
+    <string name="global_settings_splitview_when_unfolded">Pan fydd y ddyfais wedi\'i hagor</string>
+    <string name="general_settings_message_list_date_time_format_title">Fformat Dyddiad/Amser</string>
+    <string name="general_settings_message_list_date_time_format_contextual">Cyd-destunol</string>
+    <string name="general_settings_message_list_date_time_format_full">Llawn</string>
+    <string name="sort_by_then_by">Yna gan…</string>
+    <string name="changelog_latest_label_text">DIWEDDARAF</string>
+    <string name="changelog_type_new_text">NEWYDD</string>
+    <string name="changelog_type_changed_text">NEWIDIWYD</string>
+    <string name="changelog_type_fixed_text">TRWSIWYD</string>
+    <string name="notification_actions_settings_title">Gweithgaredd hysbysu</string>
+    <string name="notification_actions_settings_summary">Dewiswch pa weithredoedd sy\'n ymddangos mewn hysbysiadau e-bost</string>
+    <string name="notification_summary_delete_title">Dangos Dileu mewn hysbysiadau aml i neges</string>
+    <string name="notification_summary_delete_summary">Yn ychwanegu gweithred Dileu i hysbysiadau sy\'n crynhoi negeseuon newydd lluosog</string>
+    <string name="notification_show_contact_picture_title">Dangos lluniau cysylltiadau mewn hysbysiadau</string>
+    <string name="notification_show_contact_picture_summary">Dangos afatar yr anfonwr mewn hysbysiadau negeseuon newydd</string>
+    <string name="notification_actions_settings_description">Ail drefnu gweithredoedd hysbysiadau.</string>
+    <string name="notification_actions_cutoff_description">Dangos terfynau gweithredoedd</string>
+    <string name="notification_actions_cutoff_state">Mae gweithredoedd uwchlaw\'r llinell hon yn cael eu dangos yn yr hysbysiadau</string>
+    <string name="notification_actions_shown_state">Dangos yn yr hysbysiadau</string>
+    <string name="notification_actions_hidden_state">Dim yn cael ei dangos yn yr hysbysiadau</string>
+    <string name="accessibility_move_up">Symud i fyny</string>
+    <string name="accessibility_move_down">Symud i lawr</string>
+    <string name="accessibility_move_item_up">Symud <xliff:g id="item">%1$s</xliff:g> i fyny</string>
+    <string name="accessibility_move_item_down">Symud <xliff:g id="item">%1$s</xliff:g> i lawr</string>
+    <string name="accessibility_move_cutoff_up">Symud terfynau gweithredoedd i fyny</string>
+    <string name="accessibility_move_cutoff_down">Symud terfynau gweithredoedd i lawr</string>
+    <string name="notification_action_star">Seren</string>
+    <plurals name="message_view_attachment_summary">
+        <item quantity="zero"><xliff:g id="count">%1$d</xliff:g> Atodiadau(<xliff:g id="size">%2$s</xliff:g>)</item>
+        <item quantity="one"><xliff:g id="count">%1$d</xliff:g> Atodiad(<xliff:g id="size">%2$s</xliff:g>)</item>
+        <item quantity="two"><xliff:g id="count">%1$d</xliff:g> Atodiad(<xliff:g id="size">%2$s</xliff:g>)</item>
+        <item quantity="few"><xliff:g id="count">%1$d</xliff:g> Atodiad(<xliff:g id="size">%2$s</xliff:g>)</item>
+        <item quantity="many"><xliff:g id="count">%1$d</xliff:g> Atodiad(<xliff:g id="size">%2$s</xliff:g>)</item>
+        <item quantity="other"><xliff:g id="count">%1$d</xliff:g> Atodiad(<xliff:g id="size">%2$s</xliff:g>)</item>
+    </plurals>
+    <string name="message_view_single_attachment_summary"><xliff:g id="name">%1$s</xliff:g> (<xliff:g id="size">%2$s</xliff:g>)</string>
+    <string name="message_view_attachments_view_all">Gweld y cyfan</string>
+    <string name="message_view_attachments_view">Gweld</string>
+    <string name="message_view_attachments_title">Atodiadau</string>
+    <string name="message_view_attachments_save_all">Cadw\'r cyfan</string>
+    <string name="general_settings_message_list_date_time_format_iso">Dewis gosodiadau fformat neges Rhestr Dyddiad/Amser: ISO</string>
+    <string name="animation_setting_on">Ymlaen</string>
+    <string name="animation_setting_off">I Ffwrdd</string>
+    <string name="animation_setting_follow_system">Defnyddio rhagosodiad y system</string>
+    <string name="no_network_message_will_be_sent_later_toast">All-lein. Bydd y neges yn cael ei hanfon pan fydd cysylltiad ar gael</string>
+    <string name="global_settings_privacy_incognito_keyboard">Bysellfwrdd cudd</string>
+    <string name="global_settings_privacy_incognito_keyboard_detail">Gofyn i\'r bysellfwrdd i beidio â dysgu o\'r hyn rydych yn ei deipio wrth ysgrifennu neges</string>
+    <string name="sort_by_indicator">•</string>
 </resources>

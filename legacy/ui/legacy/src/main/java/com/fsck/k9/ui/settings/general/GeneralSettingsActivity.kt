@@ -16,12 +16,34 @@ import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.BaseActivity
 import com.fsck.k9.ui.base.extensions.fragmentTransaction
 import com.fsck.k9.ui.base.extensions.fragmentTransactionWithBackStack
+import net.thunderbird.core.featureflag.FeatureFlagProvider
+import net.thunderbird.core.featureflag.keys.GeneratedFeatureFlagKey
+import org.koin.android.ext.android.inject
 
 class GeneralSettingsActivity : BaseActivity(), OnPreferenceStartScreenCallback, SearchPreferenceResultListener {
     private lateinit var searchPreferenceActionView: SearchPreferenceActionView
     private lateinit var searchPreferenceMenuItem: MenuItem
     private lateinit var searchQuery: String
     private var searchEnabled = false
+
+    private val featureFlagProvider: FeatureFlagProvider by inject()
+    private val fontPreferenceKeys = listOf(
+        "font_size",
+        "message_list_fonts",
+        "message_list_subject_font",
+        "message_list_sender_font",
+        "message_list_date_font",
+        "message_list_preview_font",
+        "message_view_fonts",
+        "message_view_account_name_font",
+        "message_view_subject_font",
+        "message_view_sender_font",
+        "message_view_date_font",
+        "message_view_recipients_font",
+        "message_view_content_font_slider",
+        "message_compose_fonts",
+        "message_compose_input_font",
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,6 +102,11 @@ class GeneralSettingsActivity : BaseActivity(), OnPreferenceStartScreenCallback,
             textNoResults = getString(R.string.preference_search_no_results)
 
             index(R.xml.general_settings)
+            featureFlagProvider.provide(GeneratedFeatureFlagKey.DISABLE_FONT_SIZE_CONFIG).onEnabled {
+                fontPreferenceKeys.forEach { key ->
+                    ignorePreference(key)
+                }
+            }
         }
 
         searchPreferenceMenuItem.setOnActionExpandListener(

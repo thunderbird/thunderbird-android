@@ -46,11 +46,12 @@ class JvmFileSystemManager : FileSystemManager {
             if (!file.delete() && file.exists()) {
                 throw IOException("Unable to delete file at: $uri")
             }
-        } catch (error: Exception) {
+        } catch (error: IOException) {
             throw IOException("Unable to delete file at: $uri", error)
         }
     }
 
+    @Suppress("TooGenericExceptionCaught")
     override fun createDirectories(uri: Uri) {
         try {
             val file = File(uri.toURI())

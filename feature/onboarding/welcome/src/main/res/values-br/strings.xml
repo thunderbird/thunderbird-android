@@ -3,4 +3,5 @@
     <string name="onboarding_welcome_start_button">Deraouiñ</string>
     <string name="onboarding_welcome_import_button">Enporzhiañ arventennoù</string>
     <string name="onboarding_welcome_text">Un arload postelerezh frank evit Android prederiet gant gwarez ar roadennoù personel hag hep bruderezh.</string>
+    <string name="onboarding_welcome_developed_by">Diorroet a-drugarez d\'ur skipailh mennet e MZLA Technologies ha d\'ur gumuniezh tud a-youl-vat er bed a-bezh. Ezel eus familh Mozilla.</string>
 </resources>

@@ -62,3 +62,13 @@
 -dontwarn org.slf4j.impl.StaticLoggerBinder
 
 -keep,allowshrinking class com.tokenautocomplete.TokenCompleteTextView
+
+# Moshi's EnumJsonAdapter uses Class.getField() to map JSON strings to enum constants.
+# R8's enum optimization rewrites switch statements to use ordinals, making enum fields
+# appear unused, which causes R8 to strip them. This rule preserves all enum constants
+# so Moshi can deserialize them at runtime (e.g. via PendingCommandSerializer).
+-keep class net.thunderbird.core.common.mail.Flag { *; }
+
+# Moshi uses reflection to read field types. R8 can rewrite List/Map to ArrayList/HashMap,
+# which breaks Moshi's collection interface requirement.
+-keep class com.fsck.k9.controller.MessagingControllerCommands$* { *; }

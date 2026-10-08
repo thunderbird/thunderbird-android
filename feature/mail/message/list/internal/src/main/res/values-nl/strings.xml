@@ -10,7 +10,7 @@
     <string name="setup_archive_folder_dialog_create_new_folder">Nieuwe map aanmaken</string>
     <string name="setup_archive_folder_dialog_done">Gereed</string>
     <string name="setup_archive_folder_dialog_cancel">Annuleren</string>
-    <string name="setup_archive_folder_dialog_create_and_set_new_folder"><![CDATA[Create & set new folder]]></string>
+    <string name="setup_archive_folder_dialog_create_and_set_new_folder"><![CDATA[Nieuwe map maken en instellen]]></string>
     <string name="setup_archive_folder_set_archive_error_account_not_found">Kan geen account geassocieerd met ‘%1$s’ vinden</string>
     <string name="setup_archive_folder_create_archive_folder_syncing">Synchroniseren…</string>
     <string name="setup_archive_folder_create_archive_folder_local_folder_created">Lokale map aangemaakt. Beginnen met synchronisatie…</string>
@@ -23,4 +23,13 @@
     <string name="setup_archive_folder_create_archive_folder_remote_folder_created">Externe map aangemaakt.</string>
     <string name="setup_archive_folder_create_archive_folder_failed_sync_folder">Map ‘%1$s’ extern synchroniseren mislukt. Bericht: %2$s</string>
     <string name="setup_archive_folder_unhandled_error">Onbehandelde fout: %1$s</string>
+    <string name="message_list_state_new_message_description">Nieuw</string>
+    <string name="message_list_state_read_message_description">Gelezen</string>
+    <string name="message_list_state_unread_message_description">Ongelezen</string>
+    <string name="message_list_state_active_new_message_description">Actief, Nieuw</string>
+    <string name="message_list_state_active_read_message_description">Actief, Gelezen</string>
+    <string name="message_list_state_active_unread_message_description">Actief, Ongelezen</string>
+    <string name="message_list_state_selected_new_message_description">Geselecteerd, Nieuw</string>
+    <string name="message_list_state_selected_read_message_description">Geselecteerd, Gelezen</string>
+    <string name="message_list_state_selected_unread_message_description">Geselecteerd, Ongelezen</string>
 </resources>

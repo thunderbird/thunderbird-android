@@ -13,23 +13,37 @@ import app.k9mail.feature.account.server.settings.ui.outgoing.OutgoingServerSett
 import assertk.assertions.isEqualTo
 import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ServerSettings
+import kotlin.test.AfterTest
+import kotlin.test.BeforeTest
+import kotlin.test.Test
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
-import net.thunderbird.core.testing.coroutines.MainDispatcherRule
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import net.thunderbird.components.ui.testing.coroutines.MainDispatcherHelper
 import net.thunderbird.core.validation.input.NumberInputField
 import net.thunderbird.core.validation.input.StringInputField
-import org.junit.Rule
-import org.junit.Test
+import net.thunderbird.feature.account.AccountIdFactory
 
 class ModifyOutgoingServerSettingsViewModelTest {
 
-    @get:Rule
-    val mainDispatcherRule = MainDispatcherRule()
+    @OptIn(ExperimentalCoroutinesApi::class)
+    private val mainDispatcher = MainDispatcherHelper(UnconfinedTestDispatcher())
+
+    @BeforeTest
+    fun setUp() {
+        mainDispatcher.setUp()
+    }
+
+    @AfterTest
+    fun tearDown() {
+        mainDispatcher.tearDown()
+    }
 
     @Test
     fun `should load account state from use case`() = runMviTest {
-        val accountUuid = "accountUuid"
+        val accountId = AccountIdFactory.create()
         val accountState = AccountState(
-            uuid = "accountUuid",
+            id = accountId,
             emailAddress = "test@example.com",
             outgoingServerSettings = ServerSettings(
                 "smtp",
@@ -44,7 +58,7 @@ class ModifyOutgoingServerSettingsViewModelTest {
             ),
         )
         val testSubject = ModifyOutgoingServerSettingsViewModel(
-            accountUuid = accountUuid,
+            accountId = accountId,
             accountStateLoader = { _ ->
                 delay(50)
                 accountState

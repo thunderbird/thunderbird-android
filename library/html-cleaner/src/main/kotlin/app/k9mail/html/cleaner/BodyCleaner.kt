@@ -69,12 +69,14 @@ internal class BodyCleaner {
         val cleanedDocument = cleaner.clean(dirtyDocument)
         copyDocumentType(dirtyDocument, cleanedDocument)
         copyBodyAttributes(dirtyDocument, cleanedDocument)
+        moveStyleTagsOutOfAnchors(cleanedDocument)
         return cleanedDocument
     }
 
     private fun copyDocumentType(dirtyDocument: Document, cleanedDocument: Document) {
-        dirtyDocument.documentType()?.let { documentType ->
-            cleanedDocument.insertChildren(0, documentType)
+        val type = dirtyDocument.documentType()
+        if (type != null) {
+            cleanedDocument.insertChildren(0, type)
         }
     }
 
@@ -88,6 +90,15 @@ internal class BodyCleaner {
             } else {
                 cleanedBody.attr(attribute.key, true)
             }
+        }
+    }
+
+    private fun moveStyleTagsOutOfAnchors(document: Document) {
+        document.select("a style").forEach { styleEl ->
+            val a = styleEl.closest("a") ?: return@forEach
+            val html = styleEl.outerHtml()
+            styleEl.remove()
+            a.before(html)
         }
     }
 }

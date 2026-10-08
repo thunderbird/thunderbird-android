@@ -7,7 +7,7 @@ import com.fsck.k9.mail.FolderType
 import com.fsck.k9.mail.store.imap.FolderListItem
 import com.fsck.k9.mail.store.imap.ImapStore
 import net.thunderbird.core.logging.Logger
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.legacy.logging.Log
 import net.thunderbird.feature.mail.folder.api.FolderPathDelimiter
 
 private const val TAG = "CommandRefreshFolderList"
@@ -34,9 +34,15 @@ internal class CommandRefreshFolderList(
             val foldersToCreate = mutableListOf<FolderInfo>()
             for (folder in foldersOnServer) {
                 if (folder.normalizedServerId !in oldFolderServerIds) {
-                    foldersToCreate.add(FolderInfo(folder.normalizedServerId, folder.name, folder.type))
+                    foldersToCreate.add(
+                        FolderInfo(
+                            serverId = folder.normalizedServerId,
+                            name = folder.name,
+                            type = folder.type,
+                        ),
+                    )
                 } else {
-                    changeFolder(folder.normalizedServerId, folder.name, folder.type)
+                    changeFolder(folderServerId = folder.normalizedServerId, name = folder.name, type = folder.type)
                 }
             }
 
@@ -54,7 +60,7 @@ internal class CommandRefreshFolderList(
 
 private fun List<FolderListItem>.toLegacyFolderList(): List<LegacyFolderListItem> {
     return this
-        .map { LegacyFolderListItem(it.serverId, it.name, it.type) }
+        .map { LegacyFolderListItem(serverId = it.serverId, name = it.name, type = it.type) }
 }
 
 private data class LegacyFolderListItem(

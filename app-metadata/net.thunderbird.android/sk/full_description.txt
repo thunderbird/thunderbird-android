@@ -1,0 +1,16 @@
+Thunderbird je výkonná e-mailová aplikácia zameraná na súkromie. Bez námahy spravujte viacero e-mailových účtov z jednej aplikácie s možnosťou Zjednotenej schránky pre maximálnu produktivitu. Postavená na otvorených technológiách a podporovaný oddaným týmom vývojárov spolu s globálnou komunitou dobrovoľníkov, Thunderbird nikdy z Vašimi súkromnými údajmi nezaobchádza ako s produktom. Podporovaný výlučne finančnými príspevkami od našich používateľov, takže už nikdy znova nemusíte vidieť reklamy zmiešané z vašimi e-mailami.
+
+<b>Čo môžete robiť</b>
+<li>Zabudnite na viacero aplikácií a webmail. Použite jednu aplikáciu s voliteľnou Jednotnou schránkou na zvládnutie dňa.</li>
+<li>Vychutnajte si e-mailového klienta, ktorý nikdy nezhromažďuje ani nepredáva vaše osobné údaje. Priamo was prepájame do Vášho poskytovateľa e-mailu. To je všetko!</li>
+<li>Vytvorený tímom ktorý je tak rovnako zameraný na efektivitu ako Vy. Chceme aby ste trávili minimum času používaním tejto aplikácie a zároveň za to dostali maximum.</li>
+<li>Vďaka prispievateľom z celého sveta bol Thunderbird pre Android preložený do viac ako 20 jazykov.</li>
+<li>Podporovaný spoločnosťou MZLA Technologies Corporation, stopercentnou dcérskou spoločnosťou Nadácie Mozilla.</li>
+</ul>
+
+<b>Open Source a Komunita</b>
+<ul>
+<li>Thunderbird je zadarmo a s otvoreným zdrojovým kódom, čo znamená, že jeho kód je dostupný na prezeranie, úpravu, používanie a voľné zdieľanie. Jeho licencia tiež zaručuje že bude navždy bezplatný. Thunderbird si môžete predstaviť ako dar od tisícov prispievateľov pre Vás.</li>
+<li>Vyvíjame otvorene s pravidelnými a transparentnými aktualizáciami na našom blogu a v e-mailových zoznamoch.</li>
+<li>Našu používateľskú podporu poháňa naša celosvetová komunita. Nájdite odpovede, ktoré potrebujete, alebo vkročte do úlohy prispievateľa - či už odpovedáte na otázky, prekladáte aplikáciu, alebo rozprávate svojím kamarátom a rodine o Thunderbirde.</li>
+</ul>

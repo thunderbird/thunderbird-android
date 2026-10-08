@@ -17,7 +17,7 @@ A Thunderbird egy sokoldalú, adatvédelem-központú levelezőalkalmazás. Keze
 
 <b>Kompatibilitás</b>
 <ul>
-  <li>Thunderbird works with IMAP and POP3 protocols, supporting a wide range of email providers, including Gmail, Outlook, Yahoo Mail, iCloud, and more.</li>
+  <li>A Thunderbird az IMAP és POP3 protokollokkal működik, változatosa e-mail-szolgáltatókat támogatva, köztük a Gmailt, az Outlookot, a Yahoo Mailt, az iCloudot és másokat.</li>
 </ul>
 
 <b>Miért a Thunderbird?</b>

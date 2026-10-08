@@ -17,16 +17,19 @@ import com.fsck.k9.mail.store.imap.ImapStoreSettings.pathPrefix
 import net.thunderbird.core.validation.input.NumberInputField
 import net.thunderbird.core.validation.input.StringInputField
 
-fun AccountState.toIncomingServerSettingsState() = incomingServerSettings?.toIncomingServerSettingsState()
+fun AccountState.toIncomingServerSettingsState() = incomingServerSettings?.toIncomingServerSettingsStateOrNull()
     ?: State(
         username = StringInputField(value = emailAddress ?: ""),
         server = StringInputField(value = emailAddress?.toInvalidEmailDomain() ?: ""),
     )
 
-private fun ServerSettings.toIncomingServerSettingsState(): State {
+// Server settings with an unsupported protocol (e.g. "demo" from the debug/daily DemoAutoDiscovery) are treated
+// like missing settings, so the user ends up with the manual configuration defaults instead of a crash.
+private fun ServerSettings.toIncomingServerSettingsStateOrNull(): State? {
+    val protocolType = IncomingProtocolType.fromNameOrNull(type) ?: return null
     return State(
-        protocolType = IncomingProtocolType.fromName(type),
-        server = StringInputField(value = host ?: ""),
+        protocolType = protocolType,
+        server = StringInputField(value = host),
         security = connectionSecurity.toConnectionSecurity(),
         port = NumberInputField(value = port.toLong()),
         authenticationType = authenticationType.toAuthenticationType(),

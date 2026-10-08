@@ -91,9 +91,9 @@ internal class DrawerViewKtTest : ComposeTest() {
             )
         }
 
-        drawerStateFlow.emit(initialDrawerState.copy(selectedAccountUuid = FakeData.ACCOUNT.uuid))
+        drawerStateFlow.emit(initialDrawerState.copy(selectedAccountUuid = FakeData.ACCOUNT.id.toString()))
 
-        viewModel.events.contains(Event.SelectAccount(FakeData.ACCOUNT.uuid))
+        viewModel.events.contains(Event.SelectAccount(FakeData.ACCOUNT.id.toString()))
 
         drawerStateFlow.emit(initialDrawerState.copy(selectedAccountUuid = null))
 

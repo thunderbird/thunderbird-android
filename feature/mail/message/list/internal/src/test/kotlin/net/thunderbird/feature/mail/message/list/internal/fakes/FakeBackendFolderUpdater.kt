@@ -9,10 +9,17 @@ internal open class FakeBackendFolderUpdater(
     private val returnEmptySetWhenCreatingFolders: Boolean = false,
 ) : BackendFolderUpdater {
     private val ids = mutableSetOf<Long>()
+    val createFoldersCalls = mutableListOf<List<FolderInfo>>()
+    val changeFolderCalls = mutableListOf<ChangeFolderCall>()
+    var closeCalls = 0
+
     override fun createFolders(folders: List<FolderInfo>): Set<Long> {
+        createFoldersCalls += folders
         return when {
             exception != null -> throw exception
+
             returnEmptySetWhenCreatingFolders -> emptySet()
+
             else -> ids.apply {
                 var last = ids.lastOrNull() ?: 0
                 addAll(folders.map { ++last })
@@ -25,10 +32,18 @@ internal open class FakeBackendFolderUpdater(
     }
 
     override fun changeFolder(folderServerId: String, name: String, type: FolderType) {
+        changeFolderCalls += ChangeFolderCall(folderServerId, name, type)
         if (exception != null) throw exception
     }
 
     override fun close() {
+        closeCalls += 1
         if (exception != null) throw exception
     }
+
+    data class ChangeFolderCall(
+        val folderServerId: String,
+        val name: String,
+        val type: FolderType,
+    )
 }

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="swipe_action_archive">Arxiv</string>
+    <string name="swipe_action_delete">Sil</string>
+    <string name="swipe_action_spam">Spam</string>
+    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> seçildi</string>
+</resources>

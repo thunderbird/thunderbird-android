@@ -3,9 +3,8 @@ plugins {
 }
 
 kotlin {
-    androidLibrary {
+    android {
         namespace = "net.thunderbird.feature.account.profile"
-        withHostTest {}
     }
     sourceSets {
         commonMain.dependencies {
@@ -14,4 +13,8 @@ kotlin {
             api(projects.feature.account.avatar.api)
         }
     }
+}
+
+codeCoverage {
+    lineCoverage = 0
 }

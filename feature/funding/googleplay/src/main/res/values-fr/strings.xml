@@ -54,4 +54,6 @@
     <string name="funding_googleplay_contribution_reminder_statement_point_1">Nous n’affichons pas de publicités.</string>
     <string name="funding_googleplay_contribution_reminder_statement_point_2">Nous ne vendons pas vos données.</string>
     <string name="funding_googleplay_contribution_reminder_claim">Nous sommes entièrement financés par des utilisatrices et des utilisateurs tels que vous.</string>
+    <string name="funding_googleplay_contribution_footer_payment_processing_button">Traitement de l’achat…</string>
+    <string name="funding_googleplay_contribution_footer_payment_cancel_button">Annuler</string>
 </resources>

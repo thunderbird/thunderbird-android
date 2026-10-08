@@ -3,8 +3,8 @@ package net.thunderbird.feature.account.avatar.ui
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleLarge
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleMedium
+import net.thunderbird.components.ui.bolt.atom.text.TextTitleLarge
+import net.thunderbird.components.ui.bolt.atom.text.TextTitleMedium
 
 /**
  * Composable function to display a monogram avatar.

@@ -1,7 +1,7 @@
 package app.k9mail.feature.account.server.certificate.ui
 
-import app.k9mail.core.ui.compose.common.mvi.UnidirectionalViewModel
 import app.k9mail.feature.account.server.certificate.domain.entity.FormattedServerCertificateError
+import net.thunderbird.core.ui.contract.mvi.UnidirectionalViewModel
 
 interface ServerCertificateErrorContract {
 

@@ -43,18 +43,46 @@ dependencyResolutionManagement {
                 includeGroup("com.github.cketti")
             }
         }
+        maven(url = "https://central.sonatype.com/repository/maven-snapshots/") {
+            mavenContent {
+                snapshotsOnly()
+                includeGroupAndSubgroups("net.thunderbird.components")
+            }
+        }
         mavenCentral()
+    }
+}
+
+val useLocalComponents = providers.gradleProperty("tb.components.local")
+    .map(String::toBoolean)
+    .getOrElse(true)
+
+val useLocalBolt = providers.gradleProperty("tb.components.local.bolt")
+    .map(String::toBoolean)
+    .getOrElse(useLocalComponents)
+
+if (useLocalComponents || useLocalBolt) {
+    includeBuild("components") {
+        dependencySubstitution {
+            if (useLocalBolt) {
+                substitute(module("net.thunderbird.components.ui.bolt:bolt")).using(project(":ui:bolt"))
+            }
+
+            if (useLocalComponents) {
+                substitute(module("net.thunderbird.components.ui:testing")).using(project(":ui:testing"))
+            }
+        }
     }
 }
 
 include(
     ":app-k9mail",
     ":app-thunderbird",
-    ":app-ui-catalog",
 )
 
 include(
     ":app-common",
+    ":app-composition",
 )
 
 include(
@@ -98,13 +126,17 @@ include(
 include(
     ":feature:mail:account:api",
     ":feature:mail:folder:api",
-    ":feature:mail:message:composer",
+    ":feature:mail:message:api",
+    ":feature:mail:message:composer:api",
+    ":feature:mail:message:composer:internal",
     ":feature:mail:message:list:api",
     ":feature:mail:message:list:internal",
     ":feature:mail:message:export:api",
     ":feature:mail:message:export:impl-eml",
     ":feature:mail:message:reader:api",
     ":feature:mail:message:reader:impl",
+    ":feature:mail:storage:global-db-migration:api",
+    ":feature:mail:storage:global-db-migration:internal",
 )
 
 include(
@@ -118,6 +150,7 @@ include(
 include(
     ":feature:navigation:drawer:api",
     ":feature:navigation:drawer:dropdown",
+    ":feature:changelog:api",
 )
 
 include(
@@ -161,19 +194,18 @@ include(
     ":core:common",
     ":core:configstore:api",
     ":core:configstore:impl-backend",
+    ":core:configstore:testing",
     ":core:featureflag",
     ":core:logging:api",
     ":core:logging:config",
     ":core:logging:impl-composite",
     ":core:logging:impl-console",
-    ":core:logging:impl-legacy",
     ":core:logging:impl-file",
     ":core:logging:testing",
     ":core:file",
     ":core:mail:mailserver",
     ":core:preference:api",
     ":core:preference:impl",
-    ":core:outcome",
     ":core:testing",
     ":core:validation",
 )
@@ -186,9 +218,11 @@ include(
     ":core:android:network",
     ":core:android:permissions",
     ":core:android:testing",
+    ":core:android:webkit",
 )
 
 include(
+    ":core:ui:contract",
     ":core:ui:setting:api",
     ":core:ui:setting:component",
     ":core:ui:setting:impl-dialog",
@@ -196,17 +230,14 @@ include(
 
 include(
     ":core:ui:account",
+    ":core:ui:animation:manager",
     ":core:ui:compose:common",
-    ":core:ui:compose:designsystem",
-    ":core:ui:compose:navigation",
     ":core:ui:compose:testing",
-    ":core:ui:compose:theme2:common",
-    ":core:ui:compose:theme2:k9mail",
-    ":core:ui:compose:theme2:thunderbird",
     ":core:ui:legacy:designsystem",
     ":core:ui:legacy:theme2:common",
     ":core:ui:legacy:theme2:k9mail",
     ":core:ui:legacy:theme2:thunderbird",
+    ":core:ui:navigation",
     ":core:ui:theme:api",
     ":core:ui:theme:manager",
 )
@@ -229,6 +260,7 @@ include(
 )
 
 include(
+    ":legacy:logging",
     ":legacy:common",
     ":legacy:core",
     ":legacy:crypto-openpgp",
@@ -254,11 +286,14 @@ include(
     ":cli:html-cleaner-cli",
     ":cli:resource-mover-cli",
     ":cli:translation-cli",
+    ":cli:weblate-cli",
 )
 
 include(
     ":library:html-cleaner",
     ":library:token-auto-complete",
+    ":library:pii-safe:annotations",
+    ":library:pii-safe:compiler-plugin",
 )
 
 include(
@@ -267,6 +302,13 @@ include(
 
 include(
     ":feature:debug-settings",
+)
+
+include(
+    ":feature:thundermail:api",
+    ":feature:thundermail:internal:common",
+    ":feature:thundermail:thunderbird",
+    ":feature:thundermail:k9mail",
 )
 
 check(JavaVersion.current().isCompatibleWith(JavaVersion.VERSION_21)) {
@@ -280,3 +322,5 @@ check(JavaVersion.current().isCompatibleWith(JavaVersion.VERSION_21)) {
         https://developer.android.com/build/jdks#jdk-config-in-studio
     """.trimIndent()
 }
+include(":feature:changelog:internal")
+include(":feature:funding:common")

@@ -1,0 +1,137 @@
+package net.thunderbird.feature.mail.message.list.internal.ui.state.sideeffect
+
+import assertk.assertThat
+import assertk.assertions.containsExactly
+import assertk.assertions.hasSize
+import assertk.assertions.isEqualTo
+import kotlin.test.Test
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.runTest
+import net.thunderbird.core.common.state.sideeffect.StateSideEffectHandler
+import net.thunderbird.core.logging.testing.TestLogger
+import net.thunderbird.core.preference.display.visualSettings.message.list.UiDensity
+import net.thunderbird.feature.mail.message.list.domain.DomainContract.UseCase.GetMessageListPreferences
+import net.thunderbird.feature.mail.message.list.internal.fakes.RecordingFunction
+import net.thunderbird.feature.mail.message.list.preferences.MessageListPreferences
+import net.thunderbird.feature.mail.message.list.ui.event.MessageListEvent
+import net.thunderbird.feature.mail.message.list.ui.state.MessageListState
+
+class LoadPreferencesSideEffectTest : BaseSideEffectHandlerTest() {
+    @Test
+    fun `handle() should return Consumed if event is LoadConfigurations`() = runTest {
+        // Arrange
+        val testSubject = LoadPreferencesSideEffect(
+            dispatch = {},
+            scope = backgroundScope,
+            logger = TestLogger(),
+            getMessageListPreferences = FakeGetMessageListPreferences(),
+        )
+
+        // Act
+        val actual = testSubject.handle(
+            event = MessageListEvent.LoadConfigurations,
+            oldState = MessageListState.WarmingUp(),
+            newState = createReadyWarmingUpState(),
+        )
+
+        // Assert
+        assertThat(actual).isEqualTo(StateSideEffectHandler.ConsumeResult.Consumed)
+    }
+
+    @Test
+    fun `handle() should return Ignored if event is not LoadConfigurations`() = runTest {
+        // Arrange
+        val testSubject = LoadPreferencesSideEffect(
+            dispatch = {},
+            scope = backgroundScope,
+            logger = TestLogger(),
+            getMessageListPreferences = FakeGetMessageListPreferences(),
+        )
+
+        // Act
+        val actual = testSubject.handle(
+            event = MessageListEvent.ExitSelectionMode,
+            oldState = MessageListState.WarmingUp(),
+            newState = createReadyWarmingUpState(),
+        )
+
+        // Assert
+        assertThat(actual).isEqualTo(StateSideEffectHandler.ConsumeResult.Ignored)
+    }
+
+    @Test
+    @OptIn(ExperimentalCoroutinesApi::class)
+    fun `handle() should start getMessageListPreferences flow and dispatch UpdatePreferences event`() =
+        runTest(UnconfinedTestDispatcher()) {
+            // Arrange
+            val dispatch = RecordingFunction<MessageListEvent>()
+            val initialPreferences = createMessageListPreferences(density = UiDensity.Compact)
+            val fakeGetMessageListPreferences = FakeGetMessageListPreferences(initialPreferences)
+            val testSubject = LoadPreferencesSideEffect(
+                dispatch = dispatch.function,
+                scope = backgroundScope,
+                logger = TestLogger(),
+                getMessageListPreferences = fakeGetMessageListPreferences,
+            )
+            val oldState = MessageListState.WarmingUp()
+            val newState = oldState.withMetadata { copy(isActive = true) }
+
+            // Act
+            testSubject.handle(event = MessageListEvent.LoadConfigurations, oldState = oldState, newState = newState)
+
+            // Assert
+            assertThat(dispatch.calls).containsExactly(MessageListEvent.UpdatePreferences(initialPreferences))
+        }
+
+    @Test
+    @OptIn(ExperimentalCoroutinesApi::class)
+    fun `getMessageListPreferences() should dispatch UpdatePreferences event whenever a new preferences is emitted`() =
+        runTest(UnconfinedTestDispatcher()) {
+            // Arrange
+            val dispatch = RecordingFunction<MessageListEvent>()
+            val initialPreferences = createMessageListPreferences(density = UiDensity.Compact)
+            val fakeGetMessageListPreferences = FakeGetMessageListPreferences(initialPreferences)
+            val testSubject = LoadPreferencesSideEffect(
+                dispatch = dispatch.function,
+                scope = backgroundScope,
+                logger = TestLogger(),
+                getMessageListPreferences = fakeGetMessageListPreferences,
+            )
+            val oldState = MessageListState.WarmingUp()
+            val newState = oldState.withMetadata { copy(isActive = true) }
+
+            // Act
+            testSubject.handle(event = MessageListEvent.LoadConfigurations, oldState = oldState, newState = newState)
+            repeat(times = 10) { index ->
+                fakeGetMessageListPreferences.emit(
+                    preferences = createMessageListPreferences(
+                        density = UiDensity.entries[index % UiDensity.entries.size],
+                        showMessageAvatar = index % 2 == 0,
+                        showFavouriteButton = index % 3 == 0,
+                        senderAboveSubject = index % 4 == 0,
+                        colorizeBackgroundWhenRead = index % 5 == 0,
+                    ),
+                )
+            }
+
+            // Assert
+            assertThat(dispatch.calls).hasSize(11)
+        }
+
+    private inner class FakeGetMessageListPreferences(
+        initialValue: MessageListPreferences = createMessageListPreferences(),
+    ) : GetMessageListPreferences {
+        private val preferences = MutableSharedFlow<MessageListPreferences>(replay = 1)
+
+        init {
+            preferences.tryEmit(initialValue)
+        }
+
+        override fun invoke(): Flow<MessageListPreferences> = preferences
+
+        suspend fun emit(preferences: MessageListPreferences) = this.preferences.emit(preferences)
+    }
+}

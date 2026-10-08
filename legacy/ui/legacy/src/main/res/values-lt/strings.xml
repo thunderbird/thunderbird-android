@@ -34,7 +34,6 @@
     <string name="choose_folder_title">Pasirinkti aplanką</string>
     <string name="choose_folder_move_title">Perkelti į…</string>
     <string name="choose_folder_copy_title">Kopijuoti į…</string>
-    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> pasirinkta</string>
     <string name="send_action">Siųsti</string>
     <string name="empty_subject">Tema yra tuščia. Spustelėkite dar kartą, kad vis tiek išsiųstumėte</string>
     <string name="reply_action">Atsakyti</string>
@@ -93,11 +92,11 @@
     <!--Shown in place of the subject when a message has no subject. Showing this in parentheses is customary.-->
     <string name="general_no_subject">(Nėra temos)</string>
     <string name="general_no_sender">Nėra siuntėjo</string>
-    <string name="status_loading_more">Įkeliami laiškai\u2026</string>
+    <string name="status_loading_more">Įkeliami laiškai…</string>
     <string name="status_network_error">Ryšio klaida.</string>
     <string name="status_invalid_id_error">Laiškas nerastas.</string>
     <string name="status_loading_error">Laiško įkėlimo klaida.</string>
-    <string name="load_more_messages_fmt">Įkelti  iki <xliff:g id="messages_to_load">%d</xliff:g> daugiau</string>
+    <string name="load_more_messages_fmt">Įkelti iki <xliff:g id="messages_to_load">%d</xliff:g> daugiau</string>
     <string name="size_format_gigabytes">%.1f GB</string>
     <string name="size_format_megabytes">%.1f MB</string>
     <string name="size_format_kilobytes">%.1f kB</string>
@@ -156,8 +155,7 @@
     <string name="message_compose_quote_header_from">Nuo:</string>
     <string name="message_compose_quote_header_to">Kam:</string>
     <string name="message_compose_quote_header_cc">Cc:</string>
-    <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> rašė:
-</string>
+    <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> rašė:</string>
     <string name="message_compose_reply_header_fmt_with_date"><xliff:g id="sent_date">%1$s</xliff:g>, <xliff:g id="sender">%2$s</xliff:g> parašė:</string>
     <string name="message_compose_error_no_recipients">Turite pridėti bent vieną gavėją.</string>
     <string name="compose_error_incomplete_recipient">Gavėjo lauke pateikti neišsamūs įvesties duomenys!</string>
@@ -177,7 +175,7 @@
     <!--Displayed in the message view screen in front of the number of additional recipients (the ones that are not displayed).-->
     <string name="message_view_additional_recipient_prefix">+</string>
     <!--Displayed in the message view screen if the message was addressed to the user. Make sure this works with 'message_view_recipient_prefix'. In English it's "to me".-->
-    <string name="message_view_me_text">aš</string>
+    <string name="message_view_to_me_text">aš</string>
     <!--Text of the button that is displayed below the message header when the message body references one or more remote images-->
     <string name="message_view_show_remote_images_action">Rodyti nuotolinius paveikslėlius</string>
     <string name="message_view_no_viewer">Nepavyko rasto <xliff:g id="mimetype">%s</xliff:g> peržiūros programos.</string>
@@ -513,7 +511,6 @@
     <string name="account_setup_push_limit_500">500 aplankų</string>
     <string name="account_setup_push_limit_1000">1000 aplankų</string>
     <string name="animations_title">Animacija</string>
-    <string name="animations_summary">Naudoti įmantrius vizualinius efektus</string>
     <string name="show_unified_inbox_title">Rodyti suvestinius gautuosius</string>
     <string name="show_starred_count_title">Rodyti žvaigždučių skaičių</string>
     <string name="integrated_inbox_title">Suvestiniai gautieji</string>
@@ -733,7 +730,6 @@
     <string name="crypto_msg_encrypted_insecure">bet šifravimas nelaikomas saugiu</string>
     <string name="locked_attach_unlock">Atrakinti</string>
     <string name="locked_attach_unencrypted">Ši dalis nebuvo užšifruota ir gali būti nesaugi.</string>
-    <string name="locked_attach_title">Neapsaugotas priedas</string>
     <string name="message_progress_text">Įkeliama…</string>
     <string name="messageview_decrypt_cancelled">Iššifravimas buvo atšauktas.</string>
     <string name="messageview_decrypt_retry">Pakartoti</string>
@@ -785,12 +781,7 @@
     <string name="ac_transfer_finish">Kad baigti, atidarykite laišką kitame prietaise ir įveskite sąrankos kodą.</string>
     <string name="ac_transfer_show_code">Rodyti sąrankos kodą</string>
     <string name="ac_transfer_msg_subject">Automatinio šifravimo sąrankos laiškas</string>
-    <string name="ac_transfer_msg_body">Šioje žinutėje pateikiama visa informacija, skirta saugiai perkelti automatinio šifravimo nustatymus ir slaptąjį raktą iš pradinio įrenginio.
-
-Norėdami nustatyti automatinį šifravimą naujajame prietaise, vadovaukitės instrukcijomis, kurios turėtų būti pateiktos naujajame prietaise.
-
-Šią žinutę galite pasilikti ir naudoti kaip atsarginę slaptojo rakto kopiją. Jei norite tai padaryti, turėtumėte užsirašyti slaptažodį ir saugiai jį laikyti.
-</string>
+    <string name="ac_transfer_msg_body">Šioje žinutėje pateikiama visa informacija, skirta saugiai perkelti automatinio šifravimo nustatymus ir slaptąjį raktą iš pradinio įrenginio. Norėdami nustatyti automatinį šifravimą naujajame prietaise, vadovaukitės instrukcijomis, kurios turėtų būti pateiktos naujajame prietaise. Šią žinutę galite pasilikti ir naudoti kaip atsarginę slaptojo rakto kopiją. Jei norite tai padaryti, turėtumėte užsirašyti slaptažodį ir saugiai jį laikyti.</string>
     <string name="ac_transfer_error_send">Siunčiant laišką įvyko klaida. Patikrinkite tinklo ryšį ir siunčiamo serverio konfigūraciją.</string>
     <string name="switch_on">Įj.</string>
     <string name="switch_off">Išj.</string>
@@ -807,25 +798,15 @@ Norėdami nustatyti automatinį šifravimą naujajame prietaise, vadovaukitės i
     <string name="push_info_disable_push_text">Jei jums nereikia momentinių pranešimų apie naujus laiškus, turėtumėte išjungti Push ir naudoti Polling. Polling reguliariai tikrina, ar yra naujų laiškų, ir pranešimo nereikia.</string>
     <string name="push_info_disable_push_action">Išjungti Push</string>
     <!--Name of the swipe action to select a message. Try to keep it short.-->
-    <string name="swipe_action_select">Pasirinkti</string>
     <!--Name of the swipe action to deselect a message. Try to keep it short.-->
-    <string name="swipe_action_deselect">Nebežymėti</string>
     <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
-    <string name="swipe_action_mark_as_read">Pažymėti kaip skaitytą</string>
     <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
-    <string name="swipe_action_mark_as_unread">Pažymėti kaip neskaitytą</string>
     <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
-    <string name="swipe_action_add_star">Pridėti žvaigždutę</string>
     <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
-    <string name="swipe_action_remove_star">Pašalinti žvaigždutę</string>
     <!--Name of the swipe action to archive a message. Try to keep it short.-->
-    <string name="swipe_action_archive">Archyvuoti</string>
     <!--Name of the swipe action to delete a message. Try to keep it short.-->
-    <string name="swipe_action_delete">Šalinti</string>
     <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
-    <string name="swipe_action_spam">Brukalas</string>
     <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
-    <string name="swipe_action_move">Perkelti…</string>
     <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
     <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
     <string name="message_list_error_title">Klaida</string>
@@ -865,9 +846,7 @@ Norėdami nustatyti automatinį šifravimą naujajame prietaise, vadovaukitės i
     <string name="general_settings_post_remove_action_show_previous_message">Rodyti ankstesnį laišką</string>
     <string name="general_settings_ui_density_relaxed">Mažesnis</string>
     <string name="general_settings_show_compose_button_title">Rodyti slankų rašymo mygtuką</string>
-    <string name="notification_notify_error_text">Bandant sukurti sistemos pranešimą apie naują laišką, įvyko klaida. Tikėtina priežastis – trūkstamas pranešimo garsas.
-\n
-\nBakstelėkite pranešimų nustatymams atverti.</string>
+    <string name="notification_notify_error_text">Bandant sukurti sistemos pranešimą apie naują laišką, įvyko klaida. Tikėtina priežastis – trūkstamas pranešimo garsas. \n \nBakstelėkite pranešimų nustatymams atverti.</string>
     <string name="general_settings_post_remove_action_show_next_message">Rodyti kitą laišką</string>
     <string name="general_settings_post_remove_action_title">Pašalinus ar perkėlus laišką</string>
     <string name="general_settings_right_swipe_title">Braukimas dešinėn</string>
@@ -912,8 +891,6 @@ Norėdami nustatyti automatinį šifravimą naujajame prietaise, vadovaukitės i
     <string name="settings_list_action_support">Palaikyti <xliff:g id="app_name">%s</xliff:g></string>
     <string name="expand_content_description">Išplėsti</string>
     <string name="debug_enable_sync_debug_logging_title">Įjungti klaidų rašymo sinchronizavimą</string>
-    <string name="swipe_action_archive_folder_not_set">Nustatyti archyvo aplanką</string>
-    <string name="swipe_action_change_swipe_gestures">Pakeisti \nPerbraukimo gestas</string>
     <string name="archiving_not_available_for_this_account">Šiai paskyrai archyvavimas neprieinamas.</string>
     <string name="debug_open_secret_debug_screen">Atverti slaptą derinimo ekraną</string>
     <string name="debug_invalidate_access_token_unavailable">Šiai paskyrai OAuth rakas neprieinamas.</string>

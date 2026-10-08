@@ -2,6 +2,9 @@ package com.fsck.k9.helper
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import assertk.assertions.isNotNull
+import assertk.assertions.isNull
+import assertk.assertions.prop
 import com.fsck.k9.mail.Address
 import com.fsck.k9.mail.Message
 import com.fsck.k9.mail.Message.RecipientType
@@ -11,6 +14,7 @@ import java.util.UUID
 import net.thunderbird.core.android.account.Identity
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.testing.RobolectricTest
+import net.thunderbird.feature.account.AccountIdFactory
 import org.junit.Test
 
 class IdentityHelperTest : RobolectricTest() {
@@ -115,7 +119,34 @@ class IdentityHelperTest : RobolectricTest() {
         assertThat(identity.email).isEqualTo(DEFAULT_ADDRESS)
     }
 
-    private fun createDummyAccount() = LegacyAccountDto(UUID.randomUUID().toString()).apply {
+    @Test
+    fun getSenderIdentityFromMessage_withKnownSender_returnsMatchingIdentity() {
+        val message = messageWithSender(IDENTITY_1_ADDRESS)
+
+        val identity = IdentityHelper.getSenderIdentityFromMessage(account, message)
+
+        assertThat(identity).isNotNull().prop(Identity::email).isEqualTo(IDENTITY_1_ADDRESS)
+    }
+
+    @Test
+    fun getSenderIdentityFromMessage_withUnknownSender_returnsNull() {
+        val message = messageWithSender("unrelated@example.org")
+
+        val identity = IdentityHelper.getSenderIdentityFromMessage(account, message)
+
+        assertThat(identity).isNull()
+    }
+
+    @Test
+    fun getSenderIdentityFromMessage_withoutFromHeader_returnsNull() {
+        val emptyMessage = MimeMessage()
+
+        val identity = IdentityHelper.getSenderIdentityFromMessage(account, emptyMessage)
+
+        assertThat(identity).isNull()
+    }
+
+    private fun createDummyAccount() = LegacyAccountDto(AccountIdFactory.create()).apply {
         replaceIdentities(
             listOf(
                 newIdentity("Default", DEFAULT_ADDRESS),
@@ -139,6 +170,12 @@ class IdentityHelperTest : RobolectricTest() {
                 val headerName = recipientType.toHeaderName()
                 addHeader(headerName, AddressHeaderBuilder.createHeaderValue(arrayOf(Address(email))))
             }
+        }
+    }
+
+    private fun messageWithSender(email: String): Message {
+        return MimeMessage().apply {
+            setFrom(Address(email))
         }
     }
 

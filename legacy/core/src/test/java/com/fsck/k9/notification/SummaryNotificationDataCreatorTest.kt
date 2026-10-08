@@ -8,18 +8,21 @@ import assertk.assertions.isEqualTo
 import assertk.assertions.isFalse
 import assertk.assertions.isInstanceOf
 import assertk.assertions.isTrue
-import com.fsck.k9.K9
+import com.fsck.k9.mail.Address
 import java.util.Calendar
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.preference.GeneralSettings
+import net.thunderbird.core.preference.LockScreenNotificationVisibility
+import net.thunderbird.core.preference.NotificationQuickDelete
 import net.thunderbird.core.preference.display.DisplaySettings
 import net.thunderbird.core.preference.network.NetworkSettings
 import net.thunderbird.core.preference.notification.NotificationPreference
 import net.thunderbird.core.preference.privacy.PrivacySettings
 import net.thunderbird.core.testing.TestClock
+import net.thunderbird.feature.account.AccountIdFactory
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -34,6 +37,9 @@ private val TIMESTAMP = 0L
 
 @OptIn(ExperimentalTime::class)
 class SummaryNotificationDataCreatorTest {
+
+    private val accountId = AccountIdFactory.create()
+
     private val account = createAccount()
     private val testClock = TestClock()
     private var generalSettings = GeneralSettings(
@@ -51,6 +57,7 @@ class SummaryNotificationDataCreatorTest {
             interactionPreferences = mock {
                 on { getConfig() } doAnswer { generalSettings.interaction }
             },
+            notificationPreference = mock { on { getConfig() } doReturn generalSettings.notification },
         ),
         generalSettingsManager = mock {
             on { getConfig() } doAnswer { generalSettings }
@@ -97,6 +104,9 @@ class SummaryNotificationDataCreatorTest {
                 interactionPreferences = mock {
                     on { getConfig() } doReturn generalSettings.interaction
                 },
+                notificationPreference = mock {
+                    on { getConfig() } doReturn generalSettings.notification
+                },
             ),
             generalSettingsManager = mock {
                 on { getConfig() } doReturn generalSettings.copy(
@@ -137,6 +147,9 @@ class SummaryNotificationDataCreatorTest {
             singleMessageNotificationDataCreator = SingleMessageNotificationDataCreator(
                 interactionPreferences = mock {
                     on { getConfig() } doReturn generalSettings.interaction
+                },
+                notificationPreference = mock {
+                    on { getConfig() } doReturn generalSettings.notification
                 },
             ),
             generalSettingsManager = mock {
@@ -200,7 +213,7 @@ class SummaryNotificationDataCreatorTest {
 
     @Test
     fun `always show delete action without confirmation`() {
-        setDeleteAction(K9.NotificationQuickDelete.ALWAYS)
+        setDeleteAction(NotificationQuickDelete.ALWAYS)
         setConfirmDeleteFromNotification(false)
         val notificationData = createNotificationDataWithMultipleMessages()
 
@@ -216,7 +229,7 @@ class SummaryNotificationDataCreatorTest {
 
     @Test
     fun `always show delete action with confirmation`() {
-        setDeleteAction(K9.NotificationQuickDelete.ALWAYS)
+        setDeleteAction(NotificationQuickDelete.ALWAYS)
         setConfirmDeleteFromNotification(true)
         val notificationData = createNotificationDataWithMultipleMessages()
 
@@ -232,7 +245,7 @@ class SummaryNotificationDataCreatorTest {
 
     @Test
     fun `show delete action for single notification without confirmation`() {
-        setDeleteAction(K9.NotificationQuickDelete.FOR_SINGLE_MSG)
+        setDeleteAction(NotificationQuickDelete.FOR_SINGLE_MSG)
         setConfirmDeleteFromNotification(false)
         val notificationData = createNotificationDataWithMultipleMessages()
 
@@ -248,7 +261,7 @@ class SummaryNotificationDataCreatorTest {
 
     @Test
     fun `never show delete action`() {
-        setDeleteAction(K9.NotificationQuickDelete.NEVER)
+        setDeleteAction(NotificationQuickDelete.NEVER)
         val notificationData = createNotificationDataWithMultipleMessages()
 
         val result = notificationDataCreator.createSummaryNotificationData(
@@ -295,8 +308,15 @@ class SummaryNotificationDataCreatorTest {
         )
     }
 
-    private fun setDeleteAction(mode: K9.NotificationQuickDelete) {
-        K9.notificationQuickDeleteBehaviour = mode
+    private fun setDeleteAction(mode: NotificationQuickDelete) {
+        val isSummaryDeleteActionEnabled = mode == NotificationQuickDelete.ALWAYS
+
+        generalSettings = generalSettings.copy(
+            notification = generalSettings.notification.copy(
+                isSummaryDeleteActionEnabled = isSummaryDeleteActionEnabled,
+                notificationQuickDeleteBehaviour = mode,
+            ),
+        )
     }
 
     private fun setConfirmDeleteFromNotification(confirm: Boolean) {
@@ -308,14 +328,14 @@ class SummaryNotificationDataCreatorTest {
     }
 
     private fun createAccount(): LegacyAccountDto {
-        return LegacyAccountDto("00000000-0000-0000-0000-000000000000").apply {
+        return LegacyAccountDto(AccountIdFactory.create()).apply {
             accountNumber = 42
         }
     }
 
     private fun createNotificationContent() = NotificationContent(
-        messageReference = MessageReference("irrelevant", 1, "irrelevant"),
-        sender = "irrelevant",
+        messageReference = MessageReference(accountId, 1, "irrelevant"),
+        sender = Address("irrelevant", "irrelevant"),
         subject = "irrelevant",
         preview = "irrelevant",
         summary = "irrelevant",
@@ -328,7 +348,12 @@ class SummaryNotificationDataCreatorTest {
             NotificationHolder(notificationId = index, TIMESTAMP, content)
         }
 
-        return NotificationData(account, activeNotifications, inactiveNotifications = emptyList())
+        return NotificationData(
+            account,
+            activeNotifications,
+            inactiveNotifications = emptyList(),
+            lockScreenNotificationVisibility = LockScreenNotificationVisibility.MESSAGE_COUNT,
+        )
     }
 
     private fun createNotificationDataWithMultipleMessages(times: Int = 2): NotificationData {

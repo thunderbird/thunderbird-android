@@ -13,7 +13,7 @@ import com.fsck.k9.preferences.K9StoragePersister
 import com.fsck.k9.resources.resourcesModule
 import com.fsck.k9.storage.storageModule
 import net.thunderbird.core.featureflag.FeatureFlagProvider
-import net.thunderbird.core.featureflag.InMemoryFeatureFlagProvider
+import net.thunderbird.core.featureflag.provider.evaluator.MultiFeatureFlagProviderEvaluator
 import net.thunderbird.core.preference.storage.StoragePersister
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
@@ -31,12 +31,7 @@ val legacyCommonAppModule = module {
     single<StoragePersister> {
         K9StoragePersister(get(), get())
     }
-    single<FeatureFlagProvider>(createdAtStart = true) {
-        InMemoryFeatureFlagProvider(
-            featureFlagFactory = get(),
-            featureFlagOverrides = get(),
-        )
-    }
+    single<FeatureFlagProvider> { get<MultiFeatureFlagProviderEvaluator>() }
 }
 
 val legacyCommonAppModules = listOf(

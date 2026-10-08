@@ -10,8 +10,12 @@ dependencies {
     api(projects.core.common)
 
     implementation(projects.core.logging.api)
-    implementation(projects.core.logging.implLegacy)
 
     testImplementation(projects.core.testing)
     testImplementation(libs.robolectric)
+}
+
+codeCoverage {
+    branchCoverage = 0
+    lineCoverage = 0
 }

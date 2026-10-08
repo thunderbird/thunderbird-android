@@ -30,7 +30,6 @@
     <string name="compose_title_forward">Teruskan</string>
     <string name="compose_title_forward_as_attachment">Teruskan sebagai lampiran</string>
     <string name="choose_folder_title">Pilih Folder</string>
-    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> dipilih</string>
     <string name="send_action">Kirim</string>
     <string name="empty_subject">Subjek kosong, klik lagi untuk mengirim</string>
     <string name="reply_action">Balas</string>
@@ -82,12 +81,11 @@
     <!--Shown in place of the subject when a message has no subject. Showing this in parentheses is customary.-->
     <string name="general_no_subject">(Tidak ada subjek)</string>
     <string name="general_no_sender">Tidak ada pengirim</string>
-    <string name="status_loading_more">Memuat pesan\u2026</string>
+    <string name="status_loading_more">Memuat pesan…</string>
     <string name="status_network_error">Galat sambungan</string>
     <string name="status_invalid_id_error">Pesan tidak ditemukan</string>
     <string name="status_loading_error">Kesalahan pemuatan pesan</string>
-    <string name="load_more_messages_fmt">Muat sampai
-    dengan <xliff:g id="messages_to_load">%d</xliff:g> lagi</string>
+    <string name="load_more_messages_fmt">Muat sampai dengan <xliff:g id="messages_to_load">%d</xliff:g> lagi</string>
     <string name="size_format_gigabytes">%.1f GB</string>
     <string name="size_format_megabytes">%.1f MB</string>
     <string name="size_format_kilobytes">%.1f kB</string>
@@ -277,10 +275,10 @@
     <string name="account_settings_notify_self_summary">Tampilkan notifikasi untuk pesan yang saya kirim</string>
     <string name="account_notify_contacts_mail_only_label">Hanya kontak</string>
     <string name="account_notify_contacts_mail_only_summary">Tampilkan notifikasi hanya untuk pesan dari kontak yang diketahui</string>
-    <string name="account_settings_mark_message_as_read_on_view_label">Tandai sudah dibaca saat dibuka</string>
+    <string name="account_settings_mark_message_as_read_on_view_label">Tandai sebagai telah dibaca saat dibuka</string>
     <string name="account_settings_mark_message_as_read_on_view_summary">Tandai pesan sebagai telah dibaca saat dibuka untuk dilihat</string>
-    <string name="account_settings_mark_message_as_read_on_delete_label">Tandai sebagai terbaca saat dihapus</string>
-    <string name="account_settings_mark_message_as_read_on_delete_summary">Tandai pesan sebagai terbaca saat dihapus</string>
+    <string name="account_settings_mark_message_as_read_on_delete_label">Tandai sebagai telah dibaca saat dihapus</string>
+    <string name="account_settings_mark_message_as_read_on_delete_summary">Tandai pesan sebagai telah dibaca saat dihapus</string>
     <string name="account_settings_show_pictures_label">Selalu tampilkan gambar</string>
     <string name="account_settings_show_pictures_never">Tidak</string>
     <string name="account_settings_show_pictures_only_from_contacts">Dari kontak</string>
@@ -305,7 +303,7 @@
     <string name="account_settings_upload_sent_messages_label">Unggah pesan terkirim</string>
     <string name="account_settings_upload_sent_messages_summary">Unggah pesan ke folder terkirim setelah mengirim</string>
     <string name="account_settings_general_title">Pengaturan umum</string>
-    <string name="account_settings_reading_mail">Membaca surat</string>
+    <string name="account_settings_reading_mail">Membaca email</string>
     <string name="account_settings_sync">Mengambil surat</string>
     <string name="account_settings_folders">Folder</string>
     <string name="account_settings_quote_prefix_label">Awalan teks kutipan</string>
@@ -319,7 +317,7 @@
     <string name="account_settings_crypto_encrypt_all_drafts">Simpan semua draf terenkripsi</string>
     <string name="account_settings_crypto_encrypt_all_drafts_on">Semua draf akan disimpan secara terenkripsi</string>
     <string name="account_settings_crypto_encrypt_all_drafts_off">Enkripsi draft berlaku hanya jika enkripsi diaktifkan</string>
-    <string name="account_settings_mail_check_frequency_label">Frekuensi pengecekan folder</string>
+    <string name="account_settings_mail_check_frequency_label">Frekuensi pemeriksaan folder</string>
     <string name="account_settings_mail_display_count_label">Ukuran folder lokal</string>
     <string name="account_settings_autodownload_message_size_label">Ambil pesan hingga</string>
     <string name="account_settings_autodownload_message_size_1">1 KiB</string>
@@ -336,28 +334,28 @@
     <string name="account_settings_autodownload_message_size_2048">2 MiB</string>
     <string name="account_settings_autodownload_message_size_5120">5 MiB</string>
     <string name="account_settings_autodownload_message_size_10240">10 MiB</string>
-    <string name="account_settings_autodownload_message_size_any">segala ukuran (tak terbatas)</string>
-    <string name="account_settings_message_age_label">Sinkronisasi pesan dari</string>
-    <string name="account_settings_message_age_any">sembarang waktu (tak terbatas)</string>
+    <string name="account_settings_autodownload_message_size_any">ukuran apa pun (tanpa batas)</string>
+    <string name="account_settings_message_age_label">Sinkronkan pesan sejak</string>
+    <string name="account_settings_message_age_any">kapan saja (tanpa batas)</string>
     <string name="account_settings_message_age_0">hari ini</string>
     <string name="account_settings_message_age_1">2 hari terakhir</string>
     <string name="account_settings_message_age_2">3 hari terakhir</string>
-    <string name="account_settings_message_age_7">minggu lalu</string>
+    <string name="account_settings_message_age_7">minggu terakhir</string>
     <string name="account_settings_message_age_14">2 minggu terakhir</string>
     <string name="account_settings_message_age_21">3 minggu terakhir</string>
-    <string name="account_settings_message_age_1_month">bulan lalu</string>
+    <string name="account_settings_message_age_1_month">bulan terakhir</string>
     <string name="account_settings_message_age_2_months">2 bulan terakhir</string>
     <string name="account_settings_message_age_3_months">3 bulan terakhir</string>
     <string name="account_settings_message_age_6_months">6 bulan terakhir</string>
-    <string name="account_settings_message_age_1_year">tahun lalu</string>
-    <string name="account_settings_sync_remote_deletetions_label">Sinkronkan penghapusan server</string>
-    <string name="account_settings_sync_remote_deletetions_summary">Hapus pesan saat dihapus di server</string>
+    <string name="account_settings_message_age_1_year">tahun terakhir</string>
+    <string name="account_settings_sync_remote_deletetions_label">Sinkronkan penghapusan di server</string>
+    <string name="account_settings_sync_remote_deletetions_summary">Hapus pesan ketika dihapus di server</string>
     <string name="account_settings_openpgp_missing">Aplikasi OpenPGP tidak ada - apakah sudah dihapus?</string>
     <string name="folder_settings_title">Pengaturan folder</string>
     <string name="folder_settings_in_top_group_label">Perlihatkan di grup teratas</string>
     <string name="folder_settings_clear_local_folder_action">Bersihkan pesan lokal</string>
     <string name="account_settings_incoming_label">Server masuk</string>
-    <string name="account_settings_incoming_summary">Konfigurasikan server surat masuk</string>
+    <string name="account_settings_incoming_summary">Konfigurasikan server email masuk</string>
     <string name="account_settings_outgoing_label">Server keluar</string>
     <string name="account_settings_outgoing_summary">Konfigurasikan server surat keluar (SMTP)</string>
     <string name="account_settings_name_label">Nama Anda</string>
@@ -412,7 +410,7 @@
     <string name="sort_unread_last">Pesan terbaca terlebih dahulu</string>
     <string name="sort_attach_first">Pesan dengan lampiran terlebih dahulu</string>
     <string name="sort_unattached_first">Pesan tanpa lampiran terlebih dahulu</string>
-    <string name="sort_by">Sortir berdasarkan…</string>
+    <string name="sort_by">Urutkan berdasarkan…</string>
     <string name="sort_by_date">Tanggal</string>
     <string name="sort_by_arrival">Kedatangan</string>
     <string name="sort_by_subject">Subjek</string>
@@ -462,7 +460,6 @@
     <string name="account_setup_push_limit_500">500 folder</string>
     <string name="account_setup_push_limit_1000">1000 folder</string>
     <string name="animations_title">Animasi</string>
-    <string name="animations_summary">Gunakan efek visual yang mencolok</string>
     <string name="show_unified_inbox_title">Tampilkan Kotak Masuk Terpadu</string>
     <string name="integrated_inbox_title">Kotak Masuk Terpadu</string>
     <string name="integrated_inbox_detail">Semua pesan dalam folder terpadu</string>
@@ -606,7 +603,7 @@
     <string name="address_type_home">Rumah</string>
     <string name="address_type_work">Kerja</string>
     <string name="address_type_other">Lainnya</string>
-    <string name="address_type_mobile">Mobile</string>
+    <string name="address_type_mobile">Seluler</string>
     <string name="compose_error_no_draft_folder">Tidak ada folder Konsep yang dikonfigurasi untuk akun ini!</string>
     <string name="compose_error_no_key_configured">Tidak ada kunci yang dikonfigurasi untuk akun ini! Silakan periksa pengaturan Anda.</string>
     <string name="error_crypto_provider_incompatible">Penyedia kripto menggunakan versi yang tidak kompatibel. Silakan periksa pengaturan Anda!</string>
@@ -618,8 +615,7 @@
     <string name="enable_sign_only">Aktifkan PGP Sign-Only</string>
     <string name="disable_sign_only">Nonktifkan PGP Sign-Only</string>
     <string name="openpgp_inline_title">Mode PGP/INLINE</string>
-    <string name="openpgp_inline_text">Surel dikirim dalam format PGP/INLINE.
-\nHal ini hanya boleh digunakan untuk kompatibilitas:</string>
+    <string name="openpgp_inline_text">Surel dikirim dalam format PGP/INLINE. \nHal ini hanya boleh digunakan untuk kompatibilitas:</string>
     <string name="openpgp_inline_plus_compat">Beberapa klien hanya mendukung format ini</string>
     <string name="openpgp_inline_minus_transit">Tanda tangan bisa rusak saat transit</string>
     <string name="openpgp_inline_minus_attach">Lampiran tidak didukung</string>
@@ -667,7 +663,6 @@
     <string name="crypto_msg_encrypted_insecure">namun enkripsi tidak dianggap aman</string>
     <string name="locked_attach_unlock">Buka kunci</string>
     <string name="locked_attach_unencrypted">Bagian ini tidak dienkripsi dan mungkin tidak aman.</string>
-    <string name="locked_attach_title">Lampiran tidak terlindungi</string>
     <string name="message_progress_text">Memuat…</string>
     <string name="messageview_decrypt_cancelled">Dekripsi dibatalkan.</string>
     <string name="messageview_decrypt_retry">Coba lagi</string>
@@ -681,8 +676,7 @@
     <string name="error_sign_only_no_encryption">Enkripsi tidak tersedia dalam mode tanda tangan saja!</string>
     <string name="unsigned_text_divider_label">Teks yang tidak ditandai</string>
     <string name="crypto_no_provider_title">Surel ini dienkripsi</string>
-    <string name="crypto_no_provider_message">Surel ini telah dienkripsi dengan OpenPGP.
-\nUntuk membacanya, Anda perlu menginstal dan mengatur Aplikasi OpenPGP yang kompatibel.</string>
+    <string name="crypto_no_provider_message">Surel ini telah dienkripsi dengan OpenPGP. \nUntuk membacanya, Anda perlu menginstal dan mengatur Aplikasi OpenPGP yang kompatibel.</string>
     <string name="crypto_no_provider_button">Pergi ke Pengaturan</string>
     <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
     <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
@@ -726,22 +720,14 @@
     <string name="switch_off">Mati</string>
     <string name="generic_loading_error">Terjadi kesalahan saat memuat data</string>
     <!--Name of the swipe action to select a message. Try to keep it short.-->
-    <string name="swipe_action_select">Pilih</string>
     <!--Name of the swipe action to deselect a message. Try to keep it short.-->
-    <string name="swipe_action_deselect">Hapus pilihan</string>
     <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
     <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
-    <string name="swipe_action_mark_as_unread">Tandai belum dibaca</string>
     <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
-    <string name="swipe_action_add_star">Tambah bintang</string>
     <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
-    <string name="swipe_action_remove_star">Hapus bintang</string>
     <!--Name of the swipe action to archive a message. Try to keep it short.-->
-    <string name="swipe_action_archive">Arsipkan</string>
     <!--Name of the swipe action to delete a message. Try to keep it short.-->
-    <string name="swipe_action_delete">Hapus</string>
     <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
-    <string name="swipe_action_spam">Spam</string>
     <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
     <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
     <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
@@ -790,12 +776,10 @@
     <string name="unsubscribe_action">Berhenti berlangganan</string>
     <string name="copy_subject_to_clipboard">Teks subjek disalin ke papan klip</string>
     <string name="notification_certificate_error_public">Kesalahan sertifikat</string>
-    <string name="notification_notify_error_text">Kesalahan telah terjadi saat mencoba untuk membuat notifikasi sistem untuk pesan baru. Kemungkinan besar penyebabnya yaitu hilangnya suara notifikasi.
-\n
-\nKetuk untuk membuka pengaturan notifikasi.</string>
+    <string name="notification_notify_error_text">Kesalahan telah terjadi saat mencoba untuk membuat notifikasi sistem untuk pesan baru. Kemungkinan besar penyebabnya yaitu hilangnya suara notifikasi. \n \nKetuk untuk membuka pengaturan notifikasi.</string>
     <string name="debug_export_logs_success">Ekspor berhasil. Log mungkin berisi informasi sensitif. Berhati-hatilah kepada siapa Anda mengirimkannya.</string>
     <string name="message_view_additional_recipient_prefix">+</string>
-    <string name="message_view_me_text">saya</string>
+    <string name="message_view_to_me_text">saya</string>
     <string name="message_view_show_remote_images_action">Tampilkan gambar jarak jauh</string>
     <string name="general_settings_right_swipe_title">Geser kanan</string>
     <string name="general_settings_left_swipe_title">Geser kiri</string>
@@ -848,8 +832,6 @@
     <string name="push_info_disable_push_action">Nonaktifkan Dorongan</string>
     <string name="push_info_configure_notification_text">Namun, Android juga mengizinkan Anda untuk menyembunyikan notifikasi tersebut.</string>
     <string name="push_info_learn_more_text">Pelajari lebih lanjut</string>
-    <string name="swipe_action_mark_as_read">Tandai sebagai dibaca</string>
-    <string name="swipe_action_move">Pindahkan…</string>
     <string name="general_settings_show_compose_button_title">Tampilkan tombol mengambang \"pesan baru\"</string>
     <string name="message_list_error_title">Kesalahan</string>
     <string name="message_list_error_folder_not_found">Folder tidak ditemukan</string>
@@ -890,4 +872,84 @@
     <string name="attach_file">Lampirkan Berkas</string>
     <string name="camera_permission_denied">Izin Kamera Ditolak! Tidak bisa mengambil foto</string>
     <string name="open_camera">Buka Kamera</string>
+    <string name="message_view_menu_action_export_eml">Ekspor sebagai EML</string>
+    <string name="print_message_action">Cetak</string>
+    <string name="set_format_html_action">Gunakan pemformatan asli</string>
+    <string name="set_format_html_condensed_action">Tampilkan terformat</string>
+    <string name="set_format_plain_action">Tampilkan pesan tanpa pemformatan</string>
+    <string name="set_format_plain_condensed_action">Tampilkan tanpa pemformatan</string>
+    <string name="debug_enable_sync_debug_logging_title">Aktifkan pencatatan debug sinkronisasi</string>
+    <string name="debug_enable_sync_debug_logging_summary">Catat informasi diagnostik sinkronisasi selama 24 jam</string>
+    <string name="debug_sync_export_logs_title">Ekspor log Sinkronisasi</string>
+    <string name="debug_open_secret_debug_screen">Buka layar debug Rahasia</string>
+    <string name="global_settings_messageview_body_content_type_title">Tipe Konten Isi</string>
+    <string name="global_settings_messageview_body_content_type_text_html">HTML (text/html)</string>
+    <string name="global_settings_messageview_body_content_type_text_plain">Teks biasa (text/plain)</string>
+    <string name="general_settings_message_list_date_time_format_title">Format Tanggal/Waktu</string>
+    <string name="general_settings_message_list_date_time_format_contextual">Kontekstual</string>
+    <string name="general_settings_message_list_date_time_format_full">Lengkap</string>
+    <string name="account_setup_auto_select_folder">Pilih folder secara otomatis</string>
+    <string name="sort_by_then_by">Lalu berdasarkan…</string>
+    <string name="navigation_drawer_preferences">Menu Samping</string>
+    <string name="expand_folders">Perluas Folder</string>
+    <string name="global_settings_splitview_when_unfolded">Saat perangkat dibentangkan</string>
+    <string name="archiving_not_available_for_this_account">Pengarsipan tidak tersedia untuk akun ini.</string>
+    <string name="debug_invalidate_access_token">Uji: Batalkan validitas token akses</string>
+    <string name="debug_invalidate_access_token_done">Token akses dibatalkan validitasnya. Permintaan berikutnya akan menyegarkan.</string>
+    <string name="debug_invalidate_access_token_unavailable">Tidak ada token OAuth yang tersedia untuk akun ini.</string>
+    <string name="debug_invalidate_access_token_local">Uji: Batalkan validitas token akses (lokal)</string>
+    <string name="debug_invalidate_access_token_local_done">Permintaan pembatalan lokal diajukan. Permintaan berikutnya akan mengambil token baru.</string>
+    <string name="debug_invalidate_access_token_server">Uji: Batalkan validitas token akses (server)</string>
+    <string name="debug_invalidate_access_token_server_done">Token akses tersimpan rusak. Permintaan berikutnya akan gagal lalu menyegarkan.</string>
+    <string name="debug_force_auth_failure">Uji: Paksa kegagalan autentikasi sekarang</string>
+    <string name="debug_force_auth_failure_done">Status OAuth dihapus. Permintaan berikutnya akan gagal.</string>
+    <string name="debug_force_auth_failure_unavailable">Tidak ada konfigurasi OAuth yang tersedia untuk akun ini.</string>
+    <string name="debug_invalidate_access_token_cannot_modify">Tidak dapat mengubah token akses tersimpan. Coba pembatalan lokal.</string>
+    <string name="debug_invalidate_access_token_already_modified">Token akses tersimpan sudah diubah.</string>
+    <string name="debug_feature_flags">DEBUG: Flag Fitur</string>
+    <plurals name="message_view_attachment_summary">
+        <item quantity="other"><xliff:g id="count">%1$d</xliff:g> Lampiran (<xliff:g id="size">%2$s</xliff:g>)</item>
+    </plurals>
+    <string name="message_view_single_attachment_summary"><xliff:g id="name">%1$s</xliff:g> (<xliff:g id="size">%2$s</xliff:g>)</string>
+    <string name="message_view_attachments_view_all">Lihat semua</string>
+    <string name="message_view_attachments_view">Lihat</string>
+    <string name="message_view_attachments_title">Lampiran</string>
+    <string name="message_view_attachments_save_all">Simpan semua</string>
+    <string name="general_settings_message_list_date_time_format_iso">ISO</string>
+    <string name="no_network_message_will_be_sent_later_toast">Offline. Pesan akan dikirim setelah koneksi tersedia</string>
+    <string name="notification_actions_settings_title">Tindakan notifikasi</string>
+    <string name="notification_actions_settings_summary">Pilih tindakan mana yang muncul dalam notifikasi email</string>
+    <string name="notification_summary_delete_title">Tampilkan Hapus pada notifikasi multi-pesan</string>
+    <string name="notification_summary_delete_summary">Menambahkan tindakan Hapus pada notifikasi yang merangkum beberapa pesan baru</string>
+    <string name="notification_actions_settings_description">Urutkan ulang tindakan notifikasi.</string>
+    <string name="notification_actions_cutoff_description">Batas tindakan yang ditampilkan</string>
+    <string name="notification_actions_cutoff_state">Tindakan di atas baris ini ditampilkan dalam notifikasi</string>
+    <string name="notification_actions_shown_state">Ditampilkan dalam notifikasi</string>
+    <string name="notification_actions_hidden_state">Tidak ditampilkan dalam notifikasi</string>
+    <string name="accessibility_move_up">Pindahkan ke atas</string>
+    <string name="accessibility_move_down">Pindahkan ke bawah</string>
+    <string name="accessibility_move_item_up">Pindahkan <xliff:g id="item">%1$s</xliff:g> ke atas</string>
+    <string name="accessibility_move_item_down">Pindahkan <xliff:g id="item">%1$s</xliff:g> ke bawah</string>
+    <string name="accessibility_move_cutoff_up">Pindahkan batas tindakan yang ditampilkan ke atas</string>
+    <string name="accessibility_move_cutoff_down">Pindahkan batas tindakan yang ditampilkan ke bawah</string>
+    <string name="notification_action_star">Bintang</string>
+    <string name="camera_capture_lost">Gambar yang diambil hilang karena aplikasi ditutup. Silakan coba lagi.</string>
+    <string name="changelog_latest_label_text">TERBARU</string>
+    <string name="changelog_type_new_text">BARU</string>
+    <string name="changelog_type_changed_text">DIUBAH</string>
+    <string name="changelog_type_fixed_text">DIPERBAIKI</string>
+    <string name="notification_show_contact_picture_title">Tampilkan foto kontak dalam notifikasi</string>
+    <string name="notification_show_contact_picture_summary">Tampilkan avatar pengirim dalam notifikasi pesan baru</string>
+    <string name="global_settings_privacy_incognito_keyboard">Keyboard inkognito</string>
+    <string name="global_settings_privacy_incognito_keyboard_detail">Minta keyboard agar tidak mempelajari apa yang Anda ketik saat menulis pesan</string>
+    <string name="account_settings_signature_html_label">Tanda Tangan HTML</string>
+    <string name="account_settings_signature_is_html_label">Simpan tanda tangan sebagai HTML</string>
+    <string name="account_settings_signature_is_html_summary">Tafsirkan tanda tangan sebagai HTML. Skrip dan event handler akan dihapus demi keamanan.</string>
+    <string name="account_settings_signature_preview">Pratinjau tanda tangan</string>
+    <string name="account_settings_signature_clear_label">Hapus Tanda Tangan</string>
+    <string name="sort_by_indicator">•</string>
+    <string name="animation_setting_on">Aktif</string>
+    <string name="animation_setting_off">Nonaktif</string>
+    <string name="animation_setting_follow_system">Gunakan pengaturan default sistem</string>
+    <string name="message_compose_encrypting_message">Mengenkripsi pesan…</string>
 </resources>

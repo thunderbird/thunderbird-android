@@ -11,11 +11,9 @@
     <string name="account_server_validation_outgoing_loading_error">Falhou a verificação das configurações do servidor de saída</string>
     <string name="account_server_validation_incoming_success">Configurações do servidor de entrada verificadas</string>
     <string name="account_server_validation_error_client_certificate_retrieval_failure">O certificado do cliente não pode ser acedido</string>
-    <string name="account_server_validation_error_missing_server_capability_details">O servidor não tem esta funcionalidade:
-\n%s</string>
+    <string name="account_server_validation_error_missing_server_capability_details">O servidor não tem esta funcionalidade: \n%s</string>
     <string name="account_server_validation_incoming_loading_error">Falhou a verificação das configurações do servidor de entrada</string>
     <string name="account_server_validation_error_server">Erro de servidor</string>
     <string name="account_server_validation_error_client_certificate_expired">O certificado do cliente já não é válido</string>
-    <string name="account_server_validation_error_details">Detalhes:
-\n%s</string>
+    <string name="account_server_validation_error_details">Detalhes: \n%s</string>
 </resources>

@@ -107,8 +107,10 @@ class UnifiedInboxConfiguratorTest {
 }
 
 private class FakeGeneralSettingsManager(private var generalSettings: GeneralSettings) : GeneralSettingsManager {
+    @Deprecated("Use PreferenceManager<GeneralSettings>.getConfig() instead")
     override fun getSettings() = error("Not implemented")
 
+    @Deprecated("Use PreferenceManager<GeneralSettings>.getConfigFlow() instead")
     override fun getSettingsFlow() = error("Not implemented")
 
     override fun save(config: GeneralSettings) {

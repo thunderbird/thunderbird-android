@@ -1,5 +1,6 @@
 package net.thunderbird.feature.account.settings.impl.ui.general
 
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import net.thunderbird.core.ui.setting.SettingValue
@@ -15,6 +16,7 @@ internal class FakeSettingViewProvider : SettingViewProvider {
         onBack: () -> Unit,
         modifier: Modifier,
         subtitle: String?,
+        actions: @Composable (RowScope.() -> Unit),
     ) {
         // No-op
     }

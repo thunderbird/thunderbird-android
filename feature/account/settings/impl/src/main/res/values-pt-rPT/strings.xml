@@ -1,3 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="account_settings_general_title">Configurações Gerais</string>
+    <string name="account_settings_general_avatar_title">Avatar</string>
+    <string name="account_settings_general_avatar_description">Escolha como o avatar da sua conta sera visualizado.</string>
+    <string name="account_settings_general_avatar_option_monogram">Monograma</string>
+    <string name="account_settings_general_avatar_option_image">Imagem</string>
+    <string name="account_settings_general_avatar_option_icon">ícone</string>
+    <string name="account_settings_general_avatar_image_title">Imagem de avatar</string>
+    <string name="account_settings_general_avatar_image_description">Escolha uma imagem para representar a sua conta.</string>
+    <string name="account_settings_general_avatar_image_select">Selecione Imagem</string>
+    <string name="account_settings_general_name_title">Nome da conta</string>
+    <string name="account_settings_general_name_description">O nome associado com a sua conta.</string>
+    <string name="account_settings_general_name_error_empty">Nome não pode estar vazio</string>
+    <string name="account_settings_general_name_error_too_long">Nome demasiado comprido</string>
+    <string name="account_settings_general_color_title">Cor da conta</string>
+    <string name="account_settings_general_avatar_monogram_title">Monograma Avatar</string>
+    <string name="account_settings_general_avatar_monogram_error_empty">Monograma não pode estar vazio</string>
+    <string name="account_settings_general_avatar_monogram_error_too_long">Monograma demasiado longo</string>
+    <string name="account_settings_general_avatar_icon_title">Ícon de avatar</string>
+    <string name="account_settings_general_avatar_icon_description">Escolha um dos ícones para ser usado como o seu avatar.</string>
+    <string name="account_settings_avatar_error_unsupported_format">Apenas imagens JPEG são suportadas.</string>
+    <string name="account_settings_avatar_hint_jpeg_only">Apenas JPEG</string>
 </resources>

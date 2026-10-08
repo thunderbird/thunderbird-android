@@ -5,11 +5,11 @@
     <string name="settings_import_button">Flytja inn</string>
     <string name="settings_import_success_generic">Tókst að flytja inn stillingar</string>
     <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
-    <string name="settings_import_password_required"> Settu inn lykilorðin</string>
+    <string name="settings_import_password_required">Settu inn lykilorðin</string>
     <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
     <string name="settings_import_authorization_required">Skráðu þig inn</string>
     <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
-    <string name="settings_import_authorization_and_password_required"> Skráðu þig inn og settu inn lykilorð</string>
+    <string name="settings_import_authorization_and_password_required">Skráðu þig inn og settu inn lykilorð</string>
     <string name="settings_import_failure">Mistókst að flytja inn stillingar</string>
     <string name="settings_import_read_failure">Mistókst að lesa stillingaskrá</string>
     <string name="settings_import_partial_failure">Mistókst að flytja inn sumar stillingar</string>

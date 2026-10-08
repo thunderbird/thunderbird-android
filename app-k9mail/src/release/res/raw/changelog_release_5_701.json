@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "version": "5.701",
+  "versioncode": 27001,
+  "date": "2019-12-02",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Use account color as accent color in drawer",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Removed setting 'Start in Unified Inbox'",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed bug that displayed folders when the Unified Inbox was selected",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed bug where work was accidentally done in the main thread",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Updated translations",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

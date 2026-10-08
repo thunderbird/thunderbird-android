@@ -18,7 +18,6 @@ import com.fsck.k9.preferences.Settings.PseudoEnumSetting;
 import com.fsck.k9.preferences.Settings.SettingsDescription;
 import com.fsck.k9.preferences.Settings.StringSetting;
 import com.fsck.k9.preferences.Settings.V;
-import com.fsck.k9.preferences.upgrader.AccountSettingsUpgraderTo104;
 import com.fsck.k9.preferences.upgrader.AccountSettingsUpgraderTo106;
 import com.fsck.k9.preferences.upgrader.AccountSettingsUpgraderTo107;
 import com.fsck.k9.preferences.upgrader.AccountSettingsUpgraderTo53;
@@ -324,7 +323,6 @@ class AccountSettingsDescriptions {
         u.put(80, new AccountSettingsUpgraderTo80());
         u.put(81, new AccountSettingsUpgraderTo81());
         u.put(91, new AccountSettingsUpgraderTo91());
-        u.put(104, new AccountSettingsUpgraderTo104());
         u.put(106, new AccountSettingsUpgraderTo106(new ServerSettingsDtoSerializer()));
         u.put(107, new AccountSettingsUpgraderTo107());
 

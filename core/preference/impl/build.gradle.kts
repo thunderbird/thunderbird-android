@@ -3,9 +3,8 @@ plugins {
 }
 
 kotlin {
-    androidLibrary {
+    android {
         namespace = "net.thunderbird.core.preference.impl"
-        withHostTest {}
     }
 
     sourceSets {
@@ -16,4 +15,9 @@ kotlin {
             implementation(projects.core.common)
         }
     }
+}
+
+codeCoverage {
+    branchCoverage = 6
+    lineCoverage = 2
 }

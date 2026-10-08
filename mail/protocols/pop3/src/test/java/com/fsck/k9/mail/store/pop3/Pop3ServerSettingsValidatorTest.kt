@@ -15,8 +15,8 @@ import com.fsck.k9.mail.testing.security.FakeTrustManager
 import com.fsck.k9.mail.testing.security.SimpleTrustedSocketFactory
 import java.net.UnknownHostException
 import kotlin.test.Test
-import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.logging.testing.TestLogger
+import net.thunderbird.legacy.logging.Log
 import org.junit.Before
 
 private const val USERNAME = "user"

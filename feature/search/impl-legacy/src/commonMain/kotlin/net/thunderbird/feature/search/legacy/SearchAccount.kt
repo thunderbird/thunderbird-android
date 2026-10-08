@@ -1,6 +1,5 @@
 package net.thunderbird.feature.search.legacy
 
-import net.thunderbird.feature.mail.account.api.BaseAccount
 import net.thunderbird.feature.search.legacy.api.MessageSearchField
 import net.thunderbird.feature.search.legacy.api.SearchAttribute
 
@@ -11,9 +10,9 @@ import net.thunderbird.feature.search.legacy.api.SearchAttribute
 class SearchAccount(
     val id: String,
     search: LocalMessageSearch,
-    override val name: String,
-    override val email: String,
-) : BaseAccount {
+    val name: String,
+    val email: String,
+) {
     /**
      * Returns the ID of this `SearchAccount` instance.
      *
@@ -23,7 +22,7 @@ class SearchAccount(
      * Using a constant string is necessary to identify the same search account even when the corresponding
      * [SearchAccount] object has been recreated.
      */
-    override val uuid: String = id
+    val uuid: String = id
 
     val relatedSearch: LocalMessageSearch = search
 

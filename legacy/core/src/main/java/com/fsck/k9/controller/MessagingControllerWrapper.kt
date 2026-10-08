@@ -2,9 +2,13 @@ package com.fsck.k9.controller
 
 import app.k9mail.legacy.message.controller.MessageReference
 import app.k9mail.legacy.message.controller.MessagingListener
+import com.fsck.k9.backend.api.Backend
 import java.util.concurrent.Future
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.runBlocking
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.account.LegacyAccountDtoManager
+import net.thunderbird.core.common.exception.MessagingException
 import net.thunderbird.core.common.mail.Flag
 import net.thunderbird.feature.account.AccountId
 
@@ -19,11 +23,11 @@ class MessagingControllerWrapper(
 ) {
 
     private fun getAccountDtoOrThrow(id: AccountId): LegacyAccountDto {
-        return accountManager.getAccount(id.asRaw()) ?: error("Account not found: $id")
+        return accountManager.getById(id) ?: error("Account not found: $id")
     }
 
     private fun getAccountDtoOrNull(id: AccountId): LegacyAccountDto? {
-        return accountManager.getAccount(id.asRaw())
+        return accountManager.getById(id)
     }
 
     fun loadMoreMessages(id: AccountId, folderId: Long) {
@@ -47,14 +51,14 @@ class MessagingControllerWrapper(
     }
 
     fun searchRemoteMessages(
-        id: AccountId,
+        accountId: AccountId,
         folderId: Long,
         query: String?,
         requiredFlags: Set<Flag>?,
         forbiddenFlags: Set<Flag>?,
         listener: MessagingListener,
     ): Future<*>? = messagingController.searchRemoteMessages(
-        id.asRaw(),
+        accountId,
         folderId,
         query,
         requiredFlags,
@@ -218,4 +222,15 @@ class MessagingControllerWrapper(
     fun deleteMessages(messages: List<MessageReference>) = messagingController.deleteMessages(messages)
     fun archiveThreads(messages: List<MessageReference>) = messagingController.archiveThreads(messages)
     fun archiveMessages(messages: List<MessageReference>) = messagingController.archiveMessages(messages)
+}
+
+@Throws(MessagingException::class)
+internal fun Backend.downloadCompleteMessageBlocking(
+    ioDispatcher: CoroutineDispatcher,
+    folderServerId: String,
+    messageServerId: String,
+) {
+    runBlocking(ioDispatcher) {
+        downloadCompleteMessage(folderServerId, messageServerId)
+    }
 }

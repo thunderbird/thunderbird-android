@@ -11,6 +11,9 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import net.thunderbird.core.logging.Logger
+import net.thunderbird.core.preference.PreferenceChangeBroker
+import net.thunderbird.core.preference.PreferenceChangeSubscriber
+import net.thunderbird.core.preference.PreferenceScope
 import net.thunderbird.core.preference.storage.Storage
 import net.thunderbird.core.preference.storage.StorageEditor
 import net.thunderbird.core.preference.storage.StoragePersister
@@ -23,7 +26,12 @@ class DefaultDisplayMiscSettingsPreferenceManager(
     private val storageEditor: StorageEditor,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
     private var scope: CoroutineScope = CoroutineScope(SupervisorJob()),
-) : DisplayMiscSettingsPreferenceManager {
+    preferenceChangeBroker: PreferenceChangeBroker,
+) : DisplayMiscSettingsPreferenceManager, PreferenceChangeSubscriber {
+
+    init {
+        preferenceChangeBroker.subscribe(this)
+    }
     private val configState: MutableStateFlow<DisplayMiscSettings> = MutableStateFlow(value = loadConfig())
     private val mutex = Mutex()
     private val storage: Storage
@@ -40,11 +48,11 @@ class DefaultDisplayMiscSettingsPreferenceManager(
 
     private fun loadConfig(): DisplayMiscSettings = DisplayMiscSettings(
         showRecentChanges = storage.getBoolean(
-            KEY_SHOW_RECENT_CHANGES,
+            DisplayMiscSettingKey.ShowRecentChanges.value,
             DISPLAY_SETTINGS_DEFAULT_SHOW_RECENT_CHANGES,
         ),
         shouldShowSetupArchiveFolderDialog = storage.getBoolean(
-            KEY_SHOULD_SHOW_SETUP_ARCHIVE_FOLDER_DIALOG,
+            DisplayMiscSettingKey.ShouldShowSetupArchiveFolderDialog.value,
             DISPLAY_SETTINGS_DEFAULT_SHOULD_SHOW_SETUP_ARCHIVE_FOLDER_DIALOG,
         ),
     )
@@ -54,14 +62,20 @@ class DefaultDisplayMiscSettingsPreferenceManager(
         scope.launch(ioDispatcher) {
             mutex.withLock {
                 storageEditor.putBoolean(
-                    KEY_SHOULD_SHOW_SETUP_ARCHIVE_FOLDER_DIALOG,
+                    DisplayMiscSettingKey.ShouldShowSetupArchiveFolderDialog.value,
                     config.shouldShowSetupArchiveFolderDialog,
                 )
-                storageEditor.putBoolean(KEY_SHOW_RECENT_CHANGES, config.showRecentChanges)
+                storageEditor.putBoolean(DisplayMiscSettingKey.ShowRecentChanges.value, config.showRecentChanges)
                 storageEditor.commit().also { commited ->
                     logger.verbose(TAG) { "writeConfig: storageEditor.commit() resulted in: $commited" }
                 }
             }
+        }
+    }
+
+    override fun receive(scope: PreferenceScope) {
+        if (scope == PreferenceScope.ALL || scope == PreferenceScope.DISPLAY_MISC) {
+            configState.update { loadConfig() }
         }
     }
 }

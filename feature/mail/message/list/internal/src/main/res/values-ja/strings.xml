@@ -1,3 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="setup_archive_folder_dialog_dont_show_again">このメッセージを再度表示しない</string>
+    <string name="setup_archive_folder_dialog_email_can_not_be_archived">メールをアーカイブできません</string>
+    <string name="setup_archive_folder_dialog_configure_archive_folder">アーカイブフォルダーを設定してください</string>
+    <string name="setup_archive_folder_dialog_skip_for_now">今はスキップ</string>
+    <string name="setup_archive_folder_dialog_set_archive_folder">アーカイブフォルダーを設定</string>
 </resources>

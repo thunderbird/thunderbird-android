@@ -63,4 +63,6 @@
     <string name="account_setup_special_folders_form_description">אנא ציין את התיקיות המיוחדות עבור החשבון שלך.</string>
     <string name="account_setup_special_folders_form_description_automatic">הערך \"אוטומטי\" יעקוב אחר שינויים שנעשים ע\"י השרת באופן אוטומטי. ערך השרת הנוכחי מופיע בסוגריים.</string>
     <string name="account_setup_auto_discovery_result_disclaimer_untrusted_configuration">קיבלנו את התצורה עבור שרת הדוא\"ל שלך דרך חיבור שאינו מאובטח כפי שהיינו רוצים. משמעות הדבר היא שיש סיכוי זעיר שמישהו יכול היה לשנות אותה. האם תוכל בבקשה לבדוק שוב את התצורה שסופקה כדי לוודא שהיא כפי שהיא צריכה להיות?</string>
+    <string name="account_setup_options_your_name_label">שמך</string>
+    <string name="account_setup_options_your_name_error_required">נדרש להזין את שמך.</string>
 </resources>

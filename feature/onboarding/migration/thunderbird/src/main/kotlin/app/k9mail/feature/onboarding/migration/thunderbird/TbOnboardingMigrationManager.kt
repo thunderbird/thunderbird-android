@@ -9,13 +9,15 @@ class TbOnboardingMigrationManager : OnboardingMigrationManager {
     @Composable
     override fun OnboardingMigrationScreen(
         onQrCodeScan: () -> Unit,
+        onThundermailClick: () -> Unit,
         onAddAccount: () -> Unit,
         onImport: () -> Unit,
     ) {
         TbOnboardingMigrationScreen(
-            onQrCodeScan,
-            onAddAccount,
-            onImport,
+            onQrCodeScan = onQrCodeScan,
+            onThundermailClick = onThundermailClick,
+            onAddAccount = onAddAccount,
+            onImport = onImport,
         )
     }
 }

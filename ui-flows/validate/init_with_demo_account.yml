@@ -1,4 +1,0 @@
-appId: net.thunderbird.android.debug
----
-- runFlow:
-    file: ../shared/onboard_with_demo_account.yml

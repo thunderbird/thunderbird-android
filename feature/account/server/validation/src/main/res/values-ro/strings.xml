@@ -13,9 +13,7 @@
     <string name="account_server_validation_error_server">Eroare de server</string>
     <string name="account_server_validation_error_missing_server_capability">Lipsește capacitatea serverului</string>
     <string name="account_server_validation_error_client_certificate_retrieval_failure">Certificatul clientului nu a putut fi accesat</string>
-    <string name="account_server_validation_error_missing_server_capability_details">Serverului îi lipsește această capacitate:
-\n%s</string>
+    <string name="account_server_validation_error_missing_server_capability_details">Serverului îi lipsește această capacitate: \n%s</string>
     <string name="account_server_validation_error_client_certificate_expired">Certificatul de client nu mai este valabil</string>
-    <string name="account_server_validation_error_details">Detalii:
-\n%s</string>
+    <string name="account_server_validation_error_details">Detalii: \n%s</string>
 </resources>

@@ -35,7 +35,6 @@
     <string name="choose_folder_title">Selecionar pasta</string>
     <string name="choose_folder_move_title">Mover para…</string>
     <string name="choose_folder_copy_title">Copiar para…</string>
-    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> selecionada(s)</string>
     <string name="send_action">Enviar</string>
     <string name="empty_subject">O assunto está em branco, clique novamente para enviar mesmo assim</string>
     <string name="reply_action">Responder</string>
@@ -176,7 +175,7 @@
     <!--Displayed in the message view screen in front of the number of additional recipients (the ones that are not displayed).-->
     <string name="message_view_additional_recipient_prefix">+</string>
     <!--Displayed in the message view screen if the message was addressed to the user. Make sure this works with 'message_view_recipient_prefix'. In English it's "to me".-->
-    <string name="message_view_me_text">mim</string>
+    <string name="message_view_to_me_text">mim</string>
     <!--Text of the button that is displayed below the message header when the message body references one or more remote images-->
     <string name="message_view_show_remote_images_action">Exibir imagens remotas</string>
     <string name="message_view_no_viewer">Não foi possível encontrar um visualizador para <xliff:g id="mimetype">%s</xliff:g>.</string>
@@ -321,7 +320,7 @@
     <string name="account_settings_notification_channels_label">Categorias de notificação</string>
     <string name="account_settings_open_notification_settings_messages_summary">Configura as notificações para novas mensagens</string>
     <string name="account_settings_open_notification_settings_miscellaneous_summary">Configura as notificações de erros e status</string>
-    <string name="account_settings_show_pictures_label">Sempre exibir imagens</string>
+    <string name="account_settings_show_pictures_label">Sempre exibir as imagens</string>
     <string name="account_settings_show_pictures_never">Não</string>
     <string name="account_settings_show_pictures_only_from_contacts">Dos contatos</string>
     <string name="account_settings_show_pictures_always">De qualquer um</string>
@@ -520,7 +519,6 @@
     <string name="account_setup_push_limit_500">500 pastas</string>
     <string name="account_setup_push_limit_1000">1000 pastas</string>
     <string name="animations_title">Animação</string>
-    <string name="animations_summary">Utilizar efeitos visuais extravagantes</string>
     <string name="show_unified_inbox_title">Exibir a caixa de entrada unificada</string>
     <string name="show_starred_count_title">Mostrar contagem de sinalizadas</string>
     <string name="integrated_inbox_title">Caixa de Entrada Unificada</string>
@@ -736,7 +734,6 @@
     <string name="crypto_msg_encrypted_insecure">mas a criptografia não é considerada segura</string>
     <string name="locked_attach_unlock">Desbloquear</string>
     <string name="locked_attach_unencrypted">Esta parte não foi criptografada e pode estar insegura.</string>
-    <string name="locked_attach_title">Anexo desprotegido</string>
     <string name="message_progress_text">Carregando…</string>
     <string name="messageview_decrypt_cancelled">A descriptografia foi cancelada.</string>
     <string name="messageview_decrypt_retry">Tentar novamente</string>
@@ -805,25 +802,15 @@
     <string name="push_info_disable_push_text">Caso você não precise de notificações instantâneas sobre novas mensagens, deve desativar o Push e usar Polling. O Polling verifica se há novas mensagens em intervalos regulares e não necessita de notificação.</string>
     <string name="push_info_disable_push_action">Desativar Push</string>
     <!--Name of the swipe action to select a message. Try to keep it short.-->
-    <string name="swipe_action_select">Marcar</string>
     <!--Name of the swipe action to deselect a message. Try to keep it short.-->
-    <string name="swipe_action_deselect">Desmarcar</string>
     <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
-    <string name="swipe_action_mark_as_read">Marcar como lida</string>
     <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
-    <string name="swipe_action_mark_as_unread">Marcar como não lida</string>
     <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
-    <string name="swipe_action_add_star">Adicionar estrela</string>
     <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
-    <string name="swipe_action_remove_star">Remover estrela</string>
     <!--Name of the swipe action to archive a message. Try to keep it short.-->
-    <string name="swipe_action_archive">Arquivar</string>
     <!--Name of the swipe action to delete a message. Try to keep it short.-->
-    <string name="swipe_action_delete">Excluir</string>
     <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
-    <string name="swipe_action_spam">Spam</string>
     <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
-    <string name="swipe_action_move">Mover…</string>
     <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
     <string name="general_settings_show_compose_button_title">Exibir um botão flutuante de escrita</string>
     <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
@@ -901,8 +888,6 @@
     <string name="debug_enable_sync_debug_logging_summary">Registrar informações do diagnóstico de sincronização por 24 horas</string>
     <string name="debug_sync_export_logs_title">Exportar registros de sincronização</string>
     <string name="debug_open_secret_debug_screen">Abrir tela de depuração secreta</string>
-    <string name="swipe_action_archive_folder_not_set">Definir pasta de arquivamento</string>
-    <string name="swipe_action_change_swipe_gestures">Alterar\ngestos de deslizar</string>
     <string name="archiving_not_available_for_this_account">Arquivamento indisponível para esta conta.</string>
     <string name="debug_invalidate_access_token_already_modified">Token de acesso já modificado.</string>
     <string name="debug_invalidate_access_token_cannot_modify">Não foi possível modificar o token de acesso salvo. Tente invalidar localmente.</string>
@@ -929,4 +914,59 @@
     <string name="navigation_drawer_preferences">Menu Lateral</string>
     <string name="expand_folders">Expandir Pastas</string>
     <string name="debug_feature_flags">DEBUG: Sinalizadores de Recursos</string>
+    <string name="global_settings_splitview_when_unfolded">Quando o dispositivo é desdobrado</string>
+    <string name="general_settings_message_list_date_time_format_title">Formato de data/hora</string>
+    <string name="general_settings_message_list_date_time_format_contextual">Contextual</string>
+    <string name="general_settings_message_list_date_time_format_full">Cheio</string>
+    <string name="sort_by_then_by">Então por…</string>
+    <string name="notification_actions_settings_title">Ações de notificação</string>
+    <string name="notification_actions_settings_summary">Escolha quais ações aparecem nas notificações por e-mail</string>
+    <string name="notification_summary_delete_title">Mostrar Excluir em notificações de múltiplas mensagens</string>
+    <string name="notification_summary_delete_summary">Adiciona a ação Excluir às notificações que resumem várias mensagens novas</string>
+    <string name="notification_actions_settings_description">Reordena as ações de notificação.</string>
+    <string name="notification_actions_cutoff_description">Limite de ações mostradas</string>
+    <string name="notification_actions_cutoff_state">As ações acima desta linha são mostradas na notificação</string>
+    <string name="notification_actions_shown_state">Mostrado na notificação</string>
+    <string name="notification_actions_hidden_state">Não mostrado na notificação</string>
+    <string name="accessibility_move_up">Mover para cima</string>
+    <string name="accessibility_move_down">Mover para baixo</string>
+    <string name="accessibility_move_item_up">Mover <xliff:g id="item">%1$s</xliff:g> para cima</string>
+    <string name="accessibility_move_item_down">Mover <xliff:g id="item">%1$s</xliff:g> para baixo</string>
+    <string name="accessibility_move_cutoff_up">Mover o limite de ações mostradas para cima</string>
+    <string name="accessibility_move_cutoff_down">Mover o limite das ações mostradas para baixo</string>
+    <string name="notification_action_star">Estrela</string>
+    <plurals name="message_view_attachment_summary">
+        <item quantity="one"><xliff:g id="count">%1$d</xliff:g> anexo (<xliff:g id="size">%2$s</xliff:g>)</item>
+        <item quantity="many"><xliff:g id="count">%1$d</xliff:g> anexos (<xliff:g id="size">%2$s</xliff:g>)</item>
+        <item quantity="other"><xliff:g id="count">%1$d</xliff:g> anexos (<xliff:g id="size">%2$s</xliff:g>)</item>
+    </plurals>
+    <string name="message_view_single_attachment_summary"><xliff:g id="name">%1$s</xliff:g> (<xliff:g id="size">%2$s</xliff:g>)</string>
+    <string name="message_view_attachments_view_all">ver todos</string>
+    <string name="message_view_attachments_view">Ver</string>
+    <string name="message_view_attachments_title">Anexos</string>
+    <string name="message_view_attachments_save_all">Salvar todos</string>
+    <string name="general_settings_message_list_date_time_format_iso">ISO</string>
+    <string name="no_network_message_will_be_sent_later_toast">Offline. A mensagem será enviada assim que a conexão estiver disponível</string>
+    <string name="changelog_latest_label_text">ATUAL</string>
+    <string name="changelog_type_new_text">NOVO</string>
+    <string name="changelog_type_changed_text">ALTERADO</string>
+    <string name="changelog_type_fixed_text">FIXADO</string>
+    <string name="notification_show_contact_picture_title">Mostrar imagem dos contatos nas notificações</string>
+    <string name="notification_show_contact_picture_summary">Mostrar avatar dos remetentes nas notificações de nova mensagem</string>
+    <string name="animation_setting_on">Sim</string>
+    <string name="animation_setting_off">Não</string>
+    <string name="animation_setting_follow_system">Usar padrão do sistema</string>
+    <string name="camera_capture_lost">A imagem capturada foi perdida porque o aplicativo foi fechado. Tente novamente.</string>
+    <string name="global_settings_privacy_incognito_keyboard">Teclado anônimo</string>
+    <string name="global_settings_privacy_incognito_keyboard_detail">Diga ao teclado para não aprender com o que você digita ao criar mensagens</string>
+    <string name="account_settings_signature_html_label">Assinatura HTML</string>
+    <string name="account_settings_signature_is_html_label">Salvar assinatura como HTML</string>
+    <string name="account_settings_signature_is_html_summary">Interprete a assinatura como HTML. Scripts e manipuladores de eventos serão removidos por segurança.</string>
+    <string name="account_settings_signature_preview">Prévia da assinatura</string>
+    <string name="account_settings_signature_clear_label">Limpar assinatura</string>
+    <string name="sort_by_indicator">•</string>
+    <string name="message_compose_encrypting_message">Criptografando mensagem…</string>
+    <string name="message_view_from_me_text">eu</string>
+    <string name="account_settings_signature_preview_empty">A prévia da sua assinatura aparecerá aqui</string>
+    <string name="error_no_contact_provider">Nenhum aplicativo de contatos foi encontrado. Instale um primeiro para adicionar este endereço.</string>
 </resources>

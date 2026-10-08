@@ -10,7 +10,7 @@
     <string name="account_setup_options_email_signature_error_blank">Název podpisu e-mailu nemůže být prázdný.</string>
     <string name="account_setup_auto_discovery_result_approval_error_approval_required">Nastavení je potřeba schválit.</string>
     <string name="account_setup_auto_discovery_connection_security_start_tls">StartTLS</string>
-    <string name="account_setup_auto_discovery_result_disclaimer_untrusted_configuration">Nastavení pro váš e-mailový server bylo získáno prostřednictvím spojení, které není tak zabezpečené, jak bychom si přáli. Existuje malá pravděpodobnost, že ho někdo změnil. Zkontrolujte, že je nabízené nastavení v pořádku.</string>
+    <string name="account_setup_auto_discovery_result_disclaimer_untrusted_configuration">Nastavení pro váš e-mailový server bylo získáno prostřednictvím spojení, které není tak bezpečné, jak bychom si přáli. Existuje malá pravděpodobnost, že ho někdo změnil. Zkontrolujte prosím, zda je nabízené nastavení opravdu v pořádku.</string>
     <string name="account_setup_auto_discovery_result_edit_configuration_button_label">Upravit nastavení</string>
     <string name="account_setup_error_unknown">Neznámá chyba</string>
     <string name="account_setup_auto_discovery_connection_security_ssl">SSL/TLS</string>

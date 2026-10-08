@@ -1,0 +1,15 @@
+appId: ${MAESTRO_APP_ID}
+---
+# Remove contact
+
+## Open contact
+- tapOn:
+    id: "participants_container"
+
+## Delete contact
+- tapOn: "More options"
+- tapOn:
+    id: "android:id/title"
+    index: 1
+- tapOn:
+    id: "android:id/button1"

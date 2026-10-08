@@ -1,8 +1,11 @@
 package net.thunderbird.feature.account
 
-import net.thunderbird.core.architecture.model.Id
+import kotlin.uuid.Uuid
+import net.thunderbird.core.architecture.model.BaseUuidIdentifier
 
 /**
  * Represents a unique identifier for an [Account].
  */
-typealias AccountId = Id<Account>
+class AccountId(
+    value: Uuid,
+) : BaseUuidIdentifier(value)

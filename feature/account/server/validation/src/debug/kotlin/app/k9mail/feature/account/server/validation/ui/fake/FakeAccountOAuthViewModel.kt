@@ -1,7 +1,7 @@
 package app.k9mail.feature.account.server.validation.ui.fake
 
-import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
 import app.k9mail.feature.account.oauth.ui.AccountOAuthContract
+import net.thunderbird.core.ui.contract.mvi.BaseViewModel
 
 /**
  * Only for previewing the UI.

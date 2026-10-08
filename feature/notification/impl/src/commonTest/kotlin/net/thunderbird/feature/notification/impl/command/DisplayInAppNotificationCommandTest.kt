@@ -2,19 +2,17 @@ package net.thunderbird.feature.notification.impl.command
 
 import assertk.all
 import assertk.assertThat
+import assertk.assertions.containsExactly
 import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
 import assertk.assertions.prop
-import dev.mokkery.spy
-import dev.mokkery.verify.VerifyMode.Companion.exactly
-import dev.mokkery.verifySuspend
 import kotlin.test.Test
 import kotlinx.coroutines.test.runTest
-import net.thunderbird.core.featureflag.FeatureFlagKey
+import net.thunderbird.components.core.outcome.Outcome
 import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.featureflag.FeatureFlagResult
+import net.thunderbird.core.featureflag.keys.GeneratedFeatureFlagKey
 import net.thunderbird.core.logging.testing.TestLogger
-import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.feature.notification.api.NotificationSeverity
 import net.thunderbird.feature.notification.api.command.outcome.Success
 import net.thunderbird.feature.notification.api.command.outcome.UnsupportedCommand
@@ -33,7 +31,7 @@ class DisplayInAppNotificationCommandTest {
             val testSubject = createTestSubject(
                 featureFlagProvider = { key ->
                     when (key) {
-                        FeatureFlagKey.DisplayInAppNotifications -> FeatureFlagResult.Disabled
+                        GeneratedFeatureFlagKey.DISPLAY_IN_APP_NOTIFICATIONS -> FeatureFlagResult.Disabled
                         else -> FeatureFlagResult.Enabled
                     }
                 },
@@ -52,7 +50,7 @@ class DisplayInAppNotificationCommandTest {
                     prop(UnsupportedCommand<InAppNotification>::reason)
                         .isInstanceOf<UnsupportedCommand.Reason.FeatureFlagDisabled>()
                         .prop(UnsupportedCommand.Reason.FeatureFlagDisabled::key)
-                        .isEqualTo(FeatureFlagKey.DisplayInAppNotifications)
+                        .isEqualTo(GeneratedFeatureFlagKey.DISPLAY_IN_APP_NOTIFICATIONS)
                 }
         }
 
@@ -63,7 +61,7 @@ class DisplayInAppNotificationCommandTest {
             val testSubject = createTestSubject(
                 featureFlagProvider = { key ->
                     when (key) {
-                        FeatureFlagKey.DisplayInAppNotifications -> FeatureFlagResult.Unavailable
+                        GeneratedFeatureFlagKey.DISPLAY_IN_APP_NOTIFICATIONS -> FeatureFlagResult.Unavailable
                         else -> FeatureFlagResult.Enabled
                     }
                 },
@@ -82,7 +80,7 @@ class DisplayInAppNotificationCommandTest {
                     prop(UnsupportedCommand<InAppNotification>::reason)
                         .isInstanceOf<UnsupportedCommand.Reason.FeatureFlagDisabled>()
                         .prop(UnsupportedCommand.Reason.FeatureFlagDisabled::key)
-                        .isEqualTo(FeatureFlagKey.DisplayInAppNotifications)
+                        .isEqualTo(GeneratedFeatureFlagKey.DISPLAY_IN_APP_NOTIFICATIONS)
                 }
         }
 
@@ -94,7 +92,7 @@ class DisplayInAppNotificationCommandTest {
                 severity = NotificationSeverity.Information,
             )
             val notificationRegistry = FakeNotificationRegistry()
-            val notifier = spy(FakeInAppNotificationNotifier(notificationRegistry))
+            val notifier = FakeInAppNotificationNotifier(notificationRegistry)
             val testSubject = createTestSubject(
                 notification = notification,
                 notifier = notifier,
@@ -114,9 +112,7 @@ class DisplayInAppNotificationCommandTest {
                         .isEqualTo(notificationRegistry.getValue(notification))
                 }
 
-            verifySuspend(exactly(1)) {
-                notifier.show(notification)
-            }
+            assertThat(notifier.shownNotifications).containsExactly(notification)
         }
 
     private fun createTestSubject(

@@ -12,11 +12,10 @@ import app.k9mail.feature.account.setup.domain.entity.toConnectionSecurity
 import com.fsck.k9.mail.ServerSettings
 import com.fsck.k9.mail.store.imap.ImapStoreSettings
 
-internal fun IncomingServerSettings.toServerSettings(password: String?): ServerSettings {
+fun IncomingServerSettings.toServerSettings(password: String?): ServerSettings {
     return when (this) {
         is ImapServerSettings -> this.toImapServerSettings(password)
         is DemoServerSettings -> this.serverSettings
-
         else -> throw IllegalArgumentException("Unknown server settings type: $this")
     }
 }
@@ -45,11 +44,10 @@ private fun ImapServerSettings.toImapServerSettings(password: String?): ServerSe
  *
  * @throws IllegalArgumentException if the server settings type is unknown.
  */
-internal fun OutgoingServerSettings.toServerSettings(password: String?): ServerSettings {
+fun OutgoingServerSettings.toServerSettings(password: String?): ServerSettings {
     return when (this) {
         is SmtpServerSettings -> this.toSmtpServerSettings(password)
         is DemoServerSettings -> this.serverSettings
-
         else -> throw IllegalArgumentException("Unknown server settings type: $this")
     }
 }

@@ -3,7 +3,7 @@ package com.fsck.k9.message
 import android.app.Activity
 import android.app.PendingIntent
 import android.content.Intent
-import android.os.Parcelable
+import android.net.Uri
 import assertk.Assert
 import assertk.all
 import assertk.assertThat
@@ -48,15 +48,17 @@ import java.util.Date
 import kotlinx.coroutines.flow.Flow
 import net.thunderbird.core.android.account.Identity
 import net.thunderbird.core.android.account.QuoteStyle
+import net.thunderbird.core.android.testing.RobolectricPendingWorkRule
 import net.thunderbird.core.common.appConfig.PlatformConfigProvider
 import net.thunderbird.core.common.exception.MessagingException
-import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.logging.testing.TestLogger
 import net.thunderbird.core.preference.GeneralSettings
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.privacy.PrivacySettings
+import net.thunderbird.legacy.logging.Log
 import org.apache.james.mime4j.util.MimeUtil
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import org.koin.core.component.inject
 import org.mockito.ArgumentCaptor
@@ -75,10 +77,10 @@ import org.openintents.openpgp.OpenPgpError
 import org.openintents.openpgp.util.OpenPgpApi
 import org.openintents.openpgp.util.OpenPgpApi.OpenPgpDataSource
 import org.robolectric.RuntimeEnvironment
-import org.robolectric.annotation.LooperMode
 
-@LooperMode(LooperMode.Mode.LEGACY)
 class PgpMessageBuilderTest : K9RobolectricTest() {
+    @get:Rule
+    val pendingWork = RobolectricPendingWorkRule()
 
     private val defaultCryptoStatus = ComposeCryptoStatus(
         OpenPgpProviderState.OK,
@@ -98,7 +100,6 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
         createDefaultPgpMessageBuilder(openPgpApi, autocryptOpenPgpApiInteractor, resourceProvider)
 
     @Before
-    @Throws(Exception::class)
     fun setUp() {
         Log.logger = TestLogger()
         BinaryTempFileBody.setTempDirectory(RuntimeEnvironment.getApplication().cacheDir)
@@ -115,6 +116,7 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
 
         val mockCallback = mock(Callback::class.java)
         pgpMessageBuilder.buildAsync(mockCallback)
+        pendingWork.runAllTasks()
 
         verify(mockCallback).onMessageBuildException(any<MessagingException>())
         verifyNoMoreInteractions(mockCallback)
@@ -129,6 +131,7 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
 
         val mockCallback = mock(Callback::class.java)
         pgpMessageBuilder.buildAsync(mockCallback)
+        pendingWork.runAllTasks()
 
         verify(mockCallback).onMessageBuildException(any<MessagingException>())
         verifyNoMoreInteractions(mockCallback)
@@ -143,6 +146,7 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
 
         val mockCallback = mock(Callback::class.java)
         pgpMessageBuilder.buildAsync(mockCallback)
+        pendingWork.runAllTasks()
 
         verify(mockCallback).onMessageBuildException(any<MessagingException>())
         verifyNoMoreInteractions(mockCallback)
@@ -156,6 +160,7 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
 
         val mockCallback = mock(Callback::class.java)
         pgpMessageBuilder.buildAsync(mockCallback)
+        pendingWork.runAllTasks()
 
         val captor = ArgumentCaptor.forClass(MimeMessage::class.java)
         verify(mockCallback).onMessageBuildSuccess(captor.capture(), eq(false))
@@ -171,6 +176,7 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
 
         val mockCallback = mock(Callback::class.java)
         pgpMessageBuilder.buildAsync(mockCallback)
+        pendingWork.runAllTasks()
 
         val captor = ArgumentCaptor.forClass(MimeMessage::class.java)
         verify(mockCallback).onMessageBuildSuccess(captor.capture(), eq(false))
@@ -195,6 +201,7 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
 
         val mockCallback = mock(Callback::class.java)
         pgpMessageBuilder.buildAsync(mockCallback)
+        pendingWork.runAllTasks()
 
         verify(mockCallback).onMessageBuildException(any<MessagingException>())
         verifyNoMoreInteractions(mockCallback)
@@ -221,6 +228,7 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
 
         val mockCallback = mock(Callback::class.java)
         pgpMessageBuilder.buildAsync(mockCallback)
+        pendingWork.runAllTasks()
 
         val expectedIntent = Intent(OpenPgpApi.ACTION_DETACHED_SIGN)
         expectedIntent.putExtra(OpenPgpApi.EXTRA_SIGN_KEY_ID, TEST_KEY_ID)
@@ -261,12 +269,10 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
         val cryptoStatus = defaultCryptoStatus.copy(cryptoMode = CryptoMode.SIGN_ONLY)
         pgpMessageBuilder.setCryptoStatus(cryptoStatus)
 
-        val returnIntent = mock(Intent::class.java)
-        `when`(returnIntent.getIntExtra(eq(OpenPgpApi.RESULT_CODE), anyInt()))
-            .thenReturn(OpenPgpApi.RESULT_CODE_USER_INTERACTION_REQUIRED)
+        val returnIntent = Intent()
+        returnIntent.putExtra(OpenPgpApi.RESULT_CODE, OpenPgpApi.RESULT_CODE_USER_INTERACTION_REQUIRED)
         val mockPendingIntent = mock(PendingIntent::class.java)
-        `when`<Parcelable>(returnIntent.getParcelableExtra<Parcelable>(eq(OpenPgpApi.RESULT_INTENT)))
-            .thenReturn(mockPendingIntent)
+        returnIntent.putExtra(OpenPgpApi.RESULT_INTENT, mockPendingIntent)
 
         `when`(openPgpApi.executeApi(any<Intent>(), any<OpenPgpDataSource>(), any<OutputStream>())).thenReturn(
             returnIntent,
@@ -274,6 +280,7 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
 
         val mockCallback = mock(Callback::class.java)
         pgpMessageBuilder.buildAsync(mockCallback)
+        pendingWork.runAllTasks()
 
         val captor = ArgumentCaptor.forClass(PendingIntent::class.java)
         verify(mockCallback).onMessageBuildReturnPendingIntent(captor.capture(), anyInt())
@@ -295,8 +302,7 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
             returnIntent.putExtra(OpenPgpApi.RESULT_CODE, OpenPgpApi.RESULT_CODE_USER_INTERACTION_REQUIRED)
 
             val mockPendingIntent = mock(PendingIntent::class.java)
-            `when`<Parcelable>(returnIntent.getParcelableExtra<Parcelable>(eq(OpenPgpApi.RESULT_INTENT)))
-                .thenReturn(mockPendingIntent)
+            returnIntent.putExtra(OpenPgpApi.RESULT_INTENT, mockPendingIntent)
 
             `when`(openPgpApi.executeApi(any<Intent>(), any<OpenPgpDataSource>(), any<OutputStream>())).thenReturn(
                 returnIntent,
@@ -304,6 +310,7 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
 
             val mockCallback = mock(Callback::class.java)
             pgpMessageBuilder.buildAsync(mockCallback)
+            pendingWork.runAllTasks()
 
             verify(returnIntent).getIntExtra(eq(OpenPgpApi.RESULT_CODE), anyInt())
             val piCaptor = ArgumentCaptor.forClass(PendingIntent::class.java)
@@ -326,6 +333,7 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
 
             val mockCallback = mock(Callback::class.java)
             pgpMessageBuilder.onActivityResult(returnedRequestCode, Activity.RESULT_OK, mockReturnIntent, mockCallback)
+            pendingWork.runAllTasks()
             verify(openPgpApi).executeApi(same(mockReturnIntent), any<OpenPgpDataSource>(), any<OutputStream>())
             verify(returnIntent).getIntExtra(eq(OpenPgpApi.RESULT_CODE), anyInt())
         }
@@ -350,6 +358,7 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
 
         val mockCallback = mock(Callback::class.java)
         pgpMessageBuilder.buildAsync(mockCallback)
+        pendingWork.runAllTasks()
 
         verify(mockCallback).onMessageBuildException(any<MessagingException>())
         verifyNoMoreInteractions(mockCallback)
@@ -431,6 +440,7 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
 
         val mockCallback = mock(Callback::class.java)
         pgpMessageBuilder.buildAsync(mockCallback)
+        pendingWork.runAllTasks()
 
         val mimeMessageCaptor = ArgumentCaptor.forClass(MimeMessage::class.java)
         verify(mockCallback).onMessageBuildSuccess(mimeMessageCaptor.capture(), eq(true))
@@ -460,6 +470,7 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
         )
             .thenReturn(returnIntent)
         pgpMessageBuilder.buildAsync(mock(Callback::class.java))
+        pendingWork.runAllTasks()
 
         verify(autocryptOpenPgpApiInteractor).getKeyMaterialForUserId(same(openPgpApi), eq("alice@example.org"))
         verify(autocryptOpenPgpApiInteractor).getKeyMaterialForUserId(same(openPgpApi), eq("bob@example.org"))
@@ -486,6 +497,7 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
         )
             .thenReturn(returnIntent)
         pgpMessageBuilder.buildAsync(mock(Callback::class.java))
+        pendingWork.runAllTasks()
 
         verify(autocryptOpenPgpApiInteractor).getKeyMaterialForKeyId(
             same(openPgpApi),
@@ -518,6 +530,7 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
         )
             .thenReturn(returnIntent)
         pgpMessageBuilder.buildAsync(mock(Callback::class.java))
+        pendingWork.runAllTasks()
 
         verify(autocryptOpenPgpApiInteractor).getKeyMaterialForKeyId(
             any(OpenPgpApi::class.java),
@@ -551,6 +564,7 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
 
         val mockCallback = mock(Callback::class.java)
         pgpMessageBuilder.buildAsync(mockCallback)
+        pendingWork.runAllTasks()
 
         val expectedApiIntent = Intent(OpenPgpApi.ACTION_SIGN_AND_ENCRYPT)
         expectedApiIntent.putExtra(OpenPgpApi.EXTRA_SIGN_KEY_ID, TEST_KEY_ID)
@@ -612,6 +626,7 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
 
         val mockCallback = mock(Callback::class.java)
         pgpMessageBuilder.buildAsync(mockCallback)
+        pendingWork.runAllTasks()
 
         val expectedApiIntent = Intent(OpenPgpApi.ACTION_SIGN_AND_ENCRYPT)
         expectedApiIntent.putExtra(OpenPgpApi.EXTRA_SIGN_KEY_ID, TEST_KEY_ID)
@@ -660,6 +675,7 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
 
         val mockCallback = mock(Callback::class.java)
         pgpMessageBuilder.buildAsync(mockCallback)
+        pendingWork.runAllTasks()
 
         val expectedApiIntent = Intent(OpenPgpApi.ACTION_SIGN)
         expectedApiIntent.putExtra(OpenPgpApi.EXTRA_SIGN_KEY_ID, TEST_KEY_ID)
@@ -682,10 +698,11 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
         val cryptoStatus = defaultCryptoStatus.copy(cryptoMode = CryptoMode.SIGN_ONLY, isPgpInlineModeEnabled = true)
 
         pgpMessageBuilder.setCryptoStatus(cryptoStatus)
-        pgpMessageBuilder.setAttachments(listOf(Attachment.createAttachment(null, 0, null, true, true)))
+        pgpMessageBuilder.setAttachments(listOf(Attachment.createAttachment(Uri.EMPTY, 0, null, true, true)))
 
         val mockCallback = mock(Callback::class.java)
         pgpMessageBuilder.buildAsync(mockCallback)
+        pendingWork.runAllTasks()
 
         verify(mockCallback).onMessageBuildException(any<MessagingException>())
         verifyNoMoreInteractions(mockCallback)
@@ -699,10 +716,11 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
             defaultCryptoStatus.copy(cryptoMode = CryptoMode.CHOICE_ENABLED, isPgpInlineModeEnabled = true)
 
         pgpMessageBuilder.setCryptoStatus(cryptoStatus)
-        pgpMessageBuilder.setAttachments(listOf(Attachment.createAttachment(null, 0, null, true, true)))
+        pgpMessageBuilder.setAttachments(listOf(Attachment.createAttachment(Uri.EMPTY, 0, null, true, true)))
 
         val mockCallback = mock(Callback::class.java)
         pgpMessageBuilder.buildAsync(mockCallback)
+        pendingWork.runAllTasks()
 
         verify(mockCallback).onMessageBuildException(any<MessagingException>())
         verifyNoMoreInteractions(mockCallback)
@@ -733,6 +751,7 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
 
         val mockCallback = mock(Callback::class.java)
         pgpMessageBuilder.buildAsync(mockCallback)
+        pendingWork.runAllTasks()
 
         val captor = ArgumentCaptor.forClass(MimeMessage::class.java)
         verify(mockCallback).onMessageBuildSuccess(captor.capture(), eq(false))
@@ -757,6 +776,7 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
         )
         val mockCallback = mock(Callback::class.java)
         pgpMessageBuilder.buildAsync(mockCallback)
+        pendingWork.runAllTasks()
 
         verify(mockCallback).onMessageBuildException(any<MessagingException>())
         verifyNoMoreInteractions(mockCallback)
@@ -780,7 +800,7 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
                 autocryptOpenPgpApiInteractor,
                 resourceProvider,
                 fakeGeneralSettingsManager,
-            )
+            ) { error("HTML signature sanitizer called unexpectedly") }
             builder.setOpenPgpApi(openPgpApi)
 
             val identity = Identity(
@@ -845,6 +865,7 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
         }
 
         private val fakeGeneralSettingsManager = object : GeneralSettingsManager {
+            @Deprecated("Use PreferenceManager<GeneralSettings>.getConfig() instead")
             override fun getSettings() = GeneralSettings(
                 privacy = PrivacySettings(
                     isHideUserAgent = false,
@@ -853,6 +874,7 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
                 platformConfigProvider = FakePlatformConfigProvider(),
             )
 
+            @Deprecated("Use PreferenceManager<GeneralSettings>.getConfigFlow() instead")
             override fun getSettingsFlow(): Flow<GeneralSettings> = error("not implemented")
             override fun save(config: GeneralSettings) = error("not implemented")
 

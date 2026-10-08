@@ -14,6 +14,7 @@ package net.thunderbird.core.logging
  *
  * @param priority The priority of the log level, where a lower priority indicates a more verbose level.
  */
+@Suppress("MagicNumber")
 enum class LogLevel(
     val priority: Int,
 ) {

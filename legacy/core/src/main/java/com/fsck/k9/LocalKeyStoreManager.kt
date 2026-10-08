@@ -3,6 +3,7 @@ package com.fsck.k9
 import com.fsck.k9.mail.ssl.LocalKeyStore
 import java.security.cert.CertificateException
 import java.security.cert.X509Certificate
+import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.mail.mailserver.MailServerDirection
 
@@ -19,7 +20,7 @@ class LocalKeyStoreManager(
         } else {
             account.outgoingServerSettings
         }
-        localKeyStore.addCertificate(serverSettings.host!!, serverSettings.port, certificate)
+        localKeyStore.addCertificate(serverSettings.host, serverSettings.port, certificate)
     }
 
     /**
@@ -33,7 +34,7 @@ class LocalKeyStoreManager(
         } else {
             account.outgoingServerSettings
         }
-        val oldHost = serverSettings.host!!
+        val oldHost = serverSettings.host
         val oldPort = serverSettings.port
         if (oldPort == -1) {
             // This occurs when a new account is created
@@ -48,13 +49,13 @@ class LocalKeyStoreManager(
      * Examine the settings for the account and attempt to delete (possibly non-existent)
      * certificates for the incoming and outgoing servers.
      */
-    fun deleteCertificates(account: LegacyAccountDto) {
+    fun deleteCertificates(account: LegacyAccount) {
         account.incomingServerSettings.let { serverSettings ->
-            localKeyStore.deleteCertificate(serverSettings.host!!, serverSettings.port)
+            localKeyStore.deleteCertificate(serverSettings.host, serverSettings.port)
         }
 
         account.outgoingServerSettings.let { serverSettings ->
-            localKeyStore.deleteCertificate(serverSettings.host!!, serverSettings.port)
+            localKeyStore.deleteCertificate(serverSettings.host, serverSettings.port)
         }
     }
 }

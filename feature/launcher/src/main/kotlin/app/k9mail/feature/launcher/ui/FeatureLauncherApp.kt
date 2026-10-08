@@ -6,8 +6,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
-import app.k9mail.core.ui.compose.designsystem.atom.Surface
 import app.k9mail.feature.launcher.navigation.FeatureLauncherNavHost
+import net.thunderbird.components.ui.bolt.atom.Surface
 import net.thunderbird.core.ui.theme.api.FeatureThemeProvider
 import org.koin.compose.koinInject
 

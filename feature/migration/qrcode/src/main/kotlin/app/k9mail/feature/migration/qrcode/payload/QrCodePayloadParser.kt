@@ -2,7 +2,7 @@ package app.k9mail.feature.migration.qrcode.payload
 
 import com.squareup.moshi.JsonDataException
 import java.io.IOException
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.legacy.logging.Log
 
 internal class QrCodePayloadParser(
     private val qrCodePayloadAdapter: QrCodePayloadAdapter,

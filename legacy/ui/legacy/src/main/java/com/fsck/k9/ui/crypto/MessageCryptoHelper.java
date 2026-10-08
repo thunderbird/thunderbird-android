@@ -53,7 +53,7 @@ import org.openintents.openpgp.util.OpenPgpApi.OpenPgpDataSink;
 import org.openintents.openpgp.util.OpenPgpApi.OpenPgpDataSource;
 import org.openintents.openpgp.util.OpenPgpServiceConnection;
 import org.openintents.openpgp.util.OpenPgpServiceConnection.OnBound;
-import net.thunderbird.core.logging.legacy.Log;
+import net.thunderbird.legacy.logging.Log;
 
 
 public class MessageCryptoHelper {

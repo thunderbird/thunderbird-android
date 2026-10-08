@@ -13,9 +13,7 @@
     <string name="account_server_validation_error_server">Villa á þjóni</string>
     <string name="account_server_validation_error_missing_server_capability">Vantar upplýsingar um getu póstþjóns</string>
     <string name="account_server_validation_error_client_certificate_retrieval_failure">Skilríki biðlara var ekki aðgengilegt</string>
-    <string name="account_server_validation_error_missing_server_capability_details">Póstþjóninn vantar þennan eiginleika:
-\n%s</string>
+    <string name="account_server_validation_error_missing_server_capability_details">Póstþjóninn vantar þennan eiginleika: \n%s</string>
     <string name="account_server_validation_error_client_certificate_expired">Skilríki biðlara er ekki lengur gilt</string>
-    <string name="account_server_validation_error_details">Nánar:
-\n%s</string>
+    <string name="account_server_validation_error_details">Nánar: \n%s</string>
 </resources>

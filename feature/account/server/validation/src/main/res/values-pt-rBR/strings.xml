@@ -14,7 +14,6 @@
     <string name="account_server_validation_error_client_certificate_expired">O certificado do cliente não é mais válido</string>
     <string name="account_server_validation_error_client_certificate_retrieval_failure">O certificado do cliente não pode ser acessado</string>
     <string name="account_server_validation_error_missing_server_capability">Falta capacidade no servidor</string>
-    <string name="account_server_validation_error_details">Detalhes:
-\n%s</string>
+    <string name="account_server_validation_error_details">Detalhes: \n%s</string>
     <string name="account_server_validation_error_missing_server_capability_details">O servidor não tem esta capacidade: \n%s</string>
 </resources>

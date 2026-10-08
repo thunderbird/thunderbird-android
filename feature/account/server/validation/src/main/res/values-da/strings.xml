@@ -1,2 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_server_validation_error_network">Netværksfejl</string>
+    <string name="account_server_validation_error_server">Server fejl</string>
+    <string name="account_server_validation_error_unknown">Ukendt fejl</string>
+    <string name="account_server_validation_error_client_certificate_expired">Klient certifikatet er ikke længere gyldigt</string>
+    <string name="account_server_validation_error_details">Detaljer:\n%s</string>
+</resources>

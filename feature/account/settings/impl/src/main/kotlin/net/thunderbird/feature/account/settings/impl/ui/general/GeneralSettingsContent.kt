@@ -70,11 +70,13 @@ private fun handleSegmentedChange(setting: SettingValue.SegmentedButton<*>, onEv
             val avatarOption = setting.value as SegmentedButtonOption<Avatar>
             onEvent(Event.OnAvatarChange(avatarOption.value))
         }
+
         GeneralSettingId.AVATAR_ICON -> {
             @Suppress("UNCHECKED_CAST")
             val iconOption = setting.value as SegmentedButtonOption<Avatar>
             onEvent(Event.OnAvatarChange(iconOption.value))
         }
+
         else -> Unit
     }
 }
@@ -87,6 +89,7 @@ private fun handleIconListChange(setting: SettingValue.IconList, onEvent: (Event
                 onEvent(Event.OnAvatarChange(Avatar.Icon(iconOption.id)))
             }
         }
+
         else -> Unit
     }
 }

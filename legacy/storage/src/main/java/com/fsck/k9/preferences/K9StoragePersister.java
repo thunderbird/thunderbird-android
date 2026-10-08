@@ -23,7 +23,7 @@ import net.thunderbird.core.preference.storage.StoragePersister;
 import net.thunderbird.core.preference.storage.StorageUpdater;
 
 public class K9StoragePersister implements StoragePersister {
-    private static final int DB_VERSION = 29;
+    private static final int DB_VERSION = 30;
     private static final String DB_NAME = "preferences_storage";
 
     private final Context context;
@@ -165,9 +165,8 @@ public class K9StoragePersister implements StoragePersister {
         try {
             cursor = database.rawQuery("SELECT primkey, value FROM preferences_storage", null);
             while (cursor.moveToNext()) {
-                String key = cursor.getString(0);
-                String value = cursor.getString(1);
-                logger.debug(null, null, () -> String.format("Loading key '%s', value = '%s'", key, value));
+                final String key = cursor.getString(0);
+                final String value = cursor.getString(1);
                 loadedValues.put(key, value);
             }
         } finally {

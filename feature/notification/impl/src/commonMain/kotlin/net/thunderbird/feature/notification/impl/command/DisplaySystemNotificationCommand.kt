@@ -1,9 +1,9 @@
 package net.thunderbird.feature.notification.impl.command
 
-import net.thunderbird.core.featureflag.FeatureFlagKey
+import net.thunderbird.components.core.outcome.Outcome
 import net.thunderbird.core.featureflag.FeatureFlagProvider
+import net.thunderbird.core.featureflag.keys.GeneratedFeatureFlagKey
 import net.thunderbird.core.logging.Logger
-import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.feature.notification.api.NotificationSeverity
 import net.thunderbird.feature.notification.api.command.NotificationCommand
 import net.thunderbird.feature.notification.api.command.outcome.CommandExecutionFailed
@@ -36,12 +36,12 @@ internal class DisplaySystemNotificationCommand(
         logger.debug(TAG) { "execute() called with notification = $notification" }
         return when {
             featureFlagProvider
-                .provide(FeatureFlagKey.UseNotificationSenderForSystemNotifications)
+                .provide(GeneratedFeatureFlagKey.USE_NOTIFICATION_SENDER_FOR_SYSTEM_NOTIFICATIONS)
                 .isDisabledOrUnavailable() -> Outcome.failure(
                 error = UnsupportedCommand(
                     command = this,
                     reason = UnsupportedCommand.Reason.FeatureFlagDisabled(
-                        key = FeatureFlagKey.UseNotificationSenderForSystemNotifications,
+                        key = GeneratedFeatureFlagKey.USE_NOTIFICATION_SENDER_FOR_SYSTEM_NOTIFICATIONS,
                     ),
                 ),
             )

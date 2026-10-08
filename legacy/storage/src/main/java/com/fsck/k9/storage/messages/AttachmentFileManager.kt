@@ -3,7 +3,7 @@ package com.fsck.k9.storage.messages
 import com.fsck.k9.helper.FileHelper
 import com.fsck.k9.mailstore.StorageFilesProvider
 import java.io.File
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.legacy.logging.Log
 import net.thunderbird.core.preference.GeneralSettingsManager
 
 internal class AttachmentFileManager(

@@ -54,7 +54,7 @@
     <string name="message_compose_quote_header_from">Sɣur:</string>
     <string name="message_to_label">I:</string>
     <string name="message_view_bcc_label">Anɣ. Uff. I:</string>
-    <string name="message_view_me_text">nekki</string>
+    <string name="message_view_to_me_text">nekki</string>
     <string name="global_settings_confirm_action_spam">Aspam</string>
     <string name="general_settings_swipe_action_spam">Aspam</string>
     <string name="account_setup_expunge_policy_manual">S ufus</string>
@@ -124,7 +124,6 @@
     <string name="filter_folders_action">Af-d akaram</string>
     <string name="add_account_action">Rnu amiḍan</string>
     <string name="search_everywhere_action">Nadi deg yal adeg</string>
-    <string name="swipe_action_delete">Kkes</string>
     <string name="notification_action_delete_all">Kkes-iten akk</string>
     <string name="account_setup_incoming_delete_policy_delete_label">Kkes seg uqeddac</string>
     <string name="account_setup_incoming_delete_policy_label">Mi ara kkseɣ izen</string>

@@ -8,7 +8,7 @@ import com.fsck.k9.core.BuildConfig;
 import com.fsck.k9.mailstore.LockableDatabase.SchemaDefinition;
 import com.fsck.k9.mailstore.MigrationsHelper;
 import com.fsck.k9.storage.migrations.Migrations;
-import net.thunderbird.core.logging.legacy.Log;
+import net.thunderbird.legacy.logging.Log;
 
 
 class StoreSchemaDefinition implements SchemaDefinition {
@@ -47,7 +47,7 @@ class StoreSchemaDefinition implements SchemaDefinition {
         db.beginTransaction();
         try {
             if (db.getVersion() > DB_VERSION) {
-                String accountUuid = migrationsHelper.getAccount().getUuid();
+                String accountUuid = migrationsHelper.getAccount().getId().toString();
                 throw new AssertionError("Database downgrades are not supported. " +
                         "Please fix the account database '" + accountUuid + "' manually or " +
                         "clear app data.");

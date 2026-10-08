@@ -19,7 +19,7 @@ class ComposableMessageViewHolder(
     private val onLongClick: (MessageListItem) -> Unit,
     private val onAvatarClick: (MessageListItem) -> Unit,
     private val onFavouriteClick: (MessageListItem) -> Unit,
-    private val appearance: MessageListAppearance,
+    private val appearance: () -> MessageListAppearance,
     private val contactRepository: ContactRepository,
     private val avatarMonogramCreator: AvatarMonogramCreator,
 ) : MessageListViewHolder(composeView) {
@@ -41,7 +41,7 @@ class ComposableMessageViewHolder(
                     onLongClick = { onLongClick(item) },
                     onAvatarClick = { onAvatarClick(item) },
                     onFavouriteClick = { onFavouriteClick(item) },
-                    appearance = appearance,
+                    appearance = appearance(),
                 )
             }
         }
@@ -58,7 +58,7 @@ class ComposableMessageViewHolder(
             onLongClick: (MessageListItem) -> Unit,
             onFavouriteClick: (MessageListItem) -> Unit,
             onAvatarClick: (MessageListItem) -> Unit,
-            appearance: MessageListAppearance,
+            appearance: () -> MessageListAppearance,
         ): ComposableMessageViewHolder {
             val composeView = ComposeView(context)
 

@@ -27,10 +27,10 @@ internal class SyncAccountTest {
             messagingController = messagingController,
         )
 
-        val result = testSubject(account.uuid).first()
+        val result = testSubject(account.id).first()
 
         assertThat(result.isSuccess).isEqualTo(true)
-        assertThat(accountManager.recordedParameters).isEqualTo(listOf(account.uuid))
+        assertThat(accountManager.recordedParameters).isEqualTo(listOf(account.id))
         assertThat(messagingController.recordedParameters).isEqualTo(
             listOf(
                 CheckMailParameters(

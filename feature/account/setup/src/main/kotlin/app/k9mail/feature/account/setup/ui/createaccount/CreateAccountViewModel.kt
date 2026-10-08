@@ -1,18 +1,18 @@
 package app.k9mail.feature.account.setup.ui.createaccount
 
 import androidx.lifecycle.viewModelScope
-import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
 import app.k9mail.feature.account.common.domain.AccountDomainContract.AccountStateRepository
 import app.k9mail.feature.account.common.ui.WizardConstants
 import app.k9mail.feature.account.setup.AccountSetupExternalContract.AccountCreator.AccountCreatorResult
 import app.k9mail.feature.account.setup.domain.DomainContract.UseCase.CreateAccount
-import app.k9mail.feature.account.setup.domain.entity.AccountUuid
 import app.k9mail.feature.account.setup.ui.createaccount.CreateAccountContract.Effect
 import app.k9mail.feature.account.setup.ui.createaccount.CreateAccountContract.Event
 import app.k9mail.feature.account.setup.ui.createaccount.CreateAccountContract.State
 import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import net.thunderbird.core.ui.contract.mvi.BaseViewModel
+import net.thunderbird.feature.account.AccountId
 
 class CreateAccountViewModel(
     private val createAccount: CreateAccount,
@@ -33,13 +33,13 @@ class CreateAccountViewModel(
 
         viewModelScope.launch {
             when (val result = createAccount.execute(accountState)) {
-                is AccountCreatorResult.Success -> showSuccess(AccountUuid(result.accountUuid))
+                is AccountCreatorResult.Success -> showSuccess(result.accountId)
                 is AccountCreatorResult.Error -> showError(result)
             }
         }
     }
 
-    private fun showSuccess(accountUuid: AccountUuid) {
+    private fun showSuccess(accountId: AccountId) {
         updateState {
             it.copy(
                 isLoading = false,
@@ -49,7 +49,7 @@ class CreateAccountViewModel(
 
         viewModelScope.launch {
             delay(WizardConstants.CONTINUE_NEXT_DELAY)
-            navigateNext(accountUuid)
+            navigateNext(accountId)
         }
     }
 
@@ -73,8 +73,8 @@ class CreateAccountViewModel(
         emitEffect(Effect.NavigateBack)
     }
 
-    private fun navigateNext(accountUuid: AccountUuid) {
+    private fun navigateNext(accountId: AccountId) {
         viewModelScope.coroutineContext.cancelChildren()
-        emitEffect(Effect.NavigateNext(accountUuid))
+        emitEffect(Effect.NavigateNext(accountId))
     }
 }

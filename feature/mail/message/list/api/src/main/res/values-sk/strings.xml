@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="swipe_action_select">Vybrať</string>
+    <string name="swipe_action_deselect">Zrušiť výber</string>
+    <string name="swipe_action_mark_as_read">Označiť ako prečítané</string>
+    <string name="swipe_action_mark_as_unread">Označiť ako neprečítané</string>
+    <string name="swipe_action_add_star">Pridať hviezdičku</string>
+    <string name="swipe_action_remove_star">Odstrániť hviezdičku</string>
+    <string name="swipe_action_archive">Archivovať</string>
+    <string name="swipe_action_delete">Vymazať</string>
+    <string name="swipe_action_spam">Nevyžiadaná pošta</string>
+    <string name="swipe_action_move">Presunúť…</string>
+    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> vybraných</string>
+</resources>

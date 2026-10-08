@@ -5,7 +5,7 @@ import android.content.Context;
 import androidx.loader.content.AsyncTaskLoader;
 
 import net.thunderbird.core.android.account.LegacyAccountDto;
-import net.thunderbird.core.logging.legacy.Log;
+import net.thunderbird.legacy.logging.Log;
 import app.k9mail.legacy.message.controller.MessageReference;
 import com.fsck.k9.controller.MessagingController;
 import net.thunderbird.core.common.exception.MessagingException;

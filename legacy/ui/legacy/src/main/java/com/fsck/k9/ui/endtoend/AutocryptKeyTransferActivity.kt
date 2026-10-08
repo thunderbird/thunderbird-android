@@ -17,7 +17,7 @@ import com.fsck.k9.ui.base.BaseActivity
 import com.fsck.k9.view.StatusIndicator
 import com.google.android.material.textview.MaterialTextView
 import kotlinx.coroutines.delay
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.legacy.logging.Log
 import org.koin.android.ext.android.inject
 import org.koin.core.parameter.parametersOf
 import org.openintents.openpgp.util.OpenPgpIntentStarter

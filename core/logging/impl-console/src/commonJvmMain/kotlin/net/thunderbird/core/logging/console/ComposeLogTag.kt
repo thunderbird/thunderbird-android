@@ -36,7 +36,7 @@ private fun extractTagFromStackTrace(ignoredClasses: Set<String>): String? {
     val ignoredClasses = ignoredClasses + setOf(
         "net.thunderbird.core.logging.console.ComposeLogTagKt",
         "net.thunderbird.core.logging.composite.DefaultCompositeLogSink",
-        "net.thunderbird.core.logging.legacy.Log",
+        "net.thunderbird.legacy.logging.Log",
         Logger::class.java.name,
         DefaultLogger::class.java.name,
     )

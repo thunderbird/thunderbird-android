@@ -7,6 +7,7 @@ import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
 import com.fsck.k9.mail.internet.MimeMessage
 import com.fsck.k9.mail.internet.MimeMultipart
+import com.fsck.k9.mail.internet.MimeUtility
 import com.fsck.k9.mail.testing.assertk.body
 import com.fsck.k9.mail.testing.assertk.bodyPart
 import com.fsck.k9.mail.testing.assertk.bodyParts
@@ -16,6 +17,29 @@ import java.io.ByteArrayInputStream
 import org.junit.Test
 
 class MimePartStreamParserTest {
+    @Test
+    fun `parse should preserve UTF-8 attachment filename`() {
+        // Arrange
+        val expectedFilename = "Wspaniały świat.mp3"
+        val messageContent =
+            """
+            Content-Type: audio/mpeg
+            Content-Disposition: attachment; filename="$expectedFilename"
+
+            attachment content
+            """.trimIndent().crlf()
+
+        // Act
+        val bodyPart = MimePartStreamParser.parse(
+            null,
+            ByteArrayInputStream(messageContent.toByteArray(Charsets.UTF_8)),
+        )
+        val filename = MimeUtility.getHeaderParameter(bodyPart.disposition, "filename")
+
+        // Assert
+        assertThat(filename).isEqualTo(expectedFilename)
+    }
+
     @Test
     fun innerMessage_DispositionInline() {
         val messageContent =

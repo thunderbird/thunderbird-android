@@ -7,13 +7,21 @@ android {
 }
 
 dependencies {
-    api(projects.core.outcome)
+    api(libs.tb.mobile.components.core.outcome)
 
+    implementation(projects.core.android.account)
     implementation(projects.core.common)
     implementation(projects.core.featureflag)
+    implementation(projects.core.logging.api)
     implementation(projects.core.preference.api)
     implementation(projects.core.ui.compose.common)
     implementation(projects.feature.account.api)
     implementation(projects.feature.mail.account.api)
     implementation(projects.feature.mail.folder.api)
+    implementation(projects.feature.notification.api)
+}
+
+codeCoverage {
+    branchCoverage = 0
+    lineCoverage = 0
 }

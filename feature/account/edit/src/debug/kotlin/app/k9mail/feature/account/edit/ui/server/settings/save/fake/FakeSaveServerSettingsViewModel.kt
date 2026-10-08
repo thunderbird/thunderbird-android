@@ -1,10 +1,10 @@
 package app.k9mail.feature.account.edit.ui.server.settings.save.fake
 
-import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
 import app.k9mail.feature.account.edit.ui.server.settings.save.SaveServerSettingsContract.Effect
 import app.k9mail.feature.account.edit.ui.server.settings.save.SaveServerSettingsContract.Event
 import app.k9mail.feature.account.edit.ui.server.settings.save.SaveServerSettingsContract.State
 import app.k9mail.feature.account.edit.ui.server.settings.save.SaveServerSettingsContract.ViewModel
+import net.thunderbird.core.ui.contract.mvi.BaseViewModel
 
 class FakeSaveServerSettingsViewModel(
     override val isIncoming: Boolean,

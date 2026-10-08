@@ -7,7 +7,7 @@ import android.content.Intent
 import app.k9mail.legacy.mailstore.MessageListChangedListener
 import app.k9mail.legacy.mailstore.MessageListRepository
 import com.fsck.k9.core.BuildConfig
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.legacy.logging.Log
 
 class MessageListWidgetManager(
     private val context: Context,

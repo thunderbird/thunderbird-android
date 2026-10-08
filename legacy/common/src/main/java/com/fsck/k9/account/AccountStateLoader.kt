@@ -11,7 +11,8 @@ import kotlinx.coroutines.withContext
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.account.LegacyAccountDtoManager
 import net.thunderbird.core.common.mail.Protocols
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.feature.account.AccountId
+import net.thunderbird.legacy.logging.Log
 
 class AccountStateLoader(
     private val accountManager: LegacyAccountDtoManager,
@@ -19,10 +20,10 @@ class AccountStateLoader(
 ) : AccountCommonExternalContract.AccountStateLoader {
 
     @Suppress("TooGenericExceptionCaught")
-    override suspend fun loadAccountState(accountUuid: String): AccountState? {
+    override suspend fun loadAccountState(accountId: AccountId): AccountState? {
         return try {
             withContext(coroutineDispatcher) {
-                load(accountUuid)
+                load(accountId)
             }
         } catch (e: Exception) {
             Log.e(e, "Error while loading account")
@@ -31,13 +32,13 @@ class AccountStateLoader(
         }
     }
 
-    private fun load(accountUuid: String): AccountState? {
-        return accountManager.getAccount(accountUuid)?.let { mapToAccountState(it) }
+    private fun load(accountId: AccountId): AccountState? {
+        return accountManager.getById(accountId)?.let { mapToAccountState(it) }
     }
 
     private fun mapToAccountState(account: LegacyAccountDto): AccountState {
         return AccountState(
-            uuid = account.uuid,
+            id = account.id,
             emailAddress = account.email,
             incomingServerSettings = account.incomingServerSettingsExtra,
             outgoingServerSettings = account.outgoingServerSettings,

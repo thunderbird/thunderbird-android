@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="notification_channel_push_title">동기화하기 (푸시)</string>
     <string name="notification_channel_push_description">새 메시지 받는 동안 표시됨</string>
@@ -26,4 +26,27 @@
     <string name="notification_action_archive">보관</string>
     <string name="notification_action_archive_all">모두 보관</string>
     <string name="notification_action_spam">스팸</string>
+    <string name="notification_action_assign_sent_folder">폴더 할당</string>
+    <plurals name="notification_new_messages_title">
+        <item quantity="other">새 메시지 %1$d개</item>
+    </plurals>
+    <string name="push_notification_state_initializing">초기화 중…</string>
+    <string name="notification_bg_sync_text">%1$s: %2$s</string>
+    <string name="banner_inline_notification_open_notifications">알림 열기</string>
+    <string name="banner_inline_notification_learn_more">자세히 알아보기</string>
+    <string name="banner_inline_notification_view_support_article">지원 문서 보기</string>
+    <string name="notification_action_retry">재시도</string>
+    <string name="push_info_disable_push_action">알림 끄기</string>
+    <string name="notification_action_update_server_settings">서버 설정 업데이트</string>
+    <string name="banner_inline_notification_check_error_notifications">오류 알림 확인</string>
+    <string name="banner_inline_notification_some_messages_need_attention">일부 메시지를 확인하셔야 합니다.</string>
+    <string name="push_notification_state_listening">새 이메일 기다리는 중</string>
+    <string name="push_notification_state_wait_background_sync">백그라운드 동기화가 허용될 때까지 휴면 중</string>
+    <string name="push_notification_state_wait_network">네트워크에 연결될 때까지 휴면 중</string>
+    <string name="push_notification_info">눌러서 자세히 알아보세요.</string>
+    <string name="push_notification_grant_alarm_permission">눌러서 권한을 부여하세요.</string>
+    <string name="sent_folder_not_found_title">보낸편지함을 이용할 수 없습니다.</string>
+    <string name="notification_authentication_incoming_server_error_text">%1$s의 인증에 실패했습니다. 수신 서버 설정을 업데이트하세요.</string>
+    <string name="notification_authentication_outgoing_server_error_text">%1$s의 인증에 실패했습니다. 발신 서버 설정을 업데이트하세요.</string>
+    <string name="push_notification_state_alarm_permission_missing">알람을 예약할 권한이 없음</string>
 </resources>

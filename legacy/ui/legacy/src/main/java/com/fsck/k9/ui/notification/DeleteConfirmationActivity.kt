@@ -7,19 +7,18 @@ import androidx.fragment.app.DialogFragment
 import app.k9mail.legacy.message.controller.MessageReference
 import com.fsck.k9.Preferences
 import com.fsck.k9.controller.MessageReferenceHelper
-import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.fragment.ConfirmationDialogFragment
 import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmentListener
-import com.fsck.k9.notification.NotificationActionService
+import com.fsck.k9.notification.NotificationActionIntents
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.BaseActivity
 import com.fsck.k9.ui.base.ThemeType
 import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.feature.account.AccountIdFactory
 import org.koin.android.ext.android.inject
 
 class DeleteConfirmationActivity : BaseActivity(ThemeType.DIALOG), ConfirmationDialogFragmentListener {
     private val preferences: Preferences by inject()
-    private val messagingController: MessagingController by inject()
 
     private lateinit var account: LegacyAccountDto
     private lateinit var messagesToDelete: List<MessageReference>
@@ -36,15 +35,15 @@ class DeleteConfirmationActivity : BaseActivity(ThemeType.DIALOG), ConfirmationD
     }
 
     private fun extractExtras() {
-        val accountUuid = intent.getStringExtra(EXTRA_ACCOUNT_UUID)
+        val accountId = intent.getStringExtra(EXTRA_ACCOUNT_UUID)?.let { AccountIdFactory.of(it) }
         val messageReferenceStrings = intent.getStringArrayListExtra(EXTRA_MESSAGE_REFERENCES)
         val messagesToDelete = MessageReferenceHelper.toMessageReferenceList(messageReferenceStrings)
 
-        requireNotNull(accountUuid) { "$EXTRA_ACCOUNT_UUID can't be null" }
+        requireNotNull(accountId) { "$EXTRA_ACCOUNT_UUID can't be null" }
         requireNotNull(messagesToDelete) { "$EXTRA_MESSAGE_REFERENCES can't be null" }
         require(messagesToDelete.isNotEmpty()) { "$EXTRA_MESSAGE_REFERENCES can't be empty" }
 
-        val account = preferences.getAccount(accountUuid)
+        val account = preferences.getById(accountId)
             ?: error("$EXTRA_ACCOUNT_UUID couldn't be resolved to an account")
 
         this.account = account
@@ -77,19 +76,16 @@ class DeleteConfirmationActivity : BaseActivity(ThemeType.DIALOG), ConfirmationD
     }
 
     private fun deleteAndFinish() {
-        cancelNotifications()
         triggerDelete()
         finish()
     }
 
-    private fun cancelNotifications() {
-        for (messageReference in messagesToDelete) {
-            messagingController.cancelNotificationForMessage(account, messageReference)
-        }
-    }
-
     private fun triggerDelete() {
-        val intent = NotificationActionService.createDeleteAllMessagesIntent(this, account.uuid, messagesToDelete)
+        val intent = NotificationActionIntents.createDeleteAllMessagesIntent(
+            this,
+            account.id.toString(),
+            messagesToDelete,
+        )
         startService(intent)
     }
 
@@ -104,12 +100,12 @@ class DeleteConfirmationActivity : BaseActivity(ThemeType.DIALOG), ConfirmationD
         }
 
         fun getIntent(context: Context, messageReferences: List<MessageReference>): Intent {
-            val accountUuid = messageReferences[0].accountUuid
+            val accountId = messageReferences[0].accountId
             val messageReferenceStrings = MessageReferenceHelper.toMessageReferenceStringList(messageReferences)
 
             return Intent(context, DeleteConfirmationActivity::class.java).apply {
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
-                putExtra(EXTRA_ACCOUNT_UUID, accountUuid)
+                putExtra(EXTRA_ACCOUNT_UUID, accountId.toString())
                 putExtra(EXTRA_MESSAGE_REFERENCES, messageReferenceStrings)
             }
         }

@@ -1,3 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="account_settings_remote_search_num_label">Server søgebegrænsning</string>
 </resources>

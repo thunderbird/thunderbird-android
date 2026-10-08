@@ -6,8 +6,8 @@ import assertk.assertions.isInstanceOf
 import com.eygraber.uri.toKmpUri
 import kotlin.test.Test
 import kotlinx.coroutines.test.runTest
+import net.thunderbird.components.core.outcome.Outcome
 import net.thunderbird.core.file.FileOperationError
-import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.feature.mail.message.export.MessageExportError
 
 class EmlMessageExporterTest {

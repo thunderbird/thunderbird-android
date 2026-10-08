@@ -35,7 +35,6 @@
     <string name="choose_folder_title">Izvēlēties mapi</string>
     <string name="choose_folder_move_title">Pārvietot uz…</string>
     <string name="choose_folder_copy_title">Kopēt uz…</string>
-    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> atzīmēts</string>
     <string name="send_action">Sūtīt</string>
     <string name="empty_subject">Nav sūtījuma temata. Noklikšķiniet vēlreiz, lai tik un tā nosūtītu</string>
     <string name="reply_action">Atbildēt</string>
@@ -44,7 +43,7 @@
     <string name="archive_action">Arhivēt</string>
     <string name="spam_action">Ievietot mēstulēs</string>
     <string name="forward_action">Pārsūtīt</string>
-    <string name="forward_as_attachment_action">Pārsūtīt kā pielikumu </string>
+    <string name="forward_as_attachment_action">Pārsūtīt kā pielikumu</string>
     <string name="edit_as_new_message_action">Rediģēt kā jaunu vēstuli</string>
     <string name="move_action">Pārvietot</string>
     <string name="move_to_drafts_action">Pārvietot uz melnrakstiem</string>
@@ -124,10 +123,8 @@
     <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
     <string name="notification_notify_error_title">Paziņojuma kļūda</string>
     <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
-    <string name="notification_notify_error_text">Neizdevās izveidot sistēmas paziņojumu par jaunu ziņu. Visdrīzākais, ka trūkst paziņojuma skaņas.
-\n
-\nPieskarieties, lai atvērtu paziņojumu iestatījumus.</string>
-    <string name="notification_bg_sync_ticker">Pārbauda pastu: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
+    <string name="notification_notify_error_text">Neizdevās izveidot sistēmas paziņojumu par jaunu ziņu. Visdrīzākais, ka trūkst paziņojuma skaņas. \n \nPieskarieties, lai atvērtu paziņojumu iestatījumus.</string>
+    <string name="notification_bg_sync_ticker">Pārbauda <xliff:g id="account">%1$s</xliff:g> e-pasta ziņojumus <xliff:g id="folder">%2$s</xliff:g> mapē</string>
     <string name="notification_bg_sync_title">Pārbauda pastu</string>
     <string name="notification_bg_send_ticker">Sūta pastu: <xliff:g id="account">%s</xliff:g></string>
     <string name="notification_bg_send_title">Sūta pastu</string>
@@ -178,7 +175,7 @@
     <!--Displayed in the message view screen in front of the number of additional recipients (the ones that are not displayed).-->
     <string name="message_view_additional_recipient_prefix">+</string>
     <!--Displayed in the message view screen if the message was addressed to the user. Make sure this works with 'message_view_recipient_prefix'. In English it's "to me".-->
-    <string name="message_view_me_text">man</string>
+    <string name="message_view_to_me_text">man</string>
     <!--Text of the button that is displayed below the message header when the message body references one or more remote images-->
     <string name="message_view_show_remote_images_action">Rādīt lejupielādējamos attēlus</string>
     <string name="message_view_no_viewer">Nevar atrast programmu, lai atvērtu <xliff:g id="mimetype">%s</xliff:g>.</string>
@@ -394,7 +391,7 @@
     <string name="account_settings_message_age_1_year">pēdējā gada</string>
     <string name="account_settings_sync_remote_deletetions_label">Sinhronizēt dzēšanu ar serveri</string>
     <string name="account_settings_sync_remote_deletetions_summary">Dzēst ziņas, kad tās dzēstas serverī</string>
-    <string name="account_settings_openpgp_missing">Trūkst OpenPGP lietotnes - vai tā noinstalēta\?</string>
+    <string name="account_settings_openpgp_missing">Trūkst OpenPGP lietotnes - vai tā noinstalēta?</string>
     <string name="folder_settings_title">Mapes iestatījumi</string>
     <string name="folder_settings_in_top_group_label">Parādīt augšējā grupā</string>
     <string name="folder_settings_clear_local_folder_action">Dzēst ierīcē atrodošās ziņas</string>
@@ -522,7 +519,6 @@
     <string name="account_setup_push_limit_500">500 mapes</string>
     <string name="account_setup_push_limit_1000">1000 mapes</string>
     <string name="animations_title">Animācija</string>
-    <string name="animations_summary">Izmantot spilgtus vizuālos efektus</string>
     <string name="show_unified_inbox_title">Rādīt Apvienoto pastkasti (Iesūtni)</string>
     <string name="show_starred_count_title">Parādīt zvaigžņoto ziņu skaitu</string>
     <string name="integrated_inbox_title">Apvienotā Iesūtne</string>
@@ -557,27 +553,27 @@
     <string name="font_size_larger">Milzīgs</string>
     <string name="error_activity_not_found">Šīs darbības veikšanai nav atrasta atbilstoša aplikācija.</string>
     <string name="send_failed_reason">Nosūtīšana neizdevās: %s</string>
-    <string name="save_or_discard_draft_message_dlg_title">Saglabāt ziņu melnrakstos\?</string>
-    <string name="save_or_discard_draft_message_instructions_fmt">Saglabāt vai dzēst šo ziņu\?</string>
+    <string name="save_or_discard_draft_message_dlg_title">Saglabāt ziņu melnrakstos?</string>
+    <string name="save_or_discard_draft_message_instructions_fmt">Saglabāt vai dzēst šo ziņu?</string>
     <string name="save_or_discard_draft_message_changes">Saglabāt vai atcelt izmaiņas?</string>
-    <string name="confirm_discard_draft_message_title">Dzēst ziņu\?</string>
-    <string name="confirm_discard_draft_message">Vai tiešām dzēst šo ziņu\?</string>
-    <string name="dialog_confirm_clear_local_folder_title">Izdzēst ierīcē esošās ziņas\?</string>
+    <string name="confirm_discard_draft_message_title">Dzēst ziņu?</string>
+    <string name="confirm_discard_draft_message">Vai tiešām dzēst šo ziņu?</string>
+    <string name="dialog_confirm_clear_local_folder_title">Izdzēst ierīcē esošās ziņas?</string>
     <string name="dialog_confirm_clear_local_folder_message">Ar šo no ierīces mapes tiks dzēstas visas ziņas. No servera ziņas dzēstas netiks.</string>
     <string name="dialog_confirm_clear_local_folder_action">Dzēst ziņas</string>
     <string name="dialog_confirm_delete_title">Apstiprināt dzēšanu</string>
-    <string name="dialog_confirm_delete_message">Vai gribat dzēst šo ziņu\?</string>
+    <string name="dialog_confirm_delete_message">Vai gribat dzēst šo ziņu?</string>
     <plurals name="dialog_confirm_delete_messages">
-        <item quantity="zero">Vai tiešām dzēst <xliff:g id="message_count">%1$d</xliff:g> ziņas\?</item>
-        <item quantity="one">Vai tiešām dzēst <xliff:g id="message_count">%1$d</xliff:g> ziņu\?</item>
-        <item quantity="other">Vai tiešām dzēst <xliff:g id="message_count">%1$d</xliff:g> ziņas\?</item>
+        <item quantity="zero">Vai tiešām dzēst <xliff:g id="message_count">%1$d</xliff:g> ziņas?</item>
+        <item quantity="one">Vai tiešām dzēst <xliff:g id="message_count">%1$d</xliff:g> ziņu?</item>
+        <item quantity="other">Vai tiešām dzēst <xliff:g id="message_count">%1$d</xliff:g> ziņas?</item>
     </plurals>
     <string name="dialog_confirm_delete_confirm_button">Jā</string>
     <string name="dialog_confirm_delete_cancel_button">Nē</string>
     <string name="dialog_confirm_mark_all_as_read_title">Apstiprināt, ka visas tiks apzīmētas kā lasītas</string>
-    <string name="dialog_confirm_mark_all_as_read_message">Vai apzīmēt visas ziņas kā lasītas\?</string>
+    <string name="dialog_confirm_mark_all_as_read_message">Vai apzīmēt visas ziņas kā lasītas?</string>
     <string name="dialog_confirm_empty_trash_title">Apstiprināt Papīrkurvja iztukšošanu</string>
-    <string name="dialog_confirm_empty_trash_message">Vēlaties iztukšot Papīrkurvja mapi\?</string>
+    <string name="dialog_confirm_empty_trash_message">Vēlaties iztukšot Papīrkurvja mapi?</string>
     <string name="dialog_confirm_mark_all_as_read_confirm_button">Jā</string>
     <string name="dialog_confirm_mark_all_as_read_cancel_button">Nē</string>
     <string name="dialog_confirm_spam_title">Vai apstiprināt pārvietošanu uz Mēstuļu mapi</string>
@@ -690,8 +686,7 @@
     <string name="enable_sign_only">Iespējot PGP \"Tikai parakstīt\"</string>
     <string name="disable_sign_only">Atspējot PGP \"Tikai parakstīt\"</string>
     <string name="openpgp_inline_title">PGP/INLINE režīms</string>
-    <string name="openpgp_inline_text">Šī ziņa nosūtīta PGP/INLINE formātā.
-\nTo var izmantot vienīgi savietojamībai:</string>
+    <string name="openpgp_inline_text">Šī ziņa nosūtīta PGP/INLINE formātā. \nTo var izmantot vienīgi savietojamībai:</string>
     <string name="openpgp_inline_plus_compat">Ne visas programmas atbalsta šo formātu</string>
     <string name="openpgp_inline_minus_transit">Paraksti var tikt bojāti pārsūtīšanas laikā</string>
     <string name="openpgp_inline_minus_attach">Pielikumi netiek atbalstīti</string>
@@ -739,7 +734,6 @@
     <string name="crypto_msg_encrypted_insecure">taču end-to-end šifrēšana netiek uzskatīta par drošu</string>
     <string name="locked_attach_unlock">Atslēgt</string>
     <string name="locked_attach_unencrypted">Šī daļa nav šifrēta un var būt nedroša.</string>
-    <string name="locked_attach_title">Neaizsargāts pielikums</string>
     <string name="message_progress_text">Ielādē…</string>
     <string name="messageview_decrypt_cancelled">Atšifrēšana atcelta</string>
     <string name="messageview_decrypt_retry">Mēģināt vēlreiz</string>
@@ -764,7 +758,7 @@
     <string name="openpgp_description_text1">Ziņu šifrēšana nodrošina to, ka neviens cits kā vien saņēmējs, tās nevarēs lasīt.</string>
     <string name="openpgp_description_text3">Šifrēšana parādīsies tikai tad, ja to atbalstīs visi saņēmēji un viņi jau iepriekš būs Jums atsūtījuši kādu epastu.</string>
     <string name="openpgp_description_text2">Pārslēgt šifrēšanu, noklikšķinot uz šīs ikonas.</string>
-    <string name="openpgp_enabled_error_gotit">Sapratu!</string>
+    <string name="openpgp_enabled_error_gotit">Sapratu</string>
     <string name="openpgp_enabled_error_back">Atpakaļ</string>
     <string name="openpgp_enabled_error_disable">Atspējot šifrēšanu</string>
     <string name="openpgp_encryption">OpenPGP šifrēšana</string>
@@ -808,25 +802,15 @@
     <string name="push_info_disable_push_text">Ja nevēlaties saņemt invazīvus paziņojumus par jaunām ziņām, atslēdziet \"grūdeli/stūmekli\" (push) un izmantojiet aptaujāšanu (pooling). Aptauja pārbauda pastu ik pēc noteikta laika un tai nav vajadzīgs grūdenis/stūmeklis (push).</string>
     <string name="push_info_disable_push_action">Atspējot grūdeni/stūmekli (push)</string>
     <!--Name of the swipe action to select a message. Try to keep it short.-->
-    <string name="swipe_action_select">Atzīmēt</string>
     <!--Name of the swipe action to deselect a message. Try to keep it short.-->
-    <string name="swipe_action_deselect">Noņemt atzīmi</string>
     <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
-    <string name="swipe_action_mark_as_read">Atzīmēt kā lasītu</string>
     <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
-    <string name="swipe_action_mark_as_unread">Atzīmēt kā nelasītu</string>
     <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
-    <string name="swipe_action_add_star">Pievienot zvaigznīti</string>
     <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
-    <string name="swipe_action_remove_star">Noņemt zvaigznīti</string>
     <!--Name of the swipe action to archive a message. Try to keep it short.-->
-    <string name="swipe_action_archive">Arhīvs/arhivēt</string>
     <!--Name of the swipe action to delete a message. Try to keep it short.-->
-    <string name="swipe_action_delete">Dzēst</string>
     <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
-    <string name="swipe_action_spam">Mēstules</string>
     <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
-    <string name="swipe_action_move">Pārvietot…</string>
     <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
     <string name="general_settings_show_compose_button_title">Rādīt peldošo ziņas izveides pogu</string>
     <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->

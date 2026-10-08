@@ -39,13 +39,7 @@ internal class HttpUriParser : UriParser {
             currentPos = matchUnreservedPCTEncodedSubDelimClassesGreedy(text, currentPos + 1, ":@/?")
         }
 
-        if (text.isEndOfSentence(currentPos - 1)) {
-            currentPos--
-        }
-
-        if (text[currentPos - 1] == skipChar) {
-            currentPos--
-        }
+        currentPos = text.endIndexWithoutTrailingPunctuation(startPos, currentPos, skipChar)
 
         val uri = text.subSequence(startPos, currentPos)
         return UriMatch(startPos, currentPos, uri)
@@ -256,6 +250,31 @@ internal class HttpUriParser : UriParser {
         return c in 'a'..'z' || c in 'A'..'Z' || c in '0'..'9'
     }
 
+    private fun CharSequence.endIndexWithoutTrailingPunctuation(startPos: Int, endPos: Int, skipChar: Char?): Int {
+        var currentPos = endPos
+
+        while (currentPos > startPos) {
+            val position = currentPos - 1
+
+            if (skipChar != null && this[position] == skipChar) {
+                currentPos--
+                break
+            } else if (isTrailingPunctuation(position)) {
+                currentPos--
+            } else {
+                break
+            }
+        }
+
+        return currentPos
+    }
+
+    private fun CharSequence.isTrailingPunctuation(position: Int): Boolean {
+        if (position < lastIndex && this[position + 1] == '>') return false
+
+        return this[position] in CLAUSE_PUNCTUATION || isEndOfSentence(position)
+    }
+
     // This checks if the URL ends in a character that should be ignored because it most likely indicates the end of
     // a sentence rather than being part of the URL
     private fun CharSequence.isEndOfSentence(position: Int): Boolean {
@@ -269,6 +288,7 @@ internal class HttpUriParser : UriParser {
     companion object {
         // This string represent character group sub-delim as described in RFC 3986
         private const val SUB_DELIM = "!$&'()*+,;="
+        private const val CLAUSE_PUNCTUATION = ",;:'\""
         private val SCHEME_REGEX = "(https?|rtsp)://".toRegex(RegexOption.IGNORE_CASE)
         private val DOMAIN_REGEX =
             "[\\da-z](?:[\\da-z-]*[\\da-z])*(?:\\.[\\da-z](?:[\\da-z-]*[\\da-z])*)*(?::(\\d{0,5}))?"

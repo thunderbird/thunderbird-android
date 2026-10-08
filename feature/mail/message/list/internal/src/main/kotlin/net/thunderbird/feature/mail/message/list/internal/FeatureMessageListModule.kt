@@ -1,13 +1,21 @@
 package net.thunderbird.feature.mail.message.list.internal
 
+import net.thunderbird.core.common.inject.getList
+import net.thunderbird.feature.mail.message.list.LocalDeleteOperationDecider
+import net.thunderbird.feature.mail.message.list.LocalMessageUidPrefixProvider
 import net.thunderbird.feature.mail.message.list.domain.DomainContract
 import net.thunderbird.feature.mail.message.list.internal.domain.usecase.BuildSwipeActions
 import net.thunderbird.feature.mail.message.list.internal.domain.usecase.CreateArchiveFolder
 import net.thunderbird.feature.mail.message.list.internal.domain.usecase.GetAccountFolders
+import net.thunderbird.feature.mail.message.list.internal.domain.usecase.GetMessageListPreferences
+import net.thunderbird.feature.mail.message.list.internal.domain.usecase.GetSortCriteriaPerAccount
 import net.thunderbird.feature.mail.message.list.internal.domain.usecase.SetArchiveFolder
+import net.thunderbird.feature.mail.message.list.internal.ui.MessageListScreenRenderer
 import net.thunderbird.feature.mail.message.list.internal.ui.MessageListViewModel
 import net.thunderbird.feature.mail.message.list.internal.ui.dialog.SetupArchiveFolderDialogFragment
 import net.thunderbird.feature.mail.message.list.internal.ui.dialog.SetupArchiveFolderDialogViewModel
+import net.thunderbird.feature.mail.message.list.internal.ui.state.machine.MessageListStateMachine
+import net.thunderbird.feature.mail.message.list.internal.ui.state.sideeffect.inject.messageListSideEffectsModule
 import net.thunderbird.feature.mail.message.list.ui.MessageListContract
 import net.thunderbird.feature.mail.message.list.ui.dialog.SetupArchiveFolderDialogContract
 import net.thunderbird.feature.mail.message.list.ui.dialog.SetupArchiveFolderDialogFragmentFactory
@@ -15,7 +23,8 @@ import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
 val featureMessageListModule = module {
-    factory<DomainContract.UseCase.GetAccountFolders> { GetAccountFolders(folderRepository = get()) }
+    includes(messageListSideEffectsModule)
+    factory<DomainContract.UseCase.GetAccountFolders> { GetAccountFolders(remoteFolderQueryRepository = get()) }
     factory<DomainContract.UseCase.CreateArchiveFolder> {
         CreateArchiveFolder(
             accountManager = get(),
@@ -39,7 +48,7 @@ val featureMessageListModule = module {
     }
     viewModel { parameters ->
         SetupArchiveFolderDialogViewModel(
-            accountUuid = parameters.get(),
+            accountId = parameters.get(),
             logger = get(),
             getAccountFolders = get(),
             createArchiveFolder = get(),
@@ -49,8 +58,30 @@ val featureMessageListModule = module {
         ) as SetupArchiveFolderDialogContract.ViewModel
     }
     factory<SetupArchiveFolderDialogFragmentFactory> { SetupArchiveFolderDialogFragment.Factory }
-
-    viewModel<MessageListContract.ViewModel> { parameters ->
-        MessageListViewModel()
+    factory<DomainContract.UseCase.GetMessageListPreferences> {
+        GetMessageListPreferences(
+            displayPreferenceManager = get(),
+            interactionPreferenceManager = get(),
+        )
     }
+    factory<DomainContract.UseCase.GetSortCriteriaPerAccount> {
+        GetSortCriteriaPerAccount(
+            accountManager = get(),
+            getDefaultSortCriteria = get(),
+        )
+    }
+    factory {
+        MessageListStateMachine.Factory(logger = get(), clock = get(), debuggingSettingsPreferenceManager = get())
+    }
+    viewModel<MessageListContract.ViewModel> { parameters ->
+        MessageListViewModel(
+            logger = get(),
+            messageListStateMachineFactory = get(),
+            stateSideEffectHandlersFactories = getList { parameters },
+            stringsResourceManager = get(),
+        )
+    }
+    single<LocalDeleteOperationDecider> { DefaultLocalDeleteOperationDecider() }
+    single<LocalMessageUidPrefixProvider> { DefaultLocalMessageUidPrefixProvider() }
+    factory<MessageListContract.MessageListScreenRenderer> { MessageListScreenRenderer() }
 }

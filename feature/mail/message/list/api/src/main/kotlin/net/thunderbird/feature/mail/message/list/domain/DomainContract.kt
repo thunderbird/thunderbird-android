@@ -2,28 +2,30 @@ package net.thunderbird.feature.mail.message.list.domain
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
+import net.thunderbird.components.core.outcome.Outcome
 import net.thunderbird.core.common.action.SwipeActions
-import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.mail.folder.api.FolderServerId
 import net.thunderbird.feature.mail.folder.api.RemoteFolder
+import net.thunderbird.feature.mail.message.list.domain.model.SortCriteria
+import net.thunderbird.feature.mail.message.list.preferences.MessageListPreferences
 
 interface DomainContract {
     interface UseCase {
         fun interface GetAccountFolders {
-            suspend operator fun invoke(accountUuid: String): Outcome<List<RemoteFolder>, AccountFolderError>
+            suspend operator fun invoke(accountId: AccountId): Outcome<List<RemoteFolder>, AccountFolderError>
         }
 
         fun interface CreateArchiveFolder {
             operator fun invoke(
-                accountUuid: String,
+                accountId: AccountId,
                 folderName: String,
             ): Flow<Outcome<CreateArchiveFolderOutcome.Success, CreateArchiveFolderOutcome.Error>>
         }
 
         fun interface SetArchiveFolder {
             suspend operator fun invoke(
-                accountUuid: String,
+                accountId: AccountId,
                 folder: RemoteFolder,
             ): Outcome<SetAccountFolderOutcome.Success, SetAccountFolderOutcome.Error>
         }
@@ -31,10 +33,29 @@ interface DomainContract {
         fun interface BuildSwipeActions {
             operator fun invoke(): StateFlow<Map<AccountId, SwipeActions>>
         }
+
+        fun interface GetMessageListPreferences {
+            operator fun invoke(): Flow<MessageListPreferences>
+        }
+
+        fun interface GetSortCriteriaPerAccount {
+            suspend operator fun invoke(accountIds: Set<AccountId>): Map<AccountId?, SortCriteria>
+        }
+
+        fun interface GetDefaultSortCriteria {
+            suspend operator fun invoke(): SortCriteria
+        }
+
+        fun interface UpdateSortCriteria {
+            suspend operator fun invoke(
+                accountId: AccountId?,
+                sortCriteria: SortCriteria,
+            ): Outcome<UpdateSortCriteriaOutcome.Success, UpdateSortCriteriaOutcome.Error>
+        }
     }
 }
 
-data class AccountFolderError(val exception: Exception)
+data class AccountFolderError(val exception: Throwable)
 
 sealed interface SetAccountFolderOutcome {
     data object Success : SetAccountFolderOutcome
@@ -64,5 +85,12 @@ sealed interface CreateArchiveFolderOutcome {
                 val exception: Exception?,
             ) : SyncError
         }
+    }
+}
+
+sealed interface UpdateSortCriteriaOutcome {
+    data object Success : UpdateSortCriteriaOutcome
+    sealed interface Error {
+        data class AccountNotFound(val accountId: AccountId) : Error
     }
 }

@@ -13,9 +13,7 @@
     <string name="account_server_validation_error_server">Lỗi máy chủ</string>
     <string name="account_server_validation_error_client_certificate_expired">Chứng chỉ máy khánh không còn hợp lệ</string>
     <string name="account_server_validation_error_client_certificate_retrieval_failure">Chứng chỉ máy khách không thể truy cập được</string>
-    <string name="account_server_validation_error_details">Chi tiết:
-\n%s</string>
-    <string name="account_server_validation_error_missing_server_capability_details">Máy chủ không có khả năng này:
-\n%s</string>
+    <string name="account_server_validation_error_details">Chi tiết: \n%s</string>
+    <string name="account_server_validation_error_missing_server_capability_details">Máy chủ không có khả năng này: \n%s</string>
     <string name="account_server_validation_error_missing_server_capability">Máy chủ không có khả năng</string>
 </resources>

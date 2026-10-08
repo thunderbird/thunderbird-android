@@ -3,24 +3,23 @@ package net.thunderbird.feature.notification.impl.dismisser
 import assertk.all
 import assertk.assertThat
 import assertk.assertions.contains
+import assertk.assertions.containsExactly
 import assertk.assertions.hasSize
+import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
 import assertk.assertions.isNull
 import assertk.assertions.prop
-import dev.mokkery.matcher.any
-import dev.mokkery.spy
-import dev.mokkery.verify.VerifyMode.Companion.exactly
-import dev.mokkery.verifySuspend
 import kotlin.random.Random
 import kotlin.test.Test
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.test.runTest
+import net.thunderbird.components.core.outcome.Outcome
 import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.featureflag.FeatureFlagResult
 import net.thunderbird.core.logging.LogLevel
 import net.thunderbird.core.logging.testing.TestLogger
-import net.thunderbird.core.outcome.Outcome
+import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.notification.api.NotificationId
 import net.thunderbird.feature.notification.api.NotificationRegistry
 import net.thunderbird.feature.notification.api.NotificationSeverity
@@ -67,8 +66,8 @@ class DefaultNotificationDismisserTest {
         runTest {
             // Arrange
             val registry = FakeNotificationRegistry()
-            val systemNotifier = spy(FakeSystemNotificationNotifier())
-            val inAppNotifier = spy(FakeInAppNotificationNotifier())
+            val systemNotifier = FakeSystemNotificationNotifier()
+            val inAppNotifier = FakeInAppNotificationNotifier()
             val dismisser = createTestSubject(
                 notificationRegistry = registry,
                 systemNotificationNotifier = systemNotifier,
@@ -87,8 +86,8 @@ class DefaultNotificationDismisserTest {
                 .prop("data") { it.data }
                 .prop(Success.Executed<Notification>::command)
                 .isInstanceOf<DismissSystemNotificationCommand>()
-            verifySuspend(exactly(1)) { systemNotifier.dismiss(id = any()) }
-            verifySuspend(exactly(0)) { inAppNotifier.dismiss(id = any()) }
+            assertThat(systemNotifier.dismissedNotificationIds).containsExactly(registry.getValue(notification))
+            assertThat(inAppNotifier.dismissedNotificationIds).isEmpty()
         }
 
     @Test
@@ -96,8 +95,8 @@ class DefaultNotificationDismisserTest {
         runTest {
             // Arrange
             val registry = FakeNotificationRegistry()
-            val systemNotifier = spy(FakeSystemNotificationNotifier())
-            val inAppNotifier = spy(FakeInAppNotificationNotifier())
+            val systemNotifier = FakeSystemNotificationNotifier()
+            val inAppNotifier = FakeInAppNotificationNotifier()
             val dismisser = createTestSubject(
                 notificationRegistry = registry,
                 systemNotificationNotifier = systemNotifier,
@@ -115,8 +114,8 @@ class DefaultNotificationDismisserTest {
                 .prop("data") { it.data }
                 .prop(Success.Executed<Notification>::command)
                 .isInstanceOf<DismissInAppNotificationCommand>()
-            verifySuspend(exactly(1)) { inAppNotifier.dismiss(id = any()) }
-            verifySuspend(exactly(0)) { systemNotifier.dismiss(id = any()) }
+            assertThat(inAppNotifier.dismissedNotificationIds).containsExactly(registry.getValue(notification))
+            assertThat(systemNotifier.dismissedNotificationIds).isEmpty()
         }
 
     @Test
@@ -140,8 +139,8 @@ class DefaultNotificationDismisserTest {
     fun `send should emit Failure when no commands can be executed`() = runTest {
         // Arrange
         val registry = FakeNotificationRegistry()
-        val systemNotifier = spy(FakeSystemNotificationNotifier())
-        val inAppNotifier = spy(FakeInAppNotificationNotifier())
+        val systemNotifier = FakeSystemNotificationNotifier()
+        val inAppNotifier = FakeInAppNotificationNotifier()
         val logger = TestLogger()
         val testSubject = createTestSubject(
             logger = logger,
@@ -150,7 +149,7 @@ class DefaultNotificationDismisserTest {
             inAppNotificationNotifier = inAppNotifier,
         )
         val notification = object : AppNotification() {
-            override val accountUuid: String? get() = ""
+            override val accountId: AccountId? get() = null
             override val title: String = ""
             override val contentText: String? = null
             override val severity: NotificationSeverity = NotificationSeverity.Critical

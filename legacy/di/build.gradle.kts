@@ -13,3 +13,8 @@ android {
 dependencies {
     api(libs.koin.android)
 }
+
+codeCoverage {
+    branchCoverage = 0
+    lineCoverage = 0
+}

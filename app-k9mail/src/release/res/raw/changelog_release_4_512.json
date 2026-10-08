@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "version": "4.512",
+  "versioncode": 18012,
+  "date": "2013-09-16",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Updated auto-configuration settings to use IMAP for outlook.com",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Updated auto-configuration settings for gmx.de",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Notifications no longer show \"null\" when sending mail",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Increased compatibility with custom ROMs and newer Samsung firmwares",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Improved message generation",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Dramatically improved SMTP 8BITMIME compliance",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Updated Czech, French, German, Russian and Slovak translation",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

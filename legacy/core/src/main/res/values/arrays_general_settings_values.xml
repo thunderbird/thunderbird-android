@@ -152,6 +152,12 @@
         <item>follow_system</item>
     </string-array>
 
+    <string-array name="animation_values" translatable="false">
+        <item>ON</item>
+        <item>OFF</item>
+        <item>FOLLOW_SYSTEM</item>
+    </string-array>
+
     <string-array name="message_theme_values" translatable="false">
         <item>light</item>
         <item>dark</item>
@@ -192,6 +198,7 @@
         <item>ALWAYS</item>
         <item>NEVER</item>
         <item>WHEN_IN_LANDSCAPE</item>
+        <item>WHEN_UNFOLDED</item>
     </string-array>
 
     <string-array name="confirm_action_values" translatable="false">

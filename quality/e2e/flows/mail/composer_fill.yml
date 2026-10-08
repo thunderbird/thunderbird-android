@@ -1,0 +1,35 @@
+appId: ${MAESTRO_APP_ID}
+---
+# Fill compose form: to, subject, body
+# Required env vars:
+#   - TO_EMAIL
+#   - SUBJECT
+#   - BODY
+#   - IDENTITY
+
+## Fill recipient
+- tapOn:
+    id: "to"
+- inputText: ${TO_EMAIL}
+
+## Fill body
+- tapOn:
+    id: "message_content"
+    point: "56%,33%"
+- inputText: ${BODY}
+
+## Fill subject
+- tapOn:
+    id: "subject"
+- inputText: ${SUBJECT}
+
+## Verify fields are filled
+- assertVisible:
+    id: "subject"
+    text: ${SUBJECT}
+- assertVisible:
+    id: "identity"
+    text: ${IDENTITY}
+- assertVisible:
+    id: "to"
+    text: ${TO_EMAIL}

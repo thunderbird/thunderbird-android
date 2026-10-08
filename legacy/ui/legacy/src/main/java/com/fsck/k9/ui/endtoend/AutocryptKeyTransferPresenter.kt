@@ -7,7 +7,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import net.thunderbird.core.android.account.LegacyAccountDto
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.feature.account.AccountIdFactory
+import net.thunderbird.legacy.logging.Log
 import org.openintents.openpgp.OpenPgpApiManager
 import org.openintents.openpgp.OpenPgpApiManager.OpenPgpApiManagerCallback
 import org.openintents.openpgp.OpenPgpApiManager.OpenPgpProviderError
@@ -39,7 +40,8 @@ class AutocryptKeyTransferPresenter internal constructor(
             return
         }
 
-        account = preferences.getAccount(accountUuid) ?: error("Account $accountUuid not found")
+        account = preferences.getById(AccountIdFactory.of(accountUuid))
+            ?: error("Account $accountUuid not found")
 
         openPgpApiManager.setOpenPgpProvider(
             account.openPgpProvider,

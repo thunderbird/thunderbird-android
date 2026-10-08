@@ -13,7 +13,7 @@ import com.fsck.k9.activity.misc.Attachment;
 import com.fsck.k9.message.Attachment.LoadingState;
 import de.cketti.safecontentresolver.SafeContentResolver;
 import org.apache.commons.io.IOUtils;
-import net.thunderbird.core.logging.legacy.Log;
+import net.thunderbird.legacy.logging.Log;
 
 /**
  * Loader to fetch the content of an attachment.
@@ -30,7 +30,7 @@ public class AttachmentContentLoader extends AsyncTaskLoader<Attachment> {
 
     public AttachmentContentLoader(Context context, Attachment attachment) {
         super(context);
-        if (attachment.state != LoadingState.METADATA) {
+        if (attachment.getState() != LoadingState.METADATA) {
             throw new IllegalArgumentException("Attachment provided to content loader must be in METADATA state");
         }
 
@@ -60,7 +60,7 @@ public class AttachmentContentLoader extends AsyncTaskLoader<Attachment> {
 
             InputStream in;
 
-            if (sourceAttachment.internalAttachment) {
+            if (sourceAttachment.isInternalAttachment()) {
                 ContentResolver unsafeContentResolver = context.getContentResolver();
                 in = unsafeContentResolver.openInputStream(sourceAttachment.uri);
             } else {

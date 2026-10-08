@@ -35,7 +35,6 @@
     <string name="choose_folder_title">Escolher pasta</string>
     <string name="choose_folder_move_title">Mover para…</string>
     <string name="choose_folder_copy_title">Copiar para…</string>
-    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> selecionado</string>
     <string name="send_action">Enviar</string>
     <string name="empty_subject">O assunto está vazio, clique novamente para enviar</string>
     <string name="reply_action">Responder</string>
@@ -93,7 +92,7 @@
     <!--Shown in place of the subject when a message has no subject. Showing this in parentheses is customary.-->
     <string name="general_no_subject">(Sem assunto)</string>
     <string name="general_no_sender">Sem remetente</string>
-    <string name="status_loading_more">A carregar mensagens\u2026</string>
+    <string name="status_loading_more">A carregar mensagens…</string>
     <string name="status_network_error">Erro de ligação</string>
     <string name="status_invalid_id_error">Mensagem não encontrada</string>
     <string name="status_loading_error">Erro ao carregar mensagem</string>
@@ -124,8 +123,7 @@
     <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
     <string name="notification_notify_error_title">Erro de notificação</string>
     <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
-    <string name="notification_notify_error_text">Occoreu um erro ao tentar criar uma notificação do sistema para uma nova mensagem. A causa mais provavel é a falta de um som de notificação.\n\nToque para abrir as definições de notificação
-.</string>
+    <string name="notification_notify_error_text">Occoreu um erro ao tentar criar uma notificação do sistema para uma nova mensagem. A causa mais provavel é a falta de um som de notificação.\n\nToque para abrir as definições de notificação .</string>
     <string name="notification_bg_sync_ticker">A verificar correio: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
     <string name="notification_bg_sync_title">A verificar correio</string>
     <string name="notification_bg_send_ticker">A enviar correio: <xliff:g id="account">%s</xliff:g></string>
@@ -163,7 +161,7 @@
     <string name="compose_error_incomplete_recipient">O campo de destinatário está incompleto!</string>
     <string name="error_contact_address_not_found">Não foi possível encontrar um endereço de email para este contacto.</string>
     <string name="message_compose_attachments_skipped_toast">Alguns anexos não podem ser encaminhados porque não foram transferidos.</string>
-    <string name="message_compose_attachments_forward_toast">Esta mensagem não pode ser encaminhada porque alguns anexos não foram transferidos. </string>
+    <string name="message_compose_attachments_forward_toast">Esta mensagem não pode ser encaminhada porque alguns anexos não foram transferidos.</string>
     <string name="message_compose_show_quoted_text_action">Incluir mensagem citada</string>
     <string name="message_compose_description_delete_quoted_text">Remover texto citado</string>
     <string name="message_compose_description_edit_quoted_text">Editar texto citado</string>
@@ -177,7 +175,7 @@
     <!--Displayed in the message view screen in front of the number of additional recipients (the ones that are not displayed).-->
     <string name="message_view_additional_recipient_prefix">+</string>
     <!--Displayed in the message view screen if the message was addressed to the user. Make sure this works with 'message_view_recipient_prefix'. In English it's "to me".-->
-    <string name="message_view_me_text">eu</string>
+    <string name="message_view_to_me_text">eu</string>
     <!--Text of the button that is displayed below the message header when the message body references one or more remote images-->
     <string name="message_view_show_remote_images_action">Mostrar imagens remotas</string>
     <string name="message_view_no_viewer">Incapaz de encontrar visualizador para <xliff:g id="mimetype">%s</xliff:g>.</string>
@@ -393,7 +391,7 @@
     <string name="account_settings_message_age_1_year">o último ano</string>
     <string name="account_settings_sync_remote_deletetions_label">Sincronizar as eliminações do servidor</string>
     <string name="account_settings_sync_remote_deletetions_summary">Remove as mensagens quando eliminadas no servidor</string>
-    <string name="account_settings_openpgp_missing">Falta uma aplicação OpenPGP; foi desinstalada? </string>
+    <string name="account_settings_openpgp_missing">Falta uma aplicação OpenPGP; foi desinstalada?</string>
     <string name="folder_settings_title">Configurações da pasta</string>
     <string name="folder_settings_in_top_group_label">Mostrar no grupo do topo</string>
     <string name="folder_settings_clear_local_folder_action">Apagar mensagens locais</string>
@@ -521,7 +519,6 @@
     <string name="account_setup_push_limit_500">500 pastas</string>
     <string name="account_setup_push_limit_1000">1000 pastas</string>
     <string name="animations_title">Animação</string>
-    <string name="animations_summary">Usar efeitos visuais exuberantes</string>
     <string name="show_unified_inbox_title">Mostrar caixa de entrada unificada</string>
     <string name="show_starred_count_title">Mostrar contagem de estrelas</string>
     <string name="integrated_inbox_title">Caixa de entrada unificada</string>
@@ -601,7 +598,7 @@
     <string name="webview_contextmenu_link_share_action">Partilhar hiperligação</string>
     <string name="webview_contextmenu_link_copy_action">Copiar hiperligação para a área de transferência</string>
     <string name="webview_contextmenu_link_clipboard_label">Hiperligação</string>
-    <string name="webview_contextmenu_link_text_copy_action"> Copiar texto do apontador para a área de transferência</string>
+    <string name="webview_contextmenu_link_text_copy_action">Copiar texto do apontador para a área de transferência</string>
     <string name="webview_contextmenu_link_text_clipboard_label">Texto do apontador</string>
     <string name="webview_contextmenu_image_title">Imagem</string>
     <string name="webview_contextmenu_image_view_action">Ver imagem</string>
@@ -737,7 +734,6 @@
     <string name="crypto_msg_encrypted_insecure">mas a encriptação não é considerada segura</string>
     <string name="locked_attach_unlock">Desbloquear</string>
     <string name="locked_attach_unencrypted">Esta parte não foi encriptada, e pode ser insegura.</string>
-    <string name="locked_attach_title">Anexo desprotegido</string>
     <string name="message_progress_text">A carregar…</string>
     <string name="messageview_decrypt_cancelled">A desencriptação foi cancelada.</string>
     <string name="messageview_decrypt_retry">Tentar novamente</string>
@@ -789,12 +785,7 @@
     <string name="ac_transfer_finish">Para terminar, abra a mensagem no outro dispositivo seu e introduza o código de configuração.</string>
     <string name="ac_transfer_show_code">Mostrar o código de configuração</string>
     <string name="ac_transfer_msg_subject">Mensagem de configuração de auto-encriptação</string>
-    <string name="ac_transfer_msg_body">Esta mensagem contém todas as informações necessárias para transferir as suas configurações de auto-encriptação juntamente com sua chave secreta, de forma segura, a partir do seu dispositivo original
-
-Para configurar o seu novo dispositivo para auto-encriptação, siga as instruções que apresentadas pelo seu novo dispositivo.
-
-Pode manter esta mensagem e usá-la como uma cópia de segurança para a sua chave secreta. Caso queira fazer isso, deve anotar a palavra-passe e armazená-la num local seguro.
-</string>
+    <string name="ac_transfer_msg_body">Esta mensagem contém todas as informações necessárias para transferir as suas configurações de auto-encriptação juntamente com sua chave secreta, de forma segura, a partir do seu dispositivo original Para configurar o seu novo dispositivo para auto-encriptação, siga as instruções que apresentadas pelo seu novo dispositivo. Pode manter esta mensagem e usá-la como uma cópia de segurança para a sua chave secreta. Caso queira fazer isso, deve anotar a palavra-passe e armazená-la num local seguro.</string>
     <string name="ac_transfer_error_send">Ocorreu um erro durante o envio da mensagem. Verifique a conectividade da sua rede e as configurações do servidor de saída.</string>
     <string name="switch_on">Ativado</string>
     <string name="switch_off">Desativado</string>
@@ -811,25 +802,15 @@ Pode manter esta mensagem e usá-la como uma cópia de segurança para a sua cha
     <string name="push_info_disable_push_text">Se não necessita de notificações instantâneas, deve desligar o Push e utilizar o Polling. O Polling procura novos e-mails num intervalo regular e não requer a notificação.</string>
     <string name="push_info_disable_push_action">Desativar o Push</string>
     <!--Name of the swipe action to select a message. Try to keep it short.-->
-    <string name="swipe_action_select">Selecionar</string>
     <!--Name of the swipe action to deselect a message. Try to keep it short.-->
-    <string name="swipe_action_deselect">Desselecionar</string>
     <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
-    <string name="swipe_action_mark_as_read">Marcar como lido</string>
     <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
-    <string name="swipe_action_mark_as_unread">Marcar como não lido</string>
     <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
-    <string name="swipe_action_add_star">Adicionar estrela</string>
     <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
-    <string name="swipe_action_remove_star">Remover estrela</string>
     <!--Name of the swipe action to archive a message. Try to keep it short.-->
-    <string name="swipe_action_archive">Arquivo</string>
     <!--Name of the swipe action to delete a message. Try to keep it short.-->
-    <string name="swipe_action_delete">Eliminar</string>
     <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
-    <string name="swipe_action_spam">Spam</string>
     <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
-    <string name="swipe_action_move">Mover…</string>
     <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
     <string name="general_settings_show_compose_button_title">Mostrar botão de composição flutuante</string>
     <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
@@ -900,4 +881,7 @@ Pode manter esta mensagem e usá-la como uma cópia de segurança para a sua cha
     <string name="dialog_confirm_empty_spam_title">Confirmar esvaziamento do spam</string>
     <string name="dialog_confirm_empty_spam_message">Deseja esvaziar a pasta de spam?</string>
     <string name="expand_content_description">Expandir</string>
+    <string name="open_camera">Abrir Câmera</string>
+    <string name="attach_file">Anexar ficheiro</string>
+    <string name="camera_permission_denied">Permissão de câmera negada! Incapaz de tirar foto</string>
 </resources>

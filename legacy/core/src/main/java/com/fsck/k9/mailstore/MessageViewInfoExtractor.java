@@ -29,7 +29,7 @@ import com.fsck.k9.message.extractors.AttachmentInfoExtractor;
 import com.fsck.k9.message.html.HtmlConverter;
 import app.k9mail.html.cleaner.HtmlProcessor;
 import org.openintents.openpgp.util.OpenPgpUtils;
-import net.thunderbird.core.logging.legacy.Log;
+import net.thunderbird.legacy.logging.Log;
 
 import static com.fsck.k9.mail.internet.MimeUtility.getHeaderParameter;
 import static com.fsck.k9.mail.internet.Viewable.Alternative;

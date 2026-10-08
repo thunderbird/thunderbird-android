@@ -33,7 +33,6 @@
     <string name="choose_folder_title">Избери Папка</string>
     <string name="choose_folder_move_title">Преместване в…</string>
     <string name="choose_folder_copy_title">Копиране в…</string>
-    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> избрани</string>
     <string name="send_action">Изпрати</string>
     <string name="empty_subject">Полето Тема е празно, натиснете повторно ако искате да изпратите въпреки това</string>
     <string name="reply_action">Отговори</string>
@@ -89,7 +88,7 @@
     <!--Shown in place of the subject when a message has no subject. Showing this in parentheses is customary.-->
     <string name="general_no_subject">(Без тема)</string>
     <string name="general_no_sender">Без изпращач</string>
-    <string name="status_loading_more">Зарежда съобщенията\u2026</string>
+    <string name="status_loading_more">Зарежда съобщенията…</string>
     <string name="status_network_error">Грешка при свързване</string>
     <string name="status_invalid_id_error">Съобщението не е намерено</string>
     <string name="status_loading_error">Грешка при зареждане на съобщението</string>
@@ -463,7 +462,6 @@
     <string name="account_setup_push_limit_500">500 папки</string>
     <string name="account_setup_push_limit_1000">1000 папки</string>
     <string name="animations_title">Анимация</string>
-    <string name="animations_summary">Изпoлзване на ярки визуални ефекти</string>
     <string name="show_unified_inbox_title">Показване на обединената входяща папка</string>
     <string name="integrated_inbox_title">Обединена входяща кутия</string>
     <string name="integrated_inbox_detail">Всички съобщения в общата входяща кутия</string>
@@ -615,7 +613,7 @@
     <string name="address_type_mobile">Мобилен</string>
     <string name="compose_error_no_draft_folder">Липсва папка чернови за този профил!</string>
     <string name="compose_error_no_key_configured">Няма зададен ключ за този профил! Моля, проверете настройките си.</string>
-    <string name="error_crypto_provider_incompatible">Доставчика на крипто имзползва несъвместима версия.  Моля, прегледайте настройките си!</string>
+    <string name="error_crypto_provider_incompatible">Доставчика на крипто имзползва несъвместима версия. Моля, прегледайте настройките си!</string>
     <string name="error_crypto_provider_connect">Неуспешна връзка с доставчика на шифроване, проверете настройките си или натиснете иконата за повторен опит!</string>
     <string name="error_crypto_provider_ui_required">Неуспешно шифроване от край-до-край, моля прегледайте настройките</string>
     <string name="error_crypto_inline_attach">Режимът PGP/INLINE не поддържа прикачени файлове!</string>
@@ -638,7 +636,7 @@
     <string name="openpgp_dialog_sign_only_text">В този режим, Вашият PGP ключ ще бъде използван за създаването на електронен подпис на некриптиран имейл.</string>
     <string name="openpgp_dialog_sign_only_plus_verified">Това не криптира имейла, но потвърждава, че е изпратен от Вашия ключ.</string>
     <string name="openpgp_dialog_sign_only_minus_break">Подписите може да не работят, когато са изпратени на списък от получатели.</string>
-    <string name="openpgp_dialog_sign_only_minus_attach">В някои приложения подписите може да са под формата на  прикачен файл \'signature.asc\'.</string>
+    <string name="openpgp_dialog_sign_only_minus_attach">В някои приложения подписите може да са под формата на прикачен файл \'signature.asc\'.</string>
     <string name="openpgp_dialog_sign_only_neutral_encsigned">Криптирани съобщения винаги включват подпис.</string>
     <string name="crypto_msg_title_plaintext">Обикновен текст</string>
     <string name="crypto_msg_unencrypted_sign_error">\"от край\" - \"до край\" подписа съдържа грешка</string>
@@ -672,7 +670,6 @@
     <string name="crypto_msg_encrypted_insecure">но шифрирането не се счита за сигурно</string>
     <string name="locked_attach_unlock">Отключване</string>
     <string name="locked_attach_unencrypted">Тази част не криптирана и може да е несигурна.</string>
-    <string name="locked_attach_title">Незащитен прикачен файл</string>
     <string name="message_progress_text">Зареждане…</string>
     <string name="messageview_decrypt_cancelled">Декриптирването е отказано.</string>
     <string name="messageview_decrypt_retry">Повторен опит</string>
@@ -724,12 +721,7 @@
     <string name="ac_transfer_finish">За да завършите, отворете съобщението на друго устройство и въведете кодът за достъп.</string>
     <string name="ac_transfer_show_code">Показване на код за достъп</string>
     <string name="ac_transfer_msg_subject">Autocrypt съобщение с настройки</string>
-    <string name="ac_transfer_msg_body">Това съобщение съдържа всичката информация за трансфериране на Autocrypt настройките и съответния таен ключ от оригиналното устройство.
-
-За да се настрои ново устройство за Autocrypt, моля следвайте инструкциите, които ще се появят на новото устройство
-
-Може да запазите това съобщение за резерва за тайния си ключ. Ако решите да направите това е най-добре да запиште паролата и да я подсигурите.
-</string>
+    <string name="ac_transfer_msg_body">Това съобщение съдържа всичката информация за трансфериране на Autocrypt настройките и съответния таен ключ от оригиналното устройство. За да се настрои ново устройство за Autocrypt, моля следвайте инструкциите, които ще се появят на новото устройство Може да запазите това съобщение за резерва за тайния си ключ. Ако решите да направите това е най-добре да запиште паролата и да я подсигурите.</string>
     <string name="ac_transfer_error_send">Възникна грешка при изпращане на съобщението. Моля, проверете връзката си с интернет или настройките на изходящия сървър.</string>
     <string name="switch_on">Включерно</string>
     <string name="switch_off">Изключено</string>
@@ -746,22 +738,14 @@
     <string name="push_info_disable_push_text">Ако нямате нужда от мигновени известия, трябва да деактивирате Push и да използвате Polling. Polling проверява за нови писма на регулярни интервали и не се нуждае от известия.</string>
     <string name="push_info_disable_push_action">Изключи Push</string>
     <!--Name of the swipe action to select a message. Try to keep it short.-->
-    <string name="swipe_action_select">Избери</string>
     <!--Name of the swipe action to deselect a message. Try to keep it short.-->
-    <string name="swipe_action_deselect">Отмени Избор</string>
     <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
     <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
-    <string name="swipe_action_mark_as_unread">Маркирай като непрочетено</string>
     <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
-    <string name="swipe_action_add_star">Добави звезда</string>
     <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
-    <string name="swipe_action_remove_star">Премахни звезда</string>
     <!--Name of the swipe action to archive a message. Try to keep it short.-->
-    <string name="swipe_action_archive">Архивиране</string>
     <!--Name of the swipe action to delete a message. Try to keep it short.-->
-    <string name="swipe_action_delete">Изтриване</string>
     <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
-    <string name="swipe_action_spam">Спам</string>
     <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
     <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
     <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
@@ -794,7 +778,7 @@
     <string name="general_settings_swipe_action_toggle_read">Отбележи като прочетено/непрочетено</string>
     <string name="action_copy_email_address">Копиране на имейл адрес</string>
     <string name="account_settings_autodownload_message_size_10240">10 МБ</string>
-    <string name="message_view_me_text">мен</string>
+    <string name="message_view_to_me_text">мен</string>
     <string name="account_settings_notification_channels_label">Категории известия</string>
     <string name="action_compose_message_to">Напиши съобщение</string>
     <string name="account_settings_autodownload_message_size_512">512 КБ</string>
@@ -818,13 +802,10 @@
     <string name="account_settings_notification_light_label">Светлина при известие</string>
     <string name="general_settings_post_remove_action_show_previous_message">Показване на предишното съобщение</string>
     <string name="account_settings_notification_light_default_color">Цвят по подразбиране</string>
-    <string name="swipe_action_move">Преместване…</string>
     <string name="show_starred_count_title">Брой важни съобщения</string>
     <string name="account_settings_vibrate_pattern_4">Шаблон 4</string>
     <string name="debug_export_logs_success">Изнасянето е успешно. Журналите може да съдържат лична информация. Внимавайте кому ги пращате.</string>
-    <string name="notification_notify_error_text">Възникна грешка при създаването на известие за ново съобщение. Причината най-вероятно е липсващ звук за известия.
-\n
-\nДокоснете тук, за да отворите настройките на известията.</string>
+    <string name="notification_notify_error_text">Възникна грешка при създаването на известие за ново съобщение. Причината най-вероятно е липсващ звук за известия. \n \nДокоснете тук, за да отворите настройките на известията.</string>
     <string name="debug_export_logs_title">Изнасяне на журналите</string>
     <string name="general_settings_show_compose_button_title">Плаващ бутон за съобщение</string>
     <string name="general_settings_contact_name_color_label">Цвят на контакта</string>
@@ -843,7 +824,6 @@
     <string name="message_details_replyto_section_title">Отговори</string>
     <string name="account_settings_notification_light_magenta">Пурпурен</string>
     <string name="global_settings_lock_screen_notification_visibility_message_count">Брой нови съобщения</string>
-    <string name="swipe_action_mark_as_read">Отбележи като прочетено</string>
     <string name="action_add_to_contacts">Добави към контакти</string>
     <string name="general_settings_left_swipe_title">Жест наляво</string>
     <string name="general_settings_ui_density_compact">Компактен</string>
@@ -897,11 +877,9 @@
     <string name="dialog_confirm_empty_spam_message">Искате ли да изчистите нежеланите съобщения?</string>
     <string name="settings_list_action_support">Подкрепа на <xliff:g id="app_name">%s</xliff:g></string>
     <string name="expand_content_description">Разширяване</string>
-    <string name="swipe_action_archive_folder_not_set">Задаване на папка \"Архиви\"</string>
     <string name="settings_ui_telemetry_description">Споделя данни за производителността, използването, хардуера и настройките на това приложение с Mozilla, за да ни помогне да направим Thunderbird по-добър</string>
     <string name="archiving_not_available_for_this_account">Архивирането не е достъпно за този профил.</string>
     <string name="push_info_notification_explanation_text">Когато използвате Push, <xliff:g id="app_name">%1$s</xliff:g> поддържа връзка с пощенския сървър. Android изисква показване на текущо уведомление, докато приложението е активно във фонов режим. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
-    <string name="swipe_action_change_swipe_gestures">Промяна\nЖестове с плъзгане</string>
     <string name="message_view_menu_action_export_eml">Изнасяне като EML</string>
     <string name="expand_folders">Разгъване на папките</string>
     <string name="account_setup_auto_select_folder">Автоматичен избор на папка</string>

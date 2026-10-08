@@ -4,7 +4,7 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.pm.PackageManager
 import java.util.concurrent.CopyOnWriteArraySet
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.legacy.logging.Log
 
 class SystemLocaleManager(context: Context) {
     private val packageManager = context.packageManager

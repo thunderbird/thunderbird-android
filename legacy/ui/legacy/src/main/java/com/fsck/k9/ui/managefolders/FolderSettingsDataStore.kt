@@ -1,17 +1,17 @@
 package com.fsck.k9.ui.managefolders
 
 import androidx.preference.PreferenceDataStore
-import app.k9mail.legacy.mailstore.FolderRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
-import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.mail.folder.api.FolderDetails
+import net.thunderbird.feature.mail.folder.api.data.repository.FolderDetailsRepository
 
 class FolderSettingsDataStore(
-    private val folderRepository: FolderRepository,
-    private val account: LegacyAccountDto,
+    private val folderDetailsRepository: FolderDetailsRepository,
+    private val accountId: AccountId,
     private var folder: FolderDetails,
     private val saveScope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.IO),
 ) : PreferenceDataStore() {
@@ -43,7 +43,7 @@ class FolderSettingsDataStore(
     private fun updateFolder(newFolder: FolderDetails) {
         folder = newFolder
         saveScope.launch {
-            folderRepository.updateFolderDetails(account, newFolder)
+            folderDetailsRepository.update(accountId, newFolder)
         }
     }
 }

@@ -6,10 +6,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import net.thunderbird.core.logging.legacy.Log;
 import com.fsck.k9.mail.K9MailLib;
 import com.fsck.k9.mail.filter.FixedLengthInputStream;
 import com.fsck.k9.mail.filter.PeekableInputStream;
+import net.thunderbird.legacy.logging.Log;
 import okio.Buffer;
 
 import static com.fsck.k9.mail.K9MailLib.DEBUG_PROTOCOL_IMAP;

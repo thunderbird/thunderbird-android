@@ -2,20 +2,18 @@ package net.thunderbird.feature.notification.impl.command
 
 import assertk.all
 import assertk.assertThat
+import assertk.assertions.containsExactly
+import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
 import assertk.assertions.prop
-import dev.mokkery.matcher.any
-import dev.mokkery.spy
-import dev.mokkery.verify.VerifyMode.Companion.exactly
-import dev.mokkery.verifySuspend
 import kotlin.test.Test
 import kotlinx.coroutines.test.runTest
-import net.thunderbird.core.featureflag.FeatureFlagKey
+import net.thunderbird.components.core.outcome.Outcome
 import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.featureflag.FeatureFlagResult
+import net.thunderbird.core.featureflag.keys.GeneratedFeatureFlagKey
 import net.thunderbird.core.logging.testing.TestLogger
-import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.feature.notification.api.NotificationRegistry
 import net.thunderbird.feature.notification.api.command.outcome.CommandExecutionFailed
 import net.thunderbird.feature.notification.api.command.outcome.Success
@@ -35,7 +33,9 @@ class DismissSystemNotificationCommandTest {
             val testSubject = createTestSubject(
                 featureFlagProvider = { key ->
                     when (key) {
-                        FeatureFlagKey.UseNotificationSenderForSystemNotifications -> FeatureFlagResult.Disabled
+                        GeneratedFeatureFlagKey.USE_NOTIFICATION_SENDER_FOR_SYSTEM_NOTIFICATIONS ->
+                            FeatureFlagResult.Disabled
+
                         else -> FeatureFlagResult.Enabled
                     }
                 },
@@ -55,7 +55,7 @@ class DismissSystemNotificationCommandTest {
                     prop(UnsupportedCommand<SystemNotification>::reason)
                         .isInstanceOf<UnsupportedCommand.Reason.FeatureFlagDisabled>()
                         .prop(UnsupportedCommand.Reason.FeatureFlagDisabled::key)
-                        .isEqualTo(FeatureFlagKey.UseNotificationSenderForSystemNotifications)
+                        .isEqualTo(GeneratedFeatureFlagKey.USE_NOTIFICATION_SENDER_FOR_SYSTEM_NOTIFICATIONS)
                 }
         }
 
@@ -66,7 +66,9 @@ class DismissSystemNotificationCommandTest {
             val testSubject = createTestSubject(
                 featureFlagProvider = { key ->
                     when (key) {
-                        FeatureFlagKey.UseNotificationSenderForSystemNotifications -> FeatureFlagResult.Unavailable
+                        GeneratedFeatureFlagKey.USE_NOTIFICATION_SENDER_FOR_SYSTEM_NOTIFICATIONS ->
+                            FeatureFlagResult.Unavailable
+
                         else -> FeatureFlagResult.Enabled
                     }
                 },
@@ -86,7 +88,7 @@ class DismissSystemNotificationCommandTest {
                     prop(UnsupportedCommand<SystemNotification>::reason)
                         .isInstanceOf<UnsupportedCommand.Reason.FeatureFlagDisabled>()
                         .prop(UnsupportedCommand.Reason.FeatureFlagDisabled::key)
-                        .isEqualTo(FeatureFlagKey.UseNotificationSenderForSystemNotifications)
+                        .isEqualTo(GeneratedFeatureFlagKey.USE_NOTIFICATION_SENDER_FOR_SYSTEM_NOTIFICATIONS)
                 }
         }
 
@@ -97,7 +99,7 @@ class DismissSystemNotificationCommandTest {
         val registry = FakeNotificationRegistry().apply {
             register(notification)
         }
-        val notifier = spy(FakeSystemNotificationNotifier())
+        val notifier = FakeSystemNotificationNotifier()
         val testSubject = createTestSubject(
             notification = notification,
             notifier = notifier,
@@ -119,7 +121,7 @@ class DismissSystemNotificationCommandTest {
                     .isEqualTo(expectedId)
             }
 
-        verifySuspend(exactly(1)) { notifier.dismiss(expectedId) }
+        assertThat(notifier.dismissedNotificationIds).containsExactly(expectedId)
     }
 
     @Test
@@ -127,7 +129,7 @@ class DismissSystemNotificationCommandTest {
         // Arrange
         val notification = FakeNotification()
         val registry = FakeNotificationRegistry()
-        val notifier = spy(FakeSystemNotificationNotifier())
+        val notifier = FakeSystemNotificationNotifier()
         val testSubject = createTestSubject(
             notification = notification,
             notifier = notifier,
@@ -148,7 +150,7 @@ class DismissSystemNotificationCommandTest {
                     .isEqualTo("Notification is not registered in the NotificationRegistry.")
             }
 
-        verifySuspend(exactly(0)) { notifier.dismiss(any()) }
+        assertThat(notifier.dismissedNotificationIds).isEmpty()
     }
 
     private fun createTestSubject(

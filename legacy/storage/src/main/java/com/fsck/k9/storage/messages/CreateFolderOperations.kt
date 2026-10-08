@@ -26,7 +26,7 @@ internal class CreateFolderOperations(
                     put("server_id", folder.serverId)
                     put("local_only", false)
                     put("type", folder.type.toDatabaseFolderType())
-                    put("account_id", accountId.asRaw())
+                    put("account_id", accountId.toString())
                 }
 
                 db.insert("folders", null, values)

@@ -1,4 +1,4 @@
-K-9 Mail on avatud lähtekoodiga meiliklient, mis töötab põhimõtteliselt kõigi e-postiteenuste pakkujatega.
+K-9 Mail on avatud lähtekoodiga e-postiklient, mis töötab põhimõtteliselt kõigi e-postiteenuste pakkujatega.
 
 <b>Funktsioonid</b>
 

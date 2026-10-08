@@ -8,20 +8,28 @@ android {
 }
 
 dependencies {
-    implementation(projects.core.ui.compose.designsystem)
+    api(projects.feature.changelog.api)
+    implementation(projects.core.featureflag)
     implementation(projects.legacy.ui.base)
+
     implementation(projects.feature.onboarding.main)
+    implementation(projects.feature.thundermail.api)
     implementation(projects.feature.settings.import)
 
+    implementation(projects.feature.account.api)
     implementation(projects.feature.account.edit)
     implementation(projects.feature.account.settings.api)
     implementation(projects.feature.account.setup)
 
     implementation(projects.feature.funding.api)
+    implementation(projects.feature.debugSettings)
 
     implementation(libs.androidx.activity.compose)
 
     testImplementation(projects.core.ui.compose.testing)
+}
 
-    implementation(projects.feature.debugSettings)
+codeCoverage {
+    branchCoverage = 0
+    lineCoverage = 0
 }

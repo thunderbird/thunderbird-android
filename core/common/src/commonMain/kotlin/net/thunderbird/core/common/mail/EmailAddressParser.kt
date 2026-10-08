@@ -83,6 +83,7 @@ internal class EmailAddressParser(
             character.isAtext -> {
                 readDotString()
             }
+
             character == DQUOTE -> {
                 if (config.isQuotedLocalPartAllowed) {
                     readQuotedString()
@@ -90,6 +91,7 @@ internal class EmailAddressParser(
                     parserError(QuotedStringInLocalPart)
                 }
             }
+
             else -> {
                 parserError(InvalidLocalPart)
             }
@@ -129,6 +131,7 @@ internal class EmailAddressParser(
                 val character = peek()
                 when {
                     character.isQtext -> append(read())
+
                     character == BACKSLASH -> {
                         expect(BACKSLASH)
                         val escapedCharacter = read()
@@ -139,6 +142,7 @@ internal class EmailAddressParser(
                     }
 
                     character == DQUOTE -> break
+
                     else -> parserError(InvalidQuotedString)
                 }
             }

@@ -54,4 +54,6 @@
     <string name="funding_googleplay_contribution_reminder_positive_button">Da</string>
     <string name="funding_googleplay_contribution_reminder_statement">Thunderbird je prost in odprtokoden.</string>
     <string name="funding_googleplay_contribution_tfa_recurring_xxl_description">Pomagate nam, da sanjamo velike sanje! Vaša podpora nam daje moč, da dosežemo izjemne stvari.</string>
+    <string name="funding_googleplay_contribution_footer_payment_processing_button">Obdelovanje nakupa …</string>
+    <string name="funding_googleplay_contribution_footer_payment_cancel_button">Prekliči</string>
 </resources>

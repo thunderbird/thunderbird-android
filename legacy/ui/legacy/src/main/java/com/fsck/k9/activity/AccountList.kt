@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemClickListener
 import android.widget.ArrayAdapter
+import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -52,7 +53,7 @@ abstract class AccountList : BaseListActivity(), OnItemClickListener {
     }
 
     override fun onItemClick(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-        val account = parent.getItemAtPosition(position) as BaseAccount
+        val account = parent.getItemAtPosition(position) ?: return
         onAccountSelected(account)
     }
 
@@ -74,10 +75,10 @@ abstract class AccountList : BaseListActivity(), OnItemClickListener {
      * An array of accounts to display.
      */
     private fun populateListView(realAccounts: List<LegacyAccountDto>) {
-        val accounts: MutableList<BaseAccount> = ArrayList()
+        val accounts: MutableList<Any> = ArrayList()
 
         if (generalSettingsManager.getConfig().display.inboxSettings.isShowUnifiedInbox) {
-            val unifiedInboxAccount: BaseAccount = SearchAccount.createUnifiedFoldersSearch(
+            val unifiedInboxAccount = SearchAccount.createUnifiedFoldersSearch(
                 title = coreResourceProvider.searchUnifiedFoldersTitle(),
                 detail = coreResourceProvider.searchUnifiedFoldersDetail(),
             )
@@ -98,9 +99,9 @@ abstract class AccountList : BaseListActivity(), OnItemClickListener {
      * @param account
      * The account the user selected.
      */
-    protected abstract fun onAccountSelected(account: BaseAccount)
+    protected abstract fun onAccountSelected(account: Any)
 
-    internal inner class AccountsAdapter(accounts: List<BaseAccount?>) : ArrayAdapter<BaseAccount?>(
+    internal inner class AccountsAdapter(accounts: List<Any?>) : ArrayAdapter<Any?>(
         this@AccountList,
         0,
         accounts,
@@ -113,8 +114,34 @@ abstract class AccountList : BaseListActivity(), OnItemClickListener {
                 view.tag = this
             }
 
-            val accountName = account!!.name
-            if (accountName != null) {
+            if (account is SearchAccount) {
+                bindSearchAccount(account, holder)
+            } else if (account is BaseAccount) {
+                bindAccount(account, holder)
+            } else {
+                error("Unknown account type: $account")
+            }
+
+            if (account is LegacyAccountDto) {
+                holder.chip.setBackgroundColor(account.chipColor)
+            } else {
+                holder.chip.setBackgroundColor(
+                    ResourcesCompat.getColor(
+                        resources,
+                        R.color.account_list_item_chip_background,
+                        null,
+                    ),
+                )
+            }
+
+            holder.chip.background.alpha = BACKGROUND_ALPHA
+
+            return view
+        }
+
+        private fun bindSearchAccount(account: SearchAccount, holder: AccountViewHolder) {
+            val accountName = account.name
+            if (accountName.isNotEmpty()) {
                 holder.description.text = accountName
                 holder.email.text = account.email
                 holder.email.visibility = View.VISIBLE
@@ -122,16 +149,18 @@ abstract class AccountList : BaseListActivity(), OnItemClickListener {
                 holder.description.text = account.email
                 holder.email.visibility = View.GONE
             }
+        }
 
-            if (account is LegacyAccountDto) {
-                holder.chip.setBackgroundColor(account.chipColor)
+        private fun bindAccount(account: BaseAccount, holder: AccountViewHolder) {
+            val accountName = account.name
+            if (!accountName.isNullOrEmpty()) {
+                holder.description.text = accountName
+                holder.email.text = account.email
+                holder.email.visibility = View.VISIBLE
             } else {
-                holder.chip.setBackgroundColor(resources.getColor(R.color.account_list_item_chip_background))
+                holder.description.text = account.email
+                holder.email.visibility = View.GONE
             }
-
-            holder.chip.background.alpha = BACKGROUND_ALPHA
-
-            return view
         }
 
         internal inner class AccountViewHolder(view: View) {

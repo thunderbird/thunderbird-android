@@ -22,9 +22,11 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.content.IntentSender.SendIntentException;
 import android.content.pm.ActivityInfo;
+import android.graphics.Typeface;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
@@ -39,6 +41,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.view.ViewStub;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -57,10 +60,19 @@ import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.fsck.k9.activity.compose.MessageComposeInAppNotificationFragment;
+import com.fsck.k9.activity.listener.RecipientExpanderListener;
 import com.fsck.k9.ui.settings.account.AccountSettingsActivity;
 import com.fsck.k9.ui.settings.account.AccountSettingsFragment;
+import com.fsck.k9.message.html.DisplayHtml;
+import net.thunderbird.feature.account.AccountIdFactory;
+import net.thunderbird.feature.mail.message.composer.signature.HtmlSignatureSanitizer;
+import com.fsck.k9.ui.helper.DisplayHtmlUiFactory;
+import com.fsck.k9.view.MessageWebView;
+import com.fsck.k9.view.WebViewConfigProvider;
 import kotlin.Unit;
 import net.thunderbird.core.android.account.LegacyAccountDto;
+import net.thunderbird.feature.account.AccountId;
+import net.thunderbird.feature.account.usecase.GetDefaultAccountId;
 import app.k9mail.legacy.di.DI;
 import net.thunderbird.core.android.account.Identity;
 import com.fsck.k9.K9;
@@ -99,6 +111,7 @@ import com.fsck.k9.helper.MailTo;
 import com.fsck.k9.helper.ReplyToParser;
 import com.fsck.k9.helper.SimpleTextWatcher;
 import com.fsck.k9.helper.Utility;
+import net.thunderbird.core.android.network.ConnectivityManager;
 import net.thunderbird.core.common.mail.Flag;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Message.RecipientType;
@@ -130,11 +143,12 @@ import com.google.android.material.textview.MaterialTextView;
 import net.thunderbird.core.android.account.MessageFormat;
 import net.thunderbird.core.android.contact.ContactIntentHelper;
 import net.thunderbird.core.featureflag.FeatureFlagProvider;
-import net.thunderbird.core.featureflag.compat.FeatureFlagProviderCompat;
-import net.thunderbird.core.outcome.OutcomeKt;
+import net.thunderbird.core.featureflag.keys.GeneratedFeatureFlagKey;
+import net.thunderbird.components.core.outcome.OutcomeKt;
 import net.thunderbird.core.preference.GeneralSettingsManager;
 import net.thunderbird.core.ui.theme.manager.ThemeManager;
 import net.thunderbird.feature.mail.message.composer.dialog.SentFolderNotFoundConfirmationDialogFragmentFactory;
+import net.thunderbird.feature.mail.message.composer.signature.SignaturePreviewWebView;
 import net.thunderbird.feature.notification.api.command.outcome.CommandExecutionFailed;
 import net.thunderbird.feature.notification.api.content.NotificationFactoryCoroutineCompat;
 import net.thunderbird.feature.notification.api.content.SentFolderNotFoundNotification;
@@ -145,7 +159,8 @@ import net.thunderbird.feature.notification.api.sender.compat.NotificationSender
 import net.thunderbird.feature.search.legacy.LocalMessageSearch;
 import org.openintents.openpgp.OpenPgpApiManager;
 import org.openintents.openpgp.util.OpenPgpIntentStarter;
-import net.thunderbird.core.logging.legacy.Log;
+import net.thunderbird.core.android.common.startup.DatabaseUpgradeInterceptor;
+import net.thunderbird.legacy.logging.Log;
 import static com.fsck.k9.activity.compose.AttachmentPresenter.REQUEST_CODE_ATTACHMENT_URI;
 import static app.k9mail.core.android.common.camera.CameraCaptureHandler.CAMERA_PERMISSION_REQUEST_CODE;
 import static app.k9mail.core.android.common.camera.CameraCaptureHandler.REQUEST_IMAGE_CAPTURE;
@@ -163,6 +178,8 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
 
     private static final int DIALOG_SAVE_OR_DISCARD_DRAFT_MESSAGE = 1;
     private static final int DIALOG_CONFIRM_DISCARD_ON_BACK = 2;
+
+    private final DatabaseUpgradeInterceptor databaseUpgradeInterceptor = DI.get(DatabaseUpgradeInterceptor.class);
     private static final int DIALOG_CHOOSE_IDENTITY = 3;
     private static final int DIALOG_CONFIRM_DISCARD = 4;
 
@@ -194,6 +211,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
             "com.fsck.k9.activity.MessageCompose.activeInAppNotifications";
 
     private static final String FRAGMENT_WAITING_FOR_ATTACHMENT = "waitingForAttachment";
+    private static final String FRAGMENT_ENCRYPTING_MESSAGE = "encryptingMessage";
 
     private static final int MSG_PROGRESS_ON = 1;
     private static final int MSG_PROGRESS_OFF = 2;
@@ -220,7 +238,11 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
     private final DefaultFolderProvider defaultFolderProvider = DI.get(DefaultFolderProvider.class);
     private final MessagingController messagingController = DI.get(MessagingController.class);
     private final Preferences preferences = DI.get(Preferences.class);
+    private final GetDefaultAccountId getDefaultAccountId = DI.get(GetDefaultAccountId.class);
     private final GeneralSettingsManager generalSettingsManager = DI.get(GeneralSettingsManager.class);
+    private final WebViewConfigProvider webViewConfigProvider = DI.get(WebViewConfigProvider.class);
+    private final DisplayHtml displayHtml = DI.get(DisplayHtmlUiFactory.class).createForMessageCompose();
+    private final HtmlSignatureSanitizer htmlSignatureSanitizer = DI.get(HtmlSignatureSanitizer.class);
 
     private final IntentDataMapper indentDataMapper = DI.get(IntentDataMapper.class);
 
@@ -231,6 +253,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
     private final NotificationSender notificationSender = DI.get(NotificationSender.class);
     private final NotificationSenderCompat notificationSenderCompat = new NotificationSenderCompat(notificationSender);
     private final NotificationDismisser notificationDismisser = DI.get(NotificationDismisser.class);
+    private final ConnectivityManager connectivityManager = DI.get(ConnectivityManager.class);
     private final NotificationDismisserCompat notificationDismisserCompat =
         new NotificationDismisserCompat(notificationDismisser);
     private final SentFolderNotFoundConfirmationDialogFragmentFactory sentFolderNotFoundDialogFragmentFactory =
@@ -260,6 +283,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
      * have already been added from the restore of the view state.
      */
     private boolean relatedMessageProcessed = false;
+    private MessageLoaderCallbacks messageLoaderCallbacks;
     private MessageViewInfo currentMessageViewInfo;
 
     private RecipientPresenter recipientPresenter;
@@ -278,6 +302,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
     private MaterialTextView chooseIdentityView;
     private EditText subjectView;
     private EditText signatureView;
+    private MessageWebView signatureHtmlPreview;
     private EditText messageContentView;
     private LinearLayout attachmentsView;
 
@@ -297,8 +322,9 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        cameraCaptureHandler.restoreInstanceState(savedInstanceState);
 
-        if (UpgradeDatabases.actionUpgradeDatabases(this, getIntent())) {
+        if (databaseUpgradeInterceptor.checkAndHandleUpgrade(this, getIntent())) {
             finish();
             return;
         }
@@ -326,7 +352,10 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
         fetchAccount(intent);
 
         if (account == null) {
-            account = preferences.getDefaultAccount();
+            AccountId defaultAccountId = getDefaultAccountId.invoke();
+            if (defaultAccountId != null) {
+                account = preferences.getById(defaultAccountId);
+            }
         }
 
         if (account == null) {
@@ -334,7 +363,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
              * There are no accounts set up. This should not have happened. Prompt the
              * user to set up an account as an acceptable bailout.
              */
-            MainActivity.launch(this);
+            MessageHomeActivity.launch(this);
             changesMadeSinceLastSave = false;
             finish();
             return;
@@ -349,7 +378,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
         replyToPresenter = new ReplyToPresenter(replyToView);
 
         RecipientMvpView recipientMvpView = new RecipientMvpView(this);
-        MessageLoaderCallbacks messageLoaderCallbacks = new MessageComposeMessageLoaderCallback(recipientMvpView);
+        messageLoaderCallbacks = new MessageComposeMessageLoaderCallback(recipientMvpView);
         ComposePgpInlineDecider composePgpInlineDecider = new ComposePgpInlineDecider();
         ComposePgpEnableByDefaultDecider composePgpEnableByDefaultDecider = new ComposePgpEnableByDefaultDecider();
 
@@ -363,9 +392,14 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
 
         subjectView = findViewById(R.id.subject);
         subjectView.getInputExtras(true).putBoolean("allowEmoji", true);
+        applyIncognitoKeyboardSetting(subjectView);
 
         EditText upperSignature = findViewById(R.id.upper_signature);
         EditText lowerSignature = findViewById(R.id.lower_signature);
+        applyIncognitoKeyboardSetting(upperSignature);
+        applyIncognitoKeyboardSetting(lowerSignature);
+        final MessageWebView upperSignaturePreview = findViewById(R.id.upper_signature_html_preview);
+        final MessageWebView lowerSignaturePreview = findViewById(R.id.lower_signature_html_preview);
 
 
         QuotedMessageMvpView quotedMessageMvpView = new QuotedMessageMvpView(this);
@@ -375,6 +409,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
 
         messageContentView = findViewById(R.id.message_content);
         messageContentView.getInputExtras(true).putBoolean("allowEmoji", true);
+        applyIncognitoKeyboardSetting(messageContentView);
 
         attachmentsView = findViewById(R.id.attachments);
 
@@ -399,9 +434,21 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
         quotedMessageMvpView.addTextChangedListener(new WrapUriTextWatcher());
 
         subjectView.addTextChangedListener(draftNeedsChangingTextWatcher);
+        subjectView.addTextChangedListener(
+            new RecipientExpanderListener(
+                recipientPresenter::isRecipientExpanderExpanded,
+                this::triggerNonRecipientFieldFocused
+            )
+        );
 
         messageContentView.addTextChangedListener(draftNeedsChangingTextWatcher);
         messageContentView.addTextChangedListener(new WrapUriTextWatcher());
+        messageContentView.addTextChangedListener(
+            new RecipientExpanderListener(
+                recipientPresenter::isRecipientExpanderExpanded,
+                this::triggerNonRecipientFieldFocused
+            )
+        );
 
         /*
          * We set this to invisible by default. Other methods will turn it back on if it's
@@ -487,16 +534,23 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
 
         if (account.isSignatureBeforeQuotedText()) {
             signatureView = upperSignature;
+            signatureHtmlPreview = upperSignaturePreview;
             lowerSignature.setVisibility(View.GONE);
+            lowerSignaturePreview.setVisibility(View.GONE);
         } else {
             signatureView = lowerSignature;
+            signatureHtmlPreview = lowerSignaturePreview;
             upperSignature.setVisibility(View.GONE);
+            upperSignaturePreview.setVisibility(View.GONE);
         }
+        SignaturePreviewWebView.configureForSignaturePreview(
+                signatureHtmlPreview, webViewConfigProvider.createForMessageCompose());
         updateSignature();
         signatureView.addTextChangedListener(signTextWatcher);
 
         if (!identity.getSignatureUse()) {
             signatureView.setVisibility(View.GONE);
+            signatureHtmlPreview.setVisibility(View.GONE);
         }
 
         requestReadReceipt = account.isMessageReadReceipt();
@@ -540,6 +594,8 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
         recipientMvpView.setFontSizes(K9.getFontSizes(), fontSize);
         quotedMessageMvpView.setFontSizes(K9.getFontSizes(), fontSize);
         K9.getFontSizes().setViewTextSize(subjectView, fontSize);
+        if(generalSettingsManager.getConfig().getDisplay().getVisualSettings().isUseMessageViewFixedWidthFont())
+            messageContentView.setTypeface(Typeface.MONOSPACE);
         K9.getFontSizes().setViewTextSize(messageContentView, fontSize);
         K9.getFontSizes().setViewTextSize(signatureView, fontSize);
 
@@ -596,12 +652,18 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
         String messageReferenceString = intent.getStringExtra(EXTRA_MESSAGE_REFERENCE);
         relatedMessageReference = MessageReference.parse(messageReferenceString);
 
-        final String accountUuid = (relatedMessageReference != null) ?
-            relatedMessageReference.getAccountUuid() :
-            intent.getStringExtra(EXTRA_ACCOUNT);
+        AccountId accountId = null;
+        if (relatedMessageReference != null) {
+            accountId = relatedMessageReference.getAccountId();
+        } else {
+            String accountUuid = intent.getStringExtra(EXTRA_ACCOUNT);
+            if (accountUuid != null) {
+                accountId = AccountIdFactory.INSTANCE.of(accountUuid);
+            }
+        }
 
-        if (accountUuid != null) {
-            account = preferences.getAccount(accountUuid);
+        if (accountId != null) {
+            account = preferences.getById(accountId);
         }
     }
 
@@ -619,9 +681,9 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
     }
 
     private void triggerIfNeededSentFolderNotFoundInAppNotification() {
-        if (account != null && account.getSentFolderId() == null) {
+        if (account != null && account.isUploadSentMessages() && !account.hasSentFolder()) {
             final SentFolderNotFoundNotification notification = NotificationFactoryCoroutineCompat.create(
-                continuation -> SentFolderNotFoundNotification(account.getUuid(), continuation)
+                continuation -> SentFolderNotFoundNotification(account.getId(), continuation)
             );
             notificationSenderCompat.send(notification, outcome -> {
                 OutcomeKt.handle(
@@ -709,6 +771,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
         recipientPresenter.onSaveInstanceState(outState);
         quotedMessagePresenter.onSaveInstanceState(outState);
         attachmentPresenter.onSaveInstanceState(outState);
+        cameraCaptureHandler.saveInstanceState(outState);
     }
 
     @Override
@@ -825,7 +888,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
             return;
         }
 
-        if (attachmentPresenter.checkOkForSendingOrDraftSaving()) {
+        if (attachmentPresenter.checkOkForSendingOrDraftSaving(WaitingAction.SEND)) {
             return;
         }
 
@@ -838,7 +901,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
             return;
         }
 
-        if (attachmentPresenter.checkOkForSendingOrDraftSaving()) {
+        if (attachmentPresenter.checkOkForSendingOrDraftSaving(WaitingAction.SAVE)) {
             return;
         }
 
@@ -852,6 +915,11 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
         }
 
         if (!changesMadeSinceLastSave) {
+            return;
+        }
+
+        if (attachmentPresenter.hasMissingDraftParts()) {
+            // Saving now would remove the parts that were not downloaded from the server.
             return;
         }
 
@@ -872,9 +940,14 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
             return;
         }
 
-        if (!ignoreSentFolderNotAssigned && !account.hasSentFolder()) {
-            sentFolderNotFoundDialogFragmentFactory.show(account.getUuid(), getSupportFragmentManager());
+        if (account.isUploadSentMessages()
+            && !ignoreSentFolderNotAssigned && !account.hasSentFolder()) {
+            sentFolderNotFoundDialogFragmentFactory.show(account.getId().toString(), getSupportFragmentManager());
             return;
+        }
+
+        if (!connectivityManager.isNetworkAvailable()) {
+            Toast.makeText(this, R.string.no_network_message_will_be_sent_later_toast, Toast.LENGTH_LONG).show();
         }
 
         currentMessageBuilder = createMessageBuilder(false);
@@ -882,7 +955,34 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
             sendMessageHasBeenTriggered = true;
             changesMadeSinceLastSave = false;
             setProgressBarIndeterminateVisibility(true);
+            showEncryptedMessageProgressIndicatorIfNeeded();
             currentMessageBuilder.buildAsync(this);
+        }
+    }
+
+    private void showEncryptedMessageProgressIndicatorIfNeeded() {
+        ComposeCryptoStatus cryptoStatus = recipientPresenter.getCurrentCachedCryptoStatus();
+        boolean hasAttachments = !attachmentPresenter.getAttachments().isEmpty();
+        if (cryptoStatus == null || !cryptoStatus.isEncryptionEnabled() || !hasAttachments) {
+            return;
+        }
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        if (fragmentManager.findFragmentByTag(FRAGMENT_ENCRYPTING_MESSAGE) != null) {
+            return;
+        }
+
+        ProgressDialogFragment fragment = ProgressDialogFragment.Companion.newInstance(
+                getString(R.string.fetching_attachment_dialog_title_send),
+                getString(R.string.message_compose_encrypting_message));
+        fragment.setCancelable(false);
+        fragment.show(fragmentManager, FRAGMENT_ENCRYPTING_MESSAGE);
+    }
+
+    private void dismissEncryptedMessageProgressIndicator() {
+        Fragment fragment = getSupportFragmentManager().findFragmentByTag(FRAGMENT_ENCRYPTING_MESSAGE);
+        if (fragment instanceof ProgressDialogFragment) {
+            ((ProgressDialogFragment) fragment).dismiss();
         }
     }
 
@@ -938,6 +1038,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
                             "this is an illegal state!");
                     return;
                 }
+                showEncryptedMessageProgressIndicatorIfNeeded();
                 currentMessageBuilder.onActivityResult(requestCode, resultCode, data, this);
                 return;
             }
@@ -961,8 +1062,13 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
             }
 
             if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
+                final Uri capturedImageUri = cameraCaptureHandler.getCapturedImageUri();
+                if (capturedImageUri == null) {
+                    Toast.makeText(this, R.string.camera_capture_lost, Toast.LENGTH_LONG).show();
+                    return;
+                }
                 Intent intent = new Intent();
-                intent.setData(cameraCaptureHandler.getCapturedImageUri());
+                intent.setData(capturedImageUri);
                 attachmentPresenter.onActivityResult(resultCode, REQUEST_CODE_ATTACHMENT_URI, intent);
                 return;
             }
@@ -1066,6 +1172,20 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
         recipientPresenter.onSwitchIdentity();
     }
 
+    private void applyIncognitoKeyboardSetting(EditText editText) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+            return;
+        }
+
+        boolean incognitoKeyboardEnabled = generalSettingsManager.getConfig().getPrivacy().isIncognitoKeyboardEnabled();
+        int imeOptions = editText.getImeOptions();
+        if (incognitoKeyboardEnabled) {
+            editText.setImeOptions(imeOptions | EditorInfo.IME_FLAG_NO_PERSONALIZED_LEARNING);
+        } else {
+            editText.setImeOptions(imeOptions & ~EditorInfo.IME_FLAG_NO_PERSONALIZED_LEARNING);
+        }
+    }
+
     private void updateFrom() {
         chooseIdentityView.setText(identity.getEmail());
     }
@@ -1074,9 +1194,22 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
         if (identity.getSignatureUse()) {
             String signature = CrLfConverter.toLf(identity.getSignature());
             signatureView.setText(signature);
-            signatureView.setVisibility(View.VISIBLE);
+            // The plain EditText can't render HTML, so for HTML signatures we hide it and
+            // show a rendered preview in a WebView instead. The EditText still holds the
+            // raw HTML so signatureView.getText() continues to feed the outgoing message.
+            if (identity.getSignatureIsHtml() && signature != null) {
+                signatureView.setVisibility(View.GONE);
+                final String sanitizedSignature = htmlSignatureSanitizer.sanitize(signature);
+                final String document = displayHtml.wrapMessageContent(sanitizedSignature);
+                signatureHtmlPreview.displayHtmlContentWithInlineAttachments(document, null, null);
+                signatureHtmlPreview.setVisibility(View.VISIBLE);
+            } else {
+                signatureHtmlPreview.setVisibility(View.GONE);
+                signatureView.setVisibility(View.VISIBLE);
+            }
         } else {
             signatureView.setVisibility(View.GONE);
+            signatureHtmlPreview.setVisibility(View.GONE);
         }
     }
 
@@ -1085,10 +1218,16 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
         int id = v.getId();
         if (id == R.id.message_content || id == R.id.subject) {
             if (hasFocus) {
-                replyToPresenter.onNonRecipientFieldFocused();
-                recipientPresenter.onNonRecipientFieldFocused();
+                triggerNonRecipientFieldFocused();
             }
         }
+    }
+
+    // return Unit to allow this::triggerNonRecipientFieldFocused usage with () -> Unit
+    private Unit triggerNonRecipientFieldFocused() {
+        replyToPresenter.onNonRecipientFieldFocused();
+        recipientPresenter.onNonRecipientFieldFocused();
+        return Unit.INSTANCE;
     }
 
     @Override
@@ -1227,9 +1366,9 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
     private void openDefaultFolder() {
         long folderId = defaultFolderProvider.getDefaultFolder(account);
         LocalMessageSearch search = new LocalMessageSearch();
-        search.addAccountUuid(account.getUuid());
+        search.addAccountUuid(account.getId().toString());
         search.addAllowedFolder(folderId);
-        MainActivity.actionDisplaySearch(this, search, false, true);
+        MessageHomeActivity.actionDisplaySearch(this, search, false, true);
         finish();
     }
 
@@ -1514,7 +1653,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
         }
 
         if (!relatedMessageProcessed) {
-            attachmentPresenter.loadAllAvailableAttachments(messageViewInfo);
+            attachmentPresenter.processDraftMessage(messageViewInfo);
         }
 
         // Decode the identity header when loading a draft.
@@ -1527,19 +1666,32 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
 
         if (identityHeaders.length > 0 && identityHeaders[0] != null) {
             k9identity = IdentityHeaderParser.parse(identityHeaders[0]);
+        } else {
+            // This message has no identity metadata because it wasn't saved as a draft. That's
+            // true of any message we sent (including one stuck in the Outbox after a failed
+            // send), and also of any message we received. Fall back to matching the message's
+            // sender against the account's identities.
+            Identity senderIdentity = IdentityHelper.getSenderIdentityFromMessage(account, message);
+            if (senderIdentity != null) {
+                identity = senderIdentity;
+            }
         }
 
         Identity newIdentity = new Identity();
         if (k9identity.containsKey(IdentityField.SIGNATURE)) {
+            final String signatureIsHtml = k9identity.get(IdentityField.SIGNATURE_IS_HTML);
             newIdentity = newIdentity
                     .withSignatureUse(true)
-                    .withSignature(k9identity.get(IdentityField.SIGNATURE));
+                    .withSignature(k9identity.get(IdentityField.SIGNATURE))
+                    .withSignatureIsHtml(!"".equals(signatureIsHtml) && Boolean.parseBoolean(signatureIsHtml));
             signatureChanged = true;
         } else {
             if (message instanceof LocalMessage) {
                 newIdentity = newIdentity.withSignatureUse(((LocalMessage) message).getFolder().getSignatureUse());
             }
-            newIdentity = newIdentity.withSignature(identity.getSignature());
+            newIdentity = newIdentity
+                    .withSignature(identity.getSignature())
+                    .withSignatureIsHtml(identity.getSignatureIsHtml());
         }
 
         if (k9identity.containsKey(IdentityField.NAME)) {
@@ -1563,7 +1715,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
 
             if (messageReference != null) {
                 // Check if this is a valid account in our database
-                LegacyAccountDto account = preferences.getAccount(messageReference.getAccountUuid());
+                LegacyAccountDto account = preferences.getById(messageReference.getAccountId());
                 if (account != null) {
                     relatedMessageReference = messageReference;
                 }
@@ -1629,8 +1781,8 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
          **/
         private void addFlagToReferencedMessage() {
             if (messageReference != null && flag != null) {
-                String accountUuid = messageReference.getAccountUuid();
-                LegacyAccountDto account = preferences.getAccount(accountUuid);
+                AccountId accountId = messageReference.getAccountId();
+                LegacyAccountDto account = preferences.getById(accountId);
                 long folderId = messageReference.getFolderId();
                 String sourceMessageUid = messageReference.getUid();
 
@@ -1709,6 +1861,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
 
     @Override
     public void onMessageBuildSuccess(MimeMessage message, boolean isDraft) {
+        dismissEncryptedMessageProgressIndicator();
         String plaintextSubject =
                 (currentMessageBuilder instanceof PgpMessageBuilder) ? currentMessageBuilder.getSubject() : null;
 
@@ -1733,6 +1886,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
 
     @Override
     public void onMessageBuildCancel() {
+        dismissEncryptedMessageProgressIndicator();
         sendMessageHasBeenTriggered = false;
         currentMessageBuilder = null;
         setProgressBarIndeterminateVisibility(false);
@@ -1740,6 +1894,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
 
     @Override
     public void onMessageBuildException(MessagingException me) {
+        dismissEncryptedMessageProgressIndicator();
         Log.e(me, "Error sending message");
         Toast.makeText(MessageCompose.this,
                 getString(R.string.send_failed_reason, me.getLocalizedMessage()), Toast.LENGTH_LONG).show();
@@ -1750,6 +1905,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
 
     @Override
     public void onMessageBuildReturnPendingIntent(PendingIntent pendingIntent, int requestCode) {
+        dismissEncryptedMessageProgressIndicator();
         requestCode |= REQUEST_MASK_MESSAGE_BUILDER;
         try {
             OpenPgpIntentStarter.startIntentSenderForResult(this, pendingIntent.getIntentSender(), requestCode);
@@ -1810,7 +1966,15 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
         @Override
         public void onMessageViewInfoLoadFinished(MessageViewInfo messageViewInfo) {
             internalMessageHandler.sendEmptyMessage(MSG_PROGRESS_OFF);
-            loadLocalMessageForDisplay(messageViewInfo, action);
+
+            // When a draft was incomplete, the attachment presenter asked for the complete message and we end up
+            // here a second time. The draft is already in the editor, and loadLocalMessageForDisplay() would add it
+            // once more as quoted text. So only the attachments that just arrived are picked up.
+            if (relatedMessageProcessed && action == Action.EDIT_DRAFT) {
+                attachmentPresenter.processDraftMessage(messageViewInfo);
+            } else {
+                loadLocalMessageForDisplay(messageViewInfo, action);
+            }
 
             if(!recipientPresenter.isToAddressAdded()) {
                 recipientMvpView.requestFocusOnToField();
@@ -1849,7 +2013,9 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
+                    internalMessageHandler.sendEmptyMessage(MSG_PROGRESS_OFF);
                     Toast.makeText(MessageCompose.this, R.string.status_invalid_id_error, Toast.LENGTH_LONG).show();
+                    attachmentPresenter.onCompleteMessageDownloadFailed();
                 }
             });
         }
@@ -1859,7 +2025,9 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
+                    internalMessageHandler.sendEmptyMessage(MSG_PROGRESS_OFF);
                     Toast.makeText(MessageCompose.this, R.string.status_network_error, Toast.LENGTH_LONG).show();
+                    attachmentPresenter.onCompleteMessageDownloadFailed();
                 }
             });
         }
@@ -1871,8 +2039,8 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
     }
 
     private void initializeInAppNotificationFragment() {
-        if (FeatureFlagProviderCompat
-            .provide(featureFlagProvider, "display_in_app_notifications")
+        if (featureFlagProvider
+            .provide(GeneratedFeatureFlagKey.DISPLAY_IN_APP_NOTIFICATIONS)
             .isDisabledOrUnavailable()) {
             return;
         }
@@ -1890,12 +2058,12 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
             return;
         }
 
-        final ArrayList<String> uuids = new ArrayList<>();
+        final ArrayList<String> accountIds = new ArrayList<>();
         for (LegacyAccountDto legacyAccountDto : accounts) {
-            uuids.add(legacyAccountDto.getUuid());
+            accountIds.add(legacyAccountDto.getId().toString());
         }
         final MessageComposeInAppNotificationFragment inAppNotificationFragment =
-            MessageComposeInAppNotificationFragment.newInstance(uuids);
+            MessageComposeInAppNotificationFragment.newInstance(accountIds);
         fragmentManager
             .beginTransaction()
             .add(R.id.message_compose_in_app_notifications_container, inAppNotificationFragment,
@@ -1912,11 +2080,11 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
                 return;
             }
 
-            String sourceAccountUuid = relatedMessageReference.getAccountUuid();
+            AccountId sourceAccountId = relatedMessageReference.getAccountId();
             long sourceFolderId = relatedMessageReference.getFolderId();
             String sourceMessageUid = relatedMessageReference.getUid();
 
-            boolean changedMessageIsCurrent = account.getUuid().equals(sourceAccountUuid) &&
+            boolean changedMessageIsCurrent = account.getId().equals(sourceAccountId) &&
                     folderId == sourceFolderId &&
                     oldUid.equals(sourceMessageUid);
 
@@ -2004,20 +2172,20 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
             }
 
             MaterialTextView nameView = view.findViewById(R.id.attachment_name);
-            boolean hasMetadata = (attachment.state != Attachment.LoadingState.URI_ONLY);
+            boolean hasMetadata = (attachment.getState() != Attachment.LoadingState.URI_ONLY);
             if (hasMetadata) {
-                nameView.setText(attachment.name);
+                nameView.setText(attachment.getName());
             } else {
                 nameView.setText(R.string.loading_attachment);
             }
 
-            if (attachment.size != null && attachment.size >= 0) {
+            if (attachment.getSize() != null && attachment.getSize() >= 0) {
                 MaterialTextView sizeView = view.findViewById(R.id.attachment_size);
-                sizeView.setText(sizeFormatter.formatSize(attachment.size));
+                sizeView.setText(sizeFormatter.formatSize(attachment.getSize()));
             }
 
             View progressBar = view.findViewById(R.id.progressBar);
-            boolean isLoadingComplete = (attachment.state == Attachment.LoadingState.COMPLETE);
+            boolean isLoadingComplete = (attachment.getState() == Attachment.LoadingState.COMPLETE);
             if (isLoadingComplete) {
                 if (attachment.isSupportedImage()) {
                     ImageView attachmentTypeView = view.findViewById(R.id.attachment_type);
@@ -2026,7 +2194,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
                     ImageView preview = view.findViewById(R.id.attachment_preview);
                     preview.setVisibility(View.VISIBLE);
                     Glide.with(MessageCompose.this)
-                            .load(new File(attachment.filename))
+                            .load(new File(attachment.getFileName()))
                             .centerCrop()
                             .diskCacheStrategy(DiskCacheStrategy.NONE)
                             .into(preview);
@@ -2068,6 +2236,23 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
         public void showMissingAttachmentsPartialMessageForwardWarning() {
             Toast.makeText(MessageCompose.this,
                     getString(R.string.message_compose_attachments_forward_toast), Toast.LENGTH_LONG).show();
+        }
+
+        @Override
+        public void downloadCompleteMessage() {
+            if (messageLoaderHelper == null) {
+                if (relatedMessageReference == null) {
+                    return;
+                }
+
+                // After a configuration change the draft is already processed, so onCreate() created no loader.
+                messageLoaderHelper = messageLoaderHelperFactory.createForMessageCompose(MessageCompose.this,
+                        getSupportLoaderManager(), getSupportFragmentManager(), messageLoaderCallbacks);
+                messageLoaderHelper.asyncStartOrResumeLoadingMessage(relatedMessageReference, null);
+            }
+
+            internalMessageHandler.sendEmptyMessage(MSG_PROGRESS_ON);
+            messageLoaderHelper.downloadCompleteMessage();
         }
     };
 

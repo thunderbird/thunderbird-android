@@ -13,9 +13,7 @@
     <string name="account_server_validation_error_server">Error del servidor</string>
     <string name="account_server_validation_error_missing_server_capability">Falta capacitat al servidor</string>
     <string name="account_server_validation_error_client_certificate_retrieval_failure">No s\'ha pogut accedir al certificat de client</string>
-    <string name="account_server_validation_error_missing_server_capability_details">Al servidor li falta aquesta capacitat:
-\n%s</string>
+    <string name="account_server_validation_error_missing_server_capability_details">Al servidor li falta aquesta capacitat: \n%s</string>
     <string name="account_server_validation_error_client_certificate_expired">El certificat de client ja no és vàlid</string>
-    <string name="account_server_validation_error_details">Detalls:
-\n%s</string>
+    <string name="account_server_validation_error_details">Detalls: \n%s</string>
 </resources>

@@ -1,49 +1,30 @@
 plugins {
     id(ThunderbirdPlugins.Library.kmpCompose)
-    alias(libs.plugins.dev.mokkery)
 }
 
 kotlin {
-    androidLibrary {
+    android {
         namespace = "net.thunderbird.feature.notification.api"
-        @Suppress("UnstableApiUsage")
-        androidResources {
-            enable = true
-        }
-        withHostTest {
-            isIncludeAndroidResources = true
-        }
+        androidResources.enable = true
     }
     sourceSets {
         commonMain.dependencies {
+            api(projects.feature.account.api)
+
             implementation(projects.core.common)
             implementation(projects.core.featureflag)
-            implementation(projects.core.outcome)
         }
         commonTest.dependencies {
             implementation(projects.feature.notification.testing)
         }
         androidMain.dependencies {
-            implementation(projects.core.ui.compose.designsystem)
-            implementation(projects.core.ui.compose.theme2.common)
+            implementation(projects.core.ui.compose.common)
         }
         androidHostTest.dependencies {
             implementation(projects.core.ui.compose.testing)
-            implementation(libs.bundles.shared.jvm.test.compose)
-            implementation(libs.bundles.shared.jvm.android.compose.debug)
         }
         jvmTest.dependencies {
-            implementation(libs.kotlinx.coroutines.test)
-            implementation(libs.bundles.shared.jvm.test)
-        }
-    }
-
-    sourceSets.all {
-        compilerOptions {
-            freeCompilerArgs.addAll(
-                "-Xexpect-actual-classes",
-                "-Xwhen-guards",
-            )
+            implementation(libs.mockito.kotlin)
         }
     }
 }
@@ -51,4 +32,9 @@ kotlin {
 compose.resources {
     publicResClass = false
     packageOfResClass = "net.thunderbird.feature.notification.resources.api"
+}
+
+codeCoverage {
+    branchCoverage = 46
+    lineCoverage = 23
 }

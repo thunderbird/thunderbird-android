@@ -1,10 +1,17 @@
 package com.fsck.k9.notification
 
+import android.graphics.Bitmap
+import androidx.annotation.WorkerThread
+import com.fsck.k9.mail.Address
+
 interface NotificationResourceProvider {
     val iconWarning: Int
     val iconMarkAsRead: Int
     val iconDelete: Int
     val iconReply: Int
+    val iconArchive: Int
+    val iconMarkAsSpam: Int
+    val iconStar: Int
     val iconNewMail: Int
     val iconSendingMail: Int
     val iconCheckingMail: Int
@@ -24,6 +31,9 @@ interface NotificationResourceProvider {
 
     fun authenticationErrorTitle(): String
     fun authenticationErrorBody(accountName: String): String
+
+    @WorkerThread
+    fun avatar(address: Address): Bitmap?
 
     fun notifyErrorTitle(): String
     fun notifyErrorText(): String
@@ -52,6 +62,7 @@ interface NotificationResourceProvider {
     fun actionDelete(): String
     fun actionDeleteAll(): String
     fun actionReply(): String
+    fun actionStar(): String
     fun actionArchive(): String
     fun actionArchiveAll(): String
     fun actionMarkAsSpam(): String

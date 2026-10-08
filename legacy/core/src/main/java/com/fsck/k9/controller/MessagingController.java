@@ -62,7 +62,6 @@ import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.AuthenticationFailedException;
 import com.fsck.k9.mail.CertificateValidationException;
 import com.fsck.k9.mail.FetchProfile;
-import net.thunderbird.core.common.mail.Flag;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessageDownloadState;
 import com.fsck.k9.mail.Part;
@@ -81,42 +80,44 @@ import com.fsck.k9.mailstore.SendState;
 import com.fsck.k9.mailstore.SpecialLocalFoldersCreator;
 import com.fsck.k9.notification.NotificationController;
 import com.fsck.k9.notification.NotificationStrategy;
+import kotlinx.coroutines.Dispatchers;
 import net.thunderbird.core.android.account.DeletePolicy;
 import net.thunderbird.core.android.account.LegacyAccountDto;
 import net.thunderbird.core.common.exception.MessagingException;
+import net.thunderbird.core.common.exception.ThrowableExtensions;
+import net.thunderbird.core.common.mail.Flag;
 import net.thunderbird.core.featureflag.FeatureFlagProvider;
-import net.thunderbird.core.featureflag.compat.FeatureFlagProviderCompat;
+import net.thunderbird.core.featureflag.keys.GeneratedFeatureFlagKey;
 import net.thunderbird.core.logging.Logger;
-import net.thunderbird.core.logging.legacy.Log;
+import net.thunderbird.feature.account.AccountId;
+import net.thunderbird.feature.mail.folder.api.FolderDetails;
 import net.thunderbird.feature.mail.folder.api.OutboxFolderManager;
 import net.thunderbird.feature.mail.folder.api.OutboxFolderManagerKt;
+import net.thunderbird.feature.mail.message.list.LocalDeleteOperationDecider;
+import net.thunderbird.feature.mail.message.list.LocalMessageUidPrefixProvider;
 import net.thunderbird.feature.notification.api.NotificationManager;
 import net.thunderbird.feature.notification.api.content.AuthenticationErrorNotification;
 import net.thunderbird.feature.notification.api.content.NotificationFactoryCoroutineCompat;
 import net.thunderbird.feature.notification.api.dismisser.compat.NotificationDismisserCompat;
 import net.thunderbird.feature.notification.api.sender.compat.NotificationSenderCompat;
 import net.thunderbird.feature.search.legacy.LocalMessageSearch;
+import net.thunderbird.legacy.logging.Log;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import static com.fsck.k9.K9.MAX_SEND_ATTEMPTS;
 import static com.fsck.k9.controller.Preconditions.requireNotNull;
-import net.thunderbird.core.common.exception.ThrowableExtensions;
-
-import static net.thunderbird.core.common.mail.Flag.X_REMOTE_COPY_STARTED;
 import static net.thunderbird.core.android.account.AccountDefaultsProvider.DEFAULT_VISIBLE_LIMIT;
+import static net.thunderbird.core.common.mail.Flag.X_REMOTE_COPY_STARTED;
 
 
 /**
- * Starts a long running (application) Thread that will run through commands
- * that require remote mailbox access. This class is used to serialize and
- * prioritize these commands. Each method that will submit a command requires a
- * MessagingListener instance to be provided. It is expected that that listener
- * has also been added as a registered listener using addListener(). When a
- * command is to be executed, if the listener that was provided with the command
- * is no longer registered the command is skipped. The design idea for the above
- * is that when an Activity starts it registers as a listener. When it is paused
- * it removes itself. Thus, any commands that that activity submitted are
+ * Starts a long running (application) Thread that will run through commands that require remote mailbox access. This
+ * class is used to serialize and prioritize these commands. Each method that will submit a command requires a
+ * MessagingListener instance to be provided. It is expected that that listener has also been added as a registered
+ * listener using addListener(). When a command is to be executed, if the listener that was provided with the command is
+ * no longer registered the command is skipped. The design idea for the above is that when an Activity starts it
+ * registers as a listener. When it is paused it removes itself. Thus, any commands that that activity submitted are
  * removed from the queue once the activity is no longer active.
  */
 public class MessagingController implements MessagingControllerRegistry, MessagingControllerMailChecker {
@@ -137,6 +138,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
 
     private final Thread controllerThread;
 
+    private final LocalMessageUidPrefixProvider localMessageUidPrefixProvider;
     private final BlockingQueue<Command> queuedCommands = new PriorityBlockingQueue<>();
     private final Set<MessagingListener> listeners = new CopyOnWriteArraySet<>();
     private final ExecutorService threadPool = Executors.newCachedThreadPool();
@@ -169,6 +171,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
         SaveMessageDataCreator saveMessageDataCreator,
         SpecialLocalFoldersCreator specialLocalFoldersCreator,
         LocalDeleteOperationDecider localDeleteOperationDecider,
+        LocalMessageUidPrefixProvider localMessageUidPrefixProvider,
         List<ControllerExtension> controllerExtensions,
         FeatureFlagProvider featureFlagProvider,
         Logger syncDebugLogger,
@@ -185,6 +188,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
         this.saveMessageDataCreator = saveMessageDataCreator;
         this.specialLocalFoldersCreator = specialLocalFoldersCreator;
         this.localDeleteOperationDecider = localDeleteOperationDecider;
+        this.localMessageUidPrefixProvider = localMessageUidPrefixProvider;
         this.featureFlagProvider = featureFlagProvider;
         this.syncDebugLogger = syncDebugLogger;
         this.notificationSender = new NotificationSenderCompat(notificationManager);
@@ -203,7 +207,8 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
 
         initializeControllerExtensions(controllerExtensions);
 
-        draftOperations = new DraftOperations(this, messageStoreManager, saveMessageDataCreator);
+        draftOperations =
+            new DraftOperations(this, messageStoreManager, saveMessageDataCreator, localMessageUidPrefixProvider);
         notificationOperations = new NotificationOperations(notificationController, preferences, messageStoreManager);
         archiveOperations = new ArchiveOperations(this, featureFlagProvider);
     }
@@ -216,13 +221,13 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
         ControllerInternals internals = new ControllerInternals() {
             @Override
             public void put(@NotNull String description, @Nullable MessagingListener listener,
-                    @NotNull Runnable runnable) {
+                @NotNull Runnable runnable) {
                 MessagingController.this.put(description, listener, runnable);
             }
 
             @Override
             public void putBackground(@NotNull String description, @Nullable MessagingListener listener,
-                    @NotNull Runnable runnable) {
+                @NotNull Runnable runnable) {
                 MessagingController.this.putBackground(description, listener, runnable);
             }
         };
@@ -250,9 +255,9 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
                     commandDescription = command.description;
 
                     Log.i("Running command '%s', seq = %s (%s priority)",
-                            command.description,
-                            command.sequence,
-                            command.isForegroundPriority ? "foreground" : "background");
+                        command.description,
+                        command.sequence,
+                        command.isForegroundPriority ? "foreground" : "background");
 
                     command.runnable.run();
 
@@ -273,7 +278,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
     }
 
     private void putCommand(BlockingQueue<Command> queue, String description, MessagingListener listener,
-            Runnable runnable, boolean isForeground) {
+        Runnable runnable, boolean isForeground) {
         int retries = 10;
         Exception e = null;
         while (retries-- > 0) {
@@ -294,7 +299,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
     }
 
     Backend getBackend(LegacyAccountDto account) {
-        return backendManager.getBackend(account);
+        return backendManager.getBackend(account.getId());
     }
 
     LocalStore getLocalStoreOrThrow(LegacyAccountDto account) {
@@ -356,12 +361,12 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
 
 
     void suppressMessages(LegacyAccountDto account, List<LocalMessage> messages) {
-        MessageListCache cache = MessageListCache.getCache(account.getUuid());
+        MessageListCache cache = MessageListCache.getCache(account.getId());
         cache.hideMessages(messages);
     }
 
     private void unsuppressMessages(LegacyAccountDto account, List<LocalMessage> messages) {
-        MessageListCache cache = MessageListCache.getCache(account.getUuid());
+        MessageListCache cache = MessageListCache.getCache(account.getId());
         cache.unhideMessages(messages);
     }
 
@@ -369,35 +374,35 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
         long messageId = message.getDatabaseId();
         long folderId = message.getFolder().getDatabaseId();
 
-        MessageListCache cache = MessageListCache.getCache(message.getFolder().getAccountUuid());
+        MessageListCache cache = MessageListCache.getCache(message.getFolder().getAccountId());
         return cache.isMessageHidden(messageId, folderId);
     }
 
     private void setFlagInCache(final LegacyAccountDto account, final List<Long> messageIds,
-            final Flag flag, final boolean newState) {
+        final Flag flag, final boolean newState) {
 
-        MessageListCache cache = MessageListCache.getCache(account.getUuid());
+        MessageListCache cache = MessageListCache.getCache(account.getId());
         cache.setFlagForMessages(messageIds, flag, newState);
     }
 
     private void removeFlagFromCache(final LegacyAccountDto account, final List<Long> messageIds,
-            final Flag flag) {
+        final Flag flag) {
 
-        MessageListCache cache = MessageListCache.getCache(account.getUuid());
+        MessageListCache cache = MessageListCache.getCache(account.getId());
         cache.removeFlagForMessages(messageIds, flag);
     }
 
     private void setFlagForThreadsInCache(final LegacyAccountDto account, final List<Long> threadRootIds,
-            final Flag flag, final boolean newState) {
+        final Flag flag, final boolean newState) {
 
-        MessageListCache cache = MessageListCache.getCache(account.getUuid());
+        MessageListCache cache = MessageListCache.getCache(account.getId());
         cache.setValueForThreads(threadRootIds, flag, newState);
     }
 
     private void removeFlagForThreadsFromCache(final LegacyAccountDto account, final List<Long> messageIds,
-            final Flag flag) {
+        final Flag flag) {
 
-        MessageListCache cache = MessageListCache.getCache(account.getUuid());
+        MessageListCache cache = MessageListCache.getCache(account.getId());
         cache.removeFlagForThreads(messageIds, flag);
     }
 
@@ -449,20 +454,20 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
         }
     }
 
-    public Future<?> searchRemoteMessages(String acctUuid, long folderId, String query, Set<Flag> requiredFlags,
-            Set<Flag> forbiddenFlags, MessagingListener listener) {
-        Log.i("searchRemoteMessages (acct = %s, folderId = %d, query = %s)", acctUuid, folderId, query);
+    public Future<?> searchRemoteMessages(AccountId accountId, long folderId, String query, Set<Flag> requiredFlags,
+        Set<Flag> forbiddenFlags, MessagingListener listener) {
+        Log.i("searchRemoteMessages (acct = %s, folderId = %d, query = %s)", accountId, folderId, query);
 
         return threadPool.submit(() ->
-                searchRemoteMessagesSynchronous(acctUuid, folderId, query, requiredFlags, forbiddenFlags, listener)
+            searchRemoteMessagesSynchronous(accountId, folderId, query, requiredFlags, forbiddenFlags, listener)
         );
     }
 
     @VisibleForTesting
-    void searchRemoteMessagesSynchronous(String acctUuid, long folderId, String query, Set<Flag> requiredFlags,
-            Set<Flag> forbiddenFlags, MessagingListener listener) {
+    void searchRemoteMessagesSynchronous(AccountId accountId, long folderId, String query, Set<Flag> requiredFlags,
+        Set<Flag> forbiddenFlags, MessagingListener listener) {
 
-        LegacyAccountDto account = preferences.getAccount(acctUuid);
+        LegacyAccountDto account = preferences.getById(accountId);
 
         if (listener != null) {
             listener.remoteSearchStarted(folderId);
@@ -484,7 +489,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
 
             boolean performFullTextSearch = account.isRemoteSearchFullText();
             List<String> messageServerIds = backend.search(folderServerId, query, requiredFlags, forbiddenFlags,
-                    performFullTextSearch);
+                performFullTextSearch);
 
             Log.i("Remote search got %d results", messageServerIds.size());
 
@@ -493,7 +498,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
 
             if (listener != null) {
                 listener.remoteSearchServerQueryComplete(folderId, messageServerIds.size(),
-                        account.getRemoteSearchNumResults());
+                    account.getRemoteSearchNumResults());
             }
 
             int resultLimit = account.getRemoteSearchNumResults();
@@ -511,7 +516,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
                 if (listener != null) {
                     listener.remoteSearchFailed(null, e.getMessage());
                 }
-                Log.e(e, "Remote search failed for account %s, folder %d", acctUuid, folderId);
+                Log.e(e, "Remote search failed for account %s, folder %d", accountId, folderId);
             }
         } finally {
             if (listener != null) {
@@ -522,7 +527,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
     }
 
     public void loadSearchResults(LegacyAccountDto account, long folderId, List<String> messageServerIds,
-            MessagingListener listener) {
+        MessagingListener listener) {
         threadPool.execute(() -> {
             if (listener != null) {
                 listener.enableProgressIndicator(true);
@@ -548,8 +553,9 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
         });
     }
 
-    private void loadSearchResultsSynchronous(LegacyAccountDto account, List<String> messageServerIds, LocalFolder localFolder)
-            throws MessagingException {
+    private void loadSearchResultsSynchronous(LegacyAccountDto account, List<String> messageServerIds,
+        LocalFolder localFolder)
+        throws MessagingException {
 
         Backend backend = getBackend(account);
         String folderServerId = localFolder.getServerId();
@@ -586,9 +592,10 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
     /**
      * Start background synchronization of the specified folder.
      */
-    public void synchronizeMailbox(LegacyAccountDto account, long folderId, boolean notify, MessagingListener listener) {
+    public void synchronizeMailbox(LegacyAccountDto account, long folderId, boolean notify,
+        MessagingListener listener) {
         putBackground("synchronizeMailbox", listener, () ->
-                synchronizeMailboxSynchronous(account, folderId, notify, listener, new NotificationState())
+            synchronizeMailboxSynchronous(account, folderId, notify, listener, new NotificationState())
         );
     }
 
@@ -612,7 +619,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
     }
 
     private void synchronizeMailboxSynchronous(LegacyAccountDto account, long folderId, boolean notify,
-            MessagingListener listener, NotificationState notificationState) {
+        MessagingListener listener, NotificationState notificationState) {
         refreshFolderListIfStale(account);
 
         Backend backend = getBackend(account);
@@ -631,8 +638,9 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
         }
     }
 
-    private void syncFolder(LegacyAccountDto account, long folderId, boolean notify, MessagingListener listener, Backend backend,
-            NotificationState notificationState) {
+    private void syncFolder(LegacyAccountDto account, long folderId, boolean notify, MessagingListener listener,
+        Backend backend,
+        NotificationState notificationState) {
         if (isAuthenticationProblem(account, true)) {
             Log.d("Authentication will fail. Skip synchronizing folder %d.", folderId);
             handleAuthenticationFailure(account, true);
@@ -654,7 +662,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
             localFolder.open();
         } catch (MessagingException e) {
 
-            syncDebugLogger.error("MessagingException",null, e::getMessage);
+            syncDebugLogger.error("MessagingException", null, e::getMessage);
             Log.e(e, "syncFolder: Couldn't load local folder %d", folderId);
             return;
         }
@@ -676,13 +684,13 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
         String folderServerId = localFolder.getServerId();
         SyncConfig syncConfig = createSyncConfig(account);
         ControllerSyncListener syncListener =
-                new ControllerSyncListener(account, listener, suppressNotifications, notificationState);
+            new ControllerSyncListener(account, listener, suppressNotifications, notificationState);
 
         backend.sync(folderServerId, syncConfig, syncListener);
 
         if (commandException != null && !syncListener.syncFailed) {
             String rootMessage = ThrowableExtensions.getRootCauseMessage(commandException);
-            syncDebugLogger.error("MessagingException",null, () -> rootMessage);
+            syncDebugLogger.error("MessagingException", null, () -> rootMessage);
             Log.e("Root cause failure in %s:%s was '%s'", account, folderServerId, rootMessage);
             updateFolderStatus(account, folderId, rootMessage);
             listener.synchronizeMailboxFailed(account, folderId, rootMessage);
@@ -691,12 +699,12 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
 
     private SyncConfig createSyncConfig(LegacyAccountDto account) {
         return new SyncConfig(
-                    account.getExpungePolicy().toBackendExpungePolicy(),
-                    account.getEarliestPollDate(),
-                    account.isSyncRemoteDeletions(),
-                    account.getMaximumAutoDownloadMessageSize(),
-                    DEFAULT_VISIBLE_LIMIT,
-                    SYNC_FLAGS);
+            account.getExpungePolicy().toBackendExpungePolicy(),
+            account.getEarliestPollDate(),
+            account.isSyncRemoteDeletions(),
+            account.getMaximumAutoDownloadMessageSize(),
+            DEFAULT_VISIBLE_LIMIT,
+            SYNC_FLAGS);
     }
 
     private void updateFolderStatus(LegacyAccountDto account, long folderId, String status) {
@@ -704,22 +712,28 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
         messageStore.setStatus(folderId, status);
     }
 
+    public MessageStore getMessageStore(LegacyAccountDto account) {
+        return messageStoreManager.getMessageStore(account);
+    }
+
     public void handleAuthenticationFailure(LegacyAccountDto account, boolean incoming) {
         if (account.shouldMigrateToOAuth()) {
             migrateAccountToOAuth(account);
         }
 
-        if (FeatureFlagProviderCompat.provide(featureFlagProvider, "display_in_app_notifications").isEnabled()) {
+        if (featureFlagProvider.provide(GeneratedFeatureFlagKey.DISPLAY_IN_APP_NOTIFICATIONS).isEnabled()) {
             Log.d("handleAuthenticationFailure: sending in-app notification");
-            final AuthenticationErrorNotification notification = createAuthenticationErrorNotification(account, incoming);
+            final AuthenticationErrorNotification notification =
+                createAuthenticationErrorNotification(account, incoming);
 
             notificationSender.send(notification, outcome -> {
                 Log.v("notificationSender outcome = " + outcome);
             });
         }
 
-        if (FeatureFlagProviderCompat.provide(featureFlagProvider,
-            "use_notification_sender_for_system_notifications").isDisabled()) {
+        if (featureFlagProvider
+            .provide(GeneratedFeatureFlagKey.USE_NOTIFICATION_SENDER_FOR_SYSTEM_NOTIFICATIONS)
+            .isDisabled()) {
             Log.d("handleAuthenticationFailure: sending system notification via old notification controller");
             notificationController.showAuthenticationErrorNotification(account, incoming);
         }
@@ -730,7 +744,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
         return NotificationFactoryCoroutineCompat.create(
             continuation ->
                 AuthenticationErrorNotification.Companion.invoke(
-                    account.getUuid(),
+                    account.getId(),
                     account.getDisplayName(),
                     account.getAccountNumber(),
                     incoming,
@@ -832,10 +846,9 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
     }
 
     /**
-     * Process a pending append message command. This command uploads a local message to the
-     * server, first checking to be sure that the server message is not newer than
-     * the local message. Once the local message is successfully processed it is deleted so
-     * that the server message will be synchronized down without an additional copy being
+     * Process a pending append message command. This command uploads a local message to the server, first checking to
+     * be sure that the server message is not newer than the local message. Once the local message is successfully
+     * processed it is deleted so that the server message will be synchronized down without an additional copy being
      * created.
      */
     void processPendingAppend(PendingAppend command, LegacyAccountDto account) throws MessagingException {
@@ -852,7 +865,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
             return;
         }
 
-        if (!localMessage.getUid().startsWith(K9.LOCAL_UID_PREFIX)) {
+        if (!localMessage.getUid().startsWith(localMessageUidPrefixProvider.get())) {
             //FIXME: This should never happen. Throw in debug builds.
             return;
         }
@@ -861,13 +874,13 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
 
         if (localMessage.isSet(Flag.X_REMOTE_COPY_STARTED)) {
             Log.w("Local message with uid %s has flag %s  already set, checking for remote message with " +
-                    "same message id", localMessage.getUid(), X_REMOTE_COPY_STARTED);
+                "same message id", localMessage.getUid(), X_REMOTE_COPY_STARTED);
 
             String messageServerId = backend.findByMessageId(folderServerId, localMessage.getMessageId());
             if (messageServerId != null) {
                 Log.w("Local message has flag %s already set, and there is a remote message with uid %s, " +
                         "assuming message was already copied and aborting this copy",
-                        X_REMOTE_COPY_STARTED, messageServerId);
+                    X_REMOTE_COPY_STARTED, messageServerId);
 
                 String oldUid = localMessage.getUid();
                 localMessage.setUid(messageServerId);
@@ -913,8 +926,9 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
         draftOperations.processPendingReplace(pendingReplace, account);
     }
 
-    private void queueMoveOrCopy(LegacyAccountDto account, long srcFolderId, long destFolderId, MoveOrCopyFlavor operation,
-            Map<String, String> uidMap) {
+    private void queueMoveOrCopy(LegacyAccountDto account, long srcFolderId, long destFolderId,
+        MoveOrCopyFlavor operation,
+        Map<String, String> uidMap) {
         PendingCommand command;
         switch (operation) {
             case MOVE:
@@ -943,19 +957,20 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
         processPendingMoveOrCopy(account, srcFolder, destFolder, uids, operation, newUidMap);
     }
 
-    void processPendingMoveAndRead(PendingMoveAndMarkAsRead command, LegacyAccountDto account) throws MessagingException {
+    void processPendingMoveAndRead(PendingMoveAndMarkAsRead command, LegacyAccountDto account)
+        throws MessagingException {
         long srcFolder = command.srcFolderId;
         long destFolder = command.destFolderId;
         Map<String, String> newUidMap = command.newUidMap;
         List<String> uids = new ArrayList<>(newUidMap.keySet());
 
         processPendingMoveOrCopy(account, srcFolder, destFolder, uids,
-                MoveOrCopyFlavor.MOVE_AND_MARK_AS_READ, newUidMap);
+            MoveOrCopyFlavor.MOVE_AND_MARK_AS_READ, newUidMap);
     }
 
     @VisibleForTesting
     void processPendingMoveOrCopy(LegacyAccountDto account, long srcFolderId, long destFolderId, List<String> uids,
-                                  MoveOrCopyFlavor operation, Map<String, String> newUidMap) throws MessagingException {
+        MoveOrCopyFlavor operation, Map<String, String> newUidMap) throws MessagingException {
         requireNotNull(newUidMap);
 
         LocalStore localStore = localStoreProvider.getInstance(account);
@@ -1030,7 +1045,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
                 placeholderMessage.destroy();
             } else {
                 Log.w("Expected local message %s in folder %s to be a placeholder, but DELETE flag wasn't set",
-                        uid, localFolder.getServerId());
+                    uid, localFolder.getServerId());
 
                 if (BuildConfig.DEBUG) {
                     throw new AssertionError("Placeholder message must have the DELETED flag set");
@@ -1118,7 +1133,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
     }
 
     public void setFlag(final LegacyAccountDto account, final List<Long> messageIds, final Flag flag,
-            final boolean newState) {
+        final boolean newState) {
 
         setFlagInCache(account, messageIds, flag, newState);
 
@@ -1128,7 +1143,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
     }
 
     public void setFlagForThreads(final LegacyAccountDto account, final List<Long> threadRootIds,
-            final Flag flag, final boolean newState) {
+        final Flag flag, final boolean newState) {
 
         setFlagForThreadsInCache(account, threadRootIds, flag, newState);
 
@@ -1138,7 +1153,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
     }
 
     private void setFlagSynchronous(final LegacyAccountDto account, final List<Long> ids,
-            final Flag flag, final boolean newState, final boolean threadedList) {
+        final Flag flag, final boolean newState, final boolean threadedList) {
 
         LocalStore localStore;
         try {
@@ -1205,7 +1220,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
 
     private void cancelNotificationsForMessages(LegacyAccountDto account, long folderId, List<String> uids) {
         for (String uid : uids) {
-            MessageReference messageReference = new MessageReference(account.getUuid(), folderId, uid);
+            MessageReference messageReference = new MessageReference(account.getId(), folderId, uid);
             notificationController.removeNewMailNotification(account, messageReference);
         }
     }
@@ -1216,7 +1231,8 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
      * The {@link Message} objects passed in are updated to reflect the new flag state.
      * </p>
      */
-    public void setFlag(LegacyAccountDto account, long folderId, List<LocalMessage> messages, Flag flag, boolean newState) {
+    public void setFlag(LegacyAccountDto account, long folderId, List<LocalMessage> messages, Flag flag,
+        boolean newState) {
         // TODO: Put this into the background, but right now some callers depend on the message
         //       objects being modified right after this method returns.
         try {
@@ -1260,7 +1276,8 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
         }
     }
 
-    public void loadMessageRemotePartial(LegacyAccountDto account, long folderId, String uid, MessagingListener listener) {
+    public void loadMessageRemotePartial(LegacyAccountDto account, long folderId, String uid,
+        MessagingListener listener) {
         put("loadMessageRemotePartial", listener, () ->
             loadMessageRemoteSynchronous(account, folderId, uid, listener, true)
         );
@@ -1274,9 +1291,9 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
     }
 
     private void loadMessageRemoteSynchronous(LegacyAccountDto account, long folderId, String messageServerId,
-            MessagingListener listener, boolean loadPartialFromSearch) {
+        MessagingListener listener, boolean loadPartialFromSearch) {
         try {
-            if (messageServerId.startsWith(K9.LOCAL_UID_PREFIX)) {
+            if (messageServerId.startsWith(localMessageUidPrefixProvider.get())) {
                 throw new IllegalArgumentException("Must not be called with a local UID");
             }
 
@@ -1293,7 +1310,8 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
                 SyncConfig syncConfig = createSyncConfig(account);
                 backend.downloadMessage(syncConfig, folderServerId, messageServerId);
             } else {
-                backend.downloadCompleteMessage(folderServerId, messageServerId);
+                MessagingControllerWrapperKt.downloadCompleteMessageBlocking(
+                    backend, Dispatchers.getIO(), folderServerId, messageServerId);
             }
 
             for (MessagingListener l : getListeners(listener)) {
@@ -1306,7 +1324,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
 
             notifyUserIfCertificateProblem(account, e, true);
             Log.e(e, "Error while loading remote message");
-            syncDebugLogger.error("MessagingException",null, () -> "Error while loading remote message");
+            syncDebugLogger.error("MessagingException", null, () -> "Error while loading remote message");
         }
     }
 
@@ -1328,7 +1346,8 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
         return message;
     }
 
-    public LocalMessage loadMessageMetadata(LegacyAccountDto account, long folderId, String uid) throws MessagingException {
+    public LocalMessage loadMessageMetadata(LegacyAccountDto account, long folderId, String uid)
+        throws MessagingException {
         LocalStore localStore = localStoreProvider.getInstance(account);
         LocalFolder localFolder = localStore.getFolder(folderId);
         localFolder.open();
@@ -1375,7 +1394,8 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
         });
     }
 
-    private void markMessageAsOpenedBlocking(LegacyAccountDto account, LocalMessage message, boolean markMessageAsRead) {
+    private void markMessageAsOpenedBlocking(LegacyAccountDto account, LocalMessage message,
+        boolean markMessageAsRead) {
         if (markMessageAsRead) {
             markMessageAsRead(account, message);
         } else {
@@ -1407,7 +1427,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
     }
 
     public void loadAttachment(final LegacyAccountDto account, final LocalMessage message, final Part part,
-            final MessagingListener listener) {
+        final MessagingListener listener) {
 
         put("loadAttachment", listener, new Runnable() {
             @Override
@@ -1450,11 +1470,12 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
     /**
      * Stores the given message in the Outbox and starts a sendPendingMessages command to attempt to send the message.
      */
-    public void sendMessage(LegacyAccountDto account, Message message, String plaintextSubject, MessagingListener listener) {
+    public void sendMessage(LegacyAccountDto account, Message message, String plaintextSubject,
+        MessagingListener listener) {
         try {
             final long outboxFolderId = OutboxFolderManagerKt.getOutboxFolderIdSync(
                 outboxFolderManager,
-                account.getUuid(),
+                account.getId().toString(),
                 true
             );
 
@@ -1462,7 +1483,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
 
             MessageStore messageStore = messageStoreManager.getMessageStore(account);
             SaveMessageData messageData = saveMessageDataCreator.createSaveMessageData(
-                    message, MessageDownloadState.FULL, plaintextSubject);
+                message, MessageDownloadState.FULL, plaintextSubject);
             long messageId = messageStore.saveLocalMessage(outboxFolderId, messageData, null);
 
             LocalStore localStore = localStoreProvider.getInstance(account);
@@ -1484,11 +1505,11 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
      * Attempt to send any messages that are sitting in the Outbox.
      */
     public void sendPendingMessages(final LegacyAccountDto account,
-            MessagingListener listener) {
+        MessagingListener listener) {
         putBackground("sendPendingMessages", listener, new Runnable() {
             @Override
             public void run() {
-                if (OutboxFolderManagerKt.hasPendingMessagesSync(outboxFolderManager, account.getUuid())) {
+                if (OutboxFolderManagerKt.hasPendingMessagesSync(outboxFolderManager, account.getId().toString())) {
 
                     showSendingNotificationIfNecessary(account);
 
@@ -1517,7 +1538,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
     private boolean messagesPendingSend(final LegacyAccountDto account) {
         final long outboxFolderId = OutboxFolderManagerKt.getOutboxFolderIdSync(
             outboxFolderManager,
-            account.getUuid(),
+            account.getId().toString(),
             true
         );
         if (outboxFolderId == -1L) {
@@ -1546,7 +1567,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
             final OutboxStateRepository outboxStateRepository = localStore.getOutboxStateRepository();
             final long outboxFolderId = OutboxFolderManagerKt.getOutboxFolderIdSync(
                 outboxFolderManager,
-                account.getUuid(),
+                account.getId().toString(),
                 true
             );
             final LocalFolder localFolder = localStore.getFolder(outboxFolderId);
@@ -1590,7 +1611,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
                     SendState sendState = outboxState.getSendState();
                     if (sendState != SendState.READY) {
                         Log.v("Skipping sending message %s (reason: %s - %s)", message.getUid(),
-                                sendState.getDatabaseName(), outboxState.getSendError());
+                            sendState.getDatabaseName(), outboxState.getSendError());
 
                         if (sendState == SendState.RETRIES_EXCEEDED) {
                             lastFailure = new MessagingException("Retries exceeded", true);
@@ -1601,13 +1622,13 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
                     }
 
                     Log.i("Send count for message %s is %d", message.getUid(),
-                            outboxState.getNumberOfSendAttempts());
+                        outboxState.getNumberOfSendAttempts());
 
                     localFolder.fetch(Collections.singletonList(message), fp, null);
                     try {
                         if (message.getHeader(K9.IDENTITY_HEADER).length > 0 || message.isSet(Flag.DRAFT)) {
                             Log.v("The user has set the Outbox and Drafts folder to the same thing. " +
-                                    "This message appears to be a draft, so K-9 will not send it");
+                                "This message appears to be a draft, so K-9 will not send it");
                             continue;
                         }
 
@@ -1675,7 +1696,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
     }
 
     private void moveOrDeleteSentMessage(LegacyAccountDto account, LocalStore localStore, LocalMessage message)
-            throws MessagingException {
+        throws MessagingException {
         if (!account.hasSentFolder() || !account.isUploadSentMessages()) {
             Log.i("Not uploading sent message; deleting local message");
             message.destroy();
@@ -1703,7 +1724,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
 
         final long outboxFolderId = OutboxFolderManagerKt.getOutboxFolderIdSync(
             outboxFolderManager,
-            account.getUuid(),
+            account.getId().toString(),
             true
         );
         for (MessagingListener listener : getListeners()) {
@@ -1711,8 +1732,9 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
         }
     }
 
-    private void handleSendFailure(LegacyAccountDto account, LocalFolder localFolder, Message message, Exception exception)
-            throws MessagingException {
+    private void handleSendFailure(LegacyAccountDto account, LocalFolder localFolder, Message message,
+        Exception exception)
+        throws MessagingException {
 
         Log.e(exception, "Failed to send message");
         message.setFlag(Flag.X_SEND_FAILED, true);
@@ -1720,7 +1742,8 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
         notifySynchronizeMailboxFailed(account, localFolder, exception);
     }
 
-    private void notifySynchronizeMailboxFailed(LegacyAccountDto account, LocalFolder localFolder, Exception exception) {
+    private void notifySynchronizeMailboxFailed(LegacyAccountDto account, LocalFolder localFolder,
+        Exception exception) {
         long folderId = localFolder.getDatabaseId();
         String errorMessage = ThrowableExtensions.getRootCauseMessage(exception);
         for (MessagingListener listener : getListeners()) {
@@ -1729,7 +1752,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
     }
 
     public boolean isMoveCapable(MessageReference messageReference) {
-        return !messageReference.getUid().startsWith(K9.LOCAL_UID_PREFIX);
+        return !messageReference.getUid().startsWith(localMessageUidPrefixProvider.get());
     }
 
     public boolean isCopyCapable(MessageReference message) {
@@ -1769,18 +1792,18 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
     }
 
     public void moveMessages(LegacyAccountDto srcAccount, long srcFolderId,
-            List<MessageReference> messageReferences, long destFolderId) {
+        List<MessageReference> messageReferences, long destFolderId) {
         actOnMessageGroup(srcAccount, srcFolderId, messageReferences, (account, messageFolder, messages) -> {
             suppressMessages(account, messages);
 
             putBackground("moveMessages", null, () ->
-                    moveOrCopyMessageSynchronous(account, srcFolderId, messages, destFolderId, MoveOrCopyFlavor.MOVE)
+                moveOrCopyMessageSynchronous(account, srcFolderId, messages, destFolderId, MoveOrCopyFlavor.MOVE)
             );
         });
     }
 
     public void moveMessagesInThread(LegacyAccountDto srcAccount, long srcFolderId,
-            List<MessageReference> messageReferences, long destFolderId) {
+        List<MessageReference> messageReferences, long destFolderId) {
         actOnMessageGroup(srcAccount, srcFolderId, messageReferences, (account, messageFolder, messages) -> {
             suppressMessages(account, messages);
 
@@ -1788,7 +1811,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
                 try {
                     List<LocalMessage> messagesInThreads = collectMessagesInThreads(account, messages);
                     moveOrCopyMessageSynchronous(account, srcFolderId, messagesInThreads, destFolderId,
-                            MoveOrCopyFlavor.MOVE);
+                        MoveOrCopyFlavor.MOVE);
                 } catch (MessagingException e) {
                     Log.e(e, "Exception while moving messages");
                 }
@@ -1801,22 +1824,22 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
     }
 
     public void copyMessages(LegacyAccountDto srcAccount, long srcFolderId,
-            List<MessageReference> messageReferences, long destFolderId) {
+        List<MessageReference> messageReferences, long destFolderId) {
         actOnMessageGroup(srcAccount, srcFolderId, messageReferences, (account, messageFolder, messages) -> {
             putBackground("copyMessages", null, () ->
-                    moveOrCopyMessageSynchronous(srcAccount, srcFolderId, messages, destFolderId, MoveOrCopyFlavor.COPY)
+                moveOrCopyMessageSynchronous(srcAccount, srcFolderId, messages, destFolderId, MoveOrCopyFlavor.COPY)
             );
         });
     }
 
     public void copyMessagesInThread(LegacyAccountDto srcAccount, long srcFolderId,
-            final List<MessageReference> messageReferences, long destFolderId) {
+        final List<MessageReference> messageReferences, long destFolderId) {
         actOnMessageGroup(srcAccount, srcFolderId, messageReferences, (account, messageFolder, messages) -> {
             putBackground("copyMessagesInThread", null, () -> {
                 try {
                     List<LocalMessage> messagesInThreads = collectMessagesInThreads(account, messages);
                     moveOrCopyMessageSynchronous(account, srcFolderId, messagesInThreads, destFolderId,
-                            MoveOrCopyFlavor.COPY);
+                        MoveOrCopyFlavor.COPY);
                 } catch (MessagingException e) {
                     Log.e(e, "Exception while copying messages");
                 }
@@ -1829,7 +1852,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
     }
 
     void moveOrCopyMessageSynchronous(LegacyAccountDto account, long srcFolderId, List<LocalMessage> inMessages,
-            long destFolderId, MoveOrCopyFlavor operation) {
+        long destFolderId, MoveOrCopyFlavor operation) {
 
         try {
             LocalStore localStore = localStoreProvider.getInstance(account);
@@ -1850,7 +1873,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
             List<String> uids = new LinkedList<>();
             for (Message message : inMessages) {
                 String uid = message.getUid();
-                if (!uid.startsWith(K9.LOCAL_UID_PREFIX)) {
+                if (!uid.startsWith(localMessageUidPrefixProvider.get())) {
                     uids.add(uid);
                 }
 
@@ -1869,7 +1892,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
             List<LocalMessage> messages = localSrcFolder.getMessagesByUids(uids);
             if (messages.size() > 0) {
                 Log.i("moveOrCopyMessageSynchronous: source folder = %s, %d messages, destination folder = %s, " +
-                        "operation = %s", srcFolderId, messages.size(), destFolderId, operation.name());
+                    "operation = %s", srcFolderId, messages.size(), destFolderId, operation.name());
 
                 MessageStore messageStore = messageStoreManager.getMessageStore(account);
 
@@ -1920,7 +1943,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
                 }
 
                 queueMoveOrCopy(account, localSrcFolder.getDatabaseId(), localDestFolder.getDatabaseId(),
-                        operation, uidMap);
+                    operation, uidMap);
             }
 
             processPendingCommands(account);
@@ -1929,11 +1952,12 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
         }
     }
 
-    public void moveToDraftsFolder(LegacyAccountDto account, long folderId, List<MessageReference> messages){
+    public void moveToDraftsFolder(LegacyAccountDto account, long folderId, List<MessageReference> messages) {
         putBackground("moveToDrafts", null, () -> moveToDraftsFolderInBackground(account, folderId, messages));
     }
 
-    private void moveToDraftsFolderInBackground(LegacyAccountDto account, long folderId, List<MessageReference> messages) {
+    private void moveToDraftsFolderInBackground(LegacyAccountDto account, long folderId,
+        List<MessageReference> messages) {
         for (MessageReference messageReference : messages) {
             try {
                 Message message = loadMessage(account, folderId, messageReference.getUid());
@@ -1990,7 +2014,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
         MessageStore messageStore = messageStoreManager.getMessageStore(account);
         String messageServerId = messageStore.getMessageServerId(messageId);
         if (messageServerId != null) {
-            MessageReference messageReference = new MessageReference(account.getUuid(), folderId, messageServerId);
+            MessageReference messageReference = new MessageReference(account.getId(), folderId, messageServerId);
             deleteMessages(Collections.singletonList(messageReference), skipTrashFolder);
         }
     }
@@ -2004,7 +2028,8 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
         });
     }
 
-    private void deleteThreadsSynchronous(LegacyAccountDto account, long folderId, List<LocalMessage> messages, boolean skipTrashFolder) {
+    private void deleteThreadsSynchronous(LegacyAccountDto account, long folderId, List<LocalMessage> messages,
+        boolean skipTrashFolder) {
         try {
             List<LocalMessage> messagesToDelete = collectMessagesInThreads(account, messages);
             deleteMessagesSynchronous(account, folderId, messagesToDelete, skipTrashFolder);
@@ -2014,7 +2039,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
     }
 
     List<LocalMessage> collectMessagesInThreads(LegacyAccountDto account, List<LocalMessage> messages)
-            throws MessagingException {
+        throws MessagingException {
 
         LocalStore localStore = localStoreProvider.getInstance(account);
 
@@ -2048,7 +2073,8 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
         });
     }
 
-    private void deleteMessagesSynchronous(LegacyAccountDto account, long folderId, List<LocalMessage> messages, boolean skipTrashFolder) {
+    private void deleteMessagesSynchronous(LegacyAccountDto account, long folderId, List<LocalMessage> messages,
+        boolean skipTrashFolder) {
         try {
             List<LocalMessage> localOnlyMessages = new ArrayList<>();
             List<LocalMessage> syncedMessages = new ArrayList<>();
@@ -2057,7 +2083,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
                 notificationController.removeNewMailNotification(account, message.makeMessageReference());
 
                 String uid = message.getUid();
-                if (uid.startsWith(K9.LOCAL_UID_PREFIX)) {
+                if (uid.startsWith(localMessageUidPrefixProvider.get())) {
                     localOnlyMessages.add(message);
                 } else {
                     syncedMessages.add(message);
@@ -2130,7 +2156,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
 
             final long outboxFolderId = OutboxFolderManagerKt.getOutboxFolderIdSync(
                 outboxFolderManager,
-                account.getUuid(),
+                account.getId().toString(),
                 true
             );
 
@@ -2150,10 +2176,10 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
                         queueDelete(account, folderId, syncedMessageUids);
                     } else if (account.isMarkMessageAsReadOnDelete()) {
                         queueMoveOrCopy(account, folderId, trashFolderId,
-                                MoveOrCopyFlavor.MOVE_AND_MARK_AS_READ, uidMap);
+                            MoveOrCopyFlavor.MOVE_AND_MARK_AS_READ, uidMap);
                     } else {
                         queueMoveOrCopy(account, folderId, trashFolderId,
-                                MoveOrCopyFlavor.MOVE, uidMap);
+                            MoveOrCopyFlavor.MOVE, uidMap);
                     }
                     processPendingCommands(account);
                 } else if (account.getDeletePolicy() == DeletePolicy.MARK_AS_READ) {
@@ -2291,7 +2317,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
 
     public void clearFolder(LegacyAccountDto account, long folderId) {
         putBackground("clearFolder", null, () ->
-                clearFolderSynchronous(account, folderId)
+            clearFolderSynchronous(account, folderId)
         );
     }
 
@@ -2312,11 +2338,9 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
      * <p>
      * <p>Note: Currently this is only the case for POP3 accounts.</p>
      *
-     * @param account
-     *         The account to check.
-     *
-     * @return {@code true} if the account only has a local Trash folder that is not synchronized
-     * with a folder on the server. {@code false} otherwise.
+     * @param account The account to check.
+     * @return {@code true} if the account only has a local Trash folder that is not synchronized with a folder on the
+     * server. {@code false} otherwise.
      */
     private boolean isTrashLocalOnly(LegacyAccountDto account) {
         Backend backend = getBackend(account);
@@ -2359,11 +2383,11 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
     }
 
     /**
-     * Checks mail for one or multiple accounts. If account is null all accounts
-     * are checked.
+     * Checks mail for one or multiple accounts. If account is null all accounts are checked.
      */
-    public void checkMail(LegacyAccountDto account, boolean ignoreLastCheckedTime, boolean useManualWakeLock, boolean notify,
-            MessagingListener listener) {
+    public void checkMail(LegacyAccountDto account, boolean ignoreLastCheckedTime, boolean useManualWakeLock,
+        boolean notify,
+        MessagingListener listener) {
 
         final WakeLock wakeLock;
         if (useManualWakeLock) {
@@ -2402,20 +2426,20 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
                     Log.e(e, "Unable to synchronize mail");
                 }
                 putBackground("finalize sync", null, new Runnable() {
-                            @Override
-                            public void run() {
+                        @Override
+                        public void run() {
 
-                                Log.i("Finished mail sync");
+                            Log.i("Finished mail sync");
 
-                                if (wakeLock != null) {
-                                    wakeLock.release();
-                                }
-                                for (MessagingListener l : getListeners(listener)) {
-                                    l.checkMailFinished(context, account);
-                                }
-
+                            if (wakeLock != null) {
+                                wakeLock.release();
                             }
+                            for (MessagingListener l : getListeners(listener)) {
+                                l.checkMailFinished(context, account);
+                            }
+
                         }
+                    }
                 );
             }
         });
@@ -2423,7 +2447,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
 
 
     private void checkMailForAccount(LegacyAccountDto account, boolean ignoreLastCheckedTime, boolean notify,
-            MessagingListener listener) {
+        MessagingListener listener) {
         Log.i("Synchronizing account %s", account);
 
         NotificationState notificationState = new NotificationState();
@@ -2452,13 +2476,13 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
             Log.e(e, "Unable to synchronize account %s", account);
         } finally {
             putBackground("clear notification flag for " + account, null, new Runnable() {
-                        @Override
-                        public void run() {
-                            Log.v("Clearing notification flag for %s", account);
+                    @Override
+                    public void run() {
+                        Log.v("Clearing notification flag for %s", account);
 
-                            clearFetchingMailNotification(account);
-                        }
+                        clearFetchingMailNotification(account);
                     }
+                }
             );
         }
 
@@ -2466,14 +2490,15 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
     }
 
     private void synchronizeFolder(LegacyAccountDto account, LocalFolder folder, boolean ignoreLastCheckedTime,
-            boolean notify, MessagingListener listener, NotificationState notificationState) {
+        boolean notify, MessagingListener listener, NotificationState notificationState) {
         putBackground("sync" + folder.getServerId(), null, () -> {
             synchronizeFolderInBackground(account, folder, ignoreLastCheckedTime, notify, listener, notificationState);
         });
     }
 
-    private void synchronizeFolderInBackground(LegacyAccountDto account, LocalFolder folder, boolean ignoreLastCheckedTime,
-            boolean notify, MessagingListener listener, NotificationState notificationState) {
+    private void synchronizeFolderInBackground(LegacyAccountDto account, LocalFolder folder,
+        boolean ignoreLastCheckedTime,
+        boolean notify, MessagingListener listener, NotificationState notificationState) {
         Log.v("Folder %s was last synced @ %tc", folder.getServerId(), folder.getLastChecked());
 
         if (!ignoreLastCheckedTime) {
@@ -2487,7 +2512,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
                 long nextSyncTime = lastCheckedTime + syncInterval;
                 if (nextSyncTime > now) {
                     Log.v("Not syncing folder %s, previously synced @ %tc which would be too recent for the " +
-                            "account sync interval", folder.getServerId(), lastCheckedTime);
+                        "account sync interval", folder.getServerId(), lastCheckedTime);
                     return;
                 }
             }
@@ -2621,7 +2646,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
         final ServerSettings serverSettings = getServerSettings(account, incoming);
 
         return serverSettings.isMissingCredentials() ||
-                serverSettings.authenticationType == AuthType.XOAUTH2 && account.getOAuthState() == null;
+            serverSettings.authenticationType == AuthType.XOAUTH2 && account.getOAuthState() == null;
     }
 
     private ServerSettings getServerSettings(LegacyAccountDto account, boolean incoming) {
@@ -2631,7 +2656,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
     private void clearAuthenticationErrorNotification(
         LegacyAccountDto account, boolean incoming, boolean clearOnlyForOAuthAccounts
     ) {
-        if (FeatureFlagProviderCompat.provide(featureFlagProvider, "display_in_app_notifications").isEnabled()) {
+        if (featureFlagProvider.provide(GeneratedFeatureFlagKey.DISPLAY_IN_APP_NOTIFICATIONS).isEnabled()) {
             boolean shouldClear = true;
             final ServerSettings serverSettings = getServerSettings(account, incoming);
             if (clearOnlyForOAuthAccounts && serverSettings.authenticationType != AuthType.XOAUTH2) {
@@ -2649,11 +2674,11 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
     }
 
     void actOnMessagesGroupedByAccountAndFolder(List<MessageReference> messages, MessageActor actor) {
-        Map<String, Map<Long, List<MessageReference>>> accountMap = groupMessagesByAccountAndFolder(messages);
+        Map<AccountId, Map<Long, List<MessageReference>>> accountMap = groupMessagesByAccountAndFolder(messages);
 
-        for (Map.Entry<String, Map<Long, List<MessageReference>>> entry : accountMap.entrySet()) {
-            String accountUuid = entry.getKey();
-            LegacyAccountDto account = preferences.getAccount(accountUuid);
+        for (Map.Entry<AccountId, Map<Long, List<MessageReference>>> entry : accountMap.entrySet()) {
+            AccountId accountId = entry.getKey();
+            LegacyAccountDto account = preferences.getById(accountId);
 
             Map<Long, List<MessageReference>> folderMap = entry.getValue();
             for (Map.Entry<Long, List<MessageReference>> folderEntry : folderMap.entrySet()) {
@@ -2665,21 +2690,21 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
     }
 
     @NonNull
-    private Map<String, Map<Long, List<MessageReference>>> groupMessagesByAccountAndFolder(
-            List<MessageReference> messages) {
-        Map<String, Map<Long, List<MessageReference>>> accountMap = new HashMap<>();
+    private Map<AccountId, Map<Long, List<MessageReference>>> groupMessagesByAccountAndFolder(
+        List<MessageReference> messages) {
+        Map<AccountId, Map<Long, List<MessageReference>>> accountMap = new HashMap<>();
 
         for (MessageReference message : messages) {
             if (message == null) {
                 continue;
             }
-            String accountUuid = message.getAccountUuid();
+            AccountId accountId = message.getAccountId();
             long folderId = message.getFolderId();
 
-            Map<Long, List<MessageReference>> folderMap = accountMap.get(accountUuid);
+            Map<Long, List<MessageReference>> folderMap = accountMap.get(accountId);
             if (folderMap == null) {
                 folderMap = new HashMap<>();
-                accountMap.put(accountUuid, folderMap);
+                accountMap.put(accountId, folderMap);
             }
             List<MessageReference> messageList = folderMap.get(folderId);
             if (messageList == null) {
@@ -2693,7 +2718,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
     }
 
     private void actOnMessageGroup(
-            LegacyAccountDto account, long folderId, List<MessageReference> messageReferences, MessageActor actor) {
+        LegacyAccountDto account, long folderId, List<MessageReference> messageReferences, MessageActor actor) {
         try {
             LocalFolder messageFolder = localStoreProvider.getInstance(account).getFolder(folderId);
             List<LocalMessage> localMessages = messageFolder.getMessagesByReference(messageReferences);
@@ -2718,7 +2743,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
 
 
         ControllerSyncListener(LegacyAccountDto account, MessagingListener listener, boolean suppressNotifications,
-                NotificationState notificationState) {
+            NotificationState notificationState) {
             this.account = account;
             this.listener = listener;
             this.suppressNotifications = suppressNotifications;
@@ -2756,10 +2781,10 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
 
         @Override
         public void syncHeadersFinished(@NotNull String folderServerId, int totalMessagesInMailbox,
-                int numNewMessages) {
+            int numNewMessages) {
             for (MessagingListener messagingListener : getListeners(listener)) {
                 messagingListener.synchronizeMailboxHeadersFinished(account, folderServerId, totalMessagesInMailbox,
-                        numNewMessages);
+                    numNewMessages);
             }
         }
 
@@ -2773,13 +2798,13 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
 
         @Override
         public void syncNewMessage(@NotNull String folderServerId, @NotNull String messageServerId,
-                boolean isOldMessage) {
+            boolean isOldMessage) {
 
             // Send a notification of this message
             LocalMessage message = loadMessage(folderServerId, messageServerId);
             LocalFolder localFolder = message.getFolder();
             if (!suppressNotifications &&
-                    notificationStrategy.shouldNotifyForMessage(account, localFolder, message, isOldMessage)) {
+                notificationStrategy.shouldNotifyForMessage(account, localFolder, message, isOldMessage)) {
                 // Notify with the localMessage so that we don't have to recalculate the content preview.
                 boolean silent = notificationState.wasNotified();
                 notificationController.addNewMailNotification(account, message, silent);
@@ -2799,9 +2824,9 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
                 messagingListener.synchronizeMailboxRemovedMessage(account, folderServerId, messageServerId);
             }
 
-            String accountUuid = account.getUuid();
+            AccountId accountId = account.getId();
             long folderId = getFolderId(account, folderServerId);
-            MessageReference messageReference = new MessageReference(accountUuid, folderId, messageServerId);
+            MessageReference messageReference = new MessageReference(accountId, folderId, messageServerId);
             notificationController.removeNewMailNotification(account, messageReference);
         }
 

@@ -204,14 +204,12 @@ class AccountAutoDiscoveryStateMapperKtTest {
         val AUTO_DISCOVERY_STATE_USERNAME_EMPTY = AUTO_DISCOVERY_STATE.copy(
             autoDiscoverySettings = AUTO_DISCOVERY_STATE.autoDiscoverySettings?.copy(
                 incomingServerSettings = (
-                    AUTO_DISCOVERY_STATE.autoDiscoverySettings
-                        ?.incomingServerSettings as ImapServerSettings
+                    AUTO_DISCOVERY_STATE.autoDiscoverySettings.incomingServerSettings as ImapServerSettings
                     ).copy(
                     username = "",
                 ),
                 outgoingServerSettings = (
-                    AUTO_DISCOVERY_STATE.autoDiscoverySettings
-                        ?.outgoingServerSettings as SmtpServerSettings
+                    AUTO_DISCOVERY_STATE.autoDiscoverySettings.outgoingServerSettings as SmtpServerSettings
                     ).copy(
                     username = "",
                 ),

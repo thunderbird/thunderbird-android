@@ -54,4 +54,6 @@
     <string name="funding_googleplay_contribution_reminder_statement">Thunderbird je zdarma a open-source.</string>
     <string name="funding_googleplay_contribution_reminder_statement_point_1">Nezobrazujeme reklamy.</string>
     <string name="funding_googleplay_contribution_reminder_statement_point_2">Neprodáváme vaše data.</string>
+    <string name="funding_googleplay_contribution_footer_payment_processing_button">Zpracování platby…</string>
+    <string name="funding_googleplay_contribution_footer_payment_cancel_button">Zrušit</string>
 </resources>

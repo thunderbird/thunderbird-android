@@ -54,4 +54,6 @@
     <string name="funding_googleplay_contribution_tfa_onetime_xxl_description">You’re really helping us dream big! Your incredible support empowers us to achieve the extraordinary, leaving a lasting impact on everything we do.</string>
     <string name="funding_googleplay_contribution_list_disclaimer">Contributions are not tax-deductible as charitable donations.</string>
     <string name="funding_googleplay_contribution_list_empty_message">Visit <xliff:g id="link_text">%s</xliff:g> for more ways to support Thunderbird.</string>
+    <string name="funding_googleplay_contribution_footer_payment_processing_button">Processing purchase…</string>
+    <string name="funding_googleplay_contribution_footer_payment_cancel_button">Cancel</string>
 </resources>

@@ -1,4 +1,8 @@
 version: 2
+registries:
+  mozilla-maven:
+    type: maven-repository
+    url: https://maven.mozilla.org/maven2
 updates:
   # Dependabot does not support GitHub composite actions by default (.github/actions)
   # so we need to add the folder by hand to the directories entry.
@@ -12,17 +16,46 @@ updates:
     labels:
       - "type: dependency"
       - "type: github actions"
+      - "report: exclude"
+    cooldown:
+      default-days: 7
     commit-message:
       prefix: chore
       include: scope
+    groups:
+      actions-deps:
+        patterns:
+          - "*"
   - package-ecosystem: "gradle"
     open-pull-requests-limit: 20
     directory: "/"
+    registries:
+      - mozilla-maven
     schedule:
       interval: "weekly"
     labels:
       - "type: dependency"
       - "type: gradle"
+      - "report: exclude"
+    cooldown:
+      default-days: 7
+    commit-message:
+      prefix: chore
+      include: scope
+    ignore:
+      - dependency-name: "gradle"
+  - package-ecosystem: pip
+    open-pull-requests-limit: 10
+    directories:
+      - "/scripts/*"
+    schedule:
+      interval: "weekly"
+    labels:
+      - "type: dependency"
+      - "type: pip"
+      - "report: exclude"
+    cooldown:
+      default-days: 7
     commit-message:
       prefix: chore
       include: scope

@@ -2,7 +2,7 @@ package app.k9mail.feature.account.oauth.data
 
 import app.k9mail.feature.account.common.domain.entity.AuthorizationState
 import net.openid.appauth.AuthState
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.legacy.logging.Log
 import org.json.JSONException
 
 fun AuthState.toAuthorizationState(): AuthorizationState {

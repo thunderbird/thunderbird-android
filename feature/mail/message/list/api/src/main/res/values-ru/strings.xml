@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="swipe_action_select">Выбрать</string>
+    <string name="swipe_action_deselect">Снять выбор</string>
+    <string name="swipe_action_mark_as_read">Прочитано</string>
+    <string name="swipe_action_mark_as_unread">Не прочитано</string>
+    <string name="swipe_action_add_star">Важное</string>
+    <string name="swipe_action_remove_star">Обычное</string>
+    <string name="swipe_action_archive">Архивировать</string>
+    <string name="swipe_action_archive_folder_not_set">Настроить папку архива</string>
+    <string name="swipe_action_change_swipe_gestures">Изменить \nжесты</string>
+    <string name="swipe_action_delete">Удалить</string>
+    <string name="swipe_action_spam">Отправить в спам</string>
+    <string name="swipe_action_move">Переместить в…</string>
+    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> выбрано</string>
+    <string name="sort_by">Сортировка…</string>
+    <string name="sort_by_date_asc">Дата (сначала старые)</string>
+    <string name="sort_by_date_desc">Дата (сначала новые)</string>
+    <string name="sort_by_arrival_asc">Получение (сначала старые)</string>
+    <string name="sort_by_arrival_desc">Получение (сначала новые)</string>
+    <string name="sort_by_subject_asc">Тема (А-Я)</string>
+    <string name="sort_by_subject_desc">Тема (Я-А)</string>
+    <string name="sort_by_sender_asc">Отправитель (А-Я)</string>
+    <string name="sort_by_sender_desc">Отправитель (Я-А)</string>
+    <string name="sort_by_flag_asc">Важные сначала</string>
+    <string name="sort_by_flag_desc">Обычные сначала</string>
+    <string name="sort_by_unread_asc">Непрочитанные сначала</string>
+    <string name="sort_by_unread_desc">Прочитанные сначала</string>
+    <string name="sort_by_attach_asc">С вложениями сначала</string>
+    <string name="sort_by_attach_desc">Без вложений сначала</string>
+</resources>

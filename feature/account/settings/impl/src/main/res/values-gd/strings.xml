@@ -5,4 +5,13 @@
     <string name="account_settings_general_avatar_description">Tagh mar a thèid avatar a’ chunntais agad a thaisbeanadh.</string>
     <string name="account_settings_general_avatar_option_monogram">Monogram</string>
     <string name="account_settings_general_avatar_option_image">Dealbh</string>
+    <string name="account_settings_general_avatar_option_icon">Ìomhaigheag</string>
+    <string name="account_settings_general_avatar_image_title">Dealbh na pròifil</string>
+    <string name="account_settings_general_avatar_image_description">Tagh dealbh a riochdaicheas an cunntas agad.</string>
+    <string name="account_settings_general_avatar_image_select">Tagh dealbh</string>
+    <string name="account_settings_general_name_title">Ainm a’ chunntais</string>
+    <string name="account_settings_general_name_description">An t-ainm co-cheangailte ris a’ chunntas agad.</string>
+    <string name="account_settings_general_name_error_empty">Chan fhaod an t-ainm a bhith bàn</string>
+    <string name="account_settings_general_name_error_too_long">Tha an t-ainm ro fhada</string>
+    <string name="account_settings_general_color_title">Dath a’ chunntais</string>
 </resources>

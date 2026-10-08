@@ -34,7 +34,6 @@
     <string name="choose_folder_title">Ordner auswählen</string>
     <string name="choose_folder_move_title">Verschieben nach…</string>
     <string name="choose_folder_copy_title">Kopieren nach…</string>
-    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> ausgewählt</string>
     <string name="send_action">Senden</string>
     <string name="empty_subject">Betreff ist leer, bitte erneut drücken, um trotzdem zu senden</string>
     <string name="reply_action">Antworten</string>
@@ -91,7 +90,7 @@
     <!--Shown in place of the subject when a message has no subject. Showing this in parentheses is customary.-->
     <string name="general_no_subject">(Kein Betreff)</string>
     <string name="general_no_sender">Kein Absender</string>
-    <string name="status_loading_more">Nachrichten werden geladen\u2026</string>
+    <string name="status_loading_more">Nachrichten werden geladen…</string>
     <string name="status_network_error">Verbindungsfehler</string>
     <string name="status_invalid_id_error">Nachricht nicht gefunden</string>
     <string name="status_loading_error">Nachrichtenladefehler</string>
@@ -173,7 +172,7 @@
     <!--Displayed in the message view screen in front of the number of additional recipients (the ones that are not displayed).-->
     <string name="message_view_additional_recipient_prefix">+</string>
     <!--Displayed in the message view screen if the message was addressed to the user. Make sure this works with 'message_view_recipient_prefix'. In English it's "to me".-->
-    <string name="message_view_me_text">mich</string>
+    <string name="message_view_to_me_text">mich</string>
     <!--Text of the button that is displayed below the message header when the message body references one or more remote images-->
     <string name="message_view_show_remote_images_action">Externe Bilder anzeigen</string>
     <string name="message_view_no_viewer">Es wurde kein Anzeigeprogramm für <xliff:g id="mimetype">%s</xliff:g> gefunden.</string>
@@ -285,7 +284,7 @@
     <string name="idle_refresh_period_24min">Alle 24 Minuten</string>
     <string name="idle_refresh_period_36min">Alle 36 Minuten</string>
     <string name="idle_refresh_period_48min">Alle 48 Minuten</string>
-    <string name="idle_refresh_period_60min">Jede Stunde</string>
+    <string name="idle_refresh_period_60min">Alle 60 Minuten</string>
     <string name="account_setup_options_mail_display_count_10">10 Nachrichten</string>
     <string name="account_setup_options_mail_display_count_25">25 Nachrichten</string>
     <string name="account_setup_options_mail_display_count_50">50 Nachrichten</string>
@@ -316,10 +315,10 @@
     <string name="account_settings_mark_message_as_read_on_delete_label">Beim Löschen als gelesen markieren</string>
     <string name="account_settings_mark_message_as_read_on_delete_summary">Nachricht als gelesen markieren, sobald sie gelöscht wird</string>
     <string name="account_settings_notification_channels_label">Benachrichtigungskategorien</string>
-    <string name="account_settings_open_notification_settings_messages_summary">Konfiguriere die Benachrichtigungen für neue Nachrichten</string>
-    <string name="account_settings_open_notification_settings_miscellaneous_summary">Konfiguriere Fehler- und Statusbenachrichtigungen</string>
-    <string name="account_settings_show_pictures_label">Bilder automatisch herunterladen</string>
-    <string name="account_settings_show_pictures_never">Niemals</string>
+    <string name="account_settings_open_notification_settings_messages_summary">Benachrichtigungen für neue Nachrichten konfigurieren</string>
+    <string name="account_settings_open_notification_settings_miscellaneous_summary">Fehler- und Statusbenachrichtigungen konfigurieren</string>
+    <string name="account_settings_show_pictures_label">Bilder immer anzeigen</string>
+    <string name="account_settings_show_pictures_never">Nein</string>
     <string name="account_settings_show_pictures_only_from_contacts">Nur von Kontakten</string>
     <string name="account_settings_show_pictures_always">Von jedem</string>
     <string name="account_settings_composition">E-Mails versenden</string>
@@ -356,9 +355,9 @@
     <string name="account_settings_crypto_encrypt_all_drafts">Alle Entwürfe verschlüsselt speichern</string>
     <string name="account_settings_crypto_encrypt_all_drafts_on">Alle Entwürfe werden verschlüsselt gespeichert</string>
     <string name="account_settings_crypto_encrypt_all_drafts_off">Entwürfe nur verschlüsseln, wenn Verschlüsselung aktiviert ist</string>
-    <string name="account_settings_mail_check_frequency_label">Häufigkeit der E-Mail-Abfrage</string>
-    <string name="account_settings_mail_display_count_label">Anzahl anzuzeigender Nachrichten</string>
-    <string name="account_settings_autodownload_message_size_label">Nachrichten automatisch laden bis</string>
+    <string name="account_settings_mail_check_frequency_label">Häufigkeit der Ordnerabfrage</string>
+    <string name="account_settings_mail_display_count_label">Lokale Ordnergröße</string>
+    <string name="account_settings_autodownload_message_size_label">Nachrichten abrufen bis zu</string>
     <string name="account_settings_autodownload_message_size_1">1 KiB</string>
     <string name="account_settings_autodownload_message_size_2">2 KiB</string>
     <string name="account_settings_autodownload_message_size_4">4 KiB</string>
@@ -373,20 +372,20 @@
     <string name="account_settings_autodownload_message_size_2048">2 MiB</string>
     <string name="account_settings_autodownload_message_size_5120">5 MiB</string>
     <string name="account_settings_autodownload_message_size_10240">10 MiB</string>
-    <string name="account_settings_autodownload_message_size_any">Keine Beschränkung</string>
-    <string name="account_settings_message_age_label">Nachrichten synchronisieren</string>
-    <string name="account_settings_message_age_any">Alle (keine Beschränkung)</string>
-    <string name="account_settings_message_age_0">von heute</string>
-    <string name="account_settings_message_age_1">der letzten 2 Tage</string>
-    <string name="account_settings_message_age_2">der letzten 3 Tage</string>
+    <string name="account_settings_autodownload_message_size_any">jede Größe (unbegrenzt)</string>
+    <string name="account_settings_message_age_label">Nachrichten synchronisieren von</string>
+    <string name="account_settings_message_age_any">jederzeit (unbegrenzt)</string>
+    <string name="account_settings_message_age_0">heute</string>
+    <string name="account_settings_message_age_1">den letzten 2 Tagen</string>
+    <string name="account_settings_message_age_2">den letzten 3 Tagen</string>
     <string name="account_settings_message_age_7">der letzten Woche</string>
-    <string name="account_settings_message_age_14">der letzten 2 Wochen</string>
-    <string name="account_settings_message_age_21">der letzten 3 Wochen</string>
-    <string name="account_settings_message_age_1_month">des letzten Monats</string>
-    <string name="account_settings_message_age_2_months">der letzten 2 Monate</string>
-    <string name="account_settings_message_age_3_months">der letzten 3 Monate</string>
-    <string name="account_settings_message_age_6_months">der letzten 6 Monate</string>
-    <string name="account_settings_message_age_1_year">des letzten Jahres</string>
+    <string name="account_settings_message_age_14">den letzten 2 Wochen</string>
+    <string name="account_settings_message_age_21">den letzten 3 Wochen</string>
+    <string name="account_settings_message_age_1_month">dem letzten Monat</string>
+    <string name="account_settings_message_age_2_months">den letzten 2 Monaten</string>
+    <string name="account_settings_message_age_3_months">den letzten 3 Monaten</string>
+    <string name="account_settings_message_age_6_months">den letzten 6 Monaten</string>
+    <string name="account_settings_message_age_1_year">dem letzten Jahr</string>
     <string name="account_settings_sync_remote_deletetions_label">Löschungen vom Server übernehmen</string>
     <string name="account_settings_sync_remote_deletetions_summary">Nachrichten löschen, wenn sie vom Server gelöscht wurden</string>
     <string name="account_settings_openpgp_missing">Fehlende OpenPGP-App – wurde sie deinstalliert?</string>
@@ -517,7 +516,6 @@
     <string name="account_setup_push_limit_500">500 Ordner</string>
     <string name="account_setup_push_limit_1000">1000 Ordner</string>
     <string name="animations_title">Animationen</string>
-    <string name="animations_summary">Aufwändige visuelle Effekte verwenden</string>
     <string name="show_unified_inbox_title">Gemeinsamen Posteingang anzeigen</string>
     <string name="show_starred_count_title">Anzahl der wichtigen Nachrichten anzeigen</string>
     <string name="integrated_inbox_title">Gemeinsamer Posteingang</string>
@@ -619,7 +617,7 @@
     <string name="account_settings_remote_search_num_results_entries_250">250</string>
     <string name="account_settings_remote_search_num_results_entries_500">500</string>
     <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
-    <string name="account_settings_remote_search_num_label">Maximale Resultat-Anzahl</string>
+    <string name="account_settings_remote_search_num_label">Server-Suchlimit</string>
     <string name="remote_search_sending_query">Sende Anfrage an den Server</string>
     <plurals name="remote_search_downloading">
         <item quantity="one">%d Resultat wird abgerufen</item>
@@ -670,8 +668,8 @@
     <string name="address_type_work">Arbeit</string>
     <string name="address_type_other">Anderes</string>
     <string name="address_type_mobile">Mobil</string>
-    <string name="compose_error_no_draft_folder">Kein Ordner für Entwürfe für dieses Konto festgelegt!</string>
-    <string name="compose_error_no_key_configured">Kein Schlüssel für dieses Konto konfiguriert! Überprüfe deine Einstellungen.</string>
+    <string name="compose_error_no_draft_folder">Keinen Ordner für Entwürfe für dieses Konto festgelegt!</string>
+    <string name="compose_error_no_key_configured">Keinen Schlüssel für dieses Konto konfiguriert! Überprüfe deine Einstellungen.</string>
     <string name="error_crypto_provider_incompatible">Verschlüsselungsdienst verwendet inkompatible Version. Bitte überprüfe deine Einstellungen!</string>
     <string name="error_crypto_provider_connect">Verbindung zum Verschlüsselungsdienst fehlgeschlagen. Überprüfe deine Einstellungen oder tippe auf das Verschlüsselungssymbol, um es erneut zu versuchen!</string>
     <string name="error_crypto_provider_ui_required">Ende-zu-Ende Verschlüsselung konnte nicht initialisiert werden, bitte überprüfe deine Einstellungen</string>
@@ -729,8 +727,7 @@
     <string name="crypto_msg_encrypted_insecure">aber die Verschlüsselung wird nicht als sicher angesehen</string>
     <string name="locked_attach_unlock">Entsperren</string>
     <string name="locked_attach_unencrypted">Dieser Teil wurde nicht verschlüsselt und könnte unsicher sein.</string>
-    <string name="locked_attach_title">Ungeschützter Anhang</string>
-    <string name="message_progress_text">Ladevorgang…</string>
+    <string name="message_progress_text">Wird geladen …</string>
     <string name="messageview_decrypt_cancelled">Entschlüsselung abgebrochen.</string>
     <string name="messageview_decrypt_retry">Wiederholen</string>
     <string name="messageview_decrypt_incomplete">Verschlüsselte Nachricht muss für die Entschlüsselung heruntergeladen werden.</string>
@@ -781,12 +778,7 @@
     <string name="ac_transfer_finish">Um abzuschließen, öffne die Nachricht auf einem anderen Gerät und gib den Setup-Code ein.</string>
     <string name="ac_transfer_show_code">Setup-Code anzeigen</string>
     <string name="ac_transfer_msg_subject">Autocrypt-Setup-Nachricht</string>
-    <string name="ac_transfer_msg_body">Diese Nachricht enthält alle Informationen, um deine Autocrypt-Einstellungen zusammen mit deinem geheimen Schlüssel von deinem ursprünglichen Gerät sicher zu übertragen.
-
-Um dein neues Gerät für Autocrypt einzurichten, folge bitte den Anweisungen, die auf dem neuen Gerät angezeigt werden.
-
-Du kannst diese Nachricht aufheben und sie als Backup für deinen geheimen Schlüssel nutzen. Wenn du das tun möchtest, solltest du dir das Passwort notieren und sicher verwahren.
-</string>
+    <string name="ac_transfer_msg_body">Diese Nachricht enthält alle Informationen, um deine Autocrypt-Einstellungen zusammen mit deinem geheimen Schlüssel von deinem ursprünglichen Gerät sicher zu übertragen. Um dein neues Gerät für Autocrypt einzurichten, folge bitte den Anweisungen, die auf dem neuen Gerät angezeigt werden. Du kannst diese Nachricht aufheben und sie als Backup für deinen geheimen Schlüssel nutzen. Wenn du das tun möchtest, solltest du dir das Passwort notieren und sicher verwahren.</string>
     <string name="ac_transfer_error_send">Beim Senden der Nachricht trat ein Fehler auf. Bitte überprüfe deine Netzwerkverbindung und die Konfiguration deines Postausgangsservers.</string>
     <string name="switch_on">An</string>
     <string name="switch_off">Aus</string>
@@ -803,25 +795,15 @@ Du kannst diese Nachricht aufheben und sie als Backup für deinen geheimen Schl�
     <string name="push_info_disable_push_text">Wenn du keine sofortigen Benachrichtigungen über neue Nachrichten benötigst, solltest du Push deaktivieren und die Abfrage verwenden. Die Abfrage prüft in regelmäßigen Abständen auf neue E-Mails und benötigt die Benachrichtigung nicht.</string>
     <string name="push_info_disable_push_action">Push deaktivieren</string>
     <!--Name of the swipe action to select a message. Try to keep it short.-->
-    <string name="swipe_action_select">Auswählen</string>
     <!--Name of the swipe action to deselect a message. Try to keep it short.-->
-    <string name="swipe_action_deselect">Abwählen</string>
     <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
-    <string name="swipe_action_mark_as_read">Als gelesen markieren</string>
     <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
-    <string name="swipe_action_mark_as_unread">Als ungelesen markieren</string>
     <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
-    <string name="swipe_action_add_star">Als wichtig markieren</string>
     <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
-    <string name="swipe_action_remove_star">Als unwichtig markieren</string>
     <!--Name of the swipe action to archive a message. Try to keep it short.-->
-    <string name="swipe_action_archive">Archiv</string>
     <!--Name of the swipe action to delete a message. Try to keep it short.-->
-    <string name="swipe_action_delete">Löschen</string>
     <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
-    <string name="swipe_action_spam">Spam</string>
     <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
-    <string name="swipe_action_move">Verschieben…</string>
     <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
     <string name="general_settings_show_compose_button_title">Schwebendes Verfassen anzeigen</string>
     <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
@@ -875,7 +857,7 @@ Du kannst diese Nachricht aufheben und sie als Backup für deinen geheimen Schl�
     <string name="account_delete_dlg_instructions_fmt">Das Konto \"<xliff:g id="account">%1$s</xliff:g>\" wird aus <xliff:g id="app_name">%2$s</xliff:g> entfernt.</string>
     <string name="about_title">Über <xliff:g id="app_name">%s</xliff:g></string>
     <string name="push_info_notification_explanation_text">Wenn Push verwendet wird, hält <xliff:g id="app_name">%1$s</xliff:g> eine Verbindung zum Mailserver aufrecht. Bei Android muss eine laufende Benachrichtigung angezeigt werden, während die App im Hintergrund aktiv ist. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
-    <string name="about_app_authors_thunderbird">Thunderbird-Mobile-Team</string>
+    <string name="about_app_authors_thunderbird">Thunderbird Mobile Team</string>
     <string name="folder_settings_notifications_label">Benachrichtigungen</string>
     <string name="settings_ui_telemetry_description">Leistungs-, Nutzungs-, Hardware- und Individualisierungsdaten über diese App mit Mozilla teilen, um uns zu helfen, Thunderbird zu verbessern</string>
     <string name="settings_ui_data_collection">Datenerfassung</string>
@@ -898,9 +880,7 @@ Du kannst diese Nachricht aufheben und sie als Backup für deinen geheimen Schl�
     <string name="debug_sync_export_logs_title">Synchronisationsprotokolle exportieren</string>
     <string name="debug_enable_sync_debug_logging_title">Synchronisation des Fehlerprotokolls aktivieren</string>
     <string name="debug_enable_sync_debug_logging_summary">Diagnoseinformationen zur Synchronisation für 24 Stunden protokollieren</string>
-    <string name="swipe_action_change_swipe_gestures">Ändere \nWischgesten</string>
     <string name="archiving_not_available_for_this_account">Archivierung ist für dieses Konto nicht verfügbar.</string>
-    <string name="swipe_action_archive_folder_not_set">Archivordner einrichten</string>
     <string name="debug_open_secret_debug_screen">Geheime Fehleranalyse-Ansicht öffnen</string>
     <string name="debug_invalidate_access_token">Test: Zugriffstoken ungültig machen</string>
     <string name="debug_invalidate_access_token_local">Test: Zugriffstoken ungültig machen (lokal)</string>
@@ -927,4 +907,58 @@ Du kannst diese Nachricht aufheben und sie als Backup für deinen geheimen Schl�
     <string name="global_settings_messageview_body_content_type_title">Inhaltstyp des Textes</string>
     <string name="print_message_action">Drucken</string>
     <string name="debug_feature_flags">DEBUG: Feature-Flags</string>
+    <string name="global_settings_splitview_when_unfolded">Wenn das Gerät aufgeklappt ist</string>
+    <string name="general_settings_message_list_date_time_format_title">Datums-/Zeitformat</string>
+    <string name="general_settings_message_list_date_time_format_contextual">Kontextbezogen</string>
+    <string name="general_settings_message_list_date_time_format_full">Vollständig</string>
+    <string name="sort_by_then_by">Dann nach …</string>
+    <string name="general_settings_message_list_date_time_format_iso">ISO</string>
+    <plurals name="message_view_attachment_summary">
+        <item quantity="one"><xliff:g id="count">%1$d</xliff:g> Anhang (<xliff:g id="size">%2$s</xliff:g>)</item>
+        <item quantity="other"><xliff:g id="count">%1$d</xliff:g> Anhänge (<xliff:g id="size">%2$s</xliff:g>)</item>
+    </plurals>
+    <string name="message_view_single_attachment_summary"><xliff:g id="name">%1$s</xliff:g> (<xliff:g id="size">%2$s</xliff:g>)</string>
+    <string name="message_view_attachments_view_all">Alle anzeigen</string>
+    <string name="message_view_attachments_view">Anzeigen</string>
+    <string name="message_view_attachments_title">Anhänge</string>
+    <string name="message_view_attachments_save_all">Alle speichern</string>
+    <string name="no_network_message_will_be_sent_later_toast">Offline. Die Nachricht wird gesendet, sobald eine Verbindung verfügbar ist.</string>
+    <string name="notification_actions_settings_title">Benachrichtigungsaktionen</string>
+    <string name="notification_actions_settings_summary">Auswählen, welche Aktionen in E-Mail-Benachrichtigungen angezeigt werden sollen</string>
+    <string name="notification_summary_delete_title">„Löschen“ bei Benachrichtigungen mit mehreren Nachrichten anzeigen</string>
+    <string name="notification_summary_delete_summary">Fügt Benachrichtigungen, die mehrere neue Nachrichten zusammenfassen, eine Löschfunktion hinzu</string>
+    <string name="notification_actions_settings_description">Benachrichtigungsaktionen neu anordnen.</string>
+    <string name="notification_actions_cutoff_description">Anzeigegrenze für Aktionen</string>
+    <string name="notification_actions_cutoff_state">Aktionen oberhalb dieser Zeile werden in der Benachrichtigung angezeigt</string>
+    <string name="notification_actions_shown_state">In der Benachrichtigung angezeigt</string>
+    <string name="notification_actions_hidden_state">In der Benachrichtigung nicht angezeigt</string>
+    <string name="accessibility_move_up">Nach oben verschieben</string>
+    <string name="accessibility_move_down">Nach unten verschieben</string>
+    <string name="accessibility_move_item_up"><xliff:g id="item">%1$s</xliff:g> nach oben verschieben</string>
+    <string name="accessibility_move_item_down"><xliff:g id="item">%1$s</xliff:g> nach unten verschieben</string>
+    <string name="accessibility_move_cutoff_up">Anzeigegrenze nach oben verschieben</string>
+    <string name="accessibility_move_cutoff_down">Anzeigegrenze nach unten verschieben</string>
+    <string name="notification_action_star">Favorit</string>
+    <string name="changelog_type_fixed_text">BEHOBEN</string>
+    <string name="changelog_type_new_text">NEU</string>
+    <string name="changelog_latest_label_text">AKTUELL</string>
+    <string name="changelog_type_changed_text">GEÄNDERT</string>
+    <string name="notification_show_contact_picture_title">Kontaktbilder in Benachrichtigungen anzeigen</string>
+    <string name="notification_show_contact_picture_summary">Profilbild der Absender in Benachrichtigungen über neue Nachrichten anzeigen</string>
+    <string name="animation_setting_on">Ein</string>
+    <string name="animation_setting_off">Aus</string>
+    <string name="animation_setting_follow_system">Systemstandard verwenden</string>
+    <string name="sort_by_indicator">•</string>
+    <string name="global_settings_privacy_incognito_keyboard">Inkognito-Tastatur</string>
+    <string name="global_settings_privacy_incognito_keyboard_detail">Die Tastatur daran hindern, beim Verfassen von Nachrichten aus deinen Eingaben zu lernen</string>
+    <string name="camera_capture_lost">Das aufgenommene Bild ging verloren, da die App geschlossen wurde. Bitte versuche es erneut.</string>
+    <string name="account_settings_signature_html_label">HTML-Signatur</string>
+    <string name="account_settings_signature_is_html_label">Signatur als HTML speichern</string>
+    <string name="account_settings_signature_is_html_summary">Die Signatur wird als HTML interpretiert. Skripte und Ereignishandler werden aus Sicherheitsgründen entfernt.</string>
+    <string name="account_settings_signature_preview">Signaturvorschau</string>
+    <string name="account_settings_signature_clear_label">Signatur löschen</string>
+    <string name="message_compose_encrypting_message">Nachricht wird verschlüsselt…</string>
+    <string name="message_view_from_me_text">mir</string>
+    <string name="account_settings_signature_preview_empty">Deine Signaturvorschau wird hier angezeigt</string>
+    <string name="error_no_contact_provider">Es wurde keine Kontakte-App gefunden. Installiere eine Kontakte-App, um diese Adresse hinzuzufügen.</string>
 </resources>

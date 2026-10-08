@@ -1,0 +1,297 @@
+package net.thunderbird.components.ui.bolt.organism
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog as MaterialDialog
+import androidx.compose.ui.window.DialogProperties
+import net.thunderbird.components.ui.bolt.PreviewLightDarkLandscape
+import net.thunderbird.components.ui.bolt.PreviewWithThemesLightDark
+import net.thunderbird.components.ui.bolt.atom.DividerHorizontal
+import net.thunderbird.components.ui.bolt.atom.Surface
+import net.thunderbird.components.ui.bolt.atom.text.TextBodyMedium
+import net.thunderbird.components.ui.bolt.atom.text.TextHeadlineSmall
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
+
+@Composable
+fun BasicDialog(
+    onDismissRequest: () -> Unit,
+    content: (@Composable () -> Unit)?,
+    buttons: @Composable RowScope.() -> Unit,
+    modifier: Modifier = Modifier,
+    headline: (@Composable ColumnScope.() -> Unit)? = null,
+    supportingText: (@Composable ColumnScope.() -> Unit)? = null,
+    contentPadding: PaddingValues = BasicDialogDefaults.contentPadding,
+    showDividers: Boolean = BasicDialogDefaults.showDividers,
+    dividerColor: Color = BasicDialogDefaults.dividerColor,
+    properties: DialogProperties = DialogProperties(),
+) {
+    MaterialDialog(
+        onDismissRequest = onDismissRequest,
+        properties = properties,
+    ) {
+        BasicDialogContent(
+            content = content,
+            buttons = buttons,
+            modifier = modifier,
+            headline = headline,
+            supportingText = supportingText,
+            contentPadding = contentPadding,
+            showDividers = showDividers,
+            dividerColor = dividerColor,
+        )
+    }
+}
+
+@Composable
+fun BasicDialog(
+    headlineText: String,
+    onDismissRequest: () -> Unit,
+    content: (@Composable () -> Unit)?,
+    buttons: @Composable RowScope.() -> Unit,
+    modifier: Modifier = Modifier,
+    supportingText: String? = null,
+    contentPadding: PaddingValues = BasicDialogDefaults.contentPadding,
+    showDividers: Boolean = BasicDialogDefaults.showDividers,
+    dividerColor: Color = BasicDialogDefaults.dividerColor,
+    properties: DialogProperties = DialogProperties(),
+) {
+    BasicDialog(
+        onDismissRequest = onDismissRequest,
+        content = content,
+        buttons = buttons,
+        modifier = modifier,
+        headline = { TextHeadlineSmall(text = headlineText) },
+        supportingText = supportingText?.let {
+            @Composable {
+                TextBodyMedium(
+                    text = supportingText,
+                    color = BoltTheme.colors.onSurfaceVariant,
+                )
+            }
+        },
+        contentPadding = contentPadding,
+        showDividers = showDividers,
+        dividerColor = dividerColor,
+        properties = properties,
+    )
+}
+
+@Composable
+internal fun BasicDialogContent(
+    content: (@Composable () -> Unit)?,
+    buttons: @Composable RowScope.() -> Unit,
+    modifier: Modifier = Modifier,
+    headline: (@Composable ColumnScope.() -> Unit)? = null,
+    supportingText: (@Composable ColumnScope.() -> Unit)? = null,
+    contentPadding: PaddingValues = BasicDialogDefaults.contentPadding,
+    showDividers: Boolean = BasicDialogDefaults.showDividers,
+    dividerColor: Color = BasicDialogDefaults.dividerColor,
+) {
+    Surface(
+        modifier = modifier,
+        shape = BoltTheme.shapes.extraLarge,
+    ) {
+        Column {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.double),
+                modifier = Modifier
+                    .padding(
+                        start = BoltTheme.spacings.triple,
+                        end = BoltTheme.spacings.triple,
+                        top = BoltTheme.spacings.triple,
+                        bottom = BoltTheme.spacings.double,
+                    ),
+            ) {
+                headline?.invoke(this)
+                supportingText?.invoke(this)
+            }
+            if (showDividers && (headline != null || supportingText != null)) {
+                DividerHorizontal(
+                    color = dividerColor,
+                    modifier = Modifier.wrapContentSize(),
+                )
+            }
+            content?.let { content ->
+                Box(
+                    modifier = Modifier
+                        .weight(weight = 1f, fill = false)
+                        .padding(contentPadding),
+                ) {
+                    content()
+                }
+            }
+            if (showDividers && content != null) {
+                DividerHorizontal(
+                    color = dividerColor,
+                    modifier = Modifier.wrapContentSize(),
+                )
+            }
+            Box(
+                modifier = Modifier
+                    .align(Alignment.End)
+                    .padding(
+                        start = BoltTheme.spacings.triple,
+                        end = BoltTheme.spacings.triple,
+                        bottom = BoltTheme.spacings.triple,
+                    ),
+            ) {
+                Row { buttons() }
+            }
+        }
+    }
+}
+
+object BasicDialogDefaults {
+    val showDividers: Boolean get() = false
+    val dividerColor: Color
+        @Composable
+        get() = BoltTheme.colors.outlineVariant
+    val contentPadding: PaddingValues
+        @Composable
+        get() = PaddingValues(
+            top = BoltTheme.spacings.oneHalf,
+            bottom = BoltTheme.spacings.double,
+        )
+}
+
+@PreviewLightDarkLandscape
+@Composable
+private fun BasicDialogPreview() {
+    PreviewWithThemesLightDark(
+        useRow = true,
+        useScrim = true,
+        scrimPadding = PaddingValues(32.dp),
+        arrangement = Arrangement.spacedBy(24.dp),
+    ) {
+        BasicDialogContent(
+            headline = {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.double),
+                    modifier = Modifier.fillMaxWidth(),
+                ) {
+                    Icon(imageVector = Icons.Default.Refresh, contentDescription = null)
+                    TextHeadlineSmall(text = "Reset settings?")
+                }
+            },
+            supportingText = {
+                TextBodyMedium(
+                    text = "This will reset your app preferences back to their default settings. " +
+                        "The following accounts will also be signed out:",
+                    color = BoltTheme.colors.onSurfaceVariant,
+                )
+            },
+            content = {
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.double),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(
+                            start = BoltTheme.spacings.triple,
+                            end = BoltTheme.spacings.triple,
+                        ),
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(BoltTheme.spacings.double),
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .size(BoltTheme.sizes.iconAvatar)
+                                .background(color = BoltTheme.colors.primary, shape = CircleShape),
+                        )
+                        Text(text = "Account 1")
+                    }
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(BoltTheme.spacings.double),
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .size(BoltTheme.sizes.iconAvatar)
+                                .background(color = BoltTheme.colors.primary, shape = CircleShape),
+                        )
+                        Text(text = "Account 2")
+                    }
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(BoltTheme.spacings.double),
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .size(BoltTheme.sizes.iconAvatar)
+                                .background(color = BoltTheme.colors.primary, shape = CircleShape),
+                        )
+                        Text(text = "Account 3")
+                    }
+                }
+            },
+            buttons = {
+                TextButton(onClick = {}) {
+                    Text(text = "Cancel")
+                }
+                TextButton(onClick = {}) {
+                    Text(text = "Accept")
+                }
+            },
+            showDividers = true,
+            modifier = Modifier.width(300.dp),
+        )
+    }
+}
+
+@PreviewLightDarkLandscape
+@Composable
+private fun PreviewOnlySupportingText() {
+    PreviewWithThemesLightDark(
+        useRow = true,
+        useScrim = true,
+        scrimPadding = PaddingValues(32.dp),
+        arrangement = Arrangement.spacedBy(24.dp),
+    ) {
+        BasicDialogContent(
+            headline = {
+                TextHeadlineSmall(text = "Email can not be archived")
+            },
+            supportingText = {
+                TextBodyMedium(
+                    text = "Configure archive folder now",
+                    color = BoltTheme.colors.onSurfaceVariant,
+                )
+            },
+            content = null,
+            buttons = {
+                TextButton(onClick = {}) {
+                    Text(text = "Skip for now")
+                }
+                TextButton(onClick = {}) {
+                    Text(text = "Set archive folder")
+                }
+            },
+            showDividers = false,
+            modifier = Modifier.width(300.dp),
+        )
+    }
+}

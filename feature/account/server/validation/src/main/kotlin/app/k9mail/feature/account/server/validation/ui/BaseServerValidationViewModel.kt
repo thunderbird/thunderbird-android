@@ -1,7 +1,6 @@
 package app.k9mail.feature.account.server.validation.ui
 
 import androidx.lifecycle.viewModelScope
-import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
 import app.k9mail.feature.account.common.domain.AccountDomainContract
 import app.k9mail.feature.account.common.ui.WizardConstants
 import app.k9mail.feature.account.oauth.domain.AccountOAuthDomainContract
@@ -19,6 +18,7 @@ import com.fsck.k9.mail.server.ServerSettingsValidationResult
 import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import net.thunderbird.core.ui.contract.mvi.BaseViewModel
 
 @Suppress("TooManyFunctions")
 abstract class BaseServerValidationViewModel(
@@ -182,7 +182,7 @@ abstract class BaseServerValidationViewModel(
 
             certificateErrorRepository.setCertificateError(
                 ServerCertificateError(
-                    hostname = serverSettings.host!!,
+                    hostname = serverSettings.host,
                     port = serverSettings.port,
                     certificateChain = error.certificateChain,
                 ),

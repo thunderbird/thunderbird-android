@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "version": "6.901",
+  "versioncode": 39001,
+  "date": "2024-05-15",
+  "notes": [
+    {
+      "type": "fixed",
+      "text": "Fixed a crash when opening the screen to compose a message",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}
