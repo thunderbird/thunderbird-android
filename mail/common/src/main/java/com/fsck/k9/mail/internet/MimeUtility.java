@@ -9,6 +9,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import androidx.annotation.Nullable;
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyPart;
 import com.fsck.k9.mail.Message;
@@ -62,6 +63,7 @@ public class MimeUtility {
      * @param parameterName The parameter name. Might be {@code null}.
      * @return the (parameter) value. if the parameter cannot be found the method returns null.
      */
+    @Nullable
     public static String getHeaderParameter(String headerBody, String parameterName) {
         if (headerBody == null) {
             return null;
