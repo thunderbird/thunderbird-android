@@ -13,6 +13,7 @@ class K9CoreResourceProvider(
     override fun contactDisplayNamePrefix(): String = context.getString(R.string.message_to_label)
     override fun contactUnknownSender(): String = context.getString(R.string.unknown_sender)
     override fun contactUnknownRecipient(): String = context.getString(R.string.unknown_recipient)
+    override fun suspiciousSenderPrefix(): String = context.getString(R.string.suspicious_sender_prefix)
 
     override fun messageHeaderFrom(): String = context.getString(R.string.message_compose_quote_header_from)
     override fun messageHeaderTo(): String = context.getString(R.string.message_compose_quote_header_to)
