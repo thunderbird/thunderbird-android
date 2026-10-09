@@ -1163,4 +1163,8 @@ You can keep this message and use it as a backup for your secret key. If you wan
     <string name="debug_invalidate_access_token_already_modified">Stored access token already modified.</string>
     <string name="debug_feature_flags">DEBUG: Feature Flags</string>
     <string name="no_network_message_will_be_sent_later_toast">Offline. Message will be sent once connection is available</string>
+    <string name="dialog_forward_missing_content_title">Download before forwarding?</string>
+    <string name="dialog_forward_missing_content_message">Parts of this message or its attachments are not downloaded. Download the missing content before forwarding?</string>
+    <string name="dialog_confirm_forward_download_confirm_button">Download and forward</string>
+    <string name="dialog_confirm_forward_download_negative_button">Forward as is</string>
 </resources>
