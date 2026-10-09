@@ -184,6 +184,13 @@ class MessageViewFragment :
     private val interactionSettings: InteractionSettings
         get() = generalSettingsManager.getConfig().interaction
 
+    private val forwardPreparation = ForwardPreparation(
+        confirmDownload = { showDialog(R.id.dialog_confirm_forward_download) },
+        downloadMessage = { onDownloadButtonClicked() },
+        forward = { performForward() },
+        showError = { Toast.makeText(context, R.string.status_loading_error, Toast.LENGTH_LONG).show() },
+    )
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
@@ -355,6 +362,7 @@ class MessageViewFragment :
         if (menuVisible) {
             messageLoaderHelper.resumeCryptoOperationIfNecessary()
         } else {
+            forwardPreparation.cancel()
             // When the menu is hidden, the message associated with this fragment is no longer active. If the user
             // returns to it, we want to mark the message as opened again.
             wasMessageMarkedAsOpened = false
@@ -365,6 +373,16 @@ class MessageViewFragment :
         super.onResume()
         markMessageAsOpened()
         messageCryptoPresenter.onResume()
+    }
+
+    override fun onStop() {
+        forwardPreparation.cancel()
+        // Do not execute pending transactions recursively during a FragmentManager lifecycle transition.
+        val dialog = parentFragmentManager.findFragmentByTag(
+            getDialogTag(R.id.dialog_confirm_forward_download),
+        ) as DialogFragment?
+        dialog?.dismissAllowingStateLoss()
+        super.onStop()
     }
 
     override fun onDestroy() {
@@ -724,6 +742,10 @@ class MessageViewFragment :
     }
 
     fun onForward() {
+        mMessageViewInfo?.let { forwardPreparation.start(it.isMessageIncomplete) }
+    }
+
+    private fun performForward() {
         val message = checkNotNull(this.message)
 
         fragmentListener.onForward(
@@ -1006,6 +1028,16 @@ class MessageViewFragment :
                 )
             }
 
+            R.id.dialog_confirm_forward_download -> {
+                ConfirmationDialogFragment.newInstance(
+                    dialogId,
+                    getString(R.string.dialog_forward_missing_content_title),
+                    getString(R.string.dialog_forward_missing_content_message),
+                    getString(R.string.dialog_confirm_forward_download_confirm_button),
+                    getString(R.string.dialog_confirm_forward_download_negative_button),
+                )
+            }
+
             R.id.dialog_attachment_progress -> {
                 val currentAttachmentViewInfo = checkNotNull(this.currentAttachmentViewInfo)
 
@@ -1048,12 +1080,22 @@ class MessageViewFragment :
 
             refileMessage(destinationFolderId)
             this.destinationFolderId = null
+        } else if (dialogId == R.id.dialog_confirm_forward_download) {
+            forwardPreparation.download()
         }
     }
 
-    override fun doNegativeClick(dialogId: Int) = Unit
+    override fun doNegativeClick(dialogId: Int) {
+        if (dialogId == R.id.dialog_confirm_forward_download) {
+            forwardPreparation.forwardWithoutDownloading()
+        }
+    }
 
-    override fun dialogCancelled(dialogId: Int) = Unit
+    override fun dialogCancelled(dialogId: Int) {
+        if (dialogId == R.id.dialog_confirm_forward_download) {
+            forwardPreparation.cancel()
+        }
+    }
 
     private val isOutbox: Boolean
         get() = messageReference.folderId == outboxFolderManager.getOutboxFolderIdSync(account.id)
@@ -1162,6 +1204,7 @@ class MessageViewFragment :
 
     private val messageLoaderCallbacks: MessageLoaderCallbacks = object : MessageLoaderCallbacks {
         override fun onMessageDataLoadFinished(message: LocalMessage) {
+            mMessageViewInfo = null
             this@MessageViewFragment.message = message
 
             displayHeaderForLoadingMessage(message)
@@ -1175,6 +1218,8 @@ class MessageViewFragment :
         }
 
         override fun onMessageDataLoadFailed() {
+            mMessageViewInfo = null
+            forwardPreparation.cancel()
             Toast.makeText(activity, R.string.status_loading_error, Toast.LENGTH_LONG).show()
             showProgressThreshold = null
         }
@@ -1184,9 +1229,12 @@ class MessageViewFragment :
             showMessage(messageViewInfo)
             preferredUnsubscribeUri = messageViewInfo.preferredUnsubscribeUri
             showProgressThreshold = null
+            forwardPreparation.onMessageLoaded(messageViewInfo.isMessageIncomplete)
         }
 
         override fun onMessageViewInfoLoadFailed(messageViewInfo: MessageViewInfo) {
+            mMessageViewInfo = null
+            forwardPreparation.cancel()
             showMessage(messageViewInfo)
             preferredUnsubscribeUri = null
             showProgressThreshold = null
@@ -1204,11 +1252,13 @@ class MessageViewFragment :
         }
 
         override fun onDownloadErrorMessageNotFound() {
+            forwardPreparation.cancel()
             messageTopView.enableDownloadButton()
             Toast.makeText(requireContext(), R.string.status_invalid_id_error, Toast.LENGTH_LONG).show()
         }
 
         override fun onDownloadErrorNetworkError() {
+            forwardPreparation.cancel()
             messageTopView.enableDownloadButton()
             Toast.makeText(requireContext(), R.string.status_network_error, Toast.LENGTH_LONG).show()
         }
