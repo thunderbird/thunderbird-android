@@ -34,6 +34,9 @@ constructor(
     private val folderNameFormatter: FolderNameFormatter by inject { parametersOf(context) }
     private val noFolderSelectedName = context.getString(R.string.account_settings_no_folder_selected).italicize()
     private lateinit var automaticFolderOption: CharSequence
+    val selected: Long?
+        get() = getSelectedValueAsString()
+            ?.toLongOrNull()
 
     init {
         entries = emptyArray()
@@ -79,6 +82,8 @@ constructor(
         }
     }
 
+    fun isNoneSelected(value: String? = this.value): Boolean = getSelectedValueAsString(value).isNullOrBlank()
+
     private fun getFolderDisplayNames(folders: List<RemoteFolder>) = folders.map { folderNameFormatter.displayName(it) }
 
     private fun getFolderValues(folders: List<RemoteFolder>) = folders.map { MANUAL_PREFIX + it.id.toString() }
@@ -86,6 +91,10 @@ constructor(
     private fun String.italicize(): CharSequence {
         return SpannableString(this).apply { setSpan(StyleSpan(Typeface.ITALIC), 0, this.length, 0) }
     }
+
+    private fun getSelectedValueAsString(value: String? = this.value): String? = value
+        ?.substringAfter(MANUAL_PREFIX)
+        ?.substringBefore(AUTOMATIC_PREFIX)
 
     companion object {
         const val FOLDER_VALUE_DELIMITER = "|"
