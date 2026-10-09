@@ -1253,9 +1253,7 @@ class MessageViewFragment :
             createDocumentLauncher.launch(
                 input = CreateDocumentResultContract.Input(
                     title = attachment.displayName ?: getString(MessageReaderR.string.unnamed_attachment_title),
-                    mimeType = requireNotNull(attachment.mimeType) {
-                        "Invalid attachment type. The mimeType is null. Attachment = $attachment"
-                    },
+                    mimeType = requireNotNull(attachment.mimeType) { "Attachment MIME type must not be null" },
                 ),
             )
         } catch (_: ActivityNotFoundException) {
