@@ -37,7 +37,7 @@ class CommandSync(
     private val httpAuthentication: HttpAuthentication,
 ) {
 
-    fun sync(folderServerId: String, syncConfig: SyncConfig, listener: SyncListener) {
+    suspend fun sync(folderServerId: String, syncConfig: SyncConfig, listener: SyncListener) {
         try {
             val backendFolder = backendStorage.getFolder(folderServerId)
             listener.syncStarted(folderServerId)
@@ -99,7 +99,7 @@ class CommandSync(
             destroyServerIds = destroyServerIds,
             newServerIds = newServerIds,
             newQueryState = queryState,
-            listener = listener
+            listener = listener,
         )
 
         val refreshServerIds = cachedServerIds.intersect(remoteServerIds)
@@ -206,7 +206,7 @@ class CommandSync(
                 Log.d("Failed to download message: %s", messageInfo.serverId)
             }
 
-            listener.syncProgress(folderServerId, index + 1, total)
+            runBlocking { listener.syncProgress(folderServerId, index + 1, total) }
         }
 
         backendFolder.saveQueryState(newQueryState)

@@ -13,6 +13,7 @@ import com.fsck.k9.mail.Part
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import net.thunderbird.core.common.mail.Flag
 import net.thunderbird.feature.mail.folder.api.FolderPathDelimiter
 
@@ -40,8 +41,8 @@ class DemoBackend(
         return commandRefreshFolderList.refreshFolderList()
     }
 
-    override fun sync(folderServerId: String, syncConfig: SyncConfig, listener: SyncListener) =
-        runBlocking(ioDispatcher) {
+    override suspend fun sync(folderServerId: String, syncConfig: SyncConfig, listener: SyncListener) =
+        withContext(ioDispatcher) {
             commandSync.sync(folderServerId, listener)
         }
 

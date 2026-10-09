@@ -17,6 +17,7 @@ import com.fsck.k9.mail.FolderType
 import com.fsck.k9.mail.internet.BinaryTempFileBody
 import java.io.File
 import java.util.EnumSet
+import kotlinx.coroutines.test.runTest
 import net.thunderbird.core.common.mail.Flag
 import net.thunderbird.core.logging.testing.TestLogger
 import net.thunderbird.legacy.logging.Log
@@ -50,7 +51,7 @@ class CommandSyncTest {
     }
 
     @Test
-    fun sessionResourceWithAuthenticationError() {
+    fun sessionResourceWithAuthenticationError() = runTest {
         val command = createCommandSync(
             MockResponse().setResponseCode(401),
         )
@@ -63,7 +64,7 @@ class CommandSyncTest {
     }
 
     @Test
-    fun fullSyncStartingWithEmptyLocalMailbox() {
+    fun fullSyncStartingWithEmptyLocalMailbox() = runTest {
         val server = createMockWebServer(
             responseBodyFromResource("/jmap_responses/session/valid_session.json"),
             responseBodyFromResource("/jmap_responses/email/email_query_M001_and_M002.json"),
@@ -94,7 +95,7 @@ class CommandSyncTest {
     }
 
     @Test
-    fun fullSyncExceedingMaxObjectsInGet() {
+    fun fullSyncExceedingMaxObjectsInGet() = runTest {
         val command = createCommandSync(
             responseBodyFromResource("/jmap_responses/session/session_with_maxObjectsInGet_2.json"),
             responseBodyFromResource("/jmap_responses/email/email_query_M001_to_M005.json"),
@@ -122,7 +123,7 @@ class CommandSyncTest {
     }
 
     @Test
-    fun fullSyncWithLocalMessagesAndDifferentMessagesInRemoteMailbox() {
+    fun fullSyncWithLocalMessagesAndDifferentMessagesInRemoteMailbox() = runTest {
         val backendFolder = backendStorage.getFolder(FOLDER_SERVER_ID)
         backendFolder.createMessages(
             "M001" to "/jmap_responses/blob/email/email_1.eml",
@@ -146,7 +147,7 @@ class CommandSyncTest {
     }
 
     @Test
-    fun fullSyncWithLocalMessagesAndEmptyRemoteMailbox() {
+    fun fullSyncWithLocalMessagesAndEmptyRemoteMailbox() = runTest {
         val backendFolder = backendStorage.getFolder(FOLDER_SERVER_ID)
         backendFolder.createMessages(
             "M001" to "/jmap_responses/blob/email/email_1.eml",
@@ -167,7 +168,7 @@ class CommandSyncTest {
     }
 
     @Test
-    fun deltaSyncWithoutChanges() {
+    fun deltaSyncWithoutChanges() = runTest {
         val backendFolder = backendStorage.getFolder(FOLDER_SERVER_ID)
         backendFolder.createMessages(
             "M001" to "/jmap_responses/blob/email/email_1.eml",
@@ -193,7 +194,7 @@ class CommandSyncTest {
     }
 
     @Test
-    fun deltaSyncWithLocalMessagesAndDifferentMessagesInRemoteMailbox() {
+    fun deltaSyncWithLocalMessagesAndDifferentMessagesInRemoteMailbox() = runTest {
         val backendFolder = backendStorage.getFolder(FOLDER_SERVER_ID)
         backendFolder.createMessages(
             "M001" to "/jmap_responses/blob/email/email_1.eml",
@@ -216,7 +217,7 @@ class CommandSyncTest {
     }
 
     @Test
-    fun deltaSyncCannotCalculateChanges() {
+    fun deltaSyncCannotCalculateChanges() = runTest {
         val backendFolder = backendStorage.getFolder(FOLDER_SERVER_ID)
         backendFolder.createMessages(
             "M001" to "/jmap_responses/blob/email/email_1.eml",

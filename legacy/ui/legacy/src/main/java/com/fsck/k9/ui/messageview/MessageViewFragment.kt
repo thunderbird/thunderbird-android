@@ -139,11 +139,15 @@ class MessageViewFragment :
         }
     private val chooseFolderForCopyLauncher: ActivityResultLauncher<ChooseFolderResultContract.Input> =
         registerForActivityResult(ChooseFolderResultContract(ChooseFolderActivity.Action.COPY)) { result ->
-            onChooseFolderCopyResult(result)
+            lifecycleScope.launch {
+                onChooseFolderCopyResult(result)
+            }
         }
     private val chooseFolderForMoveLauncher: ActivityResultLauncher<ChooseFolderResultContract.Input> =
         registerForActivityResult(ChooseFolderResultContract(ChooseFolderActivity.Action.MOVE)) { result ->
-            onChooseFolderMoveResult(result)
+            lifecycleScope.launch {
+                onChooseFolderMoveResult(result)
+            }
         }
 
     private lateinit var messageTopView: MessageTopView
@@ -479,7 +483,7 @@ class MessageViewFragment :
 
         when (item.itemId) {
             R.id.toggle_message_view_theme -> onToggleTheme()
-            R.id.delete -> onDelete()
+            R.id.delete -> lifecycleScope.launch { onDelete() }
             R.id.reply -> onReply()
             R.id.reply_all -> onReplyAll()
             R.id.forward -> onForward()
@@ -487,8 +491,8 @@ class MessageViewFragment :
             R.id.edit_as_new_message -> onEditAsNewMessage()
             R.id.share -> onSendAlternate()
             R.id.toggle_unread -> onToggleRead()
-            R.id.archive, R.id.refile_archive -> onArchive()
-            R.id.spam, R.id.refile_spam -> onSpam()
+            R.id.archive, R.id.refile_archive -> lifecycleScope.launch { onArchive() }
+            R.id.spam, R.id.refile_spam -> lifecycleScope.launch { onSpam() }
             R.id.move, R.id.refile_move -> onMove()
             R.id.copy, R.id.refile_copy -> onCopy()
             R.id.move_to_drafts -> onMoveToDrafts()
@@ -635,7 +639,7 @@ class MessageViewFragment :
     /**
      * Called from UI thread when user select Delete
      */
-    fun onDelete() {
+    suspend fun onDelete() {
         val message = checkNotNull(message)
 
         if (interactionSettings.isConfirmDelete ||
@@ -662,7 +666,7 @@ class MessageViewFragment :
         return messageTopView.renderPlainFormat
     }
 
-    private fun delete() {
+    private suspend fun delete() {
         disableDeleteMenuItem()
 
         fragmentListener.performNavigationAfterMessageRemoval()
@@ -675,7 +679,7 @@ class MessageViewFragment :
         invalidateMenu()
     }
 
-    private fun onRefile(destinationFolderId: Long?) {
+    private suspend fun onRefile(destinationFolderId: Long?) {
         if (destinationFolderId == null || !messagingController.isMoveCapable(account)) {
             return
         }
@@ -693,7 +697,7 @@ class MessageViewFragment :
         }
     }
 
-    private fun refileMessage(destinationFolderId: Long) {
+    private suspend fun refileMessage(destinationFolderId: Long) {
         fragmentListener.performNavigationAfterMessageRemoval()
 
         val sourceFolderId = messageReference.folderId
@@ -794,7 +798,7 @@ class MessageViewFragment :
         messagingController.moveToDraftsFolder(account, folderId, messages)
     }
 
-    fun onArchive() {
+    suspend fun onArchive() {
         if (!account.hasArchiveFolder()) return
 
         if (!messagingController.isMoveCapable(messageReference)) {
@@ -806,7 +810,7 @@ class MessageViewFragment :
         messagingController.archiveMessage(messageReference)
     }
 
-    private fun onSpam() {
+    private suspend fun onSpam() {
         onRefile(account.spamFolderId)
     }
 
@@ -876,7 +880,7 @@ class MessageViewFragment :
         }
     }
 
-    private fun onChooseFolderMoveResult(result: ChooseFolderResultContract.Result?) {
+    private suspend fun onChooseFolderMoveResult(result: ChooseFolderResultContract.Result?) {
         if (result == null) return
 
         val destinationFolderId = result.folderId
@@ -891,7 +895,7 @@ class MessageViewFragment :
         moveMessage(messageReference, destinationFolderId)
     }
 
-    private fun onChooseFolderCopyResult(result: ChooseFolderResultContract.Result?) {
+    private suspend fun onChooseFolderCopyResult(result: ChooseFolderResultContract.Result?) {
         if (result == null) return
 
         val destinationFolderId = result.folderId
@@ -961,18 +965,20 @@ class MessageViewFragment :
         val message = checkNotNull(this.message)
 
         val newState = !message.isSet(flag)
-        messagingController.setFlag(account, message.folder.databaseId, listOf(message), flag, newState)
+        lifecycleScope.launch {
+            messagingController.setFlag(account, message.folder.databaseId, listOf(message), flag, newState)
 
-        messageTopView.setHeaders(message, account, true)
+            messageTopView.setHeaders(message, account, true)
 
-        invalidateMenu()
+            invalidateMenu()
+        }
     }
 
-    private fun moveMessage(reference: MessageReference?, folderId: Long) {
+    private suspend fun moveMessage(reference: MessageReference?, folderId: Long) {
         messagingController.moveMessage(account, messageReference.folderId, reference, folderId)
     }
 
-    private fun copyMessage(reference: MessageReference?, folderId: Long) {
+    private suspend fun copyMessage(reference: MessageReference?, folderId: Long) {
         messagingController.copyMessage(account, messageReference.folderId, reference, folderId)
     }
 
@@ -1042,11 +1048,11 @@ class MessageViewFragment :
 
     override fun doPositiveClick(dialogId: Int) {
         if (dialogId == R.id.dialog_confirm_delete) {
-            delete()
+            lifecycleScope.launch { delete() }
         } else if (dialogId == R.id.dialog_confirm_spam) {
             val destinationFolderId = checkNotNull(this.destinationFolderId)
 
-            refileMessage(destinationFolderId)
+            lifecycleScope.launch { refileMessage(destinationFolderId) }
             this.destinationFolderId = null
         }
     }

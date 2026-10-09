@@ -22,7 +22,7 @@ interface Backend {
     fun refreshFolderList(): FolderPathDelimiter?
 
     // TODO: Add a way to cancel the sync process
-    fun sync(folderServerId: String, syncConfig: SyncConfig, listener: SyncListener)
+    suspend fun sync(folderServerId: String, syncConfig: SyncConfig, listener: SyncListener)
 
     @Throws(MessagingException::class)
     fun downloadMessage(syncConfig: SyncConfig, folderServerId: String, messageServerId: String)

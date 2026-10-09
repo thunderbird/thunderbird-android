@@ -37,7 +37,11 @@ import com.fsck.k9.mailstore.SpecialLocalFoldersCreator;
 import com.fsck.k9.notification.NotificationController;
 import com.fsck.k9.notification.NotificationStrategy;
 import net.thunderbird.core.common.mail.Protocols;
+import kotlin.coroutines.EmptyCoroutineContext;
+import kotlinx.coroutines.BuildersKt;
+import kotlinx.coroutines.Dispatchers;
 import net.thunderbird.core.logging.Logger;
+import net.thunderbird.core.logging.testing.TestLogger;
 import net.thunderbird.components.core.outcome.Outcome;
 import net.thunderbird.feature.account.AccountId;
 import net.thunderbird.feature.mail.message.list.LocalDeleteOperationDecider;
@@ -149,6 +153,7 @@ public class MessagingControllerTest extends K9RobolectricTest {
         final OutboxFolderManager fakeOutboxFolderManager = new FakeOutboxFolderManager(FOLDER_ID);
 
         controller = new MessagingController(
+            new TestLogger(),
             appContext,
             notificationController,
             notificationStrategy,
@@ -157,14 +162,15 @@ public class MessagingControllerTest extends K9RobolectricTest {
             preferences,
             messageStoreManager,
             saveMessageDataCreator,
-            specialLocalFoldersCreator,
             noOpLocalDeleteOperationDecider,
             fakeLocalMessageUidPrefixProvider,
             Collections.<ControllerExtension>emptyList(),
             featureFlagProvider,
             syncLogger,
             notificationManager,
-            fakeOutboxFolderManager
+            fakeOutboxFolderManager,
+            Dispatchers.getUnconfined(),
+            Dispatchers.getUnconfined()
         );
 
         configureAccount();
@@ -180,22 +186,33 @@ public class MessagingControllerTest extends K9RobolectricTest {
     }
 
     @Test
-    public void clearFolderSynchronous_shouldOpenFolderForWriting() throws MessagingException {
-        controller.clearFolderSynchronous(account, FOLDER_ID);
+    public void clearFolderSynchronous_shouldOpenFolderForWriting() throws Exception {
+        BuildersKt.runBlocking(
+            EmptyCoroutineContext.INSTANCE,
+            (scope, continuation) ->
+                controller.clearFolderSynchronous(account, FOLDER_ID, continuation)
+        );
 
         verify(localFolder).open();
     }
 
     @Test
-    public void clearFolderSynchronous_shouldClearAllMessagesInTheFolder() throws MessagingException {
-        controller.clearFolderSynchronous(account, FOLDER_ID);
+    public void clearFolderSynchronous_shouldClearAllMessagesInTheFolder() throws Exception {
+        BuildersKt.runBlocking(
+            EmptyCoroutineContext.INSTANCE,
+            (scope, continuation) ->
+            controller.clearFolderSynchronous(account, FOLDER_ID, continuation)
+        );
 
         verify(localFolder).clearAllMessages();
     }
 
     @Test
-    public void refreshRemoteSynchronous_shouldCallBackend() throws MessagingException {
-        controller.refreshFolderListSynchronous(account);
+    public void refreshRemoteSynchronous_shouldCallBackend() throws Exception {
+        BuildersKt.runBlocking(
+            EmptyCoroutineContext.INSTANCE,
+            (scope, continuation) -> controller.refreshFolderListSynchronous(account, continuation)
+        );
 
         verify(backend).refreshFolderList();
     }
@@ -238,7 +255,10 @@ public class MessagingControllerTest extends K9RobolectricTest {
     public void searchRemoteMessagesSynchronous_shouldNotifyStartedListingRemoteMessages() throws Exception {
         setupRemoteSearch();
 
-        controller.searchRemoteMessagesSynchronous(accountId, FOLDER_ID, "query", reqFlags, forbiddenFlags, listener);
+        BuildersKt.runBlocking(
+            EmptyCoroutineContext.INSTANCE,
+            (scope, continuation) -> controller.searchRemoteMessagesSynchronous(accountId, FOLDER_ID,
+                "query", reqFlags, forbiddenFlags, listener, continuation));
 
         verify(listener).remoteSearchStarted(FOLDER_ID);
     }
@@ -247,7 +267,10 @@ public class MessagingControllerTest extends K9RobolectricTest {
     public void searchRemoteMessagesSynchronous_shouldQueryRemoteFolder() throws Exception {
         setupRemoteSearch();
 
-        controller.searchRemoteMessagesSynchronous(accountId, FOLDER_ID, "query", reqFlags, forbiddenFlags, listener);
+        BuildersKt.runBlocking(
+            EmptyCoroutineContext.INSTANCE,
+            (scope, continuation) -> controller.searchRemoteMessagesSynchronous(accountId, FOLDER_ID,
+                "query", reqFlags, forbiddenFlags, listener, continuation));
 
         verify(backend).search(FOLDER_NAME, "query", reqFlags, forbiddenFlags, false);
     }
@@ -256,7 +279,10 @@ public class MessagingControllerTest extends K9RobolectricTest {
     public void searchRemoteMessagesSynchronous_shouldAskLocalFolderToDetermineNewMessages() throws Exception {
         setupRemoteSearch();
 
-        controller.searchRemoteMessagesSynchronous(accountId, FOLDER_ID, "query", reqFlags, forbiddenFlags, listener);
+        BuildersKt.runBlocking(
+            EmptyCoroutineContext.INSTANCE,
+            (scope, continuation) -> controller.searchRemoteMessagesSynchronous(accountId, FOLDER_ID,
+                "query", reqFlags, forbiddenFlags, listener, continuation));
 
         verify(localFolder).extractNewMessages(remoteMessages);
     }
@@ -265,7 +291,10 @@ public class MessagingControllerTest extends K9RobolectricTest {
     public void searchRemoteMessagesSynchronous_shouldTryAndGetNewMessages() throws Exception {
         setupRemoteSearch();
 
-        controller.searchRemoteMessagesSynchronous(accountId, FOLDER_ID, "query", reqFlags, forbiddenFlags, listener);
+        BuildersKt.runBlocking(
+            EmptyCoroutineContext.INSTANCE,
+            (scope, continuation) -> controller.searchRemoteMessagesSynchronous(accountId, FOLDER_ID,
+                "query", reqFlags, forbiddenFlags, listener, continuation));
 
         verify(localFolder).getMessage("newMessageUid1");
     }
@@ -274,7 +303,10 @@ public class MessagingControllerTest extends K9RobolectricTest {
     public void searchRemoteMessagesSynchronous_shouldNotTryAndGetOldMessages() throws Exception {
         setupRemoteSearch();
 
-        controller.searchRemoteMessagesSynchronous(accountId, FOLDER_ID, "query", reqFlags, forbiddenFlags, listener);
+        BuildersKt.runBlocking(
+            EmptyCoroutineContext.INSTANCE,
+            (scope, continuation) -> controller.searchRemoteMessagesSynchronous(accountId, FOLDER_ID,
+                "query", reqFlags, forbiddenFlags, listener, continuation));
 
         verify(localFolder, never()).getMessage("oldMessageUid");
     }
@@ -283,7 +315,10 @@ public class MessagingControllerTest extends K9RobolectricTest {
     public void searchRemoteMessagesSynchronous_shouldFetchNewMessages() throws Exception {
         setupRemoteSearch();
 
-        controller.searchRemoteMessagesSynchronous(accountId, FOLDER_ID, "query", reqFlags, forbiddenFlags, listener);
+        BuildersKt.runBlocking(
+            EmptyCoroutineContext.INSTANCE,
+            (scope, continuation) -> controller.searchRemoteMessagesSynchronous(accountId, FOLDER_ID,
+                "query", reqFlags, forbiddenFlags, listener, continuation));
 
         verify(backend).downloadMessageStructure(eq(FOLDER_NAME), eq("newMessageUid2"));
     }
@@ -292,7 +327,10 @@ public class MessagingControllerTest extends K9RobolectricTest {
     public void searchRemoteMessagesSynchronous_shouldNotFetchExistingMessages() throws Exception {
         setupRemoteSearch();
 
-        controller.searchRemoteMessagesSynchronous(accountId, FOLDER_ID, "query", reqFlags, forbiddenFlags, listener);
+        BuildersKt.runBlocking(
+            EmptyCoroutineContext.INSTANCE,
+            (scope, continuation) -> controller.searchRemoteMessagesSynchronous(accountId, FOLDER_ID,
+                "query", reqFlags, forbiddenFlags, listener, continuation));
 
         verify(backend, never()).downloadMessageStructure(eq(FOLDER_NAME), eq("newMessageUid1"));
     }
@@ -303,7 +341,10 @@ public class MessagingControllerTest extends K9RobolectricTest {
         when(backend.search(anyString(), anyString(), nullable(Set.class), nullable(Set.class), eq(false)))
             .thenThrow(new MessagingException("Test"));
 
-        controller.searchRemoteMessagesSynchronous(accountId, FOLDER_ID, "query", reqFlags, forbiddenFlags, listener);
+        BuildersKt.runBlocking(
+            EmptyCoroutineContext.INSTANCE,
+            (scope, continuation) -> controller.searchRemoteMessagesSynchronous(accountId, FOLDER_ID,
+                "query", reqFlags, forbiddenFlags, listener, continuation));
 
         verify(listener).remoteSearchFailed(null, "Test");
     }
@@ -314,44 +355,47 @@ public class MessagingControllerTest extends K9RobolectricTest {
         when(backend.search(anyString(), nullable(String.class), nullable(Set.class), nullable(Set.class), eq(false)))
             .thenThrow(new MessagingException("Test"));
 
-        controller.searchRemoteMessagesSynchronous(accountId, FOLDER_ID, "query", reqFlags, forbiddenFlags, listener);
+        BuildersKt.runBlocking(
+            EmptyCoroutineContext.INSTANCE,
+            (scope, continuation) -> controller.searchRemoteMessagesSynchronous(accountId, FOLDER_ID,
+                "query", reqFlags, forbiddenFlags, listener, continuation));
 
         verify(listener).remoteSearchFinished(FOLDER_ID, 0, 50, Collections.<String>emptyList());
     }
 
     @Test
-    public void sendPendingMessagesSynchronous_withNonExistentOutbox_shouldNotStartSync() throws MessagingException {
+    public void sendPendingMessagesSynchronous_withNonExistentOutbox_shouldNotStartSync() throws Exception {
         when(localFolder.exists()).thenReturn(false);
         controller.addListener(listener);
 
-        controller.sendPendingMessagesSynchronous(account);
+        sendPendingMessagesSynchronous();
 
         verifyNoMoreInteractions(listener);
     }
 
     @Test
-    public void sendPendingMessagesSynchronous_shouldSetProgress() throws MessagingException {
+    public void sendPendingMessagesSynchronous_shouldSetProgress() throws Exception {
         setupAccountWithMessageToSend();
 
-        controller.sendPendingMessagesSynchronous(account);
+        sendPendingMessagesSynchronous();
 
         verify(listener).synchronizeMailboxProgress(account, FOLDER_ID, 0, 1);
     }
 
     @Test
-    public void sendPendingMessagesSynchronous_shouldSendMessageUsingTransport() throws MessagingException {
+    public void sendPendingMessagesSynchronous_shouldSendMessageUsingTransport() throws Exception {
         setupAccountWithMessageToSend();
 
-        controller.sendPendingMessagesSynchronous(account);
+        sendPendingMessagesSynchronous();
 
         verify(backend).sendMessage(localMessageToSend1);
     }
 
     @Test
-    public void sendPendingMessagesSynchronous_shouldSetAndRemoveSendInProgressFlag() throws MessagingException {
+    public void sendPendingMessagesSynchronous_shouldSetAndRemoveSendInProgressFlag() throws Exception {
         setupAccountWithMessageToSend();
 
-        controller.sendPendingMessagesSynchronous(account);
+        sendPendingMessagesSynchronous();
 
         InOrder ordering = inOrder(localMessageToSend1, backend);
         ordering.verify(localMessageToSend1).setFlag(Flag.X_SEND_IN_PROGRESS, true);
@@ -360,49 +404,49 @@ public class MessagingControllerTest extends K9RobolectricTest {
     }
 
     @Test
-    public void sendPendingMessagesSynchronous_shouldMarkSentMessageAsSeen() throws MessagingException {
+    public void sendPendingMessagesSynchronous_shouldMarkSentMessageAsSeen() throws Exception {
         setupAccountWithMessageToSend();
 
-        controller.sendPendingMessagesSynchronous(account);
+        sendPendingMessagesSynchronous();
 
         verify(localMessageToSend1).setFlag(Flag.SEEN, true);
     }
 
     @Test
-    public void sendPendingMessagesSynchronous_whenMessageSentSuccesfully_shouldUpdateProgress() throws MessagingException {
+    public void sendPendingMessagesSynchronous_whenMessageSentSuccessfully_shouldUpdateProgress() throws Exception {
         setupAccountWithMessageToSend();
 
-        controller.sendPendingMessagesSynchronous(account);
+        sendPendingMessagesSynchronous();
 
         verify(listener).synchronizeMailboxProgress(account, FOLDER_ID, 1, 1);
     }
 
     @Test
-    public void sendPendingMessagesSynchronous_shouldUpdateProgress() throws MessagingException {
+    public void sendPendingMessagesSynchronous_shouldUpdateProgress() throws Exception {
         setupAccountWithMessageToSend();
 
-        controller.sendPendingMessagesSynchronous(account);
+        sendPendingMessagesSynchronous();
 
         verify(listener).synchronizeMailboxProgress(account, FOLDER_ID, 1, 1);
     }
 
     @Test
-    public void sendPendingMessagesSynchronous_withAuthenticationFailure_shouldNotify() throws MessagingException {
+    public void sendPendingMessagesSynchronous_withAuthenticationFailure_shouldNotify() throws Exception {
         setupAccountWithMessageToSend();
         doThrow(new AuthenticationFailedException("Test")).when(backend).sendMessage(localMessageToSend1);
 
-        controller.sendPendingMessagesSynchronous(account);
+        sendPendingMessagesSynchronous();
 
         verify(notificationController).showAuthenticationErrorNotification(account, false);
     }
 
     @Test
-    public void sendPendingMessagesSynchronous_withCertificateFailure_shouldNotify() throws MessagingException {
+    public void sendPendingMessagesSynchronous_withCertificateFailure_shouldNotify() throws Exception {
         setupAccountWithMessageToSend();
         doThrow(new CertificateValidationException(emptyList(), new CertificateChainException("", null, null)))
             .when(backend).sendMessage(localMessageToSend1);
 
-        controller.sendPendingMessagesSynchronous(account);
+        sendPendingMessagesSynchronous();
 
         verify(notificationController).showCertificateErrorNotification(account, false);
     }
@@ -453,5 +497,12 @@ public class MessagingControllerTest extends K9RobolectricTest {
 
     private void removeAccountsFromPreferences() {
         preferences.clearAccounts();
+    }
+
+    private void sendPendingMessagesSynchronous() throws InterruptedException {
+        BuildersKt.runBlocking(
+            EmptyCoroutineContext.INSTANCE,
+            (scope, continuation) -> controller.sendPendingMessagesSynchronous(account, continuation)
+        );
     }
 }

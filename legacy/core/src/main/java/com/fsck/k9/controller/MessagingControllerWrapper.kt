@@ -96,7 +96,7 @@ class MessagingControllerWrapper(
         return messagingController.isCopyCapable(account)
     }
 
-    fun moveMessagesInThread(
+    suspend fun moveMessagesInThread(
         id: AccountId,
         folderId: Long,
         messages: List<MessageReference>,
@@ -111,7 +111,7 @@ class MessagingControllerWrapper(
         )
     }
 
-    fun moveMessages(
+    suspend fun moveMessages(
         id: AccountId,
         folderId: Long,
         messages: List<MessageReference>,
@@ -126,7 +126,7 @@ class MessagingControllerWrapper(
         )
     }
 
-    fun copyMessagesInThread(
+    suspend fun copyMessagesInThread(
         id: AccountId,
         folderId: Long,
         messages: List<MessageReference>,
@@ -141,7 +141,7 @@ class MessagingControllerWrapper(
         )
     }
 
-    fun copyMessages(
+    suspend fun copyMessages(
         id: AccountId,
         folderId: Long,
         messages: List<MessageReference>,
@@ -204,33 +204,23 @@ class MessagingControllerWrapper(
         return messagingController.isPushCapable(account)
     }
 
-    fun markAllMessagesRead(id: AccountId, folderId: Long) {
+    suspend fun markAllMessagesRead(id: AccountId, folderId: Long) {
         val account = getAccountDtoOrThrow(id)
         messagingController.markAllMessagesRead(account, folderId)
     }
 
     fun checkAuthenticationProblem(id: AccountId) {
         val account = getAccountDtoOrThrow(id)
-        messagingController.checkAuthenticationProblem(account)
+        // runBlocking preserves the synchronous behaviour of the former Java MessagingController.
+        runBlocking { messagingController.checkAuthenticationProblem(account) }
     }
 
     fun isMoveCapable(message: MessageReference) = messagingController.isMoveCapable(message)
     fun isCopyCapable(message: MessageReference) = messagingController.isCopyCapable(message)
 
-    fun deleteThreads(messages: List<MessageReference>) = messagingController.deleteThreads(messages)
+    suspend fun deleteThreads(messages: List<MessageReference>) = messagingController.deleteThreads(messages)
 
-    fun deleteMessages(messages: List<MessageReference>) = messagingController.deleteMessages(messages)
-    fun archiveThreads(messages: List<MessageReference>) = messagingController.archiveThreads(messages)
-    fun archiveMessages(messages: List<MessageReference>) = messagingController.archiveMessages(messages)
-}
-
-@Throws(MessagingException::class)
-internal fun Backend.downloadCompleteMessageBlocking(
-    ioDispatcher: CoroutineDispatcher,
-    folderServerId: String,
-    messageServerId: String,
-) {
-    runBlocking(ioDispatcher) {
-        downloadCompleteMessage(folderServerId, messageServerId)
-    }
+    suspend fun deleteMessages(messages: List<MessageReference>) = messagingController.deleteMessages(messages)
+    suspend fun archiveThreads(messages: List<MessageReference>) = messagingController.archiveThreads(messages)
+    suspend fun archiveMessages(messages: List<MessageReference>) = messagingController.archiveMessages(messages)
 }

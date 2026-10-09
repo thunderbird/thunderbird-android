@@ -14,7 +14,9 @@ class DefaultAttachmentLoadingController(
     override fun loadAttachment(part: Part?, listener: MessagingListener) {
         val localPart = part as LocalPart
         val message = localPart.message
-        val account = accountManager.getById(AccountIdFactory.of(localPart.accountUuid))
+        val account = checkNotNull(accountManager.getById(AccountIdFactory.of(localPart.accountUuid))) {
+            "Account not found (ID: ${localPart.accountUuid})"
+        }
         messagingController.loadAttachment(account, message, part, listener)
     }
 }

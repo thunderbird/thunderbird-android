@@ -2,6 +2,7 @@ package com.fsck.k9.controller.push
 
 import com.fsck.k9.backend.api.BackendPusherCallback
 import com.fsck.k9.controller.MessagingController
+import kotlinx.coroutines.runBlocking
 import net.thunderbird.core.android.account.LegacyAccountDtoManager
 import net.thunderbird.core.logging.Logger
 import net.thunderbird.feature.account.AccountId
@@ -17,13 +18,15 @@ class AccountBackendPusherCallback(
     private val logger: Logger,
 ) : BackendPusherCallback {
     override fun onPushEvent(folderServerId: String) {
-        val account = accountManager.getById(accountId)
-        messagingController.synchronizeMailboxBlocking(account, folderServerId)
+        val account = checkNotNull(accountManager.getById(accountId)) { "Account not found (ID: $accountId)" }
+        // runBlocking preserves the synchronous behaviour of the former Java MessagingController.
+        runBlocking { messagingController.synchronizeMailboxBlocking(account, folderServerId) }
     }
 
     override fun onPushError(exception: Exception) {
-        val account = accountManager.getById(accountId)
-        messagingController.handleException(account, exception)
+        val account = checkNotNull(accountManager.getById(accountId)) { "Account not found (ID: $accountId)" }
+        // runBlocking preserves the synchronous behaviour of the former Java MessagingController.
+        runBlocking { messagingController.handleException(account, exception) }
     }
 
     override suspend fun onPushNotSupported() {

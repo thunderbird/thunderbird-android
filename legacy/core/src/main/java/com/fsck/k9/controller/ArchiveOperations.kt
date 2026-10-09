@@ -14,26 +14,26 @@ internal class ArchiveOperations(
     private val messagingController: MessagingController,
     private val featureFlagProvider: FeatureFlagProvider,
 ) {
-    fun archiveThreads(messages: List<MessageReference>) {
+    suspend fun archiveThreads(messages: List<MessageReference>) {
         archiveByFolder("archiveThreads", messages) { account, folderId, messagesInFolder, archiveFolderId ->
             archiveThreads(account, folderId, messagesInFolder, archiveFolderId)
         }
     }
 
-    fun archiveMessages(messages: List<MessageReference>) {
+    suspend fun archiveMessages(messages: List<MessageReference>) {
         archiveByFolder("archiveMessages", messages) { account, folderId, messagesInFolder, archiveFolderId ->
             archiveMessages(account, folderId, messagesInFolder, archiveFolderId)
         }
     }
 
-    fun archiveMessage(message: MessageReference) {
+    suspend fun archiveMessage(message: MessageReference) {
         archiveMessages(listOf(message))
     }
 
-    private fun archiveByFolder(
+    private suspend fun archiveByFolder(
         description: String,
         messages: List<MessageReference>,
-        action: (
+        action: suspend (
             account: LegacyAccountDto,
             folderId: Long,
             messagesInFolder: List<LocalMessage>,
@@ -61,7 +61,7 @@ internal class ArchiveOperations(
         }
     }
 
-    private fun archiveThreads(
+    private suspend fun archiveThreads(
         account: LegacyAccountDto,
         sourceFolderId: Long,
         messages: List<LocalMessage>,
@@ -71,7 +71,7 @@ internal class ArchiveOperations(
         archiveMessages(account, sourceFolderId, messagesInThreads, archiveFolderId)
     }
 
-    private fun archiveMessages(
+    private suspend fun archiveMessages(
         account: LegacyAccountDto,
         sourceFolderId: Long,
         messages: List<LocalMessage>,
@@ -91,7 +91,7 @@ internal class ArchiveOperations(
         )
     }
 
-    private fun actOnMessagesGroupedByAccountAndFolder(
+    private suspend fun actOnMessagesGroupedByAccountAndFolder(
         messages: List<MessageReference>,
         block: (account: LegacyAccountDto, messageFolder: LocalFolder, messages: List<LocalMessage>) -> Unit,
     ) {
