@@ -5,8 +5,10 @@ package com.fsck.k9.search
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.feature.mail.folder.FolderType
+import net.thunderbird.feature.mail.folder.api.OutboxFolderManager
 import net.thunderbird.feature.search.legacy.LocalMessageSearch
 import net.thunderbird.feature.search.legacy.LocalMessageSearchType
+import net.thunderbird.feature.search.legacy.SearchConditionTreeNode
 import net.thunderbird.feature.search.legacy.UnifiedFolderSelection
 
 val LocalMessageSearch.isUnified: Boolean
@@ -23,6 +25,27 @@ val LocalMessageSearch.isSingleAccount: Boolean
 
 val LocalMessageSearch.isSingleFolder: Boolean
     get() = isSingleAccount && folderIds.size == 1
+
+/**
+ * Returns the conditions to run this search against [account]'s messages, or `null` if the account doesn't take part.
+ *
+ * @see LocalMessageSearch.conditionsForAccount
+ */
+fun LocalMessageSearch.conditionsFor(
+    account: LegacyAccount,
+    outboxFolderManager: OutboxFolderManager,
+): SearchConditionTreeNode? = conditionsForAccount { folderType ->
+    when (folderType) {
+        FolderType.INBOX -> account.inboxFolderId
+        FolderType.OUTBOX -> outboxFolderManager.getOutboxFolderIdSync(account.id).takeIf { it != -1L }
+        FolderType.SENT -> account.sentFolderId
+        FolderType.TRASH -> account.trashFolderId
+        FolderType.DRAFTS -> account.draftsFolderId
+        FolderType.ARCHIVE -> account.archiveFolderId
+        FolderType.SPAM -> account.spamFolderId
+        FolderType.REGULAR -> null
+    }
+}
 
 @JvmName("getLegacyAccountsFromLocalSearch")
 fun LocalMessageSearch.getLegacyAccounts(accountManager: LegacyAccountManager): List<LegacyAccount> {
