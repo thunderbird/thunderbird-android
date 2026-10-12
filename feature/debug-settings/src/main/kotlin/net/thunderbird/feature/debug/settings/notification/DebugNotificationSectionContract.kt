@@ -4,7 +4,7 @@ import kotlin.reflect.KClass
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import net.thunderbird.core.ui.contract.mvi.UnidirectionalViewModel
-import net.thunderbird.feature.mail.account.api.BaseAccount
+import net.thunderbird.feature.account.profile.AccountProfile
 import net.thunderbird.feature.notification.api.content.Notification
 
 internal interface DebugNotificationSectionContract {
@@ -12,8 +12,8 @@ internal interface DebugNotificationSectionContract {
     interface ViewModel : UnidirectionalViewModel<State, Event, Effect>
 
     data class State(
-        val accounts: ImmutableList<BaseAccount> = persistentListOf(),
-        val selectedAccount: BaseAccount? = null,
+        val accounts: ImmutableList<AccountProfile> = persistentListOf(),
+        val selectedAccount: AccountProfile? = null,
         val notificationStatusLog: ImmutableList<String> = persistentListOf("Ready to send notification"),
         val selectedSystemNotificationType: KClass<out Notification>? = null,
         val selectedInAppNotificationType: KClass<out Notification>? = null,
@@ -35,7 +35,7 @@ internal interface DebugNotificationSectionContract {
     }
 
     sealed interface Event {
-        data class SelectAccount(val account: BaseAccount) : Event
+        data class SelectAccount(val account: AccountProfile) : Event
         data class SelectNotificationType(val notificationType: KClass<out Notification>) : Event
         data object TriggerSystemNotification : Event
         data object TriggerInAppNotification : Event

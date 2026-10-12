@@ -1,9 +1,10 @@
 package net.thunderbird.feature.mail.account.api
 
 import kotlinx.coroutines.flow.Flow
+import net.thunderbird.feature.account.Account
 import net.thunderbird.feature.account.AccountId
 
-interface AccountManager<TAccount : BaseAccount> {
+interface AccountManager<TAccount : Account> {
 
     /**
      * Returns a list of all accounts.

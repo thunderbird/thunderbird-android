@@ -19,7 +19,6 @@ import kotlinx.coroutines.withContext
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.core.preference.GeneralSettingsManager
-import net.thunderbird.feature.mail.account.api.BaseAccount
 import net.thunderbird.feature.search.legacy.SearchAccount
 import org.koin.android.ext.android.inject
 
@@ -118,7 +117,7 @@ abstract class AccountList : BaseListActivity(), OnItemClickListener {
 
             if (account is SearchAccount) {
                 bindSearchAccount(account, holder)
-            } else if (account is BaseAccount) {
+            } else if (account is LegacyAccount) {
                 bindAccount(account, holder)
             } else {
                 error("Unknown account type: $account")
@@ -153,7 +152,7 @@ abstract class AccountList : BaseListActivity(), OnItemClickListener {
             }
         }
 
-        private fun bindAccount(account: BaseAccount, holder: AccountViewHolder) {
+        private fun bindAccount(account: LegacyAccount, holder: AccountViewHolder) {
             val accountName = account.name
             if (!accountName.isNullOrEmpty()) {
                 holder.description.text = accountName

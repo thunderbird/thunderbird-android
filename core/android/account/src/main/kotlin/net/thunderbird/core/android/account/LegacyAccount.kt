@@ -9,7 +9,6 @@ import net.thunderbird.core.common.mail.Protocols
 import net.thunderbird.feature.account.Account
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.storage.profile.ProfileDto
-import net.thunderbird.feature.mail.account.api.BaseAccount
 import net.thunderbird.feature.mail.folder.api.FolderPathDelimiter
 import net.thunderbird.feature.mail.folder.api.SpecialFolderSelection
 import net.thunderbird.feature.notification.NotificationSettings
@@ -24,9 +23,8 @@ data class LegacyAccount(
     // [Account]
     override val id: AccountId,
 
-    // [BaseAccount]
-    override val name: String?,
-    override val email: String,
+    val name: String?,
+    val email: String,
 
     // [AccountProfile]
     val profile: ProfileDto,
@@ -121,7 +119,7 @@ data class LegacyAccount(
     val signatureIsHtml: Boolean = identities.firstOrNull()?.signatureIsHtml ?: false,
     val shouldMigrateToOAuth: Boolean = false,
     val folderPathDelimiter: FolderPathDelimiter = "/",
-) : Account, BaseAccount {
+) : Account {
 
     fun isSortAscending(sortType: SortType): Boolean {
         return sortAscending[sortType] ?: sortType.isDefaultAscending

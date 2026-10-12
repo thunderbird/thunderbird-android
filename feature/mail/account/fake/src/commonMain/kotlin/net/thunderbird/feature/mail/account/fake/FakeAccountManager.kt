@@ -3,9 +3,9 @@ package net.thunderbird.feature.mail.account.fake
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.map
+import net.thunderbird.feature.account.Account
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.mail.account.api.AccountManager
-import net.thunderbird.feature.mail.account.api.BaseAccount
 
 /**
  * In-memory [AccountManager] for tests that only holds accounts.
@@ -13,7 +13,7 @@ import net.thunderbird.feature.mail.account.api.BaseAccount
  * It doesn't imitate the real account manager's behaviour (locking, validation, failures). Tests that need such
  * behaviour can override the open functions.
  */
-open class FakeAccountManager<TAccount : BaseAccount>(
+open class FakeAccountManager<TAccount : Account>(
     initialAccounts: List<TAccount> = emptyList(),
 ) : AccountManager<TAccount> {
     private val accounts = MutableStateFlow(initialAccounts)

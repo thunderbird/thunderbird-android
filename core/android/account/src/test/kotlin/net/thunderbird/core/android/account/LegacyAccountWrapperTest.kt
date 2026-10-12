@@ -101,7 +101,6 @@ class LegacyAccountWrapperTest {
                 // [Account]
                 id = ACCOUNT_ID,
 
-                // [BaseAccount]
                 name = PROFILE_NAME,
                 email = email,
 
