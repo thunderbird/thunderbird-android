@@ -34,13 +34,19 @@ class FakeStorageBackedAccountManager(
 
     override fun moveAccount(accountId: AccountId, newPosition: Int) = error("Not supported by this fake")
 
-    override suspend fun update(account: LegacyAccount) = updateSync(account)
+    override suspend fun create(account: LegacyAccount) = createSync(account)
 
-    override fun updateSync(account: LegacyAccount) {
+    override fun createSync(account: LegacyAccount) {
         val editor = storageProvider.createStorageEditor()
         accountStorageHandler.save(account, storageProvider.storage, editor)
         check(editor.commit())
     }
+
+    override suspend fun update(accountId: AccountId, transform: (LegacyAccount) -> LegacyAccount): LegacyAccount? =
+        updateSync(accountId, transform)
+
+    override fun updateSync(accountId: AccountId, transform: (LegacyAccount) -> LegacyAccount): LegacyAccount? =
+        findById(accountId)?.let(transform)?.also { createSync(it) }
 
     private fun load(accountId: AccountId): LegacyAccount {
         val storage = storageProvider.storage

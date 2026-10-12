@@ -7,12 +7,12 @@ import assertk.assertions.prop
 import assertk.assertions.single
 import com.fsck.k9.FakeLegacyAccount
 import com.fsck.k9.K9RobolectricTest
-import com.fsck.k9.account.FakeLegacyAccountManager
 import com.fsck.k9.backend.BackendManager
 import com.fsck.k9.backend.api.Backend
 import net.thunderbird.backend.api.BackendFactory
 import net.thunderbird.components.core.logging.testing.TestLogger
 import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.fake.FakeLegacyAccountManager
 import net.thunderbird.core.common.mail.Protocols
 import net.thunderbird.core.featureflag.FeatureFlagResult
 import net.thunderbird.feature.account.AccountId
@@ -84,7 +84,7 @@ class MessagingControllerRefreshFolderListTest : K9RobolectricTest() {
         testSubject.refreshFolderListSynchronous(account.id)
 
         // Assert
-        assertThat(accountManager.updatedAccounts).single().all {
+        assertThat(accountManager.savedAccounts).single().all {
             prop(LegacyAccount::inboxFolderId).isEqualTo(INBOX_FOLDER_ID)
             prop(LegacyAccount::trashFolderId).isEqualTo(TRASH_FOLDER_ID)
             prop(LegacyAccount::folderPathDelimiter).isEqualTo(NEW_FOLDER_PATH_DELIMITER)

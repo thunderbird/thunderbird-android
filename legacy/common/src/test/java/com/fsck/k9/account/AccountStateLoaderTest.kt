@@ -12,6 +12,7 @@ import kotlinx.coroutines.test.runTest
 import net.thunderbird.account.fake.FakeAccountData.ACCOUNT_ID
 import net.thunderbird.core.android.account.Identity
 import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.fake.FakeLegacyAccountManager
 import net.thunderbird.feature.account.storage.profile.AvatarDto
 import net.thunderbird.feature.account.storage.profile.AvatarTypeDto
 import net.thunderbird.feature.account.storage.profile.ProfileDto
@@ -52,8 +53,7 @@ class AccountStateLoaderTest {
             identities = listOf(Identity()),
             oAuthState = "oAuthState",
         )
-        val accounts = mutableMapOf(ACCOUNT_ID to account)
-        val accountManager = FakeLegacyAccountManager(accounts = accounts)
+        val accountManager = FakeLegacyAccountManager(listOf(account))
         val testSubject = AccountStateLoader(accountManager)
 
         val result = testSubject.loadAccountState(ACCOUNT_ID)

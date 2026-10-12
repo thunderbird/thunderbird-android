@@ -40,45 +40,39 @@ interface AccountManager<TAccount : BaseAccount> {
     fun moveAccount(accountId: AccountId, newPosition: Int)
 
     /**
-     * Updates the specified [account].
+     * Saves the specified new [account].
      *
-     * @param account The account to update.
+     * Use [update] to change an existing account.
+     *
+     * @param account The account to save. No account with the same ID may exist.
      */
-    suspend fun update(account: TAccount)
+    suspend fun create(account: TAccount)
 
     /**
-     * Updates the specified [account] synchronously.
+     * Synchronous version of [create].
      *
-     * @param account The account to update.
+     * @see create
      */
-    fun updateSync(account: TAccount)
+    fun createSync(account: TAccount)
 
     /**
      * Atomically updates the account with the specified [accountId].
      *
-     * [transform] receives the latest version of the account, and its result is saved. Unlike reading the account,
-     * changing it and calling [update] with it, no change made elsewhere in the meantime is lost.
+     * [transform] receives the latest version of the account, and its result is saved, so no change made elsewhere in
+     * the meantime is lost.
      *
      * [transform] may run while other account operations wait, so it must be quick and must not call this manager.
-     *
-     * The default implementation is not atomic. Implementations used from several threads must override it.
      *
      * @param accountId The [AccountId] of the account to update.
      * @param transform Returns the updated account for the latest version of the account.
      * @return The saved account, or `null` if no account with the specified [accountId] exists.
      */
-    suspend fun update(accountId: AccountId, transform: (TAccount) -> TAccount): TAccount? {
-        val account = findById(accountId) ?: return null
-        return transform(account).also { update(it) }
-    }
+    suspend fun update(accountId: AccountId, transform: (TAccount) -> TAccount): TAccount?
 
     /**
-     * Synchronous version of [update] with a [transform].
+     * Synchronous version of [update].
      *
      * @see update
      */
-    fun updateSync(accountId: AccountId, transform: (TAccount) -> TAccount): TAccount? {
-        val account = findById(accountId) ?: return null
-        return transform(account).also { updateSync(it) }
-    }
+    fun updateSync(accountId: AccountId, transform: (TAccount) -> TAccount): TAccount?
 }

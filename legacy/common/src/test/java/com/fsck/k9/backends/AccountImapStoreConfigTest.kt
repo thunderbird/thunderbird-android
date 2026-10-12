@@ -3,7 +3,6 @@ package com.fsck.k9.backends
 import assertk.assertThat
 import assertk.assertions.isFalse
 import assertk.assertions.isTrue
-import com.fsck.k9.account.FakeLegacyAccountManager
 import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ConnectionSecurity
 import com.fsck.k9.mail.ServerSettings
@@ -11,6 +10,7 @@ import com.fsck.k9.mail.store.imap.ImapClientInfo
 import net.thunderbird.core.android.account.Expunge
 import net.thunderbird.core.android.account.Identity
 import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.fake.FakeLegacyAccountManager
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.account.storage.profile.AvatarDto
@@ -20,7 +20,7 @@ import org.junit.Test
 
 class AccountImapStoreConfigTest {
     private val account = createAccount(AccountIdFactory.create())
-    private val accountManager = FakeLegacyAccountManager(mutableMapOf(account.id to account))
+    private val accountManager = FakeLegacyAccountManager(listOf(account))
 
     private val testSubject = AccountImapStoreConfig(
         accountManager = accountManager,
@@ -35,9 +35,9 @@ class AccountImapStoreConfigTest {
         assertThat(testSubject.isExpungeImmediately()).isFalse()
 
         // Act
-        accountManager.updateSync(
-            account.copy(isSubscribedFoldersOnly = true, expungePolicy = Expunge.EXPUNGE_IMMEDIATELY),
-        )
+        accountManager.updateSync(account.id) {
+            it.copy(isSubscribedFoldersOnly = true, expungePolicy = Expunge.EXPUNGE_IMMEDIATELY)
+        }
 
         // Assert
         assertThat(testSubject.isSubscribedFoldersOnly()).isTrue()

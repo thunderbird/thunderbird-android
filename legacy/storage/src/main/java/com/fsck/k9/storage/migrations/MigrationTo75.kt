@@ -5,25 +5,34 @@ import com.fsck.k9.mailstore.MigrationsHelper
 
 internal class MigrationTo75(private val db: SQLiteDatabase, private val migrationsHelper: MigrationsHelper) {
     fun updateAccountWithSpecialFolderIds() {
+        // Look up the folder IDs first, so no database query runs while the account is being updated
         val account = migrationsHelper.account
-        val updatedAccount = account.copy(
-            inboxFolderId = getFolderId(account.legacyInboxFolder),
-            draftsFolderId = getFolderId(account.importedDraftsFolder),
-            sentFolderId = getFolderId(account.importedSentFolder),
-            trashFolderId = getFolderId(account.importedTrashFolder),
-            archiveFolderId = getFolderId(account.importedArchiveFolder),
-            spamFolderId = getFolderId(account.importedSpamFolder),
-            autoExpandFolderId = getFolderId(account.importedAutoExpandFolder),
+        val inboxFolderId = getFolderId(account.legacyInboxFolder)
+        val draftsFolderId = getFolderId(account.importedDraftsFolder)
+        val sentFolderId = getFolderId(account.importedSentFolder)
+        val trashFolderId = getFolderId(account.importedTrashFolder)
+        val archiveFolderId = getFolderId(account.importedArchiveFolder)
+        val spamFolderId = getFolderId(account.importedSpamFolder)
+        val autoExpandFolderId = getFolderId(account.importedAutoExpandFolder)
 
-            importedDraftsFolder = null,
-            importedSentFolder = null,
-            importedTrashFolder = null,
-            importedArchiveFolder = null,
-            importedSpamFolder = null,
-            importedAutoExpandFolder = null,
-        )
+        migrationsHelper.updateAccount { latestAccount ->
+            latestAccount.copy(
+                inboxFolderId = inboxFolderId,
+                draftsFolderId = draftsFolderId,
+                sentFolderId = sentFolderId,
+                trashFolderId = trashFolderId,
+                archiveFolderId = archiveFolderId,
+                spamFolderId = spamFolderId,
+                autoExpandFolderId = autoExpandFolderId,
 
-        migrationsHelper.saveAccount(updatedAccount)
+                importedDraftsFolder = null,
+                importedSentFolder = null,
+                importedTrashFolder = null,
+                importedArchiveFolder = null,
+                importedSpamFolder = null,
+                importedAutoExpandFolder = null,
+            )
+        }
     }
 
     private fun getFolderId(serverId: String?): Long? {

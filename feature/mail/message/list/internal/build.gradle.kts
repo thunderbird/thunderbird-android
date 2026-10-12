@@ -26,6 +26,7 @@ dependencies {
     implementation(projects.legacy.mailstore)
     implementation(projects.mail.common)
 
+    testImplementation(projects.core.android.account.fake)
     testImplementation(projects.core.ui.compose.testing)
     testImplementation(projects.feature.notification.testing)
 

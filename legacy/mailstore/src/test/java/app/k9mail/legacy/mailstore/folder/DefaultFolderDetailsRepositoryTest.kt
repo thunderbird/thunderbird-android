@@ -1,6 +1,5 @@
 package app.k9mail.legacy.mailstore.folder
 
-import app.k9mail.legacy.mailstore.FakeLegacyAccountManager
 import app.k9mail.legacy.mailstore.FakeMessageStoreFactory
 import app.k9mail.legacy.mailstore.FolderDetailsAccessor
 import app.k9mail.legacy.mailstore.FolderMapper
@@ -28,6 +27,7 @@ import net.thunderbird.account.fake.FakeAccountData.ACCOUNT_ID_RAW
 import net.thunderbird.core.android.account.Identity
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.components.core.logging.testing.TestLogger
+import net.thunderbird.core.android.account.fake.FakeLegacyAccountManager
 import net.thunderbird.components.core.outcome.Outcome
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.AccountIdFactory
@@ -57,7 +57,7 @@ class DefaultFolderDetailsRepositoryTest {
     private val accountId = AccountIdFactory.of(ACCOUNT_ID_RAW)
     private val account = createLegacyAccount(accountId)
     private val messageStore = mock<ListenableMessageStore>()
-    private val accountManager = FakeLegacyAccountManager(accounts = listOf(account))
+    private val accountManager = FakeLegacyAccountManager(initialAccounts = listOf(account))
     private val messageStoreManager = MessageStoreManager(
         messageStoreFactory = FakeMessageStoreFactory(
             messageStoresById = mapOf(accountId to messageStore),

@@ -8,11 +8,10 @@ class DefaultMigrationHelper(
     private val accountId: AccountId,
     private val accountManager: LegacyAccountManager,
 ): MigrationsHelper {
-    override fun getAccount(): LegacyAccount {
-        return accountManager.findById(accountId) ?: error("Account $accountId not found")
-    }
+    override val account: LegacyAccount
+        get() = accountManager.findById(accountId) ?: error("Account $accountId not found")
 
-    override fun saveAccount(account: LegacyAccount) {
-        accountManager.updateSync(account)
+    override fun updateAccount(transform: (LegacyAccount) -> LegacyAccount) {
+        accountManager.updateSync(accountId, transform) ?: error("Account $accountId not found")
     }
 }

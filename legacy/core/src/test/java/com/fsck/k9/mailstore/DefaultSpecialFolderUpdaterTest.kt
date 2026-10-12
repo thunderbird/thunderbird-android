@@ -16,6 +16,7 @@ import kotlinx.coroutines.test.runTest
 import net.thunderbird.core.android.account.Identity
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.LegacyAccountManager
+import net.thunderbird.core.android.account.fake.FakeLegacyAccountManager as SharedFakeLegacyAccountManager
 import net.thunderbird.core.common.mail.Protocols
 import net.thunderbird.components.core.logging.testing.TestLogger
 import net.thunderbird.components.core.outcome.Outcome
@@ -108,7 +109,7 @@ class DefaultSpecialFolderUpdaterTest {
             importedDraftsFolder = "ImportedDrafts",
             draftsFolderSelection = SpecialFolderSelection.MANUAL,
         )
-        accountManager.updateSync(accountWithImports)
+        accountManager.updateSync(accountId) { accountWithImports }
 
         val draftsFolder = createRemoteFolder(id = 10, type = FolderType.REGULAR, serverId = "ImportedDrafts")
         remoteFolderQueryRepository.remoteFolders = listOf(draftsFolder)
@@ -129,7 +130,7 @@ class DefaultSpecialFolderUpdaterTest {
             draftsFolderId = 99L,
             draftsFolderSelection = SpecialFolderSelection.MANUAL,
         )
-        accountManager.updateSync(accountWithManual)
+        accountManager.updateSync(accountId) { accountWithManual }
 
         // Remote folders do NOT include ID 99, but has a folder named "Drafts"
         val draftsFolder = createRemoteFolder(id = 2, type = FolderType.DRAFTS, serverId = "Drafts")
@@ -150,7 +151,7 @@ class DefaultSpecialFolderUpdaterTest {
         val pop3Account = account.copy(
             incomingServerSettings = account.incomingServerSettings.copy(type = Protocols.POP3),
         )
-        accountManager.updateSync(pop3Account)
+        accountManager.updateSync(accountId) { pop3Account }
 
         val inboxFolder = createRemoteFolder(id = 1, type = FolderType.INBOX, serverId = "INBOX")
         val draftsFolder = createRemoteFolder(id = 2, type = FolderType.DRAFTS, serverId = "Drafts")
@@ -174,7 +175,7 @@ class DefaultSpecialFolderUpdaterTest {
         )
         remoteFolderQueryRepository.onGetAll = {
             // Simulates another component saving the account, e.g. a refreshed OAuth state
-            accountManager.updateSync(accountManager.findById(accountId)!!.copy(oAuthState = "refreshed"))
+            accountManager.updateSync(accountId) { it.copy(oAuthState = "refreshed") }
         }
 
         // Act
@@ -194,12 +195,12 @@ class DefaultSpecialFolderUpdaterTest {
         accountManager.onFindById = {
             // Simulates another special folder being chosen after this update read the account
             accountManager.onFindById = {}
-            accountManager.updateSync(
-                accountManager.findById(accountId)!!.copy(
+            accountManager.updateSync(accountId) {
+                it.copy(
                     draftsFolderId = 20L,
                     draftsFolderSelection = SpecialFolderSelection.MANUAL,
-                ),
-            )
+                )
+            }
         }
 
         // Act
@@ -222,12 +223,12 @@ class DefaultSpecialFolderUpdaterTest {
         )
         remoteFolderQueryRepository.onGetAll = {
             // Simulates the user choosing an archive folder while the special folders are being updated
-            accountManager.updateSync(
-                accountManager.findById(accountId)!!.copy(
+            accountManager.updateSync(accountId) {
+                it.copy(
                     archiveFolderId = 5L,
                     archiveFolderSelection = SpecialFolderSelection.MANUAL,
-                ),
-            )
+                )
+            }
         }
 
         // Act
@@ -312,23 +313,10 @@ class DefaultSpecialFolderUpdaterTest {
     }
 
     private class FakeLegacyAccountManager(
-        initialAccounts: List<LegacyAccount> = emptyList(),
-    ) : LegacyAccountManager {
-        private val accounts = initialAccounts.toMutableList()
-
-        override fun observeAll(): Flow<List<LegacyAccount>> = throw UnsupportedOperationException()
-        override suspend fun update(account: LegacyAccount) = updateSync(account)
-        override fun updateSync(account: LegacyAccount) {
-            accounts.removeIf { it.id == account.id }
-            accounts.add(account)
-        }
-
-        override fun findAll(): List<LegacyAccount> = accounts
+        initialAccounts: List<LegacyAccount>,
+    ) : SharedFakeLegacyAccountManager(initialAccounts) {
         var onFindById: () -> Unit = {}
 
-        override fun findById(accountId: AccountId): LegacyAccount? =
-            accounts.find { it.id == accountId }.also { onFindById() }
-        override fun observeById(accountId: AccountId): Flow<LegacyAccount?> = flowOf(findById(accountId))
-        override fun moveAccount(accountId: AccountId, newPosition: Int) = Unit
+        override fun findById(accountId: AccountId): LegacyAccount? = super.findById(accountId).also { onFindById() }
     }
 }

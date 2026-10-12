@@ -7,10 +7,10 @@ import assertk.assertions.isNotNull
 import assertk.assertions.isNull
 import assertk.assertions.prop
 import com.fsck.k9.FakeLegacyAccount
-import com.fsck.k9.account.FakeLegacyAccountManager
 import kotlinx.coroutines.test.runTest
 import net.thunderbird.components.core.outcome.Outcome
 import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.fake.FakeLegacyAccountManager
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.mail.folder.api.Folder
 import net.thunderbird.feature.mail.folder.api.FolderServerId

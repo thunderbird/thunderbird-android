@@ -65,7 +65,7 @@ internal class AccountSettingsWriter(
         val importedAccount = createAccount(account, accountId, accountName)
         // A failed folder-settings commit must not leave an account behind that a retry would duplicate.
         writeFolders(accountId, account.folders)
-        accountManager.update(importedAccount)
+        accountManager.create(importedAccount)
         localFoldersCreator.createSpecialLocalFolders(accountId)
         Core.setServicesEnabled(context)
 

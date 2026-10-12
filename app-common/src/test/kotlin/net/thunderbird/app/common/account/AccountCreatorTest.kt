@@ -24,9 +24,9 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import net.thunderbird.app.common.account.data.FakeAccountProfileRepository
-import net.thunderbird.app.common.account.data.FakeLegacyAccountManager
 import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.UNASSIGNED_ACCOUNT_NUMBER
 import net.thunderbird.core.android.account.DeletePolicy
+import net.thunderbird.core.android.account.fake.FakeLegacyAccountManager
 import net.thunderbird.core.featureflag.FeatureFlagResult
 import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.account.storage.profile.AvatarTypeDto
@@ -170,11 +170,10 @@ class AccountCreatorTest {
                 ),
             ),
         )
-        accountManager.updateSync(initialAccount)
+        accountManager.createSync(initialAccount)
         whenever(backendManager.getBackend(accountId)).thenReturn(backend)
         whenever(backend.refreshFolderList()).doAnswer {
-            val beforeRefresh = requireNotNull(accountManager.findById(accountId))
-            accountManager.updateSync(beforeRefresh.copy(inboxFolderId = 42L, sentFolderId = 43L))
+            accountManager.updateSync(accountId) { it.copy(inboxFolderId = 42L, sentFolderId = 43L) }
             "/"
         }
 

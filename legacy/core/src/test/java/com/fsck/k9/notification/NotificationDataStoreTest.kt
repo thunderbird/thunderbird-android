@@ -23,6 +23,7 @@ import kotlinx.coroutines.flow.flowOf
 import net.thunderbird.core.android.account.Identity
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.LegacyAccountManager
+import net.thunderbird.core.android.account.fake.FakeLegacyAccountManager
 import net.thunderbird.core.android.testing.RobolectricTest
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.AccountIdFactory
@@ -37,7 +38,7 @@ private const val NEW_CHANNEL_VERSION = 5
 class NotificationDataStoreTest : RobolectricTest() {
     private val accountId = AccountIdFactory.create()
     private val account = createFakeAccount(accountId)
-    private val accountManager = FakeAccountManager(mutableMapOf(accountId to account))
+    private val accountManager = FakeLegacyAccountManager(listOf(account))
     private val notificationIdRegistry = FakeAccountNotificationIdRegistry()
     private val notificationDataStore = NotificationDataStore(accountManager, notificationIdRegistry)
 
@@ -81,7 +82,7 @@ class NotificationDataStoreTest : RobolectricTest() {
     fun `addNotification should use the latest account`() {
         // Arrange
         notificationDataStore.addNotification(accountId, createNotificationContent("1"), TIMESTAMP)
-        accountManager.updateSync(account.copy(messagesNotificationChannelVersion = NEW_CHANNEL_VERSION))
+        accountManager.updateSync(accountId) { it.copy(messagesNotificationChannelVersion = NEW_CHANNEL_VERSION) }
 
         // Act
         val result = notificationDataStore.addNotification(accountId, createNotificationContent("2"), TIMESTAMP)
@@ -97,7 +98,7 @@ class NotificationDataStoreTest : RobolectricTest() {
         // Arrange
         val content = createNotificationContent("1")
         notificationDataStore.addNotification(accountId, content, TIMESTAMP)
-        accountManager.updateSync(account.copy(messagesNotificationChannelVersion = NEW_CHANNEL_VERSION))
+        accountManager.updateSync(accountId) { it.copy(messagesNotificationChannelVersion = NEW_CHANNEL_VERSION) }
 
         // Act
         val result = notificationDataStore.removeNotifications(accountId) { listOf(content.messageReference) }
@@ -305,18 +306,6 @@ class NotificationDataStoreTest : RobolectricTest() {
             notificationHolder.content.messageReference == content.messageReference
         }
         assertThat(notificationHolder.content).isSameInstanceAs(content)
-    }
-
-    private class FakeAccountManager(
-        val accounts: MutableMap<AccountId, LegacyAccount> = mutableMapOf(),
-    ) : LegacyAccountManager {
-        override fun findAll(): List<LegacyAccount> = accounts.values.toList()
-        override fun observeAll(): Flow<List<LegacyAccount>> = flowOf(accounts.values.toList())
-        override fun findById(accountId: AccountId): LegacyAccount? = accounts[accountId]
-        override fun observeById(accountId: AccountId): Flow<LegacyAccount?> = flowOf(accounts[accountId])
-        override fun moveAccount(accountId: AccountId, newPosition: Int) = Unit
-        override suspend fun update(account: LegacyAccount) { updateSync(account) }
-        override fun updateSync(account: LegacyAccount) { accounts[account.id] = account }
     }
 
     private class FakeAccountNotificationIdRegistry : AccountNotificationIdRegistry {

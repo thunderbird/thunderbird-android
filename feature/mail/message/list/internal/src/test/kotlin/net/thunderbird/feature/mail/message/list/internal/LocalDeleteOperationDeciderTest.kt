@@ -18,13 +18,13 @@ class LocalDeleteOperationDeciderTest {
 
     @BeforeTest
     fun setup() {
-        accountManager.accounts.clear()
+        accountManager.findAll().forEach { accountManager.remove(it.id) }
     }
 
     @Test
     fun `delete message from trash folder`() {
         val account = createAccount(trashFolderId = TRASH_FOLDER_ID, spamFolderId = SPAM_FOLDER_ID)
-        accountManager.accounts.add(account)
+        accountManager.replace(account)
 
         val result = localDeleteOperationDecider.isDeleteImmediately(accountId, TRASH_FOLDER_ID)
 
@@ -34,7 +34,7 @@ class LocalDeleteOperationDeciderTest {
     @Test
     fun `delete message from spam folder`() {
         val account = createAccount(trashFolderId = TRASH_FOLDER_ID, spamFolderId = SPAM_FOLDER_ID)
-        accountManager.accounts.add(account)
+        accountManager.replace(account)
 
         val result = localDeleteOperationDecider.isDeleteImmediately(accountId, SPAM_FOLDER_ID)
 
@@ -44,7 +44,7 @@ class LocalDeleteOperationDeciderTest {
     @Test
     fun `delete message from regular folder`() {
         val account = createAccount(trashFolderId = TRASH_FOLDER_ID, spamFolderId = SPAM_FOLDER_ID)
-        accountManager.accounts.add(account)
+        accountManager.replace(account)
 
         val result = localDeleteOperationDecider.isDeleteImmediately(accountId, REGULAR_FOLDER_ID)
 
@@ -54,7 +54,7 @@ class LocalDeleteOperationDeciderTest {
     @Test
     fun `delete message from regular folder without trash folder configured`() {
         val account = createAccount(trashFolderId = null, spamFolderId = SPAM_FOLDER_ID)
-        accountManager.accounts.add(account)
+        accountManager.replace(account)
 
         val result = localDeleteOperationDecider.isDeleteImmediately(accountId, REGULAR_FOLDER_ID)
 

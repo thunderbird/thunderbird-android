@@ -180,11 +180,17 @@ private class CachingAccountManager(private val storageManager: LegacyAccountMan
 
     override fun moveAccount(accountId: AccountId, newPosition: Int) = error("Not supported")
 
-    override suspend fun update(account: LegacyAccount) = updateSync(account)
+    override suspend fun create(account: LegacyAccount) = createSync(account)
 
-    override fun updateSync(account: LegacyAccount) {
+    override fun createSync(account: LegacyAccount) {
         updatedAccounts.add(account)
-        storageManager.updateSync(account)
+        storageManager.createSync(account)
         accounts.value = storageManager.findAll()
     }
+
+    override suspend fun update(accountId: AccountId, transform: (LegacyAccount) -> LegacyAccount): LegacyAccount? =
+        updateSync(accountId, transform)
+
+    override fun updateSync(accountId: AccountId, transform: (LegacyAccount) -> LegacyAccount): LegacyAccount? =
+        findById(accountId)?.let(transform)?.also { createSync(it) }
 }

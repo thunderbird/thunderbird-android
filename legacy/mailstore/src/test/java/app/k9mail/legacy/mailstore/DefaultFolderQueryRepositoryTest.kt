@@ -19,6 +19,7 @@ import net.thunderbird.components.core.outcome.Outcome
 import net.thunderbird.core.android.account.Identity
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.components.core.logging.testing.TestLogger
+import net.thunderbird.core.android.account.fake.FakeLegacyAccountManager
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.account.storage.profile.AvatarDto
@@ -42,7 +43,7 @@ class DefaultFolderQueryRepositoryTest {
     private val accountId = AccountIdFactory.of(ACCOUNT_ID_RAW)
     private val account = createLegacyAccount(accountId)
     private val messageStore = mock<ListenableMessageStore>()
-    private val accountManager = FakeLegacyAccountManager(accounts = listOf(account))
+    private val accountManager = FakeLegacyAccountManager(initialAccounts = listOf(account))
     private val outboxFolderManager = FakeOutboxFolderManager(outboxFolderId = OUTBOX_FOLDER_ID)
     private var messageStoreManager = createMessageStoreManager(accountId)
     private val testSubject = DefaultFolderQueryRepository(

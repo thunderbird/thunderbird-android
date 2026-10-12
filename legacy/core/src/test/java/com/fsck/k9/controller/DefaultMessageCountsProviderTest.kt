@@ -10,13 +10,13 @@ import app.k9mail.legacy.message.controller.SimpleMessagingListener
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import com.fsck.k9.FakeLegacyAccount
-import com.fsck.k9.account.FakeLegacyAccountManager
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import net.thunderbird.account.fake.FakeAccountData.ACCOUNT_ID
 import net.thunderbird.components.core.logging.testing.TestLogger
 import net.thunderbird.core.android.account.LegacyAccountManager
+import net.thunderbird.core.android.account.fake.FakeLegacyAccountManager
 import net.thunderbird.feature.search.legacy.LocalMessageSearch
 import net.thunderbird.feature.search.legacy.SearchConditionTreeNode
 import net.thunderbird.legacy.core.mailstore.folder.FakeOutboxFolderManager

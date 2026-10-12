@@ -47,6 +47,7 @@ dependencies {
     implementation(projects.feature.mail.message.reader.api)
     implementation(projects.feature.mail.message.composer.api)
 
+    testImplementation(projects.core.android.account.fake)
     testImplementation(projects.core.testing)
     testImplementation(libs.tb.mobile.components.ui.testing)
     testImplementation(projects.core.android.testing)

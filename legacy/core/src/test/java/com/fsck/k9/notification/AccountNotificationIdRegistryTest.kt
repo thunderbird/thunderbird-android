@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.LegacyAccountManager
+import net.thunderbird.core.android.account.fake.FakeLegacyAccountManager
 import net.thunderbird.core.android.testing.RobolectricTest
 import net.thunderbird.core.common.mail.Protocols
 import net.thunderbird.feature.account.AccountId
@@ -174,31 +175,4 @@ class AccountNotificationIdRegistryTest : RobolectricTest() {
         password = "irrelevant",
         clientCertificateAlias = null,
     )
-
-    private class FakeLegacyAccountManager(
-        accounts: List<LegacyAccount>,
-    ) : LegacyAccountManager {
-        private val accounts = accounts.toMutableList()
-
-        fun replace(account: LegacyAccount) {
-            val index = accounts.indexOfFirst { it.id == account.id }
-            accounts[index] = account
-        }
-
-        fun remove(accountId: AccountId) {
-            accounts.removeAll { it.id == accountId }
-        }
-
-        override fun observeAll(): Flow<List<LegacyAccount>> = flowOf(accounts)
-        override fun observeById(accountId: AccountId): Flow<LegacyAccount?> =
-            flowOf(findById(accountId))
-
-        override fun findById(accountId: AccountId): LegacyAccount? =
-            accounts.firstOrNull { it.id == accountId }
-
-        override fun moveAccount(accountId: AccountId, newPosition: Int) = error("Not used in this test")
-        override suspend fun update(account: LegacyAccount) = error("Not used in this test")
-        override fun updateSync(account: LegacyAccount) = error("Not used in this test")
-        override fun findAll(): List<LegacyAccount> = accounts
-    }
 }

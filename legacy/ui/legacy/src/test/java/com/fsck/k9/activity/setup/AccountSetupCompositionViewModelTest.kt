@@ -8,7 +8,6 @@ import assertk.assertions.isTrue
 import assertk.assertions.prop
 import com.fsck.k9.EmailAddressValidator
 import com.fsck.k9.FakeLegacyAccount
-import com.fsck.k9.account.FakeLegacyAccountManager
 import com.fsck.k9.activity.account.identity.LegacyIdentitySignatureWebViewConfigurator
 import com.fsck.k9.activity.setup.AccountSetupCompositionContract.Event
 import kotlinx.coroutines.Dispatchers
@@ -18,6 +17,7 @@ import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
 import net.thunderbird.core.android.account.Identity
 import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.fake.FakeLegacyAccountManager
 import net.thunderbird.core.common.resources.StringsResourceManager
 import org.junit.After
 import org.junit.Before
@@ -77,7 +77,7 @@ class AccountSetupCompositionViewModelTest {
     fun `saving should keep account changes made elsewhere after the screen was opened`() {
         // Arrange
         val testSubject = createTestSubject()
-        accountManager.updateSync(account.copy(oAuthState = "refreshed"))
+        accountManager.updateSync(account.id) { it.copy(oAuthState = "refreshed") }
         testSubject.event(Event.BccEmailChange("bcc@example.com"))
         testSubject.event(Event.SignatureLocationChange(1 to "Before quoted text"))
 

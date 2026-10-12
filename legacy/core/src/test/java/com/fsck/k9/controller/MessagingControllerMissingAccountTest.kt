@@ -3,9 +3,9 @@ package com.fsck.k9.controller
 import assertk.assertThat
 import assertk.assertions.isFalse
 import com.fsck.k9.K9RobolectricTest
-import com.fsck.k9.account.FakeLegacyAccountManager
 import com.fsck.k9.backend.BackendManager
 import net.thunderbird.components.core.logging.testing.TestLogger
+import net.thunderbird.core.android.account.fake.FakeLegacyAccountManager
 import net.thunderbird.core.featureflag.FeatureFlagResult
 import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.notification.testing.fake.FakeNotificationManager

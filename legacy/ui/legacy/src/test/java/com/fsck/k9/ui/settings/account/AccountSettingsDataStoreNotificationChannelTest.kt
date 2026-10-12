@@ -12,13 +12,13 @@ import assertk.assertions.isTrue
 import assertk.assertions.prop
 import com.fsck.k9.FakeLegacyAccount
 import com.fsck.k9.K9RobolectricTest
-import com.fsck.k9.account.FakeLegacyAccountManager
 import com.fsck.k9.notification.K9NotificationResourceProvider
 import com.fsck.k9.notification.NotificationChannelManager
 import com.fsck.k9.notification.NotificationLightDecoder
 import kotlinx.coroutines.test.TestScope
 import net.thunderbird.components.core.logging.testing.TestLogger
 import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.fake.FakeLegacyAccountManager
 import net.thunderbird.feature.notification.NotificationSettings
 import org.junit.Test
 import org.mockito.kotlin.mock

@@ -163,10 +163,10 @@ class DefaultLegacyAccountManagerTest {
     }
 
     @Test
-    fun `updateSync should assign account number if unassigned and save to storage and cache`() {
+    fun `createSync should assign account number if unassigned and save to storage and cache`() {
         val unassignedAccount = createFakeAccount("Unassigned").copy(accountNumber = UNASSIGNED_ACCOUNT_NUMBER)
 
-        testSubject.updateSync(unassignedAccount)
+        testSubject.createSync(unassignedAccount)
 
         val savedAccount = accountCache.findById(unassignedAccount.id)
         assertThat(savedAccount?.accountNumber).isEqualTo(0)
@@ -174,17 +174,29 @@ class DefaultLegacyAccountManagerTest {
     }
 
     @Test
-    fun `updateSync should cache the account as stored instead of as passed in`() {
+    fun `createSync should cache the account as stored instead of as passed in`() {
         // Arrange
         val account = createFakeAccount("Account").copy(openPgpProvider = null)
         // Storage writes a missing provider as an empty string, like the preferences storage
         accountStorage.onSave = { it.copy(openPgpProvider = "") }
 
         // Act
-        testSubject.updateSync(account)
+        testSubject.createSync(account)
 
         // Assert
         assertThat(testSubject.findById(account.id)).isNotNull().prop(LegacyAccount::openPgpProvider).isEqualTo("")
+    }
+
+    @Test
+    fun `createSync should reject an account that already exists`() {
+        // Arrange
+        val account = createFakeAccount("Account")
+        accountStorage.accounts.add(account)
+
+        // Act and assert
+        assertFailure { testSubject.createSync(account.copy(name = "Renamed")) }
+            .isInstanceOf<IllegalArgumentException>()
+        assertThat(accountStorage.savedAccounts).isEmpty()
     }
 
     @Test
@@ -200,7 +212,7 @@ class DefaultLegacyAccountManagerTest {
         // Arrange
         val account = createFakeAccount("Account")
         accountStorage.accounts.add(account)
-        testSubject.updateSync(account.copy(oAuthState = "refreshed"))
+        testSubject.updateSync(account.id) { it.copy(oAuthState = "refreshed") }
 
         // Act
         val result = testSubject.updateSync(account.id) { it.copy(name = "Renamed") }
@@ -254,19 +266,6 @@ class DefaultLegacyAccountManagerTest {
     }
 
     @Test
-    fun `updateSync with transform should reset folder limits when display count changes`() {
-        // Arrange
-        val account = createFakeAccount("Account").copy(displayCount = 25)
-        accountStorage.accounts.add(account)
-
-        // Act
-        testSubject.updateSync(account.id) { it.copy(displayCount = 50) }
-
-        // Assert
-        assertThat(accountFolderUpdater.resets).containsExactly(account.id to 50)
-    }
-
-    @Test
     fun `update with transform should save the account`() = runTest(testDispatcher) {
         // Arrange
         val account = createFakeAccount("Account")
@@ -280,10 +279,10 @@ class DefaultLegacyAccountManagerTest {
     }
 
     @Test
-    fun `update should save assigned account to storage and cache`() = runTest(testDispatcher) {
+    fun `create should save assigned account to storage and cache`() = runTest(testDispatcher) {
         val account = createFakeAccount("Assigned").copy(accountNumber = 5)
 
-        testSubject.update(account)
+        testSubject.create(account)
 
         assertThat(accountCache.findById(account.id)).isEqualTo(account)
         assertThat(accountStorage.savedAccounts).containsExactly(account)
@@ -294,7 +293,7 @@ class DefaultLegacyAccountManagerTest {
         val account = createFakeAccount("Account").copy(displayCount = 25)
         accountStorage.accounts.add(account)
 
-        testSubject.updateSync(account.copy(displayCount = 50))
+        testSubject.updateSync(account.id) { it.copy(displayCount = 50) }
 
         assertThat(accountFolderUpdater.resets).containsExactly(account.id to 50)
         assertThat(accountStorage.savedAccounts.single().displayCount).isEqualTo(50)
@@ -315,7 +314,7 @@ class DefaultLegacyAccountManagerTest {
 
         try {
             // Act
-            testSubject.updateSync(account.copy(displayCount = 50))
+            testSubject.updateSync(account.id) { it.copy(displayCount = 50) }
         } finally {
             executor.shutdownNow()
         }
@@ -329,16 +328,16 @@ class DefaultLegacyAccountManagerTest {
         val account = createFakeAccount("Account").copy(displayCount = 25)
         accountStorage.accounts.add(account)
 
-        testSubject.updateSync(account.copy(name = "Renamed"))
+        testSubject.updateSync(account.id) { it.copy(name = "Renamed") }
 
         assertThat(accountFolderUpdater.resets).isEmpty()
     }
 
     @Test
-    fun `updateSync should not reset folder limits for a new account`() {
+    fun `createSync should not reset folder limits for a new account`() {
         val account = createFakeAccount("New").copy(displayCount = 50)
 
-        testSubject.updateSync(account)
+        testSubject.createSync(account)
 
         assertThat(accountFolderUpdater.resets).isEmpty()
     }

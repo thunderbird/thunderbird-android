@@ -69,6 +69,7 @@ dependencies {
 
     implementation(libs.okio)
 
+    testImplementation(projects.core.android.account.fake)
     testImplementation(projects.feature.account.fake)
     testImplementation(projects.core.testing)
     testImplementation(projects.core.android.testing)

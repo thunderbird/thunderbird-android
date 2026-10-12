@@ -125,19 +125,16 @@ internal class AccountCreator(
             deletePolicy = deletePolicyProvider.getDeletePolicy(newAccount.incomingServerSettings.type),
         )
 
-        accountManager.updateSync(newAccount)
+        accountManager.createSync(newAccount)
         localFoldersCreator.createSpecialLocalFolders(newAccount.id)
-        newAccount = accountManager.findById(newAccount.id) ?: error("Account not found after creating local folders")
 
-        account.specialFolderSettings?.let { specialFolderSettings ->
-            newAccount = newAccount.setSpecialFolders(specialFolderSettings)
-        }
+        newAccount = accountManager.updateSync(newAccount.id) { createdAccount ->
+            val accountWithSpecialFolders = account.specialFolderSettings?.let { specialFolderSettings ->
+                createdAccount.setSpecialFolders(specialFolderSettings)
+            } ?: createdAccount
 
-        newAccount = newAccount.copy(
-            isFinishedSetup = true,
-        )
-
-        accountManager.updateSync(newAccount)
+            accountWithSpecialFolders.copy(isFinishedSetup = true)
+        } ?: error("Account not found after creating local folders")
 
         unifiedInboxConfigurator.configureUnifiedInbox()
 

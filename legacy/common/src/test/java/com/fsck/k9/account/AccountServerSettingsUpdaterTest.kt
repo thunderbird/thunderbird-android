@@ -16,6 +16,7 @@ import kotlinx.coroutines.test.runTest
 import net.thunderbird.account.fake.FakeAccountData.ACCOUNT_ID
 import net.thunderbird.core.android.account.Identity
 import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.fake.FakeLegacyAccountManager
 import net.thunderbird.legacy.logging.Log
 import net.thunderbird.components.core.logging.testing.TestLogger
 import net.thunderbird.feature.account.AccountId
@@ -34,7 +35,7 @@ class AccountServerSettingsUpdaterTest {
 
     @Test
     fun `updateServerSettings() SHOULD return account not found exception WHEN none present with uuid`() = runTest {
-        val accountManager = FakeLegacyAccountManager(accounts = mutableMapOf())
+        val accountManager = FakeLegacyAccountManager()
         val testSubject = AccountServerSettingsUpdater(accountManager)
 
         val result = testSubject.updateServerSettings(
@@ -53,9 +54,7 @@ class AccountServerSettingsUpdaterTest {
 
     @Test
     fun `updateServerSettings() SHOULD return success with updated incoming settings WHEN is incoming`() = runTest {
-        val accountManager = FakeLegacyAccountManager(
-            accounts = mutableMapOf(ACCOUNT_ID to createAccount(ACCOUNT_ID)),
-        )
+        val accountManager = FakeLegacyAccountManager(listOf(createAccount(ACCOUNT_ID)))
         val updatedIncomingServerSettings = INCOMING_SERVER_SETTINGS.copy(port = 123)
         val updatedAuthorizationState = AuthorizationState("new")
         val testSubject = AccountServerSettingsUpdater(accountManager)
@@ -79,9 +78,7 @@ class AccountServerSettingsUpdaterTest {
 
     @Test
     fun `updateServerSettings() SHOULD return success with updated outgoing settings WHEN is not incoming`() = runTest {
-        val accountManager = FakeLegacyAccountManager(
-            accounts = mutableMapOf(ACCOUNT_ID to createAccount(ACCOUNT_ID)),
-        )
+        val accountManager = FakeLegacyAccountManager(listOf(createAccount(ACCOUNT_ID)))
         val updatedOutgoingServerSettings = OUTGOING_SERVER_SETTINGS.copy(port = 123)
         val updatedAuthorizationState = AuthorizationState("new")
         val testSubject = AccountServerSettingsUpdater(accountManager)
@@ -105,10 +102,7 @@ class AccountServerSettingsUpdaterTest {
 
     @Test
     fun `updateServerSettings() SHOULD return unknown error when exception thrown`() = runTest {
-        val accountManager = FakeLegacyAccountManager(
-            accounts = mutableMapOf(ACCOUNT_ID to createAccount(ACCOUNT_ID)),
-            isFailureOnSave = true,
-        )
+        val accountManager = FailingSaveAccountManager(listOf(createAccount(ACCOUNT_ID)))
         val testSubject = AccountServerSettingsUpdater(accountManager)
 
         val result = testSubject.updateServerSettings(
@@ -172,6 +166,12 @@ class AccountServerSettingsUpdaterTest {
                 oAuthState = AUTHORIZATION_STATE.value,
                 identities = listOf(Identity(email = "user@example.com")),
             )
+        }
+    }
+
+    private class FailingSaveAccountManager(accounts: List<LegacyAccount>) : FakeLegacyAccountManager(accounts) {
+        override fun updateSync(accountId: AccountId, transform: (LegacyAccount) -> LegacyAccount): LegacyAccount? {
+            error("Simulated save failure")
         }
     }
 }

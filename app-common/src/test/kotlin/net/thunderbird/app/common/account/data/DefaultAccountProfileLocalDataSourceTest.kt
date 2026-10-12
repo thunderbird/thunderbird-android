@@ -11,6 +11,7 @@ import net.thunderbird.account.fake.FakeAccountProfileData.PROFILE_COLOR
 import net.thunderbird.account.fake.FakeAccountProfileData.PROFILE_NAME
 import net.thunderbird.core.android.account.Identity
 import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.fake.FakeLegacyAccountManager
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.account.avatar.Avatar

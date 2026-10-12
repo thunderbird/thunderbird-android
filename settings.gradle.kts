@@ -131,6 +131,7 @@ include(
 
 include(
     ":feature:mail:account:api",
+    ":feature:mail:account:fake",
     ":feature:mail:folder:api",
     ":feature:mail:message:api",
     ":feature:mail:message:composer:api",
@@ -214,6 +215,7 @@ include(
 
 include(
     ":core:android:account",
+    ":core:android:account:fake",
     ":core:android:common",
     ":core:android:contact",
     ":core:android:network",

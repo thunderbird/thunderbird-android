@@ -10,6 +10,7 @@ import com.fsck.k9.mail.ServerSettings
 import kotlin.test.Test
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import net.thunderbird.components.core.outcome.Outcome
@@ -31,7 +32,11 @@ internal class UpdateSearchSettingsTest {
 
         val repository = object : LegacyAccountRepository {
             override fun observeById(id: AccountId): Flow<LegacyAccount?> = emptyFlow()
-            override suspend fun update(account: LegacyAccount) = Unit
+            override suspend fun update(
+                accountId: AccountId,
+                transform: (LegacyAccount) -> LegacyAccount,
+            ): LegacyAccount? =
+                observeById(accountId).firstOrNull()?.let(transform)
         }
 
         val testSubject = UpdateSearchSettings(repository)
@@ -55,9 +60,11 @@ internal class UpdateSearchSettingsTest {
         val repository = object : LegacyAccountRepository {
             override fun observeById(id: AccountId) = flowOf(existing)
 
-            override suspend fun update(account: LegacyAccount) {
-                updatedAccount = account
-            }
+            override suspend fun update(
+                accountId: AccountId,
+                transform: (LegacyAccount) -> LegacyAccount,
+            ): LegacyAccount? =
+                observeById(accountId).firstOrNull()?.let(transform)?.also { updatedAccount = it }
         }
 
         val testSubject = UpdateSearchSettings(repository)
@@ -92,9 +99,11 @@ internal class UpdateSearchSettingsTest {
         val repository = object : LegacyAccountRepository {
             override fun observeById(id: AccountId) = flowOf(existing)
 
-            override suspend fun update(account: LegacyAccount) {
-                updatedAccount = account
-            }
+            override suspend fun update(
+                accountId: AccountId,
+                transform: (LegacyAccount) -> LegacyAccount,
+            ): LegacyAccount? =
+                observeById(accountId).firstOrNull()?.let(transform)?.also { updatedAccount = it }
         }
 
         val testSubject = UpdateSearchSettings(repository)

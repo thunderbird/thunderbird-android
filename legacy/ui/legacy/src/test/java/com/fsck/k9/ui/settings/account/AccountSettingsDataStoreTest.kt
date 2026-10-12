@@ -9,12 +9,14 @@ import assertk.assertions.isNull
 import assertk.assertions.isTrue
 import assertk.assertions.prop
 import com.fsck.k9.FakeLegacyAccount
-import com.fsck.k9.account.FakeLegacyAccountManager
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.job.K9JobManager
 import net.thunderbird.components.core.logging.testing.TestLogger
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.ShowPictures
+import net.thunderbird.core.android.account.fake.FakeLegacyAccountManager
+import net.thunderbird.feature.account.AccountId
+import net.thunderbird.legacy.logging.Log
 import org.junit.Test
 import org.mockito.kotlin.any
 import org.mockito.kotlin.doAnswer
@@ -22,7 +24,7 @@ import org.mockito.kotlin.mock
 
 class AccountSettingsDataStoreTest {
     private val account = FakeLegacyAccount.create(name = "Old name")
-    private val accountManager = FakeLegacyAccountManager(listOf(account))
+    private val accountManager = FailingSaveAccountManager(listOf(account))
 
     private var storedSubscribedFoldersOnlyOnRefresh: Boolean? = null
     private val messagingController = mock<MessagingController> {
@@ -63,15 +65,14 @@ class AccountSettingsDataStoreTest {
     @Test
     fun `saving a setting should keep account changes made elsewhere after the screen was opened`() {
         // Arrange
-        val storedAccount = requireNotNull(accountManager.findById(account.id))
-        accountManager.updateSync(
-            storedAccount.copy(
+        accountManager.updateSync(account.id) {
+            it.copy(
                 oAuthState = "refreshed-oauth-state",
                 openPgpProvider = "org.sufficientlysecure.keychain",
                 inboxFolderId = INBOX_FOLDER_ID,
                 messagesNotificationChannelVersion = 3,
-            ),
-        )
+            )
+        }
 
         // Act
         testSubject.putBoolean("always_show_cc_bcc", true)
@@ -113,8 +114,7 @@ class AccountSettingsDataStoreTest {
     @Test
     fun `changing the check frequency should reschedule mail sync with the saved account`() {
         // Arrange
-        val storedAccount = requireNotNull(accountManager.findById(account.id))
-        accountManager.updateSync(storedAccount.copy(lastSyncTime = LAST_SYNC_TIME))
+        accountManager.updateSync(account.id) { it.copy(lastSyncTime = LAST_SYNC_TIME) }
 
         // Act
         testSubject.putString("account_check_frequency", "30")
@@ -149,5 +149,18 @@ class AccountSettingsDataStoreTest {
     private companion object {
         const val LAST_SYNC_TIME = 1_700_000_000_000L
         const val INBOX_FOLDER_ID = 42L
+    }
+
+    /** Fake account manager whose next [failingSaveCount] saves fail, like a storage commit that doesn't succeed. */
+    private class FailingSaveAccountManager(accounts: List<LegacyAccount>) : FakeLegacyAccountManager(accounts) {
+        var failingSaveCount = 0
+
+        override fun updateSync(accountId: AccountId, transform: (LegacyAccount) -> LegacyAccount): LegacyAccount? {
+            if (failingSaveCount > 0) {
+                failingSaveCount--
+                error("Simulated save failure")
+            }
+            return super.updateSync(accountId, transform)
+        }
     }
 }

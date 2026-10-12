@@ -48,8 +48,17 @@ private fun SecretDebugSettingsScreenPreview() {
                     override fun findById(accountId: AccountId): BaseAccount? = null
                     override fun observeById(accountId: AccountId): Flow<BaseAccount?> = flowOf(null)
                     override fun moveAccount(accountId: AccountId, newPosition: Int) = Unit
-                    override suspend fun update(account: BaseAccount) = Unit
-                    override fun updateSync(account: BaseAccount) = Unit
+                    override suspend fun create(account: BaseAccount) = Unit
+                    override fun createSync(account: BaseAccount) = Unit
+                    override suspend fun update(
+                        accountId: AccountId,
+                        transform: (BaseAccount) -> BaseAccount,
+                    ): BaseAccount? = null
+
+                    override fun updateSync(
+                        accountId: AccountId,
+                        transform: (BaseAccount) -> BaseAccount,
+                    ): BaseAccount? = null
                 },
                 notificationSender = { _: Notification -> error("not implemented") },
                 inAppNotificationStream = get(),

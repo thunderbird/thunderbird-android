@@ -29,26 +29,28 @@ private const val TAG = "MigrationTo76"
  */
 internal class MigrationTo76(private val db: SQLiteDatabase, private val migrationsHelper: MigrationsHelper) {
     fun cleanUpSpecialLocalFolders() {
-        var account = migrationsHelper.account
+        val account = migrationsHelper.account
+        if (!account.isPop3()) return
 
-        if (account.isPop3()) {
-            Log.v(TAG, "Cleaning up Drafts folder")
-            val draftsFolderId = account.draftsFolderId ?: createFolder("Drafts", "Drafts", DRAFTS_FOLDER_TYPE)
-            moveMessages(DRAFTS_FOLDER_TYPE, draftsFolderId)
-            account = account.copy(draftsFolderId = draftsFolderId)
+        Log.v(TAG, "Cleaning up Drafts folder")
+        val draftsFolderId = account.draftsFolderId ?: createFolder("Drafts", "Drafts", DRAFTS_FOLDER_TYPE)
+        moveMessages(DRAFTS_FOLDER_TYPE, draftsFolderId)
 
-            Log.v(TAG, "Cleaning up Sent folder")
-            val sentFolderId = account.sentFolderId ?: createFolder("Sent", "Sent", SENT_FOLDER_TYPE)
-            moveMessages(SENT_FOLDER_TYPE, sentFolderId)
-            account = account.copy(sentFolderId = sentFolderId)
+        Log.v(TAG, "Cleaning up Sent folder")
+        val sentFolderId = account.sentFolderId ?: createFolder("Sent", "Sent", SENT_FOLDER_TYPE)
+        moveMessages(SENT_FOLDER_TYPE, sentFolderId)
 
-            Log.v(TAG, "Cleaning up Trash folder")
-            val trashFolderId = account.trashFolderId ?: createFolder("Trash", "Trash", TRASH_FOLDER_TYPE)
-            moveMessages(TRASH_FOLDER_TYPE, trashFolderId)
-            account = account.copy(trashFolderId = trashFolderId)
+        Log.v(TAG, "Cleaning up Trash folder")
+        val trashFolderId = account.trashFolderId ?: createFolder("Trash", "Trash", TRASH_FOLDER_TYPE)
+        moveMessages(TRASH_FOLDER_TYPE, trashFolderId)
+
+        migrationsHelper.updateAccount { latestAccount ->
+            latestAccount.copy(
+                draftsFolderId = draftsFolderId,
+                sentFolderId = sentFolderId,
+                trashFolderId = trashFolderId,
+            )
         }
-
-        migrationsHelper.saveAccount(account)
     }
 
     private fun createFolder(name: String, serverId: String, type: String): Long {

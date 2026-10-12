@@ -61,12 +61,15 @@ internal class DefaultLegacyAccountManager(
         accountCache.updateAll(accountStorage.loadAll())
     }
 
-    override suspend fun update(account: LegacyAccount) = withContext(backgroundDispatcher) {
-        updateSync(account)
+    override suspend fun create(account: LegacyAccount) = withContext(backgroundDispatcher) {
+        createSync(account)
     }
 
-    override fun updateSync(account: LegacyAccount) {
-        saveAccount(account.id) { account }
+    override fun createSync(account: LegacyAccount) {
+        saveAccount(account.id) { existingAccount ->
+            require(existingAccount == null) { "Account already exists: ${account.id}" }
+            account
+        }
     }
 
     override suspend fun update(
