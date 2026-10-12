@@ -7,7 +7,9 @@ import assertk.assertions.hasSize
 import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNotNull
+import assertk.assertions.isNull
 import assertk.assertions.isTrue
+import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.search.legacy.api.MessageSearchField
 import net.thunderbird.feature.search.legacy.api.SearchAttribute
 import net.thunderbird.feature.search.legacy.api.SearchCondition
@@ -21,24 +23,25 @@ class LocalMessageSearchTest {
         val testSubject = LocalMessageSearch()
 
         // Assert
-        assertThat(testSubject.id).isEqualTo("")
+        assertThat(testSubject.id).isNull()
+        assertThat(testSubject.type).isEqualTo(LocalMessageSearchType.Account)
         assertThat(testSubject.isManualSearch).isEqualTo(false)
-        assertThat(testSubject.accountUuids).isEmpty()
+        assertThat(testSubject.accountIds).isEmpty()
         assertThat(testSubject.leafSet).isEmpty()
         assertThat(testSubject.conditions).isNotNull()
     }
 
     @Test
-    fun `should add account uuid`() {
+    fun `should add account id`() {
         // Arrange
         val testSubject = LocalMessageSearch()
-        val uuid = "test-uuid"
+        val accountId = AccountIdFactory.create()
 
         // Act
-        testSubject.addAccountUuid(uuid)
+        testSubject.addAccountId(accountId)
 
         // Assert
-        assertThat(testSubject.accountUuids.toList()).containsExactly(uuid)
+        assertThat(testSubject.accountIds.toList()).containsExactly(accountId)
     }
 
     @Test

@@ -8,6 +8,7 @@ import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.json.JsonDecoder
+import kotlinx.serialization.json.JsonEncoder
 import net.thunderbird.feature.mail.folder.FolderType
 
 /**
@@ -64,7 +65,8 @@ internal object LocalMessageSearchTypeSerializer : KSerializer<LocalMessageSearc
     override val descriptor: SerialDescriptor = delegate.descriptor
 
     override fun serialize(encoder: Encoder, value: LocalMessageSearchType) {
-        delegate.serialize(encoder, value)
+        val jsonEncoder = encoder as? JsonEncoder ?: return delegate.serialize(encoder, value)
+        jsonEncoder.encodeJsonElement(jsonEncoder.json.encodeToJsonElement(delegate, value))
     }
 
     override fun deserialize(decoder: Decoder): LocalMessageSearchType {
