@@ -79,7 +79,7 @@ internal class DefaultMultiFeatureFlagProviderEvaluator(
             .fold(emptyMap<String, Boolean>()) { merged, providerFlags -> merged + providerFlags }
             .filterValues { it }
     }
-        .onEach { logger.verbose { "[feature-flag][1] provider: $it" } }
+        .onEach { logger.verbose(TAG) { "[feature-flag][1] provider: $it" } }
         .map { enabledFlagOverrides ->
             enabledFlagOverrides.keys.mapNotNull { key -> GeneratedFeatureFlagKey.entries.find { it.key == key } }
         }

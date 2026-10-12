@@ -95,8 +95,13 @@ class RemoteFeatureFlagCatalogDataSource(
                 result
             } catch (e: RemoteCatalogException) {
                 when (e.code) {
-                    Code.CantWriteCacheFile -> logger.debug(TAG, throwable = e) { "$LOG_PREFIX Failed to write cache file." }
-                    Code.CantReadCacheFile -> logger.debug(TAG, throwable = e) { "$LOG_PREFIX Failed to read cache file." }
+                    Code.CantWriteCacheFile -> logger.debug(TAG, throwable = e) {
+                        "$LOG_PREFIX Failed to write cache file."
+                    }
+
+                    Code.CantReadCacheFile -> logger.debug(TAG, throwable = e) {
+                        "$LOG_PREFIX Failed to read cache file."
+                    }
                 }
                 null
             } catch (e: JsonConvertException) {

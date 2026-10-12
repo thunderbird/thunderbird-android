@@ -4,14 +4,10 @@ import android.content.Context
 import com.fsck.k9.mail.internet.MimeHeader
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
-import net.thunderbird.core.architecture.model.LegacyEntityIdFactory
-import net.thunderbird.core.logging.Logger
-import net.thunderbird.feature.mail.folder.FolderId
+import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.feature.mail.message.Message
 import net.thunderbird.feature.mail.message.MessageBody
 import net.thunderbird.feature.mail.message.MessageHeaders
-import net.thunderbird.feature.mail.message.MessageId
-import net.thunderbird.feature.mail.message.ThreadId
 import net.thunderbird.feature.mail.message.mapper.MessageDataMapper
 import com.fsck.k9.mail.Message as LegacyMessage
 
