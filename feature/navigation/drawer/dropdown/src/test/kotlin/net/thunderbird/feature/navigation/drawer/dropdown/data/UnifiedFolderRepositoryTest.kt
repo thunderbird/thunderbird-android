@@ -2,6 +2,7 @@ package net.thunderbird.feature.navigation.drawer.dropdown.data
 
 import app.k9mail.legacy.message.controller.MessageCounts
 import assertk.assertThat
+import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
 import kotlin.test.Test
 import kotlinx.coroutines.flow.first
@@ -12,8 +13,6 @@ import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.UnifiedD
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.UnifiedDisplayFolderType
 import net.thunderbird.feature.search.legacy.LocalMessageSearchType
 import net.thunderbird.feature.search.legacy.UnifiedFolderSelection
-import net.thunderbird.feature.search.legacy.api.MessageSearchField
-import net.thunderbird.feature.search.legacy.api.SearchAttribute
 
 internal class UnifiedFolderRepositoryTest {
 
@@ -46,9 +45,7 @@ internal class UnifiedFolderRepositoryTest {
         assertThat(search.type).isEqualTo(
             LocalMessageSearchType.Unified(UnifiedFolderSelection.Special(FolderType.INBOX)),
         )
-        val condition = search.conditions.condition
-        assertThat(condition?.value).isEqualTo("1")
-        assertThat(condition?.attribute).isEqualTo(SearchAttribute.EQUALS)
-        assertThat(condition?.field).isEqualTo(MessageSearchField.INTEGRATE)
+        // The folder is chosen per account when the search runs
+        assertThat(search.leafSet).isEmpty()
     }
 }

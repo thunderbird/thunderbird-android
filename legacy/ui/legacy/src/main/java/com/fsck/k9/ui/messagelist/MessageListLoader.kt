@@ -5,6 +5,7 @@ import com.fsck.k9.contacts.ContactLetterBitmapCreator
 import com.fsck.k9.helper.MessageHelper
 import com.fsck.k9.mailstore.LocalStoreProvider
 import com.fsck.k9.mailstore.MessageColumns
+import com.fsck.k9.search.conditionsFor
 import com.fsck.k9.search.getLegacyAccounts
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.LegacyAccountManager
@@ -15,6 +16,7 @@ import net.thunderbird.core.preference.display.visualSettings.message.list.Messa
 import net.thunderbird.feature.mail.folder.api.OutboxFolderManager
 import net.thunderbird.feature.search.legacy.LocalMessageSearch
 import net.thunderbird.feature.search.legacy.api.MessageSearchField
+import net.thunderbird.feature.search.legacy.SearchConditionTreeNode
 import net.thunderbird.feature.search.legacy.sql.SqlWhereClause
 import net.thunderbird.legacy.logging.Log
 
@@ -58,6 +60,7 @@ class MessageListLoader(
 
     private fun loadMessageListForAccount(account: LegacyAccount, config: MessageListConfig): List<MessageListItem> {
         val accountId = account.id
+        val conditions = config.search.conditionsFor(account, outboxFolderManager) ?: return emptyList()
         val threadId = getThreadId(config.search)
         val sortOrder = buildSortOrder(config)
         val mapper = MessageListItemMapper(
@@ -77,18 +80,22 @@ class MessageListLoader(
             }
 
             config.showingThreadedList -> {
-                val (selection, selectionArgs) = buildSelection(account, config)
+                val (selection, selectionArgs) = buildSelection(account, config, conditions)
                 messageListRepository.getThreadedMessages(accountId, selection, selectionArgs, sortOrder, mapper)
             }
 
             else -> {
-                val (selection, selectionArgs) = buildSelection(account, config)
+                val (selection, selectionArgs) = buildSelection(account, config, conditions)
                 messageListRepository.getMessages(accountId, selection, selectionArgs, sortOrder, mapper)
             }
         }
     }
 
-    private fun buildSelection(account: LegacyAccount, config: MessageListConfig): Pair<String, Array<String>> {
+    private fun buildSelection(
+        account: LegacyAccount,
+        config: MessageListConfig,
+        conditions: SearchConditionTreeNode,
+    ): Pair<String, Array<String>> {
         val query = StringBuilder()
         val queryArgs = mutableListOf<String>()
 
@@ -101,7 +108,7 @@ class MessageListLoader(
         }
 
         val whereClause = SqlWhereClause.Builder()
-            .withConditions(config.search.conditions)
+            .withConditions(conditions)
             .build()
 
         query.append(whereClause.selection)
