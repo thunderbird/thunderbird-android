@@ -125,7 +125,6 @@ internal class UpdateSearchSettingsTest {
             displayName: String = "AccountProfileName",
             color: Int = 0xFF0000,
         ) = LegacyAccount(
-            isSensitiveDebugLoggingEnabled = { true },
             id = id,
             name = displayName,
             email = "demo@example.com",

@@ -55,7 +55,6 @@ class ReadingMailSettingsViewModelTest {
         id = accountId,
         name = "Demo",
         email = "demo@example.com",
-        isSensitiveDebugLoggingEnabled = { true },
         profile = ProfileDto(
             id = accountId,
             name = "Demo",

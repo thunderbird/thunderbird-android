@@ -97,7 +97,6 @@ internal class SendingMailSettingsViewModelTest {
             isStripSignature = isStripSignature,
             quotePrefix = "> ",
             isUploadSentMessages = true,
-            isSensitiveDebugLoggingEnabled = { true },
             profile = net.thunderbird.feature.account.storage.profile.ProfileDto(
                 id = accountId,
                 name = "Demo",

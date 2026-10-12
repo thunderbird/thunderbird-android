@@ -18,8 +18,6 @@ import net.thunderbird.feature.notification.NotificationSettings
  */
 @Suppress("TooManyFunctions")
 data class LegacyAccount(
-    val isSensitiveDebugLoggingEnabled: () -> Boolean = { false },
-
     // [Account]
     override val id: AccountId,
 

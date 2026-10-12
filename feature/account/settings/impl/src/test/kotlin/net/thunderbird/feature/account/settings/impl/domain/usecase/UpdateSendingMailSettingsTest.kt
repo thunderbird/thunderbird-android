@@ -33,7 +33,6 @@ internal class UpdateSendingMailSettingsTest {
         val id = AccountIdFactory.create()
 
         return LegacyAccount(
-            isSensitiveDebugLoggingEnabled = { true },
             id = id,
             name = "Test Account",
             email = "test@example.com",

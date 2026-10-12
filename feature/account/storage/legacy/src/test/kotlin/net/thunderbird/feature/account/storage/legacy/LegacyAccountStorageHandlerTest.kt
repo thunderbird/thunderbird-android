@@ -10,7 +10,6 @@ import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ConnectionSecurity
 import com.fsck.k9.mail.ServerSettings
 import kotlin.test.Test
-import kotlinx.coroutines.flow.Flow
 import net.thunderbird.account.fake.FakeAccountData
 import net.thunderbird.components.core.logging.testing.TestLogger
 import net.thunderbird.core.android.account.AccountDefaultsProvider
@@ -23,8 +22,6 @@ import net.thunderbird.core.android.account.MessageFormat
 import net.thunderbird.core.android.account.QuoteStyle
 import net.thunderbird.core.android.account.ShowPictures
 import net.thunderbird.core.android.account.SortType
-import net.thunderbird.core.preference.GeneralSettings
-import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.storage.legacy.fake.FakeStorage
 import net.thunderbird.feature.account.storage.legacy.fake.FakeStorageEditor
@@ -42,13 +39,11 @@ class LegacyAccountStorageHandlerTest {
     private val serverSettingsDtoSerializer = ServerSettingsDtoSerializer()
     private val avatarDtoStorageHandler = LegacyAvatarDtoStorageHandler()
     private val profileDtoStorageHandler = LegacyProfileDtoStorageHandler(avatarDtoStorageHandler)
-    private val generalSettingsManager = StubGeneralSettingsManager()
     private val logger = TestLogger()
 
     private val testSubject = LegacyAccountStorageHandler(
         serverSettingsDtoSerializer = serverSettingsDtoSerializer,
         profileDtoStorageHandler = profileDtoStorageHandler,
-        generalSettingsManager = generalSettingsManager,
         logger = logger,
     )
 
@@ -342,10 +337,7 @@ class LegacyAccountStorageHandlerTest {
         testSubject.save(account, FakeStorage(), editor)
         val storedValues = editor.values.filterValues { it != null }.mapValues { (_, value) -> requireNotNull(value) }
 
-        val loadedAccount = testSubject.load(account.id, FakeStorage(storedValues))
-
-        // Lambdas are only equal to themselves
-        return loadedAccount.copy(isSensitiveDebugLoggingEnabled = account.isSensitiveDebugLoggingEnabled)
+        return testSubject.load(account.id, FakeStorage(storedValues))
     }
 
     @Suppress("LongMethod")
@@ -520,19 +512,5 @@ class LegacyAccountStorageHandlerTest {
             password = "password",
             clientCertificateAlias = null,
         )
-    }
-
-    private class StubGeneralSettingsManager : GeneralSettingsManager {
-        @Deprecated("Deprecated in Java", ReplaceWith("getConfig()"))
-        override fun getSettings(): GeneralSettings = error("Not supported")
-
-        @Deprecated("Deprecated in Java", ReplaceWith("getConfigFlow()"))
-        override fun getSettingsFlow(): Flow<GeneralSettings> = error("Not supported")
-
-        override fun save(config: GeneralSettings) = error("Not supported")
-
-        override fun getConfig(): GeneralSettings = error("Not supported")
-
-        override fun getConfigFlow(): Flow<GeneralSettings> = error("Not supported")
     }
 }

@@ -112,7 +112,6 @@ class DefaultAccountProfileLocalDataSourceTest {
             color: Int = PROFILE_COLOR,
         ): LegacyAccount {
             return LegacyAccount(
-                isSensitiveDebugLoggingEnabled = { true },
                 id = id,
                 name = displayName,
                 email = "demo@example.com",

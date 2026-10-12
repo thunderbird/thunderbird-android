@@ -84,7 +84,6 @@ internal class FetchingMailSettingsViewModelTest {
             expungePolicy = Expunge.EXPUNGE_MANUALLY,
             maxPushFolders = 250,
             idleRefreshMinutes = 48,
-            isSensitiveDebugLoggingEnabled = { true },
             profile = ProfileDto(
                 id = accountId,
                 name = "Demo",

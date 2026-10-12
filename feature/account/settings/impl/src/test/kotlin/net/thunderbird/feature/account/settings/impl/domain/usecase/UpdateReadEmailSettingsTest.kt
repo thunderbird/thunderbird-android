@@ -156,7 +156,6 @@ internal class UpdateReadEmailSettingsTest {
             color: Int = 0xFF0000,
         ): LegacyAccount {
             return LegacyAccount(
-                isSensitiveDebugLoggingEnabled = { true },
                 id = id,
                 name = displayName,
                 email = "demo@example.com",

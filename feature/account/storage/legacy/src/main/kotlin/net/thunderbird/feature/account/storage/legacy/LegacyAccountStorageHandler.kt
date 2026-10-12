@@ -11,7 +11,6 @@ import net.thunderbird.core.android.account.MessageFormat
 import net.thunderbird.core.android.account.QuoteStyle
 import net.thunderbird.core.android.account.ShowPictures
 import net.thunderbird.core.android.account.SortType
-import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.storage.Storage
 import net.thunderbird.core.preference.storage.StorageEditor
 import net.thunderbird.core.preference.storage.getEnumOrDefault
@@ -29,7 +28,6 @@ private const val TAG = "LegacyAccountStorageHandler"
 class LegacyAccountStorageHandler(
     private val serverSettingsDtoSerializer: ServerSettingsDtoSerializer,
     private val profileDtoStorageHandler: ProfileDtoStorageHandler,
-    private val generalSettingsManager: GeneralSettingsManager,
     private val logger: Logger,
 ) : AccountStorageHandler {
 
@@ -107,7 +105,6 @@ class LegacyAccountStorageHandler(
             name = profileDto.name.takeIf { it.isNotEmpty() },
             email = email,
             senderName = senderName,
-            isSensitiveDebugLoggingEnabled = { generalSettingsManager.getConfig().debugging.isSensitiveLoggingEnabled },
             profile = profileDto,
             incomingServerSettings = serverSettingsDtoSerializer.deserialize(
                 storage.getStringOrDefault(keyGen.create(INCOMING_SERVER_SETTINGS_KEY), ""),

@@ -34,7 +34,6 @@ val featureAccountStorageLegacyModule = module {
         LegacyAccountStorageHandler(
             serverSettingsDtoSerializer = get(),
             profileDtoStorageHandler = get(),
-            generalSettingsManager = get(),
             logger = get(),
         )
     }

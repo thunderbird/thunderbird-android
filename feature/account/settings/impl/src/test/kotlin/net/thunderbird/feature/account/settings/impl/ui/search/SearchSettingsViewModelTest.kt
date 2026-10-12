@@ -46,7 +46,6 @@ class SearchSettingsViewModelTest {
             id = accountId,
             name = "Emon",
             email = "emon@gmail.com",
-            isSensitiveDebugLoggingEnabled = { true },
             profile = ProfileDto(
                 id = accountId,
                 name = "Emon",
