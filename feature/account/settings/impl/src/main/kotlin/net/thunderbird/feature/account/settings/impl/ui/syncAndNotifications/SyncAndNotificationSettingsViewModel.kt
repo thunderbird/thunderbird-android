@@ -11,15 +11,25 @@ internal class SyncAndNotificationSettingsViewModel(
     private val accountId: AccountId,
     initialState: State = State(
         enablePushNotifications = true,
-    )
+    ),
 ) : BaseViewModel<State, Event, Effect>(initialState), SyncAndNotificationSettingsContract.ViewModel {
     override fun event(event: Event) {
         when (event) {
             is Event.OnBackPressed -> emitEffect(Effect.NavigateBack)
-            is Event.OnEnablePushNotificationChange -> TODO()
-            Event.OnSelectFetchingAndDataLimits -> TODO()
-            Event.OnSelectFolderSyncAndPush -> TODO()
-            Event.OnSelectNotificationStyle -> TODO()
+
+            is Event.OnEnablePushNotificationChange -> { /* TODO #11683 */ }
+
+            Event.OnSelectNotificationStyle -> {
+                emitEffect(Effect.NavigateToNotificationStyle)
+            }
+
+            Event.OnSelectFolderSyncAndPush -> {
+                emitEffect(Effect.NavigateToFolderSyncAndPush)
+            }
+
+            Event.OnSelectFetchingAndDataLimits -> {
+                emitEffect(Effect.NavigateToFetchingAndDataLimits)
+            }
         }
     }
 }

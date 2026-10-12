@@ -11,7 +11,7 @@ import net.thunderbird.core.ui.setting.Settings
  */
 interface SyncAndNotificationSettingsContract {
 
-    interface ViewModel: UnidirectionalViewModel<State, Event, Effect>
+    interface ViewModel : UnidirectionalViewModel<State, Event, Effect>
 
     @Stable
     data class State(
@@ -28,6 +28,9 @@ interface SyncAndNotificationSettingsContract {
 
     sealed interface Effect {
         object NavigateBack : Effect
+        object NavigateToNotificationStyle : Effect
+        object NavigateToFolderSyncAndPush : Effect
+        object NavigateToFetchingAndDataLimits : Effect
     }
 
     fun interface SettingsBuilder {
