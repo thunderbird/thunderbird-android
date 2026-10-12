@@ -54,9 +54,9 @@ internal class DefaultAccountSettingsNavigation : AccountSettingsNavigation {
             deepLinkComposable<AccountSettingsRoute.SyncAndNotificationSettings>(
                 basePath = AccountSettingsRoute.SyncAndNotificationSettings.BASE_PATH,
             ) { backStackEntry ->
-                val syncAndNotificationsRoute = backStackEntry.toRoute<AccountSettingsRoute.SyncAndNotificationSettings>()
+                val syncAndNotificationsRoute =
+                    backStackEntry.toRoute<AccountSettingsRoute.SyncAndNotificationSettings>()
                 val accountId = AccountIdFactory.of(syncAndNotificationsRoute.accountId)
-
                 SyncAndNotificationsScreen(accountId, onBack = onBack)
             }
         }

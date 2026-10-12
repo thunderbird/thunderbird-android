@@ -193,6 +193,7 @@
 
     <string name="account_settings_composition">Sending mail</string>
 
+    <string name="account_settings_notificaction_and_sync">Notification &amp; sync</string>
     <string name="account_settings_notification_style">Notification style</string>
     <string name="account_settings_notification_style_description">Customize sound, vibrate, badges</string>
     <string name="account_settings_folder_sync_and_push">Folder sync &amp; push</string>

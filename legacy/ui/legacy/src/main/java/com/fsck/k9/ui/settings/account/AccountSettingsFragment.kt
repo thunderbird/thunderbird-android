@@ -22,6 +22,8 @@ import androidx.preference.PreferenceCategory
 import androidx.preference.SwitchPreference
 import app.k9mail.feature.launcher.FeatureLauncherActivity
 import app.k9mail.feature.launcher.FeatureLauncherTarget
+import com.fsck.k9.activity.ManageIdentities
+import com.fsck.k9.activity.setup.AccountSetupComposition
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.crypto.OpenPgpApiHelper
 import com.fsck.k9.fragment.ConfirmationDialogFragment
@@ -39,8 +41,8 @@ import com.fsck.k9.ui.settings.remove
 import com.fsck.k9.ui.settings.removeEntry
 import com.takisoft.preferencex.PreferenceFragmentCompat
 import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.NO_OPENPGP_KEY
-import net.thunderbird.core.android.account.LegacyAccount
-import net.thunderbird.core.android.account.LegacyAccountManager
+import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.android.account.QuoteStyle
 import net.thunderbird.core.common.provider.AppNameProvider
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.AccountIdFactory
@@ -530,6 +532,8 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         private const val PREFERENCE_GENERAL = "general"
 
         private const val PREFERENCE_READING_MAIL = "reading_mail"
+        private const val PREFERENCE_FOLDER_VISIBILITY_AND_SYNC = "visibility_and_syncing"
+        private const val PREFERENCE_FETCHING_MAIL = "fetching_mail"
         private const val PREFERENCE_SYNC_AND_NOTIFICATIONS = "sync_and_notifications"
         private const val PREFERENCE_FETCHING_MAIL = "fetching_mail"
 
@@ -544,8 +548,6 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         private const val PREFERENCE_OPENPGP_ENABLE = "openpgp_provider"
         private const val PREFERENCE_OPENPGP_KEY = "openpgp_key"
         private const val PREFERENCE_AUTOCRYPT_TRANSFER = "autocrypt_transfer"
-        internal const val PREFERENCE_FOLDERS = "folders"
-        internal const val PREFERENCE_FOLDER_VISIBILITY_AND_SYNC = "visibility_and_syncing"
         private const val PREFERENCE_AUTO_SELECT_FOLDER = "auto_select_folder"
         private const val PREFERENCE_SUBSCRIBED_FOLDERS_ONLY = "subscribed_folders_only"
         private const val PREFERENCE_ARCHIVE_FOLDER = "archive_folder"
@@ -564,6 +566,10 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         private const val DIALOG_DELETE_ACCOUNT = 1
         private const val REQUEST_DELETE_ACCOUNT = 1
         private const val TAG_DELETE_ACCOUNT_CONFIRMATION = "delete_account_confirmation"
+
+        // External access required for new notifications, will change over as we migrate
+        const val PREFERENCE_NOTIFICATION_STYLE = "notifications"
+        const val PREFERENCE_FOLDERS = "folders"
 
         fun create(accountUuid: String, rootKey: String?) = AccountSettingsFragment().withArguments(
             ARG_ACCOUNT_UUID to accountUuid,

@@ -6,9 +6,9 @@ import net.thunderbird.core.ui.setting.Setting
 import net.thunderbird.core.ui.setting.SettingValue
 import net.thunderbird.core.ui.setting.Settings
 import net.thunderbird.feature.account.settings.R
-import net.thunderbird.feature.account.settings.impl.ui.syncAndNotifications.SyncAndNotificationsSettingsId.NOTIFICATION_STYLE
-import net.thunderbird.feature.account.settings.impl.ui.syncAndNotifications.SyncAndNotificationsSettingsId.FOLDER_SYNC_AND_PUSH
 import net.thunderbird.feature.account.settings.impl.ui.syncAndNotifications.SyncAndNotificationsSettingsId.FETCHING_AND_DATA_LIMITS
+import net.thunderbird.feature.account.settings.impl.ui.syncAndNotifications.SyncAndNotificationsSettingsId.FOLDER_SYNC_AND_PUSH
+import net.thunderbird.feature.account.settings.impl.ui.syncAndNotifications.SyncAndNotificationsSettingsId.NOTIFICATION_STYLE
 
 class SyncAndNotificationSettingsBuilder(
     private val resources: StringsResourceManager,
