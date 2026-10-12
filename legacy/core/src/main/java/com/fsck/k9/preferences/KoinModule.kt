@@ -135,6 +135,7 @@ val preferencesModule = module {
             storagePersister = get(),
             storageEditor = get<Preferences>().createStorageEditor(),
             loggingControl = get(),
+            debugLogConfigurator = get(),
             platformConfigProvider = get(),
             preferenceChangeBroker = get(),
         )
@@ -155,7 +156,6 @@ val preferencesModule = module {
             networkSettingsPreferenceManager = get(),
             debuggingSettingsPreferenceManager = get(),
             interactionSettingsPreferenceManager = get(),
-            debugLogConfigurator = get(),
             platformConfigProvider = get(),
             logger = get(),
         )

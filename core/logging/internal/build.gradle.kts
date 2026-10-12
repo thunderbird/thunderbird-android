@@ -10,6 +10,7 @@ kotlin {
         commonMain.dependencies {
             implementation(projects.core.logging.api)
             implementation(projects.core.common)
+            implementation(projects.core.file)
             implementation(libs.tb.mobile.components.core.logging.file)
             implementation(libs.filekit.core)
             implementation(libs.uri)

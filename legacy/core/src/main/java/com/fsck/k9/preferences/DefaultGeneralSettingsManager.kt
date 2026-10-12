@@ -15,7 +15,6 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import net.thunderbird.core.common.appConfig.PlatformConfigProvider
 import net.thunderbird.components.core.logging.Logger
-import net.thunderbird.core.logging.DebugLogConfigurator
 import net.thunderbird.core.preference.GeneralSettings
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.PreferenceChangePublisher
@@ -59,7 +58,6 @@ internal class DefaultGeneralSettingsManager(
     private val networkSettingsPreferenceManager: NetworkSettingsPreferenceManager,
     private val debuggingSettingsPreferenceManager: DebuggingSettingsPreferenceManager,
     private val interactionSettingsPreferenceManager: InteractionSettingsPreferenceManager,
-    private val debugLogConfigurator: DebugLogConfigurator,
     private val backgroundDispatcher: CoroutineDispatcher = Dispatchers.IO,
     private val platformConfigProvider: PlatformConfigProvider,
     private val logger: Logger,
@@ -122,9 +120,7 @@ internal class DefaultGeneralSettingsManager(
         .combine(debuggingSettingsPreferenceManager.getConfigFlow()) { generalSettings, debuggingSettings ->
             generalSettings.copy(
                 debugging = debuggingSettings,
-            ).also {
-                debugLogConfigurator.updateSyncLogging(debuggingSettings.isSyncLoggingEnabled)
-            }
+            )
         }
         .combine(interactionSettingsPreferenceManager.getConfigFlow()) { generalSettings, interactionSettings ->
             generalSettings.copy(interaction = interactionSettings)

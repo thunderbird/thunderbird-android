@@ -13,6 +13,7 @@ import kotlinx.coroutines.sync.withLock
 import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.components.core.logging.LoggingControl
 import net.thunderbird.core.common.appConfig.PlatformConfigProvider
+import net.thunderbird.core.logging.DebugLogConfigurator
 import net.thunderbird.core.preference.PreferenceChangeBroker
 import net.thunderbird.core.preference.PreferenceChangeSubscriber
 import net.thunderbird.core.preference.PreferenceScope
@@ -27,6 +28,7 @@ class DefaultDebuggingSettingsPreferenceManager(
     private val storagePersister: StoragePersister,
     private val storageEditor: StorageEditor,
     private val loggingControl: LoggingControl,
+    private val debugLogConfigurator: DebugLogConfigurator,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
     private var scope: CoroutineScope = CoroutineScope(SupervisorJob()),
     private val platformConfigProvider: PlatformConfigProvider,
@@ -47,7 +49,7 @@ class DefaultDebuggingSettingsPreferenceManager(
     override fun save(config: DebuggingSettings) {
         logger.debug(TAG) { "save() called with: config = $config" }
         writeConfig(config)
-        configState.update { config.also(::updateLoggingEnabled) }
+        configState.update { config.also(::applyLoggingConfig) }
     }
 
     private fun loadConfig(): DebuggingSettings = DebuggingSettings(
@@ -63,7 +65,7 @@ class DefaultDebuggingSettingsPreferenceManager(
             key = DebugSettingKey.EnableSensitiveLogging.value,
             defValue = DEBUGGING_SETTINGS_DEFAULT_SENSITIVE_LOGGING_ENABLED,
         ),
-    ).also(::updateLoggingEnabled)
+    ).also(::applyLoggingConfig)
 
     private fun writeConfig(config: DebuggingSettings) {
         logger.debug(TAG) { "writeConfig() called with: config = $config" }
@@ -79,8 +81,9 @@ class DefaultDebuggingSettingsPreferenceManager(
         }
     }
 
-    private fun updateLoggingEnabled(config: DebuggingSettings) {
+    private fun applyLoggingConfig(config: DebuggingSettings) {
         loggingControl.setEnabled(config.isDebugLoggingEnabled)
+        debugLogConfigurator.updateSyncLogging(config.isSyncLoggingEnabled)
     }
 
     override fun receive(scope: PreferenceScope) {

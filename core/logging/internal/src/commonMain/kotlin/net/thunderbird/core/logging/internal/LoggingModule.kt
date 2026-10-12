@@ -1,5 +1,6 @@
 package net.thunderbird.core.logging.internal
 
+import io.github.vinceglb.filekit.PlatformFile
 import net.thunderbird.components.core.logging.DefaultLogger
 import net.thunderbird.components.core.logging.LogLevel
 import net.thunderbird.components.core.logging.LogLevelProvider
@@ -12,6 +13,7 @@ import net.thunderbird.components.core.logging.console.ConsoleLogSink
 import net.thunderbird.components.core.logging.file.FileLogSink
 import net.thunderbird.core.common.inject.getList
 import net.thunderbird.core.common.inject.singleListOf
+import net.thunderbird.core.file.DirectoryProvider
 import net.thunderbird.core.logging.DebugLogConfigurator
 import net.thunderbird.core.logging.SyncDebugLogExporter
 import org.koin.core.qualifier.named
@@ -20,6 +22,7 @@ import org.koin.dsl.module
 
 const val DEFAULT_LOGGING_ENABLED = "defaultLoggingEnabled"
 const val SYNC_DEBUG_LOG = "syncDebug"
+private const val SYNC_DEBUG_LOG_FILE_NAME = "thunderbird-sync-debug.txt"
 
 val coreLoggingModule = module {
     single<LogLevelProvider> { LogLevelProvider { get<LogLevel>() } }
@@ -42,9 +45,17 @@ val coreLoggingModule = module {
         )
     }.binds(arrayOf(Logger::class, LoggingControl::class))
 
+    single<FileLogSink>(named(SYNC_DEBUG_LOG)) {
+        FileLogSink(
+            level = LogLevel.DEBUG,
+            file = syncDebugLogFile(directoryProvider = get()),
+        )
+    }
+
     single<SyncDebugLogExporter> {
         DefaultSyncDebugLogExporter(
             fileLogSink = get<FileLogSink>(named(SYNC_DEBUG_LOG)),
+            logFile = syncDebugLogFile(directoryProvider = get()),
             destinationFile = ::uriToPlatformFile,
         )
     }
@@ -55,4 +66,9 @@ val coreLoggingModule = module {
             syncDebugFileLogSink = get<FileLogSink>(named(SYNC_DEBUG_LOG)),
         )
     }
+}
+
+private fun syncDebugLogFile(directoryProvider: DirectoryProvider): PlatformFile {
+    val filesDirectory = requireNotNull(directoryProvider.getFilesDir().path)
+    return PlatformFile(PlatformFile(filesDirectory), SYNC_DEBUG_LOG_FILE_NAME)
 }

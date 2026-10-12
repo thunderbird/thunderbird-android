@@ -12,6 +12,7 @@ kotlin {
             api(projects.core.preference.api)
 
             implementation(projects.core.common)
+            implementation(projects.core.logging.api)
         }
     }
 }
