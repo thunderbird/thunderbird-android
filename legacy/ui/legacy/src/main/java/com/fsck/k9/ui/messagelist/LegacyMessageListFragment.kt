@@ -2180,7 +2180,7 @@ class LegacyMessageListFragment :
     }
 
     private val isMarkAllAsReadSupported: Boolean
-        get() = isSingleAccountMode && isSingleFolderMode && !isOutbox
+        get() = (isSingleAccountMode && isSingleFolderMode && !isOutbox) || isUnifiedFolders
 
     private fun confirmMarkAllAsRead() {
         if (interactionSettings.isConfirmMarkAllRead) {
@@ -2192,7 +2192,11 @@ class LegacyMessageListFragment :
 
     private fun markAllAsRead() {
         if (isMarkAllAsReadSupported) {
-            account?.id?.let { messagingController.markAllMessagesRead(it, currentFolder!!.databaseId) }
+            if (isUnifiedFolders) {
+                messagingController.markAllInUnifiedInboxAsRead()
+            } else {
+                account?.id?.let { messagingController.markAllMessagesRead(it, currentFolder!!.databaseId) }
+            }
         }
     }
 
