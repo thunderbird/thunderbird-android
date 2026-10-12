@@ -1132,6 +1132,28 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
         processPendingCommands(account);
     }
 
+    public void markAllInUnifiedInboxAsRead() {
+        putBackground("markAllInUnifiedInboxAsRead", null, this::markAllInUnifiedInboxAsReadSynchronous);
+    }
+
+    void markAllInUnifiedInboxAsReadSynchronous() {
+        for (LegacyAccountDto account : preferences.getAccounts()) {
+            try {
+                MessageStore messageStore = messageStoreManager.getMessageStore(account);
+                List<Long> folderIds = messageStore.getFolders(true, folder -> {
+                    return folder.isIntegrate() ? folder.getId() : null;
+                });
+                for (Long folderId : folderIds) {
+                    if (folderId != null) {
+                        markAllMessagesRead(account, folderId);
+                    }
+                }
+            } catch (MessagingException e) {
+                Log.e(e, "Error marking all in unified inbox as read for account: %s", account);
+            }
+        }
+    }
+
     public void setFlag(final LegacyAccountDto account, final List<Long> messageIds, final Flag flag,
         final boolean newState) {
 

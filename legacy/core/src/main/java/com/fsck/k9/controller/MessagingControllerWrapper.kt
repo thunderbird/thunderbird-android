@@ -209,6 +209,10 @@ class MessagingControllerWrapper(
         messagingController.markAllMessagesRead(account, folderId)
     }
 
+    fun markAllInUnifiedInboxAsRead() {
+        messagingController.markAllInUnifiedInboxAsRead()
+    }
+
     fun checkAuthenticationProblem(id: AccountId) {
         val account = getAccountDtoOrThrow(id)
         messagingController.checkAuthenticationProblem(account)
