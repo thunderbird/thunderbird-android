@@ -4,6 +4,7 @@ import app.k9mail.legacy.di.DI.get
 import assertk.all
 import assertk.assertFailure
 import assertk.assertThat
+import assertk.assertions.contains
 import assertk.assertions.first
 import assertk.assertions.hasSize
 import assertk.assertions.isEmpty
@@ -14,6 +15,7 @@ import assertk.assertions.isTrue
 import assertk.assertions.prop
 import com.fsck.k9.K9RobolectricTest
 import com.fsck.k9.account.FakeStorageBackedAccountManager
+import java.io.ByteArrayOutputStream
 import java.util.UUID
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -21,7 +23,9 @@ import kotlinx.coroutines.test.runTest
 import net.thunderbird.core.android.account.AccountDefaultsProvider
 import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.core.preference.storage.StorageProvider
+import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.account.storage.legacy.AccountStorageHandler
+import net.thunderbird.feature.mail.folder.api.data.repository.FolderQueryRepository
 import org.junit.Before
 import org.junit.Test
 import org.koin.core.context.loadKoinModules
@@ -130,6 +134,7 @@ class SettingsImporterTest : K9RobolectricTest() {
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
+    @Suppress("LongMethod")
     @Test
     fun `importSettings() should disable accounts needing passwords`() = runTest(UnconfinedTestDispatcher()) {
         val accountUuid = UUID.randomUUID().toString()
@@ -165,7 +170,24 @@ class SettingsImporterTest : K9RobolectricTest() {
             """.trimIndent().byteInputStream()
         val accountUuids = listOf(accountUuid)
 
+        val accountManager = get<LegacyAccountManager>()
+        accountManager.findAll() // Initialize the account cache before importing.
+
         val results = settingsImporter.importSettings(inputStream, globalSettings = true, accountUuids)
+        val importedAccount = requireNotNull(accountManager.findById(AccountIdFactory.of(accountUuid)))
+        assertThat(importedAccount.profile.name).isEqualTo("Account")
+        assertThat(importedAccount.identities.single().email).isEqualTo("user@gmail.com")
+        val output = ByteArrayOutputStream()
+        SettingsExporter(
+            contentResolver = org.robolectric.RuntimeEnvironment.getApplication().contentResolver,
+            accountManager = accountManager,
+            storageProvider = get(),
+            folderSettingsProvider = get(),
+            folderQueryRepository = get<FolderQueryRepository>(),
+            notificationSettingsUpdater = mock(),
+            filePrefixProvider = mock(),
+        ).exportPreferences(output, includeGlobals = false, accountUuids = setOf(accountUuid), includePasswords = false)
+        assertThat(output.toString()).contains("key=\"notifyNewMail\"")
 
         assertThat(results).all {
             prop(ImportResults::erroneousAccounts).isEmpty()

@@ -5,6 +5,7 @@ import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.job.K9JobManager
 import com.fsck.k9.notification.NotificationChannelManager
 import com.fsck.k9.notification.NotificationController
+import java.util.concurrent.ConcurrentLinkedQueue
 import java.util.concurrent.ExecutorService
 import net.thunderbird.core.android.account.DeletePolicy
 import net.thunderbird.core.android.account.Expunge
@@ -26,7 +27,19 @@ class AccountSettingsDataStore(
     private val notificationController: NotificationController,
     private val messagingController: MessagingController,
 ) : PreferenceDataStore() {
+    private val accountId = account.id
     private var notificationSettingsChanged = false
+    private var folderListRefreshRequired = false
+
+    /**
+     * Changes made on this screen that still need to be saved.
+     *
+     * [account] is only used to display the current values. When saving, these changes are applied to the latest
+     * stored account, so changes made elsewhere in the meantime (e.g. OAuth state, OpenPGP provider, special folders,
+     * notification channel version) are not overwritten.
+     */
+    private val pendingUpdates = ConcurrentLinkedQueue<(LegacyAccount) -> LegacyAccount>()
+    private val saveLock = Any()
 
     override fun getBoolean(key: String, defValue: Boolean): Boolean {
         return when (key) {
@@ -82,6 +95,7 @@ class AccountSettingsDataStore(
 
     private fun updateValue(update: (LegacyAccount) -> LegacyAccount) {
         account = update(account)
+        pendingUpdates.add(update)
     }
 
     override fun getInt(key: String?, defValue: Int): Int {
@@ -152,7 +166,7 @@ class AccountSettingsDataStore(
         if (value == null) return
 
         when (key) {
-            "account_description" -> updateValue { it.copy(name = value) }
+            "account_description" -> updateValue { it.copy(name = value, profile = it.profile.copy(name = value)) }
             "show_pictures_enum" -> updateValue { it.copy(showPictures = ShowPictures.valueOf(value)) }
             "account_display_count" -> updateValue { it.copy(displayCount = value.toInt()) }
             "account_message_age" -> updateValue { it.copy(maximumPolledMessageAge = value.toInt()) }
@@ -241,21 +255,34 @@ class AccountSettingsDataStore(
     }
 
     fun saveSettingsInBackground() {
+        val recreateNotificationChannel = notificationSettingsChanged
+        notificationSettingsChanged = false
+        val refreshFolderList = folderListRefreshRequired
+        folderListRefreshRequired = false
+
         executorService.execute {
-            if (notificationSettingsChanged) {
-                notificationChannelManager.recreateMessagesNotificationChannel(
-                    account.id,
-                )
-                notificationController.restoreNewMailNotifications(listOf(account.id))
+            // Save first, so the follow-up actions read the updated settings
+            saveSettings()
+
+            if (recreateNotificationChannel) {
+                notificationChannelManager.recreateMessagesNotificationChannel(accountId)
+                notificationController.restoreNewMailNotifications(listOf(accountId))
             }
 
-            notificationSettingsChanged = false
-            saveSettings()
+            if (refreshFolderList) {
+                messagingController.refreshFolderList(accountId)
+            }
         }
     }
 
-    private fun saveSettings() {
-        accountManager.updateSync(account)
+    private fun saveSettings() = synchronized(saveLock) {
+        var updatedAccount = accountManager.findById(accountId) ?: return
+        while (true) {
+            val update = pendingUpdates.poll() ?: break
+            updatedAccount = update(updatedAccount)
+        }
+
+        accountManager.updateSync(updatedAccount)
     }
 
     private fun reschedulePoll() {
@@ -320,8 +347,7 @@ class AccountSettingsDataStore(
     private fun updateSubscribedFoldersOnly(value: Boolean) {
         if (account.isSubscribedFoldersOnly != value) {
             updateValue { it.copy(isSubscribedFoldersOnly = value) }
-
-            messagingController.refreshFolderList(account.id)
+            folderListRefreshRequired = true
         }
     }
 }

@@ -33,7 +33,7 @@ internal class ServerSettingsWriter(
         )
     }
 
-    private fun createServerSettings(server: ValidatedSettings.Server): ServerSettings {
+    fun createServerSettings(server: ValidatedSettings.Server): ServerSettings {
         val validatedSettings = server.settings
 
         val host = validatedSettings[HOST] as String

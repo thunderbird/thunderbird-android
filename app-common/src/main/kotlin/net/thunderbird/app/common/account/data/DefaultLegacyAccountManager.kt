@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.withContext
 import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.UNASSIGNED_ACCOUNT_NUMBER
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.LegacyAccountManager
@@ -24,15 +25,15 @@ internal class DefaultLegacyAccountManager(
     override fun observeAll(): Flow<List<LegacyAccount>> = accountCache.observeAll()
         .onStart { synchronized(accountLock) { loadAccountsIfNeeded() } }
         .map { accounts -> accounts.filter { it.isFinishedSetup } }
-        .distinctUntilChanged()
         .flowOn(backgroundDispatcher)
+        .distinctUntilChanged()
 
     override fun observeById(accountId: AccountId): Flow<LegacyAccount?> =
         accountCache.observeAll()
             .onStart { synchronized(accountLock) { loadAccountsIfNeeded() } }
             .map { accounts -> accounts.firstOrNull { it.id == accountId } }
-            .distinctUntilChanged()
             .flowOn(backgroundDispatcher)
+            .distinctUntilChanged()
 
     private val accountLock = Any()
     private var accountsLoaded = false
@@ -60,7 +61,9 @@ internal class DefaultLegacyAccountManager(
         accountCache.updateAll(accountStorage.loadAll())
     }
 
-    override suspend fun update(account: LegacyAccount) = updateSync(account)
+    override suspend fun update(account: LegacyAccount) = withContext(backgroundDispatcher) {
+        updateSync(account)
+    }
 
     override fun updateSync(account: LegacyAccount) = synchronized(accountLock) {
         loadAccountsIfNeeded()
