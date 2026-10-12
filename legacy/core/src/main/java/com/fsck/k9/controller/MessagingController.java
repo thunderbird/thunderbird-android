@@ -307,6 +307,18 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
         return backendManager.getBackend(accountId);
     }
 
+    /**
+     * Returns {@code null} when the account no longer exists, e.g. when it was removed while the UI or background work
+     * still referred to it.
+     */
+    @Nullable
+    private Backend getBackendOrNull(AccountId accountId) {
+        if (accountManager.findById(accountId) == null) {
+            return null;
+        }
+        return getBackend(accountId);
+    }
+
     LocalStore getLocalStoreOrThrow(AccountId accountId) {
         try {
             return localStoreProvider.getInstance(accountId);
@@ -448,24 +460,19 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
             final Backend backend = getBackend(accountId);
             final String folderPathDelimiter = backend.refreshFolderList();
 
-            // Refreshing the folder list may update the account (e.g. special folders), so reload it
-            account = accountManager.findById(accountId);
-            if (account == null) {
-                return;
-            }
-
-            if (folderPathDelimiter != null &&
-                !folderPathDelimiter.isEmpty() &&
-                !folderPathDelimiter.equals(account.getFolderPathDelimiter())) {
-                account = account.updateFolderDelimiter(folderPathDelimiter);
-            }
-
             long now = System.currentTimeMillis();
             Log.d(TAG, "Folder list successfully refreshed @ %tc", now);
 
-            account = account.updateLastFolderListRefreshTime(now);
-
-            accountManager.updateSync(account);
+            // Refreshing the folder list may update the account (e.g. special folders), so only change what is ours
+            accountManager.updateSync(accountId, currentAccount -> {
+                LegacyAccount updatedAccount = currentAccount;
+                if (folderPathDelimiter != null &&
+                    !folderPathDelimiter.isEmpty() &&
+                    !folderPathDelimiter.equals(currentAccount.getFolderPathDelimiter())) {
+                    updatedAccount = updatedAccount.updateFolderDelimiter(folderPathDelimiter);
+                }
+                return updatedAccount.updateLastFolderListRefreshTime(now);
+            });
         } catch (Exception e) {
             Log.e(TAG, e, "Could not refresh folder list for account %s", accountId);
             handleException(accountId, e);
@@ -792,21 +799,16 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
     }
 
     private void migrateAccountToOAuth(AccountId accountId) {
-        LegacyAccount account = accountManager.findById(accountId);
-        if (account == null) {
-            return;
-        }
+        accountManager.updateSync(accountId, account -> {
+            ServerSettings incomingServerSettings = account.getIncomingServerSettings()
+                .newAuthenticationType(AuthType.XOAUTH2);
+            ServerSettings outgoingServerSettings = account.getOutgoingServerSettings()
+                .newAuthenticationType(AuthType.XOAUTH2);
 
-        ServerSettings incomingServerSettings = account.getIncomingServerSettings()
-            .newAuthenticationType(AuthType.XOAUTH2);
-        ServerSettings outgoingServerSettings = account.getOutgoingServerSettings()
-            .newAuthenticationType(AuthType.XOAUTH2);
-
-        account = account.updateIncomingServerSettings(incomingServerSettings)
-            .updateOutgoingServerSettings(outgoingServerSettings)
-            .updateShouldMigrateToOAuth(false);
-
-        accountManager.updateSync(account);
+            return account.updateIncomingServerSettings(incomingServerSettings)
+                .updateOutgoingServerSettings(outgoingServerSettings)
+                .updateShouldMigrateToOAuth(false);
+        });
     }
 
     public void handleException(AccountId accountId, Exception exception) {
@@ -1819,15 +1821,18 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
     }
 
     public boolean isMoveCapable(final AccountId accountId) {
-        return getBackend(accountId).getSupportsMove();
+        Backend backend = getBackendOrNull(accountId);
+        return backend != null && backend.getSupportsMove();
     }
 
     public boolean isCopyCapable(final AccountId accountId) {
-        return getBackend(accountId).getSupportsCopy();
+        Backend backend = getBackendOrNull(accountId);
+        return backend != null && backend.getSupportsCopy();
     }
 
     public boolean isPushCapable(AccountId accountId) {
-        return getBackend(accountId).isPushCapable();
+        Backend backend = getBackendOrNull(accountId);
+        return backend != null && backend.isPushCapable();
     }
 
     public boolean supportsFlags(AccountId accountId) {
@@ -1835,7 +1840,8 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
     }
 
     public boolean supportsExpunge(AccountId accountId) {
-        return getBackend(accountId).getSupportsExpunge();
+        Backend backend = getBackendOrNull(accountId);
+        return backend != null && backend.getSupportsExpunge();
     }
 
     public boolean supportsSearchByDate(AccountId accountId) {
@@ -2468,15 +2474,16 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
 
         boolean success = !syncError.getValue();
         if (success) {
-            LegacyAccount account = accountManager.findById(accountId);
-            if (account == null) {
-                Log.w(TAG, "Account not found %s", accountId);
-                return success;
-            }
             long now = System.currentTimeMillis();
-            Log.v(TAG, "Account %s successfully synced @ %tc", accountId, now);
-            LegacyAccount updatedAccount = account.updateLastSyncTime(now);
-            accountManager.updateSync(updatedAccount);
+            LegacyAccount updatedAccount = accountManager.updateSync(
+                accountId,
+                account -> account.updateLastSyncTime(now)
+            );
+            if (updatedAccount == null) {
+                Log.w(TAG, "Account not found %s", accountId);
+            } else {
+                Log.v(TAG, "Account %s successfully synced @ %tc", accountId, now);
+            }
         }
 
         return success;

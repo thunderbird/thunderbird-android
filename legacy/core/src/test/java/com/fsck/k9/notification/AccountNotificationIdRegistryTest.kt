@@ -1,7 +1,10 @@
 package com.fsck.k9.notification
 
+import assertk.assertFailure
 import assertk.assertThat
+import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
+import assertk.assertions.isInstanceOf
 import assertk.assertions.isNotEqualTo
 import assertk.assertions.isTrue
 import com.fsck.k9.mail.AuthType
@@ -58,6 +61,34 @@ class AccountNotificationIdRegistryTest : RobolectricTest() {
         // Assert
         assertThat(initialId).isEqualTo(NotificationIds.getFetchingMailNotificationId(4))
         assertThat(updatedId).isEqualTo(NotificationIds.getFetchingMailNotificationId(6))
+    }
+
+    @Test
+    fun `uses last known account number after the account was removed`() {
+        // Arrange
+        val idsBeforeRemoval = testSubject.getAllNewMailNotificationIds(accountOne.id)
+        accountManager.remove(accountOne.id)
+
+        // Act
+        val idsAfterRemoval = testSubject.getAllNewMailNotificationIds(accountOne.id)
+
+        // Assert
+        assertThat(idsAfterRemoval).isEqualTo(idsBeforeRemoval)
+    }
+
+    @Test
+    fun `fails for an account that was never seen`() {
+        val unknownAccountId = AccountIdFactory.create()
+
+        assertFailure { testSubject.getOrAllocate(unknownAccountId, AccountNotificationKind.Sync) }
+            .isInstanceOf<IllegalArgumentException>()
+    }
+
+    @Test
+    fun `returns no new mail notification ids for an account that was never seen`() {
+        val ids = testSubject.getAllNewMailNotificationIds(AccountIdFactory.create())
+
+        assertThat(ids).isEmpty()
     }
 
     @Test
@@ -152,6 +183,10 @@ class AccountNotificationIdRegistryTest : RobolectricTest() {
         fun replace(account: LegacyAccount) {
             val index = accounts.indexOfFirst { it.id == account.id }
             accounts[index] = account
+        }
+
+        fun remove(accountId: AccountId) {
+            accounts.removeAll { it.id == accountId }
         }
 
         override fun observeAll(): Flow<List<LegacyAccount>> = flowOf(accounts)

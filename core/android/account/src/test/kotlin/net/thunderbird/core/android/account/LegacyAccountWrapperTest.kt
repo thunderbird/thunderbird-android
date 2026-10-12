@@ -182,8 +182,6 @@ class LegacyAccountWrapperTest {
                 lastFolderListRefreshTime = 0,
                 isFinishedSetup = false,
                 messagesNotificationChannelVersion = 0,
-                isChangedVisibleLimits = false,
-                lastSelectedFolderId = null,
                 identities = identities,
                 notificationSettings = notificationSettings,
                 senderName = identities[0].name,

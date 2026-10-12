@@ -23,7 +23,7 @@ class NotificationSettingsUpdater(
             .forEach { account ->
                 val notificationSettings = updateNotificationSettings(account)
                 if (notificationSettings != null && notificationSettings != account.notificationSettings) {
-                    accountManager.updateSync(account.copy(notificationSettings = notificationSettings))
+                    accountManager.updateSync(account.id) { it.copy(notificationSettings = notificationSettings) }
                 }
             }
     }

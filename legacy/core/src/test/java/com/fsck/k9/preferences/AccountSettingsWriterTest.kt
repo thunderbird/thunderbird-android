@@ -4,10 +4,13 @@ import app.k9mail.legacy.di.DI.get
 import assertk.assertFailure
 import assertk.assertThat
 import assertk.assertions.contains
+import assertk.assertions.first
 import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
 import assertk.assertions.isNotNull
+import assertk.assertions.isNull
+import assertk.assertions.prop
 import com.fsck.k9.K9RobolectricTest
 import com.fsck.k9.account.FakeStorageBackedAccountManager
 import java.util.UUID
@@ -17,8 +20,10 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.test.runTest
 import net.thunderbird.core.android.account.AccountDefaultsProvider
+import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.UNASSIGNED_ACCOUNT_NUMBER
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.LegacyAccountManager
+import net.thunderbird.core.preference.storage.Storage
 import net.thunderbird.core.preference.storage.StorageEditor
 import net.thunderbird.core.preference.storage.StorageProvider
 import net.thunderbird.feature.account.AccountId
@@ -28,8 +33,6 @@ import org.junit.Before
 import org.junit.Test
 import org.koin.core.context.loadKoinModules
 import org.koin.dsl.module
-import org.mockito.kotlin.doReturn
-import org.mockito.kotlin.mock
 
 class AccountSettingsWriterTest : K9RobolectricTest() {
     private val accountManagerModule = module {
@@ -72,20 +75,29 @@ class AccountSettingsWriterTest : K9RobolectricTest() {
     }
 
     @Test
+    fun `write leaves the account number to the account manager`() = runTest {
+        // Arrange
+        val accountManager = get<LegacyAccountManager>() as CachingAccountManager
+        val testSubject = get<AccountSettingsWriter>()
+        val account = createValidatedAccount(AccountIdFactory.create())
+
+        // Act
+        testSubject.write(account)
+
+        // Assert
+        assertThat(accountManager.updatedAccounts).first()
+            .prop(LegacyAccount::accountNumber).isEqualTo(UNASSIGNED_ACCOUNT_NUMBER)
+    }
+
+    @Test
     fun `failed folder settings commit does not save an account`() = runTest {
         // Arrange
         val accountManager = get<LegacyAccountManager>()
         assertThat(accountManager.findAll()).isEmpty()
         val accountId = AccountIdFactory.of(UUID.randomUUID().toString())
-        val failingEditor = mock<StorageEditor> {
-            on { commit() } doReturn false
-        }
-        val storageProvider = mock<StorageProvider> {
-            on { createStorageEditor() } doReturn failingEditor
-        }
         val testSubject = AccountSettingsWriter(
             accountManager = accountManager,
-            storageProvider = storageProvider,
+            storageProvider = FailingCommitStorageProvider(get<StorageProvider>()),
             localFoldersCreator = get(),
             clock = get(),
             generalSettingsManager = get(),
@@ -101,9 +113,8 @@ class AccountSettingsWriterTest : K9RobolectricTest() {
 
         // Assert
         assertThat(accountManager.findAll()).isEmpty()
-        assertThat(accountManager.findById(accountId)).isEqualTo(null)
-        assertThat(accountManager.observeAll().first()).isEmpty()
-        assertThat(get<StorageProvider>().loadLatestStorage().getStringOrNull("accountUuids")).isEqualTo(null)
+        assertThat(accountManager.findById(accountId)).isNull()
+        assertThat(get<StorageProvider>().loadLatestStorage().getStringOrNull("accountUuids")).isNull()
     }
 
     private fun createValidatedAccount(accountId: AccountId): ValidatedSettings.Account {
@@ -135,8 +146,28 @@ class AccountSettingsWriterTest : K9RobolectricTest() {
     }
 }
 
+/** Reads from [delegate], but every commit fails without writing anything. */
+private class FailingCommitStorageProvider(private val delegate: StorageProvider) : StorageProvider {
+    override val storage: Storage get() = delegate.storage
+
+    override fun loadLatestStorage(): Storage = delegate.loadLatestStorage()
+
+    override fun createStorageEditor(): StorageEditor = FailingCommitStorageEditor()
+}
+
+private class FailingCommitStorageEditor : StorageEditor {
+    override fun putBoolean(key: String, value: Boolean): StorageEditor = this
+    override fun putInt(key: String, value: Int): StorageEditor = this
+    override fun putLong(key: String, value: Long): StorageEditor = this
+    override fun putString(key: String, value: String?): StorageEditor = this
+    override fun remove(key: String): StorageEditor = this
+    override fun commit(): Boolean = false
+}
+
 private class CachingAccountManager(private val storageManager: LegacyAccountManager) : LegacyAccountManager {
     private val accounts = MutableStateFlow(storageManager.findAll())
+
+    val updatedAccounts = mutableListOf<LegacyAccount>()
 
     override fun findAll(): List<LegacyAccount> = accounts.value
 
@@ -152,6 +183,7 @@ private class CachingAccountManager(private val storageManager: LegacyAccountMan
     override suspend fun update(account: LegacyAccount) = updateSync(account)
 
     override fun updateSync(account: LegacyAccount) {
+        updatedAccounts.add(account)
         storageManager.updateSync(account)
         accounts.value = storageManager.findAll()
     }

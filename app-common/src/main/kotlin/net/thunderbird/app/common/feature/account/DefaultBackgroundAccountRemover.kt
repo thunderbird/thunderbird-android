@@ -15,7 +15,7 @@ class DefaultBackgroundAccountRemover(
     override fun removeAccountAsync(accountId: AccountId) {
         val account = accountManager.findById(accountId) ?: return
         if (account.isFinishedSetup) {
-            accountManager.updateSync(account.copy(isFinishedSetup = false))
+            accountManager.updateSync(accountId) { it.copy(isFinishedSetup = false) }
         }
 
         AccountRemoverWorker.enqueueRemoveAccountWorker(context, accountId)

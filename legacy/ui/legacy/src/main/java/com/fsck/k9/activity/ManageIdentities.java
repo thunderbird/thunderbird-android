@@ -14,6 +14,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import net.thunderbird.core.android.account.Identity;
+import net.thunderbird.core.android.account.LegacyAccount;
 import com.fsck.k9.ui.R;
 
 public class ManageIdentities extends ChooseIdentity {
@@ -138,8 +139,13 @@ public class ManageIdentities extends ChooseIdentity {
 
     private void saveIdentities() {
         if (mIdentitiesChanged) {
-            mAccount = mAccount.updateIdentities(identities);
-            accountManager.updateSync(mAccount);
+            LegacyAccount updatedAccount = accountManager.updateSync(
+                mAccount.getId(),
+                account -> account.updateIdentities(identities)
+            );
+            if (updatedAccount != null) {
+                mAccount = updatedAccount;
+            }
         }
     }
 }

@@ -974,13 +974,16 @@ class LegacyMessageListFragment :
 
             this.sortDateAscending = newSortAscendingMap[SortType.SORT_DATE] ?: SortType.SORT_DATE.isDefaultAscending
 
-            val updatedAccount = account.copy(
-                sortType = sortType,
-                sortAscending = newSortAscendingMap,
-            )
             lifecycleScope.launch(Dispatchers.IO) {
-                accountManager.updateSync(updatedAccount)
-                this@LegacyMessageListFragment.account = updatedAccount
+                val updatedAccount = accountManager.updateSync(account.id) { latestAccount ->
+                    latestAccount.copy(
+                        sortType = sortType,
+                        sortAscending = latestAccount.sortAscending + (sortType to resolvedAscending),
+                    )
+                }
+                if (updatedAccount != null) {
+                    this@LegacyMessageListFragment.account = updatedAccount
+                }
             }
         } else {
             K9.sortType = this.sortType
@@ -1575,7 +1578,6 @@ class LegacyMessageListFragment :
             operation = FolderOperation.MOVE,
             sourceFolderId = folderId,
             accountId = messages.first().accountId,
-            lastSelectedFolderId = null,
             messages = messages,
         )
     }
@@ -1597,7 +1599,6 @@ class LegacyMessageListFragment :
             operation = FolderOperation.COPY,
             sourceFolderId = folderId,
             accountId = messages.first().accountId,
-            lastSelectedFolderId = null,
             messages = messages,
         )
     }
@@ -1606,7 +1607,6 @@ class LegacyMessageListFragment :
         operation: FolderOperation,
         sourceFolderId: Long?,
         accountId: AccountId,
-        lastSelectedFolderId: Long?,
         messages: List<MessageReference>,
     ) {
         // Remember the selected messages so they are available in the registerForActivityResult() callbacks
@@ -1615,7 +1615,6 @@ class LegacyMessageListFragment :
         val input = ChooseFolderResultContract.Input(
             accountId = accountId,
             currentFolderId = sourceFolderId,
-            scrollToFolderId = lastSelectedFolderId,
         )
         when (operation) {
             FolderOperation.COPY -> chooseFolderForCopyLauncher.launch(input)
@@ -1635,22 +1634,8 @@ class LegacyMessageListFragment :
         if (destinationFolderId != -1L) {
             activeMessages = null
 
-            if (messages.isNotEmpty()) {
-                setLastSelectedFolder(messages, destinationFolderId)
-            }
-
             action(destinationFolderId, messages)
         }
-    }
-
-    private fun setLastSelectedFolder(messages: List<MessageReference>, folderId: Long) {
-        val firstMessage = messages.firstOrNull() ?: return
-        val account = accountManager.findById(firstMessage.accountId) ?: return
-        accountManager.updateSync(
-            account.copy(
-                lastSelectedFolderId = folderId,
-            ),
-        )
     }
 
     private fun onArchive(message: MessageReference) {

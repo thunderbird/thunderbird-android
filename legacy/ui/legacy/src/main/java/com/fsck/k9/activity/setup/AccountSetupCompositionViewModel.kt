@@ -10,6 +10,7 @@ import com.fsck.k9.activity.setup.AccountSetupCompositionContract.Event
 import com.fsck.k9.activity.setup.AccountSetupCompositionContract.State
 import com.fsck.k9.ui.R
 import kotlinx.collections.immutable.persistentListOf
+import net.thunderbird.core.android.account.Identity
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.core.common.resources.StringsResourceManager
@@ -110,7 +111,35 @@ internal class AccountSetupCompositionViewModel(
     }
 
     private fun saveAccount() {
-        legacyAccountManager.updateSync(account)
+        val editedAccount = account
+        legacyAccountManager.updateSync(editedAccount.id) { latestAccount ->
+            latestAccount.withCompositionSettingsFrom(editedAccount)
+        }
+    }
+
+    /**
+     * Copies the settings edited on this screen onto the latest version of the account.
+     *
+     * Sender name, email and signature are stored in the first identity, so they are written there.
+     */
+    private fun LegacyAccount.withCompositionSettingsFrom(editedAccount: LegacyAccount): LegacyAccount {
+        val firstIdentity = (identities.firstOrNull() ?: Identity()).copy(
+            name = editedAccount.senderName,
+            email = editedAccount.email,
+            signatureUse = editedAccount.signatureUse,
+            signature = editedAccount.signature,
+            signatureIsHtml = editedAccount.signatureIsHtml,
+        )
+        return copy(
+            identities = listOf(firstIdentity) + identities.drop(1),
+            email = editedAccount.email,
+            senderName = editedAccount.senderName,
+            signatureUse = editedAccount.signatureUse,
+            signature = editedAccount.signature,
+            signatureIsHtml = editedAccount.signatureIsHtml,
+            alwaysBcc = editedAccount.alwaysBcc,
+            isSignatureBeforeQuotedText = editedAccount.isSignatureBeforeQuotedText,
+        )
     }
 
     private fun handleOnFormatSignatureAsHtmlCheck(event: Event.OnFormatSignatureAsHtmlCheck) {

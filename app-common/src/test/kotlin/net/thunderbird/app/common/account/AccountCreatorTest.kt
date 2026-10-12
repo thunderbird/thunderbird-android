@@ -29,7 +29,6 @@ import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.UN
 import net.thunderbird.core.android.account.DeletePolicy
 import net.thunderbird.core.featureflag.FeatureFlagResult
 import net.thunderbird.feature.account.AccountIdFactory
-import net.thunderbird.feature.account.avatar.AvatarMonogramCreator
 import net.thunderbird.feature.account.storage.profile.AvatarTypeDto
 import org.mockito.kotlin.doAnswer
 import org.mockito.kotlin.doReturn

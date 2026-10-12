@@ -32,6 +32,7 @@ import net.thunderbird.feature.account.storage.profile.ProfileDto
 
 private const val FOLDER_ID = 42L
 private const val TIMESTAMP = 0L
+private const val NEW_CHANNEL_VERSION = 5
 
 class NotificationDataStoreTest : RobolectricTest() {
     private val accountId = AccountIdFactory.create()
@@ -56,6 +57,55 @@ class NotificationDataStoreTest : RobolectricTest() {
             notificationIdRegistry.getOrAllocate(accountId, AccountNotificationKind.SingleMessage, 0),
         )
         assertThat(holder.content).isEqualTo(content)
+    }
+
+    @Test
+    fun `addNotification should return null for a removed account`() {
+        val result = notificationDataStore.addNotification(
+            AccountIdFactory.create(),
+            createNotificationContent("1"),
+            TIMESTAMP,
+        )
+
+        assertThat(result).isNull()
+    }
+
+    @Test
+    fun `removeNotifications should return null for a removed account`() {
+        val result = notificationDataStore.removeNotifications(AccountIdFactory.create()) { it }
+
+        assertThat(result).isNull()
+    }
+
+    @Test
+    fun `addNotification should use the latest account`() {
+        // Arrange
+        notificationDataStore.addNotification(accountId, createNotificationContent("1"), TIMESTAMP)
+        accountManager.updateSync(account.copy(messagesNotificationChannelVersion = NEW_CHANNEL_VERSION))
+
+        // Act
+        val result = notificationDataStore.addNotification(accountId, createNotificationContent("2"), TIMESTAMP)
+
+        // Assert
+        assertThat(result).isNotNull()
+            .transform { it.notificationData.account.messagesNotificationChannelVersion }
+            .isEqualTo(NEW_CHANNEL_VERSION)
+    }
+
+    @Test
+    fun `removeNotifications should use the latest account`() {
+        // Arrange
+        val content = createNotificationContent("1")
+        notificationDataStore.addNotification(accountId, content, TIMESTAMP)
+        accountManager.updateSync(account.copy(messagesNotificationChannelVersion = NEW_CHANNEL_VERSION))
+
+        // Act
+        val result = notificationDataStore.removeNotifications(accountId) { listOf(content.messageReference) }
+
+        // Assert
+        assertThat(result).isNotNull()
+            .transform { it.notificationData.account.messagesNotificationChannelVersion }
+            .isEqualTo(NEW_CHANNEL_VERSION)
     }
 
     @Test

@@ -2,7 +2,6 @@ package com.fsck.k9.ui.messagelist.debug
 
 import com.fsck.k9.mail.oauth.AuthStateStorage
 import com.fsck.k9.mail.oauth.OAuth2TokenProviderFactory
-import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.components.core.outcome.Outcome
 import net.thunderbird.feature.account.AccountId
@@ -33,8 +32,7 @@ class AuthDebugActions(
                 val storage = object : AuthStateStorage {
                     override fun getAuthorizationState(): String? = account.oAuthState
                     override fun updateAuthorizationState(authorizationState: String?) {
-                        val updated = account.copy(oAuthState = authorizationState)
-                        accountManager.updateSync(updated)
+                        accountManager.updateSync(accountId) { it.copy(oAuthState = authorizationState) }
                     }
                 }
                 val provider = oAuth2TokenProviderFactory.create(storage)
@@ -59,19 +57,16 @@ class AuthDebugActions(
                     return Outcome.failure(Error.AlreadyModified)
                 }
 
-                val updated = account.copy(oAuthState = modified)
-                accountManager.updateSync(updated)
+                accountManager.updateSync(accountId) { it.copy(oAuthState = modified) }
                 Outcome.success(Unit)
             }
         }
     }
 
     fun forceAuthFailure(accountId: AccountId): Outcome<Unit, Error> {
-        val account: LegacyAccount = accountManager.findById(accountId)
-            ?: return Outcome.failure(Error.AccountNotFound)
         // Clear OAuth state to force immediate authentication failure
-        val updated = account.copy(oAuthState = null)
-        accountManager.updateSync(updated)
+        accountManager.updateSync(accountId) { it.copy(oAuthState = null) }
+            ?: return Outcome.failure(Error.AccountNotFound)
         return Outcome.success(Unit)
     }
 }

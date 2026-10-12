@@ -140,15 +140,16 @@ class EditIdentity : BaseActivity() {
             replyTo = replyTo.text.toString().trim().takeUnless { it.isBlank() },
         )
 
-        val identities = account.identities.toMutableList()
-        if (identityIndex == -1) {
-            identities.add(identity)
-        } else {
-            identities.removeAt(identityIndex)
-            identities.add(identityIndex, identity)
+        val editedIdentity = identity
+        accountManager.updateSync(account.id) { latestAccount ->
+            val identities = latestAccount.identities.toMutableList()
+            if (identityIndex == -1) {
+                identities.add(editedIdentity)
+            } else {
+                identities[identityIndex] = editedIdentity
+            }
+            latestAccount.copy(identities = identities)
         }
-
-        accountManager.updateSync(account.copy(identities = identities))
 
         finish()
     }

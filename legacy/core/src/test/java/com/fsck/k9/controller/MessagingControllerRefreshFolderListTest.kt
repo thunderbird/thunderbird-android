@@ -11,10 +11,10 @@ import com.fsck.k9.account.FakeLegacyAccountManager
 import com.fsck.k9.backend.BackendManager
 import com.fsck.k9.backend.api.Backend
 import net.thunderbird.backend.api.BackendFactory
+import net.thunderbird.components.core.logging.testing.TestLogger
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.common.mail.Protocols
 import net.thunderbird.core.featureflag.FeatureFlagResult
-import net.thunderbird.core.logging.testing.TestLogger
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.notification.testing.fake.FakeNotificationManager
 import net.thunderbird.legacy.core.StubLocalDeleteOperationDecider

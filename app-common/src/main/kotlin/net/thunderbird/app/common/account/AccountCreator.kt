@@ -170,12 +170,17 @@ internal class AccountCreator(
     @VisibleForTesting
     internal fun refreshInitialFolderList(accountId: AccountId) {
         val folderPathDelimiter = backendManager.getBackend(accountId).refreshFolderList()
-        var refreshedAccount = accountManager.findById(accountId)
-            ?: error("Account not found after refreshing folder list")
-        if (!folderPathDelimiter.isNullOrEmpty() && folderPathDelimiter != refreshedAccount.folderPathDelimiter) {
-            refreshedAccount = refreshedAccount.updateFolderDelimiter(folderPathDelimiter)
-        }
-        accountManager.updateSync(refreshedAccount.updateLastFolderListRefreshTime(System.currentTimeMillis()))
+        val now = System.currentTimeMillis()
+        accountManager.updateSync(accountId) { account ->
+            val updatedAccount = if (
+                !folderPathDelimiter.isNullOrEmpty() && folderPathDelimiter != account.folderPathDelimiter
+            ) {
+                account.updateFolderDelimiter(folderPathDelimiter)
+            } else {
+                account
+            }
+            updatedAccount.updateLastFolderListRefreshTime(now)
+        } ?: error("Account not found after refreshing folder list")
     }
 
     /**

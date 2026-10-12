@@ -14,10 +14,11 @@ internal class LegacyAccountLocalDataSource(
     private val accountDefaultsProvider: AccountDefaultsProvider,
 ) : AccountLocalDataSource {
 
-    private val storage: Storage
-        get() = storageProvider.loadLatestStorage()
+    // Reads the whole preferences table, so each operation reads it once and passes it on
+    private fun loadStorage(): Storage = storageProvider.loadLatestStorage()
 
     override fun loadAll(): List<LegacyAccount> {
+        val storage = loadStorage()
         val accountUuids = storage.getStringOrNull("accountUuids") ?: return emptyList()
 
         return accountUuids.split(",")
@@ -30,6 +31,7 @@ internal class LegacyAccountLocalDataSource(
     }
 
     override fun getById(accountId: AccountId): LegacyAccount? {
+        val storage = loadStorage()
         val accountUuids = storage.getStringOrNull("accountUuids")?.split(",")
         if (accountUuids == null || accountId.toString() !in accountUuids) return null
 
@@ -39,13 +41,13 @@ internal class LegacyAccountLocalDataSource(
 
     override fun save(account: LegacyAccount) {
         val editor = storageProvider.createStorageEditor()
-        accountStorageHandler.save(account, storage, editor)
+        accountStorageHandler.save(account, loadStorage(), editor)
         check(editor.commit()) { "Failed to save account settings" }
     }
 
     override fun delete(accountId: AccountId) {
         val editor = storageProvider.createStorageEditor()
-        accountStorageHandler.delete(accountId, storage, editor)
+        accountStorageHandler.delete(accountId, loadStorage(), editor)
         check(editor.commit()) { "Failed to delete account settings" }
     }
 }

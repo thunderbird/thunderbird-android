@@ -130,6 +130,13 @@ class SendFailedNotificationControllerTest : RobolectricTest() {
     }
 
     @Test
+    fun `showSendFailedNotification should do nothing for a removed account`() {
+        controller.showSendFailedNotification(AccountIdFactory.create(), Exception())
+
+        verify(notificationHelper, never()).notify(any<Int>(), any<Notification>())
+    }
+
+    @Test
     fun testClearSendFailedNotification() {
         controller.clearSendFailedNotification(accountId)
 

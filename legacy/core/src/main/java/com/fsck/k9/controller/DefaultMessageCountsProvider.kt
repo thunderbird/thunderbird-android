@@ -39,7 +39,12 @@ internal class DefaultMessageCountsProvider(
     private val coroutineContext: CoroutineContext = Dispatchers.IO,
 ) : MessageCountsProvider {
     override fun getMessageCounts(accountId: AccountId): MessageCounts {
-        val account = accountManager.findById(accountId) ?: error("Account with id $accountId not found")
+        val account = accountManager.findById(accountId)
+        if (account == null) {
+            // The account may have been removed while its message counts were still being observed
+            logger.warn(TAG) { "Unable to getMessageCounts for missing account: $accountId" }
+            return MessageCounts(unread = 0, starred = 0)
+        }
         val search = LocalMessageSearch().apply {
             excludeSpecialFolders(account, outboxFolderId = outboxFolderManager.getOutboxFolderIdSync(accountId))
             limitToDisplayableFolders()

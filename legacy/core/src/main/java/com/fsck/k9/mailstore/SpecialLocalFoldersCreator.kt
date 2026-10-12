@@ -56,9 +56,27 @@ class SpecialLocalFoldersCreator(
             } else {
                 Log.d(TAG, "Trash folder was already set up")
             }
-        }
 
-        accountManager.updateSync(account)
+            saveLocalSpecialFolders(account)
+        }
+    }
+
+    /**
+     * Saves the local special folders of [account] onto the latest version of the account.
+     *
+     * [account] was read before creating the folders, so saving it as a whole could undo changes made in the meantime.
+     */
+    private fun saveLocalSpecialFolders(account: LegacyAccount) {
+        accountManager.updateSync(account.id) { latestAccount ->
+            latestAccount.copy(
+                draftsFolderId = account.draftsFolderId,
+                draftsFolderSelection = account.draftsFolderSelection,
+                sentFolderId = account.sentFolderId,
+                sentFolderSelection = account.sentFolderSelection,
+                trashFolderId = account.trashFolderId,
+                trashFolderSelection = account.trashFolderSelection,
+            )
+        }
     }
 
     private fun LegacyAccount.isPop3() = incomingServerSettings.type == Protocols.POP3

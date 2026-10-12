@@ -40,28 +40,29 @@ class LegacyUpdateSortCriteria(
         val (primary, secondary) = sortCriteria
         val (primarySortType, primarySortAscending) = primary.toDomainSortType()
         val secondaryCriteria = secondary?.toDomainSortType()
-        val account = withContext(ioDispatcher) { accountManager.findById(accountId) }
-        if (account == null) {
+        logger.verbose(TAG) { "updateAccountSortCriteria: Setting primary sort criteria to $primarySortType" }
+        secondaryCriteria?.let { (secondarySortType, _) ->
+            logger.verbose(TAG) { "updateAccountSortCriteria: Setting secondary sort criteria to $secondarySortType" }
+        }
+        val updatedAccount = withContext(ioDispatcher) {
+            logger.debug(TAG) { "updateAccountSortCriteria: saving account with id $accountId" }
+            accountManager.updateSync(accountId) { account ->
+                val accountSortAscending = account.sortAscending.toMutableMap()
+                accountSortAscending[primarySortType] = primarySortAscending
+                secondaryCriteria?.let { (secondarySortType, secondarySortAscending) ->
+                    accountSortAscending[secondarySortType] = secondarySortAscending
+                }
+                account.copy(
+                    sortType = primarySortType,
+                    sortAscending = accountSortAscending,
+                )
+            }
+        }
+        if (updatedAccount == null) {
             logger.error(TAG) { "updateAccountSortCriteria: Could not find any account with id $accountId" }
             return Outcome.failure(UpdateSortCriteriaOutcome.Error.AccountNotFound(accountId))
         }
 
-        val accountSortAscending = account.sortAscending.toMutableMap()
-        accountSortAscending[primarySortType] = primarySortAscending
-        logger.verbose(TAG) { "updateAccountSortCriteria: Setting primary sort criteria to $primarySortType" }
-        if (secondaryCriteria != null) {
-            val (secondarySortType, secondarySortAscending) = secondaryCriteria
-            logger.verbose(TAG) { "updateAccountSortCriteria: Setting secondary sort criteria to $secondarySortType" }
-            accountSortAscending[secondarySortType] = secondarySortAscending
-        }
-        val updatedAccount = account.copy(
-            sortType = primarySortType,
-            sortAscending = accountSortAscending,
-        )
-        withContext(ioDispatcher) {
-            logger.debug(TAG) { "updateAccountSortCriteria: saving account with id $accountId" }
-            accountManager.updateSync(updatedAccount)
-        }
         return Outcome.success(UpdateSortCriteriaOutcome.Success)
     }
 

@@ -97,6 +97,17 @@ class SyncNotificationControllerTest : RobolectricTest() {
     }
 
     @Test
+    fun `show notifications should do nothing for a removed account`() {
+        val removedAccountId = AccountIdFactory.create()
+
+        controller.showSendingNotification(removedAccountId)
+        controller.showFetchingMailNotification(removedAccountId, mock<LocalFolder>())
+        controller.showEmptyFetchingMailNotification(removedAccountId)
+
+        verify(notificationHelper, never()).notify(any<Int>(), any<Notification>())
+    }
+
+    @Test
     fun testClearSendingNotification() {
         controller.clearSendingNotification(accountId)
 

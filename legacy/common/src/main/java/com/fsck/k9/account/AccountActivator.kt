@@ -4,7 +4,6 @@ import android.content.Context
 import app.k9mail.feature.settings.import.SettingsImportExternalContract
 import com.fsck.k9.Core
 import com.fsck.k9.controller.MessagingController
-import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.feature.account.AccountId
 
@@ -17,9 +16,7 @@ class AccountActivator(
     private val messagingController: MessagingController,
 ) : SettingsImportExternalContract.AccountActivator {
     override fun enableAccount(accountId: AccountId, incomingServerPassword: String?, outgoingServerPassword: String?) {
-        val account = accountManager.findById(accountId) ?: error("Account $accountId not found")
-
-        setAccountPasswords(account, incomingServerPassword, outgoingServerPassword)
+        setAccountPasswords(accountId, incomingServerPassword, outgoingServerPassword)
         enableAccount(accountId)
     }
 
@@ -32,22 +29,24 @@ class AccountActivator(
     }
 
     private fun setAccountPasswords(
-        account: LegacyAccount,
+        accountId: AccountId,
         incomingServerPassword: String?,
         outgoingServerPassword: String?,
     ) {
-        var updatedAccount = account
+        accountManager.updateSync(accountId) { account ->
+            var updatedAccount = account
 
-        if (incomingServerPassword != null) {
-            val newIncoming = updatedAccount.incomingServerSettings.newPassword(incomingServerPassword)
-            updatedAccount = updatedAccount.copy(incomingServerSettings = newIncoming)
-        }
+            if (incomingServerPassword != null) {
+                val newIncoming = updatedAccount.incomingServerSettings.newPassword(incomingServerPassword)
+                updatedAccount = updatedAccount.copy(incomingServerSettings = newIncoming)
+            }
 
-        if (outgoingServerPassword != null) {
-            val newOutgoing = updatedAccount.outgoingServerSettings.newPassword(outgoingServerPassword)
-            updatedAccount = updatedAccount.copy(outgoingServerSettings = newOutgoing)
-        }
+            if (outgoingServerPassword != null) {
+                val newOutgoing = updatedAccount.outgoingServerSettings.newPassword(outgoingServerPassword)
+                updatedAccount = updatedAccount.copy(outgoingServerSettings = newOutgoing)
+            }
 
-        accountManager.updateSync(updatedAccount)
+            updatedAccount
+        } ?: error("Account $accountId not found")
     }
 }

@@ -165,6 +165,81 @@ class DefaultSpecialFolderUpdaterTest {
         assertThat(updatedAccount.draftsFolderId).isNull()
     }
 
+    @Test
+    fun `updateSpecialFoldersSync should keep account changes made while folders are queried`() = runTest {
+        // Arrange
+        remoteFolderQueryRepository.remoteFolders = listOf(
+            createRemoteFolder(id = 1, type = FolderType.INBOX, serverId = "INBOX"),
+            createRemoteFolder(id = 2, type = FolderType.DRAFTS, serverId = "Drafts"),
+        )
+        remoteFolderQueryRepository.onGetAll = {
+            // Simulates another component saving the account, e.g. a refreshed OAuth state
+            accountManager.updateSync(accountManager.findById(accountId)!!.copy(oAuthState = "refreshed"))
+        }
+
+        // Act
+        subject.updateSpecialFoldersSync()
+
+        // Assert
+        val updatedAccount = accountManager.findById(accountId)!!
+        assertThat(updatedAccount.oAuthState).isEqualTo("refreshed")
+        assertThat(updatedAccount.inboxFolderId).isEqualTo(1L)
+        assertThat(updatedAccount.draftsFolderId).isEqualTo(2L)
+    }
+
+    @Test
+    fun `setSpecialFolder should keep another special folder chosen in the meantime`() = runTest {
+        // Arrange
+        remoteFolderQueryRepository.remoteFolders = emptyList()
+        accountManager.onFindById = {
+            // Simulates another special folder being chosen after this update read the account
+            accountManager.onFindById = {}
+            accountManager.updateSync(
+                accountManager.findById(accountId)!!.copy(
+                    draftsFolderId = 20L,
+                    draftsFolderSelection = SpecialFolderSelection.MANUAL,
+                ),
+            )
+        }
+
+        // Act
+        subject.setSpecialFolder(FolderType.ARCHIVE, 10L, SpecialFolderSelection.MANUAL)
+
+        // Assert
+        val updatedAccount = accountManager.findById(accountId)!!
+        assertThat(updatedAccount.archiveFolderId).isEqualTo(10L)
+        assertThat(updatedAccount.draftsFolderId).isEqualTo(20L)
+        assertThat(updatedAccount.draftsFolderSelection).isEqualTo(SpecialFolderSelection.MANUAL)
+    }
+
+    @Test
+    fun `updateSpecialFoldersSync should keep a special folder chosen while folders are queried`() = runTest {
+        // Arrange
+        remoteFolderQueryRepository.remoteFolders = listOf(
+            createRemoteFolder(id = 1, type = FolderType.INBOX, serverId = "INBOX"),
+            createRemoteFolder(id = 2, type = FolderType.DRAFTS, serverId = "Drafts"),
+            createRemoteFolder(id = 5, type = FolderType.REGULAR, serverId = "MyArchive"),
+        )
+        remoteFolderQueryRepository.onGetAll = {
+            // Simulates the user choosing an archive folder while the special folders are being updated
+            accountManager.updateSync(
+                accountManager.findById(accountId)!!.copy(
+                    archiveFolderId = 5L,
+                    archiveFolderSelection = SpecialFolderSelection.MANUAL,
+                ),
+            )
+        }
+
+        // Act
+        subject.updateSpecialFoldersSync()
+
+        // Assert
+        val updatedAccount = accountManager.findById(accountId)!!
+        assertThat(updatedAccount.archiveFolderId).isEqualTo(5L)
+        assertThat(updatedAccount.archiveFolderSelection).isEqualTo(SpecialFolderSelection.MANUAL)
+        assertThat(updatedAccount.draftsFolderId).isEqualTo(2L)
+    }
+
     private fun createAccount(id: AccountId): LegacyAccount {
         val profile = ProfileDto(
             id = id,
@@ -215,9 +290,12 @@ class DefaultSpecialFolderUpdaterTest {
 
     private class FakeRemoteFolderQueryRepository : RemoteFolderQueryRepository {
         var remoteFolders: List<RemoteFolder> = emptyList()
+        var onGetAll: () -> Unit = {}
 
-        override suspend fun getAllByAccountId(accountId: AccountId): Outcome<List<RemoteFolder>, FolderError> =
-            Outcome.success(remoteFolders)
+        override suspend fun getAllByAccountId(accountId: AccountId): Outcome<List<RemoteFolder>, FolderError> {
+            onGetAll()
+            return Outcome.success(remoteFolders)
+        }
     }
 
     private class FakeFolderDetailsRepository : FolderDetailsRepository {
@@ -246,7 +324,10 @@ class DefaultSpecialFolderUpdaterTest {
         }
 
         override fun findAll(): List<LegacyAccount> = accounts
-        override fun findById(accountId: AccountId): LegacyAccount? = accounts.find { it.id == accountId }
+        var onFindById: () -> Unit = {}
+
+        override fun findById(accountId: AccountId): LegacyAccount? =
+            accounts.find { it.id == accountId }.also { onFindById() }
         override fun observeById(accountId: AccountId): Flow<LegacyAccount?> = flowOf(findById(accountId))
         override fun moveAccount(accountId: AccountId, newPosition: Int) = Unit
     }

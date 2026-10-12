@@ -11,4 +11,9 @@ class DefaultLegacyAccountRepository(private val accountManager: LegacyAccountMa
     override suspend fun update(account: LegacyAccount) {
         accountManager.update(account)
     }
+
+    override suspend fun update(
+        accountId: AccountId,
+        transform: (LegacyAccount) -> LegacyAccount,
+    ): LegacyAccount? = accountManager.update(accountId, transform)
 }

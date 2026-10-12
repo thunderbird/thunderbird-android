@@ -1,5 +1,6 @@
 package com.fsck.k9.notification
 
+import java.util.concurrent.ConcurrentHashMap
 import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.UNASSIGNED_ACCOUNT_NUMBER
 import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.feature.account.AccountId
@@ -30,12 +31,18 @@ internal interface AccountNotificationIdRegistry {
 
     fun getOrAllocate(accountId: AccountId, kind: AccountNotificationKind, index: Int): Int
 
+    /**
+     * Returns the IDs of all new mail notifications of the account, or an empty list when its account number is
+     * unknown, e.g. for an account removed before the app was restarted.
+     */
     fun getAllNewMailNotificationIds(accountId: AccountId): List<Int>
 }
 
 internal class DefaultAccountNotificationIdRegistry(
     private val accountManager: LegacyAccountManager,
 ) : AccountNotificationIdRegistry {
+    // Notifications of a removed account must still be cancellable, so remember the last known account numbers
+    private val lastKnownAccountNumbers = ConcurrentHashMap<AccountId, Int>()
 
     override fun getOrAllocate(
         accountId: AccountId,
@@ -52,11 +59,9 @@ internal class DefaultAccountNotificationIdRegistry(
         return getOrAllocateForIndex(accountId, kind, index)
     }
 
-    override fun getAllNewMailNotificationIds(accountId: AccountId): List<Int> = buildList {
-        repeat(MAX_NUMBER_OF_NEW_MESSAGE_NOTIFICATIONS) { index ->
-            add(getOrAllocate(accountId, AccountNotificationKind.SingleMessage, index))
-        }
-        add(getOrAllocate(accountId, AccountNotificationKind.NewMailSummary))
+    override fun getAllNewMailNotificationIds(accountId: AccountId): List<Int> {
+        val accountNumber = findAccountNumber(accountId) ?: return emptyList()
+        return NotificationIds.getAllMessageNotificationIds(accountNumber)
     }
 
     private fun getOrAllocateForIndex(
@@ -70,10 +75,18 @@ internal class DefaultAccountNotificationIdRegistry(
         } else {
             require(index == null) { "Only SingleMessage notifications have an index" }
         }
-        val account = accountManager.findById(accountId)
-            ?: throw IllegalArgumentException("Account not found")
+        return getNotificationId(getAccountNumber(accountId), kind, index)
+    }
+
+    private fun getAccountNumber(accountId: AccountId): Int {
+        return requireNotNull(findAccountNumber(accountId)) { "Account not found" }
+    }
+
+    private fun findAccountNumber(accountId: AccountId): Int? {
+        val account = accountManager.findById(accountId) ?: return lastKnownAccountNumbers[accountId]
         require(account.accountNumber != UNASSIGNED_ACCOUNT_NUMBER) { "Account number not assigned" }
-        return getNotificationId(account.accountNumber, kind, index)
+        lastKnownAccountNumbers[accountId] = account.accountNumber
+        return account.accountNumber
     }
 
     private fun getNotificationId(accountNumber: Int, kind: AccountNotificationKind, index: Int?): Int {

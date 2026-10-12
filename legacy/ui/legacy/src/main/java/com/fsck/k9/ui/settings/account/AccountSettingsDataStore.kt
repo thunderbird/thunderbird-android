@@ -7,6 +7,7 @@ import com.fsck.k9.notification.NotificationChannelManager
 import com.fsck.k9.notification.NotificationController
 import java.util.concurrent.ConcurrentLinkedQueue
 import java.util.concurrent.ExecutorService
+import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.core.android.account.DeletePolicy
 import net.thunderbird.core.android.account.Expunge
 import net.thunderbird.core.android.account.LegacyAccount
@@ -18,6 +19,8 @@ import net.thunderbird.feature.mail.folder.api.SpecialFolderSelection
 import net.thunderbird.feature.notification.NotificationLight
 import net.thunderbird.feature.notification.NotificationVibration
 
+private const val TAG = "AccountSettingsDataStore"
+
 class AccountSettingsDataStore(
     private val accountManager: LegacyAccountManager,
     private val executorService: ExecutorService,
@@ -26,19 +29,20 @@ class AccountSettingsDataStore(
     private val notificationChannelManager: NotificationChannelManager,
     private val notificationController: NotificationController,
     private val messagingController: MessagingController,
+    private val logger: Logger,
 ) : PreferenceDataStore() {
     private val accountId = account.id
-    private var notificationSettingsChanged = false
-    private var folderListRefreshRequired = false
 
     /**
      * Changes made on this screen that still need to be saved.
      *
      * [account] is only used to display the current values. When saving, these changes are applied to the latest
      * stored account, so changes made elsewhere in the meantime (e.g. OAuth state, OpenPGP provider, special folders,
-     * notification channel version) are not overwritten.
+     * notification channel version) are not overwritten. Changes are only removed after they were saved, so a failed
+     * save is retried with the next one. Follow-up actions are queued after their change, so they only run once that
+     * change was saved.
      */
-    private val pendingUpdates = ConcurrentLinkedQueue<(LegacyAccount) -> LegacyAccount>()
+    private val pendingUpdates = ConcurrentLinkedQueue<PendingUpdate>()
     private val saveLock = Any()
 
     override fun getBoolean(key: String, defValue: Boolean): Boolean {
@@ -95,7 +99,11 @@ class AccountSettingsDataStore(
 
     private fun updateValue(update: (LegacyAccount) -> LegacyAccount) {
         account = update(account)
-        pendingUpdates.add(update)
+        pendingUpdates.add(PendingUpdate(update))
+    }
+
+    private fun requestFollowUpAction(action: FollowUpAction) {
+        pendingUpdates.add(PendingUpdate(transform = { it }, followUpAction = action))
     }
 
     override fun getInt(key: String?, defValue: Int): Int {
@@ -175,7 +183,7 @@ class AccountSettingsDataStore(
                 val newInterval = value.toInt()
                 if (account.automaticCheckIntervalMinutes != newInterval) {
                     updateValue { it.copy(automaticCheckIntervalMinutes = newInterval) }
-                    reschedulePoll()
+                    requestFollowUpAction(FollowUpAction.RESCHEDULE_MAIL_SYNC)
                 }
             }
 
@@ -222,7 +230,7 @@ class AccountSettingsDataStore(
             updateValue { it.copy(profile = it.profile.copy(color = color)) }
 
             if (account.notificationSettings.light == NotificationLight.AccountColor) {
-                notificationSettingsChanged = true
+                requestFollowUpAction(FollowUpAction.RECREATE_NOTIFICATION_CHANNEL)
             }
         }
     }
@@ -238,7 +246,7 @@ class AccountSettingsDataStore(
                     ),
                 )
             }
-            notificationSettingsChanged = true
+            requestFollowUpAction(FollowUpAction.RECREATE_NOTIFICATION_CHANNEL)
         }
     }
 
@@ -250,43 +258,53 @@ class AccountSettingsDataStore(
                     notificationSettings = it.notificationSettings.copy(light = light),
                 )
             }
-            notificationSettingsChanged = true
+            requestFollowUpAction(FollowUpAction.RECREATE_NOTIFICATION_CHANNEL)
         }
     }
 
     fun saveSettingsInBackground() {
-        val recreateNotificationChannel = notificationSettingsChanged
-        notificationSettingsChanged = false
-        val refreshFolderList = folderListRefreshRequired
-        folderListRefreshRequired = false
-
         executorService.execute {
-            // Save first, so the follow-up actions read the updated settings
-            saveSettings()
-
-            if (recreateNotificationChannel) {
-                notificationChannelManager.recreateMessagesNotificationChannel(accountId)
-                notificationController.restoreNewMailNotifications(listOf(accountId))
-            }
-
-            if (refreshFolderList) {
-                messagingController.refreshFolderList(accountId)
+            @Suppress("TooGenericExceptionCaught")
+            try {
+                // Save first, so the follow-up actions read the updated settings
+                val followUpActions = saveSettings()
+                runFollowUpActions(followUpActions)
+            } catch (e: Exception) {
+                // Pending changes and follow-up actions are kept and retried with the next save
+                logger.error(tag = TAG, throwable = e) { "Failed to save account settings for accountId" }
             }
         }
     }
 
-    private fun saveSettings() = synchronized(saveLock) {
-        var updatedAccount = accountManager.findById(accountId) ?: return
-        while (true) {
-            val update = pendingUpdates.poll() ?: break
-            updatedAccount = update(updatedAccount)
+    /**
+     * Saves the pending changes and returns the follow-up actions of the saved changes.
+     */
+    private fun saveSettings(): Set<FollowUpAction> = synchronized(saveLock) {
+        var appliedUpdates = emptyList<PendingUpdate>()
+        accountManager.updateSync(accountId) { account ->
+            appliedUpdates = pendingUpdates.toList()
+            appliedUpdates.fold(account) { updatedAccount, update -> update.transform(updatedAccount) }
         }
 
-        accountManager.updateSync(updatedAccount)
+        // Only remove the changes once they were saved
+        repeat(appliedUpdates.size) { pendingUpdates.poll() }
+
+        appliedUpdates.mapNotNullTo(mutableSetOf()) { it.followUpAction }
     }
 
-    private fun reschedulePoll() {
-        jobManager.scheduleMailSync(account)
+    private fun runFollowUpActions(actions: Set<FollowUpAction>) {
+        if (FollowUpAction.RECREATE_NOTIFICATION_CHANNEL in actions) {
+            notificationChannelManager.recreateMessagesNotificationChannel(accountId)
+            notificationController.restoreNewMailNotifications(listOf(accountId))
+        }
+
+        if (FollowUpAction.REFRESH_FOLDER_LIST in actions) {
+            messagingController.refreshFolderList(accountId)
+        }
+
+        if (FollowUpAction.RESCHEDULE_MAIL_SYNC in actions) {
+            accountManager.findById(accountId)?.let { jobManager.scheduleMailSync(it) }
+        }
     }
 
     private fun extractFolderId(preferenceValue: String): Long? {
@@ -341,13 +359,24 @@ class AccountSettingsDataStore(
                 ),
             )
         }
-        notificationSettingsChanged = true
+        requestFollowUpAction(FollowUpAction.RECREATE_NOTIFICATION_CHANNEL)
     }
 
     private fun updateSubscribedFoldersOnly(value: Boolean) {
         if (account.isSubscribedFoldersOnly != value) {
             updateValue { it.copy(isSubscribedFoldersOnly = value) }
-            folderListRefreshRequired = true
+            requestFollowUpAction(FollowUpAction.REFRESH_FOLDER_LIST)
         }
     }
+}
+
+private class PendingUpdate(
+    val transform: (LegacyAccount) -> LegacyAccount,
+    val followUpAction: FollowUpAction? = null,
+)
+
+private enum class FollowUpAction {
+    RECREATE_NOTIFICATION_CHANNEL,
+    REFRESH_FOLDER_LIST,
+    RESCHEDULE_MAIL_SYNC,
 }

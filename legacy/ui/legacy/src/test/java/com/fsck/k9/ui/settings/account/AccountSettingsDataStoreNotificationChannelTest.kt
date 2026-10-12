@@ -17,6 +17,7 @@ import com.fsck.k9.notification.K9NotificationResourceProvider
 import com.fsck.k9.notification.NotificationChannelManager
 import com.fsck.k9.notification.NotificationLightDecoder
 import kotlinx.coroutines.test.TestScope
+import net.thunderbird.components.core.logging.testing.TestLogger
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.feature.notification.NotificationSettings
 import org.junit.Test
@@ -50,6 +51,7 @@ class AccountSettingsDataStoreNotificationChannelTest : K9RobolectricTest() {
         notificationChannelManager = notificationChannelManager,
         notificationController = mock(),
         messagingController = mock(),
+        logger = TestLogger(),
     )
 
     @Test

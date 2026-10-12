@@ -28,7 +28,14 @@ class FakeLegacyAccountManager(
 
     override suspend fun update(account: LegacyAccount) = updateSync(account)
 
+    /** Number of upcoming saves that fail, like a storage commit that doesn't succeed. */
+    var failingSaveCount = 0
+
     override fun updateSync(account: LegacyAccount) {
+        if (failingSaveCount > 0) {
+            failingSaveCount--
+            error("Simulated save failure")
+        }
         updatedAccounts.add(account)
         accounts.value = if (accounts.value.any { it.id == account.id }) {
             accounts.value.map { if (it.id == account.id) account else it }

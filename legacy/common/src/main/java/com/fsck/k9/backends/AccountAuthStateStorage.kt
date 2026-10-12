@@ -14,12 +14,8 @@ class AccountAuthStateStorage(
     }
 
     override fun updateAuthorizationState(authorizationState: String?) {
-        val account = getAccountById(accountId)
-
-        val updatedAccount = account.copy(
-            oAuthState = authorizationState,
-        )
-        accountManager.updateSync(updatedAccount)
+        accountManager.updateSync(accountId) { account -> account.copy(oAuthState = authorizationState) }
+            ?: error("Account not found: $accountId")
     }
 
     private fun getAccountById(accountId: AccountId): LegacyAccount {

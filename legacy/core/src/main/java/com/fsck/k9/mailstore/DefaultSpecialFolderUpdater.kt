@@ -51,7 +51,8 @@ class DefaultSpecialFolderUpdater(
     }
 
     private suspend fun updateSpecialFoldersSynchronous() {
-        var account: LegacyAccount = getAccountById(accountId)
+        val originalAccount = getAccountById(accountId)
+        var account: LegacyAccount = originalAccount
         remoteFolderQueryRepository.getAllByAccountId(accountId).handleAsync(
             onSuccess = { folders ->
                 account = updateInbox(account, folders)
@@ -66,7 +67,7 @@ class DefaultSpecialFolderUpdater(
 
                 account = removeImportedSpecialFoldersData(account)
 
-                updateAccount(account)
+                saveSpecialFolderChanges(originalAccount, account)
             },
             onFailure = { error ->
                 logger.error(TAG) { "Failed to update special folders. Folder error: $error" }
@@ -169,7 +170,7 @@ class DefaultSpecialFolderUpdater(
             val account = getAccountById(accountId)
             val updatedAccount = setSpecialFolderSynchronous(account, type, folderId, selection)
             if (updatedAccount != account) {
-                updateAccount(updatedAccount)
+                saveSpecialFolderChanges(account, updatedAccount)
             }
         }
     }
@@ -241,8 +242,19 @@ class DefaultSpecialFolderUpdater(
         return accountManager.findById(accountId) ?: error("Account not found: $accountId")
     }
 
-    private fun updateAccount(account: LegacyAccount) {
-        accountManager.updateSync(account)
+    /**
+     * Saves the special folder settings that changed from [originalAccount] to [updatedAccount] onto the latest version
+     * of the account.
+     *
+     * Both were read before querying or creating folders. Copying only what changed keeps changes made in the meantime,
+     * e.g. another special folder chosen by the user while this update was running.
+     */
+    private fun saveSpecialFolderChanges(originalAccount: LegacyAccount, updatedAccount: LegacyAccount) {
+        accountManager.updateSync(accountId) { latestAccount ->
+            SPECIAL_FOLDER_FIELDS.fold(latestAccount) { account, field ->
+                field.copyIfChanged(from = updatedAccount, original = originalAccount, to = account)
+            }
+        }
     }
 
     private fun LegacyAccount.isPop3() = incomingServerSettings.type == Protocols.POP3
@@ -268,3 +280,42 @@ class DefaultSpecialFolderUpdater(
         )
     }
 }
+
+/**
+ * A setting of [LegacyAccount] that can be copied from one account to another.
+ */
+private class AccountField<T>(
+    private val get: (LegacyAccount) -> T,
+    private val set: LegacyAccount.(T) -> LegacyAccount,
+) {
+    /** Copies this setting from [from] to [to] if it differs from [original]. */
+    fun copyIfChanged(from: LegacyAccount, original: LegacyAccount, to: LegacyAccount): LegacyAccount {
+        val value = get(from)
+        return if (value != get(original)) to.set(value) else to
+    }
+}
+
+// A folder ID and its selection mode belong together, so they are copied as one setting
+private val SPECIAL_FOLDER_FIELDS: List<AccountField<*>> = listOf(
+    AccountField({ it.inboxFolderId }) { copy(inboxFolderId = it) },
+    AccountField({ it.archiveFolderId to it.archiveFolderSelection }) {
+        copy(archiveFolderId = it.first, archiveFolderSelection = it.second)
+    },
+    AccountField({ it.draftsFolderId to it.draftsFolderSelection }) {
+        copy(draftsFolderId = it.first, draftsFolderSelection = it.second)
+    },
+    AccountField({ it.sentFolderId to it.sentFolderSelection }) {
+        copy(sentFolderId = it.first, sentFolderSelection = it.second)
+    },
+    AccountField({ it.spamFolderId to it.spamFolderSelection }) {
+        copy(spamFolderId = it.first, spamFolderSelection = it.second)
+    },
+    AccountField({ it.trashFolderId to it.trashFolderSelection }) {
+        copy(trashFolderId = it.first, trashFolderSelection = it.second)
+    },
+    AccountField({ it.importedArchiveFolder }) { copy(importedArchiveFolder = it) },
+    AccountField({ it.importedDraftsFolder }) { copy(importedDraftsFolder = it) },
+    AccountField({ it.importedSentFolder }) { copy(importedSentFolder = it) },
+    AccountField({ it.importedSpamFolder }) { copy(importedSpamFolder = it) },
+    AccountField({ it.importedTrashFolder }) { copy(importedTrashFolder = it) },
+)

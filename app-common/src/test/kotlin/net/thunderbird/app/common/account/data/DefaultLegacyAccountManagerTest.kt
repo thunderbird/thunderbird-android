@@ -1,14 +1,21 @@
 package net.thunderbird.app.common.account.data
 
 import app.cash.turbine.test
+import assertk.all
+import assertk.assertFailure
 import assertk.assertThat
 import assertk.assertions.containsExactly
 import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
+import assertk.assertions.isInstanceOf
+import assertk.assertions.isNotNull
 import assertk.assertions.isNull
+import assertk.assertions.prop
 import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ConnectionSecurity
 import com.fsck.k9.mail.ServerSettings
+import java.util.concurrent.Executors
+import java.util.concurrent.TimeUnit
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
@@ -167,6 +174,112 @@ class DefaultLegacyAccountManagerTest {
     }
 
     @Test
+    fun `updateSync should cache the account as stored instead of as passed in`() {
+        // Arrange
+        val account = createFakeAccount("Account").copy(openPgpProvider = null)
+        // Storage writes a missing provider as an empty string, like the preferences storage
+        accountStorage.onSave = { it.copy(openPgpProvider = "") }
+
+        // Act
+        testSubject.updateSync(account)
+
+        // Assert
+        assertThat(testSubject.findById(account.id)).isNotNull().prop(LegacyAccount::openPgpProvider).isEqualTo("")
+    }
+
+    @Test
+    fun `updateSync with transform should return null and save nothing when the account does not exist`() {
+        val result = testSubject.updateSync(AccountIdFactory.create()) { it.copy(name = "Renamed") }
+
+        assertThat(result).isNull()
+        assertThat(accountStorage.savedAccounts).isEmpty()
+    }
+
+    @Test
+    fun `updateSync with transform should apply it to the latest account and return the saved account`() {
+        // Arrange
+        val account = createFakeAccount("Account")
+        accountStorage.accounts.add(account)
+        testSubject.updateSync(account.copy(oAuthState = "refreshed"))
+
+        // Act
+        val result = testSubject.updateSync(account.id) { it.copy(name = "Renamed") }
+
+        // Assert
+        assertThat(result).isNotNull().all {
+            prop(LegacyAccount::name).isEqualTo("Renamed")
+            prop(LegacyAccount::oAuthState).isEqualTo("refreshed")
+        }
+        assertThat(testSubject.findById(account.id)).isEqualTo(result)
+    }
+
+    @Test
+    fun `updateSync with transform should not lose concurrent updates`() {
+        // Arrange
+        val account = createFakeAccount("Account").copy(messagesNotificationChannelVersion = 0)
+        accountStorage.accounts.add(account)
+        val executor = Executors.newFixedThreadPool(CONCURRENT_THREADS)
+
+        // Act
+        try {
+            val futures = List(CONCURRENT_THREADS) {
+                executor.submit {
+                    repeat(UPDATES_PER_THREAD) {
+                        testSubject.updateSync(account.id) {
+                            it.copy(messagesNotificationChannelVersion = it.messagesNotificationChannelVersion + 1)
+                        }
+                    }
+                }
+            }
+            futures.forEach { it.get(OTHER_THREAD_TIMEOUT_SECONDS, TimeUnit.SECONDS) }
+        } finally {
+            executor.shutdownNow()
+        }
+
+        // Assert
+        assertThat(testSubject.findById(account.id)).isNotNull()
+            .prop(LegacyAccount::messagesNotificationChannelVersion).isEqualTo(CONCURRENT_THREADS * UPDATES_PER_THREAD)
+    }
+
+    @Test
+    fun `updateSync with transform should reject a change of the account ID`() {
+        // Arrange
+        val account = createFakeAccount("Account")
+        accountStorage.accounts.add(account)
+
+        // Act and assert
+        assertFailure { testSubject.updateSync(account.id) { it.copy(id = AccountIdFactory.create()) } }
+            .isInstanceOf<IllegalArgumentException>()
+        assertThat(accountStorage.savedAccounts).isEmpty()
+    }
+
+    @Test
+    fun `updateSync with transform should reset folder limits when display count changes`() {
+        // Arrange
+        val account = createFakeAccount("Account").copy(displayCount = 25)
+        accountStorage.accounts.add(account)
+
+        // Act
+        testSubject.updateSync(account.id) { it.copy(displayCount = 50) }
+
+        // Assert
+        assertThat(accountFolderUpdater.resets).containsExactly(account.id to 50)
+    }
+
+    @Test
+    fun `update with transform should save the account`() = runTest(testDispatcher) {
+        // Arrange
+        val account = createFakeAccount("Account")
+        accountStorage.accounts.add(account)
+
+        // Act
+        testSubject.update(account.id) { it.copy(name = "Renamed") }
+
+        // Assert
+        assertThat(accountStorage.savedAccounts.single().name).isEqualTo("Renamed")
+    }
+
+    @Test
     fun `update should save assigned account to storage and cache`() = runTest(testDispatcher) {
         val account = createFakeAccount("Assigned").copy(accountNumber = 5)
 
@@ -185,6 +298,30 @@ class DefaultLegacyAccountManagerTest {
 
         assertThat(accountFolderUpdater.resets).containsExactly(account.id to 50)
         assertThat(accountStorage.savedAccounts.single().displayCount).isEqualTo(50)
+    }
+
+    @Test
+    fun `updateSync should not hold the account lock while resetting folder limits`() {
+        // Arrange
+        val account = createFakeAccount("Account").copy(displayCount = 25)
+        accountStorage.accounts.add(account)
+        val executor = Executors.newSingleThreadExecutor()
+        var accountFoundFromOtherThread: LegacyAccount? = null
+        // Simulates a message database migration on another thread that reads the account
+        accountFolderUpdater.onReset = {
+            accountFoundFromOtherThread = executor.submit<LegacyAccount?> { testSubject.findById(account.id) }
+                .get(OTHER_THREAD_TIMEOUT_SECONDS, TimeUnit.SECONDS)
+        }
+
+        try {
+            // Act
+            testSubject.updateSync(account.copy(displayCount = 50))
+        } finally {
+            executor.shutdownNow()
+        }
+
+        // Assert
+        assertThat(accountFoundFromOtherThread).isNotNull().prop(LegacyAccount::displayCount).isEqualTo(50)
     }
 
     @Test
@@ -232,6 +369,10 @@ class DefaultLegacyAccountManagerTest {
     }
 
     private companion object Companion {
+        const val OTHER_THREAD_TIMEOUT_SECONDS = 5L
+        const val CONCURRENT_THREADS = 4
+        const val UPDATES_PER_THREAD = 50
+
         fun createFakeAccount(
             name: String,
             id: AccountId = AccountIdFactory.create(),
@@ -279,8 +420,11 @@ class DefaultLegacyAccountManagerTest {
 
     private class FakeAccountFolderUpdater : AccountFolderUpdater {
         val resets = mutableListOf<Pair<AccountId, Int>>()
+        var onReset: () -> Unit = {}
+
         override fun resetVisibleLimits(accountId: AccountId, visibleLimit: Int) {
             resets.add(accountId to visibleLimit)
+            onReset()
         }
     }
 
@@ -290,6 +434,7 @@ class DefaultLegacyAccountManagerTest {
         val deletedAccountIds = mutableListOf<AccountId>()
         var loadAllCalls = 0
             private set
+        var onSave: (LegacyAccount) -> LegacyAccount = { it }
 
         override fun loadAll(): List<LegacyAccount> {
             loadAllCalls++
@@ -303,7 +448,7 @@ class DefaultLegacyAccountManagerTest {
         override fun save(account: LegacyAccount) {
             savedAccounts.add(account)
             accounts.removeAll { it.id == account.id }
-            accounts.add(account)
+            accounts.add(onSave(account))
         }
 
         override fun delete(accountId: AccountId) {

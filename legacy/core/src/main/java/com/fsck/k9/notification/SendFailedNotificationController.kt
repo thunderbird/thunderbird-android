@@ -20,8 +20,7 @@ internal class SendFailedNotificationController(
     private val notificationIdRegistry: AccountNotificationIdRegistry,
 ) {
     fun showSendFailedNotification(accountId: AccountId, exception: Exception) {
-        val account = accountManager.findById(accountId)
-            ?: throw IllegalStateException("Account not found for id $accountId")
+        val account = accountManager.findById(accountId) ?: return
         val title = resourceProvider.sendFailedTitle()
         val text = exception.rootCauseMessage.orEmpty()
 

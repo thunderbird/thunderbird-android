@@ -292,8 +292,13 @@ public class OpenPgpAppSelectDialog extends BaseActivity {
     }
 
     private void persistOpenPgpProviderSetting(String selectedPackage) {
-        account = account.updateOpenPgpProvider(selectedPackage);
-        accountManager.updateSync(account);
+        LegacyAccount updatedAccount = accountManager.updateSync(
+            account.getId(),
+            latestAccount -> latestAccount.updateOpenPgpProvider(selectedPackage)
+        );
+        if (updatedAccount != null) {
+            account = updatedAccount;
+        }
     }
 
     private static class OpenPgpProviderEntry {

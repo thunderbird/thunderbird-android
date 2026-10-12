@@ -113,8 +113,6 @@ data class LegacyAccount(
     val lastFolderListRefreshTime: Long = 0,
     val isFinishedSetup: Boolean = false,
     val messagesNotificationChannelVersion: Int = 0,
-    val isChangedVisibleLimits: Boolean = false,
-    val lastSelectedFolderId: Long? = null,
     val identities: List<Identity>,
     val notificationSettings: NotificationSettings = NotificationSettings(),
     val senderName: String? = identities.firstOrNull()?.name,

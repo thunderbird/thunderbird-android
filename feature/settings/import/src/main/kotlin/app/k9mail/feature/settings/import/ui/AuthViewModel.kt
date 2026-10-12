@@ -132,7 +132,7 @@ internal class AuthViewModel(
                 val newAuthState = authState.jsonSerializeString()
 
                 viewModelScope.launch(Dispatchers.IO) {
-                    accountManager.update(account.copy(oAuthState = newAuthState))
+                    accountManager.update(account.id) { it.copy(oAuthState = newAuthState) }
                 }
 
                 if (authorizationException != null) {

@@ -55,6 +55,34 @@ class LegacyAccountLocalDataSourceTest {
     }
 
     @Test
+    fun `loadAll should read the storage once for all accounts`() {
+        // Arrange
+        val accountIds = List(3) { AccountIdFactory.create() }
+        accountIds.forEach { fakeAccountStorageHandler.setAccount(createFakeAccount(it, "Account $it")) }
+        val testSubject = createTestSubject(FakeStorage(mapOf("accountUuids" to accountIds.joinToString(","))))
+
+        // Act
+        testSubject.loadAll()
+
+        // Assert
+        assertThat(fakeStorageProvider.loadLatestStorageCalls).isEqualTo(1)
+    }
+
+    @Test
+    fun `getById should read the storage once`() {
+        // Arrange
+        val accountId = AccountIdFactory.create()
+        fakeAccountStorageHandler.setAccount(createFakeAccount(accountId, "Account"))
+        val testSubject = createTestSubject(FakeStorage(mapOf("accountUuids" to accountId.toString())))
+
+        // Act
+        testSubject.getById(accountId)
+
+        // Assert
+        assertThat(fakeStorageProvider.loadLatestStorageCalls).isEqualTo(1)
+    }
+
+    @Test
     fun `loadAll should return empty list when accountUuids is missing`() {
         val testSubject = createTestSubject(FakeStorage(emptyMap()))
 
@@ -237,8 +265,14 @@ class LegacyAccountLocalDataSourceTest {
         val committedValues = mutableMapOf<String, String?>()
         val committedRemovals = mutableListOf<String>()
 
+        var loadLatestStorageCalls = 0
+            private set
+
         override val storage: Storage get() = storageInstance
-        override fun loadLatestStorage(): Storage = storageInstance
+        override fun loadLatestStorage(): Storage {
+            loadLatestStorageCalls++
+            return storageInstance
+        }
         override fun createStorageEditor(): StorageEditor = FakeStorageEditor(this)
     }
 

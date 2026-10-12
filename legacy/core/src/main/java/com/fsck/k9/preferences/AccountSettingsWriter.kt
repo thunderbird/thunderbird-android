@@ -5,6 +5,7 @@ import com.fsck.k9.Core
 import com.fsck.k9.mailstore.SpecialLocalFoldersCreator
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
+import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.UNASSIGNED_ACCOUNT_NUMBER
 import net.thunderbird.core.android.account.DeletePolicy
 import net.thunderbird.core.android.account.Expunge
 import net.thunderbird.core.android.account.FolderMode
@@ -37,7 +38,7 @@ import net.thunderbird.feature.notification.VibratePattern
  * - Generate unique account identifiers and account display names
  * - Save account, server, and identity settings through the account manager
  * - Queue folder settings for folders that may not yet exist
- * - Assign unique notification channel versions and account numbers
+ * - Assign unique notification channel versions
  * - Initialize special local folders for newly created/imported accounts
  */
 internal class AccountSettingsWriter(
@@ -154,7 +155,8 @@ internal class AccountSettingsWriter(
             sortType = sortType,
             sortAscending = mapOf(sortType to bool("sortAscending")),
             showPictures = settings.enum("showPicturesEnum", ShowPictures.NEVER),
-            accountNumber = findNewAccountNumber(),
+            // The account manager assigns the number when saving, using the same rule as for new accounts
+            accountNumber = UNASSIGNED_ACCOUNT_NUMBER,
             messagesNotificationChannelVersion = channelVersion,
             isFinishedSetup = true,
             notificationSettings = notificationSettings,
@@ -192,9 +194,6 @@ internal class AccountSettingsWriter(
             folderPathDelimiter = string("folderPathDelimiter") ?: "/",
         )
     }
-
-    private fun findNewAccountNumber(): Int = accountManager.findAll()
-        .maxOfOrNull { it.accountNumber }?.plus(1) ?: 0
 
     private fun writeFolders(accountId: AccountId, folders: List<ValidatedSettings.Folder>) {
         if (folders.isEmpty()) return

@@ -5,6 +5,7 @@ import com.fsck.k9.job.K9JobManager
 import com.fsck.k9.notification.NotificationChannelManager
 import com.fsck.k9.notification.NotificationController
 import java.util.concurrent.ExecutorService
+import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.LegacyAccountManager
 
@@ -15,6 +16,7 @@ class AccountSettingsDataStoreFactory(
     private val notificationChannelManager: NotificationChannelManager,
     private val notificationController: NotificationController,
     private val messagingController: MessagingController,
+    private val logger: Logger,
 ) {
     fun create(account: LegacyAccount): AccountSettingsDataStore {
         return AccountSettingsDataStore(
@@ -25,6 +27,7 @@ class AccountSettingsDataStoreFactory(
             notificationChannelManager,
             notificationController,
             messagingController,
+            logger,
         )
     }
 }

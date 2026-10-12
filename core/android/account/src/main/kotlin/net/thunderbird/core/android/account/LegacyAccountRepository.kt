@@ -1,6 +1,7 @@
 package net.thunderbird.core.android.account
 
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.firstOrNull
 import net.thunderbird.feature.account.AccountId
 
 interface LegacyAccountRepository {
@@ -17,4 +18,19 @@ interface LegacyAccountRepository {
      * @param account The account to update.
      */
     suspend fun update(account: LegacyAccount)
+
+    /**
+     * Atomically updates the account with the specified [accountId].
+     *
+     * [transform] receives the latest version of the account, and its result is saved, so no change made elsewhere in
+     * the meantime is lost.
+     *
+     * The default implementation is not atomic. Implementations used from several threads must override it.
+     *
+     * @return The saved account, or `null` if no account with the specified [accountId] exists.
+     */
+    suspend fun update(accountId: AccountId, transform: (LegacyAccount) -> LegacyAccount): LegacyAccount? {
+        val account = observeById(accountId).firstOrNull() ?: return null
+        return transform(account).also { update(it) }
+    }
 }

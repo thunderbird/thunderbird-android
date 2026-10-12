@@ -228,10 +228,8 @@ class NotificationChannelManager(
     }
 
     private fun updateAccountChannelVersion(accountId: AccountId, newChannelVersion: Int) {
-        val currentAccount = accountManager.findById(accountId)
-
-        if (currentAccount != null) {
-            accountManager.updateSync(currentAccount.copy(messagesNotificationChannelVersion = newChannelVersion))
+        accountManager.updateSync(accountId) { account ->
+            account.copy(messagesNotificationChannelVersion = newChannelVersion)
         }
     }
 
@@ -277,11 +275,6 @@ class NotificationChannelManager(
         vibrationPattern = settings.vibration.systemPattern
         enableVibration(settings.vibration.isEnabled)
     }
-
-    private fun String.toAccountUuid(): String = this
-
-    private val LegacyAccount.notificationChannelGroupId: String
-        get() = id.toString()
 
     private val NotificationSettings.ringtoneUri: Uri?
         get() = if (isRingEnabled) ringtone?.toUri() else null

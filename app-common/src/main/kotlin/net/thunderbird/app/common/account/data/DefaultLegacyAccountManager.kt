@@ -65,15 +65,57 @@ internal class DefaultLegacyAccountManager(
         updateSync(account)
     }
 
-    override fun updateSync(account: LegacyAccount) = synchronized(accountLock) {
-        loadAccountsIfNeeded()
-        val previousAccount = accountCache.findById(account.id)
-        val assignedAccount = ensureAssignedAccountNumber(account)
-        if (previousAccount != null && previousAccount.displayCount != assignedAccount.displayCount) {
-            accountFolderUpdater.resetVisibleLimits(account.id, assignedAccount.displayCount)
+    override fun updateSync(account: LegacyAccount) {
+        saveAccount(account.id) { account }
+    }
+
+    override suspend fun update(
+        accountId: AccountId,
+        transform: (LegacyAccount) -> LegacyAccount,
+    ): LegacyAccount? = withContext(backgroundDispatcher) {
+        updateSync(accountId, transform)
+    }
+
+    override fun updateSync(accountId: AccountId, transform: (LegacyAccount) -> LegacyAccount): LegacyAccount? {
+        return saveAccount(accountId) { currentAccount -> currentAccount?.let(transform) }
+    }
+
+    /**
+     * Saves the account returned by [createAccount], which receives the cached account (or `null` if there is none).
+     *
+     * @return The saved account, or `null` if [createAccount] returned `null`.
+     */
+    private fun saveAccount(
+        accountId: AccountId,
+        createAccount: (LegacyAccount?) -> LegacyAccount?,
+    ): LegacyAccount? {
+        val (savedAccount, isDisplayCountChanged) = synchronized(accountLock) {
+            loadAccountsIfNeeded()
+            val previousAccount = accountCache.findById(accountId)
+            val account = createAccount(previousAccount) ?: return null
+            require(account.id == accountId) { "Account ID must not change: $accountId -> ${account.id}" }
+
+            val assignedAccount = ensureAssignedAccountNumber(account)
+            accountStorage.save(assignedAccount)
+            // Cache what was stored, not what was passed in, so the in-memory account matches storage
+            val storedAccount = accountStorage.getById(assignedAccount.id) ?: assignedAccount
+            accountCache.update(storedAccount)
+
+            storedAccount to (previousAccount != null && previousAccount.displayCount != storedAccount.displayCount)
         }
-        accountStorage.save(assignedAccount)
-        accountCache.update(assignedAccount)
+
+        // Must run outside accountLock: this opens the message database, whose migrations call findById().
+        // Holding the lock here can deadlock with a thread that holds the database lock.
+        if (isDisplayCountChanged) {
+            resetVisibleLimits(accountId)
+        }
+
+        return savedAccount
+    }
+
+    private fun resetVisibleLimits(accountId: AccountId) {
+        val displayCount = findById(accountId)?.displayCount ?: return
+        accountFolderUpdater.resetVisibleLimits(accountId, displayCount)
     }
 
     fun delete(accountId: AccountId) = synchronized(accountLock) {

@@ -13,6 +13,7 @@ import com.fsck.k9.mail.store.imap.ImapStoreSettings.pathPrefix
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.core.common.mail.Protocols
 import net.thunderbird.feature.account.AccountId
@@ -49,11 +50,20 @@ class AccountServerSettingsUpdater(
         serverSettings: ServerSettings,
         authorizationState: AuthorizationState?,
     ): AccountUpdaterResult {
-        val account = accountManager.findById(accountId) ?: return AccountUpdaterResult.Failure(
-            AccountUpdaterFailure.AccountNotFound(accountId),
-        )
+        accountManager.updateSync(accountId) { account ->
+            updateServerSettings(account, isIncoming, serverSettings, authorizationState)
+        } ?: return AccountUpdaterResult.Failure(AccountUpdaterFailure.AccountNotFound(accountId))
 
-        val updatedAccount = if (isIncoming) {
+        return AccountUpdaterResult.Success(accountId)
+    }
+
+    private fun updateServerSettings(
+        account: LegacyAccount,
+        isIncoming: Boolean,
+        serverSettings: ServerSettings,
+        authorizationState: AuthorizationState?,
+    ): LegacyAccount {
+        return if (isIncoming) {
             if (serverSettings.type == Protocols.IMAP) {
                 account.copy(
                     useCompression = serverSettings.isUseCompression,
@@ -78,9 +88,5 @@ class AccountServerSettingsUpdater(
                 oAuthState = authorizationState?.value ?: account.oAuthState,
             )
         }
-
-        accountManager.updateSync(updatedAccount)
-
-        return AccountUpdaterResult.Success(accountId)
     }
 }

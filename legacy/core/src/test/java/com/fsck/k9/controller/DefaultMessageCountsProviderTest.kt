@@ -10,6 +10,7 @@ import app.k9mail.legacy.message.controller.SimpleMessagingListener
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import com.fsck.k9.FakeLegacyAccount
+import com.fsck.k9.account.FakeLegacyAccountManager
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
@@ -57,6 +58,24 @@ class DefaultMessageCountsProviderTest {
         outboxFolderManager = FakeOutboxFolderManager(),
         logger = TestLogger(),
     )
+
+    @Test
+    fun `getMessageCounts() should return zero counts for a removed account`() {
+        // Arrange
+        val messageCountsProvider = DefaultMessageCountsProvider(
+            accountManager = FakeLegacyAccountManager(),
+            messageStoreManager = messageStoreManager,
+            messagingControllerRegistry = messagingControllerRegistry,
+            outboxFolderManager = FakeOutboxFolderManager(),
+            logger = TestLogger(),
+        )
+
+        // Act
+        val messageCounts = messageCountsProvider.getMessageCounts(ACCOUNT_ID)
+
+        // Assert
+        assertThat(messageCounts).isEqualTo(MessageCounts(unread = 0, starred = 0))
+    }
 
     @Test
     fun `getMessageCounts() without any special folders`() {

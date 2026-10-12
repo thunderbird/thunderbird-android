@@ -20,8 +20,7 @@ internal class SyncNotificationController(
     private val notificationIdRegistry: AccountNotificationIdRegistry,
 ) {
     fun showSendingNotification(accountId: AccountId) {
-        val account = accountManager.findById(accountId)
-            ?: throw IllegalArgumentException("Account not found")
+        val account = accountManager.findById(accountId) ?: return
         val accountName = account.profile.name
         val title = resourceProvider.sendingMailTitle()
         val tickerText = resourceProvider.sendingMailBody(accountName)
@@ -62,8 +61,7 @@ internal class SyncNotificationController(
     }
 
     fun showFetchingMailNotification(accountId: AccountId, folder: LocalFolder) {
-        val account = accountManager.findById(accountId)
-            ?: throw IllegalArgumentException("Account not found")
+        val account = accountManager.findById(accountId) ?: return
         val accountName = account.profile.name
         val folderId = folder.databaseId
         val folderName = folder.name
@@ -97,8 +95,7 @@ internal class SyncNotificationController(
     }
 
     fun showEmptyFetchingMailNotification(accountId: AccountId) {
-        val account = accountManager.findById(accountId)
-            ?: throw IllegalArgumentException("Account not found")
+        val account = accountManager.findById(accountId) ?: return
         val title = resourceProvider.checkingMailTitle()
         val text = account.profile.name
         val notificationId = getNotificationId(accountId)

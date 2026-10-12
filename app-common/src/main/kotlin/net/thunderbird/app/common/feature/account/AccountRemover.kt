@@ -72,7 +72,7 @@ class AccountRemover(
     private fun removeLocalStore(accountId: AccountId) {
         try {
             val localStore = localStoreProvider.getInstance(accountId)
-            localStore?.delete()
+            localStore.delete()
         } catch (e: Exception) {
             logger.error(tag = TAG, throwable = e) { "Error removing message database for account $accountId" }
         }

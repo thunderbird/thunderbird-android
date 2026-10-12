@@ -52,4 +52,33 @@ interface AccountManager<TAccount : BaseAccount> {
      * @param account The account to update.
      */
     fun updateSync(account: TAccount)
+
+    /**
+     * Atomically updates the account with the specified [accountId].
+     *
+     * [transform] receives the latest version of the account, and its result is saved. Unlike reading the account,
+     * changing it and calling [update] with it, no change made elsewhere in the meantime is lost.
+     *
+     * [transform] may run while other account operations wait, so it must be quick and must not call this manager.
+     *
+     * The default implementation is not atomic. Implementations used from several threads must override it.
+     *
+     * @param accountId The [AccountId] of the account to update.
+     * @param transform Returns the updated account for the latest version of the account.
+     * @return The saved account, or `null` if no account with the specified [accountId] exists.
+     */
+    suspend fun update(accountId: AccountId, transform: (TAccount) -> TAccount): TAccount? {
+        val account = findById(accountId) ?: return null
+        return transform(account).also { update(it) }
+    }
+
+    /**
+     * Synchronous version of [update] with a [transform].
+     *
+     * @see update
+     */
+    fun updateSync(accountId: AccountId, transform: (TAccount) -> TAccount): TAccount? {
+        val account = findById(accountId) ?: return null
+        return transform(account).also { updateSync(it) }
+    }
 }

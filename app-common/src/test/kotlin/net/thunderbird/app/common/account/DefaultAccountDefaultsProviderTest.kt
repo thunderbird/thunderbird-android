@@ -137,8 +137,6 @@ class DefaultAccountDefaultsProviderTest {
 
         assertThat(defaultedAccount.identities).isEqualTo(identities)
         assertThat(defaultedAccount.notificationSettings).isEqualTo(notificationSettings)
-
-        assertThat(defaultedAccount.isChangedVisibleLimits).isFalse()
     }
 
     @Test

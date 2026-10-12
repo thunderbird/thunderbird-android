@@ -120,6 +120,7 @@ class MessageViewFragment :
     private val themeProvider: FeatureThemeProvider by inject()
     private val messageLoaderHelperFactory: MessageLoaderHelperFactory by inject()
     private val accountManager: LegacyAccountManager by inject()
+    private val lastSelectedFolderStore: LastSelectedFolderStore by inject()
     private val messagingController: MessagingController by inject()
     private val attachmentLoadingController: AttachmentLoadingController by inject()
     private val shareIntentBuilder: ShareIntentBuilder by inject()
@@ -762,7 +763,7 @@ class MessageViewFragment :
             input = ChooseFolderResultContract.Input(
                 accountId = account.id,
                 currentFolderId = messageReference.folderId,
-                scrollToFolderId = account.lastSelectedFolderId,
+                scrollToFolderId = lastSelectedFolderStore.get(account.id),
                 messageReference = messageReference,
             ),
         )
@@ -781,7 +782,7 @@ class MessageViewFragment :
             input = ChooseFolderResultContract.Input(
                 accountId = account.id,
                 currentFolderId = messageReference.folderId,
-                scrollToFolderId = account.lastSelectedFolderId,
+                scrollToFolderId = lastSelectedFolderStore.get(account.id),
                 messageReference = messageReference,
             ),
         )
@@ -907,11 +908,7 @@ class MessageViewFragment :
     }
 
     private fun setLastSelectedFolderId(folderId: Long) {
-        accountManager.updateSync(
-            account.copy(
-                lastSelectedFolderId = folderId,
-            ),
-        )
+        lastSelectedFolderStore.set(account.id, folderId)
     }
 
     @OptIn(ExperimentalTime::class)

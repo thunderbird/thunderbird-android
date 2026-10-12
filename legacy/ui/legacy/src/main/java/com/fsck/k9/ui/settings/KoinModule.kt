@@ -42,6 +42,7 @@ val settingsUiModule = module {
             notificationChannelManager = get(),
             notificationController = get(),
             messagingController = get(),
+            logger = get(),
         )
     }
     factory { getSystemVibrator(context = get()) }

@@ -501,18 +501,14 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
     }
 
     private fun setOpenPgpProvider(accountId: AccountId, openPgpProviderPackage: String) {
-        accountManager.findById(accountId)?.let { account ->
-            accountManager.updateSync(account.copy(openPgpProvider = openPgpProviderPackage))
-        }
+        accountManager.updateSync(accountId) { account -> account.copy(openPgpProvider = openPgpProviderPackage) }
     }
 
     private fun removeOpenPgpProvider(accountId: AccountId) {
-        accountManager.findById(accountId)?.let { account ->
-            accountManager.updateSync(
-                account.copy(
-                    openPgpProvider = null,
-                    openPgpKey = NO_OPENPGP_KEY,
-                ),
+        accountManager.updateSync(accountId) { account ->
+            account.copy(
+                openPgpProvider = null,
+                openPgpKey = NO_OPENPGP_KEY,
             )
         }
     }

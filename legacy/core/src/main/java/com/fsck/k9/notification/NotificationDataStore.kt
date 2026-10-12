@@ -52,7 +52,7 @@ internal class NotificationDataStore(
         content: NotificationContent,
         timestamp: Long,
     ): AddNotificationResult? {
-        val notificationData = getNotificationData(accountId)
+        val notificationData = getNotificationData(accountId) ?: return null
         val messageReference = content.messageReference
 
         val activeNotification = notificationData.activeNotifications.firstOrNull { notificationHolder ->
@@ -131,7 +131,7 @@ internal class NotificationDataStore(
         accountId: AccountId,
         selector: (List<MessageReference>) -> List<MessageReference>,
     ): RemoveNotificationsResult? {
-        var notificationData = getNotificationData(accountId)
+        var notificationData = getNotificationData(accountId) ?: return null
         if (notificationData.isEmpty()) return null
 
         val removeMessageReferences = selector.invoke(notificationData.messageReferences)
@@ -217,13 +217,19 @@ internal class NotificationDataStore(
         notificationDataMap.remove(accountId)
     }
 
-    private fun getNotificationData(accountId: AccountId): NotificationData {
-        return notificationDataMap.getOrPut(accountId) {
-            val account = accountManager.findById(accountId)
-                ?: throw IllegalArgumentException("Account not found")
-
-            NotificationData.create(account)
-        }
+    /**
+     * Returns the notification data with the latest version of the account.
+     *
+     * The account can change while notifications are shown (e.g. a new notification channel version after changing the
+     * ringtone), so the cached copy is refreshed. Returns `null` when the account no longer exists, e.g. when it was
+     * removed while new mail was being processed.
+     */
+    private fun getNotificationData(accountId: AccountId): NotificationData? {
+        val account = accountManager.findById(accountId) ?: return null
+        val notificationData = notificationDataMap[accountId]?.copy(account = account)
+            ?: NotificationData.create(account)
+        notificationDataMap[accountId] = notificationData
+        return notificationData
     }
 
     private val NotificationData.isMaxNumberOfActiveNotificationsReached: Boolean
