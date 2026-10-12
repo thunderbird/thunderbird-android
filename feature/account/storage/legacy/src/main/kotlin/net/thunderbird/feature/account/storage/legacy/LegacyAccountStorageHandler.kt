@@ -94,18 +94,11 @@ class LegacyAccountStorageHandler(
             sortAscending[sortType] ?: sortType.isDefaultAscending,
         )
 
-        val isMessageFormatAuto = storage.getBoolean(
-            keyGen.create("messageFormatAuto"),
-            AccountDefaultsProvider.DEFAULT_MESSAGE_FORMAT_AUTO,
-        )
-        var messageFormat = getEnumStringPref(
+        val messageFormat = getEnumStringPref(
             storage,
             keyGen.create("messageFormat"),
             AccountDefaultsProvider.DEFAULT_MESSAGE_FORMAT,
         )
-        if (isMessageFormatAuto && messageFormat == MessageFormat.TEXT) {
-            messageFormat = MessageFormat.AUTO
-        }
 
         val isFinishedSetup = storage.getBoolean(keyGen.create("isFinishedSetup"), true)
 
@@ -250,7 +243,7 @@ class LegacyAccountStorageHandler(
             folderPushMode = getEnumStringPref<FolderMode>(storage, keyGen.create("folderPushMode"), FolderMode.NONE),
             isSignatureBeforeQuotedText = storage.getBoolean(keyGen.create("signatureBeforeQuotedText"), false),
             identities = identities,
-            openPgpProvider = storage.getStringOrDefault(keyGen.create("openPgpProvider"), ""),
+            openPgpProvider = storage.getStringOrNull(keyGen.create("openPgpProvider"))?.takeIf { it.isNotEmpty() },
             openPgpKey = storage.getLong(keyGen.create("cryptoKey"), AccountDefaultsProvider.NO_OPENPGP_KEY),
             isOpenPgpHideSignOnly = storage.getBoolean(keyGen.create("openPgpHideSignOnly"), true),
             isOpenPgpEncryptSubject = storage.getBoolean(keyGen.create("openPgpEncryptSubject"), true),

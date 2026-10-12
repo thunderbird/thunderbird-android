@@ -3,9 +3,11 @@ package net.thunderbird.app.common.account
 import app.k9mail.feature.account.common.domain.entity.Account
 import app.k9mail.feature.account.common.domain.entity.AccountOptions
 import assertk.assertThat
+import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
 import assertk.assertions.isFalse
 import assertk.assertions.isGreaterThan
+import assertk.assertions.isNull
 import com.fsck.k9.CoreResourceProvider
 import com.fsck.k9.account.DeletePolicyProvider
 import com.fsck.k9.backend.BackendManager
@@ -97,7 +99,7 @@ class AccountCreatorTest {
         assertThat(result.name).isEqualTo("Personal")
         assertThat(result.email).isEqualTo("user@example.com")
         assertThat(result.profile.id).isEqualTo(accountId)
-        assertThat(result.profile.name).isEqualTo("User")
+        assertThat(result.profile.name).isEqualTo("Personal")
         assertThat(result.profile.color).isEqualTo(0x123456)
         assertThat(result.profile.avatar.id).isEqualTo(accountId)
         assertThat(result.profile.avatar.avatarType).isEqualTo(AvatarTypeDto.MONOGRAM)
@@ -116,6 +118,35 @@ class AccountCreatorTest {
         assertThat(result.accountNumber).isEqualTo(UNASSIGNED_ACCOUNT_NUMBER)
         assertThat(result.deletePolicy).isEqualTo(DeletePolicy.NEVER)
         assertThat(result.isFinishedSetup).isFalse()
+    }
+
+    @Test
+    fun `createLegacyAccount should not use the sender name when the account name is empty`() = runTest {
+        // Arrange
+        val account = Account(
+            id = AccountIdFactory.create(),
+            emailAddress = "user@example.com",
+            incomingServerSettings = createServerSettings("imap"),
+            outgoingServerSettings = createServerSettings("smtp"),
+            authorizationState = null,
+            specialFolderSettings = null,
+            options = AccountOptions(
+                accountName = "",
+                displayName = "User",
+                emailSignature = null,
+                checkFrequencyInMinutes = 30,
+                messageDisplayCount = 50,
+                showNotification = true,
+            ),
+        )
+
+        // Act
+        val result = testSubject.createLegacyAccount(account)
+
+        // Assert
+        assertThat(result.name).isNull()
+        assertThat(result.profile.name).isEmpty()
+        assertThat(result.identities.single().name).isEqualTo("User")
     }
 
     @Test

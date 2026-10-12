@@ -447,6 +447,13 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
 
             final Backend backend = getBackend(accountId);
             final String folderPathDelimiter = backend.refreshFolderList();
+
+            // Refreshing the folder list may update the account (e.g. special folders), so reload it
+            account = accountManager.findById(accountId);
+            if (account == null) {
+                return;
+            }
+
             if (folderPathDelimiter != null &&
                 !folderPathDelimiter.isEmpty() &&
                 !folderPathDelimiter.equals(account.getFolderPathDelimiter())) {

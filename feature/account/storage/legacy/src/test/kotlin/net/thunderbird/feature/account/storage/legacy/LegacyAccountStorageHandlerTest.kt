@@ -3,6 +3,7 @@ package net.thunderbird.feature.account.storage.legacy
 import assertk.assertThat
 import assertk.assertions.contains
 import assertk.assertions.isEqualTo
+import assertk.assertions.isFalse
 import assertk.assertions.isNull
 import assertk.assertions.isTrue
 import com.fsck.k9.mail.AuthType
@@ -98,13 +99,68 @@ class LegacyAccountStorageHandlerTest {
     }
 
     @Test
-    fun `load should read messageFormatAuto from storage`() {
+    fun `load should set openPgpProvider to null when not stored`() {
         // Arrange
         val storage = createStorageWithAccount(
             accountId = ACCOUNT_ID,
             additionalValues = mapOf(
-                "$ACCOUNT_ID.messageFormatAuto" to "true",
-                "$ACCOUNT_ID.messageFormat" to "TEXT",
+                "$ACCOUNT_ID.email.0" to "test@example.com",
+            ),
+        )
+
+        // Act
+        val result = testSubject.load(ACCOUNT_ID, storage)
+
+        // Assert
+        assertThat(result.openPgpProvider).isNull()
+        assertThat(result.isOpenPgpProviderConfigured()).isFalse()
+    }
+
+    @Test
+    fun `load should set openPgpProvider to null when stored value is empty`() {
+        // Arrange
+        val storage = createStorageWithAccount(
+            accountId = ACCOUNT_ID,
+            additionalValues = mapOf(
+                "$ACCOUNT_ID.openPgpProvider" to "",
+                "$ACCOUNT_ID.email.0" to "test@example.com",
+            ),
+        )
+
+        // Act
+        val result = testSubject.load(ACCOUNT_ID, storage)
+
+        // Assert
+        assertThat(result.openPgpProvider).isNull()
+        assertThat(result.isOpenPgpProviderConfigured()).isFalse()
+    }
+
+    @Test
+    fun `load should set openPgpProvider when stored value is present`() {
+        // Arrange
+        val storage = createStorageWithAccount(
+            accountId = ACCOUNT_ID,
+            additionalValues = mapOf(
+                "$ACCOUNT_ID.openPgpProvider" to "org.sufficientlysecure.keychain",
+                "$ACCOUNT_ID.email.0" to "test@example.com",
+            ),
+        )
+
+        // Act
+        val result = testSubject.load(ACCOUNT_ID, storage)
+
+        // Assert
+        assertThat(result.openPgpProvider).isEqualTo("org.sufficientlysecure.keychain")
+        assertThat(result.isOpenPgpProviderConfigured()).isTrue()
+    }
+
+    @Test
+    fun `load should read AUTO message format from storage`() {
+        // Arrange
+        val storage = createStorageWithAccount(
+            accountId = ACCOUNT_ID,
+            additionalValues = mapOf(
+                "$ACCOUNT_ID.messageFormat" to "AUTO",
                 "$ACCOUNT_ID.email.0" to "test@example.com",
             ),
         )

@@ -75,7 +75,7 @@ internal class AccountCreator(
         val accountId = account.id
         val profile = ProfileDto(
             id = accountId,
-            name = account.options.displayName,
+            name = account.options.accountName,
             color = accountColorPicker.pickColor(),
             avatar = AvatarDto(
                 id = accountId,
@@ -91,7 +91,7 @@ internal class AccountCreator(
         val defaultAccount = accountDefaultsProvider.applyDefaults(
             LegacyAccount(
                 id = accountId,
-                name = account.options.accountName,
+                name = account.options.accountName.takeIf { it.isNotEmpty() },
                 email = account.emailAddress,
                 profile = profile,
                 incomingServerSettings = account.incomingServerSettings,
