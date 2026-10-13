@@ -161,8 +161,11 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
 
         // Since the recipient chip views are not part of the view hierarchy we need to manually invalidate this
         // RecipientSelectView whenever a contact picture was loaded in order for the image to be drawn.
+        // The redraw is posted because Glide can deliver a memory-cached picture synchronously while the token span is
+        // being drawn (see RecipientTokenSpan.draw()). Changing the text's spans at that point reflows the layout in the
+        // middle of the draw pass and crashes in DynamicLayout.getLineStart().
         RecipientCircleImageView contactPhotoView = view.findViewById(R.id.contact_photo);
-        contactPhotoView.setOnSetImageDrawableListener(this::redrawTokens);
+        contactPhotoView.setOnSetImageDrawableListener(() -> post(this::redrawTokens));
 
         return view;
     }
