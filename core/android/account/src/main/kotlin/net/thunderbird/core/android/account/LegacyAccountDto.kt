@@ -12,6 +12,7 @@ import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.account.storage.profile.AvatarDto
 import net.thunderbird.feature.account.storage.profile.AvatarTypeDto
 import net.thunderbird.feature.mail.account.api.BaseAccount
+import net.thunderbird.feature.mail.folder.api.ArchiveGranularity
 import net.thunderbird.feature.mail.folder.api.FolderPathDelimiter
 import net.thunderbird.feature.mail.folder.api.SpecialFolderSelection
 import net.thunderbird.feature.notification.NotificationSettings
@@ -198,6 +199,9 @@ open class LegacyAccountDto(
 
     @get:Synchronized
     var archiveFolderSelection = SpecialFolderSelection.AUTOMATIC
+
+    @get:Synchronized
+    var archiveGranularity = ArchiveGranularity.DEFAULT
 
     @get:Synchronized
     var spamFolderSelection = SpecialFolderSelection.AUTOMATIC
