@@ -396,11 +396,8 @@ jobs:
 
           # Add changelogs, build version changes and metadata symlink
           git add ./app-metadata/${APPLICATION_ID}/en-US/changelogs/*
-          if [[ "$APP_NAME" = "k9mail" ]]; then
-            git add ./app-${APP_NAME}/src/main/res/raw/changelog_master.xml
-          elif [[ "$APP_NAME" = "thunderbird" ]]; then
-            git add ./app-${APP_NAME}/src/${RELEASE_TYPE}/res/raw/changelog_master.xml
-          fi
+          CHANGELOG_DIR="./app-${APP_NAME}/src/${RELEASE_TYPE}/res/raw"
+          git add "${CHANGELOG_DIR}/changelog_index.json" "${CHANGELOG_DIR}"/changelog_release_*.json
           git add ./app-${APP_NAME}/build.gradle.kts
           git add metadata
 

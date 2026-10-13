@@ -165,7 +165,7 @@ The merge process enables various benefits, including:
 - Carrying forward main branch history to beta, and beta branch history to release.
 - No branch history is lost.
 - Git tags are retained in the git log.
-- Files/code that is unique per branch can remain that way (e.g. notes files such as changelog_master.xml, version codes).
+- Files/code that is unique per branch can remain that way (e.g. changelog JSON resources, version codes).
 
 **The following steps are taken when merging main into beta:**
 
@@ -184,6 +184,8 @@ The merge process enables various benefits, including:
    - Tip: use the `origin/main` and `origin/beta` branches to diff conflicting files, e.g. `git diff origin/main origin/beta <file>`
 5. Review merge results and ensure correctness:
    - Review the changes to `app-thunderbird/build.gradle.kts`, `app-k9mail/build.gradle.kts`, and release note files
+   - Confirm `app-thunderbird/src/beta/res/raw/changelog_index.json` only lists beta releases, and
+     `app-k9mail/src/release/res/raw/changelog_index.json` and `app-thunderbird/src/release/res/raw/changelog_index.json` only list stable releases.
    - Diff the merge commit with `git diff HEAD~1 HEAD --name-only` and sanity check the files that changed
    - Diff main vs the new beta with `git diff origin/main` or `git difftool -d origin/main` (recommended if you have the tooling set up for it)
 6. Push the merge (`git push`)
@@ -210,7 +212,7 @@ The merge process enables various benefits, including:
    - Tip: use the `origin/beta` and `origin/release` branches to diff conflicting files, e.g. `git diff origin/beta origin/release <file>`
 4. Review merge results and ensure correctness:
    - Review the changes to `app-thunderbird/build.gradle.kts`, `app-k9mail/build.gradle.kts`, and release note files
-   - Ensure `app-k9mail/src/main/res/raw/changelog_master.xml` does not include any beta notes
+   - Ensure the release changelog JSON under `app-thunderbird/src/release/res/raw` and `app-k9mail/src/release/res/raw` does not include beta notes
    - Diff the merge commit with `git diff HEAD~1 HEAD --name-only` and sanity check the files that changed
    - Diff beta vs the new release with `git diff origin/beta` or `git difftool -d origin/beta` (recommended if you have the tooling set up for it)
 5. Push the merge (`git push`)
@@ -230,11 +232,11 @@ Files of particular importance are:
 
 - app-k9mail/build.gradle.kts
 - app-thunderbird/build.gradle.kts
-- app-k9mail/src/main/res/raw/changelog_master.xml
+- app-thunderbird/src/{daily,beta,release}/res/raw/changelog_*.json
+- app-k9mail/src/release/res/raw/changelog_*.json
 
-These build.gradle.kts files must be handled as described under "Merge Days" above. This is part of the do_merge.sh automation.
-
-The app-k9mail/src/main/res/raw/changelog_master.xml should not include any beta notes in the release branch.
+The build.gradle.kts files are handled as described under "Merge Days" above. The merge script preserves the destination
+branch's changelog JSON, including its index. Review the indexes and release files during the merge checks above.
 
 ## Releases
 
@@ -252,6 +254,8 @@ These are the general steps for a release:
 3. Trigger build via the [Shippable Build & Signing](https://github.com/thunderbird/thunderbird-android/actions/workflows/shippable_builds.yml) action
    - Release notes must be landed to `prod` before triggering [Shippable Build & Signing](https://github.com/thunderbird/thunderbird-android/actions/workflows/shippable_builds.yml), or the build will fail
 4. Review the build results by reviewing the action summary and the git commits resulting from the build
+   - Confirm `changelog_index.json` lists the new version in version order and that its `changelog_release_*.json` file
+     exists under the app's release or beta source set. The release action generates these from `thunderbird-notes`.
    - Make sure the version code is incremented properly and not wildly off
    - Ensure the commits are correct
    - Ensure the symlink `app-metadata` points to the right product at this commit
