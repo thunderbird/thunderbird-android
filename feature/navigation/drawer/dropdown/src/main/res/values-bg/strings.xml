@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="navigation_drawer_dropdown_action_settings">Настройки</string>
-    <string name="navigation_drawer_dropdown_action_manage_folders">Управление на папки</string>
     <string name="navigation_drawer_dropdown_unified_inbox_title">входящи</string>
     <string name="navigation_drawer_dropdown_avount_view_selection_title">Списък с профили</string>
     <string name="navigation_drawer_dropdown_unified_account_title">Обединен профил</string>
