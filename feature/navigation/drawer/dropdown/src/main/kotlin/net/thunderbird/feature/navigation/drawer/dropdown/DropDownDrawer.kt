@@ -12,9 +12,10 @@ import kotlinx.coroutines.flow.update
 import net.thunderbird.core.ui.theme.api.FeatureThemeProvider
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.UnifiedAccountId
+import net.thunderbird.feature.mail.folder.FolderRole
 import net.thunderbird.feature.navigation.drawer.api.NavigationDrawer
 import net.thunderbird.feature.navigation.drawer.api.R
-import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.UnifiedDisplayFolderType
+import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.UnifiedDisplayFolder
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.createMailDisplayAccountFolderId
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.DrawerView
 import org.koin.core.component.KoinComponent
@@ -31,7 +32,7 @@ class DropDownDrawer(
     override val parent: AppCompatActivity,
     private val openAccount: (accountId: AccountId) -> Unit,
     private val openFolder: (accountId: AccountId, folderId: Long) -> Unit,
-    private val openUnifiedFolder: () -> Unit,
+    private val openUnifiedFolder: (role: FolderRole) -> Unit,
     private val openSettings: () -> Unit,
     private val openAddAccount: () -> Unit,
     createDrawerListener: () -> DrawerLayout.DrawerListener,
@@ -87,11 +88,11 @@ class DropDownDrawer(
         }
     }
 
-    override fun selectUnifiedInbox() {
+    override fun selectUnifiedFolder(role: FolderRole) {
         drawerState.update {
             it.copy(
                 selectedAccountId = UnifiedAccountId,
-                selectedFolderId = UnifiedDisplayFolderType.INBOX.id,
+                selectedFolderId = UnifiedDisplayFolder.idOf(role),
             )
         }
     }

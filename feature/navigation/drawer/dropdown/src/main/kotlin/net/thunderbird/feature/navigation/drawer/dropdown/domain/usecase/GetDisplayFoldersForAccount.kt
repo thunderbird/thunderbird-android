@@ -2,15 +2,16 @@ package net.thunderbird.feature.navigation.drawer.dropdown.domain.usecase
 
 import app.k9mail.legacy.ui.folder.DisplayFolderRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.UnifiedAccountId
+import net.thunderbird.feature.mail.folder.FolderRole
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.DomainContract.UnifiedFolderRepository
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.DomainContract.UseCase
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayFolder
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.MailDisplayFolder
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.UnifiedDisplayAccount
-import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.UnifiedDisplayFolderType
 
 internal class GetDisplayFoldersForAccount(
     private val displayFolderRepository: DisplayFolderRepository,
@@ -18,10 +19,11 @@ internal class GetDisplayFoldersForAccount(
 ) : UseCase.GetDisplayFoldersForAccount {
     override fun invoke(accountId: AccountId): Flow<List<DisplayFolder>> {
         if (accountId == UnifiedAccountId) {
-            return unifiedFolderRepository.getUnifiedDisplayFolderFlow(UnifiedDisplayFolderType.INBOX)
-                .map { displayUnifiedFolder ->
-                    listOf(displayUnifiedFolder)
-                }
+            val unifiedFolderFlows = FolderRole.entries.map { role ->
+                unifiedFolderRepository.getUnifiedDisplayFolderFlow(role)
+            }
+
+            return combine(unifiedFolderFlows) { unifiedFolders -> unifiedFolders.toList() }
         } else {
             return displayFolderRepository.getDisplayFoldersFlow(accountId).map { displayFolders ->
                 displayFolders.map { displayFolder ->

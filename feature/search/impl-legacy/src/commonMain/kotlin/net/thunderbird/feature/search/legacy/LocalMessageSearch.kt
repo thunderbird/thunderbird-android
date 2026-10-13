@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.account.UnifiedAccountId
-import net.thunderbird.feature.mail.folder.FolderType
+import net.thunderbird.feature.mail.folder.FolderRole
 import net.thunderbird.feature.search.legacy.api.MessageSearchField
 import net.thunderbird.feature.search.legacy.api.MessageSearchSpecification
 import net.thunderbird.feature.search.legacy.api.SearchAttribute
@@ -204,15 +204,15 @@ class LocalMessageSearch : MessageSearchSpecification {
      * part in the search.
      *
      * Folder IDs differ between accounts, so a [LocalMessageSearchType.Unified] search names its folder per account:
-     * [folderIdOf] returns the account's folder ID for a special folder type, or `null` if the account doesn't have
+     * [folderIdOf] returns the account's folder ID for a folder role, or `null` if the account doesn't have
      * that folder. Conditions on the legacy integrate flag are ignored. Other searches return [conditions].
      */
-    fun conditionsForAccount(folderIdOf: (FolderType) -> Long?): SearchConditionTreeNode? {
+    fun conditionsForAccount(folderIdOf: (FolderRole) -> Long?): SearchConditionTreeNode? {
         val unifiedType = type as? LocalMessageSearchType.Unified ?: return conditions
-        val folderType = when (val folder = unifiedType.folder) {
-            is UnifiedFolderSelection.Special -> folder.folderType
+        val role = when (val folder = unifiedType.folder) {
+            is UnifiedFolderSelection.Special -> folder.role
         }
-        val folderId = folderIdOf(folderType) ?: return null
+        val folderId = folderIdOf(role) ?: return null
 
         val folderCondition = SearchCondition(MessageSearchField.FOLDER, SearchAttribute.EQUALS, folderId.toString())
         val otherConditions = conditionsRoot?.withoutField(MessageSearchField.INTEGRATE)
@@ -243,11 +243,11 @@ class LocalMessageSearch : MessageSearchSpecification {
 
     companion object {
         /**
-         * Creates a search for the [folderType] folder of every account.
+         * Creates a search for the folder with the given [role] in every account.
          */
-        fun createUnifiedSearch(folderType: FolderType): LocalMessageSearch = LocalMessageSearch().apply {
+        fun createUnifiedSearch(role: FolderRole): LocalMessageSearch = LocalMessageSearch().apply {
             id = UnifiedAccountId
-            type = LocalMessageSearchType.Unified(UnifiedFolderSelection.Special(folderType))
+            type = LocalMessageSearchType.Unified(UnifiedFolderSelection.Special(role))
         }
     }
 }
