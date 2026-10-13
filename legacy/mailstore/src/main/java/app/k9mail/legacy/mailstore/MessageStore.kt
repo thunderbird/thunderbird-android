@@ -212,11 +212,6 @@ interface MessageStore {
     fun <T> getDisplayFolders(includeHiddenFolders: Boolean, outboxFolderId: Long?, mapper: FolderMapper<T>): List<T>
 
     /**
-     * Check if all given folders are included in the Unified Inbox.
-     */
-    fun areAllIncludedInUnifiedInbox(folderIds: Collection<Long>): Boolean
-
-    /**
      * Find a folder with the given server ID and return its store ID.
      */
     fun getFolderId(folderServerId: String): Long?
@@ -258,11 +253,6 @@ interface MessageStore {
      * Update settings of a single folder.
      */
     fun updateFolderSettings(folderDetails: FolderDetails)
-
-    /**
-     * Update the "integrate" setting of a folder.
-     */
-    fun setIncludeInUnifiedInbox(folderId: Long, includeInUnifiedInbox: Boolean)
 
     /**
      * Update the "visible" setting of a folder.

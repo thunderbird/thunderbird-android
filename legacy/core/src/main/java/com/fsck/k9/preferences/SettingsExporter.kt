@@ -468,7 +468,6 @@ class SettingsExporter(
         serializer.attribute(null, NAME_ATTRIBUTE, folder.serverId)
 
         // Write folder settings
-        writeFolderSetting(serializer, "integrate", folder.isIntegrate.toString())
         writeFolderSetting(serializer, "inTopGroup", folder.isInTopGroup.toString())
         writeFolderSetting(serializer, "syncEnabled", folder.isSyncEnabled.toString())
         writeFolderSetting(serializer, "visible", folder.isVisible.toString())

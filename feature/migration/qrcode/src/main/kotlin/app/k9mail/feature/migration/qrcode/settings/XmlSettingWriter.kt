@@ -81,7 +81,6 @@ internal class XmlSettingWriter(
                                 isLocalOnly = false, // Unused in import file
                             ),
                             isInTopGroup = false,
-                            isIntegrate = false,
                             isSyncEnabled = true,
                             isVisible = true,
                             isNotificationsEnabled = true,
@@ -181,7 +180,6 @@ internal class XmlSettingWriter(
         startTag(null, FOLDER_ELEMENT)
         attribute(null, NAME_ELEMENT, folderDetails.folder.name)
 
-        writeKeyValue(INTEGRATE_ATTRIBUTE, folderDetails.isIntegrate.toString())
         writeKeyValue(IN_TOP_GROUP_ATTRIBUTE, folderDetails.isInTopGroup.toString())
         writeKeyValue(SYNC_ENABLED_ATTRIBUTE, folderDetails.isSyncEnabled.toString())
         writeKeyValue(VISIBLE_ATTRIBUTE, folderDetails.isVisible.toString())
@@ -227,7 +225,6 @@ internal class XmlSettingWriter(
         private const val EMAIL_ELEMENT = "email"
         private const val FOLDERS_ELEMENT = "folders"
         private const val FOLDER_ELEMENT = "folder"
-        private const val INTEGRATE_ATTRIBUTE = "integrate"
         private const val IN_TOP_GROUP_ATTRIBUTE = "inTopGroup"
         private const val SYNC_ENABLED_ATTRIBUTE = "syncEnabled"
         private const val VISIBLE_ATTRIBUTE = "visible"
