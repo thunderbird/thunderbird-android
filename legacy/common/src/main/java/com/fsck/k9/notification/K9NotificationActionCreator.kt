@@ -9,13 +9,13 @@ import android.net.Uri
 import androidx.core.app.PendingIntentCompat
 import app.k9mail.feature.launcher.FeatureLauncherActivity
 import app.k9mail.feature.launcher.FeatureLauncherTarget
-import app.k9mail.legacy.mailstore.MessageStoreManager
 import app.k9mail.legacy.message.controller.MessageReference
 import com.fsck.k9.activity.MessageHomeActivity
 import com.fsck.k9.activity.compose.MessageActions
 import com.fsck.k9.ui.messagelist.DefaultFolderProvider
 import com.fsck.k9.ui.notification.DeleteConfirmationActivity
 import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.search.legacy.LocalMessageSearch
@@ -35,7 +35,7 @@ import net.thunderbird.feature.search.legacy.LocalMessageSearch
 internal class K9NotificationActionCreator(
     private val context: Context,
     private val defaultFolderProvider: DefaultFolderProvider,
-    private val messageStoreManager: MessageStoreManager,
+    private val accountManager: LegacyAccountManager,
     private val generalSettingsManager: GeneralSettingsManager,
 ) : NotificationActionCreator {
     private val interactionSettings get() = generalSettingsManager.getConfig().interaction
@@ -43,7 +43,7 @@ internal class K9NotificationActionCreator(
     override fun createViewMessagePendingIntent(messageReference: MessageReference): PendingIntent {
         val openInUnifiedInbox =
             generalSettingsManager.getConfig().display.inboxSettings.isShowUnifiedInbox &&
-                isIncludedInUnifiedInbox(messageReference)
+                isInInbox(messageReference.accountId, listOf(messageReference.folderId))
         val intent = createMessageViewIntent(messageReference, openInUnifiedInbox)
 
         return PendingIntentCompat.getActivity(context, 0, intent, FLAG_UPDATE_CURRENT, false)!!
@@ -64,7 +64,7 @@ internal class K9NotificationActionCreator(
                 .display
                 .inboxSettings
                 .isShowUnifiedInbox &&
-            areAllIncludedInUnifiedInbox(accountId, folderIds)
+            isInInbox(accountId, folderIds)
         ) {
             createUnifiedInboxIntent(accountId)
         } else if (folderIds.size == 1) {
@@ -279,13 +279,8 @@ internal class K9NotificationActionCreator(
         return messageReferences.asSequence().map { it.folderId }.toSet()
     }
 
-    private fun areAllIncludedInUnifiedInbox(accountId: AccountId, folderIds: Collection<Long>): Boolean {
-        val messageStore = messageStoreManager.getMessageStore(accountId)
-        return messageStore.areAllIncludedInUnifiedInbox(folderIds)
-    }
-
-    private fun isIncludedInUnifiedInbox(messageReference: MessageReference): Boolean {
-        val messageStore = messageStoreManager.getMessageStore(messageReference.accountId)
-        return messageStore.areAllIncludedInUnifiedInbox(listOf(messageReference.folderId))
+    private fun isInInbox(accountId: AccountId, folderIds: Collection<Long>): Boolean {
+        val inboxFolderId = accountManager.findById(accountId)?.inboxFolderId ?: return false
+        return folderIds.all { it == inboxFolderId }
     }
 }

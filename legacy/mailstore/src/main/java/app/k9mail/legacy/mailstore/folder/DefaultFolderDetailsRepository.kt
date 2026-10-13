@@ -53,7 +53,6 @@ class DefaultFolderDetailsRepository(
                         isLocalOnly = folder.isLocalOnly,
                     ),
                     isInTopGroup = folder.isInTopGroup,
-                    isIntegrate = folder.isIntegrate,
                     isSyncEnabled = folder.isSyncEnabled,
                     isVisible = folder.isVisible,
                     isNotificationsEnabled = folder.isNotificationsEnabled,
@@ -126,16 +125,11 @@ class DefaultFolderDetailsRepository(
         val folderId = folderDetails.folderId
         logger.verbose(TAG) { "$LOG_ID executing partial update of folder '$folderId'" }
         messageStore.apply {
-            val includeInUnifiedInbox = folderDetails.includeInUnifiedInbox
             val syncEnabled = folderDetails.syncEnabled
             val visible = folderDetails.visible
             val notificationsEnabled = folderDetails.notificationsEnabled
             val pushEnabled = folderDetails.isPushEnabled
 
-            if (includeInUnifiedInbox != null) {
-                logger.verbose(TAG) { "$LOG_ID updating 'integrate' to '$includeInUnifiedInbox' of folder '$folderId'" }
-                setIncludeInUnifiedInbox(folderId = folderId, includeInUnifiedInbox = includeInUnifiedInbox)
-            }
             if (syncEnabled != null) {
                 logger.verbose(TAG) { "$LOG_ID updating 'sync_enabled' to '$syncEnabled' of folder '$folderId'" }
                 setSyncEnabled(folderId = folderId, enable = syncEnabled)

@@ -32,11 +32,6 @@ class ListenableMessageStore(
         notifyFolderSettingsChanged()
     }
 
-    override fun setIncludeInUnifiedInbox(folderId: Long, includeInUnifiedInbox: Boolean) {
-        messageStore.setIncludeInUnifiedInbox(folderId, includeInUnifiedInbox)
-        notifyFolderSettingsChanged()
-    }
-
     override fun setVisible(folderId: Long, visible: Boolean) {
         messageStore.setVisible(folderId, visible)
         notifyFolderSettingsChanged()

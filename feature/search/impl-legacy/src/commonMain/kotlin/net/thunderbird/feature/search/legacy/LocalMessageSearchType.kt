@@ -36,7 +36,7 @@ sealed interface LocalMessageSearchType {
     /**
      * A search across accounts, made of 1 account → 1 folder relations.
      *
-     * Still backed by the legacy `INTEGRATE` flag until migrated.
+     * The folder of each account is resolved when the search runs, see [LocalMessageSearch.conditionsForAccount].
      */
     @Serializable
     @SerialName("unified")

@@ -571,7 +571,6 @@
     <string name="account_setup_push_limit_500">500 thư mục</string>
     <string name="animations_title">Hình ảnh động</string>
     <string name="show_unified_inbox_title">Hiển thị hộp thư đồng nhất</string>
-    <string name="folder_settings_include_in_integrated_inbox_label">Đồng nhất</string>
     <string name="font_size_settings_description">Phông chữ có thể tùy chỉnh</string>
     <string name="save_or_discard_draft_message_instructions_fmt">Lưu hay Hủy tin nhắn này?</string>
     <string name="confirm_discard_draft_message_title">Hủy tin nhắn?</string>

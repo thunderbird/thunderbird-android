@@ -14,7 +14,7 @@ import net.thunderbird.legacy.logging.Log;
 class StoreSchemaDefinition implements SchemaDefinition {
     private static final String TAG = "StoreSchemaDefinition";
 
-    static final int DB_VERSION = 91;
+    static final int DB_VERSION = 92;
 
     private final MigrationsHelper migrationsHelper;
 
@@ -91,7 +91,6 @@ class StoreSchemaDefinition implements SchemaDefinition {
                 "visible_limit INTEGER, " +
                 "status TEXT, " +
                 "flagged_count INTEGER default 0, " +
-                "integrate INTEGER, " +
                 "top_group INTEGER, " +
                 "sync_enabled INTEGER DEFAULT 0, " +
                 "push_enabled INTEGER DEFAULT 0, " +
