@@ -29,6 +29,15 @@ interface IncomingServerSettingsContract {
         val imapPrefix: StringInputField = StringInputField(),
         val imapUseCompression: Boolean = true,
         val imapSendClientInfo: Boolean = true,
+        val isGraphReauthorizationAvailable: Boolean = false,
+        val apiOAuthClientId: StringInputField = StringInputField(),
+        val apiOAuthRedirectUri: StringInputField = StringInputField(),
+        val apiConfigurationError: Boolean = false,
+        val preserveLegacyGraphProtocol: Boolean = false,
+        val zohoClientId: StringInputField = StringInputField(),
+        val zohoRedirectUri: StringInputField = StringInputField(),
+        val zohoIncomingOnly: Boolean = false,
+        val zohoConfigurationError: Boolean = false,
     )
 
     sealed interface Event {
@@ -44,6 +53,13 @@ interface IncomingServerSettingsContract {
         data class ImapPrefixChanged(val imapPrefix: String) : Event
         data class ImapUseCompressionChanged(val useCompression: Boolean) : Event
         data class ImapSendClientInfoChanged(val sendClientInfo: Boolean) : Event
+        data class ApiOAuthClientIdChanged(val clientId: String) : Event
+        data class ApiOAuthRedirectUriChanged(val redirectUri: String) : Event
+        data class ZohoClientIdChanged(val clientId: String) : Event
+        data class ZohoRedirectUriChanged(val redirectUri: String) : Event
+        data class ZohoIncomingOnlyChanged(val enabled: Boolean) : Event
+        data object ReauthorizeZohoAccountClicked : Event
+        data object ReauthorizeMicrosoftAccountClicked : Event
 
         data object LoadAccountState : Event
 
@@ -54,6 +70,7 @@ interface IncomingServerSettingsContract {
     sealed interface Effect {
         data object NavigateNext : Effect
         data object NavigateBack : Effect
+        data object ReauthorizeMicrosoftAccount : Effect
     }
 
     interface Validator {

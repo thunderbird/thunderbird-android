@@ -12,6 +12,7 @@ import assertk.assertions.isEqualTo
 import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ServerSettings
 import com.fsck.k9.mail.store.imap.ImapStoreSettings
+import net.thunderbird.core.common.mail.NativeApiMailServerSettings
 import net.thunderbird.core.validation.input.NumberInputField
 import net.thunderbird.core.validation.input.StringInputField
 import org.junit.Test
@@ -102,6 +103,87 @@ class IncomingServerSettingsStateMapperKtTest {
         val result = incomingState.toServerSettings()
 
         assertThat(result).isEqualTo(POP3_SERVER_SETTINGS)
+    }
+
+    @Test
+    fun `should map from Graph server settings to OAuth state`() {
+        val result = AccountState(
+            incomingServerSettings = ServerSettings(
+                type = "graph",
+                host = "graph.microsoft.com",
+                port = 443,
+                connectionSecurity = MailConnectionSecurity.SSL_TLS_REQUIRED,
+                authenticationType = AuthType.XOAUTH2,
+                username = "user@example.com",
+                password = null,
+                clientCertificateAlias = null,
+            ),
+        ).toIncomingServerSettingsState()
+
+        assertThat(result.protocolType).isEqualTo(IncomingProtocolType.GRAPH)
+        assertThat(result.server.value).isEqualTo("graph.microsoft.com")
+        assertThat(result.port.value).isEqualTo(443L)
+        assertThat(result.authenticationType).isEqualTo(AuthenticationType.OAuth2)
+        assertThat(result.username.value).isEqualTo("user@example.com")
+        assertThat(result.preserveLegacyGraphProtocol).isEqualTo(true)
+    }
+
+    @Test
+    fun `should map Graph state to OAuth server settings`() {
+        val result = State(
+            protocolType = IncomingProtocolType.GRAPH,
+            server = StringInputField(value = " graph.microsoft.com "),
+            security = ConnectionSecurity.TLS,
+            port = NumberInputField(value = 443),
+            authenticationType = AuthenticationType.OAuth2,
+            username = StringInputField(value = " user@example.com "),
+            preserveLegacyGraphProtocol = true,
+        ).toServerSettings()
+
+        assertThat(result.type).isEqualTo("graph")
+        assertThat(result.host).isEqualTo("graph.microsoft.com")
+        assertThat(result.port).isEqualTo(443)
+        assertThat(result.authenticationType).isEqualTo(AuthType.XOAUTH2)
+        assertThat(result.username).isEqualTo("user@example.com")
+        assertThat(result.password).isEqualTo(null)
+    }
+
+    @Test
+    fun `should preserve per-account Client ID and Redirect URI through a Graph settings edit`() {
+        val redirectUri = "net.thunderbird.android.debug://oauth2redirect"
+        val serverSettings = ServerSettings(
+            type = "msgraphapi",
+            host = "graph.microsoft.com",
+            port = 443,
+            connectionSecurity = com.fsck.k9.mail.ConnectionSecurity.SSL_TLS_REQUIRED,
+            authenticationType = AuthType.XOAUTH2,
+            username = "user@example.com",
+            password = null,
+            clientCertificateAlias = null,
+            extra = mapOf(
+                NativeApiMailServerSettings.EXTRA_OAUTH_CLIENT_ID to "account-specific-client",
+                NativeApiMailServerSettings.EXTRA_OAUTH_REDIRECT_URI to redirectUri,
+            ),
+        )
+
+        val result = AccountState(incomingServerSettings = serverSettings)
+            .toIncomingServerSettingsState()
+            .toServerSettings()
+
+        assertThat(result.extra).isEqualTo(serverSettings.extra)
+    }
+
+    @Test
+    fun `should use the canonical msgraphapi identifier for a new Graph account`() {
+        val result = State(
+            protocolType = IncomingProtocolType.GRAPH,
+            server = StringInputField(value = "graph.microsoft.com"),
+            port = NumberInputField(value = 443),
+            security = ConnectionSecurity.TLS,
+            authenticationType = AuthenticationType.OAuth2,
+        ).toServerSettings()
+
+        assertThat(result.type).isEqualTo("msgraphapi")
     }
 
     private companion object {

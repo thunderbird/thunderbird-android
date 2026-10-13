@@ -1,6 +1,7 @@
 package net.thunderbird.feature.account.settings
 
 import kotlinx.collections.immutable.ImmutableList
+import net.thunderbird.core.common.oauth.OAuthConfigurationProvider
 import net.thunderbird.core.common.resources.StringsResourceManager
 import net.thunderbird.feature.account.settings.api.AccountSettingsNavigation
 import net.thunderbird.feature.account.settings.impl.DefaultAccountSettingsNavigation
@@ -8,6 +9,7 @@ import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomai
 import net.thunderbird.feature.account.settings.impl.domain.usecase.GetAccountName
 import net.thunderbird.feature.account.settings.impl.domain.usecase.GetAccountProfile
 import net.thunderbird.feature.account.settings.impl.domain.usecase.GetLegacyAccount
+import net.thunderbird.feature.account.settings.impl.domain.usecase.UpdateApiClientId
 import net.thunderbird.feature.account.settings.impl.domain.usecase.UpdateAvatarImage
 import net.thunderbird.feature.account.settings.impl.domain.usecase.UpdateFetchingMailSettings
 import net.thunderbird.feature.account.settings.impl.domain.usecase.UpdateGeneralSettings
@@ -15,6 +17,7 @@ import net.thunderbird.feature.account.settings.impl.domain.usecase.UpdateReadEm
 import net.thunderbird.feature.account.settings.impl.domain.usecase.UpdateSearchSettings
 import net.thunderbird.feature.account.settings.impl.domain.usecase.ValidateAccountName
 import net.thunderbird.feature.account.settings.impl.domain.usecase.ValidateAvatarMonogram
+import net.thunderbird.feature.account.settings.impl.ui.api.ApiSettingsViewModel
 import net.thunderbird.feature.account.settings.impl.ui.fetchingMail.FetchingMailSettingsBuilder
 import net.thunderbird.feature.account.settings.impl.ui.fetchingMail.FetchingMailSettingsContract
 import net.thunderbird.feature.account.settings.impl.ui.fetchingMail.FetchingMailSettingsOptionsMapper
@@ -72,6 +75,12 @@ val featureAccountSettingsModule = module {
         )
     }
 
+    factory<UseCase.UpdateApiClientId> {
+        UpdateApiClientId(
+            repository = get(),
+        )
+    }
+
     factory<UseCase.UpdateAvatarImage> {
         UpdateAvatarImage(
             repository = get(),
@@ -83,6 +92,10 @@ val featureAccountSettingsModule = module {
         UpdateGeneralSettings(
             repository = get(),
         )
+    }
+
+    factory<UseCase.ValidateAccountName> {
+        ValidateAccountName()
     }
 
     factory<GeneralSettingsContract.Validator> {
@@ -110,6 +123,19 @@ val featureAccountSettingsModule = module {
             getAccountProfile = get(),
             updateGeneralSettings = get(),
             updateAvatarImage = get(),
+            logger = get(),
+        )
+    }
+
+    viewModel { params ->
+        ApiSettingsViewModel(
+            accountId = params.get(),
+            getAccountProfile = get(),
+            getLegacyAccount = get(),
+            updateGeneralSettings = get(),
+            updateApiClientId = get(),
+            oauthConfigurationProvider = get<OAuthConfigurationProvider>(),
+            validateAccountName = get(),
             logger = get(),
         )
     }

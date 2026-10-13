@@ -15,6 +15,7 @@ fun ServerSettingsPasswordInput(
     password: String = "",
     isRequired: Boolean = false,
     errorMessage: String? = null,
+    label: String? = null,
     contentPadding: PaddingValues = inputContentPadding(),
 ) {
     if (mode == InteractionMode.Create) {
@@ -24,6 +25,7 @@ fun ServerSettingsPasswordInput(
             password = password,
             isRequired = isRequired,
             errorMessage = errorMessage,
+            label = label,
             contentPadding = contentPadding,
         )
     } else {
@@ -33,6 +35,7 @@ fun ServerSettingsPasswordInput(
             password = password,
             isRequired = isRequired,
             errorMessage = errorMessage,
+            label = label,
             contentPadding = contentPadding,
         )
     }

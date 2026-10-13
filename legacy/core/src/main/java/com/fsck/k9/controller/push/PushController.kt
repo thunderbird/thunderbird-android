@@ -27,6 +27,7 @@ import net.thunderbird.core.android.account.LegacyAccountDtoManager
 import net.thunderbird.core.android.network.ConnectivityChangeListener
 import net.thunderbird.core.android.network.ConnectivityManager
 import net.thunderbird.components.core.outcome.fold
+import net.thunderbird.core.common.mail.Protocols
 import net.thunderbird.core.preference.BackgroundOps
 import net.thunderbird.core.preference.BackgroundSync
 import net.thunderbird.core.preference.GeneralSettingsManager
@@ -253,7 +254,11 @@ class PushController internal constructor(
     private fun getPushCapableAccounts(): Set<LegacyAccountDto> {
         return accountManager.getAccounts()
             .asSequence()
-            .filter { account -> backendManager.getBackend(account.id).isPushCapable }
+            .filter { account ->
+                isAccountPushCapable(account) {
+                    backendManager.getBackend(account.id).isPushCapable
+                }
+            }
             .toSet()
     }
 
@@ -338,6 +343,10 @@ class PushController internal constructor(
             }
         }
     }
+}
+
+internal fun isAccountPushCapable(account: LegacyAccountDto, backendIsPushCapable: () -> Boolean): Boolean {
+    return !Protocols.isNativeApiProtocol(account.incomingServerSettings.type) && backendIsPushCapable()
 }
 
 fun BackgroundOps.toBackgroundSync(): BackgroundSync {

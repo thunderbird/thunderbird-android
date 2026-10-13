@@ -24,6 +24,10 @@ internal interface AccountSettingsDomainContract {
             suspend operator fun invoke(accountId: AccountId): Outcome<LegacyAccount, AccountSettingError>
         }
 
+        fun interface UpdateApiClientId {
+            suspend operator fun invoke(accountId: AccountId, clientId: String): Outcome<Unit, AccountSettingError>
+        }
+
         fun interface UpdateGeneralSettings {
             suspend operator fun invoke(
                 accountId: AccountId,

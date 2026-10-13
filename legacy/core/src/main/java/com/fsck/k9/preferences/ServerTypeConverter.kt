@@ -11,6 +11,7 @@ internal object ServerTypeConverter {
         Protocols.IMAP -> "IMAP"
         Protocols.POP3 -> "POP3"
         Protocols.SMTP -> "SMTP"
+        Protocols.GRAPH -> "Microsoft Graph"
         else -> throw AssertionError("Unsupported type: $serverSettingsType")
     }
 }

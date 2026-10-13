@@ -1,0 +1,30 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues/>
+  <CurrentIssues>
+    <ID>CyclomaticComplexMethod:GmailApiClient.kt:MimeBuilder$private fun render: String</ID>
+    <ID>MagicNumber:GmailApiClient.kt:GmailApiClient$502</ID>
+    <ID>MagicNumber:GmailBackend.kt:GmailBackend$404</ID>
+    <ID>MaxLineLength:GmailApiClient.kt:GmailApiClient$fun rawMessage: ByteArray</ID>
+    <ID>MaxLineLength:GmailApiClient.kt:GmailApiClient$request(url, "POST", mapAdapter.toJson(body).toRequestBody("application/json".toMediaType())).use { parse(it.body.string()) }</ID>
+    <ID>MaxLineLength:GmailApiClient.kt:MimeBuilder$val boundary = if (parts.isNotEmpty()) boundaryFrom(originalContentType) ?: "thunderbird-gmail-${UUID.randomUUID()}" else null</ID>
+    <ID>MaxLineLength:GmailApiClient.kt:MimeBuilder$val encoded = Base64.getMimeEncoder(76, "\r\n".toByteArray(StandardCharsets.US_ASCII)).encodeToString(decodeBodyData(bodyData))</ID>
+    <ID>MaxLineLength:GmailApiClient.kt:MimeBuilder$val encodedId = Base64.getUrlEncoder().withoutPadding().encodeToString(it.toByteArray(StandardCharsets.UTF_8))</ID>
+    <ID>MaxLineLength:GmailApiClient.kt:private fun Map&lt;*, *&gt;.objList: List&lt;Map&lt;*, *&gt;&gt;</ID>
+    <ID>MaxLineLength:GmailApiClient.kt:private fun Map&lt;*, *&gt;.stringList: List&lt;String&gt;</ID>
+    <ID>MaxLineLength:GmailApiClientTest.kt:GmailApiClientTest$"""{"id":"message-1","threadId":"thread-1","labelIds":["INBOX","UNREAD"],"sizeEstimate":12345,"internalDate":"1700000000000","payload":{"mimeType":"text/plain","headers":[{"name":"Subject","value":"Hello"}]}}"""</ID>
+    <ID>MaxLineLength:GmailApiClientTest.kt:GmailApiClientTest$"headers" to listOf(mapOf("name" to "Content-Disposition", "value" to "attachment; filename=sample.bin"))</ID>
+    <ID>MaxLineLength:GmailApiClientTest.kt:GmailApiClientTest$"headers" to listOf(mapOf("name" to "Content-Type", "value" to "multipart/alternative; boundary=\"alt\""))</ID>
+    <ID>MaxLineLength:GmailApiClientTest.kt:GmailApiClientTest$"{subject:\"budget review\" from:\"budget review\" to:\"budget review\" cc:\"budget review\" bcc:\"budget review\"}"</ID>
+    <ID>MaxLineLength:GmailBackend.kt:GmailBackend$Flag.FLAGGED -&gt; api.modify(id, add = if (newState) listOf("STARRED") else emptyList(), remove = if (newState) emptyList() else listOf("STARRED"))</ID>
+    <ID>MaxLineLength:GmailBackend.kt:GmailBackend$Flag.SEEN -&gt; api.modify(id, remove = if (newState) listOf("UNREAD") else emptyList(), add = if (newState) emptyList() else listOf("UNREAD"))</ID>
+    <ID>MaxLineLength:GmailBackend.kt:GmailBackend$folder.setMoreMessages(if (nextPageToken != null) BackendFolder.MoreMessages.TRUE else BackendFolder.MoreMessages.FALSE)</ID>
+    <ID>MaxLineLength:GmailBackend.kt:GmailBackend$setInternalSentDate(Date(source.internalDateMillis ?: metadata.internalDateMillis ?: System.currentTimeMillis()))</ID>
+    <ID>MaxLineLength:GmailBackend.kt:GmailBackend$val page = api.listMessages(labelId, pageToken, maxResults = (count - references.size).coerceAtMost(PAGE_SIZE))</ID>
+    <ID>MaxLineLength:GmailBackend.kt:GmailBackend$val withinAutoDownloadLimit = metadata.sizeEstimate == null || metadata.sizeEstimate &lt;= config.maximumAutoDownloadMessageSize.toLong()</ID>
+    <ID>NestedBlockDepth:GmailApiClient.kt:GmailApiClient$fun history: Pair&lt;List&lt;GmailRef&gt;, String?&gt;</ID>
+    <ID>ReturnCount:GmailApiClient.kt:GmailApiClient$private fun findByInternetMessageId: GmailRef?</ID>
+    <ID>TooGenericExceptionCaught:GmailBackend.kt:GmailBackend$error: Exception</ID>
+    <ID>TooManyFunctions:GmailApiClient.kt:GmailApiClient</ID>
+  </CurrentIssues>
+</SmellBaseline>

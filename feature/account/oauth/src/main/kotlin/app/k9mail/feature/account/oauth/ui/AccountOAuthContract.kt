@@ -3,6 +3,7 @@ package app.k9mail.feature.account.oauth.ui
 import android.content.Intent
 import app.k9mail.feature.account.common.domain.entity.AuthorizationState
 import app.k9mail.feature.account.common.ui.WizardNavigationBarState
+import net.thunderbird.core.common.oauth.OAuthConfiguration
 import net.thunderbird.core.ui.contract.mvi.UnidirectionalViewModel
 
 interface AccountOAuthContract {
@@ -20,6 +21,7 @@ interface AccountOAuthContract {
         val isGoogleSignIn: Boolean = false,
         val error: Error? = null,
         val isLoading: Boolean = false,
+        val oauthConfiguration: OAuthConfiguration? = null,
     )
 
     sealed interface Event {

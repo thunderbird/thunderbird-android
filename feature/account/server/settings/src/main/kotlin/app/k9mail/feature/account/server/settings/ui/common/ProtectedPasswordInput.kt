@@ -32,6 +32,7 @@ fun ProtectedPasswordInput(
     password: String = "",
     isRequired: Boolean = false,
     errorMessage: String? = null,
+    label: String? = null,
     contentPadding: PaddingValues = inputContentPadding(),
     authenticator: Authenticator = rememberBiometricAuthenticator(
         title = stringResource(R.string.account_server_settings_password_authentication_title),
@@ -59,7 +60,7 @@ fun ProtectedPasswordInput(
             onValueChange = onPasswordChange,
             onWarningChange = { authenticationError = it },
             authenticator = authenticator,
-            label = stringResource(R.string.account_server_settings_password_input_label),
+            label = label ?: stringResource(R.string.account_server_settings_password_input_label),
             isRequired = isRequired,
             hasError = errorMessage != null,
             modifier = Modifier.fillMaxWidth(),

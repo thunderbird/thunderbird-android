@@ -86,6 +86,7 @@ import net.thunderbird.core.android.account.LegacyAccountDto;
 import net.thunderbird.core.common.exception.MessagingException;
 import net.thunderbird.core.common.exception.ThrowableExtensions;
 import net.thunderbird.core.common.mail.Flag;
+import net.thunderbird.core.common.mail.Protocols;
 import net.thunderbird.core.featureflag.FeatureFlagProvider;
 import net.thunderbird.core.featureflag.keys.GeneratedFeatureFlagKey;
 import net.thunderbird.core.logging.Logger;
@@ -581,12 +582,15 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
             return;
         }
 
+        boolean fetchMoreMessagesRequested =
+            Protocols.INSTANCE.isNativeApiProtocol(account.getIncomingServerSettings().type);
         if (visibleLimit > 0) {
-            int newVisibleLimit = visibleLimit + account.getDisplayCount();
+            int fetchMoreCount = fetchMoreMessagesRequested ? 10 : account.getDisplayCount();
+            int newVisibleLimit = visibleLimit + fetchMoreCount;
             messageStore.setVisibleLimit(folderId, newVisibleLimit);
         }
 
-        synchronizeMailboxSynchronous(account, folderId, false, null, new NotificationState());
+        synchronizeMailboxSynchronous(account, folderId, false, null, new NotificationState(), fetchMoreMessagesRequested);
     }
 
     /**
@@ -620,10 +624,15 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
 
     private void synchronizeMailboxSynchronous(LegacyAccountDto account, long folderId, boolean notify,
         MessagingListener listener, NotificationState notificationState) {
+        synchronizeMailboxSynchronous(account, folderId, notify, listener, notificationState, false);
+    }
+
+    private void synchronizeMailboxSynchronous(LegacyAccountDto account, long folderId, boolean notify,
+        MessagingListener listener, NotificationState notificationState, boolean fetchMoreMessagesRequested) {
         refreshFolderListIfStale(account);
 
         Backend backend = getBackend(account);
-        syncFolder(account, folderId, notify, listener, backend, notificationState);
+        syncFolder(account, folderId, notify, listener, backend, notificationState, fetchMoreMessagesRequested);
     }
 
     private void refreshFolderListIfStale(LegacyAccountDto account) {
@@ -640,7 +649,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
 
     private void syncFolder(LegacyAccountDto account, long folderId, boolean notify, MessagingListener listener,
         Backend backend,
-        NotificationState notificationState) {
+        NotificationState notificationState, boolean fetchMoreMessagesRequested) {
         if (isAuthenticationProblem(account, true)) {
             Log.d("Authentication will fail. Skip synchronizing folder %d.", folderId);
             handleAuthenticationFailure(account, true);
@@ -682,7 +691,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
         }
 
         String folderServerId = localFolder.getServerId();
-        SyncConfig syncConfig = createSyncConfig(account);
+        SyncConfig syncConfig = createSyncConfig(account, fetchMoreMessagesRequested);
         ControllerSyncListener syncListener =
             new ControllerSyncListener(account, listener, suppressNotifications, notificationState);
 
@@ -698,13 +707,18 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
     }
 
     private SyncConfig createSyncConfig(LegacyAccountDto account) {
+        return createSyncConfig(account, false);
+    }
+
+    private SyncConfig createSyncConfig(LegacyAccountDto account, boolean fetchMoreMessagesRequested) {
         return new SyncConfig(
             account.getExpungePolicy().toBackendExpungePolicy(),
             account.getEarliestPollDate(),
             account.isSyncRemoteDeletions(),
             account.getMaximumAutoDownloadMessageSize(),
             DEFAULT_VISIBLE_LIMIT,
-            SYNC_FLAGS);
+            SYNC_FLAGS,
+            fetchMoreMessagesRequested);
     }
 
     private void updateFolderStatus(LegacyAccountDto account, long folderId, String status) {
@@ -871,6 +885,12 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
         }
 
         Backend backend = getBackend(account);
+
+        if (Protocols.INSTANCE.isNativeApiProtocol(account.getIncomingServerSettings().type) &&
+            !backend.getSupportsUpload()) {
+            localMessage.setFlag(Flag.X_REMOTE_COPY_STARTED, false);
+            throw new MessagingException("Account backend does not support uploading messages", true);
+        }
 
         if (localMessage.isSet(Flag.X_REMOTE_COPY_STARTED)) {
             Log.w("Local message with uid %s has flag %s  already set, checking for remote message with " +
@@ -1557,9 +1577,12 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
     protected void sendPendingMessagesSynchronous(final LegacyAccountDto account) {
         Exception lastFailure = null;
         try {
-            if (isAuthenticationProblem(account, false)) {
+            boolean authorizationIsForNativeApiAccount =
+                Protocols.INSTANCE.isNativeApiProtocol(account.getIncomingServerSettings().type);
+            boolean authenticationProblem = isAuthenticationProblem(account, authorizationIsForNativeApiAccount);
+            if (authenticationProblem) {
                 Log.d("Authentication will fail. Skip sending messages.");
-                handleAuthenticationFailure(account, false);
+                handleAuthenticationFailure(account, authorizationIsForNativeApiAccount);
                 return;
             }
 
@@ -1651,7 +1674,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
                         outboxStateRepository.decrementSendAttempts(messageId);
                         lastFailure = e;
 
-                        handleAuthenticationFailure(account, false);
+                        handleAuthenticationFailure(account, authorizationIsForNativeApiAccount);
                         handleSendFailure(account, localFolder, message, e);
                     } catch (CertificateValidationException e) {
                         outboxStateRepository.decrementSendAttempts(messageId);
@@ -1701,23 +1724,29 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
             Log.i("Not uploading sent message; deleting local message");
             message.destroy();
         } else {
-            long sentFolderId = account.getSentFolderId();
-            LocalFolder sentFolder = localStore.getFolder(sentFolderId);
-            sentFolder.open();
-            String sentFolderServerId = sentFolder.getServerId();
-            Log.i("Moving sent message to folder '%s' (%d)", sentFolderServerId, sentFolderId);
+            Backend backend = getBackend(account);
+            if (backend.getSavesSentMessagesToServer()) {
+                // The backend already saved the message remotely; drop the temporary Outbox copy.
+                message.destroy();
+            } else {
+                long sentFolderId = account.getSentFolderId();
+                LocalFolder sentFolder = localStore.getFolder(sentFolderId);
+                sentFolder.open();
+                String sentFolderServerId = sentFolder.getServerId();
+                Log.i("Moving sent message to folder '%s' (%d)", sentFolderServerId, sentFolderId);
 
-            MessageStore messageStore = messageStoreManager.getMessageStore(account);
-            long destinationMessageId = messageStore.moveMessage(message.getDatabaseId(), sentFolderId);
+                MessageStore messageStore = messageStoreManager.getMessageStore(account);
+                long destinationMessageId = messageStore.moveMessage(message.getDatabaseId(), sentFolderId);
 
-            Log.i("Moved sent message to folder '%s' (%d)", sentFolderServerId, sentFolderId);
+                Log.i("Moved sent message to folder '%s' (%d)", sentFolderServerId, sentFolderId);
 
-            if (!sentFolder.isLocalOnly()) {
-                String destinationUid = messageStore.getMessageServerId(destinationMessageId);
-                if (destinationUid != null) {
-                    PendingCommand command = PendingAppend.create(sentFolderId, destinationUid);
-                    queuePendingCommand(account, command);
-                    processPendingCommands(account);
+                if (!sentFolder.isLocalOnly() && backend.getSupportsUpload()) {
+                    String destinationUid = messageStore.getMessageServerId(destinationMessageId);
+                    if (destinationUid != null) {
+                        PendingCommand command = PendingAppend.create(sentFolderId, destinationUid);
+                        queuePendingCommand(account, command);
+                        processPendingCommands(account);
+                    }
                 }
             }
         }
@@ -2626,12 +2655,23 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
     }
 
     public void checkAuthenticationProblem(LegacyAccountDto account) {
+        boolean authorizationIsForNativeApiAccount =
+            Protocols.INSTANCE.isNativeApiProtocol(account.getIncomingServerSettings().type);
+        if (authorizationIsForNativeApiAccount) {
+            clearAuthenticationErrorNotification(account, false, false);
+            notificationController.clearAuthenticationErrorNotification(account, false);
+        }
+
         // checking incoming server configuration
         if (isAuthenticationProblem(account, true)) {
             handleAuthenticationFailure(account, true);
             return;
         } else {
             clearAuthenticationErrorNotification(account, true, true);
+        }
+
+        if (authorizationIsForNativeApiAccount) {
+            return;
         }
 
         // checking outgoing server configuration

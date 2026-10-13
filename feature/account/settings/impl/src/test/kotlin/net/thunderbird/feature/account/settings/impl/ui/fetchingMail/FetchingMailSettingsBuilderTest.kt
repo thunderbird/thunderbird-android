@@ -41,6 +41,7 @@ internal class FetchingMailSettingsBuilderTest {
         expunge: Expunge = Expunge.EXPUNGE_IMMEDIATELY,
         maxFolderPush: String = "5",
         refreshIdle: String = "2",
+        isGraphAccount: Boolean? = false,
     ): FetchingMailSettingsContract.State {
         return FetchingMailSettingsContract.State(
             localFolderSize = SelectOption(localFolderSize) { "" },
@@ -53,6 +54,7 @@ internal class FetchingMailSettingsBuilderTest {
             eraseDeletedMessageOnServer = SelectOption(expunge.name) { "" },
             maxFolderToCheckWithPush = SelectOption(maxFolderPush) { "" },
             refreshIdleConnection = SelectOption(refreshIdle) { "" },
+            isGraphAccount = isGraphAccount,
         )
     }
 
@@ -82,6 +84,23 @@ internal class FetchingMailSettingsBuilderTest {
             FetchingMailSettingsId.MAX_FOLDER_TO_CHECK_WITH_PUSH,
             FetchingMailSettingsId.REFRESH_IDLE_CONNECTION,
         )
+    }
+
+    @Test
+    fun `Graph core settings omit options unsupported by the backend`() {
+        val state = createState(isGraphAccount = true)
+
+        val coreSettings = builder.buildCoreFetchingMailSettings(state) {}
+        val advancedSettings = builder.buildAdvancedFetchingMailSettings(state) {}
+
+        assertThat(coreSettings.map { it.id }).containsExactly(
+            FetchingMailSettingsId.LOCAL_FOLDER_SIZE,
+            FetchingMailSettingsId.FOLDER_POLL_FREQUENCY,
+            FetchingMailSettingsId.SYNC_SERVER_DELETIONS,
+            FetchingMailSettingsId.MARK_AS_READ_WHEN_DELETED,
+            FetchingMailSettingsId.WHEN_I_DELETE_A_MESSAGE,
+        )
+        assertThat(advancedSettings.map { it.id }).containsExactly()
     }
 
     @Test

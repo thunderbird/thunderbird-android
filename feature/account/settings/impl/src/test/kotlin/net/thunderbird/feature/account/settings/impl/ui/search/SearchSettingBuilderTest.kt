@@ -24,9 +24,13 @@ internal class SearchSettingBuilderTest {
 
     private val builder = SearchSettingBuilder(resources)
 
-    private fun state(selected: SelectOption = SelectOption("25") { "" }) =
+    private fun state(
+        selected: SelectOption = SelectOption("25") { "" },
+        isGraphAccount: Boolean? = false,
+    ) =
         SearchSettingsContract.State(
             serverSearchLimit = selected,
+            isGraphAccount = isGraphAccount,
         )
 
     @Test
@@ -86,5 +90,12 @@ internal class SearchSettingBuilderTest {
         assertThat(title).isEqualTo(
             "string_${R.string.account_settings_remote_search_num_label}",
         )
+    }
+
+    @Test
+    fun `should hide remote search limit for Graph accounts`() {
+        val settings = builder.build(state(isGraphAccount = true)) {}
+
+        assertThat(settings).hasSize(0)
     }
 }

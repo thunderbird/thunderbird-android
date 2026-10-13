@@ -25,6 +25,26 @@ class IncomingProtocolTypeTest {
     }
 
     @Test
+    fun `fromName should return Graph protocol type`() {
+        assertThat(IncomingProtocolType.fromName("graph")).isEqualTo(IncomingProtocolType.GRAPH)
+    }
+
+    @Test
+    fun `fromName should return Gmail API protocol type`() {
+        assertThat(IncomingProtocolType.fromName("gmailapi")).isEqualTo(IncomingProtocolType.GMAIL_API)
+    }
+
+    @Test
+    fun `fromName should return Zoho Mail API protocol type`() {
+        assertThat(IncomingProtocolType.fromName("zohomailapi")).isEqualTo(IncomingProtocolType.ZOHO_MAIL_API)
+    }
+
+    @Test
+    fun `fromName should return Microsoft Graph protocol type for its provider ID`() {
+        assertThat(IncomingProtocolType.fromName("msgraphapi")).isEqualTo(IncomingProtocolType.GRAPH)
+    }
+
+    @Test
     fun `fromName should throw IllegalArgumentException`() {
         assertFailsWith<IllegalArgumentException> { IncomingProtocolType.fromName("unknown") }
     }
@@ -52,6 +72,9 @@ class IncomingProtocolTypeTest {
             mapOf(
                 IncomingProtocolType.IMAP to ConnectionSecurity.TLS,
                 IncomingProtocolType.POP3 to ConnectionSecurity.TLS,
+                IncomingProtocolType.GMAIL_API to ConnectionSecurity.TLS,
+                IncomingProtocolType.GRAPH to ConnectionSecurity.TLS,
+                IncomingProtocolType.ZOHO_MAIL_API to ConnectionSecurity.TLS,
             ),
         )
     }
@@ -65,6 +88,9 @@ class IncomingProtocolTypeTest {
             mapOf(
                 IncomingProtocolType.IMAP to 993L,
                 IncomingProtocolType.POP3 to 995L,
+                IncomingProtocolType.GMAIL_API to 443L,
+                IncomingProtocolType.GRAPH to 443L,
+                IncomingProtocolType.ZOHO_MAIL_API to 443L,
             ),
         )
     }

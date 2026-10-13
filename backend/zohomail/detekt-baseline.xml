@@ -1,0 +1,71 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues/>
+  <CurrentIssues>
+    <ID>CyclomaticComplexMethod:ZohoMailApiClient.kt:ZohoMailApiClient$private fun Map&lt;String, Any?&gt;.toSummary: ZohoSummary?</ID>
+    <ID>CyclomaticComplexMethod:ZohoMailBackend.kt:ZohoComposeMessage$private fun collectPart</ID>
+    <ID>CyclomaticComplexMethod:ZohoMailBackend.kt:ZohoMailBackend$override fun sync</ID>
+    <ID>LongMethod:ZohoMailBackend.kt:ZohoMailBackend$override fun sync</ID>
+    <ID>LoopWithTooManyJumpStatements:ZohoMailBackend.kt:ZohoMailBackend$for</ID>
+    <ID>LoopWithTooManyJumpStatements:ZohoMailBackend.kt:ZohoMailBackend$while</ID>
+    <ID>MagicNumber:ZohoMailApiClient.kt:ZohoMailApiClient$200</ID>
+    <ID>MagicNumber:ZohoMailApiClient.kt:ZohoMailApiClient$299</ID>
+    <ID>MagicNumber:ZohoMailBackend.kt:ZohoComposeMessage$3</ID>
+    <ID>MagicNumber:ZohoMailBackend.kt:ZohoMailMimeFactory$0x20</ID>
+    <ID>MagicNumber:ZohoMailBackend.kt:ZohoMailMimeFactory$0x7e</ID>
+    <ID>MagicNumber:ZohoMailBackend.kt:ZohoMailMimeFactory$3</ID>
+    <ID>MagicNumber:ZohoMailBackend.kt:ZohoMailMimeFactory$76</ID>
+    <ID>MaxLineLength:ZohoMailApiClient.kt:ZohoMailApiClient$fun</ID>
+    <ID>MaxLineLength:ZohoMailApiClient.kt:ZohoMailApiClient$private fun Map&lt;String, Any?&gt;.list: List&lt;String&gt;</ID>
+    <ID>MaxLineLength:ZohoMailApiClient.kt:ZohoMailApiClient$requestJson("POST", url("api", "accounts", accountId(), "messages", remoteId(messageId).toString()), jsonBody(payload))</ID>
+    <ID>MaxLineLength:ZohoMailApiClient.kt:ZohoMailApiClient$requestJson("PUT", url("api", "accounts", accountId(), "folders", remoteId(folderId).toString()), jsonBody(body))</ID>
+    <ID>MaxLineLength:ZohoMailApiClient.kt:ZohoMailApiClient$return root.dataMap().string("content") ?: throw IOException("Zoho original-message response contained no MIME content")</ID>
+    <ID>MaxLineLength:ZohoMailApiClient.kt:ZohoMailApiClient$url</ID>
+    <ID>MaxLineLength:ZohoMailApiClient.kt:ZohoMailApiClient$url("api", "accounts", accountId(), "folders", remoteId(folderId).toString(), "messages", remoteId(messageId).toString(), "attachments", remoteId(attachmentId).toString())</ID>
+    <ID>MaxLineLength:ZohoMailApiClient.kt:ZohoMailApiClient$val</ID>
+    <ID>MaxLineLength:ZohoMailApiClient.kt:ZohoMailApiClient$val name = data.string("attachmentName") ?: throw IOException("Zoho attachment upload returned no attachmentName")</ID>
+    <ID>MaxLineLength:ZohoMailApiClient.kt:ZohoMailApiClient$val path = data.string("attachmentPath") ?: throw IOException("Zoho attachment upload returned no attachmentPath")</ID>
+    <ID>MaxLineLength:ZohoMailApiClient.kt:ZohoMailApiClient$val root = requestJson("GET", url("api", "accounts", accountId(), "messages", remoteId(messageId).toString(), "originalmessage"))</ID>
+    <ID>MaxLineLength:ZohoMailApiClient.kt:ZohoMailApiClient$val rows = data as? List&lt;*&gt; ?: ((data as? Map&lt;*, *&gt;)?.get(nestedKey) as? List&lt;*&gt;) ?: (this[nestedKey] as? List&lt;*&gt;) ?: emptyList&lt;Any?&gt;()</ID>
+    <ID>MaxLineLength:ZohoMailApiClient.kt:ZohoMailApiClient.Companion$require(uri.rawPath.isNullOrEmpty() || uri.rawPath == "/") { "Zoho Mail API origin must not contain a path" }</ID>
+    <ID>MaxLineLength:ZohoMailApiClientTest.kt:ZohoMailApiClientTest$assertThrows(IllegalArgumentException::class.java) { ZohoMailApiClient.requireOfficialOrigin("https://mail.example.invalid") }</ID>
+    <ID>MaxLineLength:ZohoMailBackend.kt:ZohoComposeContent</ID>
+    <ID>MaxLineLength:ZohoMailBackend.kt:ZohoComposeMessage$fun</ID>
+    <ID>MaxLineLength:ZohoMailBackend.kt:ZohoComposeMessage$mapOf("attachmentName" to uploaded.name, "attachmentPath" to uploaded.path, "storeName" to uploaded.storeName)</ID>
+    <ID>MaxLineLength:ZohoMailBackend.kt:ZohoComposeMessage$message.getRecipients(Message.RecipientType.BCC).joinToString(",") { it.address }.takeIf(String::isNotBlank)?.let { payload["bccAddress"] = it }</ID>
+    <ID>MaxLineLength:ZohoMailBackend.kt:ZohoComposeMessage$message.getRecipients(Message.RecipientType.CC).joinToString(",") { it.address }.takeIf(String::isNotBlank)?.let { payload["ccAddress"] = it }</ID>
+    <ID>MaxLineLength:ZohoMailBackend.kt:ZohoComposeMessage$private</ID>
+    <ID>MaxLineLength:ZohoMailBackend.kt:ZohoComposeMessage$private fun extractFileName: String?</ID>
+    <ID>MaxLineLength:ZohoMailBackend.kt:ZohoComposeMessage$return ZohoComposeContent(plain.takeIf { it.isNotEmpty() }?.joinToString("\n"), html.takeIf { it.isNotEmpty() }?.joinToString("\n"), attachments)</ID>
+    <ID>MaxLineLength:ZohoMailBackend.kt:ZohoComposeMessage$val</ID>
+    <ID>MaxLineLength:ZohoMailBackend.kt:ZohoComposeMessage$val mime = contentType.substringBefore(';').trim().takeIf { CONTENT_TYPE_REGEX.matches(it) } ?: "application/octet-stream"</ID>
+    <ID>MaxLineLength:ZohoMailBackend.kt:ZohoMailBackend$// Preserve the cursor decision made by initial sync/Fetch more; server listing is not a Fetch more action.</ID>
+    <ID>MaxLineLength:ZohoMailBackend.kt:ZohoMailBackend$// there is deliberately no age cutoff or maximum-new-message count. Older body data is fetched only by Fetch more.</ID>
+    <ID>MaxLineLength:ZohoMailBackend.kt:ZohoMailBackend$folder.setMoreMessages(if (hasOlder) BackendFolder.MoreMessages.TRUE else BackendFolder.MoreMessages.FALSE)</ID>
+    <ID>MaxLineLength:ZohoMailBackend.kt:ZohoMailBackend$folder.setMoreMessages(if (page.hasMore) BackendFolder.MoreMessages.TRUE else BackendFolder.MoreMessages.FALSE)</ID>
+    <ID>MaxLineLength:ZohoMailBackend.kt:ZohoMailBackend$override</ID>
+    <ID>MaxLineLength:ZohoMailBackend.kt:ZohoMailBackend$throw UnsupportedOperationException("Zoho Mail REST draft/upload is unavailable without an explicit draft workflow")</ID>
+    <ID>MaxLineLength:ZohoMailBackend.kt:ZohoMailBackend$val</ID>
+    <ID>MaxLineLength:ZohoMailBackend.kt:ZohoMailBackend$val remoteMessageId = HEADER_MESSAGE_ID_REGEX.find(rawHeaders)?.groupValues?.get(1)?.trim()?.removePrefix("&lt;")?.removeSuffix("&gt;")</ID>
+    <ID>MaxLineLength:ZohoMailBackend.kt:ZohoMailBackend$val state = if (requestedState == MessageDownloadState.PARTIAL) MessageDownloadState.PARTIAL else stateForSize(summary.size, config)</ID>
+    <ID>MaxLineLength:ZohoMailBackend.kt:ZohoMailMimeFactory$append("Content-Disposition: ${if (attachment.inline) "inline" else "attachment"}; filename=\"${fileName.replace("\\", "\\\\").replace("\"", "\\\"")}\"\r\n")</ID>
+    <ID>MaxLineLength:ZohoMailBackend.kt:ZohoMailMimeFactory$append(Base64.getMimeEncoder(76, "\r\n".toByteArray(StandardCharsets.US_ASCII)).encodeToString(value.toByteArray(StandardCharsets.UTF_8)))</ID>
+    <ID>MaxLineLength:ZohoMailBackend.kt:ZohoMailMimeFactory$details?.sentTime?.let { appendHeader("Date", java.time.format.DateTimeFormatter.RFC_1123_DATE_TIME.format(Date(it).toInstant().atZone(java.time.ZoneOffset.UTC))) }</ID>
+    <ID>MaxLineLength:ZohoMailBackend.kt:ZohoMailMimeFactory$private</ID>
+    <ID>MaxLineLength:ZohoMailBackend.kt:ZohoMailMimeFactory$summary.from?.takeIf(String::isNotBlank)?.let { if (details?.from.isNullOrBlank()) appendHeader("From", cleanHeader(it)) }</ID>
+    <ID>MaxLineLength:ZohoMailBackend.kt:ZohoMailMimeFactory$val</ID>
+    <ID>MaxLineLength:ZohoMailBackend.kt:ZohoMailMimeFactory$val encodedId = Base64.getUrlEncoder().withoutPadding().encodeToString(attachment.id.toByteArray(StandardCharsets.UTF_8))</ID>
+    <ID>MaxLineLength:ZohoMailBackend.kt:ZohoOutgoingAttachment</ID>
+    <ID>ReturnCount:ZohoMailApiClient.kt:ZohoMailApiClient$private fun Map&lt;String, Any?&gt;.toFolder: ZohoFolder?</ID>
+    <ID>ReturnCount:ZohoMailApiClient.kt:ZohoMailApiClient$private fun accountId: String</ID>
+    <ID>ReturnCount:ZohoMailBackend.kt:ZohoComposeMessage$private fun parameter: String?</ID>
+    <ID>ReturnCount:ZohoMailBackend.kt:ZohoMailBackend$private fun findReplyParent: String?</ID>
+    <ID>ReturnCount:ZohoMailBackend.kt:ZohoMailMimeFactory$private fun extractParameter: String?</ID>
+    <ID>ReturnCount:ZohoMailBackend.kt:ZohoMailMimeFactory$private fun safeContentType: String</ID>
+    <ID>ThrowsCount:ZohoMailApiClient.kt:ZohoMailApiClient$fun uploadAttachment: ZohoUploadedAttachment</ID>
+    <ID>ThrowsCount:ZohoMailApiClient.kt:ZohoMailApiClient$private fun accountId: String</ID>
+    <ID>TooGenericExceptionCaught:ZohoMailBackend.kt:ZohoMailBackend$error: Exception</ID>
+    <ID>TooManyFunctions:ZohoMailApiClient.kt:ZohoMailApiClient</ID>
+    <ID>TooManyFunctions:ZohoMailBackend.kt:ZohoMailMimeFactory</ID>
+  </CurrentIssues>
+</SmellBaseline>

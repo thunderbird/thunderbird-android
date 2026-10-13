@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="account_settings_api_title">API settings</string>
+    <string name="account_settings_api_name_label">Account name</string>
+    <string name="account_settings_api_email_id_label">Your email address</string>
+    <string name="account_settings_api_email_required">Email address is required.</string>
+    <string name="account_settings_api_client_id_label">Your client ID</string>
+    <string name="account_settings_api_client_id_required">Client ID is required.</string>
+    <string name="account_settings_api_reauthorize">Reauthorize account</string>
+</resources>

@@ -6,6 +6,28 @@ import net.thunderbird.core.ui.navigation.Route
 sealed interface AccountSettingsRoute : Route {
 
     @Serializable
+    data class ApiSettings(val accountId: String) : AccountSettingsRoute {
+        override val basePath: String = BASE_PATH
+
+        override fun route(): String = "$basePath/$accountId"
+
+        companion object {
+            const val BASE_PATH = "$ACCOUNT_SETTINGS_BASE_PATH/api"
+        }
+    }
+
+    @Serializable
+    data class ReauthorizeApiAccount(val accountId: String) : AccountSettingsRoute {
+        override val basePath: String = BASE_PATH
+
+        override fun route(): String = "$basePath/$accountId"
+
+        companion object {
+            const val BASE_PATH = "$ACCOUNT_SETTINGS_BASE_PATH/reauthorize"
+        }
+    }
+
+    @Serializable
     data class GeneralSettings(val accountId: String) : AccountSettingsRoute {
         override val basePath: String = BASE_PATH
 

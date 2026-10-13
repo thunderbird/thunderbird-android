@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="account_server_settings_protocol_type_label">Protocol</string>
+    <string name="account_server_settings_connector_label">Connector</string>
+    <string name="account_server_settings_protocol_type_graph">Microsoft Graph API</string>
+    <string name="account_server_settings_protocol_type_gmail_api">Gmail API</string>
+    <string name="account_server_settings_protocol_type_zoho_api">Zoho Mail API</string>
     <string name="account_server_settings_server_label">Server</string>
     <string name="account_server_settings_security_label">Security</string>
     <string name="account_server_settings_port_label">Port</string>
@@ -21,6 +25,25 @@
     <string name="account_server_settings_client_certificate_label">Client certificate</string>
 
     <string name="account_server_settings_incoming_top_bar_title">Incoming server settings</string>
+    <string name="account_server_settings_reauthorize_microsoft_account">Reauthorize Microsoft account</string>
+    <string name="account_server_settings_reauthorize_zoho_account">Authorize this Zoho account again</string>
+
+    <string name="account_server_settings_api_client_id_label">Client ID</string>
+    <string name="account_server_settings_api_client_id_required">Client ID is required.</string>
+    <string name="account_server_settings_api_redirect_uri_label">Redirect URI</string>
+    <string name="account_server_settings_api_redirect_required">Redirect URI is required.</string>
+    <string name="account_server_settings_api_redirect_invalid">Use an app callback URI the installed app can receive.</string>
+
+    <string name="account_server_settings_zoho_name_label">Your name</string>
+    <string name="account_server_settings_zoho_email_label">Your email address</string>
+    <string name="account_server_settings_zoho_client_id_label">Zoho Client ID</string>
+    <string name="account_server_settings_zoho_client_secret_label">Zoho Client Secret</string>
+    <string name="account_server_settings_zoho_redirect_uri_label">Redirect URI</string>
+    <string name="account_server_settings_zoho_incoming_only_label">Incoming email only</string>
+    <string name="account_server_settings_zoho_email_required">Email address is required.</string>
+    <string name="account_server_settings_zoho_client_id_required">Zoho Client ID is required.</string>
+    <string name="account_server_settings_zoho_redirect_required">Redirect URI is required.</string>
+    <string name="account_server_settings_zoho_redirect_invalid">Use an app callback URI the installed app can receive.</string>
 
     <string name="account_server_settings_incoming_imap_namespace_label">Auto-detect IMAP namespace</string>
     <string name="account_server_settings_incoming_imap_prefix_label">IMAP path prefix</string>

@@ -1,0 +1,10 @@
+# Microsoft Graph OAuth references
+
+Reviewed 2026-10-08 for the debug-only Graph account setup work.
+
+- Microsoft Graph's [permissions reference](https://learn.microsoft.com/en-us/graph/permissions-reference) describes delegated `Mail.ReadWrite` as read/create/update/delete mail access and explicitly says it **does not include sending**. Delegated `Mail.Send` is a separate permission. The page recommends requesting the least privilege needed.
+- Microsoft's [scope and OIDC documentation](https://learn.microsoft.com/en-us/entra/identity-platform/scopes-oidc) says that Graph permissions may be requested as unqualified scopes (for example `Mail.ReadWrite`; when the resource identifier is omitted, Graph is assumed). The v2 endpoint requires explicitly including `offline_access` to receive refresh tokens; `openid`, `profile`, and `email` are supported identity scopes.
+- Microsoft's [Android app setup tutorial](https://learn.microsoft.com/en-us/entra/identity-platform/tutorial-mobile-app-android-prepare-app) documents an Android `msauth://<package>/<signature-hash>` redirect URI registered against the package and signing certificate.
+- Microsoft's [Graph `user: sendMail` API](https://learn.microsoft.com/en-us/graph/api/user-sendmail?view=graph-rest-1.0) documents `POST /me/sendMail`, the separate `Mail.Send` delegated permission, and MIME submission as a base64-encoded request body with `Content-Type: text/plain`; successful submission returns `202 Accepted`.
+
+The existing Thunderbird Microsoft app registration's configured delegated Graph permissions/consent cannot be verified here without entering its portal or performing a real sign-in. No sign-in or mailbox access is being performed. The Graph debug OAuth configuration therefore reuses only Thunderbird's existing client ID and fullDebug redirect value, adds separate Graph scopes, and leaves existing IMAP/SMTP scopes unchanged. The registration must already allow or later be updated to allow the requested Graph delegated scopes for interactive testing.

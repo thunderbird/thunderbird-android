@@ -18,6 +18,7 @@ import com.fsck.k9.mail.ServerSettings
 import com.fsck.k9.mail.folders.FolderServerId
 import com.fsck.k9.mail.folders.RemoteFolder
 import kotlinx.coroutines.test.runTest
+import net.thunderbird.core.common.mail.Protocols
 import net.thunderbird.feature.account.AccountIdFactory
 import org.junit.Test
 
@@ -61,6 +62,29 @@ class CreateAccountTest {
         )
     }
 
+    @Test
+    fun `Graph account without autodiscovered SMTP settings receives an unused SMTP placeholder`() = runTest {
+        var recordedAccount: Account? = null
+        val createAccount = CreateAccount(
+            accountCreator = { account ->
+                recordedAccount = account
+                AccountCreatorResult.Success(accountId = AccountIdFactory.create())
+            },
+        )
+
+        createAccount.execute(
+            AccountState(
+                emailAddress = EMAIL_ADDRESS,
+                incomingServerSettings = GRAPH_SETTINGS,
+                outgoingServerSettings = null,
+                displayOptions = DISPLAY_OPTIONS,
+                syncOptions = SYNC_OPTIONS,
+            ),
+        )
+
+        assertThat(recordedAccount!!.outgoingServerSettings).isEqualTo(GRAPH_SETTINGS.copy(type = Protocols.SMTP))
+    }
+
     private companion object {
         const val EMAIL_ADDRESS = "user@example.com"
 
@@ -72,6 +96,17 @@ class CreateAccountTest {
             authenticationType = AuthType.PLAIN,
             username = "user",
             password = "password",
+            clientCertificateAlias = null,
+        )
+
+        val GRAPH_SETTINGS = ServerSettings(
+            type = Protocols.GRAPH,
+            host = "graph.microsoft.com",
+            port = 443,
+            connectionSecurity = MailConnectionSecurity.SSL_TLS_REQUIRED,
+            authenticationType = AuthType.XOAUTH2,
+            username = EMAIL_ADDRESS,
+            password = null,
             clientCertificateAlias = null,
         )
 

@@ -23,6 +23,7 @@ dependencies {
     implementation(projects.mail.protocols.imap)
 
     implementation(projects.feature.account.common)
+    implementation(projects.feature.account.oauth)
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.biometric)
 

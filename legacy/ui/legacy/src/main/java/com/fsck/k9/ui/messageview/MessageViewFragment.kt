@@ -379,7 +379,16 @@ class MessageViewFragment :
 
     @Suppress("LongMethod")
     private fun prepareMenu(menu: Menu) {
-        menu.findItem(R.id.delete).apply {
+        val deleteItem = menu.findItem(R.id.delete)
+        val permanentDelete = ::account.isInitialized && ::messageReference.isInitialized &&
+            com.fsck.k9.ui.isPermanentDeleteFolder(
+                account.incomingServerSettings.type,
+                account.trashFolderId,
+                account.spamFolderId,
+                messageReference.folderId,
+            )
+        deleteItem.setTitle(if (permanentDelete) R.string.delete_permanently_action else R.string.delete_action)
+        deleteItem.apply {
             isVisible = generalSettingsManager.getConfig()
                 .display.visualSettings.isMessageViewDeleteActionVisible
             isEnabled = !isDeleteMenuItemDisabled
@@ -457,7 +466,7 @@ class MessageViewFragment :
         menu.findItem(R.id.export_eml).isVisible =
             featureFlagProvider.provide(GeneratedFeatureFlagKey.MESSAGE_VIEW_ACTION_EXPORT_EML).isEnabled()
         menu.findItem(R.id.print)?.isVisible = true
-        menu.findItem(R.id.view_compose).isVisible = true
+        menu.findItem(R.id.view_compose).isVisible = canComposeFromAccount()
 
         val toggleTheme = menu.findItem(R.id.toggle_message_view_theme)
         if (generalSettingsManager.getConfig().display.coreSettings.fixedMessageViewTheme) {
@@ -701,6 +710,7 @@ class MessageViewFragment :
     }
 
     fun onReply(forceReplyAction: Boolean = false) {
+        if (!canComposeFromAccount()) return
         val message = this.message ?: return
 
         val additionalActions = replayAllStrategy.getReplyActions(account, message).additionalActions
@@ -715,6 +725,7 @@ class MessageViewFragment :
     }
 
     fun onReplyAll() {
+        if (!canComposeFromAccount()) return
         val message = checkNotNull(this.message)
 
         fragmentListener.onReplyAll(
@@ -724,6 +735,7 @@ class MessageViewFragment :
     }
 
     fun onForward() {
+        if (!canComposeFromAccount()) return
         val message = checkNotNull(this.message)
 
         fragmentListener.onForward(
@@ -733,6 +745,7 @@ class MessageViewFragment :
     }
 
     private fun onForwardAsAttachment() {
+        if (!canComposeFromAccount()) return
         val message = checkNotNull(this.message)
 
         fragmentListener.onForwardAsAttachment(
@@ -742,10 +755,17 @@ class MessageViewFragment :
     }
 
     private fun onEditAsNewMessage() {
+        if (!canComposeFromAccount()) return
         val message = checkNotNull(this.message)
 
         fragmentListener.onEditAsNewMessage(message.makeMessageReference())
     }
+
+    private fun canComposeFromAccount(): Boolean =
+        ::account.isInitialized && !com.fsck.k9.ui.NativeApiAccountCapabilities.isZohoIncomingOnly(
+            account.incomingServerSettings.type,
+            account.incomingServerSettings.extra,
+        )
 
     fun onMove() {
         check(messagingController.isMoveCapable(account))

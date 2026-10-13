@@ -60,6 +60,7 @@ class FolderSettingsViewModel(
             val folderSettingsData = FolderSettingsData(
                 folder = folderDetails.folder,
                 dataStore = FolderSettingsDataStore(folderDetailsRepository, account.id, folderDetails),
+                isPushCapable = messagingController.isPushCapable(account),
             )
             emit(folderSettingsData)
         }
@@ -93,7 +94,11 @@ class FolderSettingsViewModel(
 
 sealed class FolderSettingsResult
 object FolderNotFound : FolderSettingsResult()
-data class FolderSettingsData(val folder: Folder, val dataStore: FolderSettingsDataStore) : FolderSettingsResult()
+data class FolderSettingsData(
+    val folder: Folder,
+    val dataStore: FolderSettingsDataStore,
+    val isPushCapable: Boolean = true,
+) : FolderSettingsResult()
 
 sealed class Action {
     object ShowClearFolderConfirmationDialog : Action()

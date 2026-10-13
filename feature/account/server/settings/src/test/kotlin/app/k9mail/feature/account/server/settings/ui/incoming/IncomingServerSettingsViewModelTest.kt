@@ -6,8 +6,10 @@ import app.k9mail.core.ui.compose.testing.mvi.runMviTest
 import app.k9mail.core.ui.compose.testing.mvi.turbinesWithInitialStateCheck
 import app.k9mail.feature.account.common.data.InMemoryAccountStateRepository
 import app.k9mail.feature.account.common.domain.AccountDomainContract
+import app.k9mail.feature.account.common.domain.entity.AccountDisplayOptions
 import app.k9mail.feature.account.common.domain.entity.AccountState
 import app.k9mail.feature.account.common.domain.entity.AuthenticationType
+import app.k9mail.feature.account.common.domain.entity.AuthorizationState
 import app.k9mail.feature.account.common.domain.entity.ConnectionSecurity
 import app.k9mail.feature.account.common.domain.entity.IncomingProtocolType
 import app.k9mail.feature.account.common.domain.entity.InteractionMode
@@ -121,6 +123,74 @@ class IncomingServerSettingsViewModelTest {
                 port = NumberInputField(value = ConnectionSecurity.TLS.toPop3DefaultPort()),
             ),
         )
+    }
+
+    @Test
+    fun `should select fixed Graph endpoint and OAuth when Graph protocol is chosen`() = runMviTest {
+        val email = "user@example.com"
+        val repository = InMemoryAccountStateRepository(AccountState(emailAddress = email))
+        val initialState = State(username = StringInputField(value = ""))
+        val testSubject = createTestSubject(initialState = initialState, repository = repository)
+
+        eventStateTest(
+            viewModel = testSubject,
+            initialState = initialState,
+            event = Event.ProtocolTypeChanged(IncomingProtocolType.GRAPH),
+            expectedState = initialState.copy(
+                protocolType = IncomingProtocolType.GRAPH,
+                server = StringInputField(value = "graph.microsoft.com"),
+                security = ConnectionSecurity.TLS,
+                port = NumberInputField(value = 443L),
+                authenticationType = AuthenticationType.OAuth2,
+                username = StringInputField(value = email),
+                password = StringInputField(value = ""),
+                clientCertificateAlias = null,
+            ),
+        )
+    }
+
+    @Test
+    fun `Graph settings can continue without validating hidden endpoint and username fields`() = runMviTest {
+        val initialState = State(
+            protocolType = IncomingProtocolType.GRAPH,
+            server = StringInputField(value = ""),
+            security = ConnectionSecurity.TLS,
+            port = NumberInputField(value = 443L),
+            authenticationType = AuthenticationType.OAuth2,
+            username = StringInputField(value = ""),
+            apiOAuthClientId = StringInputField(value = "account-client-id"),
+            apiOAuthRedirectUri = StringInputField(value = "net.thunderbird.android.debug:/oauth2redirect"),
+        )
+        val repository = InMemoryAccountStateRepository()
+        val testSubject = createTestSubject(
+            initialState = initialState,
+            validator = FakeIncomingServerSettingsValidator(
+                serverAnswer = Outcome.Failure(TestError),
+                portAnswer = Outcome.Failure(TestError),
+                usernameAnswer = Outcome.Failure(TestError),
+            ),
+            repository = repository,
+        )
+        val turbines = turbinesWithInitialStateCheck(testSubject, initialState)
+
+        testSubject.event(Event.OnNextClicked)
+
+        assertThat(turbines.awaitStateItem()).isEqualTo(
+            initialState.copy(
+                server = StringInputField(value = "", isValid = true),
+                port = NumberInputField(value = 443L, isValid = true),
+                username = StringInputField(value = "", isValid = true),
+                password = StringInputField(value = "", isValid = true),
+                imapPrefix = StringInputField(value = "", isValid = true),
+            ),
+        )
+        assertThat(repository.getState().incomingServerSettings?.type).isEqualTo("msgraphapi")
+        assertThatAndMviTurbinesConsumed(
+            actual = turbines.awaitEffectItem(),
+            turbines = turbines,
+        ) {
+            isEqualTo(Effect.NavigateNext)
+        }
     }
 
     @Test
@@ -401,6 +471,192 @@ class IncomingServerSettingsViewModelTest {
             isEqualTo(Effect.NavigateBack)
         }
     }
+
+    @Test
+    fun `should emit reauthorization effect only for eligible edit accounts`() = runMviTest {
+        val testSubject = IncomingServerSettingsViewModel(
+            mode = InteractionMode.Edit,
+            validator = FakeIncomingServerSettingsValidator(),
+            accountStateRepository = InMemoryAccountStateRepository(),
+            initialState = State(
+                protocolType = IncomingProtocolType.GRAPH,
+                isGraphReauthorizationAvailable = true,
+            ),
+        )
+        val turbines = turbinesWithInitialStateCheck(
+            testSubject,
+            State(
+                protocolType = IncomingProtocolType.GRAPH,
+                isGraphReauthorizationAvailable = true,
+            ),
+        )
+
+        testSubject.event(Event.ReauthorizeMicrosoftAccountClicked)
+
+        assertThatAndMviTurbinesConsumed(
+            actual = turbines.awaitEffectItem(),
+            turbines = turbines,
+        ) {
+            isEqualTo(Effect.ReauthorizeMicrosoftAccount)
+        }
+    }
+
+    @Test
+    fun `should ignore reauthorization event in account setup`() = runMviTest {
+        val initialState = State(
+            protocolType = IncomingProtocolType.GRAPH,
+            isGraphReauthorizationAvailable = true,
+        )
+        val testSubject = createTestSubject(initialState)
+        val turbines = turbinesWithInitialStateCheck(testSubject, initialState)
+
+        testSubject.event(Event.ReauthorizeMicrosoftAccountClicked)
+
+        turbines.effectTurbine.expectNoEvents()
+    }
+
+    @Test
+    fun `should persist Zoho OAuth settings and sender identity when setup continues`() = runMviTest {
+        val emailAddress = "zoho@example.com"
+        val initialState = State(
+            protocolType = IncomingProtocolType.ZOHO_MAIL_API,
+            server = StringInputField(value = "zoho.example.com"),
+            security = ConnectionSecurity.TLS,
+            port = NumberInputField(value = 443L),
+            authenticationType = AuthenticationType.OAuth2,
+            username = StringInputField(value = emailAddress),
+            password = StringInputField(value = "user-client-secret"),
+            zohoClientId = StringInputField(value = "user-client-id"),
+            zohoRedirectUri = StringInputField(value = "net.thunderbird.android.debug://custom-zoho-callback"),
+            zohoIncomingOnly = true,
+        )
+        val repository = InMemoryAccountStateRepository(AccountState(emailAddress = "old@example.com"))
+        val testSubject = IncomingServerSettingsViewModel(
+            mode = InteractionMode.Create,
+            validator = FakeIncomingServerSettingsValidator(),
+            accountStateRepository = repository,
+            initialState = initialState,
+        )
+        val turbines = turbinesWithInitialStateCheck(testSubject, initialState)
+
+        testSubject.event(Event.OnNextClicked)
+
+        assertThat(turbines.awaitStateItem().zohoConfigurationError).isEqualTo(false)
+        assertThat(repository.getState().emailAddress).isEqualTo(emailAddress)
+        assertThat(repository.getState().incomingServerSettings).isEqualTo(
+            ServerSettings(
+                type = "zohomailapi",
+                host = "zoho.example.com",
+                port = 443,
+                connectionSecurity = MailConnectionSecurity.SSL_TLS_REQUIRED,
+                authenticationType = AuthType.XOAUTH2,
+                username = emailAddress,
+                password = "user-client-secret",
+                clientCertificateAlias = null,
+                extra = mapOf(
+                    "zohoOAuthClientId" to "user-client-id",
+                    "zohoOAuthRedirectUri" to "net.thunderbird.android.debug://custom-zoho-callback",
+                    "zohoIncomingOnly" to "true",
+                ),
+            ),
+        )
+        assertThat(repository.getState().displayOptions).isEqualTo(
+            AccountDisplayOptions(
+                accountName = emailAddress,
+                displayName = "",
+                emailSignature = null,
+            ),
+        )
+        assertThatAndMviTurbinesConsumed(
+            actual = turbines.awaitEffectItem(),
+            turbines = turbines,
+        ) {
+            isEqualTo(Effect.NavigateNext)
+        }
+    }
+
+    @Test
+    fun `should preserve a chosen account name when saving Zoho settings`() = runMviTest {
+        val emailAddress = "zoho@example.com"
+        val repository = InMemoryAccountStateRepository(
+            AccountState(
+                emailAddress = emailAddress,
+                displayOptions = AccountDisplayOptions(
+                    accountName = "Work mailbox",
+                    displayName = "Old sender",
+                    emailSignature = "Existing signature",
+                ),
+            ),
+        )
+        val initialState = State(
+            protocolType = IncomingProtocolType.ZOHO_MAIL_API,
+            server = StringInputField(value = "zoho.example.com"),
+            security = ConnectionSecurity.TLS,
+            port = NumberInputField(value = 443L),
+            authenticationType = AuthenticationType.OAuth2,
+            username = StringInputField(value = emailAddress),
+            zohoClientId = StringInputField(value = "user-client-id"),
+            zohoRedirectUri = StringInputField(value = "net.thunderbird.android://oauth2redirect"),
+        )
+        val testSubject = IncomingServerSettingsViewModel(
+            mode = InteractionMode.Create,
+            validator = FakeIncomingServerSettingsValidator(),
+            accountStateRepository = repository,
+            initialState = initialState,
+        )
+        val turbines = turbinesWithInitialStateCheck(testSubject, initialState)
+
+        testSubject.event(Event.OnNextClicked)
+
+        assertThat(turbines.awaitStateItem().zohoConfigurationError).isEqualTo(false)
+        assertThat(repository.getState().displayOptions?.accountName).isEqualTo("Work mailbox")
+        assertThatAndMviTurbinesConsumed(
+            actual = turbines.awaitEffectItem(),
+            turbines = turbines,
+        ) {
+            isEqualTo(Effect.NavigateNext)
+        }
+    }
+
+    @Test
+    fun `should clear Zoho authorization state and navigate to OAuth when reauthorizing an existing account`() =
+        runMviTest {
+            val emailAddress = "zoho@example.com"
+            val repository = InMemoryAccountStateRepository(
+                AccountState(
+                    emailAddress = emailAddress,
+                    authorizationState = AuthorizationState(value = "old-state"),
+                ),
+            )
+            val initialState = State(
+                protocolType = IncomingProtocolType.ZOHO_MAIL_API,
+                server = StringInputField(value = "zoho.example.com"),
+                security = ConnectionSecurity.TLS,
+                port = NumberInputField(value = 443L),
+                authenticationType = AuthenticationType.OAuth2,
+                username = StringInputField(value = emailAddress),
+                zohoClientId = StringInputField(value = "user-client-id"),
+                zohoRedirectUri = StringInputField(value = "net.thunderbird.android://oauth2redirect"),
+            )
+            val testSubject = IncomingServerSettingsViewModel(
+                mode = InteractionMode.Edit,
+                validator = FakeIncomingServerSettingsValidator(),
+                accountStateRepository = repository,
+                initialState = initialState,
+            )
+            val turbines = turbinesWithInitialStateCheck(testSubject, initialState)
+
+            testSubject.event(Event.ReauthorizeZohoAccountClicked)
+
+            assertThat(turbines.awaitStateItem().zohoConfigurationError).isEqualTo(false)
+            assertThat(repository.getState().authorizationState).isEqualTo(AuthorizationState())
+            assertThatAndMviTurbinesConsumed(
+                actual = turbines.awaitEffectItem(),
+                turbines = turbines,
+            ) {
+                isEqualTo(Effect.NavigateNext)
+            }
+        }
 
     private object TestError : ValidationError
 

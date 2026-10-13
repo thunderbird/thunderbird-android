@@ -8,6 +8,7 @@ import com.fsck.k9.mail.ServerSettings
 import com.fsck.k9.mail.server.ServerSettingsValidationResult
 import java.io.IOException
 import kotlinx.coroutines.test.runTest
+import net.thunderbird.core.common.mail.Protocols
 import org.junit.Test
 
 class ValidateServerSettingsTest {
@@ -118,6 +119,31 @@ class ValidateServerSettingsTest {
                 authenticationType = AuthType.PLAIN,
                 username = "user",
                 password = "password",
+                clientCertificateAlias = null,
+            ),
+        )
+
+        assertThat(result).isEqualTo(ServerSettingsValidationResult.Success)
+    }
+
+    @Test
+    fun `Graph validation bypasses IMAP POP3 and SMTP validators`() = runTest {
+        val testSubject = ValidateServerSettings(
+            authStateStorage = authStateStorage,
+            imapValidator = { _, _ -> error("IMAP validator must not be called for Graph") },
+            pop3Validator = { _, _ -> error("POP3 validator must not be called for Graph") },
+            smtpValidator = { _, _ -> error("SMTP validator must not be called for Graph") },
+        )
+
+        val result = testSubject.execute(
+            ServerSettings(
+                type = Protocols.GRAPH,
+                host = "graph.microsoft.com",
+                port = 443,
+                connectionSecurity = ConnectionSecurity.SSL_TLS_REQUIRED,
+                authenticationType = AuthType.XOAUTH2,
+                username = "user@example.com",
+                password = null,
                 clientCertificateAlias = null,
             ),
         )

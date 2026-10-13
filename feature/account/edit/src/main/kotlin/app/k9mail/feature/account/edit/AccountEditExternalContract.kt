@@ -24,4 +24,12 @@ interface AccountEditExternalContract {
             authorizationState: AuthorizationState?,
         ): AccountUpdaterResult
     }
+
+    fun interface AccountAuthorizationStateUpdater {
+        suspend fun updateAuthorizationState(
+            accountId: AccountId,
+            expectedAuthorizationState: AuthorizationState?,
+            newAuthorizationState: AuthorizationState,
+        ): AccountUpdaterResult
+    }
 }

@@ -58,10 +58,12 @@ internal class FetchingMailSettingsViewModelTest {
         eraseDeletedMessageOnServer = SelectOption(Expunge.EXPUNGE_IMMEDIATELY.name) { "" },
         maxFolderToCheckWithPush = SelectOption("5") { "" },
         refreshIdleConnection = SelectOption("2") { "" },
+        isGraphAccount = false,
     )
 
     private fun dummyLegacyAccount(
         accountId: AccountId,
+        protocolType: String = "imap",
     ): LegacyAccount {
         return LegacyAccount(
             id = accountId,
@@ -96,7 +98,7 @@ internal class FetchingMailSettingsViewModelTest {
                 ),
             ),
             incomingServerSettings = com.fsck.k9.mail.ServerSettings(
-                type = "imap",
+                type = protocolType,
                 host = "imap.example.com",
                 port = 993,
                 connectionSecurity = com.fsck.k9.mail.ConnectionSecurity.SSL_TLS_REQUIRED,
@@ -235,7 +237,21 @@ internal class FetchingMailSettingsViewModelTest {
 
             assertThat(maxFolderToCheckWithPush.id).isEqualTo("250")
             assertThat(refreshIdleConnection.id).isEqualTo("48")
+            assertThat(isGraphAccount).isEqualTo(false)
         }
+    }
+
+    @Test
+    fun `should identify Graph accounts when loading fetching mail settings`() = runTest {
+        val accountId = AccountIdFactory.create()
+        val vm = createViewModel(
+            accountId = accountId,
+            getLegacyAccount = { Outcome.success(dummyLegacyAccount(it, protocolType = "graph")) },
+        )
+
+        advanceUntilIdle()
+
+        assertThat(vm.state.value.isGraphAccount).isEqualTo(true)
     }
 
     @Test

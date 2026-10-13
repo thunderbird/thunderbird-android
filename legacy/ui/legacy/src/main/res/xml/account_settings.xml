@@ -15,6 +15,12 @@
         />
 
     <Preference
+        android:icon="@drawable/ic_settings"
+        android:key="api_settings"
+        android:title="@string/account_settings_api_title"
+        />
+
+    <Preference
         android:icon="@drawable/ic_mark_email_read"
         android:key="reading_mail"
         android:title="@string/account_settings_reading_mail"

@@ -25,6 +25,7 @@ import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ConnectionSecurity
 import com.fsck.k9.mail.ServerSettings
 import com.fsck.k9.ui.R
+import com.fsck.k9.ui.messagelist.item.toMessageItemUi
 import com.google.android.material.textview.MaterialTextView
 import kotlin.time.ExperimentalTime
 import net.thunderbird.core.android.account.Identity
@@ -171,6 +172,24 @@ class MessageListAdapterTest : RobolectricTest() {
         val view = adapter.createAndBindView(messageListItem)
 
         assertThat(view.firstLineView.textString).isEqualTo("Display Name")
+    }
+
+    @Test
+    fun composeMessageItem_shouldUseResolvedSenderNameInsteadOfRawAddress() {
+        val messageListItem = createMessageListItem(
+            displayName = "Resolved Sender",
+            displayAddress = Address.parse("sender@example.test").single(),
+        )
+
+        val testSubject = messageListItem.toMessageItemUi(
+            showContactPicture = false,
+            isSelected = false,
+            isActive = false,
+            monogram = "",
+            url = null,
+        )
+
+        assertThat(testSubject.senders.displayName).isEqualTo("Resolved Sender")
     }
 
     @Test

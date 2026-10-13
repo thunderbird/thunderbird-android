@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="account_edit_api_reauthorization_title">Reauthorize API account</string>
+    <string name="account_edit_api_reauthorization_loading">Checking account authorization…</string>
+    <string name="account_edit_api_reauthorization_unavailable">Reauthorization is not configured for this account or app build.</string>
+    <string name="account_edit_api_reauthorization_canceled">Sign-in was canceled. The current authorization was left unchanged.</string>
+    <string name="account_edit_api_reauthorization_failure">Could not update the account authorization. The current authorization was left unchanged.</string>
+    <string name="account_edit_api_reauthorization_done">Done</string>
+    <string name="account_edit_gmail_reauthorization_title">Reauthorize Google account</string>
+    <string name="account_edit_gmail_reauthorization_explanation">Sign in to the same Google account to replace its saved authorization. The existing Gmail mail permission is used to confirm the account; no additional identity scopes are requested. Account settings and downloaded mail remain unchanged.</string>
+    <string name="account_edit_gmail_reauthorization_success">Google account authorization was updated.</string>
+    <string name="account_edit_gmail_reauthorization_identity_mismatch">This is a different Google account. Nothing was changed. Choose the Google account already used by this mail account.</string>
+    <string name="account_edit_zoho_reauthorization_title">Reauthorize Zoho account</string>
+    <string name="account_edit_zoho_reauthorization_explanation">Sign in to the Zoho account used by this mail account to replace its saved authorization. Account settings and downloaded mail remain unchanged.</string>
+    <string name="account_edit_zoho_reauthorization_success">Zoho account authorization was updated.</string>
+</resources>

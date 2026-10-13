@@ -9,6 +9,7 @@ import assertk.all
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNotEmpty
+import assertk.assertions.isNotEqualTo
 import assertk.assertions.isNotNull
 import assertk.assertions.isNull
 import assertk.assertions.prop
@@ -24,6 +25,7 @@ import net.openid.appauth.GrantTypeValues
 import net.openid.appauth.ResponseTypeValues
 import net.openid.appauth.TokenRequest
 import net.openid.appauth.TokenResponse
+import net.thunderbird.core.common.mail.ZohoMailServerSettings
 import net.thunderbird.core.common.oauth.OAuthConfiguration
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -38,6 +40,50 @@ import org.robolectric.RobolectricTestRunner
 class AuthorizationRepositoryTest {
 
     private val service: AuthorizationService = mock<AuthorizationService>()
+
+    @Test
+    fun `Zoho authorization request should use granular scopes and fresh security values`() = runTest {
+        val callbackUri = "net.thunderbird.android.debug://oauth2redirect"
+        val mailboxAddress = "user@example.invalid"
+        val configuration = OAuthConfiguration(
+            clientId = "user-configured-client",
+            scopes = ZohoMailServerSettings.OAUTH_SCOPES,
+            authorizationEndpoint = ZohoMailServerSettings.AUTHORIZATION_ENDPOINT,
+            tokenEndpoint = ZohoMailServerSettings.TOKEN_ENDPOINT,
+            redirectUri = callbackUri,
+            scopeSeparator = ZohoMailServerSettings.SCOPE_SEPARATOR,
+            authorizationParameters = mapOf("access_type" to "offline", "prompt" to "consent"),
+        )
+        val authorizationRequests = mutableListOf<AuthorizationRequest>()
+        val intent = Intent()
+        service.stub {
+            on { getAuthorizationRequestIntent(any()) } doAnswer { invocation ->
+                authorizationRequests += invocation.getArgument(0, AuthorizationRequest::class.java)
+                intent
+            }
+        }
+        val testSubject = AuthorizationRepository(service)
+
+        val firstResult = testSubject.getAuthorizationRequestIntent(configuration, mailboxAddress)
+        val secondResult = testSubject.getAuthorizationRequestIntent(configuration, mailboxAddress)
+
+        assertThat(firstResult).isEqualTo(AuthorizationIntentResult.Success(intent))
+        assertThat(secondResult).isEqualTo(AuthorizationIntentResult.Success(intent))
+        val firstRequest = authorizationRequests[0]
+        val secondRequest = authorizationRequests[1]
+        assertThat(firstRequest.clientId).isEqualTo("user-configured-client")
+        assertThat(firstRequest.responseType).isEqualTo(ResponseTypeValues.CODE)
+        assertThat(firstRequest.redirectUri).isEqualTo(callbackUri.toUri())
+        assertThat(firstRequest.scope).isEqualTo(ZohoMailServerSettings.OAUTH_SCOPES.joinToString(","))
+        assertThat(firstRequest.loginHint).isEqualTo(mailboxAddress)
+        assertThat(firstRequest.prompt).isEqualTo("consent")
+        assertThat(firstRequest.additionalParameters).isEqualTo(mapOf("access_type" to "offline"))
+        assertThat(firstRequest.codeVerifierChallengeMethod).isEqualTo("S256")
+        assertThat(firstRequest.state).isNotEqualTo(secondRequest.state)
+        assertThat(firstRequest.nonce).isNotEqualTo(secondRequest.nonce)
+        assertThat(firstRequest.codeVerifier).isNotEqualTo(secondRequest.codeVerifier)
+        assertThat(firstRequest.codeVerifierChallenge).isNotEqualTo(secondRequest.codeVerifierChallenge)
+    }
 
     @Test
     fun `getAuthorizationRequestIntent should return Success with intent when hostname has oauth configuration`() =
@@ -74,6 +120,8 @@ class AuthorizationRepositoryTest {
                 prop(AuthorizationRequest::redirectUri).isEqualTo(oAuthConfiguration.redirectUri.toUri())
                 prop(AuthorizationRequest::scope).isEqualTo("scope scope2")
                 prop(AuthorizationRequest::loginHint).isEqualTo(emailAddress)
+                prop(AuthorizationRequest::prompt).isEqualTo("consent")
+                prop(AuthorizationRequest::additionalParameters).isEqualTo(mapOf("access_type" to "offline"))
                 prop(AuthorizationRequest::codeVerifier).isNotNull()
                 prop(AuthorizationRequest::codeVerifierChallengeMethod).isEqualTo("S256")
                 prop(AuthorizationRequest::codeVerifierChallenge).isNotNull().isNotEmpty()
@@ -177,8 +225,8 @@ class AuthorizationRepositoryTest {
         val tokenResponse = TokenResponse.Builder(tokenRequest)
             .build()
         service.stub {
-            on { performTokenRequest(any(), any()) } doAnswer {
-                val callback = it.getArgument(1, TokenResponseCallback::class.java)
+            on { performTokenRequest(any(), any()) } doAnswer { invocation ->
+                val callback = invocation.getArgument(1, TokenResponseCallback::class.java)
                 callback.onTokenRequestCompleted(tokenResponse, null)
             }
         }
@@ -189,6 +237,64 @@ class AuthorizationRepositoryTest {
         val successAuthorizationState = expectedAuthState.toAuthorizationState()
 
         assertThat(result).isEqualTo(AuthorizationResult.Success(successAuthorizationState))
+    }
+
+    @Test
+    fun `Zoho token exchange uses callback Accounts server and preserves state and PKCE`() = runTest {
+        val response = zohoAuthorizationResponse()
+        var capturedRequest: TokenRequest? = null
+        service.stub {
+            on { performTokenRequest(any(), any()) } doAnswer { invocation ->
+                capturedRequest = invocation.getArgument(0, TokenRequest::class.java)
+                val callback = invocation.getArgument(1, TokenResponseCallback::class.java)
+                callback.onTokenRequestCompleted(TokenResponse.Builder(capturedRequest!!).build(), null)
+            }
+        }
+        val testSubject = AuthorizationRepository(service)
+
+        val result = testSubject.getExchangeToken(response)
+
+        assertThat(result is AuthorizationResult.Success).isEqualTo(true)
+        val tokenRequest = requireNotNull(capturedRequest)
+        assertThat(tokenRequest.configuration.tokenEndpoint)
+            .isEqualTo("https://accounts.zoho.in/oauth/v2/token".toUri())
+        assertThat(tokenRequest.authorizationCode).isEqualTo("authorization-code")
+        assertThat(tokenRequest.redirectUri).isEqualTo(response.request.redirectUri)
+        assertThat(tokenRequest.codeVerifier).isEqualTo(response.request.codeVerifier)
+        assertThat(tokenRequest.nonce).isEqualTo(response.request.nonce)
+
+        val authorizationState = (result as AuthorizationResult.Success).state
+        val authState = AuthState.jsonDeserialize(requireNotNull(authorizationState.value))
+        assertThat(authState.lastAuthorizationResponse?.state).isEqualTo(response.state)
+        assertThat(authState.lastTokenResponse?.request?.configuration?.tokenEndpoint)
+            .isEqualTo("https://accounts.zoho.in/oauth/v2/token".toUri())
+    }
+
+    @Test
+    fun `Zoho token exchange rejects missing unknown unsafe or contradictory regional server data`() = runTest {
+        var tokenRequestCount = 0
+        service.stub {
+            on { performTokenRequest(any(), any()) } doAnswer { invocation ->
+                tokenRequestCount++
+                val callback = invocation.getArgument(1, TokenResponseCallback::class.java)
+                val request = invocation.getArgument(0, TokenRequest::class.java)
+                callback.onTokenRequestCompleted(TokenResponse.Builder(request).build(), null)
+            }
+        }
+        val testSubject = AuthorizationRepository(service)
+        val invalidResponses = listOf(
+            zohoAuthorizationResponse(accountsServer = null),
+            zohoAuthorizationResponse(accountsServer = "https://accounts.zoho.in.attacker.invalid"),
+            zohoAuthorizationResponse(accountsServer = "http://accounts.zoho.in"),
+            zohoAuthorizationResponse(location = "eu", accountsServer = "https://accounts.zoho.in"),
+            zohoAuthorizationResponse(location = "unknown", accountsServer = "https://accounts.zoho.in"),
+        )
+
+        invalidResponses.forEach { response ->
+            val result = testSubject.getExchangeToken(response)
+            assertThat(result is AuthorizationResult.Failure).isEqualTo(true)
+        }
+        assertThat(tokenRequestCount).isEqualTo(0)
     }
 
     fun `getExchangeToken should return failure when tokenRequest failure`() = runTest {
@@ -204,8 +310,8 @@ class AuthorizationRepositoryTest {
             null,
         )
         service.stub {
-            on { performTokenRequest(any(), any()) } doAnswer {
-                val callback = it.getArgument(1, TokenResponseCallback::class.java)
+            on { performTokenRequest(any(), any()) } doAnswer { invocation ->
+                val callback = invocation.getArgument(1, TokenResponseCallback::class.java)
                 callback.onTokenRequestCompleted(null, authorizationException)
             }
         }
@@ -221,8 +327,8 @@ class AuthorizationRepositoryTest {
         )
         val exception = Exception("Unknown error")
         service.stub {
-            on { performTokenRequest(any(), any()) } doAnswer {
-                val callback = it.getArgument(1, TokenResponseCallback::class.java)
+            on { performTokenRequest(any(), any()) } doAnswer { invocation ->
+                val callback = invocation.getArgument(1, TokenResponseCallback::class.java)
                 callback.onTokenRequestCompleted(null, null)
             }
         }
@@ -233,12 +339,41 @@ class AuthorizationRepositoryTest {
     }
 
     private companion object {
+        fun zohoAuthorizationResponse(
+            location: String? = "in",
+            accountsServer: String? = "https://accounts.zoho.in",
+        ): AuthorizationResponse {
+            val configuration = AuthorizationServiceConfiguration(
+                ZohoMailServerSettings.AUTHORIZATION_ENDPOINT.toUri(),
+                ZohoMailServerSettings.TOKEN_ENDPOINT.toUri(),
+            )
+            val request = AuthorizationRequest.Builder(
+                configuration,
+                "configured-zoho-client",
+                ResponseTypeValues.CODE,
+                "net.thunderbird.android://oauth2redirect".toUri(),
+            )
+                .setState("test-oauth-state")
+                .setCodeVerifier("0123456789abcdefghijklmnopqrstuvwxyzABCDEFG")
+                .build()
+            val additionalParameters = buildMap {
+                location?.let { put("location", it) }
+                accountsServer?.let { put("accounts-server", it) }
+            }
+            return AuthorizationResponse.Builder(request)
+                .setState("test-oauth-state")
+                .setAuthorizationCode("authorization-code")
+                .setAdditionalParameters(additionalParameters)
+                .build()
+        }
+
         val oAuthConfiguration = OAuthConfiguration(
             clientId = "clientId",
             scopes = listOf("scope", "scope2"),
             authorizationEndpoint = "auth.example.com",
             tokenEndpoint = "token.example.com",
             redirectUri = "redirect.example.com",
+            authorizationParameters = mapOf("access_type" to "offline", "prompt" to "consent"),
         )
 
         val authorizationConfiguration = AuthorizationServiceConfiguration(

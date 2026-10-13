@@ -2,22 +2,33 @@ package app.k9mail.feature.account.server.validation.ui
 
 import androidx.lifecycle.viewModelScope
 import app.k9mail.feature.account.common.domain.AccountDomainContract
+import app.k9mail.feature.account.common.domain.entity.AccountDisplayOptions
+import app.k9mail.feature.account.common.domain.entity.AuthorizationState
 import app.k9mail.feature.account.common.ui.WizardConstants
 import app.k9mail.feature.account.oauth.domain.AccountOAuthDomainContract
+import app.k9mail.feature.account.oauth.domain.NativeApiOAuthConfiguration
 import app.k9mail.feature.account.oauth.domain.entity.OAuthResult
 import app.k9mail.feature.account.oauth.domain.entity.isOAuth
+import app.k9mail.feature.account.oauth.domain.isRegisteredOAuthRedirectUri
 import app.k9mail.feature.account.oauth.ui.AccountOAuthContract
 import app.k9mail.feature.account.server.certificate.domain.ServerCertificateDomainContract
 import app.k9mail.feature.account.server.certificate.domain.entity.ServerCertificateError
+import app.k9mail.feature.account.server.validation.domain.OAuthAccountIdentityResolver
 import app.k9mail.feature.account.server.validation.domain.ServerValidationDomainContract
 import app.k9mail.feature.account.server.validation.ui.ServerValidationContract.Effect
 import app.k9mail.feature.account.server.validation.ui.ServerValidationContract.Error
 import app.k9mail.feature.account.server.validation.ui.ServerValidationContract.Event
 import app.k9mail.feature.account.server.validation.ui.ServerValidationContract.State
+import com.fsck.k9.mail.ServerSettings
 import com.fsck.k9.mail.server.ServerSettingsValidationResult
 import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import net.thunderbird.core.common.mail.NativeApiMailServerSettings
+import net.thunderbird.core.common.mail.Protocols
+import net.thunderbird.core.common.mail.ZohoMailServerSettings
+import net.thunderbird.core.common.oauth.OAuthConfiguration
+import net.thunderbird.core.common.oauth.OAuthConfigurationProvider
 import net.thunderbird.core.ui.contract.mvi.BaseViewModel
 
 @Suppress("TooManyFunctions")
@@ -29,6 +40,9 @@ abstract class BaseServerValidationViewModel(
     override val oAuthViewModel: AccountOAuthContract.ViewModel,
     override val isIncomingValidation: Boolean = true,
     initialState: State? = null,
+    private val accountIdentityResolver: OAuthAccountIdentityResolver? = null,
+    private val oauthConfigurationProvider: OAuthConfigurationProvider? = null,
+    private val applicationId: String = "",
 ) : BaseViewModel<State, Event, Effect>(
     initialState = initialState ?: accountStateRepository.getState().toServerValidationState(isIncomingValidation),
 ),
@@ -77,27 +91,85 @@ abstract class BaseServerValidationViewModel(
     }
 
     private fun startOAuthSignIn() {
-        val hostname = state.value.serverSettings?.host
-        val emailAddress = state.value.emailAddress
+        val currentState = state.value
+        val incomingSettings = accountStateRepository.getState().incomingServerSettings
+        val oauthConfiguration = incomingSettings.toOAuthConfiguration()
 
+        if (incomingSettings.isNativeApiOAuthSettings() && oauthConfiguration == null) {
+            updateError(Error.UnknownError("OAuth Client ID or app callback URI is not configured"))
+            return
+        }
+
+        val hostname = currentState.serverSettings?.host
+        val emailAddress = currentState.emailAddress
         if (hostname == null || emailAddress == null) {
             updateError(Error.UnknownError("Hostname or email address not set"))
             return
-        } else {
-            updateState { state ->
-                state.copy(
-                    needsAuthorization = true,
-                )
-            }
+        }
 
-            oAuthViewModel.initState(
-                AccountOAuthContract.State(
-                    hostname = hostname,
-                    emailAddress = emailAddress,
-                ),
+        updateState { it.copy(needsAuthorization = true) }
+        oAuthViewModel.initState(
+            AccountOAuthContract.State(
+                hostname = hostname,
+                emailAddress = emailAddress,
+                oauthConfiguration = oauthConfiguration,
+            ),
+        )
+    }
+
+    private fun ServerSettings?.toOAuthConfiguration(): OAuthConfiguration? {
+        if (this == null) return null
+
+        return when {
+            type == Protocols.ZOHO_MAIL_API -> zohoOAuthConfiguration(this)
+            type == Protocols.GMAIL_API || Protocols.isGraphProtocol(type) -> nativeApiOAuthConfiguration(this)
+            else -> null
+        }
+    }
+
+    private fun zohoOAuthConfiguration(settings: ServerSettings): OAuthConfiguration? {
+        val clientId = settings.extra[ZohoMailServerSettings.EXTRA_CLIENT_ID].orEmpty()
+        val redirectUri = settings.extra[ZohoMailServerSettings.EXTRA_REDIRECT_URI].orEmpty()
+
+        return when {
+            clientId.isBlank() -> null
+
+            redirectUri.isBlank() -> null
+
+            !isValidRedirectUri(redirectUri) -> null
+
+            else -> OAuthConfiguration(
+                clientId = clientId,
+                scopes = ZohoMailServerSettings.OAUTH_SCOPES,
+                authorizationEndpoint = ZohoMailServerSettings.AUTHORIZATION_ENDPOINT,
+                tokenEndpoint = ZohoMailServerSettings.TOKEN_ENDPOINT,
+                redirectUri = redirectUri,
+                clientSecret = settings.password,
+                scopeSeparator = ZohoMailServerSettings.SCOPE_SEPARATOR,
+                authorizationParameters = mapOf("access_type" to "offline", "prompt" to "consent"),
             )
         }
     }
+
+    private fun nativeApiOAuthConfiguration(settings: ServerSettings): OAuthConfiguration? {
+        val baseConfiguration = oauthConfigurationProvider?.getConfiguration(settings.host)
+            ?: NativeApiOAuthConfiguration.defaultFor(settings.type, applicationId)
+
+        return baseConfiguration?.let { configuration ->
+            configuration.copy(
+                clientId = settings.extra[NativeApiMailServerSettings.EXTRA_OAUTH_CLIENT_ID]
+                    ?.takeIf(String::isNotBlank) ?: configuration.clientId,
+                redirectUri = settings.extra[NativeApiMailServerSettings.EXTRA_OAUTH_REDIRECT_URI]
+                    ?.takeIf(String::isNotBlank) ?: configuration.redirectUri,
+            )
+        }?.takeIf { it.clientId.isNotBlank() && isValidRedirectUri(it.redirectUri) }
+    }
+
+    private fun isValidRedirectUri(redirectUri: String): Boolean =
+        applicationId.isBlank() || isRegisteredOAuthRedirectUri(redirectUri, applicationId)
+
+    private fun ServerSettings?.isNativeApiOAuthSettings(): Boolean =
+        this != null && Protocols.isNativeApiProtocol(type)
 
     private fun onOAuthResult(result: OAuthResult) {
         if (result is OAuthResult.Success) {
@@ -108,7 +180,52 @@ abstract class BaseServerValidationViewModel(
                 )
             }
 
-            validateServerSettings()
+            if (isIncomingValidation && accountIdentityResolver != null) {
+                viewModelScope.launch {
+                    applyProviderIdentity(result.authorizationState)
+                    validateServerSettings()
+                }
+            } else {
+                validateServerSettings()
+            }
+        }
+    }
+
+    private suspend fun applyProviderIdentity(authorizationState: AuthorizationState) {
+        val serverSettings = state.value.serverSettings ?: return
+        val identity = accountIdentityResolver?.resolve(serverSettings, authorizationState) ?: return
+        val profileEmail = identity.emailAddress?.takeIf(String::isValidEmailAddress)
+        val profileName = identity.displayName?.trim()?.takeIf(String::isNotEmpty)
+        val accountState = accountStateRepository.getState()
+        val resolvedEmail = profileEmail ?: accountState.emailAddress
+        val updatedServerSettings = if (profileEmail != null) {
+            serverSettings.copy(username = profileEmail)
+        } else {
+            serverSettings
+        }
+
+        if (profileEmail != null) {
+            accountStateRepository.setEmailAddress(profileEmail)
+            accountStateRepository.setIncomingServerSettings(updatedServerSettings)
+        }
+
+        if (profileName != null) {
+            val existingOptions = accountState.displayOptions
+            accountStateRepository.setDisplayOptions(
+                AccountDisplayOptions(
+                    accountName = existingOptions?.accountName?.takeIf(String::isNotBlank)
+                        ?: resolvedEmail.orEmpty(),
+                    displayName = profileName,
+                    emailSignature = existingOptions?.emailSignature,
+                ),
+            )
+        }
+
+        updateState {
+            it.copy(
+                emailAddress = resolvedEmail,
+                serverSettings = updatedServerSettings,
+            )
         }
     }
 
@@ -220,4 +337,10 @@ abstract class BaseServerValidationViewModel(
         viewModelScope.coroutineContext.cancelChildren()
         emitEffect(Effect.NavigateNext)
     }
+}
+
+private fun String.isValidEmailAddress(): Boolean {
+    val separator = indexOf('@')
+    return separator > 0 && separator == lastIndexOf('@') &&
+        separator < lastIndex && !any(Char::isWhitespace)
 }

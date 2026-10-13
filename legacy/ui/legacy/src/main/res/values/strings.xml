@@ -43,6 +43,7 @@
     <string name="accounts_title">Accounts</string>
 
     <string name="compose_title_compose">Compose</string>
+    <string name="zoho_incoming_only_send_blocked">This Zoho Mail account is configured for incoming email only.</string>
     <string name="compose_title_reply">Reply</string>
     <string name="compose_title_reply_all">Reply all</string>
     <string name="compose_title_forward">Forward</string>
@@ -57,6 +58,7 @@
     <string name="reply_action">Reply</string>
     <string name="reply_all_action">Reply all</string>
     <string name="delete_action">Delete</string>
+    <string name="delete_permanently_action">Delete permanently</string>
     <string name="archive_action">Archive</string>
     <string name="spam_action">Spam</string>
     <string name="forward_action">Forward</string>
@@ -563,6 +565,7 @@
 
     <string name="account_settings_incoming_label">Incoming server</string>
     <string name="account_settings_incoming_summary">Configure the incoming mail server</string>
+    <string name="account_settings_api_title">API settings</string>
     <string name="account_settings_outgoing_label">Outgoing server</string>
     <string name="account_settings_outgoing_summary">Configure the outgoing mail (SMTP) server</string>
     <string name="account_settings_name_label">Your name</string>

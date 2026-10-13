@@ -9,6 +9,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import app.k9mail.feature.account.common.domain.entity.IncomingProtocolType
+import app.k9mail.feature.account.common.domain.entity.isNativeRestApi
 import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSettingsScreen
 import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSettingsViewModel
 import app.k9mail.feature.account.server.settings.ui.outgoing.OutgoingServerSettingsScreen
@@ -48,6 +49,7 @@ fun AccountSetupNavHost(
 ) {
     val navController = rememberNavController()
     var isAutomaticConfig by rememberSaveable { mutableStateOf(skipToIncomingValidation) }
+    var isNativeApiAccount by rememberSaveable { mutableStateOf(false) }
     var hasSpecialFolders by rememberSaveable { mutableStateOf(false) }
 
     NavHost(
@@ -62,6 +64,7 @@ fun AccountSetupNavHost(
             AccountAutoDiscoveryScreen(
                 onNext = { result ->
                     isAutomaticConfig = result.isAutomaticConfig
+                    isNativeApiAccount = result.incomingProtocolType?.isNativeRestApi() == true
                     if (isAutomaticConfig) {
                         hasSpecialFolders = checkSpecialFoldersSupport(result.incomingProtocolType)
                         navController.navigate(NESTED_NAVIGATION_INCOMING_SERVER_VALIDATION)
@@ -80,6 +83,7 @@ fun AccountSetupNavHost(
         composable(route = NESTED_NAVIGATION_INCOMING_SERVER_CONFIG) {
             IncomingServerSettingsScreen(
                 onNext = { state ->
+                    isNativeApiAccount = state.protocolType.isNativeRestApi()
                     hasSpecialFolders = checkSpecialFoldersSupport(state.protocolType)
                     navController.navigate(NESTED_NAVIGATION_INCOMING_SERVER_VALIDATION)
                 },
@@ -91,7 +95,11 @@ fun AccountSetupNavHost(
         composable(route = NESTED_NAVIGATION_INCOMING_SERVER_VALIDATION) {
             ServerValidationScreen(
                 onNext = {
-                    if (isAutomaticConfig) {
+                    if (isNativeApiAccount) {
+                        navController.navigate(NESTED_NAVIGATION_DISPLAY_OPTIONS) {
+                            popUpTo(NESTED_NAVIGATION_INCOMING_SERVER_CONFIG)
+                        }
+                    } else if (isAutomaticConfig) {
                         navController.navigate(NESTED_NAVIGATION_OUTGOING_SERVER_VALIDATION) {
                             popUpTo(NESTED_NAVIGATION_AUTO_CONFIG)
                         }

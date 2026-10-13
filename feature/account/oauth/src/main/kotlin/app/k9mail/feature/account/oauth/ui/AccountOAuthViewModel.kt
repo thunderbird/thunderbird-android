@@ -14,6 +14,7 @@ import app.k9mail.feature.account.oauth.ui.AccountOAuthContract.Event
 import app.k9mail.feature.account.oauth.ui.AccountOAuthContract.State
 import app.k9mail.feature.account.oauth.ui.AccountOAuthContract.ViewModel
 import kotlinx.coroutines.launch
+import net.openid.appauth.AuthorizationException
 import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.ui.contract.mvi.BaseViewModel
 
@@ -46,9 +47,12 @@ class AccountOAuthViewModel(
 
     private fun onSignIn() {
         val result = try {
-            getOAuthRequestIntent.execute(
-                hostname = state.value.hostname,
-                emailAddress = state.value.emailAddress,
+            val currentState = state.value
+            currentState.oauthConfiguration?.let { configuration ->
+                getOAuthRequestIntent.execute(configuration, currentState.emailAddress)
+            } ?: getOAuthRequestIntent.execute(
+                hostname = currentState.hostname,
+                emailAddress = currentState.emailAddress,
             )
         } catch (e: ActivityNotFoundException) {
             logger.error(throwable = e) { "Failed to launch custom tabs. Browser is not available." }
@@ -99,12 +103,15 @@ class AccountOAuthViewModel(
             )
         }
         viewModelScope.launch {
-            when (val result = finishOAuthSignIn.execute(data)) {
+            when (val result = finishOAuthSignIn.execute(data, state.value.oauthConfiguration?.clientSecret)) {
                 AuthorizationResult.BrowserNotAvailable -> updateErrorState(Error.BrowserNotAvailable)
 
                 AuthorizationResult.Canceled -> updateErrorState(Error.Canceled)
 
-                is AuthorizationResult.Failure -> updateErrorState(Error.Unknown(result.error))
+                is AuthorizationResult.Failure -> {
+                    logOAuthFailure(result.error)
+                    updateErrorState(Error.Unknown(result.error))
+                }
 
                 is AuthorizationResult.Success -> {
                     updateState { state ->
@@ -121,6 +128,18 @@ class AccountOAuthViewModel(
             error = error,
             isLoading = false,
         )
+    }
+
+    private fun logOAuthFailure(error: Exception) {
+        val appAuthError = error as? AuthorizationException
+        if (appAuthError != null) {
+            logger.error {
+                "OAuth sign-in failed (AppAuth type=${appAuthError.type}, code=${appAuthError.code}, " +
+                    "errorPresent=${appAuthError.error != null}, descriptionPresent=${appAuthError.errorDescription != null})"
+            }
+        } else {
+            logger.error { "OAuth sign-in failed (${error::class.simpleName ?: "unknown exception"})" }
+        }
     }
 
     private fun navigateBack() = emitEffect(Effect.NavigateBack)

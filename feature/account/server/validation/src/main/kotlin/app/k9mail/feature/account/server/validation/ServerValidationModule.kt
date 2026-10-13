@@ -3,6 +3,8 @@ package app.k9mail.feature.account.server.validation
 import app.k9mail.feature.account.common.featureAccountCommonModule
 import app.k9mail.feature.account.oauth.featureAccountOAuthModule
 import app.k9mail.feature.account.server.certificate.featureAccountServerCertificateModule
+import app.k9mail.feature.account.server.validation.domain.DefaultOAuthAccountIdentityResolver
+import app.k9mail.feature.account.server.validation.domain.OAuthAccountIdentityResolver
 import app.k9mail.feature.account.server.validation.domain.ServerValidationDomainContract
 import app.k9mail.feature.account.server.validation.domain.usecase.ValidateServerSettings
 import app.k9mail.feature.account.server.validation.ui.IncomingServerValidationViewModel
@@ -11,6 +13,7 @@ import com.fsck.k9.mail.store.imap.ImapServerSettingsValidator
 import com.fsck.k9.mail.store.pop3.Pop3ServerSettingsValidator
 import com.fsck.k9.mail.transport.smtp.SmtpServerSettingsValidator
 import net.thunderbird.core.common.coreCommonModule
+import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
@@ -49,6 +52,9 @@ val featureAccountServerValidationModule = module {
             authorizationStateRepository = get(),
             certificateErrorRepository = get(),
             oAuthViewModel = get(),
+            accountIdentityResolver = get(),
+            oauthConfigurationProvider = get(),
+            applicationId = androidContext().packageName,
         )
     }
 
@@ -61,4 +67,6 @@ val featureAccountServerValidationModule = module {
             oAuthViewModel = get(),
         )
     }
+
+    factory<OAuthAccountIdentityResolver> { DefaultOAuthAccountIdentityResolver() }
 }

@@ -129,7 +129,7 @@ public class MessageExtractor {
     public static boolean hasMissingParts(Part part) {
         Body body = part.getBody();
         if (body == null) {
-            return true;
+            return !isDeferredAttachmentWithoutBody(part);
         }
         if (body instanceof Multipart) {
             Multipart multipart = (Multipart) body;
@@ -140,6 +140,28 @@ public class MessageExtractor {
             }
         }
         return false;
+    }
+
+    private static boolean isDeferredAttachmentWithoutBody(Part part) {
+        if (part.getServerExtra() == null) {
+            return false;
+        }
+
+        String disposition = part.getDisposition();
+        if (disposition != null) {
+            String dispositionType = MimeUtility.getHeaderParameter(disposition, null);
+            if ("attachment".equalsIgnoreCase(dispositionType) ||
+                    MimeUtility.getHeaderParameter(disposition, "filename") != null) {
+                return true;
+            }
+        }
+
+        String contentType = part.getContentType();
+        if (contentType != null && MimeUtility.getHeaderParameter(contentType, "name") != null) {
+            return true;
+        }
+
+        return part.getContentId() != null && !part.isMimeType("text/plain") && !part.isMimeType("text/html");
     }
 
 

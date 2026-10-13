@@ -3,4 +3,12 @@
     <string name="account_edit_save_server_settings_loading_message">Saving server settings…</string>
     <string name="account_edit_save_server_settings_error_message">Failed to save server settings</string>
     <string name="account_edit_save_server_settings_success_message">Server settings saved</string>
+    <string name="account_edit_graph_reauthorization_title">Reauthorize Microsoft account</string>
+    <string name="account_edit_graph_reauthorization_explanation">Sign in to the same Microsoft account to replace its saved authorization. Your account settings and downloaded mail will remain unchanged.</string>
+    <string name="account_edit_graph_reauthorization_success">Microsoft account authorization was updated.</string>
+    <string name="account_edit_graph_reauthorization_canceled">Sign-in was canceled. The current authorization was left unchanged.</string>
+    <string name="account_edit_graph_reauthorization_identity_mismatch">This is a different Microsoft account. Nothing was changed. Choose the Microsoft account already used by this mail account.</string>
+    <string name="account_edit_graph_reauthorization_unavailable">Microsoft reauthorization is not configured for this app build or account.</string>
+    <string name="account_edit_graph_reauthorization_failure">Could not update the Microsoft account authorization. The current authorization was left unchanged.</string>
+    <string name="account_edit_graph_reauthorization_done">Done</string>
 </resources>

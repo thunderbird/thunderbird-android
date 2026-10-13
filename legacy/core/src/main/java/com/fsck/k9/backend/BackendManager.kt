@@ -14,6 +14,7 @@ class BackendManager(
     private val accountManager: LegacyAccountManager,
 ) {
     private val backendCache = mutableMapOf<AccountId, BackendContainer>()
+    private val nonCacheableBackendMetadata = mutableMapOf<AccountId, NonCacheableBackendMetadata>()
     private val listeners = CopyOnWriteArraySet<BackendChangedListener>()
 
     // TODO remove this once Java callers have been converted to Kotlin
@@ -22,23 +23,38 @@ class BackendManager(
     }
 
     fun getBackend(accountId: AccountId): Backend {
+        var shouldNotifyListeners = false
         val newBackend = synchronized(backendCache) {
             val container = backendCache[accountId]
             val account = getAccountById(accountId)
-            if (container != null && isBackendStillValid(container, account)) {
+            if (container != null && container.backend.isCacheable && isBackendStillValid(container, account)) {
                 return container.backend
             }
 
             createBackend(account).also { backend ->
-                backendCache[account.id] = BackendContainer(
-                    backend,
-                    account.incomingServerSettings,
-                    account.outgoingServerSettings,
-                )
+                if (backend.isCacheable) {
+                    backendCache[account.id] = BackendContainer(
+                        backend,
+                        account.incomingServerSettings,
+                        account.outgoingServerSettings,
+                    )
+                    nonCacheableBackendMetadata.remove(account.id)
+                    shouldNotifyListeners = true
+                } else {
+                    backendCache.remove(account.id)
+                    val metadata = NonCacheableBackendMetadata(
+                        backend.javaClass,
+                        account.incomingServerSettings,
+                        account.outgoingServerSettings,
+                    )
+                    shouldNotifyListeners = nonCacheableBackendMetadata.put(account.id, metadata) != metadata
+                }
             }
         }
 
-        notifyListeners(accountId)
+        if (shouldNotifyListeners) {
+            notifyListeners(accountId)
+        }
 
         return newBackend
     }
@@ -56,6 +72,7 @@ class BackendManager(
     fun removeBackend(accountId: AccountId) {
         synchronized(backendCache) {
             backendCache.remove(accountId)
+            nonCacheableBackendMetadata.remove(accountId)
         }
 
         notifyListeners(accountId)
@@ -84,6 +101,12 @@ class BackendManager(
 
 private data class BackendContainer(
     val backend: Backend,
+    val incomingServerSettings: ServerSettings,
+    val outgoingServerSettings: ServerSettings,
+)
+
+private data class NonCacheableBackendMetadata(
+    val backendClass: Class<out Backend>,
     val incomingServerSettings: ServerSettings,
     val outgoingServerSettings: ServerSettings,
 )

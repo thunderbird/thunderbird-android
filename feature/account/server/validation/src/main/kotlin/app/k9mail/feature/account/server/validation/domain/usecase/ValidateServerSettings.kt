@@ -8,6 +8,7 @@ import com.fsck.k9.mail.server.ServerSettingsValidator
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import net.thunderbird.core.common.mail.Protocols
 
 class ValidateServerSettings(
     private val authStateStorage: AuthStateStorage,
@@ -26,6 +27,12 @@ class ValidateServerSettings(
                 "smtp" -> smtpValidator.checkServerSettings(settings, authStateStorage)
 
                 "demo" -> ServerSettingsValidationResult.Success
+
+                Protocols.GRAPH,
+                Protocols.GRAPH_LEGACY,
+                Protocols.GMAIL_API,
+                Protocols.ZOHO_MAIL_API,
+                -> ServerSettingsValidationResult.Success
 
                 else -> {
                     throw IllegalArgumentException("Unsupported server type: ${settings.type}")

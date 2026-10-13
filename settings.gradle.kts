@@ -256,6 +256,9 @@ include(
     ":backend:imap",
     ":backend:pop3",
     ":backend:jmap",
+    ":backend:graph",
+    ":backend:gmailapi",
+    ":backend:zohomail",
     ":backend:demo",
 )
 

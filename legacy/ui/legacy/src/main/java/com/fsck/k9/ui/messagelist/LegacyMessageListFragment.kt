@@ -1162,7 +1162,8 @@ class LegacyMessageListFragment :
         prepareSortMenu(menu)
         menu.findItem(R.id.select_all).isVisible = true
         menu.findItem(R.id.mark_all_as_read).isVisible = isMarkAllAsReadSupported
-        menu.findItem(R.id.empty_spam).isVisible = isShowingSpamFolder
+        menu.findItem(R.id.empty_spam).isVisible = isShowingSpamFolder &&
+            account?.incomingServerSettings?.type?.let { !com.fsck.k9.ui.isZohoMailApiProtocol(it) } == true
         menu.findItem(R.id.empty_trash).isVisible = isShowingTrashFolder
 
         if (isSingleAccountMode) {
@@ -2551,6 +2552,17 @@ class LegacyMessageListFragment :
             mode.menuInflater.inflate(R.menu.message_list_context_menu, menu)
 
             setContextCapabilities(account, menu)
+            val folderId = currentFolder?.databaseId
+            if (account != null && folderId != null &&
+                com.fsck.k9.ui.isPermanentDeleteFolder(
+                    account!!.incomingServerSettings.type,
+                    account!!.trashFolderId,
+                    account!!.spamFolderId,
+                    folderId,
+                )
+            ) {
+                menu.findItem(R.id.delete).setTitle(R.string.delete_permanently_action)
+            }
             return true
         }
 

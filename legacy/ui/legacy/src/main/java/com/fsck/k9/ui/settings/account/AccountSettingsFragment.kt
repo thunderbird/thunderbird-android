@@ -43,6 +43,7 @@ import com.takisoft.preferencex.PreferenceFragmentCompat
 import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.NO_OPENPGP_KEY
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.account.QuoteStyle
+import net.thunderbird.core.common.mail.Protocols
 import net.thunderbird.core.common.provider.AppNameProvider
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.AccountIdFactory
@@ -100,14 +101,15 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         title = preferenceScreen.title
 
         initializeGeneralSettings()
+        initializeApiSettings(account)
         initializeReadingMail()
         initializeFetchingMail()
-        initializeSearch()
+        initializeSearch(account)
         initializeIncomingServer()
         initializeComposition()
         initializeManageIdentities()
         initializeUploadSentMessages(account)
-        initializeOutgoingServer()
+        initializeOutgoingServer(account)
         initializeQuoteStyle()
         initializeDeletePolicy(account)
         initializeExpungePolicy(account)
@@ -176,6 +178,21 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         }
     }
 
+    private fun initializeApiSettings(account: LegacyAccountDto) {
+        findPreference<Preference>(PREFERENCE_API_SETTINGS)?.apply {
+            if (Protocols.isNativeApiProtocol(account.incomingServerSettings.type)) {
+                onClick {
+                    FeatureLauncherActivity.launch(
+                        context = requireActivity(),
+                        target = FeatureLauncherTarget.AccountApiSettings(accountId),
+                    )
+                }
+            } else {
+                remove()
+            }
+        }
+    }
+
     private fun initializeReadingMail() {
         findPreference<Preference>(PREFERENCE_READING_MAIL)?.onClick {
             FeatureLauncherActivity.launch(
@@ -196,13 +213,19 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         }
     }
 
-    private fun initializeSearch() {
-        findPreference<Preference>(PREFERENCE_SEARCH)?.onClick {
-            FeatureLauncherActivity.launch(
-                context = requireActivity(),
-                target = FeatureLauncherTarget.AccountSearchSettings(accountId),
-                launcher = launcherForActivityResult,
-            )
+    private fun initializeSearch(account: LegacyAccountDto) {
+        findPreference<Preference>(PREFERENCE_SEARCH)?.apply {
+            if (Protocols.isGraphProtocol(account.incomingServerSettings.type)) {
+                remove()
+            } else {
+                onClick {
+                    FeatureLauncherActivity.launch(
+                        context = requireActivity(),
+                        target = FeatureLauncherTarget.AccountSearchSettings(accountId),
+                        launcher = launcherForActivityResult,
+                    )
+                }
+            }
         }
     }
 
@@ -235,12 +258,18 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         }
     }
 
-    private fun initializeOutgoingServer() {
-        findPreference<Preference>(PREFERENCE_OUTGOING_SERVER)?.onClick {
-            FeatureLauncherActivity.launch(
-                context = requireActivity(),
-                target = FeatureLauncherTarget.AccountEditOutgoingSettings(accountId),
-            )
+    private fun initializeOutgoingServer(account: LegacyAccountDto) {
+        findPreference<Preference>(PREFERENCE_OUTGOING_SERVER)?.apply {
+            if (Protocols.isNativeApiProtocol(account.incomingServerSettings.type)) {
+                remove()
+            } else {
+                onClick {
+                    FeatureLauncherActivity.launch(
+                        context = requireActivity(),
+                        target = FeatureLauncherTarget.AccountEditOutgoingSettings(accountId),
+                    )
+                }
+            }
         }
     }
 
@@ -529,6 +558,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         internal const val PREFERENCE_OPENPGP = "openpgp"
         private const val ARG_ACCOUNT_UUID = "accountUuid"
         private const val PREFERENCE_GENERAL = "general"
+        private const val PREFERENCE_API_SETTINGS = "api_settings"
 
         private const val PREFERENCE_READING_MAIL = "reading_mail"
         private const val PREFERENCE_FETCHING_MAIL = "fetching_mail"

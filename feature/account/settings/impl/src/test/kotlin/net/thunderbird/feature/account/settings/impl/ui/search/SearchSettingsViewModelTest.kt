@@ -34,7 +34,7 @@ class SearchSettingsViewModelTest {
     fun tearDown() {
         mainDispatcher.tearDown()
     }
-    private fun dummyLegacyAccount(accountId: AccountId) =
+    private fun dummyLegacyAccount(accountId: AccountId, protocolType: String = "imap") =
         LegacyAccount(
             id = accountId,
             name = "Emon",
@@ -58,7 +58,7 @@ class SearchSettingsViewModelTest {
                 ),
             ),
             incomingServerSettings = com.fsck.k9.mail.ServerSettings(
-                type = "imap",
+                type = protocolType,
                 host = "imap.example.com",
                 port = 993,
                 connectionSecurity = com.fsck.k9.mail.ConnectionSecurity.SSL_TLS_REQUIRED,
@@ -119,6 +119,20 @@ class SearchSettingsViewModelTest {
 
         assertThat(vm.state.value.serverSearchLimit.id)
             .isEqualTo(ServerSearchLimit.TWENTY_FIVE.count.toString())
+        assertThat(vm.state.value.isGraphAccount).isEqualTo(false)
+    }
+
+    @Test
+    fun `should identify Graph account for remote search availability`() = runTest {
+        val vm = createViewModel(
+            getAccountName = { flowOf(Outcome.success("My Account")) },
+            getLegacyAccount = { Outcome.success(dummyLegacyAccount(it, protocolType = "graph")) },
+            updateSearchSettings = { _, _ -> Outcome.success(Unit) },
+        )
+
+        advanceUntilIdle()
+
+        assertThat(vm.state.value.isGraphAccount).isEqualTo(true)
     }
 
     @Test

@@ -13,10 +13,17 @@ interface Backend {
     val supportsMove: Boolean
     val supportsCopy: Boolean
     val supportsUpload: Boolean
+    /** True when a successful send already stores its copy in the remote Sent Items folder. */
+    val savesSentMessagesToServer: Boolean
+        get() = false
     val supportsTrashFolder: Boolean
     val supportsSearchByDate: Boolean
     val supportsFolderSubscriptions: Boolean
     val isPushCapable: Boolean
+
+    /** Whether [com.fsck.k9.backend.BackendManager] may retain this backend between calls. */
+    val isCacheable: Boolean
+        get() = true
 
     @Throws(MessagingException::class)
     fun refreshFolderList(): FolderPathDelimiter?

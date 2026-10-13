@@ -71,6 +71,7 @@ import com.fsck.k9.view.MessageWebView;
 import com.fsck.k9.view.WebViewConfigProvider;
 import kotlin.Unit;
 import net.thunderbird.core.android.account.LegacyAccountDto;
+import com.fsck.k9.ui.NativeApiAccountCapabilities;
 import net.thunderbird.feature.account.AccountId;
 import net.thunderbird.feature.account.usecase.GetDefaultAccountId;
 import app.k9mail.legacy.di.DI;
@@ -936,6 +937,11 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
     }
 
     public void performSendAfterChecks() {
+        if (isZohoIncomingOnlyAccount()) {
+            Toast.makeText(this, R.string.zoho_incoming_only_send_blocked, Toast.LENGTH_LONG).show();
+            return;
+        }
+
         if (sendMessageHasBeenTriggered) {
             return;
         }
@@ -1321,6 +1327,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
         }
 
         getMenuInflater().inflate(R.menu.message_compose_option, menu);
+        menu.findItem(R.id.send).setVisible(!isZohoIncomingOnlyAccount());
 
         // Disable the 'Save' menu option if Drafts folder is set to -NONE-
         if (!account.hasDraftsFolder()) {
@@ -1335,8 +1342,16 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
         super.onPrepareOptionsMenu(menu);
 
         recipientPresenter.onPrepareOptionsMenu(menu);
+        menu.findItem(R.id.send).setVisible(!isZohoIncomingOnlyAccount());
 
         return true;
+    }
+
+    private boolean isZohoIncomingOnlyAccount() {
+        return account != null && NativeApiAccountCapabilities.isZohoIncomingOnly(
+            account.getIncomingServerSettings().type,
+            account.getIncomingServerSettings().getExtra()
+        );
     }
 
 

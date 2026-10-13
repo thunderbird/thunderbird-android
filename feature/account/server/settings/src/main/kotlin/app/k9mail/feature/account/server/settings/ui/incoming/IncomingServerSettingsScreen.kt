@@ -34,6 +34,7 @@ fun IncomingServerSettingsScreen(
         when (effect) {
             is Effect.NavigateNext -> onNext(viewModel.state.value)
             is Effect.NavigateBack -> onBack()
+            Effect.ReauthorizeMicrosoftAccount -> Unit
         }
     }
 

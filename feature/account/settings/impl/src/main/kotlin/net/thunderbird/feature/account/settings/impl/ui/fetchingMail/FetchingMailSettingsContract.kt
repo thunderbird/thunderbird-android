@@ -22,6 +22,7 @@ interface FetchingMailSettingsContract {
         val eraseDeletedMessageOnServer: SelectOption,
         val maxFolderToCheckWithPush: SelectOption,
         val refreshIdleConnection: SelectOption,
+        val isGraphAccount: Boolean? = null,
     )
 
     sealed interface Event {

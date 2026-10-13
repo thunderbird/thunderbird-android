@@ -20,17 +20,21 @@ internal class FetchingMailSettingsBuilder(
     ): Settings {
         val settings = mutableListOf<Setting>()
         settings += localFolderSize(value = state.localFolderSize)
-        settings += syncMessageFrom(value = state.syncMessageFrom)
-        settings += fetchMessageUpTo(value = state.fetchMessageUpTo)
+        if (state.isGraphAccount == false) {
+            settings += syncMessageFrom(value = state.syncMessageFrom)
+            settings += fetchMessageUpTo(value = state.fetchMessageUpTo)
+        }
         settings += folderPollFrequency(value = state.folderPollFrequency)
         settings += syncServerDeletions(value = state.syncServerDeletions)
         settings += markAsReadWhenDeleted(value = state.markAsReadWhenDeleted)
         settings += whenIDeleteAMessage(value = state.whenIDeleteAMessage)
-        settings += eraseDeletedMessageOnServer(
-            value = state.eraseDeletedMessageOnServer,
-        )
-        settings += incomingServer(onEvent = onEvent)
-        settings += advanced(onEvent = onEvent)
+        if (state.isGraphAccount == false) {
+            settings += eraseDeletedMessageOnServer(
+                value = state.eraseDeletedMessageOnServer,
+            )
+            settings += incomingServer(onEvent = onEvent)
+            settings += advanced(onEvent = onEvent)
+        }
 
         return settings.toImmutableList()
     }
@@ -39,6 +43,8 @@ internal class FetchingMailSettingsBuilder(
         state: FetchingMailSettingsContract.State,
         onEvent: (FetchingMailSettingsContract.Event) -> Unit,
     ): Settings {
+        if (state.isGraphAccount != false) return emptyList<Setting>().toImmutableList()
+
         val settings = mutableListOf<Setting>()
         settings += maxFolderToCheckWithPush(value = state.maxFolderToCheckWithPush)
         settings += refreshIdleConnection(value = state.refreshIdleConnection)

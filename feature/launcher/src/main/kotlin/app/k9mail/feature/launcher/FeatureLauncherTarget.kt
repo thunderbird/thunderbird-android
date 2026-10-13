@@ -34,6 +34,10 @@ sealed class FeatureLauncherTarget(
         deepLinkUri = AccountSettingsRoute.GeneralSettings(accountId.toString()).route().toUri(),
     )
 
+    data class AccountApiSettings(val accountId: AccountId) : FeatureLauncherTarget(
+        deepLinkUri = AccountSettingsRoute.ApiSettings(accountId.toString()).route().toUri(),
+    )
+
     data class AccountReadingMailSettings(val accountId: AccountId) : FeatureLauncherTarget(
         deepLinkUri = AccountSettingsRoute.ReadingMailSettings(accountId.toString()).route().toUri(),
     )

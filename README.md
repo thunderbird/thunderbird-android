@@ -1,100 +1,89 @@
-# Thunderbird for Android
+# Thunderbird Native REST API Project
 
-<a href="https://play.google.com/store/apps/details?id=net.thunderbird.android&referrer=utm_campaign%3Dandroid_metadata%26utm_medium%3Dweb%26utm_source%3Dgithub.com%26utm_content%3Dbadge" target="_blank"><img src="./docs/assets/get-it-on-play.png" alt="Get it on Google Play" height="28"></a>
-<a href="https://f-droid.org/packages/net.thunderbird.android"><img src="./docs/assets/get-it-on-fdroid.png" alt="Get it on F-Droid" height="28"></a>
-<a href="https://apps.obtainium.imranr.dev/"><img src="./docs/assets/get-it-on-obtainium.png" alt="Get it on Obtainium" height="28"></a>
-[![Latest release](https://img.shields.io/github/release/thunderbird/thunderbird-android.svg?style=for-the-badge&filter=THUNDERBIRD_*&logo=thunderbird)](https://github.com/thunderbird/thunderbird-android/releases/latest)
-[![Latest beta release](https://img.shields.io/github/release/thunderbird/thunderbird-android.svg?include_prereleases&style=for-the-badge&label=beta&filter=THUNDERBIRD_*b*&logo=thunderbird)](https://github.com/thunderbird/thunderbird-android/releases)
+This repository contains source-code changes that add native REST-based mail-provider integrations to Thunderbird. It is intended for users who want to inspect the code, build it themselves, or adapt it for their own use. It is **not an official Thunderbird release**, and this project does not separately distribute a Thunderbird app or prebuilt app package.
 
-Thunderbird for Android is a powerful, privacy-focused email app. Effortlessly manage multiple email accounts from one app, with a Unified Inbox option for maximum productivity. Built on open-source technology and supported by a dedicated team of developers alongside a global community of volunteers, Thunderbird never treats your private data as a product.
+The upstream project's original root README is preserved as [`readme_thunderbird.md`](readme_thunderbird.md).
 
-Thunderbird for Android is based on K-9 Mail, which comes with a rich history of success and functionality in open source email.
+## Implemented functionality
 
-## Download
+- **Gmail REST API:** Native Gmail mailbox synchronization, including labels and messages; message content and attachment handling; sending; and supported mailbox actions.
+- **Zoho Mail REST API:** Native Zoho Mail synchronization for folders and messages, message content and attachment handling, sending, and supported mailbox actions.
+- **Microsoft Graph REST API:** Native Graph-backed folder and message synchronization, message and attachment handling, and supported message operations, including sending.
+- **Shared mail-client behavior:** Provider-specific account handling is integrated with Thunderbird's existing account, folder, message, and background-operation infrastructure.
+- **Existing transports retained:** Existing IMAP and POP account paths remain available, including Gmail-hosted IMAP for accounts configured to use IMAP. The native Gmail REST path is additional; it does not replace those existing paths.
 
-Thunderbird for Android can be downloaded from a couple of sources:
+Exact capabilities and behavior depend on the provider and the operation supported by its API. The source tree also includes tests for provider-specific and shared functionality.
 
-- Thunderbird on [Google Play](https://play.google.com/store/apps/details?id=net.thunderbird.android&referrer=utm_campaign%3Dandroid_metadata%26utm_medium%3Dweb%26utm_source%3Dgithub.com%26utm_content%3Dlink) or [F-Droid](https://f-droid.org/packages/net.thunderbird.android)
-- Thunderbird Beta on [Google Play](https://play.google.com/store/apps/details?id=net.thunderbird.android.beta&referrer=utm_campaign%3Dandroid_metadata%26utm_medium%3Dweb%26utm_source%3Dgithub.com%26utm_content%3Dlink) or [F-Droid](https://f-droid.org/packages/net.thunderbird.android.beta)
-- [Github Releases](https://github.com/thunderbird/thunderbird-android/releases)
-- [FFUpdater](https://f-droid.org/packages/de.marmaro.krt.ffupdater/) allows installing the latest versions from ftp.mozilla.org
-- [Obtainium](https://obtainium.imranr.dev/): Use "Filter release title by regular expression" under "Additional options" with `Thunderbird`. More info in [Complex Obtainium Apps list](https://apps.obtainium.imranr.dev/).
+## Provider OAuth credentials
 
-By using Thunderbird for Android Beta, you have early access to current development and are able to try new features earlier.
+These integrations use **OAuth 2.0**, not a static API key. Create and use OAuth credentials from accounts and developer consoles that you control. Provider registration screens and consent requirements can change, so follow the linked provider documentation as well as the source configuration described below.
 
-Check out the [Release Notes](https://github.com/thunderbird/thunderbird-android/releases) to find out what changed in each version of Thunderbird for Android.
+> **Use your own OAuth client credentials.** Do not rely on credentials that happen to be present in a checkout or upstream build. Client IDs identify an OAuth application; they are not passwords. Never publish a client secret, refresh/access token, signing key, or private keystore in source control. Native Android apps are public clients and cannot keep a bundled secret confidential.
 
-The SHA-256 fingerprints for our signing certificates are available in [SECURITY.md](./SECURITY.md#verifying-fingerprints).
+### Gmail
 
-## Need Help? Found a bug? Have an idea? Want to chat?
+1. Create a Google Cloud project, enable the **Gmail API**, and configure the Google Auth consent screen. For external/testing apps, set the intended audience and add test users as needed.
+2. Create an OAuth client suitable for this Android app's authorization flow. The app currently requests `openid`, `profile`, and the broad Gmail scope `https://mail.google.com/`. Google classifies that Gmail scope as **restricted**; review Google's verification and user-data requirements before distributing a public build.
+   > **Placeholder client ID:** Treat the Gmail API OAuth client ID included in this source as a dummy placeholder for your own build. It will not work until you configure your own Google OAuth client, enable the Gmail API, and grant the scopes listed above (`openid`, `profile`, and `https://mail.google.com/`).
+3. For a `fullDebug` build, update the `clientId` in `createGmailConfiguration()` in [`app-thunderbird/src/debug/kotlin/net/thunderbird/android/auth/TbOAuthConfigurationFactory.kt`](app-thunderbird/src/debug/kotlin/net/thunderbird/android/auth/TbOAuthConfigurationFactory.kt). For other Thunderbird build types, update the matching `TbOAuthConfigurationFactory.kt` under `app-thunderbird/src/beta/`, `src/daily/`, or `src/release/` as appropriate.
+4. Keep the OAuth callback configured in code and in the provider registration in sync. The current factory derives it from the application ID as `${applicationId}:/oauth2redirect`; for `fullDebug`, that resolves to `net.thunderbird.android.debug:/oauth2redirect`. Google's native-app redirect rules can depend on client type and platform; verify that the current supported flow accepts your app's callback, and update the app flow and registration together if required.
 
-If the app is not behaving like it should, or you are not sure if you've encountered a bug:
+The Gmail OAuth entry is also used by the existing Gmail IMAP/SMTP OAuth path. Replacing it therefore affects Gmail accounts using either REST or the existing mail protocols. An Android client ID is public; do not add a Google client secret to the app.
 
-- Check out our [knowledge base](https://support.mozilla.org/products/thunderbird-android) and [frequently asked questions](https://support.mozilla.org/kb/thunderbird-android-8-faq)
-- Ask a question on our [support forum](https://support.mozilla.org/en-US/questions/new/thunderbird-android)
+Official guides: [Enable/configure Gmail API access](https://developers.google.com/workspace/gmail/api/auth/scopes), [configure Google OAuth consent](https://developers.google.com/workspace/guides/configure-oauth-consent), and [OAuth for installed/native apps](https://developers.google.com/identity/protocols/oauth2/native-app).
 
-If you are certain you've identified a bug in Thunderbird for Android and would like to help fix it:
+### Microsoft Graph
 
-- File an issue on [our GitHub issue tracker](https://github.com/thunderbird/thunderbird-android/issues)
+1. Register a new app in the [Microsoft Entra admin center](https://entra.microsoft.com/). Select supported account types that match the users you intend to allow.
+2. Add the **Android** platform for the build you will run. For `fullDebug`, the application ID is `net.thunderbird.android.debug`. Register the package name and the signature hash for your own debug signing certificate, then use the exact redirect URI generated for that registration in the OAuth configuration.
+3. Add the **delegated Microsoft Graph** permissions `Mail.ReadWrite` and `Mail.Send`. The first permits reading and changing the signed-in user's mail but **does not grant send permission**; `Mail.Send` is separate. User or administrator consent may be required by the tenant's policy.
+4. For `fullDebug`, replace the client ID and, if your registration uses a different callback, the redirect URI in `createMicrosoftGraphConfiguration()` in [`app-thunderbird/src/debug/kotlin/net/thunderbird/android/auth/TbOAuthConfigurationFactory.kt`](app-thunderbird/src/debug/kotlin/net/thunderbird/android/auth/TbOAuthConfigurationFactory.kt). This is distinct from `createMicrosoftConfiguration()`, which configures the existing Microsoft IMAP/SMTP OAuth route.
 
-If you have an idea how to improve Thunderbird for Android:
+In the current tree, the separate Graph OAuth mapping is present in the **debug** source set. If you need Graph in a beta, daily, or release build, add and validate the corresponding mapping for that source set and register the matching application ID/signing certificate/redirect; changing the debug entry alone does not configure those builds. Do not put a confidential client secret in the Android app.
 
-- Tell us about and vote on your feature ideas on [connect.mozilla.org](https://connect.mozilla.org/t5/ideas/idb-p/ideas/label-name/thunderbird%20android).
-- Join the discussion about the latest changes in the [Thunderbird Android Beta Topicbox](https://thunderbird.topicbox.com/groups/android-beta).
+Official guides: [Register an app](https://learn.microsoft.com/en-us/entra/identity-platform/quickstart-register-app), [configure Android redirect/signature hash](https://learn.microsoft.com/en-us/entra/identity-platform/tutorial-mobile-app-android-prepare-app), and [Microsoft Graph permissions](https://learn.microsoft.com/en-us/graph/permissions-reference).
 
-The Thunderbird Community uses Matrix to communicate:
+### Zoho Mail
 
-- General chat about Thunderbird for Android and K-9 Mail: [#tb-android:mozilla.org](https://matrix.to/#/#tb-android:mozilla.org)
-- Development and other ways to contribute: [#tb-android-dev:mozilla.org](https://matrix.to/#/#tb-android-dev:mozilla.org)
-- Reach the broader Thunderbird Community in the [community space](https://matrix.to/#/#thunderbird-community:mozilla.org)
+1. In the [Zoho API Console](https://api-console.zoho.com/), register a **Mobile-based application** for a native Android client. This integration uses OAuth authorization code with PKCE; a mobile client should not depend on a secret embedded in the app.
+2. Register the callback URI shown in Thunderbird's Zoho account setup screen exactly. The app fills a package-specific default. For `fullDebug`, it is `net.thunderbird.android.debug://oauth2redirect`; other variants have different application IDs. The URI registered with Zoho must match the URI saved in the account settings.
+3. During Zoho account setup, select the **Zoho Mail REST API** incoming protocol and enter your Zoho account email, OAuth client ID, and callback URI. The password field is labeled for the client secret; leave it blank for a PKCE mobile client unless your Zoho registration specifically requires it. No source-code edit is needed to enter per-account Zoho credentials.
+4. The integration requests these Mail API scopes: `ZohoMail.accounts.READ`, `ZohoMail.folders.READ`, `ZohoMail.messages.READ`, `ZohoMail.messages.CREATE`, `ZohoMail.messages.UPDATE`, `ZohoMail.messages.DELETE`, and `ZohoMail.folders.UPDATE`. Review the requested access before consenting. The app derives the regional Mail API origin from the Zoho authorization response rather than asking you to hard-code a regional endpoint.
 
-## Roadmap
+If you are changing the Zoho setup UI or its OAuth behavior, the relevant code is under `feature/account/server/settings/src/main/kotlin/app/k9mail/feature/account/server/settings/ui/incoming/` and `feature/account/oauth/src/main/kotlin/app/k9mail/feature/account/oauth/`. Normally, create your own Zoho mobile client and provide its credentials in the account form instead of changing these source files.
 
-To learn more about all the wonderful things planned for this year please see our
-[roadmap](https://github.com/orgs/thunderbird/projects/19/views/1). The core team's day to day activities are additionally
-tracked in our [sprint board](https://github.com/orgs/thunderbird/projects/20/views/1).
+Official guides: [Register a Zoho OAuth app](https://www.zoho.com/developer/oauth/register-app.html), [mobile/desktop OAuth with PKCE](https://www.zoho.com/developer/oauth/mobile-and-desktop-apps/overview.html), and [Zoho Mail OAuth](https://www.zoho.com/mail/help/api/using-oauth-2.html).
 
-## Contributing
+## Synchronization and privacy
 
-We welcome contributions from everyone.
+- Initial synchronization fetches up to **10 messages per folder with synchronization enabled**.
+- **Fetch more** loads **10 older messages per request**.
+- API updates rely entirely on polling. **No webhooks are implemented**, for privacy reasons.
 
-- Development: Have you done a little bit of Kotlin? The [CONTRIBUTING](docs/CONTRIBUTING.md) guide will help you get started
-- Translations: Do you speak a language aside from English? [Translating is easy](https://hosted.weblate.org/projects/thunderbird/thunderbird-android/) and just takes a few minutes for your first success.
-- We have [a number of other contribution opportunities](https://blog.thunderbird.net/2024/09/contribute-to-thunderbird-for-android/) available.
-- Thunderbird is supported solely by financial contributions from users like you. [Make a financial contribution today](https://www.thunderbird.net/donate/mobile/?form=tfa)!
-- Make sure to check out the [Mozilla Community Participation Guidelines](https://www.mozilla.org/about/governance/policies/participation/).
+## Build a local Thunderbird debug APK
 
-### Engineering Process
+Use JDK 21 or later, install the Android SDK, and set `ANDROID_HOME` to the SDK location if your environment does not already expose it. From the repository root, build the full-flavor debug APK with the included Gradle wrapper:
 
-We use a structured engineering process to propose, decide, and deliver technical changes. This includes:
-- [Requests for Comments (RFCs)](docs/engineering/rfcs/README.md) for technical direction.
-- [Technical Designs](docs/engineering/technical-designs/README.md) for implementation details.
-- [Architecture Decision Records (ADRs)](docs/engineering/adr/README.md) for durable architectural decisions.
+```bash
+./gradlew :app-thunderbird:assembleFullDebug
+```
 
-You can find more information in the [`docs/engineering`](docs/engineering) directory.
+On Windows, use:
 
-We encourage team members and contributors to read through our engineering documentation to understand the
-processes and decisions that have shaped this project so far.
+```bat
+gradlew.bat :app-thunderbird:assembleFullDebug
+```
 
-## K-9 Mail
+The APK is produced under `app-thunderbird/build/outputs/apk/full/debug/`. To install directly to a connected Android device or emulator, use `./gradlew :app-thunderbird:installFullDebug` after accepting the device's USB debugging prompt.
 
-In June 2022, [K-9 Mail joined the Thunderbird family](https://k9mail.app/2022/06/13/K-9-Mail-and-Thunderbird.html)
-as the foundation for Thunderbird on Android. Since then, we’ve been updating both apps to give
-users the same solid experience, so it’s normal to notice that K-9 Mail and Thunderbird look and
-feel nearly identical. They’re built on the same code, and that’s intentional. You'll notice some
-features are selectively enabled for Thunderbird as opposed to K-9 Mail, usually when they are
-simply a better fit for Thunderbird (like the import from K-9 functionality).
+## Important project notes
 
-If you prefer the robot dog and would like to keep K-9 Mail around, you can find it here:
+- This is a **source-code project** for inspection, source builds, and adaptation. It is not an official Thunderbird release and no separate app distribution is provided here.
+- Native REST accounts are separate from IMAP/POP accounts. Existing IMAP and POP transport paths remain available.
+- These REST integrations poll provider APIs; they do not use push notifications or webhooks. Initial sync and Fetch more use batches of 10 messages; normal API refresh behavior and available actions also depend on provider capabilities and account settings.
+- OAuth access is subject to provider consent, account eligibility, Google verification requirements, and Microsoft organization policies. Creating a client ID alone does not grant mailbox access.
+- Some operations differ by provider. Consult the provider API documentation and the implementation/tests before assuming a specific feature, deletion behavior, draft workflow, or search capability.
+- Use and modification remain subject to the applicable project and upstream licenses. See [`LICENSE`](LICENSE).
 
-- [K-9 Mail on Google Play](https://play.google.com/store/apps/details?id=com.fsck.k9&utm_source=thunderbird-android-github&utm_campaign=download-section)
-- [K-9 Mail on F-Droid](https://f-droid.org/packages/com.fsck.k9/)
-- [K-9 Mail on Obtainium](https://obtainium.imranr.dev/) (use `K-9 Mail` as filter, see [notes](#download) above)
-
-## Forking
-
-If you want to use a fork of this project please ensure that you replace the OAuth client setup in the `app-k9mail/src/{debug,release}/kotlin/app/k9mail/auth/K9OAuthConfigurationFactory.kt` and `app-thunderbird/src/{debug,daily,beta,release}/kotlin/net/thunderbird/android/auth/TbOAuthConfigurationFactory.kt` with your own OAuth client setup and ensure that the `redirectUri` is different to the one used in the main project. This is to prevent conflicts with the main app when both are installed on the same device.
-
-## License
-
-Thunderbird for Android is licensed under the [Apache License, Version 2.0](LICENSE).
+- **Author:** [Anoop Bhatia](https://github.com/anoopspeaks)
+- <strong>Tool used:</strong> <img src="assets/kern-badge.jpg" width="32" height="32" alt="Kern badge" align="middle"> <a href="https://cue.im/">Cue by Manus</a>

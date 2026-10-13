@@ -487,7 +487,7 @@ class MessageListFragment :
         isShowFloatingActionButton = generalSettingsManager.getConfig()
             .display
             .inboxSettings
-            .isShowComposeButtonOnMessageList
+            .isShowComposeButtonOnMessageList && canComposeFromCurrentAccount()
         if (isShowFloatingActionButton) {
             enableFloatingActionButton(view)
         } else {
@@ -810,6 +810,8 @@ class MessageListFragment :
     }
 
     override fun onCompose() {
+        if (!canComposeFromCurrentAccount()) return
+
         if (!isSingleAccountMode) {
             fragmentListener.onCompose(null)
         } else {
@@ -1050,11 +1052,12 @@ class MessageListFragment :
     }
 
     private fun prepareMenu(menu: Menu) {
-        menu.findItem(R.id.compose).isVisible = !isShowFloatingActionButton
+        menu.findItem(R.id.compose).isVisible = !isShowFloatingActionButton && canComposeFromCurrentAccount()
         prepareSortMenu(menu)
         menu.findItem(R.id.select_all).isVisible = true
         menu.findItem(R.id.mark_all_as_read).isVisible = isMarkAllAsReadSupported
-        menu.findItem(R.id.empty_spam).isVisible = isShowingSpamFolder
+        menu.findItem(R.id.empty_spam).isVisible = isShowingSpamFolder &&
+            account?.incomingServerSettings?.type?.let { !com.fsck.k9.ui.isZohoMailApiProtocol(it) } == true
         menu.findItem(R.id.empty_trash).isVisible = isShowingTrashFolder
 
         if (isSingleAccountMode) {
@@ -1068,6 +1071,11 @@ class MessageListFragment :
         menu.findItem(R.id.search_remote).isVisible = !isRemoteSearch && isRemoteSearchAllowed
         menu.findItem(R.id.search_everywhere).isVisible = isManualSearch && !localSearch.searchAllAccounts()
     }
+
+    private fun canComposeFromCurrentAccount(): Boolean =
+        account?.incomingServerSettings?.let { settings ->
+            !com.fsck.k9.ui.NativeApiAccountCapabilities.isZohoIncomingOnly(settings.type, settings.extra)
+        } ?: true
 
     private fun prepareSortMenu(menu: Menu) {
         menu.findItem(R.id.select_sort_criteria).apply {
@@ -2171,6 +2179,17 @@ class MessageListFragment :
             mode.menuInflater.inflate(R.menu.message_list_context_menu, menu)
 
             setContextCapabilities(account, menu)
+            val folderId = currentFolder?.databaseId
+            if (account != null && folderId != null &&
+                com.fsck.k9.ui.isPermanentDeleteFolder(
+                    account!!.incomingServerSettings.type,
+                    account!!.trashFolderId,
+                    account!!.spamFolderId,
+                    folderId,
+                )
+            ) {
+                menu.findItem(R.id.delete).setTitle(R.string.delete_permanently_action)
+            }
             return true
         }
 

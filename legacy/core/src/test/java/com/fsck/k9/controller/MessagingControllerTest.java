@@ -16,6 +16,9 @@ import com.fsck.k9.K9RobolectricTest;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.backend.BackendManager;
 import com.fsck.k9.backend.api.Backend;
+import com.fsck.k9.backend.api.SyncConfig;
+import com.fsck.k9.controller.MessagingControllerCommands.PendingAppend;
+import com.fsck.k9.controller.MessagingControllerCommands.PendingCommand;
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.AuthenticationFailedException;
 import com.fsck.k9.mail.CertificateChainException;
@@ -28,6 +31,7 @@ import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.mailstore.LocalStoreProvider;
+import app.k9mail.legacy.mailstore.ListenableMessageStore;
 import app.k9mail.legacy.mailstore.MessageStoreManager;
 import com.fsck.k9.mailstore.OutboxState;
 import com.fsck.k9.mailstore.OutboxStateRepository;
@@ -53,6 +57,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentMatchers;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -200,6 +205,121 @@ public class MessagingControllerTest extends K9RobolectricTest {
         verify(backend).refreshFolderList();
     }
 
+    @Test
+    public void processPendingCommandsSynchronous_unsupportedAppendDoesNotCrashOrKeepRemoteCopyFlag()
+        throws MessagingException {
+        account.setIncomingServerSettings(new ServerSettings(Protocols.GRAPH, "mail.invalid", 443,
+            ConnectionSecurity.SSL_TLS_REQUIRED, AuthType.XOAUTH2, account.getEmail(), null, null));
+        PendingAppend command = PendingAppend.create(FOLDER_ID, "FAKE1");
+        when(localStore.getPendingCommands()).thenReturn(Collections.<PendingCommand>singletonList(command));
+        when(localFolder.getMessage("FAKE1")).thenReturn(localNewMessage1);
+        when(localNewMessage1.getUid()).thenReturn("FAKE1");
+        when(localNewMessage1.isSet(Flag.X_REMOTE_COPY_STARTED)).thenReturn(true);
+        when(backend.getSupportsUpload()).thenReturn(false);
+
+        controller.processPendingCommandsSynchronous(account);
+
+        verify(localNewMessage1).setFlag(Flag.X_REMOTE_COPY_STARTED, false);
+        verify(localStore).removePendingCommand(command);
+        verify(backend, never()).findByMessageId(anyString(), anyString());
+        verify(backend, never()).uploadMessage(anyString(), ArgumentMatchers.any());
+    }
+
+    @Test
+    public void processPendingCommandsSynchronous_doesNotChangeImapAppendPath() throws MessagingException {
+        PendingAppend command = PendingAppend.create(FOLDER_ID, "FAKE1");
+        when(localStore.getPendingCommands()).thenReturn(Collections.<PendingCommand>singletonList(command));
+        when(localFolder.getMessage("FAKE1")).thenReturn(localNewMessage1);
+        when(localNewMessage1.getUid()).thenReturn("FAKE1");
+        when(backend.getSupportsUpload()).thenReturn(false);
+
+        controller.processPendingCommandsSynchronous(account);
+
+        verify(backend).uploadMessage(eq(FOLDER_NAME), ArgumentMatchers.any());
+    }
+
+    @Test
+    public void loadMoreMessagesSynchronous_nativeApiAddsTenAndWorksWhenFolderSyncIsDisabled() {
+        ListenableMessageStore messageStore = mock(ListenableMessageStore.class);
+        when(messageStoreManager.getMessageStore(account)).thenReturn(messageStore);
+        when(messageStore.getFolder(eq(FOLDER_ID), ArgumentMatchers.any())).thenReturn(20);
+        account.setDisplayCount(25);
+        account.setIncomingServerSettings(new ServerSettings(Protocols.ZOHO_MAIL_API, "mail.invalid", 443,
+            ConnectionSecurity.SSL_TLS_REQUIRED, AuthType.XOAUTH2, account.getEmail(), null, null));
+        account.setOAuthState("authorized");
+        account.setLastFolderListRefreshTime(System.currentTimeMillis());
+
+        controller.loadMoreMessagesSynchronous(account, FOLDER_ID);
+
+        verify(messageStore).setVisibleLimit(FOLDER_ID, 30);
+        ArgumentCaptor<SyncConfig> syncConfig = ArgumentCaptor.forClass(SyncConfig.class);
+        verify(backend).sync(eq(FOLDER_NAME), syncConfig.capture(), ArgumentMatchers.any());
+        org.junit.Assert.assertTrue(syncConfig.getValue().getFetchMoreMessagesRequested());
+    }
+
+    @Test
+    public void loadMoreMessagesSynchronous_keepsConfiguredIncrementForImap() {
+        ListenableMessageStore messageStore = mock(ListenableMessageStore.class);
+        when(messageStoreManager.getMessageStore(account)).thenReturn(messageStore);
+        when(messageStore.getFolder(eq(FOLDER_ID), ArgumentMatchers.any())).thenReturn(20);
+        account.setDisplayCount(25);
+        account.setLastFolderListRefreshTime(System.currentTimeMillis());
+
+        controller.loadMoreMessagesSynchronous(account, FOLDER_ID);
+
+        verify(messageStore).setVisibleLimit(FOLDER_ID, 45);
+        ArgumentCaptor<SyncConfig> syncConfig = ArgumentCaptor.forClass(SyncConfig.class);
+        verify(backend).sync(eq(FOLDER_NAME), syncConfig.capture(), ArgumentMatchers.any());
+        org.junit.Assert.assertFalse(syncConfig.getValue().getFetchMoreMessagesRequested());
+    }
+
+    @Test
+    public void sendPendingMessagesSynchronous_nativeApiUsesSharedAuthorizationStatus() {
+        ServerSettings incomingSettings = new ServerSettings(Protocols.ZOHO_MAIL_API, "mail.invalid", 443,
+            ConnectionSecurity.SSL_TLS_REQUIRED, AuthType.XOAUTH2, account.getEmail(), null, null);
+        account.setIncomingServerSettings(incomingSettings);
+        account.setOutgoingServerSettings(new ServerSettings(Protocols.SMTP, "mail.invalid", 443,
+            ConnectionSecurity.SSL_TLS_REQUIRED, AuthType.XOAUTH2, account.getEmail(), null, null));
+        account.setOAuthState(null);
+
+        controller.sendPendingMessagesSynchronous(account);
+
+        verify(notificationController).showAuthenticationErrorNotification(account, true);
+        verify(notificationController, never()).showAuthenticationErrorNotification(account, false);
+    }
+
+    @Test
+    public void sendPendingMessagesSynchronous_nativeApiSendAuthenticationFailure_shouldNotifyIncoming()
+        throws MessagingException {
+        setupAccountWithMessageToSend();
+        account.setIncomingServerSettings(new ServerSettings(Protocols.ZOHO_MAIL_API, "mail.invalid", 443,
+            ConnectionSecurity.SSL_TLS_REQUIRED, AuthType.XOAUTH2, account.getEmail(), null, null));
+        account.setOutgoingServerSettings(new ServerSettings(Protocols.SMTP, "mail.invalid", 443,
+            ConnectionSecurity.SSL_TLS_REQUIRED, AuthType.XOAUTH2, account.getEmail(), null, null));
+        account.setOAuthState("authorized");
+        doThrow(new AuthenticationFailedException("Test")).when(backend).sendMessage(localMessageToSend1);
+
+        controller.sendPendingMessagesSynchronous(account);
+
+        verify(notificationController).showAuthenticationErrorNotification(account, true);
+        verify(notificationController, never()).showAuthenticationErrorNotification(account, false);
+    }
+
+    @Test
+    public void checkAuthenticationProblem_nativeApiShouldIgnoreOutgoingServerAuthentication() {
+        account.setIncomingServerSettings(new ServerSettings(Protocols.ZOHO_MAIL_API, "mail.invalid", 443,
+            ConnectionSecurity.SSL_TLS_REQUIRED, AuthType.XOAUTH2, account.getEmail(), null, null));
+        account.setOutgoingServerSettings(new ServerSettings(Protocols.SMTP, "mail.invalid", 465,
+            ConnectionSecurity.SSL_TLS_REQUIRED, AuthType.PLAIN, "", null, null));
+        account.setOAuthState("authorized");
+
+        controller.checkAuthenticationProblem(account);
+
+        verify(notificationController).clearAuthenticationErrorNotification(account, false);
+        verify(notificationController, never()).showAuthenticationErrorNotification(account, false);
+        verify(notificationController, never()).showAuthenticationErrorNotification(account, true);
+    }
+
     private void setupRemoteSearch() throws Exception {
         remoteMessages = new ArrayList<>();
         Collections.addAll(remoteMessages, "oldMessageUid", "newMessageUid1", "newMessageUid2");
@@ -345,6 +465,19 @@ public class MessagingControllerTest extends K9RobolectricTest {
         controller.sendPendingMessagesSynchronous(account);
 
         verify(backend).sendMessage(localMessageToSend1);
+    }
+
+    @Test
+    public void sendPendingMessagesSynchronous_whenBackendSavesSentCopy_shouldNotUploadItAgain()
+        throws MessagingException {
+        setupAccountWithMessageToSend();
+        account.setUploadSentMessages(true);
+        when(backend.getSavesSentMessagesToServer()).thenReturn(true);
+
+        controller.sendPendingMessagesSynchronous(account);
+
+        verify(localMessageToSend1).destroy();
+        verify(messageStoreManager, never()).getMessageStore(account);
     }
 
     @Test

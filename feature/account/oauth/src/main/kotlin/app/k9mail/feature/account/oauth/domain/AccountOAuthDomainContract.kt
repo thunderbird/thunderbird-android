@@ -13,10 +13,15 @@ interface AccountOAuthDomainContract {
     interface UseCase {
         fun interface GetOAuthRequestIntent {
             fun execute(hostname: String, emailAddress: String): AuthorizationIntentResult
+
+            fun execute(configuration: OAuthConfiguration, emailAddress: String): AuthorizationIntentResult =
+                AuthorizationIntentResult.NotSupported
         }
 
         fun interface FinishOAuthSignIn {
             suspend fun execute(intent: Intent): AuthorizationResult
+
+            suspend fun execute(intent: Intent, clientSecret: String?): AuthorizationResult = execute(intent)
         }
 
         fun interface CheckIsGoogleSignIn {
@@ -34,6 +39,9 @@ interface AccountOAuthDomainContract {
         suspend fun getAuthorizationException(intent: Intent): AuthorizationException?
 
         suspend fun getExchangeToken(response: AuthorizationResponse): AuthorizationResult
+
+        suspend fun getExchangeToken(response: AuthorizationResponse, clientSecret: String?): AuthorizationResult =
+            getExchangeToken(response)
     }
 
     fun interface AuthorizationStateRepository {

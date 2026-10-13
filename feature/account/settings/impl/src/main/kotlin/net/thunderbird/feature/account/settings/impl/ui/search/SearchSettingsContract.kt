@@ -12,6 +12,7 @@ interface SearchSettingsContract {
     data class State(
         val subtitle: String? = null,
         val serverSearchLimit: SelectOption,
+        val isGraphAccount: Boolean? = null,
     )
 
     sealed interface Event {

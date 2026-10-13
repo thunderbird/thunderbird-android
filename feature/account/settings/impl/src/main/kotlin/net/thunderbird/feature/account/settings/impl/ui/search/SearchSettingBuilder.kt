@@ -16,6 +16,8 @@ class SearchSettingBuilder(
         state: SearchSettingsContract.State,
         onEvent: (SearchSettingsContract.Event) -> Unit,
     ): Settings {
+        if (state.isGraphAccount != false) return persistentListOf<Setting>()
+
         val settings = mutableListOf<Setting>()
         settings += serverSearchLimit(state.serverSearchLimit)
         return settings.toImmutableList()

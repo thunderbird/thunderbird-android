@@ -27,6 +27,12 @@ val newAccountModule = module {
         )
     }
 
+    factory<AccountEditExternalContract.AccountAuthorizationStateUpdater> {
+        AccountAuthorizationStateUpdater(
+            accountManager = get(),
+        )
+    }
+
     factory<SettingsImportExternalContract.AccountActivator> {
         AccountActivator(
             context = get(),

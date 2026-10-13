@@ -10,6 +10,7 @@ import com.fsck.k9.preferences.ServerSettingsDescriptions.HOST
 import com.fsck.k9.preferences.ServerSettingsDescriptions.PASSWORD
 import com.fsck.k9.preferences.ServerSettingsDescriptions.PORT
 import com.fsck.k9.preferences.ServerSettingsDescriptions.USERNAME
+import net.thunderbird.core.common.mail.Protocols
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.storage.StorageEditor
 import net.thunderbird.feature.account.storage.legacy.serializer.ServerSettingsDtoSerializer
@@ -42,7 +43,11 @@ internal class ServerSettingsWriter(
         val authenticationType = AuthType.valueOf(validatedSettings[AUTHENTICATION_TYPE] as String)
         val username = validatedSettings[USERNAME] as String
         val rawPassword = validatedSettings[PASSWORD] as? String
-        val password = if (authenticationType == AuthType.XOAUTH2) "" else rawPassword
+        val password = if (authenticationType == AuthType.XOAUTH2 && server.type != Protocols.ZOHO_MAIL_API) {
+            ""
+        } else {
+            rawPassword
+        }
         val clientCertificateAlias = validatedSettings[CLIENT_CERTIFICATE_ALIAS] as? String
 
         return ServerSettings(

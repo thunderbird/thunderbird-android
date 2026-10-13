@@ -9,6 +9,7 @@ import app.k9mail.feature.account.setup.AccountSetupExternalContract.AccountCrea
 import app.k9mail.feature.account.setup.AccountSetupExternalContract.AccountCreator.AccountCreatorResult
 import app.k9mail.feature.account.setup.domain.DomainContract.UseCase
 import java.util.UUID
+import net.thunderbird.core.common.mail.Protocols
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.AccountIdFactory
 
@@ -21,7 +22,12 @@ class CreateAccount(
             id = uuidGenerator(),
             emailAddress = accountState.emailAddress!!,
             incomingServerSettings = accountState.incomingServerSettings!!.copy(),
-            outgoingServerSettings = accountState.outgoingServerSettings!!.copy(),
+            outgoingServerSettings = (
+                accountState.outgoingServerSettings
+                    ?: accountState.incomingServerSettings?.takeIf { Protocols.isNativeApiProtocol(it.type) }
+                        ?.copy(type = Protocols.SMTP)
+                    ?: error("Outgoing server settings are required for non-native API accounts")
+                ).copy(),
             authorizationState = accountState.authorizationState?.value,
             specialFolderSettings = accountState.specialFolderSettings,
             options = mapOptions(accountState.displayOptions!!, accountState.syncOptions!!),

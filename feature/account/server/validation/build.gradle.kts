@@ -24,6 +24,7 @@ dependencies {
 
     implementation(projects.feature.account.common)
     implementation(projects.feature.account.oauth)
+    implementation(libs.appauth)
     implementation(projects.feature.account.server.certificate)
     testImplementation(projects.core.ui.compose.testing)
 }

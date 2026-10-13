@@ -12,6 +12,7 @@ import net.openid.appauth.AuthorizationException
 import net.openid.appauth.AuthorizationException.AuthorizationRequestErrors
 import net.openid.appauth.AuthorizationException.GeneralErrors
 import net.openid.appauth.AuthorizationService
+import net.openid.appauth.ClientSecretPost
 import net.thunderbird.legacy.logging.Log
 
 class RealOAuth2TokenProvider(
@@ -62,15 +63,22 @@ class RealOAuth2TokenProvider(
         }
 
         val oldAccessToken = authState.accessToken
+        val clientAuthentication = (authStateStorage as? OAuthClientSecretProvider)
+            ?.getClientSecret()
+            ?.takeIf(String::isNotBlank)
+            ?.let(::ClientSecretPost)
+        val tokenCallback = AuthState.AuthStateAction { accessToken, _, authException ->
+            token = accessToken
+            exception = authException
+
+            latch.countDown()
+        }
 
         try {
-            authState.performActionWithFreshTokens(
-                authService,
-            ) { accessToken: String?, _, authException: AuthorizationException? ->
-                token = accessToken
-                exception = authException
-
-                latch.countDown()
+            if (clientAuthentication == null) {
+                authState.performActionWithFreshTokens(authService, tokenCallback)
+            } else {
+                authState.performActionWithFreshTokens(authService, clientAuthentication, tokenCallback)
             }
 
             latch.await(timeoutMillis, TimeUnit.MILLISECONDS)

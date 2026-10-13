@@ -11,8 +11,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -118,5 +120,43 @@ public class MessageExtractorTest {
 
         assertNotNull(result);
         assertEquals(bodyText, result);
+    }
+
+    @Test
+    public void hasMissingParts_withBodylessAttachment_shouldNotReportMissingMessageContent() throws Exception {
+        part.setHeader(MimeHeader.HEADER_CONTENT_TYPE, "multipart/mixed; boundary=boundary");
+        MimeMultipart multipart = MimeMultipart.newInstance();
+
+        MimeBodyPart textBody = new MimeBodyPart();
+        textBody.setHeader(MimeHeader.HEADER_CONTENT_TYPE, "text/plain");
+        textBody.setBody(new BinaryMemoryBody("Message body".getBytes(), MimeUtil.ENC_8BIT));
+        multipart.addBodyPart(textBody);
+
+        MimeBodyPart lazyAttachment = new MimeBodyPart();
+        lazyAttachment.setHeader(MimeHeader.HEADER_CONTENT_TYPE, "application/pdf");
+        lazyAttachment.setHeader(MimeHeader.HEADER_CONTENT_DISPOSITION, "attachment; filename=report.pdf");
+        lazyAttachment.setServerExtra("remote-attachment-id");
+        lazyAttachment.setBody(null);
+        multipart.addBodyPart(lazyAttachment);
+        part.setBody(multipart);
+
+        assertFalse(MessageExtractor.hasMissingParts(part));
+    }
+
+    @Test
+    public void hasMissingParts_withMissingTextBody_shouldReportMissingMessageContent() {
+        part.setHeader(MimeHeader.HEADER_CONTENT_TYPE, "text/plain");
+        part.setBody(null);
+
+        assertTrue(MessageExtractor.hasMissingParts(part));
+    }
+
+    @Test
+    public void hasMissingParts_withAttachmentMissingRemoteReference_shouldReportMissingContent() {
+        part.setHeader(MimeHeader.HEADER_CONTENT_TYPE, "application/pdf");
+        part.setHeader(MimeHeader.HEADER_CONTENT_DISPOSITION, "attachment; filename=report.pdf");
+        part.setBody(null);
+
+        assertTrue(MessageExtractor.hasMissingParts(part));
     }
 }

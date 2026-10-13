@@ -6,4 +6,7 @@ data class OAuthConfiguration(
     val authorizationEndpoint: String,
     val tokenEndpoint: String,
     val redirectUri: String,
+    val clientSecret: String? = null,
+    val scopeSeparator: String = " ",
+    val authorizationParameters: Map<String, String> = emptyMap(),
 )

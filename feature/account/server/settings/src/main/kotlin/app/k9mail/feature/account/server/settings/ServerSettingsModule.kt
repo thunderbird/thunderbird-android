@@ -7,6 +7,7 @@ import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSett
 import app.k9mail.feature.account.server.settings.ui.outgoing.OutgoingServerSettingsContract
 import app.k9mail.feature.account.server.settings.ui.outgoing.OutgoingServerSettingsValidator
 import app.k9mail.feature.account.server.settings.ui.outgoing.OutgoingServerSettingsViewModel
+import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.Module
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
@@ -20,6 +21,8 @@ val featureAccountServerSettingsModule: Module = module {
             mode = InteractionMode.Create,
             validator = get(),
             accountStateRepository = get(),
+            oauthConfigurationProvider = get(),
+            applicationId = androidContext().packageName,
         )
     }
 

@@ -19,6 +19,13 @@ class DefaultDeletePolicyProviderTest {
     }
 
     @Test
+    fun `getDeletePolicy with Graph should return ON_DELETE`() {
+        val result = deletePolicyProvider.getDeletePolicy(Protocols.GRAPH)
+
+        assertThat(result).isEqualTo(DeletePolicy.ON_DELETE)
+    }
+
+    @Test
     fun `getDeletePolicy with POP3 should return NEVER`() {
         val result = deletePolicyProvider.getDeletePolicy(Protocols.POP3)
 

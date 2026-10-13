@@ -10,6 +10,9 @@ dependencies {
     implementation(projects.legacy.ui.legacy)
     implementation(projects.backend.imap)
     implementation(projects.backend.pop3)
+    implementation(projects.backend.graph)
+    implementation(projects.backend.gmailapi)
+    implementation(projects.backend.zohomail)
 
     implementation(projects.core.featureflag)
     implementation(projects.core.logging.api)

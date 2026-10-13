@@ -9,7 +9,7 @@ internal fun AccountState.toDisplayOptionsState(): State {
     val options = displayOptions
     return if (options == null) {
         State(
-            accountName = StringInputField(emailAddress ?: ""),
+            accountName = StringInputField(defaultAccountName()),
             // displayName = StringInputField(""),
             // TODO: get display name from: preferences.defaultAccount?.senderName ?: ""
         )
@@ -21,6 +21,8 @@ internal fun AccountState.toDisplayOptionsState(): State {
         )
     }
 }
+
+private fun AccountState.defaultAccountName(): String = emailAddress.orEmpty()
 
 internal fun State.toAccountDisplayOptions(): AccountDisplayOptions {
     return AccountDisplayOptions(

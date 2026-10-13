@@ -12,6 +12,7 @@ class TbOAuthConfigurationFactory : OAuthConfigurationFactory {
             createFastmailConfiguration(),
             createGmailConfiguration(),
             createMicrosoftConfiguration(),
+            createMicrosoftGraphConfiguration(),
             createYahooConfiguration(),
             createThundermailConfiguration(),
             createThundermailStageConfiguration(),
@@ -48,11 +49,12 @@ class TbOAuthConfigurationFactory : OAuthConfigurationFactory {
         return listOf(
             "imap.gmail.com",
             "imap.googlemail.com",
+            "gmail.googleapis.com",
             "smtp.gmail.com",
             "smtp.googlemail.com",
         ) to OAuthConfiguration(
             clientId = "560629489500-no2mlau7e4vn3psh5esaiodgri09jrj9.apps.googleusercontent.com",
-            scopes = listOf("https://mail.google.com/"),
+            scopes = listOf("openid", "profile", "https://mail.google.com/"),
             authorizationEndpoint = "https://accounts.google.com/o/oauth2/v2/auth",
             tokenEndpoint = "https://oauth2.googleapis.com/token",
             redirectUri = "${BuildConfig.APPLICATION_ID}:/oauth2redirect",
@@ -74,6 +76,16 @@ class TbOAuthConfigurationFactory : OAuthConfigurationFactory {
                 "https://outlook.office.com/SMTP.Send",
                 "offline_access",
             ),
+            authorizationEndpoint = "https://login.microsoftonline.com/common/oauth2/v2.0/authorize",
+            tokenEndpoint = "https://login.microsoftonline.com/common/oauth2/v2.0/token",
+            redirectUri = "msauth://net.thunderbird.android.debug/eaXDuh6T3KFWjcJhsoaObT9OayU%3D",
+        )
+    }
+
+    private fun createMicrosoftGraphConfiguration(): Pair<List<String>, OAuthConfiguration> {
+        return listOf("graph.microsoft.com") to OAuthConfiguration(
+            clientId = "e6f8716e-299d-4ed9-bbf3-453f192f44e5",
+            scopes = listOf("openid", "profile", "email", "offline_access", "Mail.ReadWrite", "Mail.Send"),
             authorizationEndpoint = "https://login.microsoftonline.com/common/oauth2/v2.0/authorize",
             tokenEndpoint = "https://login.microsoftonline.com/common/oauth2/v2.0/token",
             redirectUri = "msauth://net.thunderbird.android.debug/eaXDuh6T3KFWjcJhsoaObT9OayU%3D",

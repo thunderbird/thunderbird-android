@@ -8,6 +8,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import app.k9mail.feature.account.edit.navigation.AccountEditNavigation
+import app.k9mail.feature.account.edit.navigation.AccountEditRoute
 import app.k9mail.feature.account.setup.navigation.AccountSetupNavigation
 import app.k9mail.feature.account.setup.navigation.AccountSetupRoute
 import app.k9mail.feature.launcher.FeatureLauncherExternalContract.MessageListLauncher
@@ -15,6 +16,7 @@ import app.k9mail.feature.onboarding.main.navigation.OnboardingNavigation
 import app.k9mail.feature.onboarding.main.navigation.OnboardingRoute
 import net.thunderbird.core.featureflag.navigation.RemoteFeatureFlagNavigation
 import net.thunderbird.feature.account.settings.api.AccountSettingsNavigation
+import net.thunderbird.feature.account.settings.api.AccountSettingsRoute
 import net.thunderbird.feature.debug.settings.navigation.SecretDebugSettingsNavigation
 import net.thunderbird.feature.debug.settings.navigation.SecretDebugSettingsRoute
 import net.thunderbird.feature.funding.api.FundingNavigation
@@ -102,14 +104,25 @@ fun FeatureLauncherNavHost(
         accountEditNavigation.registerRoutes(
             navGraphBuilder = this,
             onBack = onBack,
-            onFinish = { activity.finish() },
+            onFinish = { route ->
+                when (route) {
+                    is AccountEditRoute.ApiAccountReauthorization -> navController.popBackStack()
+                    else -> activity.finish()
+                }
+            },
         )
 
         accountSettingsNavigation.registerRoutes(
             navGraphBuilder = this,
             onBack = onBack,
-            onFinish = {
-                onBack()
+            onFinish = { route ->
+                when (route) {
+                    is AccountSettingsRoute.ReauthorizeApiAccount -> {
+                        navController.navigate(AccountEditRoute.ApiAccountReauthorization(route.accountId))
+                    }
+
+                    else -> onBack()
+                }
             },
         )
 

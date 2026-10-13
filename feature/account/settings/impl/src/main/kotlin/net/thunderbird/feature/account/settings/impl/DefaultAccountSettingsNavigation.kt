@@ -6,6 +6,7 @@ import net.thunderbird.core.ui.navigation.deepLinkComposable
 import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.account.settings.api.AccountSettingsNavigation
 import net.thunderbird.feature.account.settings.api.AccountSettingsRoute
+import net.thunderbird.feature.account.settings.impl.ui.api.ApiSettingsScreen
 import net.thunderbird.feature.account.settings.impl.ui.fetchingMail.FetchingMailSettingsScreen
 import net.thunderbird.feature.account.settings.impl.ui.fetchingMail.advanced.AdvancedFetchingMailSettingsScreen
 import net.thunderbird.feature.account.settings.impl.ui.general.GeneralSettingsScreen
@@ -20,6 +21,23 @@ internal class DefaultAccountSettingsNavigation : AccountSettingsNavigation {
         onBack: () -> Unit,
         onFinish: (AccountSettingsRoute) -> Unit,
     ) {
+        with(navGraphBuilder) {
+            deepLinkComposable<AccountSettingsRoute.ApiSettings>(
+                basePath = AccountSettingsRoute.ApiSettings.BASE_PATH,
+            ) { backStackEntry ->
+                val apiSettingsRoute = backStackEntry.toRoute<AccountSettingsRoute.ApiSettings>()
+                val accountId = AccountIdFactory.of(apiSettingsRoute.accountId)
+
+                ApiSettingsScreen(
+                    accountId = accountId,
+                    onBack = onBack,
+                    onReauthorize = {
+                        onFinish(AccountSettingsRoute.ReauthorizeApiAccount(apiSettingsRoute.accountId))
+                    },
+                )
+            }
+        }
+
         with(navGraphBuilder) {
             deepLinkComposable<AccountSettingsRoute.GeneralSettings>(
                 basePath = AccountSettingsRoute.GeneralSettings.BASE_PATH,

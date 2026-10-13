@@ -114,8 +114,10 @@ class FolderSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFra
     private fun setPreferenceVisibility(folderSettings: FolderSettingsData) {
         if (folderSettings.folder.isLocalOnly) {
             requirePreference<Preference>(PREFERENCE_SYNC).isVisible = false
-            requirePreference<Preference>(PREFERENCE_PUSH).isVisible = false
             requirePreference<Preference>(PREFERENCE_NOTIFICATIONS).isVisible = false
+        }
+        if (!shouldShowPushPreference(folderSettings.folder.isLocalOnly, folderSettings.isPushCapable)) {
+            requirePreference<Preference>(PREFERENCE_PUSH).isVisible = false
         }
     }
 

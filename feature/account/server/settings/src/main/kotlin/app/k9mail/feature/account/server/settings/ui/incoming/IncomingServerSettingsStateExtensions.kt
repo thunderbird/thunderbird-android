@@ -13,20 +13,21 @@ internal val IncomingServerSettingsContract.State.allowedAuthenticationTypes: Im
 
 internal val IncomingProtocolType.allowedAuthenticationTypes: List<AuthenticationType>
     get() = when (this) {
-        IncomingProtocolType.IMAP -> {
-            listOf(
-                AuthenticationType.PasswordCleartext,
-                AuthenticationType.PasswordEncrypted,
-                AuthenticationType.ClientCertificate,
-                AuthenticationType.OAuth2,
-            )
-        }
+        IncomingProtocolType.IMAP -> listOf(
+            AuthenticationType.PasswordCleartext,
+            AuthenticationType.PasswordEncrypted,
+            AuthenticationType.ClientCertificate,
+            AuthenticationType.OAuth2,
+        )
 
-        IncomingProtocolType.POP3 -> {
-            listOf(
-                AuthenticationType.PasswordCleartext,
-                AuthenticationType.PasswordEncrypted,
-                AuthenticationType.ClientCertificate,
-            )
-        }
+        IncomingProtocolType.POP3 -> listOf(
+            AuthenticationType.PasswordCleartext,
+            AuthenticationType.PasswordEncrypted,
+            AuthenticationType.ClientCertificate,
+        )
+
+        IncomingProtocolType.GMAIL_API,
+        IncomingProtocolType.GRAPH,
+        IncomingProtocolType.ZOHO_MAIL_API,
+        -> listOf(AuthenticationType.OAuth2)
     }
