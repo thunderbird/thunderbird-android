@@ -37,6 +37,7 @@ class GeneralSettingsDataStore(
         val debuggingSettings = config.debugging
         val inboxSettings = config.display.inboxSettings
         val interactionSettings = config.interaction
+        val networkSettings = config.network
         val notificationSettings = config.notification
         val privacySettings = config.privacy
         val visualSettings = config.display.visualSettings
@@ -62,6 +63,7 @@ class GeneralSettingsDataStore(
             "disable_notifications_during_quiet_time" -> !notificationSettings.isNotificationDuringQuietTimeEnabled
             "notification_summary_delete" -> notificationSettings.isSummaryDeleteActionEnabled
             "notification_show_contact_picture" -> notificationSettings.isShowContactPictureInNotification
+            "check_mail_on_app_start" -> networkSettings.isCheckMailOnAppStart
             "privacy_hide_useragent" -> privacySettings.isHideUserAgent
             "privacy_hide_timezone" -> privacySettings.isHideTimeZone
             "privacy_incognito_keyboard" -> privacySettings.isIncognitoKeyboardEnabled
@@ -108,6 +110,7 @@ class GeneralSettingsDataStore(
                 isShowContactPictureInNotification = value,
             )
 
+            "check_mail_on_app_start" -> setIsCheckMailOnAppStart(isCheckMailOnAppStart = value)
             "privacy_hide_useragent" -> setIsHideUserAgent(isHideUserAgent = value)
             "privacy_hide_timezone" -> setIsHideTimeZone(isHideTimeZone = value)
             "privacy_incognito_keyboard" -> setIsIncognitoKeyboardEnabled(isIncognitoKeyboardEnabled = value)
@@ -736,6 +739,17 @@ class GeneralSettingsDataStore(
             settings.copy(
                 interaction = settings.interaction.copy(
                     useVolumeKeysForNavigation = useVolumeKeysForNavigation,
+                ),
+            )
+        }
+    }
+
+    private fun setIsCheckMailOnAppStart(isCheckMailOnAppStart: Boolean) {
+        skipSaveSettings = true
+        generalSettingsManager.update { settings ->
+            settings.copy(
+                network = settings.network.copy(
+                    isCheckMailOnAppStart = isCheckMailOnAppStart,
                 ),
             )
         }

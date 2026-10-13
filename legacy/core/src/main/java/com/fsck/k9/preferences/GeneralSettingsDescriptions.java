@@ -67,6 +67,7 @@ import static net.thunderbird.core.preference.display.visualSettings.DisplayVisu
 import static net.thunderbird.core.preference.notification.NotificationPreferenceKt.NOTIFICATION_PREFERENCE_DEFAULT_IS_QUIET_TIME_ENABLED;
 import static net.thunderbird.core.preference.notification.NotificationPreferenceKt.NOTIFICATION_PREFERENCE_DEFAULT_QUIET_TIME_END;
 import static net.thunderbird.core.preference.notification.NotificationPreferenceKt.NOTIFICATION_PREFERENCE_DEFAULT_QUIET_TIME_STARTS;
+import static net.thunderbird.core.preference.network.NetworkSettingsKt.NETWORK_SETTINGS_DEFAULT_IS_CHECK_MAIL_ON_APP_START;
 import static net.thunderbird.core.preference.privacy.PrivacySettingsKt.PRIVACY_SETTINGS_DEFAULT_HIDE_TIME_ZONE;
 import static net.thunderbird.core.preference.privacy.PrivacySettingsKt.PRIVACY_SETTINGS_DEFAULT_HIDE_USER_AGENT;
 
@@ -346,6 +347,9 @@ class GeneralSettingsDescriptions {
         ));
         s.put("messageListDateTimeFormat", Settings.versions(
             new V(110, new EnumSetting<>(MessageListDateTimeFormat.class, MessageListDateTimeFormat.Contextual))
+        ));
+        s.put("checkMailOnAppStart", Settings.versions(
+            new V(112, new BooleanSetting(NETWORK_SETTINGS_DEFAULT_IS_CHECK_MAIL_ON_APP_START))
         ));
 
         // TODO: Add a way to properly support feature-specific settings.
