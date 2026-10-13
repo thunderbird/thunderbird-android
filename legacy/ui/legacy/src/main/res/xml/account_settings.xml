@@ -39,10 +39,12 @@
         android:title="@string/account_settings_composition"/>
 
 
+    <!-- TODO: Replace with Jetpack Compose settings in #11723 and #11724 -->
     <PreferenceScreen
         android:icon="@drawable/ic_folder"
         android:key="folders"
         android:title="@string/account_settings_folders"
+        app:isPreferenceVisible="false"
         >
 
         <Preference
@@ -93,10 +95,12 @@
 
     </PreferenceScreen>
 
+    <!-- TODO: Replace with Jetpack Compose settings in #11722 -->
     <PreferenceScreen
         android:icon="@drawable/ic_notifications"
         android:key="notifications"
         android:title="@string/notifications_title"
+        app:isPreferenceVisible="false"
         >
 
         <CheckBoxPreference
