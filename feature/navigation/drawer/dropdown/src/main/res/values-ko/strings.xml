@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="navigation_drawer_dropdown_action_settings">설정</string>
-    <string name="navigation_drawer_dropdown_action_manage_folders">폴더 관리</string>
     <string name="navigation_drawer_dropdown_unified_inbox_title">통합 편지함</string>
     <string name="navigation_drawer_dropdown_avount_view_selection_title">계정 목록</string>
     <string name="navigation_drawer_dropdown_unified_account_title">통합 계정</string>
