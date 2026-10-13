@@ -2,7 +2,7 @@ package net.thunderbird.feature.search.legacy
 
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.UnifiedAccountId
-import net.thunderbird.feature.mail.folder.FolderType
+import net.thunderbird.feature.mail.folder.FolderRole
 
 /**
  * This class is basically a wrapper around a LocalSearch. It allows to expose it as an account.
@@ -22,7 +22,7 @@ class SearchAccount(
             title: String,
             detail: String,
         ): SearchAccount {
-            val tmpSearch = LocalMessageSearch.createUnifiedSearch(FolderType.INBOX)
+            val tmpSearch = LocalMessageSearch.createUnifiedSearch(FolderRole.INBOX)
 
             return SearchAccount(
                 id = UnifiedAccountId,

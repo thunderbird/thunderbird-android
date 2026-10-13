@@ -3,19 +3,24 @@ package com.fsck.k9.controller
 import com.fsck.k9.notification.NotificationController
 import com.fsck.k9.search.isNewMessages
 import com.fsck.k9.search.isSingleFolder
-import com.fsck.k9.search.isUnifiedInbox
+import com.fsck.k9.search.folderIdFor
+import com.fsck.k9.search.unifiedFolderRole
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.feature.account.AccountId
+import net.thunderbird.feature.mail.folder.FolderRole
+import net.thunderbird.feature.mail.folder.api.OutboxFolderManager
 import net.thunderbird.feature.search.legacy.LocalMessageSearch
 
 internal class NotificationOperations(
     private val notificationController: NotificationController,
     private val accountManager: LegacyAccountManager,
+    private val outboxFolderManager: OutboxFolderManager,
 ) {
     fun clearNotifications(search: LocalMessageSearch) {
-        if (search.isUnifiedInbox) {
-            clearUnifiedInboxNotifications()
+        val unifiedFolderRole = search.unifiedFolderRole
+        if (unifiedFolderRole != null) {
+            clearUnifiedFolderNotifications(unifiedFolderRole)
         } else if (search.isNewMessages) {
             clearAllNotifications()
         } else if (search.isSingleFolder) {
@@ -28,10 +33,10 @@ internal class NotificationOperations(
         }
     }
 
-    private fun clearUnifiedInboxNotifications() {
+    private fun clearUnifiedFolderNotifications(role: FolderRole) {
         for (account in accountManager.findAll()) {
-            val inboxFolderId = account.inboxFolderId ?: continue
-            clearNotifications(account.id, inboxFolderId)
+            val folderId = account.folderIdFor(role, outboxFolderManager) ?: continue
+            clearNotifications(account.id, folderId)
         }
     }
 

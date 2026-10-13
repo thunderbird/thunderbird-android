@@ -4,7 +4,7 @@ package com.fsck.k9.search
 
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.LegacyAccountManager
-import net.thunderbird.feature.mail.folder.FolderType
+import net.thunderbird.feature.mail.folder.FolderRole
 import net.thunderbird.feature.mail.folder.api.OutboxFolderManager
 import net.thunderbird.feature.search.legacy.LocalMessageSearch
 import net.thunderbird.feature.search.legacy.LocalMessageSearchType
@@ -14,8 +14,11 @@ import net.thunderbird.feature.search.legacy.UnifiedFolderSelection
 val LocalMessageSearch.isUnified: Boolean
     get() = type is LocalMessageSearchType.Unified
 
-val LocalMessageSearch.isUnifiedInbox: Boolean
-    get() = (type as? LocalMessageSearchType.Unified)?.folder == UnifiedFolderSelection.Special(FolderType.INBOX)
+/**
+ * The role of the folders a unified search shows, or `null` if this isn't a unified search of a special folder.
+ */
+val LocalMessageSearch.unifiedFolderRole: FolderRole?
+    get() = ((type as? LocalMessageSearchType.Unified)?.folder as? UnifiedFolderSelection.Special)?.role
 
 val LocalMessageSearch.isNewMessages: Boolean
     get() = type == LocalMessageSearchType.NewMessages
@@ -34,16 +37,22 @@ val LocalMessageSearch.isSingleFolder: Boolean
 fun LocalMessageSearch.conditionsFor(
     account: LegacyAccount,
     outboxFolderManager: OutboxFolderManager,
-): SearchConditionTreeNode? = conditionsForAccount { folderType ->
-    when (folderType) {
-        FolderType.INBOX -> account.inboxFolderId
-        FolderType.OUTBOX -> outboxFolderManager.getOutboxFolderIdSync(account.id).takeIf { it != -1L }
-        FolderType.SENT -> account.sentFolderId
-        FolderType.TRASH -> account.trashFolderId
-        FolderType.DRAFTS -> account.draftsFolderId
-        FolderType.ARCHIVE -> account.archiveFolderId
-        FolderType.SPAM -> account.spamFolderId
-        FolderType.REGULAR -> null
+): SearchConditionTreeNode? = conditionsForAccount { role ->
+    account.folderIdFor(role, outboxFolderManager)
+}
+
+/**
+ * Returns the ID of this account's folder with the given [role], or `null` if the account doesn't have one.
+ */
+fun LegacyAccount.folderIdFor(role: FolderRole, outboxFolderManager: OutboxFolderManager): Long? {
+    return when (role) {
+        FolderRole.INBOX -> inboxFolderId
+        FolderRole.OUTBOX -> outboxFolderManager.getOutboxFolderIdSync(id).takeIf { it != -1L }
+        FolderRole.SENT -> sentFolderId
+        FolderRole.TRASH -> trashFolderId
+        FolderRole.DRAFTS -> draftsFolderId
+        FolderRole.ARCHIVE -> archiveFolderId
+        FolderRole.SPAM -> spamFolderId
     }
 }
 

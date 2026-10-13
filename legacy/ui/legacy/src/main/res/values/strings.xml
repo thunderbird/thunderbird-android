@@ -732,6 +732,12 @@
 
     <string name="integrated_inbox_title">Unified Inbox</string>
     <string name="integrated_inbox_detail">All messages in unified folders</string>
+    <string name="unified_outbox_title">Unified Outbox</string>
+    <string name="unified_drafts_title">Unified Drafts</string>
+    <string name="unified_sent_title">Unified Sent</string>
+    <string name="unified_archive_title">Unified Archive</string>
+    <string name="unified_spam_title">Unified Spam</string>
+    <string name="unified_trash_title">Unified Trash</string>
 
 
     <string name="account_settings_no_folder_selected">None</string>

@@ -758,7 +758,7 @@ class LegacyMessageListFragment :
 
     private fun setWindowTitle() {
         val title = when {
-            isUnifiedFoldersView -> getString(R.string.integrated_inbox_title)
+            isUnifiedFoldersView -> getString(localSearch.unifiedFolderTitleResId)
             isNewMessagesView -> getString(R.string.new_messages_title)
             isManualSearch -> getString(R.string.search_results)
             isThreadDisplay -> threadTitle ?: ""

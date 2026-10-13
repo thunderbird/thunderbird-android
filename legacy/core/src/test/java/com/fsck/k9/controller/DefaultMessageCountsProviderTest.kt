@@ -19,7 +19,7 @@ import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.core.android.account.fake.FakeLegacyAccountManager
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.AccountIdFactory
-import net.thunderbird.feature.mail.folder.FolderType
+import net.thunderbird.feature.mail.folder.FolderRole
 import net.thunderbird.feature.search.legacy.LocalMessageSearch
 import net.thunderbird.feature.search.legacy.SearchConditionTreeNode
 import net.thunderbird.feature.search.legacy.api.MessageSearchField
@@ -111,7 +111,7 @@ class DefaultMessageCountsProviderTest {
         )
 
         // Act
-        val result = messageCountsProvider.getMessageCounts(LocalMessageSearch.createUnifiedSearch(FolderType.INBOX))
+        val result = messageCountsProvider.getMessageCounts(LocalMessageSearch.createUnifiedSearch(FolderRole.INBOX))
 
         // Assert
         assertThat(result.unread).isEqualTo(2)
