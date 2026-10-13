@@ -79,7 +79,7 @@ internal fun FolderListItem(
             selected = selectedFolderId == displayFolder.folderId,
             onClick = {
                 when (displayFolder) {
-                    is MailDisplayFolder -> isExpanded.value = !isExpanded.value
+                    is MailDisplayFolder if displayFolder.isPlaceholder -> isExpanded.value = !isExpanded.value
                     else -> onClick(displayFolder)
                 }
             },
@@ -184,7 +184,7 @@ private fun mapFolderIcon(folder: DisplayFolder): ImageVector {
 }
 
 private fun mapDisplayAccountFolderIcon(folder: MailDisplayFolder): ImageVector {
-    if (folder.folder.type == FolderType.REGULAR && folder.isInTopGroup) {
+    if (folder.folder.type == FolderType.REGULAR && folder.isInTopGroup && !folder.isPlaceholder) {
         return Icons.Outlined.FavoriteFolder
     }
 

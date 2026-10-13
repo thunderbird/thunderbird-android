@@ -206,7 +206,7 @@ class GetDisplayTreeFolderTest {
                             displayFolder = MailDisplayFolder(
                                 accountId = ACCOUNT_ID,
                                 folder = Folder(
-                                    id = 1L,
+                                    id = -1L,
                                     name = "(Unnamed)/(Unnamed)",
                                     type = FolderType.REGULAR,
                                     isLocalOnly = false,
@@ -215,6 +215,7 @@ class GetDisplayTreeFolderTest {
                                 unreadMessageCount = 0,
                                 starredMessageCount = 0,
                                 pathDelimiter = "/",
+                                isPlaceholder = true,
                             ),
                             displayName = "(Unnamed)",
                             totalUnreadCount = 1,
@@ -246,11 +247,12 @@ class GetDisplayTreeFolderTest {
                 DisplayTreeFolder(
                     displayFolder = MailDisplayFolder(
                         accountId = ACCOUNT_ID,
-                        folder = Folder(id = 2, name = "valid1", type = FolderType.REGULAR, isLocalOnly = false),
+                        folder = Folder(id = -2, name = "valid1", type = FolderType.REGULAR, isLocalOnly = false),
                         isInTopGroup = true,
                         unreadMessageCount = 0,
                         starredMessageCount = 0,
                         pathDelimiter = "/",
+                        isPlaceholder = true,
                     ),
                     displayName = "valid1",
                     totalUnreadCount = 6,
@@ -260,7 +262,7 @@ class GetDisplayTreeFolderTest {
                             displayFolder = MailDisplayFolder(
                                 accountId = ACCOUNT_ID,
                                 folder = Folder(
-                                    id = 3L,
+                                    id = -3L,
                                     name = "valid1/(Unnamed)",
                                     type = FolderType.REGULAR,
                                     isLocalOnly = false,
@@ -269,6 +271,7 @@ class GetDisplayTreeFolderTest {
                                 unreadMessageCount = 0,
                                 starredMessageCount = 0,
                                 pathDelimiter = "/",
+                                isPlaceholder = true,
                             ),
                             displayName = "(Unnamed)",
                             totalUnreadCount = 6,
@@ -332,10 +335,11 @@ class GetDisplayTreeFolderTest {
                 createDisplayTreeFolder(
                     displayFolder = createDisplayAccountFolder(
                         accountId = ACCOUNT_ID,
-                        folderId = 1L,
+                        folderId = -1L,
                         folderName = "folderLevel1",
                         unreadMessageCount = 0,
                         starredMessageCount = 0,
+                        isPlaceholder = true,
                     ),
                     displayName = "folderLevel1",
                     totalUnreadCount = 8,
@@ -391,10 +395,11 @@ class GetDisplayTreeFolderTest {
                 createDisplayTreeFolder(
                     displayFolder = createDisplayAccountFolder(
                         accountId = ACCOUNT_ID,
-                        folderId = 1,
+                        folderId = -1L,
                         folderName = "level1",
                         unreadMessageCount = 0,
                         starredMessageCount = 0,
+                        isPlaceholder = true,
                     ),
                     displayName = "level1",
                     totalUnreadCount = 12,
@@ -403,10 +408,11 @@ class GetDisplayTreeFolderTest {
                         createDisplayTreeFolder(
                             displayFolder = createDisplayAccountFolder(
                                 accountId = ACCOUNT_ID,
-                                folderId = 2L,
+                                folderId = -2L,
                                 folderName = "level1/level2",
                                 unreadMessageCount = 0,
                                 starredMessageCount = 0,
+                                isPlaceholder = true,
                             ),
                             displayName = "level2",
                             totalUnreadCount = 12,
@@ -443,6 +449,7 @@ class GetDisplayTreeFolderTest {
             unreadMessageCount: Int,
             starredMessageCount: Int,
             accountId: AccountId = ACCOUNT_ID,
+            isPlaceholder: Boolean = false,
         ): MailDisplayFolder {
             return MailDisplayFolder(
                 accountId = accountId,
@@ -456,6 +463,7 @@ class GetDisplayTreeFolderTest {
                 unreadMessageCount = unreadMessageCount,
                 starredMessageCount = starredMessageCount,
                 pathDelimiter = "/",
+                isPlaceholder = isPlaceholder,
             )
         }
 

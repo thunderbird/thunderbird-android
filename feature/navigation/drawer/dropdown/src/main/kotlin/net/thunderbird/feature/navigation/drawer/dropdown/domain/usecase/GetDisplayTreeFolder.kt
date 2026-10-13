@@ -115,7 +115,7 @@ internal class GetDisplayTreeFolder(
         return MailDisplayFolder(
             accountId = accountId,
             folder = Folder(
-                id = placeholderCounter,
+                id = -placeholderCounter,
                 name = name,
                 type = FolderType.REGULAR,
                 isLocalOnly = false,
@@ -124,6 +124,7 @@ internal class GetDisplayTreeFolder(
             unreadMessageCount = 0,
             starredMessageCount = 0,
             pathDelimiter = pathDelimiter,
+            isPlaceholder = true,
         )
     }
 }

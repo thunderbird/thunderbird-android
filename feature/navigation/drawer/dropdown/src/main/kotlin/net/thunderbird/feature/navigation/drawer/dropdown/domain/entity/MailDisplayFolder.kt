@@ -11,6 +11,7 @@ internal data class MailDisplayFolder(
     override val unreadMessageCount: Int,
     override val starredMessageCount: Int,
     override val pathDelimiter: FolderPathDelimiter,
+    val isPlaceholder: Boolean = false,
 ) : DisplayFolder {
     override val folderId: String = createMailDisplayAccountFolderId(accountId, folder.id)
 }
