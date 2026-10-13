@@ -37,7 +37,7 @@
             const path_to_root = "../../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../../searchindex-14c3c5b8.js";
+            window.path_to_searchindex_js = "../../searchindex-183f55a9.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../../toc-0f8055a0.js"></script>
@@ -418,7 +418,7 @@ entries.</li>
 <h3 id="data-semantics"><a class="header" href="#data-semantics">Data Semantics</a></h3>
 <p>Release ordering:</p>
 <ul>
-<li>Releases sort by descending <code>date</code>.</li>
+<li>Releases sort by descending version (numeric version components, followed by prerelease suffixes).</li>
 <li>Recent Changes matches the full current app version name to the release <code>version</code> for beta and release builds.</li>
 <li>Recent Changes matches both the full current app version name and the current date for daily builds.</li>
 <li>Per-release resource names are derived from the release <code>version</code>, matching <code>thunderbird-notes</code>.</li>
@@ -490,7 +490,7 @@ explicit feature flag metadata when available.</li>
 <li>Write or replace each per-release changelog file.</li>
 <li>Load the existing <code>changelog_index.json</code> when present.</li>
 <li>Insert or replace release index entries by <code>version</code>.</li>
-<li>Sort index entries descending by <code>date</code>.</li>
+<li>Sort index entries descending by version, with the final release after its prerelease candidates.</li>
 <li>Validate the index and release files against their schemas.</li>
 <li>Write the target <code>changelog_index.json</code>.</li>
 </ol>
@@ -629,7 +629,7 @@ python -m jsonschema -i app-thunderbird/src/release/res/raw/changelog_release_21
 <li>Resource name generation from beta versions such as <code>10.0b1</code>.</li>
 <li>Multiple release files generated from one <code>thunderbird-notes</code> file with multiple <code>release.releases</code> entries.</li>
 <li>Grouped beta notes are emitted only to the matching generated release file.</li>
-<li>Descending release ordering by <code>date</code>.</li>
+<li>Descending release ordering by version, including multi-digit prerelease numbers and release candidates.</li>
 <li>Source note order preservation.</li>
 <li><code>issues</code> preservation.</li>
 <li><code>pull_requests</code> to <code>pullRequests</code> mapping.</li>
@@ -663,7 +663,7 @@ python -m jsonschema -i app-thunderbird/src/release/res/raw/changelog_release_21
 </ul>
 <h2 id="open-technical-questions"><a class="header" href="#open-technical-questions">Open Technical Questions</a></h2>
 <p>None.</p>
-<footer id="last-change">Last change: <time datetime="2026-10-05">2026-10-05</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/d52aa73">d52aa73</a></footer>
+<footer id="last-change">Last change: <time datetime="2026-10-13">2026-10-13</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/b1bb931">b1bb931</a></footer>
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">

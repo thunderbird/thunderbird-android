@@ -37,7 +37,7 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-14c3c5b8.js";
+            window.path_to_searchindex_js = "../searchindex-183f55a9.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../toc-0f8055a0.js"></script>
@@ -335,7 +335,7 @@ On the latter, code that was in beta goes to release, where the general populati
 <li>Carrying forward main branch history to beta, and beta branch history to release.</li>
 <li>No branch history is lost.</li>
 <li>Git tags are retained in the git log.</li>
-<li>Files/code that is unique per branch can remain that way (e.g. notes files such as changelog_master.xml, version codes).</li>
+<li>Files/code that is unique per branch can remain that way (e.g. changelog JSON resources, version codes).</li>
 </ul>
 <p><strong>The following steps are taken when merging main into beta:</strong></p>
 <ol>
@@ -361,6 +361,8 @@ On the latter, code that was in beta goes to release, where the general populati
 <li>Review merge results and ensure correctness:
 <ul>
 <li>Review the changes to <code>app-thunderbird/build.gradle.kts</code>, <code>app-k9mail/build.gradle.kts</code>, and release note files</li>
+<li>Confirm <code>app-thunderbird/src/beta/res/raw/changelog_index.json</code> only lists beta releases, and
+<code>app-k9mail/src/release/res/raw/changelog_index.json</code> and <code>app-thunderbird/src/release/res/raw/changelog_index.json</code> only list stable releases.</li>
 <li>Diff the merge commit with <code>git diff HEAD~1 HEAD --name-only</code> and sanity check the files that changed</li>
 <li>Diff main vs the new beta with <code>git diff origin/main</code> or <code>git difftool -d origin/main</code> (recommended if you have the tooling set up for it)</li>
 </ul>
@@ -399,7 +401,7 @@ On the latter, code that was in beta goes to release, where the general populati
 <li>Review merge results and ensure correctness:
 <ul>
 <li>Review the changes to <code>app-thunderbird/build.gradle.kts</code>, <code>app-k9mail/build.gradle.kts</code>, and release note files</li>
-<li>Ensure <code>app-k9mail/src/main/res/raw/changelog_master.xml</code> does not include any beta notes</li>
+<li>Ensure the release changelog JSON under <code>app-thunderbird/src/release/res/raw</code> and <code>app-k9mail/src/release/res/raw</code> does not include beta notes</li>
 <li>Diff the merge commit with <code>git diff HEAD~1 HEAD --name-only</code> and sanity check the files that changed</li>
 <li>Diff beta vs the new release with <code>git diff origin/beta</code> or <code>git difftool -d origin/beta</code> (recommended if you have the tooling set up for it)</li>
 </ul>
@@ -417,10 +419,11 @@ On the latter, code that was in beta goes to release, where the general populati
 <ul>
 <li>app-k9mail/build.gradle.kts</li>
 <li>app-thunderbird/build.gradle.kts</li>
-<li>app-k9mail/src/main/res/raw/changelog_master.xml</li>
+<li>app-thunderbird/src/{daily,beta,release}/res/raw/changelog_*.json</li>
+<li>app-k9mail/src/release/res/raw/changelog_*.json</li>
 </ul>
-<p>These build.gradle.kts files must be handled as described under “Merge Days” above. This is part of the do_merge.sh automation.</p>
-<p>The app-k9mail/src/main/res/raw/changelog_master.xml should not include any beta notes in the release branch.</p>
+<p>The build.gradle.kts files are handled as described under “Merge Days” above. The merge script preserves the destination
+branch’s changelog JSON, including its index. Review the indexes and release files during the merge checks above.</p>
 <h2 id="releases-1"><a class="header" href="#releases-1">Releases</a></h2>
 <p>Releases for both K-9 and Thunderbird for Android are automated with github actions.
 Daily builds are scheduled with the <a href="https://github.com/thunderbird/thunderbird-android/actions/workflows/build-daily.yml">Daily Builds</a> action and all builds are performed by the <a href="https://github.com/thunderbird/thunderbird-android/actions/workflows/shippable_builds.yml">Shippable Build &amp; Signing</a> action.</p>
@@ -437,6 +440,8 @@ Daily builds are scheduled with the <a href="https://github.com/thunderbird/thun
 </li>
 <li>Review the build results by reviewing the action summary and the git commits resulting from the build
 <ul>
+<li>Confirm <code>changelog_index.json</code> lists the new version in version order and that its <code>changelog_release_*.json</code> file
+exists under the app’s release or beta source set. The release action generates these from <code>thunderbird-notes</code>.</li>
 <li>Make sure the version code is incremented properly and not wildly off</li>
 <li>Ensure the commits are correct</li>
 <li>Ensure the symlink <code>app-metadata</code> points to the right product at this commit</li>
@@ -473,7 +478,7 @@ Daily builds are scheduled with the <a href="https://github.com/thunderbird/thun
 </ul>
 </li>
 </ol>
-<footer id="last-change">Last change: <time datetime="2026-10-05">2026-10-05</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/d52aa73">d52aa73</a></footer>
+<footer id="last-change">Last change: <time datetime="2026-10-13">2026-10-13</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/b1bb931">b1bb931</a></footer>
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
