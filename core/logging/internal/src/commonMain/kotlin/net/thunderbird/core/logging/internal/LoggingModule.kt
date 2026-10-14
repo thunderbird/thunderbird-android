@@ -68,6 +68,12 @@ val coreLoggingModule = module {
     }
 }
 
+/**
+ * Synchronizes and provides a debug log file within the application's files directory.
+ *
+ * @param directoryProvider An instance of [DirectoryProvider] used to retrieve the platform-specific files directory.
+ * @return A [PlatformFile] representing the synchronized debug log file.
+ */
 private fun syncDebugLogFile(directoryProvider: DirectoryProvider): PlatformFile {
     val filesDirectory = requireNotNull(directoryProvider.getFilesDir().path)
     return PlatformFile(PlatformFile(filesDirectory), SYNC_DEBUG_LOG_FILE_NAME)
