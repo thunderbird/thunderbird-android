@@ -17,7 +17,7 @@ import org.junit.Test
 import org.mockito.kotlin.mock
 import org.robolectric.RuntimeEnvironment
 
-class MessagingControllerMissingAccountTest : K9RobolectricTest() {
+class MessagingControllerRemovedAccountTest : K9RobolectricTest() {
     private val removedAccountId = AccountIdFactory.create()
     private val accountManager = FakeLegacyAccountManager()
 

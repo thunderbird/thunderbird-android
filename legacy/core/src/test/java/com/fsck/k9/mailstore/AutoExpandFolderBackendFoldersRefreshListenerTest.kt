@@ -52,7 +52,7 @@ class AutoExpandFolderBackendFoldersRefreshListenerTest {
         // Arrange
         accountManager.replace(account.copy(importedAutoExpandFolder = IMPORTED_FOLDER_SERVER_ID))
         refreshFolderList()
-        accountManager.replace(accountManager.findById(account.id)!!.copy(autoExpandFolderId = USER_FOLDER_ID))
+        accountManager.updateSync(account.id) { it.copy(autoExpandFolderId = USER_FOLDER_ID) }
 
         // Act
         refreshFolderList()
@@ -68,7 +68,7 @@ class AutoExpandFolderBackendFoldersRefreshListenerTest {
         accountManager.replace(account.copy(importedAutoExpandFolder = IMPORTED_FOLDER_SERVER_ID))
         folderQueryRepository.onQuery = {
             // Simulates another component saving the account, e.g. a refreshed OAuth state
-            accountManager.replace(accountManager.findById(account.id)!!.copy(oAuthState = "refreshed"))
+            accountManager.updateSync(account.id) { it.copy(oAuthState = "refreshed") }
         }
 
         // Act

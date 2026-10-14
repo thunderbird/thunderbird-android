@@ -120,13 +120,19 @@ class NotificationActionService : Service() {
         val account = accountManager.findById(accountId)
         val spamFolderId = account?.spamFolderId
 
-        if (account == null) {
-            logger.warn(TAG) { "Could not find account for notification action: $accountId" }
-        } else if (spamFolderId == null) {
-            logger.warn(TAG) { "No spam folder configured for account: $accountId" }
-        } else if (!interactionSettings.isConfirmSpam && messagingController.isMoveCapable(accountId)) {
-            val sourceFolderId = messageReference.folderId
-            messagingController.moveMessage(accountId, sourceFolderId, messageReference, spamFolderId)
+        when {
+            account == null -> {
+                logger.warn(TAG) { "Could not find account for notification action: $accountId" }
+            }
+
+            spamFolderId == null -> {
+                logger.warn(TAG) { "No spam folder configured for account: $accountId" }
+            }
+
+            !interactionSettings.isConfirmSpam && messagingController.isMoveCapable(accountId) -> {
+                val sourceFolderId = messageReference.folderId
+                messagingController.moveMessage(accountId, sourceFolderId, messageReference, spamFolderId)
+            }
         }
     }
 

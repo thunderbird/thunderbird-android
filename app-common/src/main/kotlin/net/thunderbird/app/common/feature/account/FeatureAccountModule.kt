@@ -8,6 +8,7 @@ import net.thunderbird.feature.account.AccountRepository
 import net.thunderbird.feature.account.settings.api.BackgroundAccountRemover
 import net.thunderbird.feature.account.usecase.DeleteAccount
 import net.thunderbird.feature.account.usecase.GetDefaultAccountId
+import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
 internal val appCommonFeatureAccountModule = module {
@@ -47,13 +48,13 @@ internal val appCommonFeatureAccountModule = module {
         AccountRemoverWorker(
             accountRemover = get(),
             notificationController = get(),
-            context = get(),
+            context = androidContext(),
             workerParams = parameters,
         )
     }
     factory<BackgroundAccountRemover> {
         DefaultBackgroundAccountRemover(
-            context = get(),
+            context = androidContext(),
             accountManager = get(),
         )
     }

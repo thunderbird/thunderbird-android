@@ -44,19 +44,17 @@ class LegacyUpdateSortCriteria(
         secondaryCriteria?.let { (secondarySortType, _) ->
             logger.verbose(TAG) { "updateAccountSortCriteria: Setting secondary sort criteria to $secondarySortType" }
         }
-        val updatedAccount = withContext(ioDispatcher) {
-            logger.debug(TAG) { "updateAccountSortCriteria: saving account with id $accountId" }
-            accountManager.updateSync(accountId) { account ->
-                val accountSortAscending = account.sortAscending.toMutableMap()
-                accountSortAscending[primarySortType] = primarySortAscending
-                secondaryCriteria?.let { (secondarySortType, secondarySortAscending) ->
-                    accountSortAscending[secondarySortType] = secondarySortAscending
-                }
-                account.copy(
-                    sortType = primarySortType,
-                    sortAscending = accountSortAscending,
-                )
+        logger.debug(TAG) { "updateAccountSortCriteria: saving account with id $accountId" }
+        val updatedAccount = accountManager.update(accountId) { account ->
+            val accountSortAscending = account.sortAscending.toMutableMap()
+            accountSortAscending[primarySortType] = primarySortAscending
+            secondaryCriteria?.let { (secondarySortType, secondarySortAscending) ->
+                accountSortAscending[secondarySortType] = secondarySortAscending
             }
+            account.copy(
+                sortType = primarySortType,
+                sortAscending = accountSortAscending,
+            )
         }
         if (updatedAccount == null) {
             logger.error(TAG) { "updateAccountSortCriteria: Could not find any account with id $accountId" }

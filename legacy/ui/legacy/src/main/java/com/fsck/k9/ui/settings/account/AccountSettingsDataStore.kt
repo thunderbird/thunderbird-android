@@ -34,7 +34,7 @@ class AccountSettingsDataStore(
     private val accountId = account.id
 
     /**
-     * Changes made on this screen that still need to be saved.
+     * Changes made on the account settings screen that still need to be saved.
      *
      * [account] is only used to display the current values. When saving, these changes are applied to the latest
      * stored account, so changes made elsewhere in the meantime (e.g. OAuth state, OpenPGP provider, special folders,

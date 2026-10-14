@@ -19,9 +19,6 @@ internal class NotificationOperations(
         if (search.isUnifiedInbox) {
             clearUnifiedInboxNotifications()
         } else if (search.isNewMessages) {
-            // TODO: A new messages search is always bound to a single account (see
-            //  LocalMessageSearchType.NewMessages), so only the notifications of that account should be cleared
-            //  instead of those of all accounts.
             clearAllNotifications()
         } else if (search.isSingleFolder) {
             val account = search.firstAccount() ?: return

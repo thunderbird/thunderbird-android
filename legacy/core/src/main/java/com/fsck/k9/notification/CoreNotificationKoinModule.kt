@@ -6,6 +6,7 @@ import androidx.core.app.NotificationManagerCompat
 import java.util.concurrent.Executors
 import kotlin.time.ExperimentalTime
 import org.koin.android.ext.koin.androidApplication
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 val coreNotificationModule = module {
@@ -39,6 +40,7 @@ val coreNotificationModule = module {
             notificationManager = get<Context>().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager,
             resourceProvider = get(),
             notificationLightDecoder = get(),
+            coroutineScope = get(named("AppCoroutineScope")),
         )
     }
     single {

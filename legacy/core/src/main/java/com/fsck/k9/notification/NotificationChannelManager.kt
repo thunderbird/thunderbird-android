@@ -10,7 +10,6 @@ import androidx.annotation.RequiresApi
 import androidx.core.net.toUri
 import java.util.concurrent.Executor
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import net.thunderbird.core.android.account.LegacyAccount
@@ -29,7 +28,7 @@ class NotificationChannelManager(
     private val notificationManager: NotificationManager,
     private val resourceProvider: NotificationResourceProvider,
     private val notificationLightDecoder: NotificationLightDecoder,
-    coroutineScope: CoroutineScope = GlobalScope,
+    coroutineScope: CoroutineScope,
 ) {
     val pushChannelId = "push"
     val miscellaneousChannelId = "misc"
@@ -218,7 +217,6 @@ class NotificationChannelManager(
 
             // To avoid a race condition we first create the new NotificationChannel, point the Account to it,
             // then delete the old one.
-            // TDOD: this should be changed to use a notification settings repository
             updateAccountChannelVersion(account.id, newChannelVersion)
 
             notificationManager.deleteNotificationChannel(oldChannelId)
