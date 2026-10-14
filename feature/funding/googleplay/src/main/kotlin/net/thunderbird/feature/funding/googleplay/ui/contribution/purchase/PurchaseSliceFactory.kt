@@ -1,7 +1,7 @@
 package net.thunderbird.feature.funding.googleplay.ui.contribution.purchase
 
 import kotlinx.coroutines.CoroutineScope
-import net.thunderbird.core.logging.Logger
+import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract
 import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract.UseCase
 

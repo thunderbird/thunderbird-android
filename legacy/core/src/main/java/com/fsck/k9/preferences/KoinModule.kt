@@ -3,8 +3,6 @@ package com.fsck.k9.preferences
 import com.fsck.k9.Preferences
 import kotlin.time.ExperimentalTime
 import net.thunderbird.core.android.account.LegacyAccountDtoManager
-import net.thunderbird.core.logging.config.DebugLogConfigurator
-import net.thunderbird.core.logging.config.PlatformInitializer
 import net.thunderbird.core.preference.DefaultPreferenceChangeBroker
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.PreferenceChangeBroker
@@ -136,19 +134,10 @@ val preferencesModule = module {
             logger = get(),
             storagePersister = get(),
             storageEditor = get<Preferences>().createStorageEditor(),
-            logLevelManager = get(),
+            loggingControl = get(),
+            debugLogConfigurator = get(),
             platformConfigProvider = get(),
             preferenceChangeBroker = get(),
-        )
-    }
-    single<PlatformInitializer> {
-        PlatformInitializer()
-    }
-    single<DebugLogConfigurator> {
-        DebugLogConfigurator(
-            syncDebugCompositeSink = get(named("syncDebug")),
-            syncDebugFileLogSink = get(named("syncDebug")),
-            platformInitializer = get(),
         )
     }
     single {
@@ -167,7 +156,6 @@ val preferencesModule = module {
             networkSettingsPreferenceManager = get(),
             debuggingSettingsPreferenceManager = get(),
             interactionSettingsPreferenceManager = get(),
-            debugLogConfigurator = get(),
             platformConfigProvider = get(),
             logger = get(),
         )

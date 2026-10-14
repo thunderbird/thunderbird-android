@@ -13,13 +13,15 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
-import net.thunderbird.core.android.logging.LogFileWriter
-import net.thunderbird.core.logging.file.FileLogSink
+import net.thunderbird.core.logging.LogcatExporter
+import net.thunderbird.core.logging.SyncDebugLogExporter
 import net.thunderbird.legacy.logging.Log
 
+private const val TAG = "GeneralSettingsViewModel"
+
 class GeneralSettingsViewModel(
-    private val logFileWriter: LogFileWriter,
-    private val syncDebugFileLogSink: FileLogSink,
+    private val logcatExporter: LogcatExporter,
+    private val syncDebugLogExporter: SyncDebugLogExporter,
 ) : ViewModel() {
     private var snackbarJob: Job? = null
     private val uiStateFlow = MutableStateFlow<GeneralSettingsUiState>(GeneralSettingsUiState.Idle)
@@ -29,10 +31,10 @@ class GeneralSettingsViewModel(
         viewModelScope.launch {
             setExportingState()
             try {
-                logFileWriter.writeLogTo(contentUri)
+                logcatExporter.export(contentUri)
                 showSnackbar(GeneralSettingsUiState.Success)
             } catch (e: Exception) {
-                Log.e(e, "Failed to write log to URI: %s", contentUri)
+                Log.e(TAG, e, "Failed to write log to URI: %s", contentUri)
                 showSnackbar(GeneralSettingsUiState.Failure)
             }
         }
@@ -42,10 +44,10 @@ class GeneralSettingsViewModel(
         viewModelScope.launch {
             setExportingState()
             try {
-                syncDebugFileLogSink.export(contentUri.toKmpUri())
+                syncDebugLogExporter.export(contentUri.toKmpUri())
                 showSnackbar(GeneralSettingsUiState.Success)
             } catch (e: Exception) {
-                Log.e(e, "Failed to write log to URI")
+                Log.e(TAG, e, "Failed to write log to URI")
                 showSnackbar(GeneralSettingsUiState.Failure)
             }
         }
@@ -61,7 +63,7 @@ class GeneralSettingsViewModel(
                     showSnackbar(GeneralSettingsUiState.Failure)
                 }
             } catch (e: Exception) {
-                Log.e(e, "Failed to write log to URI")
+                Log.e(TAG, e, "Failed to write log to URI")
                 showSnackbar(GeneralSettingsUiState.Failure)
             }
         }

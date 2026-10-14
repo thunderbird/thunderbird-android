@@ -24,8 +24,10 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.account.LegacyAccountDtoManager
-import net.thunderbird.core.logging.Logger
+import net.thunderbird.components.core.logging.Logger
 import org.apache.commons.io.IOUtils
+
+private const val TAG = "AttachmentController"
 
 class AttachmentController internal constructor(
     private val context: Context,
@@ -88,7 +90,7 @@ class AttachmentController internal constructor(
                 writeAttachment(documentUri)
                 true
             } catch (e: IOException) {
-                logger.error(throwable = e) { "Error saving attachment" }
+                logger.error(tag = TAG, throwable = e) { "Error saving attachment" }
                 false
             }
         }
@@ -115,7 +117,7 @@ class AttachmentController internal constructor(
                 writeAttachment(documentUri)
                 true
             } catch (e: IOException) {
-                logger.error(throwable = e) { "Error saving attachment to directory" }
+                logger.error(tag = TAG, throwable = e) { "Error saving attachment to directory" }
                 false
             }
         }
@@ -185,7 +187,7 @@ class AttachmentController internal constructor(
             )
             attachment.mimeType?.let { viewIntentFinder.getBestViewIntent(intentDataUri, attachment.displayName, it) }
         } catch (e: IOException) {
-            logger.error(throwable = e) { "Error creating temp file for attachment!" }
+            logger.error(tag = TAG, throwable = e) { "Error creating temp file for attachment!" }
             return null
         }
     }

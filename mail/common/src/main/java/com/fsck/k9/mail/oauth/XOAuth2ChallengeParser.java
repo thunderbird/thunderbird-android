@@ -16,6 +16,8 @@ import net.thunderbird.legacy.logging.Log;
  * See: https://developers.google.com/gmail/xoauth2_protocol#error_response
  */
 public class XOAuth2ChallengeParser {
+    private static final String TAG = "XOAuth2ChallengeParser";
+
     public static final String BAD_RESPONSE = "400";
 
 
@@ -23,7 +25,7 @@ public class XOAuth2ChallengeParser {
         String decodedResponse = Base64.decode(response);
 
         if (K9MailLib.isDebug()) {
-            Log.v("Challenge response: %s", decodedResponse);
+            Log.v(TAG, "Challenge response: %s", decodedResponse);
         }
 
         try {
@@ -35,7 +37,7 @@ public class XOAuth2ChallengeParser {
                 return false;
             }
         } catch (IOException | JsonDataException e) {
-            Log.e(e, "Error decoding JSON response from: %s. Response was: %s", host, decodedResponse);
+            Log.e(TAG, e, "Error decoding JSON response from: %s. Response was: %s", host, decodedResponse);
         }
 
         return true;

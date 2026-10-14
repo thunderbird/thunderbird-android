@@ -7,12 +7,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import net.thunderbird.components.core.outcome.Outcome
 import net.thunderbird.core.common.exception.MessagingException
-import net.thunderbird.core.logging.Logger
+import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.mail.folder.api.RemoteFolder
 import net.thunderbird.feature.mail.folder.api.RemoteFolderDetails
 import net.thunderbird.feature.mail.folder.api.data.FolderError
 import net.thunderbird.feature.mail.folder.api.data.repository.RemoteFolderDetailsRepository
+
+private const val TAG = "DefaultRemoteFolderDetailsRepository"
 
 private const val LOG_ID = "[repository][remote-folder-details]"
 
@@ -23,7 +25,7 @@ class DefaultRemoteFolderDetailsRepository(
 ) : RemoteFolderDetailsRepository {
     override suspend fun getAllByAccountId(accountId: AccountId): Outcome<List<RemoteFolderDetails>, FolderError> =
         withContext(ioDispatcher) {
-            logger.verbose { "$LOG_ID getting all remote folders details for account '$accountId'" }
+            logger.verbose(TAG) { "$LOG_ID getting all remote folders details for account '$accountId'" }
             try {
                 val messageStore = messageStoreManager.getMessageStore(accountId)
                 val folderDetails = messageStore.getFolders(excludeLocalOnly = true) { folder ->
@@ -42,14 +44,18 @@ class DefaultRemoteFolderDetailsRepository(
                         isPushEnabled = folder.isPushEnabled,
                     )
                 }
-                logger.verbose { "$LOG_ID remote folder details = $folderDetails" }
+                logger.verbose(TAG) { "$LOG_ID remote folder details = $folderDetails" }
                 Outcome.success(folderDetails)
             } catch (e: MessagingException) {
-                logger.error(throwable = e) { "$LOG_ID Failed to get remote folders details for account '$accountId'" }
+                logger.error(tag = TAG, throwable = e) {
+                    "$LOG_ID Failed to get remote folders details for account '$accountId'"
+                }
 
                 Outcome.failure(FolderError.FailedToQueryDatabase(message = "Failed to query database.", throwable = e))
             } catch (e: IllegalStateException) {
-                logger.error(throwable = e) { "$LOG_ID Failed to get remote folders details for account '$accountId'" }
+                logger.error(tag = TAG, throwable = e) {
+                    "$LOG_ID Failed to get remote folders details for account '$accountId'"
+                }
                 Outcome.failure(FolderError.AccountNotFound(throwable = e))
             }
         }

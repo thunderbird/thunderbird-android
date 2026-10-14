@@ -11,25 +11,26 @@ import kotlin.getValue
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.common.mail.Flag
-import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.preference.interaction.InteractionSettingsPreferenceManager
 import net.thunderbird.feature.account.AccountIdFactory
 import org.koin.android.ext.android.inject
 import org.koin.core.qualifier.named
+
+private const val TAG = "NotificationActionService"
 
 class NotificationActionService : Service() {
     private val preferences: Preferences by inject()
     private val messagingController: MessagingController by inject()
     private val coroutineScope: CoroutineScope by inject(named("AppCoroutineScope"))
     private val interactionPreferences: InteractionSettingsPreferenceManager by inject()
-
     private val logger: Logger by inject()
     private val interactionSettings get() = interactionPreferences.getConfig()
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
-        logger.info { "NotificationActionService started with startId = $startId" }
+        logger.info(TAG) { "NotificationActionService started with startId = $startId" }
 
         startHandleCommand(intent, startId)
 
@@ -54,13 +55,13 @@ class NotificationActionService : Service() {
         }
 
         if (accountId == null) {
-            logger.warn { "Missing account id: $rawId" }
+            logger.warn(TAG) { "Missing account id: $rawId" }
             return
         }
 
         val account = preferences.getById(accountId)
         if (account == null) {
-            logger.warn { "Could not find account for notification action: $accountId" }
+            logger.warn(TAG) { "Could not find account for notification action: $accountId" }
             return
         }
 
@@ -70,7 +71,7 @@ class NotificationActionService : Service() {
             ACTION_ARCHIVE -> archiveMessages(intent)
             ACTION_SPAM -> markMessageAsSpam(intent, account)
             ACTION_STAR -> markMessagesAsStarred(intent, account)
-            ACTION_DISMISS -> logger.info { "Notification dismissed for account: $accountId" }
+            ACTION_DISMISS -> logger.info(TAG) { "Notification dismissed for account: $accountId" }
         }
 
         cancelNotifications(intent, account)
@@ -81,7 +82,7 @@ class NotificationActionService : Service() {
     }
 
     private fun markMessagesAsRead(intent: Intent, account: LegacyAccountDto) {
-        logger.info { "NotificationActionService marking messages as read for account: ${account.id}" }
+        logger.info(TAG) { "NotificationActionService marking messages as read for account: ${account.id}" }
 
         val messageReferenceStrings = intent.getStringArrayListExtra(EXTRA_MESSAGE_REFERENCES)
         val messageReferences = MessageReferenceHelper.toMessageReferenceList(messageReferenceStrings)
@@ -94,7 +95,7 @@ class NotificationActionService : Service() {
     }
 
     private fun deleteMessages(intent: Intent) {
-        logger.info { "NotificationActionService deleting messages" }
+        logger.info(TAG) { "NotificationActionService deleting messages" }
 
         val messageReferenceStrings = intent.getStringArrayListExtra(EXTRA_MESSAGE_REFERENCES)
         val messageReferences = MessageReferenceHelper.toMessageReferenceList(messageReferenceStrings)
@@ -103,7 +104,7 @@ class NotificationActionService : Service() {
     }
 
     private fun archiveMessages(intent: Intent) {
-        logger.info { "NotificationActionService archiving messages" }
+        logger.info(TAG) { "NotificationActionService archiving messages" }
 
         val messageReferenceStrings = intent.getStringArrayListExtra(EXTRA_MESSAGE_REFERENCES)
         val messageReferences = MessageReferenceHelper.toMessageReferenceList(messageReferenceStrings)
@@ -112,19 +113,19 @@ class NotificationActionService : Service() {
     }
 
     private fun markMessageAsSpam(intent: Intent, account: LegacyAccountDto) {
-        logger.info { "NotificationActionService moving messages to spam for account: ${account.id}" }
+        logger.info(TAG) { "NotificationActionService moving messages to spam for account: ${account.id}" }
 
         val messageReferenceString = intent.getStringExtra(EXTRA_MESSAGE_REFERENCE)
         val messageReference = MessageReference.parse(messageReferenceString)
 
         if (messageReference == null) {
-            logger.warn { "Invalid message reference: $messageReferenceString" }
+            logger.warn(TAG) { "Invalid message reference: $messageReferenceString" }
             return
         }
 
         val spamFolderId = account.spamFolderId
         if (spamFolderId == null) {
-            logger.warn { "No spam folder configured for account: ${account.id}" }
+            logger.warn(TAG) { "No spam folder configured for account: ${account.id}" }
             return
         }
 
@@ -135,7 +136,7 @@ class NotificationActionService : Service() {
     }
 
     private fun markMessagesAsStarred(intent: Intent, account: LegacyAccountDto) {
-        logger.info { "NotificationActionService starring messages for account: ${account.id}" }
+        logger.info(TAG) { "NotificationActionService starring messages for account: ${account.id}" }
 
         val messageReferenceStrings = intent.getStringArrayListExtra(EXTRA_MESSAGE_REFERENCES)
         val messageReferences = MessageReferenceHelper.toMessageReferenceList(messageReferenceStrings)
@@ -155,7 +156,7 @@ class NotificationActionService : Service() {
             if (messageReference != null) {
                 messagingController.cancelNotificationForMessage(account, messageReference)
             } else {
-                logger.warn { "Invalid message reference: $messageReferenceString" }
+                logger.warn(TAG) { "Invalid message reference: $messageReferenceString" }
             }
         } else if (intent.hasExtra(EXTRA_MESSAGE_REFERENCES)) {
             val messageReferenceStrings = intent.getStringArrayListExtra(EXTRA_MESSAGE_REFERENCES)

@@ -6,6 +6,8 @@ import android.graphics.BitmapFactory
 import app.k9mail.core.android.common.contact.ContactRepository
 import net.thunderbird.legacy.logging.Log
 
+private const val TAG = "ContactPhotoLoader"
+
 internal class ContactPhotoLoader(
     private val contentResolver: ContentResolver,
     private val contactRepository: ContactRepository,
@@ -17,7 +19,7 @@ internal class ContactPhotoLoader(
                 BitmapFactory.decodeStream(inputStream)
             }
         } catch (e: Exception) {
-            Log.e(e, "Couldn't load contact photo: $photoUri")
+            Log.e(TAG, e, "Couldn't load contact photo: $photoUri")
             null
         }
     }

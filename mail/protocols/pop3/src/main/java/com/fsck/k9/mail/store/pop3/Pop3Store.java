@@ -14,6 +14,8 @@ import org.jetbrains.annotations.NotNull;
 
 
 public class Pop3Store {
+    private static final String TAG = "Pop3Store";
+
     private final TrustedSocketFactory trustedSocketFactory;
     private final String host;
     private final int port;
@@ -56,7 +58,7 @@ public class Pop3Store {
             folder.open();
             folder.requestUidl();
         } catch (Exception e) {
-            Log.e(e, "Error while checking server settings");
+            Log.e(TAG, e, "Error while checking server settings");
             throw e;
         } finally {
             folder.close();

@@ -8,6 +8,8 @@ import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.legacy.logging.Log
 import androidx.core.app.NotificationCompat.Builder as NotificationBuilder
 
+private const val TAG = "SummaryNotificationCreator"
+
 internal class SummaryNotificationCreator(
     private val notificationHelper: NotificationHelper,
     private val actionCreator: NotificationActionCreator,
@@ -72,7 +74,7 @@ internal class SummaryNotificationCreator(
             .setLockScreenNotification(baseNotificationData)
             .build()
 
-        Log.v("Creating inbox-style summary notification (silent=%b): %s", notificationData.isSilent, notification)
+        Log.v(TAG, "Creating inbox-style summary notification (silent=%b): %s", notificationData.isSilent, notification)
         notificationHelper.notify(account, notificationData.notificationId, notification)
     }
 

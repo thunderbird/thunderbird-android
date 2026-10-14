@@ -34,8 +34,6 @@ dependencies {
 
     testImplementation(libs.kotlin.compiler)
     testImplementation(libs.kotlin.compile.testing)
-    // For fixtures
-    testImplementation(projects.core.logging.api)
 }
 
 buildConfig {

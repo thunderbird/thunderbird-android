@@ -17,6 +17,8 @@ import net.thunderbird.legacy.logging.Log
 import net.thunderbird.feature.mail.message.list.LocalMessageUidPrefixProvider
 import org.jetbrains.annotations.NotNull
 
+private const val TAG = "DraftOperations"
+
 internal class DraftOperations(
     private val messagingController: @NotNull MessagingController,
     private val messageStoreManager: @NotNull MessageStoreManager,
@@ -41,7 +43,7 @@ internal class DraftOperations(
 
             messageId
         } catch (e: MessagingException) {
-            Log.e(e, "Unable to save message as draft.")
+            Log.e(TAG, e, "Unable to save message as draft.")
             null
         }
     }
@@ -107,10 +109,10 @@ internal class DraftOperations(
         val uploadMessageId = command.uploadMessageId
         val localMessage = localFolder.getMessage(uploadMessageId)
         if (localMessage == null) {
-            Log.w("Couldn't find local copy of message to upload [ID: %d]", uploadMessageId)
+            Log.w(TAG, "Couldn't find local copy of message to upload [ID: %d]", uploadMessageId)
             return
         } else if (!localMessage.uid.startsWith(localMessageUidPrefixProvider.get())) {
-            Log.i("Message [ID: %d] to be uploaded already has a server ID set. Skipping upload.", uploadMessageId)
+            Log.i(TAG, "Message [ID: %d] to be uploaded already has a server ID set. Skipping upload.", uploadMessageId)
         } else {
             uploadMessage(backend, account, localFolder, localMessage)
         }
@@ -125,7 +127,7 @@ internal class DraftOperations(
         localMessage: LocalMessage,
     ) {
         val folderServerId = localFolder.serverId
-        Log.d("Uploading message [ID: %d] to remote folder '%s'", localMessage.databaseId, folderServerId)
+        Log.d(TAG, "Uploading message [ID: %d] to remote folder '%s'", localMessage.databaseId, folderServerId)
 
         val fetchProfile = FetchProfile().apply {
             add(FetchProfile.Item.BODY)
@@ -136,6 +138,7 @@ internal class DraftOperations(
 
         if (messageServerId == null) {
             Log.w(
+                TAG,
                 "Failed to get a server ID for the uploaded message. Removing local copy [ID: %d]",
                 localMessage.databaseId,
             )
@@ -154,7 +157,7 @@ internal class DraftOperations(
 
     private fun deleteMessage(backend: Backend, localFolder: LocalFolder, messageId: Long) {
         val messageServerId = localFolder.getMessageUidById(messageId) ?: run {
-            Log.i("Couldn't find local copy of message [ID: %d] to be deleted. Skipping delete.", messageId)
+            Log.i(TAG, "Couldn't find local copy of message [ID: %d] to be deleted. Skipping delete.", messageId)
             return
         }
 

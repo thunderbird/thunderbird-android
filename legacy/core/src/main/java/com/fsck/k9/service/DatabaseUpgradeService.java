@@ -27,6 +27,8 @@ import net.thunderbird.legacy.logging.Log;
  * </p>
  */
 public class DatabaseUpgradeService extends Service {
+    private static final String TAG = "DatabaseUpgradeService";
+
     /**
      * Broadcast intent reporting the current progress of the database upgrade.
      *
@@ -120,7 +122,7 @@ public class DatabaseUpgradeService extends Service {
         boolean success = mRunning.compareAndSet(false, true);
         if (success) {
             // The service wasn't running yet.
-            Log.i("DatabaseUpgradeService started");
+            Log.i(TAG, "DatabaseUpgradeService started");
 
             acquireWakelock();
 
@@ -156,7 +158,7 @@ public class DatabaseUpgradeService extends Service {
      */
     private void stopService() {
         stopSelf();
-        Log.i("DatabaseUpgradeService stopped");
+        Log.i(TAG, "DatabaseUpgradeService stopped");
 
         releaseWakelock();
         mRunning.set(false);
@@ -194,7 +196,7 @@ public class DatabaseUpgradeService extends Service {
                 // Account.getLocalStore() is blocking and will upgrade the database if necessary
                 DI.get(LocalStoreProvider.class).getInstance(account);
             } catch (Exception e) {
-                Log.e(e, "Error while upgrading database");
+                Log.e(TAG, e, "Error while upgrading database");
             }
 
             mProgress++;

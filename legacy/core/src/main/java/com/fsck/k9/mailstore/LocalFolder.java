@@ -58,6 +58,8 @@ import net.thunderbird.legacy.logging.Log;
 
 
 public class LocalFolder {
+    private static final String TAG = "LocalFolder";
+
     private static final int MAX_BODY_SIZE_FOR_DATABASE = 16 * 1024;
     private static final long INVALID_MESSAGE_PART_ID = -1;
 
@@ -813,7 +815,7 @@ public class LocalFolder {
                 try {
                     updateOrInsertMessagePart(db, new ContentValues(), part, messagePartId);
                 } catch (Exception e) {
-                    Log.e(e, "Error writing message part");
+                    Log.e(TAG, e, "Error writing message part");
                 }
 
                 return null;
@@ -857,7 +859,7 @@ public class LocalFolder {
                     try {
                         message.setFlags(flags, value);
                     } catch (MessagingException e) {
-                        Log.e(e, "Something went wrong while setting flag");
+                        Log.e(TAG, e, "Something went wrong while setting flag");
                     }
                 }
 
@@ -1127,7 +1129,7 @@ public class LocalFolder {
                 File file = localStore.getAttachmentFile(messagePartId);
                 if (file.exists()) {
                     if (!file.delete() && generalSettingsManager.getConfig().getDebugging().isDebugLoggingEnabled()) {
-                        Log.d("Couldn't delete message part file: %s", file.getAbsolutePath());
+                        Log.d(TAG, "Couldn't delete message part file: %s", file.getAbsolutePath());
                     }
                 }
             }

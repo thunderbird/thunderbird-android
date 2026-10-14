@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.core.featureflag.FeatureFlagKey
 import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.featureflag.FeatureFlagResult
@@ -17,7 +18,8 @@ import net.thunderbird.core.featureflag.model.FeatureFlagCatalog
 import net.thunderbird.core.featureflag.model.FlagOverrides
 import net.thunderbird.core.featureflag.provider.CatalogFeatureFlagProvider.State
 import net.thunderbird.core.featureflag.provider.context.FeatureFlagContext
-import net.thunderbird.core.logging.Logger
+
+private const val TAG = "CatalogFeatureFlagProvider"
 
 /**
  * Extended interface for catalog-based feature flag providers.
@@ -94,25 +96,25 @@ abstract class BaseCatalogFeatureFlagProvider internal constructor(
     protected fun resolve(context: FeatureFlagContext?, catalog: FeatureFlagCatalog?): Map<String, Boolean> {
         this.catalog.update { catalog }
         updateState { State.ResolvingFlags }
-        logger.verbose { "$logPrefix resolving feature flag catalog for '${metadata.name}' provider" }
+        logger.verbose(TAG) { "$logPrefix resolving feature flag catalog for '${metadata.name}' provider" }
         if (catalog == null) {
-            logger.verbose { "$logPrefix no catalog available" }
+            logger.verbose(TAG) { "$logPrefix no catalog available" }
             updateState { State.Resolved }
             return emptyMap()
         }
         val base = catalog.flags.associate { it.key to it.default }
-        logger.verbose { "$logPrefix base flags: $base" }
+        logger.verbose(TAG) { "$logPrefix base flags: $base" }
 
         val app = context?.get(key = "app")?.asString()
         val buildType = context?.get(key = "build_type")?.asString()
-        logger.verbose { "$logPrefix fetching overrides for '$app/$buildType'" }
+        logger.verbose(TAG) { "$logPrefix fetching overrides for '$app/$buildType'" }
         val overrides = if (app != null && buildType != null) {
             catalog.overrides[app]?.get(buildType).orEmpty()
         } else {
             emptyMap()
         }
         val resolvedFlags = base + overrides
-        logger.verbose { "$logPrefix resolved flags: $resolvedFlags" }
+        logger.verbose(TAG) { "$logPrefix resolved flags: $resolvedFlags" }
         updateState { State.Resolved }
         return resolvedFlags
     }

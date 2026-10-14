@@ -4,12 +4,10 @@ import com.fsck.k9.mailstore.LocalStoreProvider
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.components.core.outcome.Outcome
 import net.thunderbird.core.android.account.LegacyAccountManager
-import net.thunderbird.core.architecture.model.LegacyEntityIdFactory
-import net.thunderbird.core.logging.Logger
 import net.thunderbird.feature.account.AccountId
-import net.thunderbird.feature.mail.folder.FolderId
 import net.thunderbird.feature.mail.folder.LegacyFolderIdFactory
 import net.thunderbird.feature.mail.message.LegacyMessageIdFactory
 import net.thunderbird.feature.mail.message.MessageId
@@ -17,6 +15,7 @@ import net.thunderbird.feature.mail.message.domain.GetMessageIdCriteria
 import net.thunderbird.feature.mail.message.domain.MessageQueryError
 import net.thunderbird.feature.mail.message.domain.MessageQueryRepository
 
+private const val TAG = "DefaultMessageQueryRepository"
 private const val LOG_ID = "[repository][message-query]"
 
 class DefaultMessageQueryRepository(
@@ -29,7 +28,7 @@ class DefaultMessageQueryRepository(
         accountId: AccountId,
         criteria: GetMessageIdCriteria,
     ): Outcome<MessageId?, MessageQueryError> = withContext(ioDispatcher) {
-        logger.verbose { "$LOG_ID finding message id by account id = '$accountId' and criteria = $criteria" }
+        logger.verbose(TAG) { "$LOG_ID finding message id by account id = '$accountId' and criteria = $criteria" }
         val account = accountManager.getById(accountId) ?: error("account not found")
         val localStore = localStoreProvider.getInstanceByLegacyAccount(account)
         val lockableDatabase = localStore.database
@@ -54,7 +53,7 @@ class DefaultMessageQueryRepository(
             }
         }
         val messageId = legacyMessageId?.let(LegacyMessageIdFactory::of)
-        logger.verbose { "message id = '$messageId'" }
+        logger.verbose(TAG) { "message id = '$messageId'" }
         Outcome.success(messageId)
     }
 }

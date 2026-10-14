@@ -8,9 +8,9 @@ import com.fsck.k9.controller.MessagingController
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import net.thunderbird.components.core.logging.Logger
+import net.thunderbird.components.core.logging.testing.TestLogger
 import net.thunderbird.core.android.testing.RobolectricTest
-import net.thunderbird.core.logging.Logger
-import net.thunderbird.core.logging.testing.TestLogger
 import net.thunderbird.core.preference.interaction.InteractionSettingsPreferenceManager
 import org.junit.After
 import org.junit.Before

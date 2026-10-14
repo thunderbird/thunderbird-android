@@ -4,6 +4,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
 import kotlinx.io.IOException
+import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.components.core.outcome.Outcome
 import net.thunderbird.core.featureflag.FeatureFlagKey
 import net.thunderbird.core.featureflag.data.FeatureFlagCatalogDataSource
@@ -12,8 +13,8 @@ import net.thunderbird.core.featureflag.data.configstore.FeatureFlagConfigStore
 import net.thunderbird.core.featureflag.domain.RemoteFeatureFlagDomainContract.FetchEnabledFeatureFlags
 import net.thunderbird.core.featureflag.model.FeatureFlagCatalog
 import net.thunderbird.core.featureflag.provider.evaluator.MultiFeatureFlagProviderEvaluator
-import net.thunderbird.core.logging.Logger
 
+private const val TAG = "DefaultFetchEnabledFeatureFlags"
 private const val LOG_ID = "[feature-flag][usecase][fetch-enabled]"
 
 internal class DefaultFetchEnabledFeatureFlags(
@@ -24,7 +25,7 @@ internal class DefaultFetchEnabledFeatureFlags(
 ) : FetchEnabledFeatureFlags {
 
     override fun invoke(): Flow<Outcome<FetchEnabledFeatureFlags.Success, FetchEnabledFeatureFlags.Failure>> {
-        logger.verbose { "$LOG_ID fetching enabled feature flags" }
+        logger.verbose(TAG) { "$LOG_ID fetching enabled feature flags" }
         return combine<
             FeatureFlagConfigData,
             List<FeatureFlagKey>,
@@ -35,7 +36,7 @@ internal class DefaultFetchEnabledFeatureFlags(
             featureFlagProvider.enabledFlags,
             remoteDataSource.observe(),
         ) { config, enabledFlags, data ->
-            logger.verbose {
+            logger.verbose(TAG) {
                 """$LOG_ID combine called:
                     |  feature flag config store: $config
                     |  enabled flags: $enabledFlags
@@ -52,7 +53,7 @@ internal class DefaultFetchEnabledFeatureFlags(
             )
         }.catch { error ->
             if (error !is IOException) throw error
-            logger.error(throwable = error) { "$LOG_ID failed to read the feature flag config" }
+            logger.error(TAG, throwable = error) { "$LOG_ID failed to read the feature flag config" }
             emit(Outcome.failure(FetchEnabledFeatureFlags.Failure.ConfigReadFailed(cause = error)))
         }
     }

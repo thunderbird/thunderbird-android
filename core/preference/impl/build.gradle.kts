@@ -11,8 +11,8 @@ kotlin {
         commonMain.dependencies {
             api(projects.core.preference.api)
 
-            implementation(projects.core.logging.api)
             implementation(projects.core.common)
+            implementation(projects.core.logging.api)
         }
     }
 }

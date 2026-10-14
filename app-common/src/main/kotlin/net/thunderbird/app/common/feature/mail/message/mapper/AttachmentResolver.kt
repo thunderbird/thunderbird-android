@@ -15,7 +15,7 @@ import com.fsck.k9.mailstore.LocalPart
 import java.io.File
 import java.io.IOException
 import net.thunderbird.app.common.feature.mail.message.mapper.DefaultMessageDataMapper.Companion.LOG_ID
-import net.thunderbird.core.logging.Logger
+import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.mail.message.MessageAttachment
 import net.thunderbird.feature.mail.message.MimeType
@@ -27,6 +27,8 @@ import okio.blackholeSink
 import okio.buffer
 import okio.sink
 import okio.source
+
+private const val TAG = "AttachmentResolver"
 
 /**
  * Resolves attachment metadata and content when converting between legacy [Part]s and
@@ -121,7 +123,7 @@ internal class AttachmentResolver(
         accountId: AccountId,
     ): File? {
         val partBody = body ?: return null.also {
-            logger.warn {
+            logger.warn(TAG) {
                 "$LOG_ID attachment part has no body (content not downloaded yet). internalUri will be null."
             }
         }

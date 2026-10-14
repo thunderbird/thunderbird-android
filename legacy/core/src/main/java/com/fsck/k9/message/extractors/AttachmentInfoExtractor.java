@@ -30,6 +30,8 @@ import com.fsck.k9.provider.DecryptedFileProvider;
 
 
 public class AttachmentInfoExtractor {
+    private static final String TAG = "AttachmentInfoExtractor";
+
     private final Context context;
 
 
@@ -94,7 +96,7 @@ public class AttachmentInfoExtractor {
             uri = DecryptedFileProvider.getUriForProvidedFile(
                     context, file, decryptedTempFileBody.getEncoding(), mimeType);
         } catch (IOException e) {
-            Log.e(e, "Decrypted temp file (no longer?) exists!");
+            Log.e(TAG, e, "Decrypted temp file (no longer?) exists!");
             uri = null;
         }
         return uri;

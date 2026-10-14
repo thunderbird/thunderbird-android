@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
+import net.thunderbird.components.core.logging.testing.TestLogger
 import net.thunderbird.core.featureflag.FeatureFlagResult
 import net.thunderbird.core.featureflag.data.FeatureFlagCatalogDataSource
 import net.thunderbird.core.featureflag.data.configstore.FeatureFlagConfigData
@@ -24,7 +25,6 @@ import net.thunderbird.core.featureflag.model.FlagRegistry
 import net.thunderbird.core.featureflag.model.FlagRegistryOverride
 import net.thunderbird.core.featureflag.provider.context.FeatureFlagContext
 import net.thunderbird.core.featureflag.provider.context.ImmutableFeatureFlagContext
-import net.thunderbird.core.logging.testing.TestLogger
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class RemoteCatalogFeatureFlagProviderTest {

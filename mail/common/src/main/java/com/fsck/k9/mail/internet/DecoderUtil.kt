@@ -13,6 +13,8 @@ import okio.source
 import org.apache.james.mime4j.codec.QuotedPrintableInputStream
 import org.apache.james.mime4j.util.CharsetUtil
 
+private const val TAG = "DecoderUtil"
+
 /**
  * Decoder for encoded words (RFC 2047).
  *
@@ -136,7 +138,7 @@ internal object DecoderUtil {
         }
 
         if (encodedText.isEmpty()) {
-            Log.w("Missing encoded text in encoded word: '%s'", body.substring(begin, end))
+            Log.w(TAG, "Missing encoded text in encoded word: '%s'", body.substring(begin, end))
             return null
         }
 
@@ -145,7 +147,7 @@ internal object DecoderUtil {
         } else if (encoding.equals("B", ignoreCase = true)) {
             EncodedWord(charset, Encoding.B, decodeB(encodedText))
         } else {
-            Log.w("Warning: Unknown encoding in encoded word '%s'", body.substring(begin, end))
+            Log.w(TAG, "Warning: Unknown encoding in encoded word '%s'", body.substring(begin, end))
             null
         }
     }

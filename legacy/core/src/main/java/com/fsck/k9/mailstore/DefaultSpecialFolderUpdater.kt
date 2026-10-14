@@ -10,7 +10,7 @@ import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.core.common.mail.Protocols
-import net.thunderbird.core.logging.Logger
+import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.mail.folder.FolderType
 import net.thunderbird.feature.mail.folder.api.RemoteFolder
@@ -19,6 +19,8 @@ import net.thunderbird.feature.mail.folder.api.SpecialFolderUpdater
 import net.thunderbird.feature.mail.folder.api.data.repository.FolderDetailsRepository
 import net.thunderbird.feature.mail.folder.api.data.repository.PartialUpdatableFolderDetails
 import net.thunderbird.feature.mail.folder.api.data.repository.RemoteFolderQueryRepository
+
+private const val TAG = "DefaultSpecialFolderUpdater"
 
 /**
  * Updates special folders in [LegacyAccountDto] if they are marked as [SpecialFolderSelection.AUTOMATIC] or if they
@@ -68,7 +70,7 @@ class DefaultSpecialFolderUpdater(
                 updateAccount(account)
             },
             onFailure = { error ->
-                logger.error { "Failed to update special folders. Folder error: $error" }
+                logger.error(TAG) { "Failed to update special folders. Folder error: $error" }
                 when (val throwable = error.throwable) {
                     null -> error("Unknown error while loading folders. Error: $error")
                     else -> throw throwable

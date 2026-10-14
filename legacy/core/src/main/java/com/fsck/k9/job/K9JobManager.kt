@@ -7,6 +7,8 @@ import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.account.LegacyAccountDtoManager
 import net.thunderbird.legacy.logging.Log
 
+private const val TAG = "K9JobManager"
+
 class K9JobManager(
     private val workManager: WorkManager,
     private val accountManager: LegacyAccountDtoManager,
@@ -22,7 +24,7 @@ class K9JobManager(
     }
 
     fun scheduleAllMailJobs() {
-        Log.v("scheduling all jobs")
+        Log.v(TAG, "scheduling all jobs")
         scheduleMailSync()
     }
 
@@ -40,7 +42,7 @@ class K9JobManager(
     }
 
     private fun cancelAllMailSyncJobs() {
-        Log.v("canceling mail sync job")
+        Log.v(TAG, "canceling mail sync job")
         workManager.cancelAllWorkByTag(MailSyncWorkerManager.MAIL_SYNC_TAG)
     }
 }

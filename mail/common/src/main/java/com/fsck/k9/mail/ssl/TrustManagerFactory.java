@@ -18,12 +18,14 @@ import net.thunderbird.legacy.logging.Log;
 import org.apache.hc.client5.http.ssl.DefaultHostnameVerifier;
 
 public class TrustManagerFactory {
+    private static final String TAG = "TrustManagerFactory";
+
     public static TrustManagerFactory createInstance(LocalKeyStore localKeyStore) {
         TrustManagerFactory trustManagerFactory = new TrustManagerFactory(localKeyStore);
         try {
             trustManagerFactory.initialize();
         } catch (NoSuchAlgorithmException | KeyStoreException e) {
-            Log.e(e, "Failed to initialize X509 Trust Manager!");
+            Log.e(TAG, e, "Failed to initialize X509 Trust Manager!");
             throw new IllegalStateException(e);
         }
         return trustManagerFactory;
