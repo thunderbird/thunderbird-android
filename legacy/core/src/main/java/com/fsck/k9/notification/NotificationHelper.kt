@@ -117,7 +117,7 @@ internal class NotificationHelper(
     }
 
     private fun getNotificationId(accountId: AccountId): Int {
-        return notificationIdRegistry.getOrAllocate(accountId, AccountNotificationKind.NewMailSummary)
+        return notificationIdRegistry.getOrAllocate(accountId, AccountNotificationKind.NewMailSummary).value
     }
 
     companion object {

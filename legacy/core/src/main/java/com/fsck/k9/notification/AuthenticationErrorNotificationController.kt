@@ -58,7 +58,7 @@ internal open class AuthenticationErrorNotificationController(
         } else {
             AccountNotificationKind.AuthenticationErrorOutgoing
         }
-        return notificationIdRegistry.getOrAllocate(accountId, kind)
+        return notificationIdRegistry.getOrAllocate(accountId, kind).value
     }
 
     protected open fun createContentIntent(account: LegacyAccount, incoming: Boolean): PendingIntent {

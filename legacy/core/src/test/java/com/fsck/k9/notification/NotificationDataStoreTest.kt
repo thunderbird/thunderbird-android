@@ -30,6 +30,7 @@ import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.account.storage.profile.AvatarDto
 import net.thunderbird.feature.account.storage.profile.AvatarTypeDto
 import net.thunderbird.feature.account.storage.profile.ProfileDto
+import net.thunderbird.feature.notification.api.NotificationId
 
 private const val FOLDER_ID = 42L
 private const val TIMESTAMP = 0L
@@ -55,7 +56,7 @@ class NotificationDataStoreTest : RobolectricTest() {
 
         assertThat(holder).isNotNull()
         assertThat(holder.notificationId).isEqualTo(
-            notificationIdRegistry.getOrAllocate(accountId, AccountNotificationKind.SingleMessage, 0),
+            notificationIdRegistry.getOrAllocate(accountId, AccountNotificationKind.SingleMessage, 0).value,
         )
         assertThat(holder.content).isEqualTo(content)
     }
@@ -126,7 +127,7 @@ class NotificationDataStoreTest : RobolectricTest() {
         assertNotNull(result)
         assertThat(result.shouldCancelNotification).isTrue()
         assertThat(result.cancelNotificationId).isEqualTo(
-            notificationIdRegistry.getOrAllocate(accountId, AccountNotificationKind.SingleMessage, 0),
+            notificationIdRegistry.getOrAllocate(accountId, AccountNotificationKind.SingleMessage, 0).value,
         )
     }
 
@@ -140,7 +141,7 @@ class NotificationDataStoreTest : RobolectricTest() {
         assertNotNull(result) { removeResult ->
             assertThat(removeResult.cancelNotificationIds)
                 .containsExactly(
-                    notificationIdRegistry.getOrAllocate(accountId, AccountNotificationKind.SingleMessage, 0),
+                    notificationIdRegistry.getOrAllocate(accountId, AccountNotificationKind.SingleMessage, 0).value,
                 )
             assertThat(removeResult.notificationHolders).isEmpty()
         }
@@ -171,13 +172,13 @@ class NotificationDataStoreTest : RobolectricTest() {
                         accountId,
                         AccountNotificationKind.SingleMessage,
                         1,
-                    ),
+                    ).value,
                 )
             assertThat(removeResult.notificationHolders).hasSize(1)
 
             val holder = removeResult.notificationHolders.first()
             assertThat(holder.notificationId).isEqualTo(
-                notificationIdRegistry.getOrAllocate(accountId, AccountNotificationKind.SingleMessage, 1),
+                notificationIdRegistry.getOrAllocate(accountId, AccountNotificationKind.SingleMessage, 1).value,
             )
             assertThat(holder.content).isEqualTo(content)
         }
@@ -309,15 +310,19 @@ class NotificationDataStoreTest : RobolectricTest() {
     }
 
     private class FakeAccountNotificationIdRegistry : AccountNotificationIdRegistry {
-        private val notificationIds = mutableMapOf<Triple<AccountId, AccountNotificationKind, Int?>, Int>()
+        private val notificationIds = mutableMapOf<Triple<AccountId, AccountNotificationKind, Int?>, NotificationId>()
 
-        override fun getOrAllocate(accountId: AccountId, kind: AccountNotificationKind): Int =
+        override fun getOrAllocate(accountId: AccountId, kind: AccountNotificationKind): NotificationId =
             getOrAllocate(accountId, kind, null)
 
-        override fun getOrAllocate(accountId: AccountId, kind: AccountNotificationKind, index: Int): Int =
+        override fun getOrAllocate(
+            accountId: AccountId,
+            kind: AccountNotificationKind,
+            index: Int,
+        ): NotificationId =
             getOrAllocate(accountId, kind, index as Int?)
 
-        override fun getAllNewMailNotificationIds(accountId: AccountId): List<Int> =
+        override fun getAllNewMailNotificationIds(accountId: AccountId): List<NotificationId> =
             buildList {
                 repeat(MAX_NUMBER_OF_NEW_MESSAGE_NOTIFICATIONS) { index ->
                     add(getOrAllocate(accountId, AccountNotificationKind.SingleMessage, index))
@@ -325,9 +330,9 @@ class NotificationDataStoreTest : RobolectricTest() {
                 add(getOrAllocate(accountId, AccountNotificationKind.NewMailSummary))
             }
 
-        private fun getOrAllocate(accountId: AccountId, kind: AccountNotificationKind, index: Int?): Int =
+        private fun getOrAllocate(accountId: AccountId, kind: AccountNotificationKind, index: Int?): NotificationId =
             notificationIds.getOrPut(Triple(accountId, kind, index)) {
-                1000 + notificationIds.size
+                NotificationId(1000 + notificationIds.size)
             }
     }
 

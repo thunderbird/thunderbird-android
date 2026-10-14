@@ -15,6 +15,7 @@ import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.account.storage.profile.AvatarDto
 import net.thunderbird.feature.account.storage.profile.AvatarTypeDto
 import net.thunderbird.feature.account.storage.profile.ProfileDto
+import net.thunderbird.feature.notification.api.NotificationId
 import net.thunderbird.legacy.core.mailstore.folder.FakeOutboxFolderManager
 import org.junit.Test
 import org.mockito.ArgumentMatchers.anyLong
@@ -67,7 +68,7 @@ class SyncNotificationControllerTest : RobolectricTest() {
         on { findById(accountId) } doReturn account
     }
     private val notificationIdRegistry = mock<AccountNotificationIdRegistry> {
-        on { getOrAllocate(accountId, AccountNotificationKind.Sync) } doReturn NOTIFICATION_ID
+        on { getOrAllocate(accountId, AccountNotificationKind.Sync) } doReturn NotificationId(NOTIFICATION_ID)
     }
     private val contentIntent = mock<PendingIntent>()
     private val controller = SyncNotificationController(

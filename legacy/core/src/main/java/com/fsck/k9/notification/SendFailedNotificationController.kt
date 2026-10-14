@@ -62,7 +62,7 @@ internal class SendFailedNotificationController(
     }
 
     private fun getNotificationId(accountId: AccountId): Int {
-        return notificationIdRegistry.getOrAllocate(accountId, AccountNotificationKind.SendFailed)
+        return notificationIdRegistry.getOrAllocate(accountId, AccountNotificationKind.SendFailed).value
     }
 
     private fun createLockScreenNotification(account: LegacyAccount): Notification {

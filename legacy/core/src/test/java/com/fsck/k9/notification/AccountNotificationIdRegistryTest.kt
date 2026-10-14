@@ -22,6 +22,7 @@ import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.account.storage.profile.AvatarDto
 import net.thunderbird.feature.account.storage.profile.AvatarTypeDto
 import net.thunderbird.feature.account.storage.profile.ProfileDto
+import net.thunderbird.feature.notification.api.NotificationId
 import org.junit.Test
 
 class AccountNotificationIdRegistryTest : RobolectricTest() {
@@ -45,8 +46,10 @@ class AccountNotificationIdRegistryTest : RobolectricTest() {
         val accountOneId = testSubject.getOrAllocate(accountOne.id, AccountNotificationKind.Sync)
         val accountTwoId = testSubject.getOrAllocate(accountTwo.id, AccountNotificationKind.Sync)
 
-        assertThat(accountOneId).isEqualTo(NotificationIds.getFetchingMailNotificationId(accountOne.accountNumber))
-        assertThat(accountTwoId).isEqualTo(NotificationIds.getFetchingMailNotificationId(accountTwo.accountNumber))
+        assertThat(accountOneId)
+            .isEqualTo(NotificationId(NotificationIds.getFetchingMailNotificationId(accountOne.accountNumber)))
+        assertThat(accountTwoId)
+            .isEqualTo(NotificationId(NotificationIds.getFetchingMailNotificationId(accountTwo.accountNumber)))
         assertThat(accountOneId).isNotEqualTo(accountTwoId)
     }
 
@@ -60,8 +63,8 @@ class AccountNotificationIdRegistryTest : RobolectricTest() {
         val updatedId = testSubject.getOrAllocate(accountOne.id, AccountNotificationKind.Sync)
 
         // Assert
-        assertThat(initialId).isEqualTo(NotificationIds.getFetchingMailNotificationId(4))
-        assertThat(updatedId).isEqualTo(NotificationIds.getFetchingMailNotificationId(6))
+        assertThat(initialId).isEqualTo(NotificationId(NotificationIds.getFetchingMailNotificationId(4)))
+        assertThat(updatedId).isEqualTo(NotificationId(NotificationIds.getFetchingMailNotificationId(6)))
     }
 
     @Test
@@ -97,7 +100,7 @@ class AccountNotificationIdRegistryTest : RobolectricTest() {
         val ids = testSubject.getAllNewMailNotificationIds(accountOne.id)
 
         assertThat(ids).isEqualTo(
-            NotificationIds.getAllMessageNotificationIds(accountOne.accountNumber),
+            NotificationIds.getAllMessageNotificationIds(accountOne.accountNumber).map(::NotificationId),
         )
     }
 

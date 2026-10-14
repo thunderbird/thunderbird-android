@@ -25,6 +25,7 @@ import net.thunderbird.core.preference.notification.NotificationPreference
 import net.thunderbird.core.preference.privacy.PrivacySettings
 import net.thunderbird.core.testing.TestClock
 import net.thunderbird.feature.account.AccountIdFactory
+import net.thunderbird.feature.notification.api.NotificationId
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -48,7 +49,7 @@ class SummaryNotificationDataCreatorTest {
         on { findById(accountId) } doReturn account
     }
     private val notificationIdRegistry = mock<AccountNotificationIdRegistry> {
-        on { getOrAllocate(any(), any()) } doReturn 1
+        on { getOrAllocate(any(), any()) } doReturn NotificationId(1)
     }
     private val testClock = TestClock()
     private var generalSettings = GeneralSettings(

@@ -58,7 +58,7 @@ internal open class CertificateErrorNotificationController(
         } else {
             AccountNotificationKind.CertificateErrorOutgoing
         }
-        return notificationIdRegistry.getOrAllocate(accountId, kind)
+        return notificationIdRegistry.getOrAllocate(accountId, kind).value
     }
 
     protected open fun createContentIntent(account: LegacyAccount, incoming: Boolean): PendingIntent {

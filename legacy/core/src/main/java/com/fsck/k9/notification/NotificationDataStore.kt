@@ -242,7 +242,7 @@ internal class NotificationDataStore(
                 account.id,
                 AccountNotificationKind.SingleMessage,
                 index,
-            )
+            ).value
             if (notificationId !in notificationIdsInUse) {
                 return notificationId
             }

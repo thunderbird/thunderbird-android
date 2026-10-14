@@ -21,6 +21,7 @@ import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.account.storage.profile.AvatarDto
 import net.thunderbird.feature.account.storage.profile.AvatarTypeDto
 import net.thunderbird.feature.account.storage.profile.ProfileDto
+import net.thunderbird.feature.notification.api.NotificationId
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -71,7 +72,7 @@ class SendFailedNotificationControllerTest : RobolectricTest() {
         on { findById(accountId) } doReturn account
     }
     private val notificationIdRegistry = mock<AccountNotificationIdRegistry> {
-        on { getOrAllocate(accountId, AccountNotificationKind.SendFailed) } doReturn NOTIFICATION_ID
+        on { getOrAllocate(accountId, AccountNotificationKind.SendFailed) } doReturn NotificationId(NOTIFICATION_ID)
     }
     private val contentIntent = mock<PendingIntent>()
     private val controller = SendFailedNotificationController(

@@ -59,7 +59,7 @@ internal class SingleMessageNotificationDataCreator(
     }
 
     private fun getNotificationId(accountId: AccountId) = notificationIdRegistry
-        .getOrAllocate(accountId, AccountNotificationKind.NewMailSummary)
+        .getOrAllocate(accountId, AccountNotificationKind.NewMailSummary).value
 
     private fun createSingleNotificationActions(account: LegacyAccount): List<NotificationAction> {
         val order = parseActionsOrder(notificationSettings.messageActionsOrder)

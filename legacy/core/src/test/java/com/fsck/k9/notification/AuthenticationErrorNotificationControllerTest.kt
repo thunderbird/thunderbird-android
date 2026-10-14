@@ -22,6 +22,7 @@ import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.account.storage.profile.AvatarDto
 import net.thunderbird.feature.account.storage.profile.AvatarTypeDto
 import net.thunderbird.feature.account.storage.profile.ProfileDto
+import net.thunderbird.feature.notification.api.NotificationId
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -80,10 +81,10 @@ class AuthenticationErrorNotificationControllerTest : RobolectricTest() {
     private val notificationIdRegistry = mock<AccountNotificationIdRegistry> {
         on {
             getOrAllocate(accountId, AccountNotificationKind.AuthenticationErrorIncoming)
-        } doReturn INCOMING_NOTIFICATION_ID
+        } doReturn NotificationId(INCOMING_NOTIFICATION_ID)
         on {
             getOrAllocate(accountId, AccountNotificationKind.AuthenticationErrorOutgoing)
-        } doReturn OUTGOING_NOTIFICATION_ID
+        } doReturn NotificationId(OUTGOING_NOTIFICATION_ID)
     }
 
     private val controller = TestAuthenticationErrorNotificationController()

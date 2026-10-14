@@ -112,11 +112,11 @@ constructor(
 
     fun clearNewMailNotifications(accountId: AccountId, clearNewMessageState: Boolean): List<Int> {
         notificationRepository.clearNotifications(accountId, clearNewMessageState)
-        return notificationIdRegistry.getAllNewMailNotificationIds(accountId)
+        return notificationIdRegistry.getAllNewMailNotificationIds(accountId).map { it.value }
     }
 
     private fun getNewMailSummaryNotificationId(accountId: AccountId): Int {
-        return notificationIdRegistry.getOrAllocate(accountId, AccountNotificationKind.NewMailSummary)
+        return notificationIdRegistry.getOrAllocate(accountId, AccountNotificationKind.NewMailSummary).value
     }
 
     private fun createBaseNotificationData(notificationData: NotificationData): BaseNotificationData {

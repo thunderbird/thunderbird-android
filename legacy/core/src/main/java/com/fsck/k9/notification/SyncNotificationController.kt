@@ -57,7 +57,7 @@ internal class SyncNotificationController(
     }
 
     private fun getNotificationId(accountId: AccountId): Int {
-        return notificationIdRegistry.getOrAllocate(accountId, AccountNotificationKind.Sync)
+        return notificationIdRegistry.getOrAllocate(accountId, AccountNotificationKind.Sync).value
     }
 
     fun showFetchingMailNotification(accountId: AccountId, folder: LocalFolder) {
