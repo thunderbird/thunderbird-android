@@ -29,7 +29,7 @@ public class K9StoragePersister implements StoragePersister {
 
     private final Context context;
     private final Logger logger;
-    private final StorageMigrationHelper migrationHelper = new DefaultStorageMigrationHelper();
+    private final StorageMigrationHelper migrationHelper;
 
     public K9StoragePersister(
         Context context,
@@ -37,6 +37,7 @@ public class K9StoragePersister implements StoragePersister {
     ) {
         this.context = context;
         this.logger = logger;
+        this.migrationHelper = new DefaultStorageMigrationHelper(logger);
     }
 
     private SQLiteDatabase openDB() {

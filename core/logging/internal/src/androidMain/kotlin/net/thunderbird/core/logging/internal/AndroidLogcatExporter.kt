@@ -13,9 +13,9 @@ internal class AndroidLogcatExporter(
     private val processExecutor: ProcessExecutor,
     private val coroutineDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : LogcatExporter {
-    override suspend fun export(contentUri: Uri) {
+    override suspend fun export(destination: Uri) {
         return withContext(coroutineDispatcher) {
-            val outputStream = contentResolver.openOutputStream(contentUri, "wt")
+            val outputStream = contentResolver.openOutputStream(destination, "wt")
                 ?: error("Error opening contentUri for writing")
 
             outputStream.use {
