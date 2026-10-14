@@ -5,7 +5,7 @@ import android.content.res.Resources
 import androidx.annotation.RawRes
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
-import net.thunderbird.core.logging.Logger
+import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.feature.navigation.changelog.api.ChangelogConfigProvider
 
 private const val TAG = "ChangelogProvider"

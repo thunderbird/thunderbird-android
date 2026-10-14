@@ -122,6 +122,11 @@
         android:title="@string/account_settings_folders"
         >
 
+        <Preference
+            android:key="visibility_and_syncing"
+            android:title="@string/account_setup_visibility_and_syncing"
+            />
+
         <com.fsck.k9.ui.settings.account.FolderListPreference
             android:key="auto_select_folder"
             app:useSimpleSummaryProvider="true"

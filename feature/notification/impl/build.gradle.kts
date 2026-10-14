@@ -10,12 +10,10 @@ kotlin {
         commonMain.dependencies {
             implementation(projects.core.common)
             implementation(projects.core.featureflag)
-            implementation(projects.core.logging.api)
             implementation(projects.feature.notification.api)
         }
         commonTest.dependencies {
             implementation(projects.core.testing)
-            implementation(projects.core.logging.testing)
             implementation(projects.feature.notification.testing)
         }
         androidMain.dependencies {

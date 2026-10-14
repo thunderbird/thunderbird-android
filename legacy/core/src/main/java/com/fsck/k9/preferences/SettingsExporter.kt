@@ -23,6 +23,8 @@ import net.thunderbird.feature.mail.folder.api.data.repository.FolderQueryReposi
 import net.thunderbird.legacy.logging.Log
 import org.xmlpull.v1.XmlSerializer
 
+private const val TAG = "SettingsExporter"
+
 class SettingsExporter(
     private val contentResolver: ContentResolver,
     private val preferences: Preferences,
@@ -64,7 +66,7 @@ class SettingsExporter(
             serializer.attribute(null, VERSION_ATTRIBUTE, Settings.VERSION.toString())
             serializer.attribute(null, FILE_FORMAT_ATTRIBUTE, FILE_FORMAT_VERSION.toString())
 
-            Log.i("Exporting preferences")
+            Log.i(TAG, "Exporting preferences")
 
             val storage = preferences.storage
 
@@ -98,7 +100,7 @@ class SettingsExporter(
         } catch (e: Exception) {
             // An error here could mean we export notification settings that don't reflect the current configuration
             // of the notification channels. But we prefer stale data over failing the export.
-            Log.w(e, "Error while updating accounts with notification configuration from system")
+            Log.w(TAG, e, "Error while updating accounts with notification configuration from system")
         }
     }
 
@@ -113,13 +115,14 @@ class SettingsExporter(
                     writeKeyAndPrettyValueFromSetting(serializer, key, setting, valueString)
                 } catch (e: InvalidSettingValueException) {
                     Log.w(
+                        TAG,
                         "Global setting \"%s\" has invalid value \"%s\" in preference storage. This shouldn't happen!",
                         key,
                         valueString,
                     )
                 }
             } else {
-                Log.d("Couldn't find key \"%s\" in preference storage. Using default value.", key)
+                Log.d(TAG, "Couldn't find key \"%s\" in preference storage. Using default value.", key)
                 writeKeyAndDefaultValueFromSetting(serializer, key, setting)
             }
         }
@@ -289,6 +292,7 @@ class SettingsExporter(
                     writeKeyAndPrettyValueFromSetting(serializer, keyPart, setting, valueString)
                 } catch (e: InvalidSettingValueException) {
                     Log.w(
+                        TAG,
                         "Account setting \"%s\" (%s) has invalid value \"%s\" in preference storage. " +
                             "This shouldn't happen!",
                         keyPart,
@@ -407,6 +411,7 @@ class SettingsExporter(
                         writeKeyAndPrettyValueFromSetting(serializer, identityKey, setting, valueString)
                     } catch (e: InvalidSettingValueException) {
                         Log.w(
+                            TAG,
                             "Identity setting \"%s\" has invalid value \"%s\" in preference storage. " +
                                 "This shouldn't happen!",
                             identityKey,
@@ -447,6 +452,7 @@ class SettingsExporter(
                     writeKeyAndPrettyValueFromSetting(serializer, key, setting, value)
                 } catch (e: InvalidSettingValueException) {
                     Log.w(
+                        TAG,
                         "Folder setting \"%s\" has invalid value \"%s\" in preference storage. This shouldn't happen!",
                         key,
                         value,

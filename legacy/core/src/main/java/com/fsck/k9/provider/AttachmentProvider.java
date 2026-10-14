@@ -32,6 +32,8 @@ import org.openintents.openpgp.util.OpenPgpApi.OpenPgpDataSource;
  * A simple ContentProvider that allows file access to attachments.
  */
 public class AttachmentProvider extends ContentProvider {
+    private static final String TAG = "AttachmentProvider";
+
     public static Uri CONTENT_URI;
 
     private static final String[] DEFAULT_PROJECTION = new String[] {
@@ -109,12 +111,12 @@ public class AttachmentProvider extends ContentProvider {
             final LegacyAccountDto account = Preferences.getPreferences().getById(accountId);
             attachmentInfo = DI.get(LocalStoreProvider.class).getInstance(account).getAttachmentInfo(id);
         } catch (MessagingException e) {
-            Log.e(e, "Unable to retrieve attachment info from local store for ID: %s", id);
+            Log.e(TAG, e, "Unable to retrieve attachment info from local store for ID: %s", id);
             return null;
         }
 
         if (attachmentInfo == null) {
-            Log.d("No attachment info for ID: %s", id);
+            Log.d(TAG, "No attachment info for ID: %s", id);
             return null;
         }
 
@@ -178,7 +180,7 @@ public class AttachmentProvider extends ContentProvider {
                 type = attachmentInfo.type;
             }
         } catch (MessagingException e) {
-            Log.e(e, "Unable to retrieve LocalStore for %s", account);
+            Log.e(TAG, e, "Unable to retrieve LocalStore for %s", account);
             type = MimeTypeUtil.DEFAULT_ATTACHMENT_MIME_TYPE;
         }
 
@@ -190,15 +192,15 @@ public class AttachmentProvider extends ContentProvider {
         try {
             OpenPgpDataSource openPgpDataSource = getAttachmentDataSource(accountId, attachmentId);
             if (openPgpDataSource == null) {
-                Log.e("Error getting data source for attachment (part doesn't exist?)");
+                Log.e(TAG, "Error getting data source for attachment (part doesn't exist?)");
                 return null;
             }
             return openPgpDataSource.startPumpThread();
         } catch (MessagingException e) {
-            Log.e(e, "Error getting InputStream for attachment");
+            Log.e(TAG, e, "Error getting InputStream for attachment");
             return null;
         } catch (IOException e) {
-            Log.e(e, "Error creating ParcelFileDescriptor");
+            Log.e(TAG, e, "Error creating ParcelFileDescriptor");
             return null;
         }
     }

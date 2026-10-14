@@ -5,11 +5,13 @@ import net.openid.appauth.AuthState
 import net.thunderbird.legacy.logging.Log
 import org.json.JSONException
 
+private const val TAG = "AuthStateExtension"
+
 fun AuthState.toAuthorizationState(): AuthorizationState {
     return try {
         AuthorizationState(value = jsonSerializeString())
     } catch (e: JSONException) {
-        Log.e(e, "Error serializing AuthorizationState")
+        Log.e(TAG, e, "Error serializing AuthorizationState")
         AuthorizationState()
     }
 }
@@ -18,7 +20,7 @@ fun AuthorizationState.toAuthState(): AuthState {
     return try {
         value?.let { AuthState.jsonDeserialize(it) } ?: AuthState()
     } catch (e: JSONException) {
-        Log.e(e, "Error deserializing AuthorizationState")
+        Log.e(TAG, e, "Error deserializing AuthorizationState")
         AuthState()
     }
 }

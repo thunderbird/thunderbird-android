@@ -1,5 +1,6 @@
 package net.thunderbird.feature.account.storage.legacy
 
+import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.core.android.account.AccountDefaultsProvider
 import net.thunderbird.core.android.account.DeletePolicy
 import net.thunderbird.core.android.account.Expunge
@@ -10,7 +11,6 @@ import net.thunderbird.core.android.account.MessageFormat
 import net.thunderbird.core.android.account.QuoteStyle
 import net.thunderbird.core.android.account.ShowPictures
 import net.thunderbird.core.android.account.SortType
-import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.preference.storage.Storage
 import net.thunderbird.core.preference.storage.StorageEditor
 import net.thunderbird.core.preference.storage.getEnumOrDefault
@@ -22,6 +22,8 @@ import net.thunderbird.feature.notification.NotificationLight
 import net.thunderbird.feature.notification.NotificationSettings
 import net.thunderbird.feature.notification.NotificationVibration
 import net.thunderbird.feature.notification.VibratePattern
+
+private const val TAG = "LegacyAccountStorageHandler"
 
 class LegacyAccountStorageHandler(
     private val serverSettingsDtoSerializer: ServerSettingsDtoSerializer,
@@ -595,7 +597,7 @@ class LegacyAccountStorageHandler(
         return try {
             storage.getEnumOrDefault<T>(key, defaultEnum)
         } catch (ex: IllegalArgumentException) {
-            logger.warn(throwable = ex) {
+            logger.warn(tag = TAG, throwable = ex) {
                 "Unable to convert preference key [$key] to enum of type defaultEnum: $defaultEnum"
             }
 

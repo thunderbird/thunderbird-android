@@ -50,6 +50,8 @@ import net.thunderbird.feature.thundermail.ui.component.ThundermailButtonPanel
 import net.thunderbird.legacy.logging.Log
 import org.koin.compose.koinInject
 
+private const val TAG = "TbOnboardingMigrationScreen"
+
 @Composable
 internal fun TbOnboardingMigrationScreen(
     onQrCodeScan: () -> Unit,
@@ -281,7 +283,7 @@ private fun Context.launchLearnHowToUpdateThunderbird() {
 
         startActivity(viewIntent)
     } catch (e: ActivityNotFoundException) {
-        Log.d(e, "Failed to open URL")
+        Log.d(TAG, e, "Failed to open URL")
 
         Toast.makeText(
             this,

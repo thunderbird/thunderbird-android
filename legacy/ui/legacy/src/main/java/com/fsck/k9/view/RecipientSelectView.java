@@ -59,6 +59,8 @@ import static com.fsck.k9.FontSizes.FONT_DEFAULT;
 public class RecipientSelectView extends TokenCompleteTextView<Recipient> implements LoaderCallbacks<List<Recipient>>,
     AlternateRecipientListener {
 
+    private static final String TAG = "RecipientSelectView";
+
     private static final int MINIMUM_LENGTH_FOR_FILTERING = 2;
 
     private static final String ARG_QUERY = "query";
@@ -161,8 +163,11 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
 
         // Since the recipient chip views are not part of the view hierarchy we need to manually invalidate this
         // RecipientSelectView whenever a contact picture was loaded in order for the image to be drawn.
+        // The redraw is posted because Glide can deliver a memory-cached picture synchronously while the token span is
+        // being drawn (see RecipientTokenSpan.draw()). Changing the text's spans at that point reflows the layout in the
+        // middle of the draw pass and crashes in DynamicLayout.getLineStart().
         RecipientCircleImageView contactPhotoView = view.findViewById(R.id.contact_photo);
-        contactPhotoView.setOnSetImageDrawableListener(this::redrawTokens);
+        contactPhotoView.setOnSetImageDrawableListener(() -> post(this::redrawTokens));
 
         return view;
     }
@@ -493,7 +498,7 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         List<Recipient> currentRecipients = getObjects();
         int indexOfRecipient = currentRecipients.indexOf(recipientToReplace);
         if (indexOfRecipient == -1) {
-            Log.e("Tried to refresh invalid view token!");
+            Log.e(TAG, "Tried to refresh invalid view token!");
             return;
         }
         Recipient currentRecipient = currentRecipients.get(indexOfRecipient);
@@ -504,7 +509,7 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
 
         View recipientTokenView = getTokenViewForRecipient(currentRecipient);
         if (recipientTokenView == null) {
-            Log.e("Tried to refresh invalid view token!");
+            Log.e(TAG, "Tried to refresh invalid view token!");
             return;
         }
 

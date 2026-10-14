@@ -8,10 +8,11 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.stateIn
+import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.core.featureflag.data.FeatureFlagCatalogDataSource
 import net.thunderbird.core.featureflag.data.configstore.FeatureFlagConfigStore
 import net.thunderbird.core.featureflag.model.FeatureFlagCatalog
-import net.thunderbird.core.logging.Logger
+private const val TAG = "RemoteCatalogFeatureFlagProvider"
 
 class RemoteCatalogFeatureFlagProvider(
     configStore: FeatureFlagConfigStore,
@@ -41,12 +42,12 @@ class RemoteCatalogFeatureFlagProvider(
                 val context = context
                 when {
                     enabled && catalog == null && context != null -> {
-                        logger.info { "$logPrefix Remote catalog is enabled. Loading remote catalog." }
+                        logger.info(TAG) { "$logPrefix Remote catalog is enabled. Loading remote catalog." }
                         initialize(context)
                     }
 
                     !enabled && catalog != null && context != null -> {
-                        logger.info { "$logPrefix Remote catalog is disabled. Clearing remote catalog." }
+                        logger.info(TAG) { "$logPrefix Remote catalog is disabled. Clearing remote catalog." }
                         clearCatalog()
                     }
                 }
@@ -57,12 +58,12 @@ class RemoteCatalogFeatureFlagProvider(
     override suspend fun loadCatalog(): FeatureFlagCatalog? {
         val config = config.value
         if (config?.remoteCatalogConfig?.enabled == false) {
-            logger.info { "$logPrefix Remote catalog is disabled. Skipping remote catalog load." }
+            logger.info(TAG) { "$logPrefix Remote catalog is disabled. Skipping remote catalog load." }
             return null
         }
         val catalog = dataSource.load()
         if (catalog == null) {
-            logger.warn { "$logPrefix Remote catalog is not available." }
+            logger.warn(TAG) { "$logPrefix Remote catalog is not available." }
         }
         return catalog
     }

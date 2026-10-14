@@ -24,6 +24,11 @@ plugins {
 dependencyResolutionManagement {
     repositoriesMode = RepositoriesMode.FAIL_ON_PROJECT_REPOS
     repositories {
+        mavenLocal {
+            content {
+                includeGroupAndSubgroups("net.thunderbird.components")
+            }
+        }
         google {
             mavenContent {
                 includeGroupAndSubgroups("androidx")
@@ -197,11 +202,7 @@ include(
     ":core:configstore:testing",
     ":core:featureflag",
     ":core:logging:api",
-    ":core:logging:config",
-    ":core:logging:impl-composite",
-    ":core:logging:impl-console",
-    ":core:logging:impl-file",
-    ":core:logging:testing",
+    ":core:logging:internal",
     ":core:file",
     ":core:mail:mailserver",
     ":core:preference:api",
@@ -214,7 +215,6 @@ include(
     ":core:android:account",
     ":core:android:common",
     ":core:android:contact",
-    ":core:android:logging",
     ":core:android:network",
     ":core:android:permissions",
     ":core:android:testing",

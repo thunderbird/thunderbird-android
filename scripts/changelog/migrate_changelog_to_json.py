@@ -20,6 +20,7 @@ import json
 from pathlib import Path
 import xml.etree.ElementTree as ET
 import re
+from datetime import date as calendar_date
 
 from jsonschema import Draft202012Validator
 
@@ -170,6 +171,10 @@ def extract_release(
             "'date' attribute"
         )
 
+    # Older XML sometimes omits a leading zero in the day (e.g. 2025-12-8).
+    year, month, day = (int(part) for part in date.split("-"))
+    date = calendar_date(year, month, day).isoformat()
+
     notes = []
 
     for change in release_element.findall(
@@ -230,6 +235,7 @@ def write_release_file(
             indent=2,
             ensure_ascii=False,
         )
+        file.write("\n")
 
     return resource_name
 
@@ -269,12 +275,14 @@ def write_index_file(
             indent=2,
             ensure_ascii=False,
         )
+        file.write("\n")
 
 
 def migrate_changelog(
     root: ET.Element,
     output_dir: Path,
     release_schema: dict,
+    exclude_beta: bool = False,
 ) -> dict:
     index = {
         "schemaVersion": 1,
@@ -286,6 +294,9 @@ def migrate_changelog(
     for release_element in root.findall(
         "release"
     ):
+        if exclude_beta and re.search(r"0b\d+$", release_element.get("version", "")):
+            continue
+
         release_data = extract_release(
             release_element
         )
@@ -448,6 +459,7 @@ def main():
         output_dir=output_dir,
         release_schema=
         release_schema,
+        exclude_beta=args.applicationid == "com.fsck.k9",
     )
 
     validate_json(

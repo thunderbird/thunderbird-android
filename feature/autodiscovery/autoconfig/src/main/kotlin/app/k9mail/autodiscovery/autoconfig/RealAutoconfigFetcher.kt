@@ -10,6 +10,8 @@ import net.thunderbird.core.common.mail.EmailAddress
 import net.thunderbird.legacy.logging.Log
 import okhttp3.HttpUrl
 
+private const val TAG = "RealAutoconfigFetcher"
+
 internal class RealAutoconfigFetcher(
     private val fetcher: HttpFetcher,
     private val parser: SuspendableAutoconfigParser,
@@ -24,7 +26,7 @@ internal class RealAutoconfigFetcher(
                 is ErrorResponse -> AutoDiscoveryResult.NoUsableSettingsFound
             }
         } catch (e: IOException) {
-            Log.d(e, "Error fetching Autoconfig from URL: %s", autoconfigUrl)
+            Log.d(TAG, e, "Error fetching Autoconfig from URL: %s", autoconfigUrl)
             AutoDiscoveryResult.NetworkError(e)
         }
     }
@@ -50,7 +52,7 @@ internal class RealAutoconfigFetcher(
                 }
             }
         } catch (e: AutoconfigParserException) {
-            Log.d(e, "Failed to parse config from URL: %s", autoconfigUrl)
+            Log.d(TAG, e, "Failed to parse config from URL: %s", autoconfigUrl)
             AutoDiscoveryResult.NoUsableSettingsFound
         }
     }

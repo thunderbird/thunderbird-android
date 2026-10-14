@@ -1,28 +1,30 @@
 @file:JvmName("NonPiiMap")
 
-import net.thunderbird.core.logging.Logger
-import net.thunderbird.core.logging.LogMessage
-import net.thunderbird.core.logging.LogTag
+import net.thunderbird.components.core.logging.Logger
+import net.thunderbird.components.core.logging.LogMessage
+import net.thunderbird.components.core.logging.LogTag
+
+private const val TAG = "NonPiiMap"
 
 class FakeLogger : Logger {
     var captured: String? = null
-    override fun verbose(tag: LogTag?, throwable: Throwable?, message: () -> LogMessage) {
+    override fun verbose(tag: LogTag, throwable: Throwable?, message: () -> LogMessage) {
         captured = message()
     }
-    override fun debug(tag: LogTag?, throwable: Throwable?, message: () -> LogMessage) {
+    override fun debug(tag: LogTag, throwable: Throwable?, message: () -> LogMessage) {
         captured = message()
     }
-    override fun info(tag: LogTag?, throwable: Throwable?, message: () -> LogMessage) {
+    override fun info(tag: LogTag, throwable: Throwable?, message: () -> LogMessage) {
         captured = message()
     }
-    override fun warn(tag: LogTag?, throwable: Throwable?, message: () -> LogMessage) {
+    override fun warn(tag: LogTag, throwable: Throwable?, message: () -> LogMessage) {
         captured = message()
     }
-    override fun error(tag: LogTag?, throwable: Throwable?, message: () -> LogMessage) {
+    override fun error(tag: LogTag, throwable: Throwable?, message: () -> LogMessage) {
         captured = message()
     }
 }
 
 fun logItems(logger: Logger, items: Map<String, Int>) {
-    logger.debug { "Items: $items" }
+    logger.debug(TAG) { "Items: $items" }
 }

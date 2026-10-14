@@ -5,6 +5,8 @@ import java.io.IOException
 import net.thunderbird.core.common.exception.MessagingException
 import net.thunderbird.legacy.logging.Log
 
+private const val TAG = "RealImapFolderIdler"
+
 private const val SOCKET_EXTRA_TIMEOUT_MS = 2 * 60 * 1000L
 
 internal class RealImapFolderIdler(
@@ -30,14 +32,14 @@ internal class RealImapFolderIdler(
     private var doneSent = false
 
     override fun idle(): IdleResult {
-        Log.v("%s.idle()", logTag)
+        Log.v(TAG, "%s.idle()", logTag)
 
         val folder = imapStore.getFolder(folderServerId).also { this.folder = it }
         folder.open(OpenMode.READ_ONLY)
 
         try {
             return folder.idle().also { idleResult ->
-                Log.v("%s.idle(): result=%s", logTag, idleResult)
+                Log.v(TAG, "%s.idle(): result=%s", logTag, idleResult)
             }
         } finally {
             folder.close()
@@ -46,13 +48,13 @@ internal class RealImapFolderIdler(
 
     @Synchronized
     override fun refresh() {
-        Log.v("%s.refresh()", logTag)
+        Log.v(TAG, "%s.refresh()", logTag)
         endIdle()
     }
 
     @Synchronized
     override fun stop() {
-        Log.v("%s.stop()", logTag)
+        Log.v(TAG, "%s.stop()", logTag)
         stopIdle = true
         endIdle()
     }
@@ -64,7 +66,7 @@ internal class RealImapFolderIdler(
             try {
                 sendDone()
             } catch (e: IOException) {
-                Log.v(e, "%s: IOException while sending DONE", logTag)
+                Log.v(TAG, e, "%s: IOException while sending DONE", logTag)
             }
         }
     }
@@ -74,7 +76,7 @@ internal class RealImapFolderIdler(
 
         val connection = connectionProvider.getConnection(this)!!
         if (!connection.isIdleCapable) {
-            Log.w("%s: IDLE not supported by server", logTag)
+            Log.w(TAG, "%s: IDLE not supported by server", logTag)
             return IdleResult.NOT_SUPPORTED
         }
 
@@ -97,7 +99,7 @@ internal class RealImapFolderIdler(
             do {
                 val response = connection.readResponse()
                 if (response.tag == tag) {
-                    Log.w("%s.idle(): IDLE command completed without a continuation request response", logTag)
+                    Log.w(TAG, "%s.idle(): IDLE command completed without a continuation request response", logTag)
                     return IdleResult.NOT_SUPPORTED
                 } else if (response.isRelevant) {
                     receivedRelevantResponse = true
@@ -105,7 +107,7 @@ internal class RealImapFolderIdler(
             } while (!response.isContinuationRequested)
 
             if (receivedRelevantResponse) {
-                Log.v("%s.idle(): Received a relevant untagged response right after sending IDLE command", logTag)
+                Log.v(TAG, "%s.idle(): Received a relevant untagged response right after sending IDLE command", logTag)
                 result = IdleResult.SYNC
                 stopIdle = true
                 sendDone()
@@ -130,12 +132,12 @@ internal class RealImapFolderIdler(
                 }
 
                 if (response.isRelevant && !stopIdle) {
-                    Log.v("%s.idle(): Received a relevant untagged response during IDLE", logTag)
+                    Log.v(TAG, "%s.idle(): Received a relevant untagged response during IDLE", logTag)
                     result = IdleResult.SYNC
                     stopIdle = true
                     sendDone()
                 } else if (!response.isTagged) {
-                    Log.v("%s.idle(): Ignoring untagged response", logTag)
+                    Log.v(TAG, "%s.idle(): Ignoring untagged response", logTag)
                 }
             } while (response.tag != tag)
 
@@ -151,17 +153,17 @@ internal class RealImapFolderIdler(
 
     @Synchronized
     private fun idleRefresh() {
-        Log.v("%s.idleRefresh()", logTag)
+        Log.v(TAG, "%s.idleRefresh()", logTag)
 
         if (!idleSent || doneSent) {
-            Log.v("%s: Connection is not in a state where it can be refreshed.", logTag)
+            Log.v(TAG, "%s: Connection is not in a state where it can be refreshed.", logTag)
             return
         }
 
         try {
             sendDone()
         } catch (e: IOException) {
-            Log.v(e, "%s: IOException while sending DONE", logTag)
+            Log.v(TAG, e, "%s: IOException while sending DONE", logTag)
         }
     }
 
@@ -177,7 +179,7 @@ internal class RealImapFolderIdler(
                 try {
                     connection.sendContinuation("DONE")
                 } catch (e: IOException) {
-                    Log.v(e, "%s: IOException while sending DONE", logTag)
+                    Log.v(TAG, e, "%s: IOException while sending DONE", logTag)
                     throw e
                 }
             }

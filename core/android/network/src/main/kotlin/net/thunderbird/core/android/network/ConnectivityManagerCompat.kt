@@ -1,7 +1,7 @@
 package net.thunderbird.core.android.network
 
 import android.os.Build
-import net.thunderbird.core.logging.Logger
+import net.thunderbird.components.core.logging.Logger
 import android.net.ConnectivityManager as AndroidConnectivityManager
 
 /**

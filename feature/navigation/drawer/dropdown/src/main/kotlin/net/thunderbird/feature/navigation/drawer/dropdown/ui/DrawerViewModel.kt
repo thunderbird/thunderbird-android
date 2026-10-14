@@ -179,8 +179,6 @@ internal class DrawerViewModel(
                 }
             }
 
-            Event.OnManageFoldersClick -> emitEffect(Effect.OpenManageFolders)
-
             Event.OnSettingsClick -> emitEffect(Effect.OpenSettings)
 
             Event.OnSyncAccount -> onSyncAccount()

@@ -50,6 +50,8 @@ import static com.fsck.k9.mail.store.pop3.Pop3Commands.USER_COMMAND;
 
 
 class Pop3Connection {
+    private static final String TAG = "Pop3Connection";
+
 
     private final Pop3Settings settings;
     private final TrustedSocketFactory trustedSocketFactory;
@@ -117,7 +119,7 @@ class Pop3Connection {
             try {
                 return connectToAddress(address);
             } catch (IOException e) {
-                Log.w(e, "Could not connect to %s", address);
+                Log.w(TAG, e, "Could not connect to %s", address);
                 connectException = e;
             }
         }
@@ -128,7 +130,7 @@ class Pop3Connection {
     private Socket connectToAddress(InetAddress address)
             throws IOException, MessagingException, NoSuchAlgorithmException, KeyManagementException {
         if (K9MailLib.isDebug() && K9MailLib.DEBUG_PROTOCOL_POP3) {
-            Log.d("Connecting to %s as %s", settings.getHost(), address);
+            Log.d(TAG, "Connecting to %s as %s", settings.getHost(), address);
         }
 
         InetSocketAddress socketAddress = new InetSocketAddress(address, settings.getPort());
@@ -341,9 +343,9 @@ class Pop3Connection {
         if (command != null) {
             if (K9MailLib.isDebug() && DEBUG_PROTOCOL_POP3) {
                 if (sensitive && !K9MailLib.isDebugSensitive()) {
-                    Log.d(">>> [Command Hidden, Enable Sensitive Debug Logging To Show]");
+                    Log.d(TAG, ">>> [Command Hidden, Enable Sensitive Debug Logging To Show]");
                 } else {
-                    Log.d(">>> %s", command);
+                    Log.d(TAG, ">>> %s", command);
                 }
             }
 
@@ -376,7 +378,7 @@ class Pop3Connection {
         } while ((d = in.read()) != -1);
         String ret = sb.toString();
         if (K9MailLib.isDebug() && DEBUG_PROTOCOL_POP3) {
-            Log.d("<<< %s", ret);
+            Log.d(TAG, "<<< %s", ret);
         }
         return ret;
     }

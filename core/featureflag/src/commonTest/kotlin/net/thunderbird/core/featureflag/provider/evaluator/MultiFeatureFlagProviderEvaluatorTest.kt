@@ -16,6 +16,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
+import net.thunderbird.components.core.logging.testing.TestLogger
 import net.thunderbird.core.featureflag.FeatureFlagKey
 import net.thunderbird.core.featureflag.FeatureFlagResult
 import net.thunderbird.core.featureflag.keys.GeneratedFeatureFlagKey.ARCHIVE_MARKS_AS_READ
@@ -30,7 +31,6 @@ import net.thunderbird.core.featureflag.provider.BaseCatalogFeatureFlagProvider
 import net.thunderbird.core.featureflag.provider.CatalogFeatureFlagProvider
 import net.thunderbird.core.featureflag.provider.CatalogFeatureFlagProvider.State
 import net.thunderbird.core.featureflag.provider.ProviderMetadata
-import net.thunderbird.core.logging.testing.TestLogger
 
 class MultiFeatureFlagProviderEvaluatorTest {
 

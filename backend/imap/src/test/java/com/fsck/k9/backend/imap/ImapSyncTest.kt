@@ -21,7 +21,7 @@ import com.fsck.k9.mail.testing.message.buildMessage
 import java.util.Date
 import kotlinx.coroutines.test.runTest
 import net.thunderbird.core.common.mail.Flag
-import net.thunderbird.core.logging.testing.TestLogger
+import net.thunderbird.components.core.logging.testing.TestLogger
 import net.thunderbird.legacy.logging.Log
 import org.apache.james.mime4j.dom.field.DateTimeField
 import org.apache.james.mime4j.field.DefaultFieldParser

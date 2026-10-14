@@ -14,6 +14,8 @@ import net.thunderbird.legacy.logging.Log;
 
 
 public class LocalMessageExtractorLoader extends AsyncTaskLoader<MessageViewInfo> {
+    private static final String TAG = "LocalMessageExtractorLoader";
+
     private final MessageViewInfoExtractor messageViewInfoExtractor;
 
 
@@ -53,7 +55,7 @@ public class LocalMessageExtractorLoader extends AsyncTaskLoader<MessageViewInfo
         try {
             return messageViewInfoExtractor.extractMessageForView(message, annotations, message.getAccount().isOpenPgpProviderConfigured());
         } catch (Exception e) {
-            Log.e(e, "Error while decoding message");
+            Log.e(TAG, e, "Error while decoding message");
             return null;
         }
     }

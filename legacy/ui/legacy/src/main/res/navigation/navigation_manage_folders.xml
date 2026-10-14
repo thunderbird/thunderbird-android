@@ -10,7 +10,7 @@
     <fragment
         android:id="@+id/manageFoldersScreen"
         android:name="com.fsck.k9.ui.managefolders.ManageFoldersFragment"
-        android:label="@string/folders_action"
+        android:label="@string/account_setup_visibility_and_syncing"
         tools:layout="@layout/fragment_manage_folders"
         >
 

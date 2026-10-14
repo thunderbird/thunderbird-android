@@ -9,23 +9,17 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import java.util.UUID
 import kotlin.test.Test
-import net.thunderbird.legacy.logging.Log
-import net.thunderbird.core.logging.testing.TestLogger
+import net.thunderbird.components.core.logging.testing.TestLogger
 import org.junit.After
-import org.junit.Before
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 
 @RunWith(RobolectricTestRunner::class)
 class StorageMigrationTo22Test {
+    private val logger = TestLogger()
     private val database = createPreferencesDatabase()
-    private val migrationHelper = DefaultStorageMigrationHelper()
+    private val migrationHelper = DefaultStorageMigrationHelper(logger)
     private val migration = StorageMigrationTo22(database, migrationHelper)
-
-    @Before
-    fun setUp() {
-        Log.logger = TestLogger()
-    }
 
     @After
     fun tearDown() {

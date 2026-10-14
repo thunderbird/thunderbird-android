@@ -1,6 +1,6 @@
 package net.thunderbird.core.android.preferences
 
-import net.thunderbird.core.logging.Logger
+import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.core.preference.storage.InMemoryStorage
 import net.thunderbird.core.preference.storage.Storage
 import net.thunderbird.core.preference.storage.StorageEditor

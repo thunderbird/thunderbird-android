@@ -13,8 +13,8 @@ import net.thunderbird.account.fake.FakeAccountData.ACCOUNT_ID_OTHER_RAW
 import net.thunderbird.account.fake.FakeAccountData.ACCOUNT_ID_RAW
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.preferences.TestStoragePersister
-import net.thunderbird.core.logging.Logger
-import net.thunderbird.core.logging.testing.TestLogger
+import net.thunderbird.components.core.logging.Logger
+import net.thunderbird.components.core.logging.testing.TestLogger
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.storage.legacy.LegacyAccountStorageHandler
 import net.thunderbird.feature.account.storage.legacy.LegacyAvatarDtoStorageHandler

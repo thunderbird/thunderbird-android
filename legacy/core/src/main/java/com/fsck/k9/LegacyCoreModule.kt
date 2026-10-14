@@ -23,7 +23,6 @@ import com.fsck.k9.power.powerModule
 import com.fsck.k9.preferences.preferencesModule
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.GlobalScope
-import net.thunderbird.core.android.logging.loggingModule
 import net.thunderbird.core.android.network.coreAndroidNetworkModule
 import net.thunderbird.core.preference.storage.Storage
 import net.thunderbird.core.preference.storage.StorageEditor
@@ -48,7 +47,6 @@ val legacyCoreModule = module {
         helperModule,
         preferencesModule,
         powerModule,
-        loggingModule,
         featureAccountStorageLegacyModule,
     )
 

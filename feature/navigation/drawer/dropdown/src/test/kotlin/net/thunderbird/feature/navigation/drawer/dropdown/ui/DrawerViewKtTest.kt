@@ -29,7 +29,6 @@ internal class DrawerViewKtTest : ComposeTest() {
                 openAccount = { counter.openAccountCount++ },
                 openFolder = { _, _ -> counter.openFolderCount++ },
                 openUnifiedFolder = { counter.openUnifiedFolderCount++ },
-                openManageFolders = { counter.openManageFoldersCount++ },
                 openSettings = { counter.openSettingsCount++ },
                 openAddAccount = { counter.openAddAccountCount++ },
                 closeDrawer = { counter.closeDrawerCount++ },
@@ -54,9 +53,6 @@ internal class DrawerViewKtTest : ComposeTest() {
 
         verifyCounter.openUnifiedFolderCount++
         viewModel.effect(Effect.OpenUnifiedFolder)
-
-        verifyCounter.openManageFoldersCount++
-        viewModel.effect(Effect.OpenManageFolders)
 
         verifyCounter.openSettingsCount++
         viewModel.effect(Effect.OpenSettings)
@@ -83,7 +79,6 @@ internal class DrawerViewKtTest : ComposeTest() {
                 openAccount = { },
                 openFolder = { _, _ -> },
                 openUnifiedFolder = { },
-                openManageFolders = { },
                 openSettings = { },
                 openAddAccount = { },
                 closeDrawer = { },
@@ -113,7 +108,6 @@ internal class DrawerViewKtTest : ComposeTest() {
         var openAccountCount: Int = 0,
         var openFolderCount: Int = 0,
         var openUnifiedFolderCount: Int = 0,
-        var openManageFoldersCount: Int = 0,
         var openSettingsCount: Int = 0,
         var openAddAccountCount: Int = 0,
         var closeDrawerCount: Int = 0,

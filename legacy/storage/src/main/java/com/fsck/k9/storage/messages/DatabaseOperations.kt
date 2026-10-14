@@ -4,6 +4,8 @@ import com.fsck.k9.mailstore.LockableDatabase
 import com.fsck.k9.mailstore.StorageFilesProvider
 import net.thunderbird.legacy.logging.Log
 
+private const val TAG = "DatabaseOperations"
+
 internal class DatabaseOperations(
     private val lockableDatabase: LockableDatabase,
     private val storageFilesProvider: StorageFilesProvider,
@@ -27,12 +29,12 @@ internal class DatabaseOperations(
     }
 
     fun compact() {
-        Log.i("Before compaction size = %d", getSize())
+        Log.i(TAG, "Before compaction size = %d", getSize())
 
         lockableDatabase.execute(false) { database ->
             database.execSQL("VACUUM")
         }
 
-        Log.i("After compaction size = %d", getSize())
+        Log.i(TAG, "After compaction size = %d", getSize())
     }
 }

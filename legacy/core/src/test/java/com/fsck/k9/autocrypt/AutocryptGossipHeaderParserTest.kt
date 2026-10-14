@@ -12,7 +12,7 @@ import com.fsck.k9.mail.filter.Base64
 import com.fsck.k9.mail.testing.crlf
 import com.fsck.k9.mailstore.MimePartStreamParser
 import net.thunderbird.legacy.logging.Log
-import net.thunderbird.core.logging.testing.TestLogger
+import net.thunderbird.components.core.logging.testing.TestLogger
 import org.junit.Before
 import org.junit.Test
 

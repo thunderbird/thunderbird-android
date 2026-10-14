@@ -19,6 +19,8 @@ package com.fsck.k9.mail.store.imap
 import net.thunderbird.core.common.mail.Flag
 import net.thunderbird.legacy.logging.Log
 
+private const val TAG = "ImapUtility"
+
 /**
  * Utility methods for use with IMAP.
  */
@@ -82,11 +84,11 @@ internal object ImapUtility {
             if (is32bitValue(first) && is32bitValue(second)) {
                 first to second
             } else {
-                Log.d("Invalid range: %s", range)
+                Log.d(TAG, "Invalid range: %s", range)
                 null
             }
         } catch (e: NumberFormatException) {
-            Log.d(e, "Invalid range value: %s", range)
+            Log.d(TAG, e, "Invalid range value: %s", range)
             null
         }
     }
@@ -94,7 +96,7 @@ internal object ImapUtility {
     private fun isNumberValid(number: String): Boolean {
         val value = number.toLongOrNull()
         if (value != null && is32bitValue(value)) return true
-        Log.d("Invalid UID value: %s", number)
+        Log.d(TAG, "Invalid UID value: %s", number)
         return false
     }
 

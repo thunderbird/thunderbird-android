@@ -20,6 +20,8 @@ import com.fsck.k9.mail.internet.MimeUtility;
  * Loader to fetch metadata of an attachment.
  */
 public class AttachmentInfoLoader  extends AsyncTaskLoader<Attachment> {
+    private static final String TAG = "AttachmentInfoLoader";
+
     private final Attachment sourceAttachment;
     private Attachment cachedResultAttachment;
 
@@ -96,17 +98,17 @@ public class AttachmentInfoLoader  extends AsyncTaskLoader<Attachment> {
                     File f = new File(uriString.substring("file://".length()));
                     size = f.length();
                 } else {
-                    Log.v("Not a file: %s", uriString);
+                    Log.v(TAG, "Not a file: %s", uriString);
                 }
             } else {
-                Log.v("old attachment.size: %d", size);
+                Log.v(TAG, "old attachment.size: %d", size);
             }
-            Log.v("new attachment.size: %d", size);
+            Log.v(TAG, "new attachment.size: %d", size);
 
             cachedResultAttachment = sourceAttachment.deriveWithMetadataLoaded(usableContentType, name, size);
             return cachedResultAttachment;
         } catch (Exception e) {
-            Log.e(e, "Error getting attachment meta data");
+            Log.e(TAG, e, "Error getting attachment meta data");
 
             cachedResultAttachment = sourceAttachment.deriveWithLoadCancelled();
             return cachedResultAttachment;

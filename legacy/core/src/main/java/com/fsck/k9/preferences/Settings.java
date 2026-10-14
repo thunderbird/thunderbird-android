@@ -24,6 +24,8 @@ import net.thunderbird.core.preference.storage.StorageEditor;
  */
 
 public class Settings {
+    private static final String TAG = "Settings";
+
     /**
      * Version number of global and account settings.
      *
@@ -65,7 +67,7 @@ public class Settings {
 
             boolean useDefaultValue;
             if (!importedSettings.containsKey(key)) {
-                Log.v("Key \"%s\" wasn't found in the imported file.%s",
+                Log.v(TAG, "Key \"%s\" wasn't found in the imported file.%s",
                         key,
                         (useDefaultValues) ? " Using default value." : "");
 
@@ -77,7 +79,7 @@ public class Settings {
                     validatedSettings.put(key, internalValue);
                     useDefaultValue = false;
                 } catch (InvalidSettingValueException e) {
-                    Log.v("Key \"%s\" has invalid value \"%s\" in imported file. %s",
+                    Log.v(TAG, "Key \"%s\" has invalid value \"%s\" in imported file. %s",
                             key,
                             prettyValue,
                             (useDefaultValues) ? "Using default value." : "Skipping.");
@@ -127,7 +129,7 @@ public class Settings {
 
                 serializedSettings.put(settingName, stringValue);
             } else {
-                Log.w("Settings.convert() called with a setting that should have been removed: %s", settingName);
+                Log.w(TAG, "Settings.convert() called with a setting that should have been removed: %s", settingName);
             }
         }
 

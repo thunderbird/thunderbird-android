@@ -17,7 +17,6 @@ dependencies {
     implementation(projects.feature.account.api)
     implementation(projects.feature.mail.folder.api)
 
-    testImplementation(projects.core.logging.testing)
     testImplementation(projects.mail.testing)
     testImplementation(projects.backend.testing)
 

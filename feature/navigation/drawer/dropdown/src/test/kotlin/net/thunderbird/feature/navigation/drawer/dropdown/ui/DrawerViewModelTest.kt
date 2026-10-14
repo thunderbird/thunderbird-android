@@ -448,18 +448,6 @@ internal class DrawerViewModelTest {
         }
 
     @Test
-    fun `should emit OpenManageFolders effect when OnManageFoldersClick event is received`() = runMviTest {
-        val testSubject = createTestSubject()
-        val turbines = turbinesWithInitialStateCheck(testSubject, State())
-
-        testSubject.event(Event.OnManageFoldersClick)
-
-        turbines.assertThatAndEffectTurbineConsumed {
-            isEqualTo(Effect.OpenManageFolders)
-        }
-    }
-
-    @Test
     fun `should emit OpenSettings effect when OnSettingsClick event is received`() = runMviTest {
         val testSubject = createTestSubject()
         val turbines = turbinesWithInitialStateCheck(testSubject, State())

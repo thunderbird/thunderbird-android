@@ -36,6 +36,8 @@ import net.thunderbird.legacy.logging.Log;
 
 
 public class OpenPgpAppSelectDialog extends BaseActivity {
+    private static final String TAG = "OpenPgpAppSelectDialog";
+
     private static final String EXTRA_ACCOUNT = "account";
 
     private static final String OPENKEYCHAIN_PACKAGE = "org.sufficientlysecure.keychain";
@@ -77,7 +79,7 @@ public class OpenPgpAppSelectDialog extends BaseActivity {
         if (openPgpProviderPackages.isEmpty()) {
             showOpenKeychainInfoFragment();
         } else if (openPgpProviderPackages.size() == 1) {
-            Log.d("Only one OpenPGP provider - just choosing that one!");
+            Log.d(TAG, "Only one OpenPGP provider - just choosing that one!");
             persistOpenPgpProviderSetting(openPgpProviderPackages.get(0));
             finish();
         } else {
