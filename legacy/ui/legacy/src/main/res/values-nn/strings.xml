@@ -701,7 +701,6 @@
     <string name="account_setup_push_limit_label">Maks antal mapper å sjekke med dytting</string>
     <string name="animations_title">Animasjon</string>
     <string name="integrated_inbox_title">Samla innboks</string>
-    <string name="integrated_inbox_detail">Alle meldingar i samla mapper</string>
     <string name="show_starred_count_title">Vis antal stjernemerka</string>
     <string name="settings_message_theme_selection_summary_off">Vel meldinsvisingsdrakt for vising av meldingar</string>
     <string name="settings_message_theme_selection_summary_on">Bruk fast drakt for vising av meldingar</string>

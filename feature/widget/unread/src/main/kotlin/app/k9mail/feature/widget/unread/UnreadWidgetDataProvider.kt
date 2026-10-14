@@ -63,8 +63,8 @@ class UnreadWidgetDataProvider(
 
     private fun getUnifiedFoldersSearch(accountId: AccountId): SearchAccount = when (accountId) {
         UnifiedAccountId -> SearchAccount.createUnifiedInboxSearch(
-            title = coreResourceProvider.searchUnifiedFoldersTitle(),
-            detail = coreResourceProvider.searchUnifiedFoldersDetail(),
+            title = coreResourceProvider.unifiedInboxTitle(),
+            detail = coreResourceProvider.unifiedInboxDetail(),
         )
 
         else -> throw AssertionError("SearchAccount expected")

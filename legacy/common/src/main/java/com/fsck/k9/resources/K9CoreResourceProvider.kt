@@ -31,8 +31,8 @@ class K9CoreResourceProvider(
     override fun replyHeader(sender: String, sentDate: String): String =
         context.getString(R.string.message_compose_reply_header_fmt_with_date, sentDate, sender)
 
-    override fun searchUnifiedFoldersTitle(): String = context.getString(R.string.integrated_inbox_title)
-    override fun searchUnifiedFoldersDetail(): String = context.getString(R.string.integrated_inbox_detail)
+    override fun unifiedInboxTitle(): String = context.getString(R.string.integrated_inbox_title)
+    override fun unifiedInboxDetail(): String = context.getString(R.string.unified_inbox_detail)
 
     override fun pushNotificationText(notificationState: PushNotificationState): String {
         val resId = when (notificationState) {
