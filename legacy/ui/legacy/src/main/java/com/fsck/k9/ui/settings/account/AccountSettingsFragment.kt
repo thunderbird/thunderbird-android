@@ -22,8 +22,6 @@ import androidx.preference.PreferenceCategory
 import androidx.preference.SwitchPreference
 import app.k9mail.feature.launcher.FeatureLauncherActivity
 import app.k9mail.feature.launcher.FeatureLauncherTarget
-import com.fsck.k9.activity.ManageIdentities
-import com.fsck.k9.activity.setup.AccountSetupComposition
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.crypto.OpenPgpApiHelper
 import com.fsck.k9.fragment.ConfirmationDialogFragment
@@ -42,7 +40,6 @@ import com.fsck.k9.ui.settings.removeEntry
 import com.takisoft.preferencex.PreferenceFragmentCompat
 import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.NO_OPENPGP_KEY
 import net.thunderbird.core.android.account.LegacyAccountDto
-import net.thunderbird.core.android.account.QuoteStyle
 import net.thunderbird.core.common.provider.AppNameProvider
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.AccountIdFactory
@@ -85,7 +82,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
 
     private val accountId: AccountId by lazy {
         checkNotNull(
-            arguments?.getString(ARG_ACCOUNT_UUID)?.let { AccountIdFactory.of(it) }
+            arguments?.getString(ARG_ACCOUNT_UUID)?.let { AccountIdFactory.of(it) },
         ) { "$ARG_ACCOUNT_UUID == null" }
     }
 
@@ -102,13 +99,10 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         initializeGeneralSettings()
         initializeReadingMail()
         initializeFetchingMail()
+        initializeSendingMail()
         initializeSearch()
         initializeIncomingServer()
-        initializeComposition()
-        initializeManageIdentities()
-        initializeUploadSentMessages(account)
         initializeOutgoingServer()
-        initializeQuoteStyle()
         initializeDeletePolicy(account)
         initializeExpungePolicy(account)
         initializeMessageAge(account)
@@ -140,6 +134,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
                             onDeleteAccount()
                             true
                         }
+
                         else -> false
                     }
                 }
@@ -196,6 +191,16 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         }
     }
 
+    private fun initializeSendingMail() {
+        findPreference<Preference>(PREFERENCE_SENDING_MAIL)?.onClick {
+            FeatureLauncherActivity.launch(
+                context = requireActivity(),
+                target = FeatureLauncherTarget.AccountSendingMailSettings(accountId),
+                launcher = launcherForActivityResult,
+            )
+        }
+    }
+
     private fun initializeSearch() {
         findPreference<Preference>(PREFERENCE_SEARCH)?.onClick {
             FeatureLauncherActivity.launch(
@@ -215,42 +220,12 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         }
     }
 
-    private fun initializeComposition() {
-        findPreference<Preference>(PREFERENCE_COMPOSITION)?.onClick {
-            AccountSetupComposition.actionEditCompositionSettings(requireActivity(), accountId)
-        }
-    }
-
-    private fun initializeManageIdentities() {
-        findPreference<Preference>(PREFERENCE_MANAGE_IDENTITIES)?.onClick {
-            ManageIdentities.start(requireActivity(), accountId.toString())
-        }
-    }
-
-    private fun initializeUploadSentMessages(account: LegacyAccountDto) {
-        findPreference<Preference>(PREFERENCE_UPLOAD_SENT_MESSAGES)?.apply {
-            if (!messagingController.supportsUpload(account)) {
-                remove()
-            }
-        }
-    }
-
     private fun initializeOutgoingServer() {
         findPreference<Preference>(PREFERENCE_OUTGOING_SERVER)?.onClick {
             FeatureLauncherActivity.launch(
                 context = requireActivity(),
                 target = FeatureLauncherTarget.AccountEditOutgoingSettings(accountId),
             )
-        }
-    }
-
-    private fun initializeQuoteStyle() {
-        findPreference<Preference>(PREFERENCE_QUOTE_STYLE)?.apply {
-            setOnPreferenceChangeListener { _, newValue ->
-                val quoteStyle = QuoteStyle.valueOf(newValue.toString())
-                notifyDependencyChange(quoteStyle == QuoteStyle.HEADER)
-                true
-            }
         }
     }
 
@@ -532,13 +507,11 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
 
         private const val PREFERENCE_READING_MAIL = "reading_mail"
         private const val PREFERENCE_FETCHING_MAIL = "fetching_mail"
+
+        private const val PREFERENCE_SENDING_MAIL = "composing"
         private const val PREFERENCE_SEARCH = "search"
         private const val PREFERENCE_INCOMING_SERVER = "incoming"
-        private const val PREFERENCE_COMPOSITION = "composition"
-        private const val PREFERENCE_MANAGE_IDENTITIES = "manage_identities"
         private const val PREFERENCE_OUTGOING_SERVER = "outgoing"
-        private const val PREFERENCE_UPLOAD_SENT_MESSAGES = "upload_sent_messages"
-        private const val PREFERENCE_QUOTE_STYLE = "quote_style"
         private const val PREFERENCE_DELETE_POLICY = "delete_policy"
         private const val PREFERENCE_EXPUNGE_POLICY = "expunge_policy"
         private const val PREFERENCE_MESSAGE_AGE = "account_message_age"
@@ -569,7 +542,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
 
         fun create(accountUuid: String, rootKey: String?) = AccountSettingsFragment().withArguments(
             ARG_ACCOUNT_UUID to accountUuid,
-            PreferenceFragmentCompat.ARG_PREFERENCE_ROOT to rootKey,
+            ARG_PREFERENCE_ROOT to rootKey,
         )
     }
 }
