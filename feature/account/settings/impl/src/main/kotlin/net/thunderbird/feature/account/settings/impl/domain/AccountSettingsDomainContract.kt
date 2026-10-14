@@ -128,7 +128,11 @@ internal interface AccountSettingsDomainContract {
             val message: String,
         ) : AccountSettingError
 
-        data class UnsupportedMessageFormat (
+        data class UnsupportedMessageFormat(
+            val message: String,
+        ) : AccountSettingError
+
+        data class UnsupportedQuoteStyle(
             val message: String,
         ) : AccountSettingError
     }

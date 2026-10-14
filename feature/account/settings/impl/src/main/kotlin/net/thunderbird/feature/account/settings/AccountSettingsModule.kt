@@ -1,6 +1,7 @@
 package net.thunderbird.feature.account.settings
 
 import kotlinx.collections.immutable.ImmutableList
+import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.core.common.resources.StringsResourceManager
 import net.thunderbird.feature.account.settings.api.AccountSettingsNavigation
 import net.thunderbird.feature.account.settings.impl.DefaultAccountSettingsNavigation
@@ -188,7 +189,7 @@ val featureAccountSettingsModule = module {
     viewModel { params ->
         SendingMailSettingsViewModel(
             accountId = params.get(),
-            logger = get(),
+            logger = get<Logger>(),
             getAccountName = get(),
             getLegacyAccount = get(),
             updateSendingMailSettings = get(),

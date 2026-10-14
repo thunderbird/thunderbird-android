@@ -31,8 +31,11 @@ internal class UpdateSendingMailSettings(
                 account.copy(
                     messageFormat = when (command.value) {
                         "TEXT" -> MessageFormat.TEXT
+
                         "HTML" -> MessageFormat.HTML
+
                         "AUTO" -> MessageFormat.AUTO
+
                         else -> error(
                             AccountSettingError.UnsupportedMessageFormat(
                                 message = "Invalid Message format value: ${command.value}",
@@ -58,11 +61,13 @@ internal class UpdateSendingMailSettings(
                 account.copy(
                     quoteStyle = when (command.value) {
                         "PREFIX" -> QuoteStyle.PREFIX
+
                         "HEADER" -> QuoteStyle.HEADER
+
                         else -> error(
                             AccountSettingError.UnsupportedQuoteStyle(
-                                message = "Invalid quote style value: ${command.value}"
-                            )
+                                message = "Invalid quote style value: ${command.value}",
+                            ),
                         )
                     },
                 )
