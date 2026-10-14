@@ -5,6 +5,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import net.thunderbird.components.core.outcome.handle
+import net.thunderbird.core.android.account.QuoteStyle
 import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.ui.contract.mvi.BaseViewModel
 import net.thunderbird.feature.account.AccountCapabilities
@@ -38,6 +39,7 @@ internal class SendingMailSettingsViewModel(
         quotedTextPrefix = ">",
         uploadSentMessages = false,
         supportsUpload = true,
+        shouldShowQuoteSettings = true,
     ),
 ) : BaseViewModel<State, Event, Effect>(initialState = initialState), SendingMailSettingContract.ViewModel {
 
@@ -119,7 +121,12 @@ internal class SendingMailSettingsViewModel(
                             ),
                     ).handle(
                         onSuccess = {
-                            updateState { state -> state.copy(replyQuotingStyle = event.replyQuotingStyle) }
+                            updateState { state ->
+                                state.copy(
+                                    replyQuotingStyle = event.replyQuotingStyle,
+                                    shouldShowQuoteSettings = QuoteStyle.PREFIX.name == event.replyQuotingStyle.id,
+                                )
+                            }
                         },
                         onFailure = {
                             handleError(it)
@@ -271,6 +278,7 @@ internal class SendingMailSettingsViewModel(
                     val quotedTextPrefix = it.quotePrefix ?: ""
                     val uploadSentMessages = it.isUploadSentMessages
                     val supportsUpload = accountCapabilities.supportsUpload(accountId)
+                    val shouldShowQuoteSettings = QuoteStyle.PREFIX.name == replyQuotingStyle.id
 
                     updateState { state ->
                         state.copy(
@@ -284,6 +292,7 @@ internal class SendingMailSettingsViewModel(
                             quotedTextPrefix = quotedTextPrefix,
                             uploadSentMessages = uploadSentMessages,
                             supportsUpload = supportsUpload,
+                            shouldShowQuoteSettings = shouldShowQuoteSettings,
                         )
                     }
                 },

@@ -25,9 +25,13 @@ internal class SendingMailSettingsBuilder(
         settings += readReceipt(state.readReceipt)
         settings += replyQuotingStyle(state.replyQuotingStyle)
         settings += quoteMessageWhenReplying(state.quoteMessageWhenReplying)
-        settings += replyAfterQuotedText(state.replyAfterQuotedText)
+        if(state.shouldShowQuoteSettings) {
+            settings += replyAfterQuotedText(state.replyAfterQuotedText)
+        }
         settings += stripSignatureOnReply(state.stripSignatureOnReply)
-        settings += quotePrefix(state.quotedTextPrefix)
+        if(state.shouldShowQuoteSettings) {
+            settings += quotePrefix(state.quotedTextPrefix)
+        }
         if(state.supportsUpload) {
             settings += uploadSentMessages(state.uploadSentMessages)
         }

@@ -22,6 +22,7 @@ interface SendingMailSettingContract {
         val quotedTextPrefix: String,
         val uploadSentMessages: Boolean = false,
         val supportsUpload: Boolean = true,
+        val shouldShowQuoteSettings: Boolean = true,
 
     )
 
