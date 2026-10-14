@@ -32,7 +32,7 @@ class LoggingSyncListener : SyncListener {
         return events.removeAt(0)
     }
 
-    override fun syncStarted(folderServerId: String) {
+    override suspend fun syncStarted(folderServerId: String) {
         events.add(SyncListenerEvent.SyncStarted(folderServerId))
     }
 
@@ -52,31 +52,31 @@ class LoggingSyncListener : SyncListener {
         throw UnsupportedOperationException("not implemented")
     }
 
-    override fun syncProgress(folderServerId: String, completed: Int, total: Int) {
+    override suspend fun syncProgress(folderServerId: String, completed: Int, total: Int) {
         events.add(SyncListenerEvent.SyncProgress(folderServerId, completed, total))
     }
 
-    override fun syncNewMessage(folderServerId: String, messageServerId: String, isOldMessage: Boolean) {
+    override suspend fun syncNewMessage(folderServerId: String, messageServerId: String, isOldMessage: Boolean) {
         throw UnsupportedOperationException("not implemented")
     }
 
-    override fun syncRemovedMessage(folderServerId: String, messageServerId: String) {
+    override suspend fun syncRemovedMessage(folderServerId: String, messageServerId: String) {
         throw UnsupportedOperationException("not implemented")
     }
 
-    override fun syncFlagChanged(folderServerId: String, messageServerId: String) {
+    override suspend fun syncFlagChanged(folderServerId: String, messageServerId: String) {
         throw UnsupportedOperationException("not implemented")
     }
 
-    override fun syncFinished(folderServerId: String) {
+    override suspend fun syncFinished(folderServerId: String) {
         events.add(SyncListenerEvent.SyncFinished(folderServerId))
     }
 
-    override fun syncFailed(folderServerId: String, message: String, exception: Exception?) {
+    override suspend fun syncFailed(folderServerId: String, message: String, exception: Exception?) {
         events.add(SyncListenerEvent.SyncFailed(folderServerId, message, exception))
     }
 
-    override fun folderStatusChanged(folderServerId: String) {
+    override suspend fun folderStatusChanged(folderServerId: String) {
         throw UnsupportedOperationException("not implemented")
     }
 }

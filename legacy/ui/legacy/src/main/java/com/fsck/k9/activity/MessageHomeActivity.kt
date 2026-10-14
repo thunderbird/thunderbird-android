@@ -5,7 +5,6 @@ import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
-import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
 import android.view.KeyEvent
@@ -17,6 +16,7 @@ import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.view.ActionMode
+import androidx.core.net.toUri
 import androidx.core.view.isGone
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.drawerlayout.widget.DrawerLayout.DrawerListener
@@ -57,6 +57,7 @@ import com.fsck.k9.view.ViewSwitcher
 import com.fsck.k9.view.ViewSwitcher.OnSwitchCompleteListener
 import com.google.android.material.textview.MaterialTextView
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.account.LegacyAccountDtoManager
@@ -88,7 +89,6 @@ import org.koin.android.ext.android.inject
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import org.koin.core.parameter.parametersOf
-import androidx.core.net.toUri
 
 private const val TAG = "MainActivity"
 
@@ -976,10 +976,13 @@ open class MessageHomeActivity :
             }
 
             'v' -> {
-                if (displayMode == DisplayMode.MESSAGE_LIST) {
-                    messageListFragment!!.onArchive()
-                } else if (messageViewContainerFragment != null) {
-                    messageViewContainerFragment!!.onArchive()
+                // runBlocking preserves the synchronous behaviour of the former Java MessagingController.
+                runBlocking {
+                    if (displayMode == DisplayMode.MESSAGE_LIST) {
+                        messageListFragment!!.onArchive()
+                    } else if (messageViewContainerFragment != null) {
+                        messageViewContainerFragment!!.onArchive()
+                    }
                 }
                 return true
             }
@@ -1042,10 +1045,12 @@ open class MessageHomeActivity :
     }
 
     private fun onDeleteHotKey() {
-        if (displayMode == DisplayMode.MESSAGE_LIST) {
-            messageListFragment!!.onDelete()
-        } else if (messageViewContainerFragment != null) {
-            messageViewContainerFragment!!.onDelete()
+        lifecycleScope.launch {
+            if (displayMode == DisplayMode.MESSAGE_LIST) {
+                messageListFragment!!.onDelete()
+            } else if (messageViewContainerFragment != null) {
+                messageViewContainerFragment!!.onDelete()
+            }
         }
     }
 
@@ -1434,7 +1439,7 @@ open class MessageHomeActivity :
     }
 
     private fun clearNotifications() {
-        messagingController.clearNotifications(search)
+        search?.let { messagingController.clearNotifications(it) }
     }
 
     private val isAdditionalMessageListDisplayed: Boolean

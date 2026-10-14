@@ -45,7 +45,7 @@ class JmapBackend(
         return commandRefreshFolderList.refreshFolderList()
     }
 
-    override fun sync(folderServerId: String, syncConfig: SyncConfig, listener: SyncListener) {
+    override suspend fun sync(folderServerId: String, syncConfig: SyncConfig, listener: SyncListener) {
         commandSync.sync(folderServerId, syncConfig, listener)
     }
 

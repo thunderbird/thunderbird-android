@@ -26,22 +26,22 @@ import org.koin.dsl.module
 val controllerModule = module {
     single {
         MessagingController(
-            get<Context>(),
-            get<NotificationController>(),
-            get<NotificationStrategy>(),
-            get<LocalStoreProvider>(),
-            get<BackendManager>(),
-            get<Preferences>(),
-            get<MessageStoreManager>(),
-            get<SaveMessageDataCreator>(),
-            get<SpecialLocalFoldersCreator>(),
-            get<LocalDeleteOperationDecider>(),
-            get<LocalMessageUidPrefixProvider>(),
-            get(named("controllerExtensions")),
-            get<FeatureFlagProvider>(),
-            get<Logger>(named("syncDebug")),
-            get<NotificationManager>(),
-            get<OutboxFolderManager>(),
+            logger = get<Logger>(),
+            context = get<Context>(),
+            notificationController = get<NotificationController>(),
+            notificationStrategy = get<NotificationStrategy>(),
+            localStoreProvider = get<LocalStoreProvider>(),
+            backendManager = get<BackendManager>(),
+            preferences = get<Preferences>(),
+            messageStoreManager = get<MessageStoreManager>(),
+            saveMessageDataCreator = get<SaveMessageDataCreator>(),
+            localDeleteOperationDecider = get<LocalDeleteOperationDecider>(),
+            localMessageUidPrefixProvider = get<LocalMessageUidPrefixProvider>(),
+            controllerExtensions = get(named("controllerExtensions")),
+            featureFlagProvider = get<FeatureFlagProvider>(),
+            syncDebugLogger = get<Logger>(named("syncDebug")),
+            notificationManager = get<NotificationManager>(),
+            outboxFolderManager = get<OutboxFolderManager>(),
         )
     } binds arrayOf(MessagingControllerRegistry::class)
 

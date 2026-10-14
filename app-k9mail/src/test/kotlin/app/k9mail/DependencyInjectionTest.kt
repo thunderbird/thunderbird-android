@@ -12,6 +12,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.work.WorkerParameters
 import app.k9mail.core.ui.compose.common.window.FoldableStateObserver
 import app.k9mail.feature.account.common.domain.entity.InteractionMode
+import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.job.MailSyncWorker
 import com.fsck.k9.job.SyncDebugWorker
 import com.fsck.k9.mail.Part
@@ -73,6 +74,8 @@ class DependencyInjectionTest {
                 definition<FoldableStateObserver>(Activity::class),
                 definition<K9WebViewClient>(AttachmentResolver::class, MessageWebView.OnPageFinishedListener::class),
                 definition<MailSyncWorker>(WorkerParameters::class),
+                // controllerExtensions is provided by a named definition, which verify() can't resolve.
+                definition<MessagingController>(List::class),
                 definition<SyncDebugWorker>(WorkerParameters::class),
                 definition<OpenPgpApiManager>(LifecycleOwner::class),
                 definition<SetupArchiveFolderDialogContract.ViewModel>(SetupArchiveFolderDialogContract.State::class),

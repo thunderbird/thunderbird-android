@@ -58,8 +58,8 @@ class ImapBackend(
         return commandRefreshFolderList.refreshFolderList()
     }
 
-    override fun sync(folderServerId: String, syncConfig: SyncConfig, listener: SyncListener) =
-        runBlocking(ioDispatcher) {
+    override suspend fun sync(folderServerId: String, syncConfig: SyncConfig, listener: SyncListener) =
+        withContext(ioDispatcher) {
             imapSync.sync(folderServerId, syncConfig, listener)
         }
 
