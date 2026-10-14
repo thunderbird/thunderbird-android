@@ -317,12 +317,13 @@ preferencex-datetimepicker = { module = "com.takisoft.preferencex:preferencex-da
 robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
 safeContentResolver = { module = "de.cketti.safecontentresolver:safe-content-resolver-v21", version.ref = "safeContentResolver" }
 searchPreference = { module = "com.github.ByteHamster:SearchPreference", version.ref = "searchPreference" }
-tb-mobile-components-core-outcome = { module = "net.thunderbird.components.core:outcome", version.ref = "tbMobileComponents" }
-tb-mobile-components-core-logging-core = { module = "net.thunderbird.components.core.logging:core", version.ref = "tbMobileComponents" }
-tb-mobile-components-core-logging-file = { module = "net.thunderbird.components.core.logging:file", version.ref = "tbMobileComponents" }
-tb-mobile-components-core-logging-testing = { module = "net.thunderbird.components.core.logging:testing", version.ref = "tbMobileComponents" }
-tb-mobile-components-ui-bolt = { module = "net.thunderbird.components.ui.bolt:bolt", version.ref = "tbMobileComponents" }
-tb-mobile-components-ui-testing = { module = "net.thunderbird.components.ui:testing", version.ref = "tbMobileComponents" }
+tb-mobile-components-bom = { module = "net.thunderbird.components:bom", version.ref = "tbMobileComponents" }
+tb-mobile-components-core-outcome = { module = "net.thunderbird.components.core:outcome" }
+tb-mobile-components-core-logging-core = { module = "net.thunderbird.components.core.logging:core" }
+tb-mobile-components-core-logging-file = { module = "net.thunderbird.components.core.logging:file" }
+tb-mobile-components-core-logging-testing = { module = "net.thunderbird.components.core.logging:testing" }
+tb-mobile-components-ui-bolt = { module = "net.thunderbird.components.ui.bolt:bolt" }
+tb-mobile-components-ui-testing = { module = "net.thunderbird.components.ui:testing" }
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
 turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
 uri = { module = "com.eygraber:uri-kmp", version.ref = "uri" }

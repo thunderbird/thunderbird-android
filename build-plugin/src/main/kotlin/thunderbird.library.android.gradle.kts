@@ -66,6 +66,7 @@ kotlin {
 dependencies {
     implementation(platform(libs.kotlin.bom))
     implementation(platform(libs.koin.bom))
+    implementation(platform(libs.tb.mobile.components.bom))
 
     implementation(libs.bundles.shared.android)
     implementation(libs.bundles.shared.tmc.components)

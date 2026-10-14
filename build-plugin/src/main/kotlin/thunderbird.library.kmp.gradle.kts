@@ -35,6 +35,8 @@ kotlin {
         commonMain.dependencies {
             implementation(project.dependencies.platform(libs.kotlin.bom))
             implementation(project.dependencies.platform(libs.koin.bom))
+            implementation(project.dependencies.platform(libs.tb.mobile.components.bom))
+
             implementation(libs.bundles.shared.kmp.common)
             implementation(libs.bundles.shared.tmc.components)
         }
