@@ -37,7 +37,7 @@
             const path_to_root = "../../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../../searchindex-183f55a9.js";
+            window.path_to_searchindex_js = "../../searchindex-d1c17be6.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../../toc-0f8055a0.js"></script>
@@ -186,8 +186,9 @@ logging, reproduce the issue, collect logs, and share them with the team.</p>
 <ul>
 <li>If the app is <strong>crashing on startup</strong>, jump directly
 to <a href="#method-b-using-a-pc-with-adb">Method B: Using a PC with ADB</a>.</li>
-<li>Logs may include sensitive information (e.g., email addresses, server hostnames). You should redact <strong>passwords</strong>.</li>
-<li>When possible, share the <strong>complete log</strong> to maximize debugging value.</li>
+<li>Logs may include sensitive information (e.g., email addresses, server hostnames, or tokens). Review and redact them
+before sharing.</li>
+<li>Share only the log needed to diagnose the issue after checking it for sensitive information.</li>
 </ul>
 <h2 id="step-1-enable-debug-logging"><a class="header" href="#step-1-enable-debug-logging">Step 1: Enable debug logging</a></h2>
 <ol>
@@ -214,6 +215,8 @@ to <a href="#method-b-using-a-pc-with-adb">Method B: Using a PC with ADB</a>.</p
 <li>Tap the menu and select: <strong>Export logs</strong>.</li>
 <li>Choose a location to save the log file.</li>
 </ul>
+<p>If you enabled <strong>Enable sync debug logging</strong>, use <strong>Export Sync logs</strong> to export the separate sync-debug file. That file
+contains events captured by the app’s sync-debug sink, not the full Android logcat buffer.</p>
 <h3 id="method-b-using-a-pc-with-adb"><a class="header" href="#method-b-using-a-pc-with-adb">Method B: Using a PC with ADB</a></h3>
 <p>Use this if the app <strong>crashes on startup</strong> or you prefer collecting logs via a computer.</p>
 <p><strong>Requirements:</strong></p>
@@ -312,7 +315,7 @@ placeholders like <code>redacted-pii</code>.</li>
 adb start-server
 </code></pre>
 <p>On <em>Windows</em>, install OEM USB drivers if your device isn’t detected.</p>
-<footer id="last-change">Last change: <time datetime="2026-10-13">2026-10-13</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/b1bb931">b1bb931</a></footer>
+<footer id="last-change">Last change: <time datetime="2026-10-14">2026-10-14</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/bce2a2f">bce2a2f</a></footer>
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">

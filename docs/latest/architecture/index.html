@@ -37,7 +37,7 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-183f55a9.js";
+            window.path_to_searchindex_js = "../searchindex-d1c17be6.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../toc-0f8055a0.js"></script>
@@ -502,7 +502,8 @@ standardized solutions that can be reused across the application:</p>
 <ul>
 <li><strong>⚠️ Error Handling</strong>: The Thunderbird Mobile Components <code>outcome</code> artifact transforms exceptions into domain-specific
 errors and provides user-friendly feedback.</li>
-<li><strong>📋 Logging</strong>: Centralized logging system (<code>core/logging</code>) ensures consistent log formatting, levels, and storage.</li>
+<li><strong>📋 Logging</strong>: <a href="../developer/thunderbird-mobile-components.html">Thunderbird Mobile Components</a> supplies the logger and
+sinks. The <code>core/logging</code> module provides app-specific configuration and exports.</li>
 <li><strong>🔒 Security</strong>: Modules like <code>core/security</code> handle encryption, authentication, and secure data storage.</li>
 </ul>
 <p>Work in progress:</p>
@@ -671,9 +672,18 @@ fun fetchMessages(): Outcome&lt;List&lt;Message&gt;, MessageError&gt; {
 <ul>
 <li>📊 <strong>Logging Architecture</strong>:
 <ul>
-<li>Core logging API (<code>core/logging/api</code>) defines interfaces like <code>Logger</code> and <code>LogSink</code></li>
-<li>Multiple implementations (composite, console) allow for flexible logging targets</li>
-<li>Composite implementation enables logging to multiple sinks simultaneously</li>
+<li><a href="../developer/thunderbird-mobile-components.html">Thunderbird Mobile Components</a> logging core
+(<code>net.thunderbird.components.core.logging:core</code>) defines <code>Logger</code>, <code>LogSink</code>, and the console and composite sinks.
+Its file artifact provides <code>FileLogSink</code>.</li>
+<li><code>core/logging/api</code> exposes app-specific debug-log configuration and export contracts. <code>core/logging/internal</code> binds
+the default logger and fixed level provider, and implements the sync-debug and Android logcat exporters.</li>
+<li><code>app-common</code> chooses the build’s logging default and sync-debug file location, then assembles the logging modules.
+The main logger is enabled by default in debug builds and disabled in release builds. The saved debug preference
+updates it independently of the log level, which is verbose in debug builds and debug in release builds. The
+sync-debug logger remains independent, with its file sink attached only when sync-debug logging is enabled. Android
+console output writes directly to logcat.</li>
+<li><strong>Export logs</strong> copies the Android logcat buffer to a user-selected file. <strong>Export Sync logs</strong> exports the app’s
+sync-debug file sink. They do not necessarily contain the same entries.</li>
 </ul>
 </li>
 <li>🔄 <strong>Logger vs. Sink</strong>:
@@ -721,25 +731,26 @@ fun fetchMessages(): Outcome&lt;List&lt;Message&gt;, MessageError&gt; {
 <li>
 <p><strong>Choose the appropriate log level</strong> based on the importance of the information:</p>
 <ul>
-<li>Use <code>verbose</code> for detailed debugging information (only visible in debug builds)</li>
+<li>Use <code>verbose</code> for detailed debugging information when the active log level permits it</li>
 <li>Use <code>debug</code> for general debugging information</li>
-<li>Use <code>info</code> for important events that should be visible in production</li>
+<li>Use <code>info</code> for operational events (emitted only when logging is enabled)</li>
 <li>Use <code>warn</code> for potential issues that don’t affect functionality</li>
 <li>Use <code>error</code> for issues that affect functionality</li>
 </ul>
 </li>
 <li>
 <p><strong>Use lambda syntax</strong> to avoid string concatenation when logging isn’t needed:</p>
-<pre><code class="language-kotlin">// Good - string is only created if this log level is enabled
-logger.debug { "Processing message with ID: $messageId" }
+<pre><code class="language-kotlin">// The lambda is evaluated only when the logger accepts debug events.
+logger.debug(tag = "Sync") { "Starting folder sync" }
 
-// Avoid - string is always created even if debug logging is disabled
-logger.debug("Processing message with ID: " + messageId)
+// Avoid eagerly constructing messages, even when they contain no sensitive data.
+val message = "Starting folder sync"
+logger.debug(tag = "Sync") { message }
 </code></pre>
 </li>
 <li>
 <p><strong>Include relevant context</strong> in log messages:</p>
-<pre><code class="language-kotlin">logger.info { "Syncing account: ${account.email}, folders: ${folders.size}" }
+<pre><code class="language-kotlin">logger.info(tag = "Sync") { "Starting folder sync" }
 </code></pre>
 </li>
 <li>
@@ -747,17 +758,17 @@ logger.debug("Processing message with ID: " + messageId)
 <pre><code class="language-kotlin">try {
     apiClient.fetchMessages()
 } catch (e: Exception) {
-    logger.error(e) { "Failed to fetch messages for account: ${account.email}" }
+    logger.error(tag = "Sync", throwable = e) { "Failed to fetch messages" }
     throw MessageSyncError.FetchFailed(e)
 }
 </code></pre>
 </li>
 <li>
 <p><strong>Use tags</strong> for better filtering when needed:</p>
-<pre><code class="language-kotlin">private val logTag = LogTag("AccountSync")
+<pre><code class="language-kotlin">private const val LOG_TAG = "AccountSync"
 
 fun syncAccount() {
-    logger.info(logTag) { "Starting account sync for: ${account.email}" }
+    logger.info(tag = LOG_TAG) { "Starting account sync" }
 }
 </code></pre>
 </li>

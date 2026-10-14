@@ -37,7 +37,7 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-183f55a9.js";
+            window.path_to_searchindex_js = "../searchindex-d1c17be6.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../toc-0f8055a0.js"></script>
@@ -304,7 +304,8 @@ and the command to <code>build</code> runs tests and other checks, while <code>a
 </ol>
 <p>See the <a href="https://developer.android.com/studio/debug">Android Studio Debugger Guide</a> for a detailed description.</p>
 <h3 id="logging"><a class="header" href="#logging">Logging</a></h3>
-<p>Use the project’s core logging API <code>net.thunderbird.core.logging.Logger</code>, which is provided via dependency injection
+<p>Use the <a href="../developer/thunderbird-mobile-components.html">Thunderbird Mobile Components</a> logging API
+<code>net.thunderbird.components.core.logging.Logger</code>, which is provided via dependency injection
 (Koin). Avoid logging <strong>personally identifiable information (PII)</strong>.</p>
 <p>Example with DI (Koin):</p>
 <pre><code class="language-kotlin">private const val TAG = "ExampleActivity"
@@ -331,7 +332,7 @@ class ExampleActivity : ComponentActivity() {
 <li>Network activity</li>
 </ul>
 <p>For performance-sensitive code, also consider Baseline Profiles or Macrobenchmark tests.</p>
-<footer id="last-change">Last change: <time datetime="2026-10-13">2026-10-13</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/b1bb931">b1bb931</a></footer>
+<footer id="last-change">Last change: <time datetime="2026-10-14">2026-10-14</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/bce2a2f">bce2a2f</a></footer>
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
