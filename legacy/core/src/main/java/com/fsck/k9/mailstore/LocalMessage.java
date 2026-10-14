@@ -380,6 +380,7 @@ public class LocalMessage extends MimeMessage {
         return rootId;
     }
 
+    @Override
     public AccountId getAccountId() {
         return localStore.getAccountId();
     }
