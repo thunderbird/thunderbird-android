@@ -1518,8 +1518,8 @@ open class MessageHomeActivity :
 
     private fun createSearchAccount(): SearchAccount {
         return SearchAccount.createUnifiedInboxSearch(
-            title = coreResourceProvider.searchUnifiedFoldersTitle(),
-            detail = coreResourceProvider.searchUnifiedFoldersDetail(),
+            title = coreResourceProvider.unifiedInboxTitle(),
+            detail = coreResourceProvider.unifiedInboxDetail(),
         )
     }
 
@@ -1602,8 +1602,8 @@ open class MessageHomeActivity :
         ): Intent {
             return Intent(context, MessageHomeActivity::class.java).apply {
                 val search = SearchAccount.createUnifiedInboxSearch(
-                    title = coreResourceProvider.searchUnifiedFoldersTitle(),
-                    detail = coreResourceProvider.searchUnifiedFoldersDetail(),
+                    title = coreResourceProvider.unifiedInboxTitle(),
+                    detail = coreResourceProvider.unifiedInboxDetail(),
                 ).relatedSearch
 
                 putExtra(EXTRA_ACCOUNT, accountId.toString())
@@ -1671,8 +1671,8 @@ open class MessageHomeActivity :
             return Intent(context, MessageHomeActivity::class.java).apply {
                 if (openInUnifiedInbox) {
                     val search = SearchAccount.createUnifiedInboxSearch(
-                        title = coreResourceProvider.searchUnifiedFoldersTitle(),
-                        detail = coreResourceProvider.searchUnifiedFoldersDetail(),
+                        title = coreResourceProvider.unifiedInboxTitle(),
+                        detail = coreResourceProvider.unifiedInboxDetail(),
                     ).relatedSearch
                     putExtra(EXTRA_SEARCH, LocalMessageSearchSerializer.serialize(search))
                 }

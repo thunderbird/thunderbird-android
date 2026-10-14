@@ -354,7 +354,6 @@
     <string name="settings_export_progress_text">Exporting settings…</string>
     <string name="setting_theme_dark">Dark</string>
     <string name="account_settings_crypto_encrypt_all_drafts_on">All drafts will be stored encrypted</string>
-    <string name="integrated_inbox_detail">All messages in unified folders</string>
     <string name="account_settings_message_read_receipt_summary">Always request a read receipt</string>
     <string name="account_settings_default_quoted_text_shown_label">Quote message when replying</string>
     <string name="account_settings_message_age_14">the last 2 weeks</string>

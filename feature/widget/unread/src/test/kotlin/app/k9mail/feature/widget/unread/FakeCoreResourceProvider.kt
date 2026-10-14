@@ -4,9 +4,9 @@ import com.fsck.k9.CoreResourceProvider
 import com.fsck.k9.notification.PushNotificationState
 
 class FakeCoreResourceProvider : CoreResourceProvider {
-    override fun searchUnifiedFoldersTitle(): String = "Unified Inbox"
+    override fun unifiedInboxTitle(): String = "Unified Inbox"
 
-    override fun searchUnifiedFoldersDetail(): String = "All messages in unified folders"
+    override fun unifiedInboxDetail(): String = "Messages in the inbox of every account"
 
     override fun defaultIdentityDescription(): String {
         throw UnsupportedOperationException("not implemented")

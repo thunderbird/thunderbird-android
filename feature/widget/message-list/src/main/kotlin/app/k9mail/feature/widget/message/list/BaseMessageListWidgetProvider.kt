@@ -64,8 +64,8 @@ abstract class BaseMessageListWidgetProvider : AppWidgetProvider(), KoinComponen
 
     private fun viewUnifiedFoldersPendingIntent(context: Context): PendingIntent {
         val unifiedFoldersSearch = createUnifiedInboxSearch(
-            title = coreResourceProvider.searchUnifiedFoldersTitle(),
-            detail = coreResourceProvider.searchUnifiedFoldersDetail(),
+            title = coreResourceProvider.unifiedInboxTitle(),
+            detail = coreResourceProvider.unifiedInboxDetail(),
         )
         val intent = intentDisplaySearch(
             context = context,

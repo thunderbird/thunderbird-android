@@ -23,8 +23,8 @@ class TestCoreResourceProvider : CoreResourceProvider {
     override fun replyHeader(sender: String) = throw UnsupportedOperationException("not implemented")
     override fun replyHeader(sender: String, sentDate: String) = throw UnsupportedOperationException("not implemented")
 
-    override fun searchUnifiedFoldersTitle() = throw UnsupportedOperationException("not implemented")
-    override fun searchUnifiedFoldersDetail() = throw UnsupportedOperationException("not implemented")
+    override fun unifiedInboxTitle() = throw UnsupportedOperationException("not implemented")
+    override fun unifiedInboxDetail() = throw UnsupportedOperationException("not implemented")
 
     override fun pushNotificationText(notificationState: PushNotificationState): String {
         throw UnsupportedOperationException("not implemented")

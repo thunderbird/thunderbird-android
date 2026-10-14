@@ -828,7 +828,6 @@
     <string name="account_settings_identities_summary">\'முகவரிகள் மற்றும் கையொப்பங்களிலிருந்து மாற்று\' ஐ அமைக்கவும்</string>
     <string name="accountlist_preferences">கணக்கு பட்டியல்</string>
     <string name="messagelist_preferences">செய்தி பட்டியல்கள்</string>
-    <string name="integrated_inbox_detail">ஒருங்கிணைந்த கோப்புறைகளில் உள்ள அனைத்து செய்திகளும்</string>
     <string name="account_settings_automatic_special_folder">தானியங்கி (%s)</string>
     <string name="switch_off">அணை</string>
     <string name="account_settings_mark_message_as_read_on_delete_summary">ஒரு செய்தியை நீக்கும்போது அதைப் படித்தபடி குறிக்கவும்</string>
