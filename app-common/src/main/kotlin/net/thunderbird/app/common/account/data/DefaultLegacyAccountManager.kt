@@ -101,7 +101,9 @@ internal class DefaultLegacyAccountManager(
             val assignedAccount = ensureAssignedAccountNumber(account)
             accountStorage.save(assignedAccount)
             // Cache what was stored, not what was passed in, so the in-memory account matches storage
-            val storedAccount = accountStorage.getById(assignedAccount.id) ?: assignedAccount
+            val storedAccount = checkNotNull(accountStorage.getById(assignedAccount.id)) {
+                "Account ${assignedAccount.id} was not found right after saving it"
+            }
             accountCache.update(storedAccount)
 
             storedAccount to (previousAccount != null && previousAccount.displayCount != storedAccount.displayCount)

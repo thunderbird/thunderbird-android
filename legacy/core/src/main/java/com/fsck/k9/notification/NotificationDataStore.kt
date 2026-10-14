@@ -33,8 +33,9 @@ internal class NotificationDataStore(
         lockScreenNotificationVisibility: LockScreenNotificationVisibility,
     ): NotificationData {
         require(activeNotifications.size <= MAX_NUMBER_OF_NEW_MESSAGE_NOTIFICATIONS)
-        val account = accountManager.findById(accountId)
-            ?: throw IllegalArgumentException("Account not found: $accountId")
+        val account = requireNotNull(accountManager.findById(accountId)) {
+            "Account not found: $accountId"
+        }
 
         return NotificationData(
             account,

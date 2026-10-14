@@ -180,7 +180,7 @@ data class LegacyAccount(
 
     @Synchronized
     fun getIdentity(index: Int): Identity {
-        if (index !in identities.indices) error("Identity with index $index not found")
+        if (index !in identities.indices) throw NoSuchElementException("Identity with index $index not found")
 
         return identities[index]
     }
