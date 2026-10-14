@@ -6,10 +6,13 @@ import com.fsck.k9.helper.MessageHelper
 import com.fsck.k9.mailstore.LocalStoreProvider
 import com.fsck.k9.mailstore.MessageColumns
 import com.fsck.k9.search.conditionsFor
+import com.fsck.k9.search.folderIdFor
 import com.fsck.k9.search.getLegacyAccounts
+import com.fsck.k9.search.unifiedFolderRole
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.core.android.account.SortType
+import net.thunderbird.core.common.exception.MessagingException
 import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.featureflag.keys.GeneratedFeatureFlagKey
 import net.thunderbird.core.preference.display.visualSettings.message.list.MessageListPreferencesManager
@@ -41,7 +44,7 @@ class MessageListLoader(
             Log.e(TAG, e, "Error while fetching message list")
 
             // TODO: Return an error object instead of an empty list
-            MessageListInfo(messageListItems = emptyList(), hasMoreMessages = false)
+            MessageListInfo(messageListItems = emptyList(), hasMoreMessages = false, hasUnsyncedFolders = false)
         }
     }
 
@@ -54,8 +57,34 @@ class MessageListLoader(
             .sortedWith(config)
 
         val hasMoreMessages = loadHasMoreMessages(accounts, config.search.folderIds)
+        val hasUnsyncedFolders = messageListItems.isEmpty() && hasUnsyncedFolders(accounts, config.search)
 
-        return MessageListInfo(messageListItems, hasMoreMessages)
+        return MessageListInfo(messageListItems, hasMoreMessages, hasUnsyncedFolders)
+    }
+
+    private fun hasUnsyncedFolders(accounts: List<LegacyAccount>, search: LocalMessageSearch): Boolean {
+        val unifiedFolderRole = search.unifiedFolderRole
+        val folders = when {
+            unifiedFolderRole != null -> accounts.mapNotNull { account ->
+                account.folderIdFor(unifiedFolderRole, outboxFolderManager)?.let { folderId -> account to folderId }
+            }
+
+            accounts.size == 1 && search.folderIds.size == 1 -> listOf(accounts[0] to search.folderIds[0])
+            else -> emptyList()
+        }
+
+        return folders.any { (account, folderId) -> isUnsynced(account, folderId) }
+    }
+
+    private fun isUnsynced(account: LegacyAccount, folderId: Long): Boolean {
+        return try {
+            val localFolder = localStoreProvider.getInstance(account.id).getFolder(folderId)
+            localFolder.open()
+            !localFolder.isLocalOnly && localFolder.lastChecked == 0L
+        } catch (e: MessagingException) {
+            Log.w(e, "Couldn't check if folder %d was synced", folderId)
+            false
+        }
     }
 
     private fun loadMessageListForAccount(account: LegacyAccount, config: MessageListConfig): List<MessageListItem> {
@@ -203,7 +232,8 @@ class MessageListLoader(
             val localStore = localStoreProvider.getInstance(account.id)
             val localFolder = localStore.getFolder(folderId)
             localFolder.open()
-            localFolder.hasMoreMessages()
+            // Local folders like the outbox have nothing more to download from the server.
+            !localFolder.isLocalOnly && localFolder.hasMoreMessages()
         } else {
             false
         }
@@ -234,4 +264,17 @@ private fun Comparator<MessageListItem>.thenByDate(config: MessageListConfig): C
     }
 }
 
-data class MessageListInfo(val messageListItems: List<MessageListItem>, val hasMoreMessages: Boolean)
+/**
+ * The result of loading a message list.
+ *
+ * @property messageListItems The messages to show, sorted.
+ * @property hasMoreMessages `true` if the folder has more messages on the server that can be loaded. Only set for a
+ *   single folder that isn't local-only.
+ * @property hasUnsyncedFolders `true` if the message list is empty and at least one of the folders it shows has never
+ *   been synchronized with the server.
+ */
+data class MessageListInfo(
+    val messageListItems: List<MessageListItem>,
+    val hasMoreMessages: Boolean,
+    val hasUnsyncedFolders: Boolean,
+)

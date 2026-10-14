@@ -212,6 +212,8 @@ class LegacyMessageListFragment :
     private var itemTouchHelper: ItemTouchHelper? = null
     private var swipeRefreshLayout: SwipeRefreshLayout? = null
     private var floatingActionButton: FloatingActionButton? = null
+    private var emptyView: View? = null
+    private var isShowingUnsyncedFolders = false
 
     private lateinit var adapter: MessageListAdapter
 
@@ -488,6 +490,7 @@ class LegacyMessageListFragment :
         initializeFloatingActionButton(view)
         initializeRecyclerView(view)
         initializeRecentChangesSnackbar()
+        emptyView = view.findViewById(R.id.message_list_empty)
 
         // This needs to be done before loading the message list below
         initializeSortSettings()
@@ -783,6 +786,11 @@ class LegacyMessageListFragment :
     override fun progress(progress: Boolean) {
         if (!progress) {
             swipeRefreshLayout?.isRefreshing = false
+
+            // A sync that finds no messages doesn't change the message list, so reload it to update the empty state.
+            if (isShowingUnsyncedFolders) {
+                loadMessageList(forceUpdate = true)
+            }
         }
 
         fragmentListener.setMessageListProgressEnabled(progress)
@@ -849,6 +857,7 @@ class LegacyMessageListFragment :
         itemTouchHelper = null
         swipeRefreshLayout = null
         floatingActionButton = null
+        emptyView = null
 
         if (isNewMessagesView && !requireActivity().isChangingConfigurations) {
             account?.id?.let { messagingController.clearNewMessages(it) }
@@ -2055,6 +2064,7 @@ class LegacyMessageListFragment :
             }
             addAll(messageListItems.map { MessageListViewItem.Message(it) })
         }
+        updateEmptyState(messageListInfo)
 
         rememberedSelected?.let {
             rememberedSelected = null
@@ -2080,6 +2090,26 @@ class LegacyMessageListFragment :
         currentFolder?.let { currentFolder ->
             currentFolder.moreMessages = messageListInfo.hasMoreMessages
             updateFooterText()
+        }
+    }
+
+    private fun updateEmptyState(messageListInfo: MessageListInfo) {
+        val isEmpty = messageListInfo.messageListItems.isEmpty()
+        isShowingUnsyncedFolders = isEmpty && messageListInfo.hasUnsyncedFolders
+
+        val emptyView = emptyView ?: return
+        emptyView.isVisible = isEmpty
+        if (!isEmpty) return
+
+        val emptyState = MessageListEmptyState.of(
+            isSearch = isManualSearch,
+            hasUnsyncedFolders = messageListInfo.hasUnsyncedFolders,
+            isPullToSyncAllowed = isCheckMailAllowed,
+        )
+        emptyView.findViewById<MaterialTextView>(R.id.message_list_empty_message).setText(emptyState.messageResId)
+        emptyView.findViewById<MaterialTextView>(R.id.message_list_empty_hint).apply {
+            isVisible = emptyState.hintResId != null
+            emptyState.hintResId?.let(::setText)
         }
     }
 
