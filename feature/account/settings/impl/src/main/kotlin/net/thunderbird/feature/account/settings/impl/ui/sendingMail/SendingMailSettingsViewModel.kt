@@ -261,6 +261,7 @@ internal class SendingMailSettingsViewModel(
             is AccountSettingError.NotFound -> logger.error(tag = TAG, message = { error.message })
             is AccountSettingError.StorageError -> logger.error(tag = TAG, message = { error.message })
             is AccountSettingError.UnsupportedFormat -> logger.error(tag = TAG, message = { error.message })
+            is AccountSettingError.UnsupportedMessageFormat -> logger.error(tag = TAG, message = { error.message })
         }
     }
 
