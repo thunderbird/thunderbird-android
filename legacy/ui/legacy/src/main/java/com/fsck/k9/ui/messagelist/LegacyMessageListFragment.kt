@@ -110,7 +110,6 @@ import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.account.avatar.AvatarMonogramCreator
 import net.thunderbird.feature.changelog.internal.RecentChangesViewModel
-import net.thunderbird.feature.mail.folder.FolderRole
 import net.thunderbird.feature.mail.folder.api.OutboxFolderManager
 import net.thunderbird.feature.mail.message.list.domain.DomainContract
 import net.thunderbird.feature.mail.message.list.ui.dialog.SetupArchiveFolderDialogFragmentFactory
@@ -215,6 +214,10 @@ class LegacyMessageListFragment :
     private var floatingActionButton: FloatingActionButton? = null
     private var emptyView: View? = null
     private var isShowingUnsyncedFolders = false
+
+    // Updated with each loaded message list. A unified folder of local-only folders, like the outbox, has nothing
+    // to sync.
+    private var hasRemoteFolders = true
 
     private lateinit var adapter: MessageListAdapter
 
@@ -964,6 +967,7 @@ class LegacyMessageListFragment :
             null,
             activityListener,
         )
+        legacyViewModel.getMessageListLiveData().value?.let(::updateEmptyState)
 
         invalidateMenu()
     }
@@ -2035,6 +2039,7 @@ class LegacyMessageListFragment :
             return
         }
 
+        hasRemoteFolders = messageListInfo.hasRemoteFolders
         swipeRefreshLayout?.let { swipeRefreshLayout ->
             swipeRefreshLayout.isRefreshing = false
             swipeRefreshLayout.isEnabled = isPullToRefreshAllowed
@@ -2089,9 +2094,12 @@ class LegacyMessageListFragment :
         val isEmpty = messageListInfo.messageListItems.isEmpty()
         isShowingUnsyncedFolders = isEmpty && messageListInfo.hasUnsyncedFolders
 
+        // Results of a running remote search are still to come
+        val isShowingEmptyState = isEmpty && remoteSearchFuture == null
+
         val emptyView = emptyView ?: return
-        emptyView.isVisible = isEmpty
-        if (!isEmpty) return
+        emptyView.isVisible = isShowingEmptyState
+        if (!isShowingEmptyState) return
 
         val emptyState = MessageListEmptyState.of(
             isSearch = isManualSearch,
@@ -2132,6 +2140,7 @@ class LegacyMessageListFragment :
 
     override fun remoteSearchFinished() {
         remoteSearchFuture = null
+        legacyViewModel.getMessageListLiveData().value?.let(::updateEmptyState)
     }
 
     override fun setActiveMessage(messageReference: MessageReference?) {
@@ -2232,14 +2241,10 @@ class LegacyMessageListFragment :
     }
 
     private val isCheckMailSupported: Boolean
-        get() = !isUnifiedOutbox && (allAccounts || !isSingleAccountMode || !isSingleFolderMode || isRemoteFolder)
-
-    // Like an account's outbox, the unified outbox only holds local messages, so there's nothing to refresh.
-    private val isUnifiedOutbox: Boolean
-        get() = localSearch.unifiedFolderRole == FolderRole.OUTBOX
+        get() = allAccounts || !isSingleAccountMode || !isSingleFolderMode || isRemoteFolder
 
     private val isCheckMailAllowed: Boolean
-        get() = !isManualSearch && isCheckMailSupported
+        get() = !isManualSearch && isCheckMailSupported && hasRemoteFolders
 
     private val isPullToRefreshAllowed: Boolean
         get() = isRemoteSearchAllowed || isCheckMailAllowed
@@ -2319,7 +2324,7 @@ class LegacyMessageListFragment :
         }
 
         override fun onSwipeEnded(item: MessageListItem) {
-            swipeRefreshLayout?.isEnabled = true
+            swipeRefreshLayout?.isEnabled = isPullToRefreshAllowed
             if (itemSelectedOnSwipeStart && !isMessageSelected(item)) {
                 selectMessage(item)
             }

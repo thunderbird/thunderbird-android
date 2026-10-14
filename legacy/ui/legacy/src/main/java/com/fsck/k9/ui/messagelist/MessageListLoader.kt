@@ -3,6 +3,7 @@ package com.fsck.k9.ui.messagelist
 import app.k9mail.legacy.mailstore.MessageListRepository
 import com.fsck.k9.contacts.ContactLetterBitmapCreator
 import com.fsck.k9.helper.MessageHelper
+import com.fsck.k9.mailstore.LocalFolder
 import com.fsck.k9.mailstore.LocalStoreProvider
 import com.fsck.k9.mailstore.MessageColumns
 import com.fsck.k9.search.conditionsFor
@@ -44,7 +45,12 @@ class MessageListLoader(
             Log.e(TAG, e, "Error while fetching message list")
 
             // TODO: Return an error object instead of an empty list
-            MessageListInfo(messageListItems = emptyList(), hasMoreMessages = false, hasUnsyncedFolders = false)
+            MessageListInfo(
+                messageListItems = emptyList(),
+                hasMoreMessages = false,
+                hasUnsyncedFolders = false,
+                hasRemoteFolders = true,
+            )
         }
     }
 
@@ -56,34 +62,41 @@ class MessageListLoader(
             }
             .sortedWith(config)
 
-        val hasMoreMessages = loadHasMoreMessages(accounts, config.search.folderIds)
-        val hasUnsyncedFolders = messageListItems.isEmpty() && hasUnsyncedFolders(accounts, config.search)
+        val folders = loadFolders(accounts, config.search)
+        // Local folders like the outbox have nothing more to download from the server.
+        val singleFolder = folders?.singleOrNull()?.takeIf { config.search.folderIds.size == 1 }
+        val hasMoreMessages = singleFolder != null && !singleFolder.isLocalOnly && singleFolder.hasMoreMessages()
+        val hasUnsyncedFolders = messageListItems.isEmpty() &&
+            folders.orEmpty().any { folder -> !folder.isLocalOnly && folder.lastChecked == 0L }
+        val hasRemoteFolders = folders?.any { folder -> !folder.isLocalOnly } ?: true
 
-        return MessageListInfo(messageListItems, hasMoreMessages, hasUnsyncedFolders)
+        return MessageListInfo(messageListItems, hasMoreMessages, hasUnsyncedFolders, hasRemoteFolders)
     }
 
-    private fun hasUnsyncedFolders(accounts: List<LegacyAccount>, search: LocalMessageSearch): Boolean {
+    /**
+     * Loads the folders the message list shows, or returns `null` if it shows neither a single folder nor a unified
+     * folder.
+     */
+    private fun loadFolders(accounts: List<LegacyAccount>, search: LocalMessageSearch): List<LocalFolder>? {
         val unifiedFolderRole = search.unifiedFolderRole
-        val folders = when {
+        val folderIds = when {
             unifiedFolderRole != null -> accounts.mapNotNull { account ->
                 account.folderIdFor(unifiedFolderRole, outboxFolderManager)?.let { folderId -> account to folderId }
             }
 
             accounts.size == 1 && search.folderIds.size == 1 -> listOf(accounts[0] to search.folderIds[0])
-            else -> emptyList()
+            else -> return null
         }
 
-        return folders.any { (account, folderId) -> isUnsynced(account, folderId) }
+        return folderIds.mapNotNull { (account, folderId) -> loadFolder(account, folderId) }
     }
 
-    private fun isUnsynced(account: LegacyAccount, folderId: Long): Boolean {
+    private fun loadFolder(account: LegacyAccount, folderId: Long): LocalFolder? {
         return try {
-            val localFolder = localStoreProvider.getInstance(account.id).getFolder(folderId)
-            localFolder.open()
-            !localFolder.isLocalOnly && localFolder.lastChecked == 0L
+            localStoreProvider.getInstance(account.id).getFolder(folderId).apply { open() }
         } catch (e: MessagingException) {
-            Log.w(e, "Couldn't check if folder %d was synced", folderId)
-            false
+            Log.w(TAG, e, "Couldn't load folder %d", folderId)
+            null
         }
     }
 
@@ -224,20 +237,6 @@ class MessageListLoader(
 
         return this.sortedWith(comparator)
     }
-
-    private fun loadHasMoreMessages(accounts: List<LegacyAccount>, folderIds: List<Long>): Boolean {
-        return if (accounts.size == 1 && folderIds.size == 1) {
-            val account = accounts[0]
-            val folderId = folderIds[0]
-            val localStore = localStoreProvider.getInstance(account.id)
-            val localFolder = localStore.getFolder(folderId)
-            localFolder.open()
-            // Local folders like the outbox have nothing more to download from the server.
-            !localFolder.isLocalOnly && localFolder.hasMoreMessages()
-        } else {
-            false
-        }
-    }
 }
 
 private inline fun <T> compareBy(sortAscending: Boolean, crossinline selector: (T) -> Comparable<*>?): Comparator<T> {
@@ -272,9 +271,12 @@ private fun Comparator<MessageListItem>.thenByDate(config: MessageListConfig): C
  *   single folder that isn't local-only.
  * @property hasUnsyncedFolders `true` if the message list is empty and at least one of the folders it shows has never
  *   been synchronized with the server.
+ * @property hasRemoteFolders `false` if all folders the message list shows are local-only, like the outbox, so there's
+ *   nothing to synchronize.
  */
 data class MessageListInfo(
     val messageListItems: List<MessageListItem>,
     val hasMoreMessages: Boolean,
     val hasUnsyncedFolders: Boolean,
+    val hasRemoteFolders: Boolean,
 )
