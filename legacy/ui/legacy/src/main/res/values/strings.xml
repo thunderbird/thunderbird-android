@@ -1105,6 +1105,14 @@ You can keep this message and use it as a backup for your secret key. If you wan
     <string name="message_list_error_title">Error</string>
     <!-- Displayed instead of the message list when a folder couldn't be found, e.g. due to an outdated home screen shortcut. -->
     <string name="message_list_error_folder_not_found">Folder not found</string>
+    <!-- Displayed instead of the message list when a folder contains no messages. -->
+    <string name="message_list_empty">No messages</string>
+    <!-- Displayed instead of the message list when a search found no messages. -->
+    <string name="message_list_empty_search">No results</string>
+    <!-- Displayed instead of the message list when a folder is empty because it hasn't been synchronized with the server yet. -->
+    <string name="message_list_not_synced">Not synced yet</string>
+    <!-- Displayed below "Not synced yet" to explain how to synchronize the folder. -->
+    <string name="message_list_not_synced_hint">Pull down to sync</string>
 
     <!-- Title of the toolbar that is displayed when the message details bottom sheet has been expanded -->
     <string name="message_details_toolbar_title">Message details</string>
