@@ -80,6 +80,8 @@ internal class GeneralSettingsBuilder(
         settings += name(name = state.name.value)
         settings += color(color = state.color.value ?: 0)
 
+        settings += manageFolderVisibilityAndSort(onEvent)
+
         return settings.toImmutableList()
     }
 
@@ -252,6 +254,19 @@ internal class GeneralSettingsBuilder(
         is Avatar.Image -> options.first { it.id == AVATAR_IMAGE_ID }
         is Avatar.Icon -> options.first { it.id == AVATAR_ICON_ID }
     }
+
+    private fun manageFolderVisibilityAndSort(onEvent: (Event) -> Unit): Setting =
+        SettingValue.ActionText(
+            id = GeneralSettingId.FOLDER_VISIBILITY_AND_SORT,
+            title = { resources.stringResource(R.string.account_settings_manage_folders) },
+            description = { null },
+            icon = { null },
+            value =
+                resources.stringResource(R.string.account_settings_folder_visibility_and_sort_description),
+            onClick = {
+                onEvent(Event.OnManageFoldersSelected)
+            }
+        )
 
     private companion object {
         const val AVATAR_MONOGRAM_ID = "avatar_monogram"
