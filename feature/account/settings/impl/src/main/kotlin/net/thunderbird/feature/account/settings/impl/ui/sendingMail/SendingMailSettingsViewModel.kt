@@ -7,6 +7,7 @@ import kotlinx.coroutines.launch
 import net.thunderbird.components.core.outcome.handle
 import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.ui.contract.mvi.BaseViewModel
+import net.thunderbird.feature.account.AccountCapabilities
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract
 import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.AccountSettingError
@@ -25,6 +26,7 @@ internal class SendingMailSettingsViewModel(
     private val getLegacyAccount: UseCase.GetLegacyAccount,
     private val updateSendingMailSettings: UseCase.UpdateSendingMailSettings,
     private val optionsMapper: SendingMailSettingsOptionsMapper,
+    private val accountCapabilities: AccountCapabilities,
     initialState: State = State(
         messageFormat = optionsMapper.defaultMessageFormatOption(),
         alwaysShowCcBcc = false,
@@ -35,6 +37,7 @@ internal class SendingMailSettingsViewModel(
         stripSignatureOnReply = false,
         quotedTextPrefix = ">",
         uploadSentMessages = false,
+        supportsUpload = true,
     ),
 ) : BaseViewModel<State, Event, Effect>(initialState = initialState), SendingMailSettingContract.ViewModel {
 
@@ -267,6 +270,7 @@ internal class SendingMailSettingsViewModel(
                     val stripSignatureOnReply = it.isStripSignature
                     val quotedTextPrefix = it.quotePrefix ?: ""
                     val uploadSentMessages = it.isUploadSentMessages
+                    val supportsUpload = accountCapabilities.supportsUpload(accountId)
 
                     updateState { state ->
                         state.copy(
@@ -279,6 +283,7 @@ internal class SendingMailSettingsViewModel(
                             stripSignatureOnReply = stripSignatureOnReply,
                             quotedTextPrefix = quotedTextPrefix,
                             uploadSentMessages = uploadSentMessages,
+                            supportsUpload = supportsUpload,
                         )
                     }
                 },

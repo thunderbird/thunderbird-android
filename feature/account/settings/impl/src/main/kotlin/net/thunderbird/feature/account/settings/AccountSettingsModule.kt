@@ -193,6 +193,7 @@ val featureAccountSettingsModule = module {
             getLegacyAccount = get(),
             updateSendingMailSettings = get(),
             optionsMapper = get(),
+            accountCapabilities = get(),
         )
     }
 

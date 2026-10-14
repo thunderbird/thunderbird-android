@@ -21,6 +21,7 @@ interface SendingMailSettingContract {
         val stripSignatureOnReply: Boolean = false,
         val quotedTextPrefix: String,
         val uploadSentMessages: Boolean = false,
+        val supportsUpload: Boolean = true,
 
     )
 

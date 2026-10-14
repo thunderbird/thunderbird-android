@@ -28,7 +28,9 @@ internal class SendingMailSettingsBuilder(
         settings += replyAfterQuotedText(state.replyAfterQuotedText)
         settings += stripSignatureOnReply(state.stripSignatureOnReply)
         settings += quotePrefix(state.quotedTextPrefix)
-        settings += uploadSentMessages(state.uploadSentMessages)
+        if(state.supportsUpload) {
+            settings += uploadSentMessages(state.uploadSentMessages)
+        }
         settings += outgoingServer(onEvent)
         return settings.toImmutableList()
     }
