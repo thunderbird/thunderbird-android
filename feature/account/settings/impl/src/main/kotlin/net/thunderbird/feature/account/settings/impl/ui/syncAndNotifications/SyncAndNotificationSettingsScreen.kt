@@ -1,11 +1,13 @@
 package net.thunderbird.feature.account.settings.impl.ui.syncAndNotifications
 
 import androidx.activity.compose.BackHandler
+import androidx.activity.compose.LocalActivity
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import app.k9mail.feature.launcher.FeatureLauncherActivity
 import app.k9mail.feature.launcher.FeatureLauncherTarget
+import com.fsck.k9.ui.managefolders.ManageFoldersActivity
 import com.fsck.k9.ui.settings.account.AccountSettingsActivity
 import com.fsck.k9.ui.settings.account.AccountSettingsFragment
 import net.thunderbird.core.ui.contract.mvi.observe
@@ -28,6 +30,8 @@ internal fun SyncAndNotificationsScreen(
     builder: SyncAndNotificationSettingsContract.SettingsBuilder = koinInject(),
 ) {
     val context = LocalContext.current
+    val activityContext = LocalActivity.current!!
+
     val (state, dispatch) = viewModel.observe { effect ->
         when (effect) {
             is Effect.NavigateBack -> {
@@ -43,10 +47,9 @@ internal fun SyncAndNotificationsScreen(
             }
 
             is Effect.NavigateToFolderSyncAndPush -> {
-                AccountSettingsActivity.start(
-                    context = context,
-                    accountUuid = accountId.value.toString(),
-                    startScreenKey = AccountSettingsFragment.PREFERENCE_FOLDERS,
+                ManageFoldersActivity.launch(
+                    activityContext,
+                    accountId,
                 )
             }
 

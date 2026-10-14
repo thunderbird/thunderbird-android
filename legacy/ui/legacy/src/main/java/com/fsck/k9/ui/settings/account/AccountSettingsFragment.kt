@@ -34,7 +34,6 @@ import com.fsck.k9.notification.NotificationSettingsUpdater
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.extensions.withArguments
 import com.fsck.k9.ui.endtoend.AutocryptKeyTransferActivity
-import com.fsck.k9.ui.managefolders.ManageFoldersActivity
 import com.fsck.k9.ui.settings.onClick
 import com.fsck.k9.ui.settings.oneTimeClickListener
 import com.fsck.k9.ui.settings.remove
@@ -532,7 +531,6 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         private const val PREFERENCE_GENERAL = "general"
 
         private const val PREFERENCE_READING_MAIL = "reading_mail"
-        private const val PREFERENCE_FOLDER_VISIBILITY_AND_SYNC = "visibility_and_syncing"
         private const val PREFERENCE_FETCHING_MAIL = "fetching_mail"
         private const val PREFERENCE_SYNC_AND_NOTIFICATIONS = "sync_and_notifications"
         private const val PREFERENCE_FETCHING_MAIL = "fetching_mail"
@@ -570,6 +568,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         // External access required for new notifications, will change over as we migrate
         const val PREFERENCE_NOTIFICATION_STYLE = "notifications"
         const val PREFERENCE_FOLDERS = "folders"
+        const val PREFERENCE_FOLDER_VISIBILITY_AND_SYNC = "visibility_and_syncing"
 
         fun create(accountUuid: String, rootKey: String?) = AccountSettingsFragment().withArguments(
             ARG_ACCOUNT_UUID to accountUuid,
