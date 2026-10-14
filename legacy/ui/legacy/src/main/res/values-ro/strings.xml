@@ -426,9 +426,9 @@
     <string name="account_settings_notification_light_magenta">Magenta</string>
     <string name="account_settings_composition_title">Opțiuni compunere mesaj</string>
     <string name="account_settings_composition_label">Setări implicite compunere mesaj</string>
-    <string name="account_settings_composition_summary">Setează ”De la”, Bcc și semnătură</string>
+    <string name="account_settings_composition_summary">Definește valorile implicite pentru „De la”, „Bcc” și semnătură</string>
     <string name="account_settings_identities_label">Administrează identitățile</string>
-    <string name="account_settings_identities_summary">Setează adrese și semnături alternative pentru ”De la”</string>
+    <string name="account_settings_identities_summary">Definiți adrese „De la” și semnături alternative</string>
     <string name="manage_identities_title">Gestionează identitățile</string>
     <string name="manage_identities_context_menu_title">Gestionează identitate</string>
     <string name="edit_identity_title">Modifică identitate</string>
@@ -970,4 +970,5 @@
     <string name="account_settings_signature_preview_empty">Previzualizarea semnăturii tale va apărea aici</string>
     <string name="error_no_contact_provider">Nu s-a găsit nicio aplicație „Agendă de contacte”. Instalează o aplicație de Agendă de contacte pentru a adăuga această adresă.</string>
     <string name="remote_feature_flag_preferences">Opțiuni de funcții la distanță</string>
+    <string name="account_setup_visibility_and_syncing">Vizibilitate și sincronizare</string>
 </resources>
