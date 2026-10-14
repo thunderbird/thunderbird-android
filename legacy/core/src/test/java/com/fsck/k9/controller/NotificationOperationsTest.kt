@@ -52,7 +52,7 @@ class NotificationOperationsTest {
     }
 
     @Test
-    fun `clearing a unified folder should clear notifications of each account's folder of that type only`() {
+    fun `clearing a unified folder should clear notifications of each account's folder with that role only`() {
         // Act
         testSubject.clearNotifications(LocalMessageSearch.createUnifiedSearch(FolderRole.SPAM))
 

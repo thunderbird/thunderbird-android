@@ -3,7 +3,7 @@ package com.fsck.k9.controller
 import com.fsck.k9.notification.NotificationController
 import com.fsck.k9.search.isNewMessages
 import com.fsck.k9.search.isSingleFolder
-import com.fsck.k9.search.folderIdFor
+import com.fsck.k9.search.folderIdsFor
 import com.fsck.k9.search.unifiedFolderRole
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.LegacyAccountManager
@@ -34,9 +34,8 @@ internal class NotificationOperations(
     }
 
     private fun clearUnifiedFolderNotifications(role: FolderRole) {
-        for (account in accountManager.findAll()) {
-            val folderId = account.folderIdFor(role, outboxFolderManager) ?: continue
-            clearNotifications(account.id, folderId)
+        for ((accountId, folderId) in accountManager.folderIdsFor(role, outboxFolderManager)) {
+            clearNotifications(accountId, folderId)
         }
     }
 

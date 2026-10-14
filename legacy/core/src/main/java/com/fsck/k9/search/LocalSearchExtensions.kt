@@ -4,6 +4,7 @@ package com.fsck.k9.search
 
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.LegacyAccountManager
+import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.mail.folder.FolderRole
 import net.thunderbird.feature.mail.folder.api.OutboxFolderManager
 import net.thunderbird.feature.search.legacy.LocalMessageSearch
@@ -54,6 +55,18 @@ fun LegacyAccount.folderIdFor(role: FolderRole, outboxFolderManager: OutboxFolde
         FolderRole.ARCHIVE -> archiveFolderId
         FolderRole.SPAM -> spamFolderId
     }
+}
+
+/**
+ * Returns the ID of each account's folder with the given [role], leaving out accounts that don't have one.
+ */
+fun LegacyAccountManager.folderIdsFor(
+    role: FolderRole,
+    outboxFolderManager: OutboxFolderManager,
+): Map<AccountId, Long> {
+    return findAll()
+        .mapNotNull { account -> account.folderIdFor(role, outboxFolderManager)?.let { account.id to it } }
+        .toMap()
 }
 
 @JvmName("getLegacyAccountsFromLocalSearch")

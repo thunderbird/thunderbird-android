@@ -54,6 +54,7 @@ import com.fsck.k9.activity.FolderInfoHolder
 import com.fsck.k9.activity.MessageSearchActivity
 import com.fsck.k9.activity.misc.ContactPicture
 import com.fsck.k9.controller.MessagingControllerWrapper
+import com.fsck.k9.controller.UnifiedFolderSynchronizer
 import com.fsck.k9.fragment.ConfirmationDialogFragment
 import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmentListener
 import com.fsck.k9.helper.Utility
@@ -63,6 +64,7 @@ import com.fsck.k9.mailstore.LocalStoreProvider
 import com.fsck.k9.search.getLegacyAccounts
 import com.fsck.k9.search.isNewMessages
 import com.fsck.k9.search.isUnified
+import com.fsck.k9.search.unifiedFolderRole
 import com.fsck.k9.ui.BuildConfig
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.choosefolder.ChooseFolderActivity
@@ -107,6 +109,7 @@ import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.account.avatar.AvatarMonogramCreator
 import net.thunderbird.feature.changelog.internal.RecentChangesViewModel
+import net.thunderbird.feature.mail.folder.FolderRole
 import net.thunderbird.feature.mail.folder.api.OutboxFolderManager
 import net.thunderbird.feature.mail.message.list.domain.DomainContract
 import net.thunderbird.feature.mail.message.list.ui.dialog.SetupArchiveFolderDialogFragmentFactory
@@ -164,6 +167,7 @@ class LegacyMessageListFragment :
     private val sortTypeToastProvider: SortTypeToastProvider by inject()
     private val folderNameFormatter: FolderNameFormatter by inject { parametersOf(requireContext()) }
     private val messagingController: MessagingControllerWrapper by inject()
+    private val unifiedFolderSynchronizer: UnifiedFolderSynchronizer by inject()
     private val messagingControllerRegistry: MessagingControllerRegistry by inject()
     private val accountManager: LegacyAccountManager by inject()
     private val lastSelectedFolderStore: LastSelectedFolderStore by inject()
@@ -1845,10 +1849,13 @@ class LegacyMessageListFragment :
     }
 
     private fun checkMail() {
+        val unifiedFolderRole = localSearch.unifiedFolderRole
         if (isSingleAccountMode && isSingleFolderMode) {
             val folderId = currentFolder!!.databaseId
             account?.id?.let { messagingController.synchronizeMailbox(it, folderId, false, activityListener) }
             account?.id?.let { messagingController.sendPendingMessages(it, activityListener) }
+        } else if (unifiedFolderRole != null) {
+            unifiedFolderSynchronizer.synchronize(unifiedFolderRole, activityListener)
         } else if (allAccounts) {
             messagingController.checkMail(null, true, true, false, activityListener)
         } else {
@@ -2203,7 +2210,11 @@ class LegacyMessageListFragment :
     }
 
     private val isCheckMailSupported: Boolean
-        get() = allAccounts || !isSingleAccountMode || !isSingleFolderMode || isRemoteFolder
+        get() = !isUnifiedOutbox && (allAccounts || !isSingleAccountMode || !isSingleFolderMode || isRemoteFolder)
+
+    // Like an account's outbox, the unified outbox only holds local messages, so there's nothing to refresh.
+    private val isUnifiedOutbox: Boolean
+        get() = localSearch.unifiedFolderRole == FolderRole.OUTBOX
 
     private val isCheckMailAllowed: Boolean
         get() = !isManualSearch && isCheckMailSupported
