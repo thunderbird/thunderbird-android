@@ -4,7 +4,7 @@ import java.util.concurrent.ConcurrentHashMap
 import net.thunderbird.feature.account.AccountId
 
 /**
- * Remembers the folder last chosen when moving or copying a message from the message view, so the folder chooser can
+ * Remembers the folder last chosen when moving or copying messages, so the folder chooser in the message view can
  * scroll to it next time.
  *
  * Kept in memory only, so it resets when the app restarts.

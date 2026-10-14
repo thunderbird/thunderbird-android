@@ -110,6 +110,7 @@ import com.fsck.k9.ui.messagelist.MessageListFragmentBridgeContract.MessageListF
 import com.fsck.k9.ui.messagelist.MessageListFragmentBridgeContract.MessageListFragmentListener.Companion.MAX_PROGRESS
 import com.fsck.k9.ui.messagelist.debug.AuthDebugActions
 import com.fsck.k9.ui.messagelist.item.toMessageItemUi
+import com.fsck.k9.ui.messageview.LastSelectedFolderStore
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.color.MaterialColors
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -215,6 +216,7 @@ class MessageListFragment :
     private val messagingController: MessagingControllerWrapper by inject()
     private val messagingControllerRegistry: MessagingControllerRegistry by inject()
     private val accountManager: LegacyAccountManager by inject()
+    private val lastSelectedFolderStore: LastSelectedFolderStore by inject()
     private val connectivityManager: ConnectivityManager by inject()
     private val localStoreProvider: LocalStoreProvider by inject()
 
@@ -1463,8 +1465,15 @@ class MessageListFragment :
         if (destinationFolderId != -1L) {
             activeMessages = null
 
+            setLastSelectedFolder(messages, destinationFolderId)
+
             action(destinationFolderId, messages)
         }
+    }
+
+    private fun setLastSelectedFolder(messages: List<MessageReference>, folderId: Long) {
+        val firstMessage = messages.firstOrNull() ?: return
+        lastSelectedFolderStore.set(firstMessage.accountId, folderId)
     }
 
     private fun onArchive(message: MessageReference) {
