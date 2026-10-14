@@ -21,7 +21,7 @@ object FakeData {
             name = "user@example.com",
             color = 0,
             avatar = AvatarDto(
-                id = FakeAccountData.ACCOUNT_ID,
+                accountId = FakeAccountData.ACCOUNT_ID,
                 avatarType = AvatarTypeDto.MONOGRAM,
                 avatarMonogram = "us",
                 avatarImageUri = null,

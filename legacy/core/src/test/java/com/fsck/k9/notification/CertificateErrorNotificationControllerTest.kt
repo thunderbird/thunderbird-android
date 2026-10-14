@@ -161,7 +161,7 @@ class CertificateErrorNotificationControllerTest : RobolectricTest() {
             name = ACCOUNT_NAME,
             color = 0,
             avatar = AvatarDto(
-                id = accountId,
+                accountId = accountId,
                 avatarType = AvatarTypeDto.MONOGRAM,
                 avatarMonogram = null,
                 avatarImageUri = null,

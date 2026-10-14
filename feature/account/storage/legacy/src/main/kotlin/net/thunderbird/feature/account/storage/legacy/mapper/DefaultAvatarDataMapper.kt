@@ -10,7 +10,7 @@ class DefaultAvatarDataMapper : AvatarDataMapper {
     override fun toDomain(dto: AvatarDto): Avatar {
         return when (dto.avatarType) {
             AvatarTypeDto.MONOGRAM -> Avatar.Monogram(
-                id = dto.id,
+                accountId = dto.accountId,
                 value = dto.avatarMonogram ?: DEFAULT_MONOGRAM,
             )
 
@@ -19,12 +19,12 @@ class DefaultAvatarDataMapper : AvatarDataMapper {
 
                 if (uri.isNullOrEmpty()) {
                     Avatar.Monogram(
-                        id = dto.id,
+                        accountId = dto.accountId,
                         value = DEFAULT_MONOGRAM,
                     )
                 } else {
                     Avatar.Image(
-                        id = dto.id,
+                        accountId = dto.accountId,
                         uri = uri,
                     )
                 }
@@ -35,12 +35,12 @@ class DefaultAvatarDataMapper : AvatarDataMapper {
 
                 if (name.isNullOrEmpty()) {
                     Avatar.Monogram(
-                        id = dto.id,
+                        accountId = dto.accountId,
                         value = DEFAULT_MONOGRAM,
                     )
                 } else {
                     Avatar.Icon(
-                        id = dto.id,
+                        accountId = dto.accountId,
                         name = name,
                     )
                 }
@@ -50,7 +50,7 @@ class DefaultAvatarDataMapper : AvatarDataMapper {
 
     override fun toDto(domain: Avatar): AvatarDto {
         return AvatarDto(
-            id = domain.id,
+            accountId = domain.accountId,
             avatarType = when (domain) {
                 is Avatar.Monogram -> AvatarTypeDto.MONOGRAM
                 is Avatar.Image -> AvatarTypeDto.IMAGE

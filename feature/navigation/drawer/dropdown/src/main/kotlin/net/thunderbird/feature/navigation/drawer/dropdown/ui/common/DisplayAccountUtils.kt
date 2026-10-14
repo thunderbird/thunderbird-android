@@ -40,7 +40,7 @@ internal fun getDisplayAccountAvatar(account: DisplayAccount): Avatar {
     return when (account) {
         is UnifiedDisplayAccount -> {
             Avatar.Icon(
-                id = account.id,
+                accountId = account.id,
                 name = "group",
             )
         }

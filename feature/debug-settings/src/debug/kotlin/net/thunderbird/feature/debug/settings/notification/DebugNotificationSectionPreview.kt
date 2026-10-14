@@ -30,7 +30,7 @@ private fun DebugNotificationSectionPreview() {
                     id = id,
                     name = "Account $it",
                     color = 0,
-                    avatar = Avatar.Monogram(id = id, value = "A$it"),
+                    avatar = Avatar.Monogram(accountId = id, value = "A$it"),
                 )
             }.toPersistentList()
         }
@@ -62,7 +62,7 @@ private fun PreviewSingleMailNotification() {
                     id = id,
                     name = "Account $it",
                     color = 0,
-                    avatar = Avatar.Monogram(id = id, value = "A$it"),
+                    avatar = Avatar.Monogram(accountId = id, value = "A$it"),
                 )
             }.toPersistentList()
         }

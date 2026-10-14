@@ -26,7 +26,7 @@ class DisplayAccountUtilsTest {
         // Assert
         assertThat(avatar).isEqualTo(
             Avatar.Icon(
-                id = UnifiedAccountId,
+                accountId = UnifiedAccountId,
                 name = "group",
             ),
         )
@@ -36,7 +36,7 @@ class DisplayAccountUtilsTest {
     fun `mail account returns its provided avatar`() {
         // Arrange
         val providedAvatar = Avatar.Icon(
-            id = AccountIdFactory.create(),
+            accountId = AccountIdFactory.create(),
             name = "star",
         )
         val mail = MailDisplayAccount(

@@ -55,7 +55,7 @@ class SyncNotificationControllerTest : RobolectricTest() {
             name = ACCOUNT_NAME,
             color = -1,
             avatar = AvatarDto(
-                id = accountId,
+                accountId = accountId,
                 avatarType = AvatarTypeDto.MONOGRAM,
                 avatarMonogram = "TA",
                 avatarImageUri = null,

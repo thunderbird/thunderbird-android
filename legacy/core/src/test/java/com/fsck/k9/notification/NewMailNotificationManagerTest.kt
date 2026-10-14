@@ -447,7 +447,7 @@ class NewMailNotificationManagerTest {
                 name = ACCOUNT_NAME,
                 color = ACCOUNT_COLOR,
                 avatar = AvatarDto(
-                    id = accountId,
+                    accountId = accountId,
                     avatarType = AvatarTypeDto.MONOGRAM,
                     avatarMonogram = "PE",
                     avatarImageUri = null,

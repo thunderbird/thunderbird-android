@@ -41,7 +41,7 @@ class DefaultAccountAvatarDataMapperTest {
         avatarTypeDtos.forEach { type ->
             // Arrange
             val dto = AvatarDto(
-                id = ACCOUNT_ID,
+                accountId = ACCOUNT_ID,
                 avatarType = type,
                 avatarMonogram = null,
                 avatarImageUri = null,
@@ -52,7 +52,7 @@ class DefaultAccountAvatarDataMapperTest {
             val result = testSubject.toDomain(dto)
 
             // Assert
-            assertDomainMonogram(result, Avatar.Monogram(id = ACCOUNT_ID, value = "XX"))
+            assertDomainMonogram(result, Avatar.Monogram(accountId = ACCOUNT_ID, value = "XX"))
         }
     }
 
@@ -122,33 +122,33 @@ class DefaultAccountAvatarDataMapperTest {
         val testCases = listOf(
             TestCase(
                 AvatarDto(
-                    id = ACCOUNT_ID,
+                    accountId = ACCOUNT_ID,
                     avatarType = AvatarTypeDto.MONOGRAM,
                     avatarMonogram = "AB",
                     avatarImageUri = null,
                     avatarIconName = null,
                 ),
-                Avatar.Monogram(id = ACCOUNT_ID, value = "AB"),
+                Avatar.Monogram(accountId = ACCOUNT_ID, value = "AB"),
             ),
             TestCase(
                 AvatarDto(
-                    id = ACCOUNT_ID,
+                    accountId = ACCOUNT_ID,
                     avatarType = AvatarTypeDto.IMAGE,
                     avatarMonogram = null,
                     avatarImageUri = "uri://img",
                     avatarIconName = null,
                 ),
-                Avatar.Image(id = ACCOUNT_ID, uri = "uri://img"),
+                Avatar.Image(accountId = ACCOUNT_ID, uri = "uri://img"),
             ),
             TestCase(
                 AvatarDto(
-                    id = ACCOUNT_ID,
+                    accountId = ACCOUNT_ID,
                     avatarType = AvatarTypeDto.ICON,
                     avatarMonogram = null,
                     avatarImageUri = null,
                     avatarIconName = "icon_name",
                 ),
-                Avatar.Icon(id = ACCOUNT_ID, name = "icon_name"),
+                Avatar.Icon(accountId = ACCOUNT_ID, name = "icon_name"),
             ),
         )
     }

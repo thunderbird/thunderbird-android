@@ -375,7 +375,7 @@ class LegacyAccountStorageHandlerTest {
                 name = "Test Account",
                 color = 0xFF0000,
                 avatar = AvatarDto(
-                    id = accountId,
+                    accountId = accountId,
                     avatarType = AvatarTypeDto.MONOGRAM,
                     avatarMonogram = "TA",
                     avatarImageUri = null,
@@ -489,7 +489,7 @@ class LegacyAccountStorageHandlerTest {
                 name = "Test Account",
                 color = 0,
                 avatar = AvatarDto(
-                    id = accountId,
+                    accountId = accountId,
                     avatarType = AvatarTypeDto.MONOGRAM,
                     avatarMonogram = "T",
                     avatarImageUri = null,

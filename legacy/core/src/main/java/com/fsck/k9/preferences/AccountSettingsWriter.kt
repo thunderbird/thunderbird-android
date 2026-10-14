@@ -101,7 +101,7 @@ internal class AccountSettingsWriter(
             )
         }
         val avatar = AvatarDto(
-            id = accountId,
+            accountId = accountId,
             avatarType = settings.enum("avatarType", AvatarTypeDto.MONOGRAM),
             avatarMonogram = string("avatarMonogram"),
             avatarImageUri = string("avatarImageUri"),

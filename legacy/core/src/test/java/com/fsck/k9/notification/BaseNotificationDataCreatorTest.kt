@@ -273,7 +273,7 @@ class BaseNotificationDataCreatorTest {
                 name = name ?: "",
                 color = color,
                 avatar = AvatarDto(
-                    id = id,
+                    accountId = id,
                     avatarType = AvatarTypeDto.MONOGRAM,
                     avatarMonogram = "AN",
                     avatarImageUri = null,

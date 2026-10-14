@@ -316,7 +316,7 @@ private fun createLegacyAccount(id: AccountId): LegacyAccount {
             id = id,
             name = "Account",
             color = 0,
-            avatar = AvatarDto(id = id, AvatarTypeDto.MONOGRAM, "A", null, null),
+            avatar = AvatarDto(accountId = id, AvatarTypeDto.MONOGRAM, "A", null, null),
         ),
         incomingServerSettings = ServerSettings(
             type = "imap",

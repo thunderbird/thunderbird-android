@@ -361,7 +361,7 @@ class NotificationDataStoreTest : RobolectricTest() {
                     name = "Test Account",
                     color = -1,
                     avatar = AvatarDto(
-                        id = id,
+                        accountId = id,
                         avatarType = AvatarTypeDto.MONOGRAM,
                         avatarMonogram = "TA",
                         avatarImageUri = null,

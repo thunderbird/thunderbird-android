@@ -175,7 +175,7 @@ class LegacyAccountLocalDataSourceTest {
                     name = name,
                     color = -1,
                     avatar = AvatarDto(
-                        id = id,
+                        accountId = id,
                         avatarType = AvatarTypeDto.MONOGRAM,
                         avatarMonogram = "NA",
                         avatarImageUri = null,

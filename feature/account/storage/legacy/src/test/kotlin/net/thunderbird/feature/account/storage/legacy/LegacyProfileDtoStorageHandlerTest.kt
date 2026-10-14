@@ -79,7 +79,7 @@ class LegacyProfileDtoStorageHandlerTest {
             name = NAME,
             color = COLOR,
             avatar = AvatarDto(
-                id = accountId,
+                accountId = accountId,
                 avatarType = AvatarTypeDto.IMAGE,
                 avatarMonogram = null,
                 avatarImageUri = AVATAR_IMAGE_URI,

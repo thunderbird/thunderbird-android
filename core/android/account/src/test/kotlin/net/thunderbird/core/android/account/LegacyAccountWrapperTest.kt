@@ -45,7 +45,7 @@ class LegacyAccountWrapperTest {
         const val email = "demo@example.com"
 
         val avatar = AvatarDto(
-            id = ACCOUNT_ID,
+            accountId = ACCOUNT_ID,
             avatarType = AvatarTypeDto.MONOGRAM,
             avatarMonogram = null,
             avatarImageUri = null,

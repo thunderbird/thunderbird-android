@@ -52,7 +52,7 @@ class SearchSettingsViewModelTest {
                 name = "Emon",
                 color = 0xFF0000,
                 avatar = AvatarDto(
-                    id = accountId,
+                    accountId = accountId,
                     avatarType = AvatarTypeDto.ICON,
                     avatarMonogram = null,
                     avatarImageUri = null,

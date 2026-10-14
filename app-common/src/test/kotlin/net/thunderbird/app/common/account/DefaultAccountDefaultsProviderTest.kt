@@ -260,7 +260,7 @@ class DefaultAccountDefaultsProviderTest {
                 name = "name",
                 color = -1,
                 avatar = AvatarDto(
-                    id = accountId,
+                    accountId = accountId,
                     avatarType = AvatarTypeDto.MONOGRAM,
                     avatarMonogram = "NA",
                     avatarImageUri = null,

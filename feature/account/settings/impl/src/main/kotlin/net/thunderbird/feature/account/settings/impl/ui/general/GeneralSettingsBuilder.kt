@@ -49,7 +49,7 @@ internal class GeneralSettingsBuilder(
             name = state.name.value,
             color = Color(state.color.value ?: 0),
             avatar = state.avatar ?: Avatar.Icon(
-                id = accountId,
+                accountId = accountId,
                 name = iconCatalog.defaultIcon.id,
             ),
         )
@@ -222,7 +222,7 @@ internal class GeneralSettingsBuilder(
                 id = AVATAR_MONOGRAM_ID,
                 title = { resources.stringResource(R.string.account_settings_general_avatar_option_monogram) },
                 value = (avatar as? Avatar.Monogram) ?: Avatar.Monogram(
-                    id = accountId,
+                    accountId = accountId,
                     value = monogramCreator.create(name, null),
                 ),
             ),
@@ -230,7 +230,7 @@ internal class GeneralSettingsBuilder(
                 id = AVATAR_IMAGE_ID,
                 title = { resources.stringResource(R.string.account_settings_general_avatar_option_image) },
                 value = (avatar as? Avatar.Image) ?: Avatar.Image(
-                    id = accountId,
+                    accountId = accountId,
                     uri = "avatar_placeholder_uri",
                 ),
             ),
@@ -238,7 +238,7 @@ internal class GeneralSettingsBuilder(
                 id = AVATAR_ICON_ID,
                 title = { resources.stringResource(R.string.account_settings_general_avatar_option_icon) },
                 value = (avatar as? Avatar.Icon) ?: Avatar.Icon(
-                    id = accountId,
+                    accountId = accountId,
                     name = iconCatalog.defaultIcon.id,
                 ),
             ),

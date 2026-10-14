@@ -67,7 +67,7 @@ class DefaultAccountProfileDataMapperTest {
             name: String = PROFILE_NAME,
             color: Int = PROFILE_COLOR,
             avatar: AvatarDto = AvatarDto(
-                id = ACCOUNT_ID,
+                accountId = ACCOUNT_ID,
                 avatarType = AvatarTypeDto.IMAGE,
                 avatarMonogram = null,
                 avatarImageUri = AVATAR_IMAGE_URI,

@@ -16,7 +16,7 @@ internal fun GeneralSettingsProfileViewPreview() {
             email = "demo@example.com",
             color = Color.Green,
             avatar = Avatar.Monogram(
-                id = AccountIdFactory.create(),
+                accountId = AccountIdFactory.create(),
                 value = "N",
             ),
         )
@@ -34,7 +34,7 @@ internal fun GeneralSettingsProfileViewWithLongTextPreview() {
             email = "verylongemailaddress@exampledomainwithaverylongname.com",
             color = Color.Green,
             avatar = Avatar.Monogram(
-                id = AccountIdFactory.create(),
+                accountId = AccountIdFactory.create(),
                 value = "L",
             ),
         )

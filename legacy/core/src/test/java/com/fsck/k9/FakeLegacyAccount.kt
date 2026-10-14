@@ -26,7 +26,7 @@ object FakeLegacyAccount {
             name = "fake",
             color = -1,
             avatar = AvatarDto(
-                id = ACCOUNT_ID,
+                accountId = ACCOUNT_ID,
                 avatarType = AvatarTypeDto.MONOGRAM,
                 avatarMonogram = "FA",
                 avatarImageUri = null,

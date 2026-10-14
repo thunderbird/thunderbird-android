@@ -100,7 +100,7 @@ class AccountCreatorTest {
         assertThat(result.profile.id).isEqualTo(accountId)
         assertThat(result.profile.name).isEqualTo("Personal")
         assertThat(result.profile.color).isEqualTo(0x123456)
-        assertThat(result.profile.avatar.id).isEqualTo(accountId)
+        assertThat(result.profile.avatar.accountId).isEqualTo(accountId)
         assertThat(result.profile.avatar.avatarType).isEqualTo(AvatarTypeDto.MONOGRAM)
         assertThat(result.profile.avatar.avatarMonogram).isEqualTo("AB")
         assertThat(result.identities.single().description).isEqualTo("Default identity")

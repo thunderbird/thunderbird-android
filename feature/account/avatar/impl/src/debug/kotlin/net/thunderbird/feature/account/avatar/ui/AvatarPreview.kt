@@ -18,7 +18,7 @@ internal fun AvatarPreview() {
     AvatarPreviewSetup {
         Avatar(
             avatar = Avatar.Monogram(
-                id = AccountIdFactory.create(),
+                accountId = AccountIdFactory.create(),
                 value = "AB",
             ),
             color = Color.Red,
@@ -33,7 +33,7 @@ internal fun AvatarSelectedPreview() {
     AvatarPreviewSetup {
         Avatar(
             avatar = Avatar.Monogram(
-                id = AccountIdFactory.create(),
+                accountId = AccountIdFactory.create(),
                 value = "AB",
             ),
             color = Color.Red,
@@ -49,7 +49,7 @@ internal fun AvatarIconPreview() {
     AvatarPreviewSetup {
         Avatar(
             avatar = Avatar.Icon(
-                id = AccountIdFactory.create(),
+                accountId = AccountIdFactory.create(),
                 name = "person",
             ),
             color = Color.Red,
@@ -64,7 +64,7 @@ internal fun AvatarIconLargePreview() {
     AvatarPreviewSetup {
         Avatar(
             avatar = Avatar.Icon(
-                id = AccountIdFactory.create(),
+                accountId = AccountIdFactory.create(),
                 name = "person",
             ),
             color = Color.Red,
@@ -79,7 +79,7 @@ internal fun AvatarImagePreview() {
     AvatarPreviewSetup {
         Avatar(
             avatar = Avatar.Image(
-                id = AccountIdFactory.create(),
+                accountId = AccountIdFactory.create(),
                 uri = "",
             ),
             color = Color.Red,
@@ -94,7 +94,7 @@ internal fun AvatarImageLargePreview() {
     AvatarPreviewSetup {
         Avatar(
             avatar = Avatar.Image(
-                id = AccountIdFactory.create(),
+                accountId = AccountIdFactory.create(),
                 uri = "",
             ),
             color = Color.Red,

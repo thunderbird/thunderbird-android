@@ -41,7 +41,7 @@ class AccountStateLoaderTest {
                 name = "name",
                 color = -1,
                 avatar = AvatarDto(
-                    id = ACCOUNT_ID,
+                    accountId = ACCOUNT_ID,
                     avatarType = AvatarTypeDto.MONOGRAM,
                     avatarMonogram = "NA",
                     avatarImageUri = null,

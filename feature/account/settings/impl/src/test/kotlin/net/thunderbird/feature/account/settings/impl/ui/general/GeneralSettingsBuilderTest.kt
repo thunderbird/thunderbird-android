@@ -159,17 +159,17 @@ internal class GeneralSettingsBuilderTest {
     fun `avatar selection should match provided avatar or default to monogram`() {
         // Monogram
         assertSelectedAvatarOption(
-            avatar = Avatar.Monogram(id = accountId, value = "AB"),
+            avatar = Avatar.Monogram(accountId = accountId, value = "AB"),
             expectedOptionId = "avatar_monogram",
         )
         // Image
         assertSelectedAvatarOption(
-            avatar = Avatar.Image(id = accountId, uri = "uri"),
+            avatar = Avatar.Image(accountId = accountId, uri = "uri"),
             expectedOptionId = "avatar_image",
         )
         // Icon
         assertSelectedAvatarOption(
-            avatar = Avatar.Icon(id = accountId, name = "icon"),
+            avatar = Avatar.Icon(accountId = accountId, name = "icon"),
             expectedOptionId = "avatar_icon",
         )
         // Null defaults to monogram
@@ -193,7 +193,7 @@ internal class GeneralSettingsBuilderTest {
         val state = GeneralSettingsContract.State(
             name = StringInputField(value = "Thunderbird"),
             color = IntegerInputField(value = 0),
-            avatar = Avatar.Monogram(id = accountId, value = "TB"),
+            avatar = Avatar.Monogram(accountId = accountId, value = "TB"),
         )
 
         // Act
@@ -230,7 +230,7 @@ internal class GeneralSettingsBuilderTest {
         val state = GeneralSettingsContract.State(
             name = StringInputField(value = ""),
             color = IntegerInputField(value = 0),
-            avatar = Avatar.Monogram(id = accountId, value = "TB"),
+            avatar = Avatar.Monogram(accountId = accountId, value = "TB"),
         )
 
         // Act
@@ -301,7 +301,7 @@ internal class GeneralSettingsBuilderTest {
         val stateIcon = GeneralSettingsContract.State(
             name = StringInputField(value = "Thunderbird"),
             color = IntegerInputField(value = 0),
-            avatar = Avatar.Icon(id = accountId, name = "star"),
+            avatar = Avatar.Icon(accountId = accountId, name = "star"),
         )
         val settingsIcon = builderEnabled.build(accountId, stateIcon) {}
         assertThat(settingsIcon).any {
@@ -313,7 +313,7 @@ internal class GeneralSettingsBuilderTest {
         val stateMonogram = GeneralSettingsContract.State(
             name = StringInputField(value = "Thunderbird"),
             color = IntegerInputField(value = 0),
-            avatar = Avatar.Monogram(id = accountId, value = "TB"),
+            avatar = Avatar.Monogram(accountId = accountId, value = "TB"),
         )
         val settingsMonogram = builderEnabled.build(accountId, stateMonogram) {}
         assertThat(settingsMonogram).none {
@@ -351,7 +351,7 @@ internal class GeneralSettingsBuilderTest {
         val state = GeneralSettingsContract.State(
             name = StringInputField(value = "Thunderbird"),
             color = IntegerInputField(value = 0),
-            avatar = Avatar.Icon(id = accountId, name = iconCatalog.defaultIcon.id),
+            avatar = Avatar.Icon(accountId = accountId, name = iconCatalog.defaultIcon.id),
         )
 
         // Act
@@ -376,7 +376,7 @@ internal class GeneralSettingsBuilderTest {
         val state = GeneralSettingsContract.State(
             name = StringInputField(value = "Thunderbird"),
             color = IntegerInputField(value = 0),
-            avatar = Avatar.Icon(id = accountId, name = "unknown"),
+            avatar = Avatar.Icon(accountId = accountId, name = "unknown"),
         )
 
         // Act
@@ -403,7 +403,7 @@ internal class GeneralSettingsBuilderTest {
         val state = GeneralSettingsContract.State(
             name = StringInputField(value = "Thunderbird"),
             color = IntegerInputField(value = 0),
-            avatar = Avatar.Icon(id = accountId, name = "star"),
+            avatar = Avatar.Icon(accountId = accountId, name = "star"),
         )
 
         // Act
@@ -430,7 +430,7 @@ internal class GeneralSettingsBuilderTest {
         val stateImage = GeneralSettingsContract.State(
             name = StringInputField(value = "Thunderbird"),
             color = IntegerInputField(value = 0),
-            avatar = Avatar.Image(id = accountId, uri = "content://picked/image.jpg"),
+            avatar = Avatar.Image(accountId = accountId, uri = "content://picked/image.jpg"),
         )
 
         // Act

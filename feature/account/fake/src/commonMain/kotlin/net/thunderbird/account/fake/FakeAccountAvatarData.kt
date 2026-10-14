@@ -8,7 +8,7 @@ object FakeAccountAvatarData {
     const val AVATAR_IMAGE_URI = "https://example.com/avatar.png"
 
     val ACCOUNT_AVATAR = Avatar.Image(
-        id = AccountIdFactory.create(),
+        accountId = AccountIdFactory.create(),
         uri = AVATAR_IMAGE_URI,
     )
 }

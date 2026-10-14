@@ -24,7 +24,7 @@ class UpdateGeneralSettingsTest {
             name = "Test Account",
             color = 0xFF0000,
             avatar = Avatar.Icon(
-                id = accountId,
+                accountId = accountId,
                 name = "star",
             ),
         )
@@ -54,7 +54,7 @@ class UpdateGeneralSettingsTest {
             name = "Test Account",
             color = 0xFF0000,
             avatar = Avatar.Icon(
-                id = accountId,
+                accountId = accountId,
                 name = "star",
             ),
         )
@@ -108,12 +108,12 @@ class UpdateGeneralSettingsTest {
             name = "Test Account",
             color = 0xFF0000,
             avatar = Avatar.Icon(
-                id = accountId,
+                accountId = accountId,
                 name = "star",
             ),
         )
         val imageAvatar = Avatar.Image(
-            id = accountId,
+            accountId = accountId,
             uri = "avatar://uri",
         )
         val repository = FakeAccountProfileRepository(initialAccountProfile = accountProfile)
@@ -134,7 +134,7 @@ class UpdateGeneralSettingsTest {
         // Arrange
         val accountId = AccountIdFactory.create()
         val imageAvatar = Avatar.Image(
-            id = accountId,
+            accountId = accountId,
             uri = "avatar://uri",
         )
         val repository = FakeAccountProfileRepository()

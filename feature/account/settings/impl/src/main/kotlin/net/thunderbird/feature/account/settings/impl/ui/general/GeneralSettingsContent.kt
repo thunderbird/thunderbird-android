@@ -100,7 +100,7 @@ private fun handleIconListChange(
                 onEvent(
                     Event.OnAvatarChange(
                         Avatar.Icon(
-                            id = accountId,
+                            accountId = accountId,
                             name = iconOption.id,
                         ),
                     ),

@@ -24,7 +24,7 @@ internal class GetAccountProfileTest {
             name = "Test Account",
             color = 0xFF0000,
             avatar = Avatar.Icon(
-                id = accountId,
+                accountId = accountId,
                 name = "star",
             ),
         )

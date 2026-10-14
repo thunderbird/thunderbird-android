@@ -105,7 +105,7 @@ class DefaultAccountProfileRepositoryTest {
             name = "Profile 1",
             color = 0xFF0000,
             avatar = Avatar.Icon(
-                id = PROFILE_ID_1,
+                accountId = PROFILE_ID_1,
                 name = "icon-1",
             ),
         )
@@ -114,7 +114,7 @@ class DefaultAccountProfileRepositoryTest {
             name = "Profile 2",
             color = 0x00FF00,
             avatar = Avatar.Monogram(
-                id = PROFILE_ID_2,
+                accountId = PROFILE_ID_2,
                 value = "AB",
             ),
         )

@@ -21,7 +21,7 @@ internal fun GeneralSettingsContentPreview() {
                 name = StringInputField(value = "Alice"),
                 color = IntegerInputField(value = 0x112233),
                 avatar = Avatar.Monogram(
-                    id = AccountIdFactory.create(),
+                    accountId = AccountIdFactory.create(),
                     value = "AL",
                 ),
             ),

@@ -307,7 +307,7 @@ class LoadFolderInformationSideEffectTest : BaseSideEffectHandlerTest() {
                         name = "Test",
                         color = expectedColor,
                         avatar = Avatar.Monogram(
-                            id = accountId,
+                            accountId = accountId,
                             value = "T",
                         ),
                     ),
@@ -489,7 +489,7 @@ class LoadFolderInformationSideEffectTest : BaseSideEffectHandlerTest() {
             name = "Test $accountId",
             color = color.toArgb(),
             avatar = Avatar.Monogram(
-                id = accountId,
+                accountId = accountId,
                 value = "T",
             ),
         )

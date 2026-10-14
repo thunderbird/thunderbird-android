@@ -35,7 +35,7 @@ internal object FakeData {
         email = EMAIL_ADDRESS,
         color = Color.Red.toArgb(),
         avatar = Avatar.Monogram(
-            id = ACCOUNT_ID,
+            accountId = ACCOUNT_ID,
             value = "AC",
         ),
         unreadMessageCount = 0,
@@ -149,7 +149,7 @@ internal object FakeData {
                 email = "job@example.com",
                 color = Color.Green.toArgb(),
                 avatar = Avatar.Monogram(
-                    id = id1,
+                    accountId = id1,
                     value = "JD",
                 ),
                 unreadMessageCount = 2,
@@ -163,7 +163,7 @@ internal object FakeData {
                 email = "jodie@example.com",
                 color = Color.Red.toArgb(),
                 avatar = Avatar.Monogram(
-                    id = id2,
+                    accountId = id2,
                     value = "JO",
                 ),
                 unreadMessageCount = 12,
@@ -177,7 +177,7 @@ internal object FakeData {
                 email = "john@example.com",
                 color = Color.Cyan.toArgb(),
                 avatar = Avatar.Monogram(
-                    id = id3,
+                    accountId = id3,
                     value = "J",
                 ),
                 unreadMessageCount = 0,

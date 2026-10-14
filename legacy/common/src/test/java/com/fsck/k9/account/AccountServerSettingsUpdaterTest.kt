@@ -154,7 +154,7 @@ class AccountServerSettingsUpdaterTest {
                     name = "Account",
                     color = -1,
                     avatar = AvatarDto(
-                        id = accountId,
+                        accountId = accountId,
                         avatarType = AvatarTypeDto.MONOGRAM,
                         avatarMonogram = "AC",
                         avatarImageUri = null,

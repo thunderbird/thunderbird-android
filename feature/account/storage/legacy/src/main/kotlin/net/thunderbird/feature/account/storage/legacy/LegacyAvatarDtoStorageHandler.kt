@@ -17,7 +17,7 @@ class LegacyAvatarDtoStorageHandler : AvatarDtoStorageHandler {
         val keyGen = AccountKeyGenerator(accountId)
 
         return AvatarDto(
-            id = accountId,
+            accountId = accountId,
             avatarType = storage.getEnumOrDefault(keyGen.create(KEY_AVATAR_TYPE), AvatarTypeDto.MONOGRAM),
             avatarMonogram = storage.getStringOrNull(keyGen.create(KEY_AVATAR_MONOGRAM)),
             avatarImageUri = storage.getStringOrNull(keyGen.create(KEY_AVATAR_IMAGE_URI)),
@@ -30,7 +30,7 @@ class LegacyAvatarDtoStorageHandler : AvatarDtoStorageHandler {
         storage: Storage,
         editor: StorageEditor,
     ) {
-        val keyGen = AccountKeyGenerator(data.id)
+        val keyGen = AccountKeyGenerator(data.accountId)
 
         with(data) {
             editor.putEnum(keyGen.create(KEY_AVATAR_TYPE), avatarType)

@@ -121,7 +121,7 @@ class DefaultAccountProfileLocalDataSourceTest {
                     name = displayName,
                     color = color,
                     avatar = AvatarDto(
-                        id = id,
+                        accountId = id,
                         avatarType = AvatarTypeDto.ICON,
                         avatarMonogram = null,
                         avatarImageUri = null,
@@ -167,7 +167,7 @@ class DefaultAccountProfileLocalDataSourceTest {
                 name = name,
                 color = color,
                 avatar = Avatar.Icon(
-                    id = accountId,
+                    accountId = accountId,
                     name = "star",
                 ),
             )

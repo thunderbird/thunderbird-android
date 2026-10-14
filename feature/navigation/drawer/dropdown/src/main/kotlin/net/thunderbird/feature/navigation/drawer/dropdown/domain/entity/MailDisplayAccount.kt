@@ -9,7 +9,7 @@ internal data class MailDisplayAccount(
     val email: String,
     val color: Int,
     val avatar: Avatar = Avatar.Monogram(
-        id = id,
+        accountId = id,
         value = "?",
     ),
     val hasAutoExpandFolder: Boolean,

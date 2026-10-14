@@ -139,7 +139,7 @@ class AccountColorPickerTest {
             name = "Account Red 1",
             color = COLOR_RED,
             avatar = Avatar.Icon(
-                id = ACCOUNT_ID_1,
+                accountId = ACCOUNT_ID_1,
                 name = "icon1",
             ),
         )
@@ -148,7 +148,7 @@ class AccountColorPickerTest {
             name = "Account Red 2",
             color = COLOR_RED,
             avatar = Avatar.Icon(
-                id = ACCOUNT_ID_2,
+                accountId = ACCOUNT_ID_2,
                 name = "icon4",
             ),
         )
@@ -158,7 +158,7 @@ class AccountColorPickerTest {
             name = "Account Green 1",
             color = COLOR_GREEN,
             avatar = Avatar.Icon(
-                id = ACCOUNT_ID_3,
+                accountId = ACCOUNT_ID_3,
                 name = "icon2",
             ),
         )
@@ -168,7 +168,7 @@ class AccountColorPickerTest {
             name = "Account Green 2",
             color = COLOR_GREEN,
             avatar = Avatar.Icon(
-                id = ACCOUNT_ID_4,
+                accountId = ACCOUNT_ID_4,
                 name = "icon5",
             ),
         )
@@ -178,7 +178,7 @@ class AccountColorPickerTest {
             name = "Account Blue 1",
             color = COLOR_BLUE,
             avatar = Avatar.Icon(
-                id = ACCOUNT_ID_5,
+                accountId = ACCOUNT_ID_5,
                 name = "icon3",
             ),
         )

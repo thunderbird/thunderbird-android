@@ -24,7 +24,7 @@ class LegacyAvatarDtoStorageHandlerTest {
         val result = testSubject.load(accountId, storage)
 
         // Assert
-        assertThat(result.id).isEqualTo(accountId)
+        assertThat(result.accountId).isEqualTo(accountId)
         assertThat(result.avatarType).isEqualTo(AVATAR_TYPE)
         assertThat(result.avatarMonogram).isEqualTo(AVATAR_MONOGRAM)
         assertThat(result.avatarImageUri).isEqualTo(AVATAR_IMAGE_URI)
@@ -66,7 +66,7 @@ class LegacyAvatarDtoStorageHandlerTest {
 
     private fun createAvatarDto(accountId: AccountId): AvatarDto {
         return AvatarDto(
-            id = accountId,
+            accountId = accountId,
             avatarType = AVATAR_TYPE,
             avatarMonogram = AVATAR_MONOGRAM,
             avatarImageUri = AVATAR_IMAGE_URI,

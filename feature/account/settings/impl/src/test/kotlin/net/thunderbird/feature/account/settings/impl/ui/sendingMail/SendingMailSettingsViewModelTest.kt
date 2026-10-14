@@ -103,7 +103,7 @@ internal class SendingMailSettingsViewModelTest {
                 name = "Demo",
                 color = 0xFF0000,
                 avatar = net.thunderbird.feature.account.storage.profile.AvatarDto(
-                    id = accountId,
+                    accountId = accountId,
                     avatarType = net.thunderbird.feature.account.storage.profile.AvatarTypeDto.ICON,
                     avatarMonogram = null,
                     avatarImageUri = null,

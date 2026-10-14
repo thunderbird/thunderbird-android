@@ -422,7 +422,7 @@ private fun createLegacyAccount(id: AccountId): LegacyAccount {
             name = "Account",
             color = 0,
             avatar = AvatarDto(
-                id = id,
+                accountId = id,
                 avatarType = AvatarTypeDto.MONOGRAM,
                 avatarMonogram = "A",
                 avatarImageUri = null,

@@ -4,7 +4,6 @@ import androidx.annotation.Discouraged
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.preference.storage.Storage
 import net.thunderbird.core.preference.storage.StorageEditor
-import net.thunderbird.feature.account.Account
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.storage.profile.AvatarDto
 import net.thunderbird.feature.account.storage.profile.ProfileDto
@@ -17,7 +16,7 @@ import net.thunderbird.feature.account.storage.profile.ProfileDto
 @Discouraged(
     message = "This interface is only used to encapsulate the [LegacyAccount] storage handling.",
 )
-interface StorageHandler<T : Account> {
+interface StorageHandler<T> {
 
     /**
      * Loads the data from the storage into the provided object.

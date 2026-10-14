@@ -143,7 +143,7 @@ class UnreadWidgetDataProviderTest : AutoCloseKoinTest() {
             name = ACCOUNT_NAME,
             color = 0,
             avatar = AvatarDto(
-                id = accountId,
+                accountId = accountId,
                 avatarType = AvatarTypeDto.MONOGRAM,
                 avatarMonogram = "A",
                 avatarImageUri = null,

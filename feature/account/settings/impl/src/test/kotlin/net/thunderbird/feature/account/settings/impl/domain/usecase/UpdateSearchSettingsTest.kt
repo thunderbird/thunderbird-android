@@ -134,7 +134,7 @@ internal class UpdateSearchSettingsTest {
                 name = displayName,
                 color = color,
                 avatar = AvatarDto(
-                    id = id,
+                    accountId = id,
                     avatarType = AvatarTypeDto.ICON,
                     avatarMonogram = null,
                     avatarImageUri = null,

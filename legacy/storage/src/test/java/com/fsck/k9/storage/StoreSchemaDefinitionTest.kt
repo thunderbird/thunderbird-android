@@ -392,7 +392,7 @@ class StoreSchemaDefinitionTest : RobolectricTest() {
     private fun createAccount(): LegacyAccount {
         val accountId = AccountIdFactory.of(ACCOUNT_UUID)
         val avatar = AvatarDto(
-            id = accountId,
+            accountId = accountId,
             avatarType = AvatarTypeDto.MONOGRAM,
             avatarMonogram = null,
             avatarImageUri = null,

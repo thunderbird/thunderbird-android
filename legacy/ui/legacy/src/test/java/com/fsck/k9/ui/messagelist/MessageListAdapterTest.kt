@@ -517,7 +517,7 @@ class MessageListAdapterTest : RobolectricTest() {
             name = "irrelevant",
             color = 0xFF00FF,
             avatar = AvatarDto(
-                id = SOME_ACCOUNT_ID,
+                accountId = SOME_ACCOUNT_ID,
                 avatarType = AvatarTypeDto.MONOGRAM,
                 avatarMonogram = "ab",
                 avatarImageUri = null,

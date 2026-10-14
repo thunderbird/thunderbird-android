@@ -78,7 +78,7 @@ internal class AccountCreator(
             name = account.options.accountName,
             color = accountColorPicker.pickColor(),
             avatar = AvatarDto(
-                id = accountId,
+                accountId = accountId,
                 avatarType = AvatarTypeDto.MONOGRAM,
                 avatarMonogram = avatarMonogramCreator.create(
                     name = account.options.accountName,

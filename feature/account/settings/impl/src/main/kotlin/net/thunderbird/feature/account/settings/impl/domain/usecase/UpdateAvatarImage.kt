@@ -35,7 +35,7 @@ internal class UpdateAvatarImage(
             val storedUri = repository.update(accountId, imageUri)
             Outcome.Success(
                 Avatar.Image(
-                    id = accountId,
+                    accountId = accountId,
                     uri = storedUri.toString(),
                 ),
             )

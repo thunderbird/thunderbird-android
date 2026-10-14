@@ -151,7 +151,7 @@ class AccountNotificationIdRegistryTest : RobolectricTest() {
                 name = "Account",
                 color = 0,
                 avatar = AvatarDto(
-                    id = id,
+                    accountId = id,
                     avatarType = AvatarTypeDto.MONOGRAM,
                     avatarMonogram = null,
                     avatarImageUri = null,
