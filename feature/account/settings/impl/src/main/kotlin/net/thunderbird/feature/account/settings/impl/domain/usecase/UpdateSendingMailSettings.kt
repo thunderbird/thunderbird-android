@@ -1,7 +1,7 @@
 package net.thunderbird.feature.account.settings.impl.domain.usecase
 
-import kotlinx.coroutines.flow.firstOrNull
 import net.thunderbird.components.core.outcome.Outcome
+import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.LegacyAccountRepository
 import net.thunderbird.core.android.account.MessageFormat
 import net.thunderbird.core.android.account.QuoteStyle
@@ -18,15 +18,19 @@ internal class UpdateSendingMailSettings(
         accountId: AccountId,
         command: UpdateSendingMailSettingsCommand,
     ): Outcome<Unit, AccountSettingError> {
-        val account = repository.observeById(accountId)
-            .firstOrNull()
+        repository.update(accountId) { account -> account.updatedWith(command) }
             ?: return Outcome.failure(
                 AccountSettingError.NotFound(
                     "Account not found",
                 ),
             )
 
-        val updatedAccount = when (command) {
+        return Outcome.success(Unit)
+    }
+
+    private fun LegacyAccount.updatedWith(command: UpdateSendingMailSettingsCommand): LegacyAccount {
+        val account = this
+        return when (command) {
             is UpdateSendingMailSettingsCommand.UpdateMessageFormat -> {
                 account.copy(
                     messageFormat = when (command.value) {
@@ -103,9 +107,5 @@ internal class UpdateSendingMailSettings(
                 )
             }
         }
-
-        repository.update(updatedAccount)
-
-        return Outcome.success(Unit)
     }
 }
