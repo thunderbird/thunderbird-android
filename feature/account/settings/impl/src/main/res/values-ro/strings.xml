@@ -130,4 +130,6 @@
     <string name="account_settings_idle_refresh_period_36min">La fiecare 36 de minute</string>
     <string name="account_settings_idle_refresh_period_48min">La fiecare 48 de minute</string>
     <string name="account_settings_idle_refresh_period_60min">La fiecare 60 de minute</string>
+    <string name="account_settings_composition_summary">Definește valorile implicite pentru „De la”, „Bcc” și semnătură</string>
+    <string name="account_settings_identities_summary">Definiți adrese „De la” și semnături alternative</string>
 </resources>
