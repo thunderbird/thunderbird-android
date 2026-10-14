@@ -921,4 +921,5 @@
     <string name="message_view_from_me_text">mé</string>
     <string name="account_settings_signature_preview_empty">Beidh réamhamharc do shíniú le feiceáil anseo</string>
     <string name="error_no_contact_provider">Níor aimsíodh aon aip teagmhálaithe. Suiteáil aip teagmhálaithe chun an seoladh seo a chur leis.</string>
+    <string name="remote_feature_flag_preferences">Bratacha Gné Cianda</string>
 </resources>
