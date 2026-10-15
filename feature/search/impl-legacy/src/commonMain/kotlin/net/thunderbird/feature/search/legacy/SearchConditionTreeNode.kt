@@ -3,6 +3,7 @@ package net.thunderbird.feature.search.legacy
 import kotlinx.serialization.Serializable
 import net.thunderbird.feature.search.legacy.api.SearchAttribute
 import net.thunderbird.feature.search.legacy.api.SearchCondition
+import net.thunderbird.feature.search.legacy.api.SearchField
 import net.thunderbird.feature.search.legacy.api.SearchFieldType
 
 /**
@@ -89,6 +90,25 @@ class SearchConditionTreeNode private constructor(
             Operator.AND, Operator.OR -> {
                 collectLeaves(node.left, leafSet)
                 collectLeaves(node.right, leafSet)
+            }
+        }
+    }
+
+    /**
+     * Returns a copy of this tree without the conditions on [field], or `null` if no condition is left.
+     */
+    internal fun withoutField(field: SearchField): SearchConditionTreeNode? = when (operator) {
+        Operator.CONDITION -> takeIf { condition?.field != field }
+
+        Operator.NOT -> left?.withoutField(field)?.let { SearchConditionTreeNode(Operator.NOT, left = it) }
+
+        Operator.AND, Operator.OR -> {
+            val newLeft = left?.withoutField(field)
+            val newRight = right?.withoutField(field)
+            when {
+                newLeft == null -> newRight
+                newRight == null -> newLeft
+                else -> SearchConditionTreeNode(operator, left = newLeft, right = newRight)
             }
         }
     }

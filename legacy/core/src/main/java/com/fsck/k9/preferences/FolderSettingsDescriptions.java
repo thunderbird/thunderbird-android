@@ -47,7 +47,8 @@ class FolderSettingsDescriptions {
                 new V(1, new BooleanSetting(false))
         ));
         s.put("integrate", Settings.versions(
-                new V(1, new BooleanSetting(false))
+                new V(1, new BooleanSetting(false)),
+                new V(113, null)
         ));
         s.put("notificationsEnabled", Settings.versions(
             new V(96, new BooleanSetting(false))

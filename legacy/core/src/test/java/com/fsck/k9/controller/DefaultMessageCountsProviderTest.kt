@@ -17,10 +17,17 @@ import net.thunderbird.account.fake.FakeAccountData.ACCOUNT_ID
 import net.thunderbird.components.core.logging.testing.TestLogger
 import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.core.android.account.fake.FakeLegacyAccountManager
+import net.thunderbird.feature.account.AccountId
+import net.thunderbird.feature.account.AccountIdFactory
+import net.thunderbird.feature.mail.folder.FolderRole
 import net.thunderbird.feature.search.legacy.LocalMessageSearch
 import net.thunderbird.feature.search.legacy.SearchConditionTreeNode
+import net.thunderbird.feature.search.legacy.api.MessageSearchField
+import net.thunderbird.feature.search.legacy.api.SearchAttribute
+import net.thunderbird.feature.search.legacy.api.SearchCondition
 import net.thunderbird.legacy.core.mailstore.folder.FakeOutboxFolderManager
 import org.junit.Test
+import org.mockito.kotlin.any
 import org.mockito.kotlin.anyOrNull
 import org.mockito.kotlin.doAnswer
 import org.mockito.kotlin.doReturn
@@ -75,6 +82,45 @@ class DefaultMessageCountsProviderTest {
 
         // Assert
         assertThat(messageCounts).isEqualTo(MessageCounts(unread = 0, starred = 0))
+    }
+
+    @Test
+    fun `getMessageCounts() for a unified search should count each account's own folder`() {
+        // Arrange
+        val firstAccount = FakeLegacyAccount.create(id = AccountIdFactory.create()).copy(inboxFolderId = 10)
+        val secondAccount = FakeLegacyAccount.create(id = AccountIdFactory.create()).copy(inboxFolderId = 20)
+        val accountWithoutInbox = FakeLegacyAccount.create(id = AccountIdFactory.create()).copy(inboxFolderId = null)
+        val recordedConditions = mutableMapOf<AccountId, String>()
+        val messageStoreManager = mock<MessageStoreManager> {
+            on { getMessageStore(any<AccountId>()) } doAnswer { invocation ->
+                val accountId = invocation.getArgument<AccountId>(0)
+                mock<ListenableMessageStore> {
+                    on { getUnreadMessageCount(anyOrNull<SearchConditionTreeNode>()) } doAnswer {
+                        recordedConditions[accountId] = it.getArgument<SearchConditionTreeNode?>(0).toString()
+                        1
+                    }
+                }
+            }
+        }
+        val messageCountsProvider = DefaultMessageCountsProvider(
+            accountManager = FakeLegacyAccountManager(listOf(firstAccount, secondAccount, accountWithoutInbox)),
+            messageStoreManager = messageStoreManager,
+            messagingControllerRegistry = messagingControllerRegistry,
+            outboxFolderManager = FakeOutboxFolderManager(),
+            logger = TestLogger(),
+        )
+
+        // Act
+        val result = messageCountsProvider.getMessageCounts(LocalMessageSearch.createUnifiedSearch(FolderRole.INBOX))
+
+        // Assert
+        assertThat(result.unread).isEqualTo(2)
+        assertThat(recordedConditions).isEqualTo(
+            mapOf(
+                firstAccount.id to folderCondition(10).toString(),
+                secondAccount.id to folderCondition(20).toString(),
+            ),
+        )
     }
 
     @Test
@@ -152,4 +198,7 @@ class DefaultMessageCountsProviderTest {
             assertThat(awaitItem()).isEqualTo(MessageCounts(2, 2))
         }
     }
+
+    private fun folderCondition(folderId: Long) =
+        SearchCondition(MessageSearchField.FOLDER, SearchAttribute.EQUALS, folderId.toString())
 }

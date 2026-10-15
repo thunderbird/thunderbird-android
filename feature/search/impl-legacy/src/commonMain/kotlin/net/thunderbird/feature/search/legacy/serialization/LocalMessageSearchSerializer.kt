@@ -3,7 +3,11 @@ package net.thunderbird.feature.search.legacy.serialization
 import kotlin.text.Charsets
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
+import net.thunderbird.feature.mail.folder.FolderRole
 import net.thunderbird.feature.search.legacy.LocalMessageSearch
+import net.thunderbird.feature.search.legacy.LocalMessageSearchType
+import net.thunderbird.feature.search.legacy.UnifiedFolderSelection
+import net.thunderbird.feature.search.legacy.api.MessageSearchField
 import net.thunderbird.feature.search.legacy.api.SearchField
 
 /**
@@ -40,6 +44,19 @@ object LocalMessageSearchSerializer {
      */
     fun deserialize(bytes: ByteArray): LocalMessageSearch {
         val searchString = String(bytes, Charsets.UTF_8)
-        return json.decodeFromString(LocalMessageSearch.serializer(), searchString)
+        return json.decodeFromString(LocalMessageSearch.serializer(), searchString).apply {
+            upgradeLegacyUnifiedInbox()
+        }
+    }
+
+    /**
+     * Older versions marked the unified inbox only by a condition on the removed integrate flag of folders. Such a
+     * search, e.g. from a notification posted before an update, is turned into a unified inbox search.
+     */
+    private fun LocalMessageSearch.upgradeLegacyUnifiedInbox() {
+        val hasIntegrateCondition = leafSet.any { it.condition?.field == MessageSearchField.INTEGRATE }
+        if (hasIntegrateCondition && type !is LocalMessageSearchType.Unified) {
+            type = LocalMessageSearchType.Unified(UnifiedFolderSelection.Special(FolderRole.INBOX))
+        }
     }
 }

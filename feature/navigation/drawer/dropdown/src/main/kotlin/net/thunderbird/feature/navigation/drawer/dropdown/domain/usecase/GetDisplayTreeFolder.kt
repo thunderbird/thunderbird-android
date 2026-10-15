@@ -25,7 +25,7 @@ internal class GetDisplayTreeFolder(
         val unifiedFolderTreeList = folders.filterIsInstance<UnifiedDisplayFolder>().map {
             DisplayTreeFolder(
                 displayFolder = it,
-                displayName = it.unifiedType.id,
+                displayName = it.folderId,
                 totalUnreadCount = it.unreadMessageCount,
                 totalStarredCount = it.starredMessageCount,
                 children = persistentListOf(),

@@ -12,7 +12,6 @@ fun SQLiteDatabase.createFolder(
     type: String = "regular",
     serverId: String? = null,
     isLocalOnly: Boolean = true,
-    integrate: Boolean = false,
     inTopGroup: Boolean = false,
     visible: Boolean = true,
     syncEnabled: Boolean = false,
@@ -30,7 +29,6 @@ fun SQLiteDatabase.createFolder(
         put("type", type)
         put("server_id", serverId)
         put("local_only", isLocalOnly)
-        put("integrate", integrate)
         put("top_group", inTopGroup)
         put("visible", visible)
         put("sync_enabled", syncEnabled)
@@ -57,7 +55,6 @@ fun SQLiteDatabase.readFolders(): List<FolderEntry> {
                 type = cursor.getStringOrNull("type"),
                 serverId = cursor.getStringOrNull("server_id"),
                 isLocalOnly = cursor.getIntOrNull("local_only"),
-                integrate = cursor.getIntOrNull("integrate"),
                 inTopGroup = cursor.getIntOrNull("top_group"),
                 visible = cursor.getIntOrNull("visible"),
                 syncEnabled = cursor.getIntOrNull("sync_enabled"),
@@ -81,7 +78,6 @@ data class FolderEntry(
     val type: String?,
     val serverId: String?,
     val isLocalOnly: Int?,
-    val integrate: Int?,
     val inTopGroup: Int?,
     val visible: Int?,
     val syncEnabled: Int?,

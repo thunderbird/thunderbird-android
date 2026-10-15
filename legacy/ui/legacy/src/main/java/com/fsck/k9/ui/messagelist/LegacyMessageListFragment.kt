@@ -55,6 +55,7 @@ import com.fsck.k9.activity.FolderInfoHolder
 import com.fsck.k9.activity.MessageSearchActivity
 import com.fsck.k9.activity.misc.ContactPicture
 import com.fsck.k9.controller.MessagingControllerWrapper
+import com.fsck.k9.controller.UnifiedFolderSynchronizer
 import com.fsck.k9.fragment.ConfirmationDialogFragment
 import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmentListener
 import com.fsck.k9.helper.Utility
@@ -64,6 +65,7 @@ import com.fsck.k9.mailstore.LocalStoreProvider
 import com.fsck.k9.search.getLegacyAccounts
 import com.fsck.k9.search.isNewMessages
 import com.fsck.k9.search.isUnified
+import com.fsck.k9.search.unifiedFolderRole
 import com.fsck.k9.ui.BuildConfig
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.choosefolder.ChooseFolderActivity
@@ -165,6 +167,7 @@ class LegacyMessageListFragment :
     private val sortTypeToastProvider: SortTypeToastProvider by inject()
     private val folderNameFormatter: FolderNameFormatter by inject { parametersOf(requireContext()) }
     private val messagingController: MessagingControllerWrapper by inject()
+    private val unifiedFolderSynchronizer: UnifiedFolderSynchronizer by inject()
     private val messagingControllerRegistry: MessagingControllerRegistry by inject()
     private val accountManager: LegacyAccountManager by inject()
     private val lastSelectedFolderStore: LastSelectedFolderStore by inject()
@@ -209,6 +212,12 @@ class LegacyMessageListFragment :
     private var itemTouchHelper: ItemTouchHelper? = null
     private var swipeRefreshLayout: SwipeRefreshLayout? = null
     private var floatingActionButton: FloatingActionButton? = null
+    private var emptyView: View? = null
+    private var isShowingUnsyncedFolders = false
+
+    // Updated with each loaded message list. A unified folder of local-only folders, like the outbox, has nothing
+    // to sync.
+    private var hasRemoteFolders = true
 
     private lateinit var adapter: MessageListAdapter
 
@@ -485,6 +494,7 @@ class LegacyMessageListFragment :
         initializeFloatingActionButton(view)
         initializeRecyclerView(view)
         initializeRecentChangesSnackbar()
+        emptyView = view.findViewById(R.id.message_list_empty)
 
         // This needs to be done before loading the message list below
         initializeSortSettings()
@@ -758,7 +768,7 @@ class LegacyMessageListFragment :
 
     private fun setWindowTitle() {
         val title = when {
-            isUnifiedFoldersView -> getString(R.string.integrated_inbox_title)
+            isUnifiedFoldersView -> getString(localSearch.unifiedFolderTitleResId)
             isNewMessagesView -> getString(R.string.new_messages_title)
             isManualSearch -> getString(R.string.search_results)
             isThreadDisplay -> threadTitle ?: ""
@@ -780,6 +790,11 @@ class LegacyMessageListFragment :
     override fun progress(progress: Boolean) {
         if (!progress) {
             swipeRefreshLayout?.isRefreshing = false
+
+            // A sync that finds no messages doesn't change the message list, so reload it to update the empty state.
+            if (isShowingUnsyncedFolders) {
+                loadMessageList(forceUpdate = true)
+            }
         }
 
         fragmentListener.setMessageListProgressEnabled(progress)
@@ -846,6 +861,7 @@ class LegacyMessageListFragment :
         itemTouchHelper = null
         swipeRefreshLayout = null
         floatingActionButton = null
+        emptyView = null
 
         if (isNewMessagesView && !requireActivity().isChangingConfigurations) {
             account?.id?.let { messagingController.clearNewMessages(it) }
@@ -951,6 +967,7 @@ class LegacyMessageListFragment :
             null,
             activityListener,
         )
+        legacyViewModel.getMessageListLiveData().value?.let(::updateEmptyState)
 
         invalidateMenu()
     }
@@ -1841,10 +1858,13 @@ class LegacyMessageListFragment :
     }
 
     private fun checkMail() {
+        val unifiedFolderRole = localSearch.unifiedFolderRole
         if (isSingleAccountMode && isSingleFolderMode) {
             val folderId = currentFolder!!.databaseId
             account?.id?.let { messagingController.synchronizeMailbox(it, folderId, false, activityListener) }
             account?.id?.let { messagingController.sendPendingMessages(it, activityListener) }
+        } else if (unifiedFolderRole != null) {
+            unifiedFolderSynchronizer.synchronize(unifiedFolderRole, activityListener)
         } else if (allAccounts) {
             messagingController.checkMail(null, true, true, false, activityListener)
         } else {
@@ -2019,6 +2039,7 @@ class LegacyMessageListFragment :
             return
         }
 
+        hasRemoteFolders = messageListInfo.hasRemoteFolders
         swipeRefreshLayout?.let { swipeRefreshLayout ->
             swipeRefreshLayout.isRefreshing = false
             swipeRefreshLayout.isEnabled = isPullToRefreshAllowed
@@ -2044,6 +2065,7 @@ class LegacyMessageListFragment :
             }
             addAll(messageListItems.map { MessageListViewItem.Message(it) })
         }
+        updateEmptyState(messageListInfo)
 
         rememberedSelected?.let {
             rememberedSelected = null
@@ -2065,6 +2087,29 @@ class LegacyMessageListFragment :
         currentFolder?.let { currentFolder ->
             currentFolder.moreMessages = messageListInfo.hasMoreMessages
             updateFooterText()
+        }
+    }
+
+    private fun updateEmptyState(messageListInfo: MessageListInfo) {
+        val isEmpty = messageListInfo.messageListItems.isEmpty()
+        isShowingUnsyncedFolders = isEmpty && messageListInfo.hasUnsyncedFolders
+
+        // Results of a running remote search are still to come
+        val isShowingEmptyState = isEmpty && remoteSearchFuture == null
+
+        val emptyView = emptyView ?: return
+        emptyView.isVisible = isShowingEmptyState
+        if (!isShowingEmptyState) return
+
+        val emptyState = MessageListEmptyState.of(
+            isSearch = isManualSearch,
+            hasUnsyncedFolders = messageListInfo.hasUnsyncedFolders,
+            isPullToSyncAllowed = isCheckMailAllowed,
+        )
+        emptyView.findViewById<MaterialTextView>(R.id.message_list_empty_message).setText(emptyState.messageResId)
+        emptyView.findViewById<MaterialTextView>(R.id.message_list_empty_hint).apply {
+            isVisible = emptyState.hintResId != null
+            emptyState.hintResId?.let(::setText)
         }
     }
 
@@ -2095,6 +2140,7 @@ class LegacyMessageListFragment :
 
     override fun remoteSearchFinished() {
         remoteSearchFuture = null
+        legacyViewModel.getMessageListLiveData().value?.let(::updateEmptyState)
     }
 
     override fun setActiveMessage(messageReference: MessageReference?) {
@@ -2198,7 +2244,7 @@ class LegacyMessageListFragment :
         get() = allAccounts || !isSingleAccountMode || !isSingleFolderMode || isRemoteFolder
 
     private val isCheckMailAllowed: Boolean
-        get() = !isManualSearch && isCheckMailSupported
+        get() = !isManualSearch && isCheckMailSupported && hasRemoteFolders
 
     private val isPullToRefreshAllowed: Boolean
         get() = isRemoteSearchAllowed || isCheckMailAllowed
@@ -2278,7 +2324,7 @@ class LegacyMessageListFragment :
         }
 
         override fun onSwipeEnded(item: MessageListItem) {
-            swipeRefreshLayout?.isEnabled = true
+            swipeRefreshLayout?.isEnabled = isPullToRefreshAllowed
             if (itemSelectedOnSwipeStart && !isMessageSelected(item)) {
                 selectMessage(item)
             }

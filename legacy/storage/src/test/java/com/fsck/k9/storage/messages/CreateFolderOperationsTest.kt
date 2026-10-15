@@ -46,7 +46,6 @@ class CreateFolderOperationsTest : RobolectricTest() {
                         isNotificationsEnabled = true,
                         isPushEnabled = false,
                         inTopGroup = true,
-                        integrate = false,
                     ),
                 ),
             ),
@@ -64,7 +63,6 @@ class CreateFolderOperationsTest : RobolectricTest() {
         assertThat(folder.notificationsEnabled).isEqualTo(1)
         assertThat(folder.pushEnabled).isEqualTo(0)
         assertThat(folder.inTopGroup).isEqualTo(1)
-        assertThat(folder.integrate).isEqualTo(0)
     }
 
     @Test
@@ -100,7 +98,6 @@ class CreateFolderOperationsTest : RobolectricTest() {
                 isNotificationsEnabled = false,
                 isPushEnabled = false,
                 inTopGroup = false,
-                integrate = false,
             ),
         )
     }

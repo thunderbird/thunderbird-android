@@ -6,7 +6,7 @@ import assertk.assertions.isNotNull
 import assertk.assertions.isNull
 import kotlin.text.Charsets
 import net.thunderbird.feature.account.AccountIdFactory
-import net.thunderbird.feature.mail.folder.FolderType
+import net.thunderbird.feature.mail.folder.FolderRole
 import net.thunderbird.feature.search.legacy.LocalMessageSearch
 import net.thunderbird.feature.search.legacy.LocalMessageSearchType
 import net.thunderbird.feature.search.legacy.UnifiedFolderSelection
@@ -95,7 +95,7 @@ class LocalMessageSearchSerializerTest {
     fun `should round-trip serialize and deserialize unified search type`() {
         // Arrange
         val search = LocalMessageSearch().apply {
-            type = LocalMessageSearchType.Unified(UnifiedFolderSelection.Special(FolderType.INBOX))
+            type = LocalMessageSearchType.Unified(UnifiedFolderSelection.Special(FolderRole.INBOX))
         }
 
         // Act
@@ -104,7 +104,7 @@ class LocalMessageSearchSerializerTest {
 
         // Assert
         assertThat(result.type).isEqualTo(
-            LocalMessageSearchType.Unified(UnifiedFolderSelection.Special(FolderType.INBOX)),
+            LocalMessageSearchType.Unified(UnifiedFolderSelection.Special(FolderRole.INBOX)),
         )
     }
 
@@ -143,6 +143,42 @@ class LocalMessageSearchSerializerTest {
 
         // Assert
         assertThat(result.type).isEqualTo(LocalMessageSearchType.Account)
+    }
+
+    @Test
+    fun `should deserialize a unified inbox search of older versions as unified inbox`() {
+        // Arrange
+        val search = LocalMessageSearch().apply {
+            and(MessageSearchField.INTEGRATE, "1", SearchAttribute.EQUALS)
+        }
+        val bytes = LocalMessageSearchSerializer.serialize(search)
+
+        // Act
+        val result = LocalMessageSearchSerializer.deserialize(bytes)
+
+        // Assert
+        assertThat(result.type).isEqualTo(
+            LocalMessageSearchType.Unified(UnifiedFolderSelection.Special(FolderRole.INBOX)),
+        )
+    }
+
+    @Test
+    fun `should deserialize a unified inbox search of older versions with an unknown folder selection as unified inbox`() {
+        // Arrange
+        val search = LocalMessageSearch().apply {
+            and(MessageSearchField.INTEGRATE, "1", SearchAttribute.EQUALS)
+        }
+        val json = String(LocalMessageSearchSerializer.serialize(search), Charsets.UTF_8)
+        val bytes = """{"type":{"type":"unified","folder":{"type":"special","folderType":"INBOX"}},${json.drop(1)}"""
+            .toByteArray(Charsets.UTF_8)
+
+        // Act
+        val result = LocalMessageSearchSerializer.deserialize(bytes)
+
+        // Assert
+        assertThat(result.type).isEqualTo(
+            LocalMessageSearchType.Unified(UnifiedFolderSelection.Special(FolderRole.INBOX)),
+        )
     }
 
     @Test

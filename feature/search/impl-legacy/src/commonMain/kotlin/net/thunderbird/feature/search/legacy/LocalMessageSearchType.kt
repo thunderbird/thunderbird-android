@@ -9,7 +9,7 @@ import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.json.JsonDecoder
 import kotlinx.serialization.json.JsonEncoder
-import net.thunderbird.feature.mail.folder.FolderType
+import net.thunderbird.feature.mail.folder.FolderRole
 
 /**
  * The type of a [LocalMessageSearch], defining how the search is bound to accounts and folders.
@@ -36,7 +36,7 @@ sealed interface LocalMessageSearchType {
     /**
      * A search across accounts, made of 1 account → 1 folder relations.
      *
-     * Still backed by the legacy `INTEGRATE` flag until migrated.
+     * The folder of each account is resolved when the search runs, see [LocalMessageSearch.conditionsForAccount].
      */
     @Serializable
     @SerialName("unified")
@@ -49,11 +49,11 @@ sealed interface LocalMessageSearchType {
 @Serializable
 sealed interface UnifiedFolderSelection {
     /**
-     * The special folder of the given [folderType] in each account.
+     * The special folder with the given [role] in each account.
      */
     @Serializable
     @SerialName("special")
-    data class Special(val folderType: FolderType) : UnifiedFolderSelection
+    data class Special(val role: FolderRole) : UnifiedFolderSelection
 }
 
 /**
