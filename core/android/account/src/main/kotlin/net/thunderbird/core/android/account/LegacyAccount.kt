@@ -164,7 +164,6 @@ data class LegacyAccount(
         return findIdentity(address) != null
     }
 
-    @Synchronized
     fun findIdentity(address: Address): Identity? {
         // Prefer to match by email and name.
         // Fall back to email only if no identity's name matches (e.g. a renamed identity).
@@ -176,7 +175,6 @@ data class LegacyAccount(
         }
     }
 
-    @Synchronized
     fun getIdentity(index: Int): Identity {
         if (index !in identities.indices) throw NoSuchElementException("Identity with index $index not found")
 

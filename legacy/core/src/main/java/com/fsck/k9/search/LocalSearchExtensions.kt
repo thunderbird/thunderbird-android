@@ -31,7 +31,7 @@ fun LocalMessageSearch.getLegacyAccounts(accountManager: LegacyAccountManager): 
         accounts
     } else {
         val searchAccountIds = accountIds.toSet()
-        accounts.filter { it.id in searchAccountIds || it.id in searchAccountIds }
+        accounts.filter { it.id in searchAccountIds }
     }
 }
 

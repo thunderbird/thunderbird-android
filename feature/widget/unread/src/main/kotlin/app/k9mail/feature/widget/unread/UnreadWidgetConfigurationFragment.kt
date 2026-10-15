@@ -121,7 +121,7 @@ class UnreadWidgetConfigurationFragment : PreferenceFragmentCompat() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putString(STATE_SELECTED_ACCOUNT_UUID, selectedAccountId.toString())
+        selectedAccountId?.let { outState.putString(STATE_SELECTED_ACCOUNT_UUID, it.toString()) }
         outState.putLongIfPresent(STATE_SELECTED_FOLDER_ID, selectedFolderId)
         outState.putString(STATE_SELECTED_FOLDER_DISPLAY_NAME, selectedFolderDisplayName)
     }
