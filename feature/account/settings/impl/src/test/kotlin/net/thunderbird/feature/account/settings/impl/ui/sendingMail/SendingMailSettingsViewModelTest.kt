@@ -66,7 +66,7 @@ internal class SendingMailSettingsViewModelTest {
         quotedTextPrefix = ">",
         uploadSentMessages = false,
         supportsUpload = true,
-        shouldShowQuoteSettings = true,
+        isQuoteSettingsEnabled = true,
     )
 
     @Suppress("LongMethod")
@@ -541,7 +541,7 @@ internal class SendingMailSettingsViewModelTest {
 
         advanceUntilIdle()
 
-        assertThat(vm.state.value.shouldShowQuoteSettings).isEqualTo(true)
+        assertThat(vm.state.value.isQuoteSettingsEnabled).isEqualTo(true)
     }
 
     @Test
@@ -560,16 +560,16 @@ internal class SendingMailSettingsViewModelTest {
 
         advanceUntilIdle()
 
-        assertThat(vm.state.value.shouldShowQuoteSettings).isEqualTo(false)
+        assertThat(vm.state.value.isQuoteSettingsEnabled).isEqualTo(false)
     }
 
     @Test
-    fun `should hide quote settings after changing quoting style to header`() = runTest {
+    fun `should disable quote settings after changing quoting style to header`() = runTest {
         val accountId = AccountIdFactory.create()
         val vm = createViewModel(accountId = accountId)
 
         advanceUntilIdle()
-        assertThat(vm.state.value.shouldShowQuoteSettings).isEqualTo(false)
+        assertThat(vm.state.value.isQuoteSettingsEnabled).isEqualTo(false)
 
         vm.event(
             SendingMailSettingContract.Event.OnReplyQuotingStyleChange(
@@ -580,7 +580,7 @@ internal class SendingMailSettingsViewModelTest {
         advanceUntilIdle()
 
         assertThat(vm.state.value.replyQuotingStyle.id).isEqualTo(QuoteStyle.HEADER.name)
-        assertThat(vm.state.value.shouldShowQuoteSettings).isEqualTo(false)
+        assertThat(vm.state.value.isQuoteSettingsEnabled).isEqualTo(false)
     }
 
     private fun accountCapabilities(
