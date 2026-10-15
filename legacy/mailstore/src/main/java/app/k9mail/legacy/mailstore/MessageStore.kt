@@ -6,6 +6,7 @@ import java.util.Date
 import kotlin.jvm.Throws
 import net.thunderbird.core.common.exception.MessagingException
 import net.thunderbird.core.common.mail.Flag
+import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.mail.folder.api.FolderDetails
 import net.thunderbird.feature.search.legacy.SearchConditionTreeNode
 
@@ -17,10 +18,11 @@ import net.thunderbird.feature.search.legacy.SearchConditionTreeNode
  */
 @Suppress("TooManyFunctions")
 interface MessageStore {
+    val accountId: AccountId
     /**
      * Save a remote message in this store.
      */
-    fun saveRemoteMessage(folderId: Long, messageServerId: String, messageData: SaveMessageData)
+    fun saveRemoteMessage(folderId: Long, messageServerId: String, messageData: SaveMessageData): Long
 
     /**
      * Save a local message in this store.
