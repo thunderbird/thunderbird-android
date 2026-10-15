@@ -1663,7 +1663,12 @@ class LegacyMessageListFragment :
     private fun groupMessagesByAccount(
         messages: List<MessageReference>,
     ): Map<LegacyAccount, List<MessageReference>> {
-        return messages.groupBy { accountManager.findById(it.accountId)!! }
+        return messages
+            .groupBy { it.accountId }
+            .mapNotNull { (accountId, messagesInAccount) ->
+                accountManager.findById(accountId)?.let { account -> account to messagesInAccount }
+            }
+            .toMap()
     }
 
     private fun onSpam(messages: List<MessageReference>, count: Int) {
