@@ -565,10 +565,14 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         private const val REQUEST_DELETE_ACCOUNT = 1
         private const val TAG_DELETE_ACCOUNT_CONFIRMATION = "delete_account_confirmation"
 
-        // External access required for new notifications, will change over as we migrate
+        /* TODO:
+            External access required for new notifications, will change over as we migrate
+            As part of #9301, including tickets #11722, #11723, and #11724, these will be migrated
+            to Jetpack compose and MVI. They're public here as a temporary measure to allow launching
+            of these legacy settings via newer settings pages.
+         */
         const val PREFERENCE_NOTIFICATION_STYLE = "notifications"
         const val PREFERENCE_FOLDERS = "folders"
-        const val PREFERENCE_FOLDER_VISIBILITY_AND_SYNC = "visibility_and_syncing"
 
         fun create(accountUuid: String, rootKey: String?) = AccountSettingsFragment().withArguments(
             ARG_ACCOUNT_UUID to accountUuid,
