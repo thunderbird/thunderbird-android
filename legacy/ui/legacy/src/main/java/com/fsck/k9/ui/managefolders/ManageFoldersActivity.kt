@@ -56,13 +56,5 @@ class ManageFoldersActivity : BaseActivity() {
             }
             activity.startActivity(intent)
         }
-
-        @JvmStatic
-        fun launch(activity: Activity, accountId: AccountId) {
-            val intent = Intent(activity, ManageFoldersActivity::class.java).apply {
-                putExtra(EXTRA_ACCOUNT, accountId.value.toString())
-            }
-            activity.startActivity(intent)
-        }
     }
 }
