@@ -59,7 +59,10 @@ class UnreadWidgetConfigurationFragment : PreferenceFragmentCompat() {
     override fun onCreatePreferencesFix(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.unread_widget_configuration, rootKey)
 
-        appWidgetId = arguments?.getInt(ARGUMENT_APP_WIDGET_ID) ?: error("Missing argument '$ARGUMENT_APP_WIDGET_ID'")
+        appWidgetId = requireArguments()
+            .getInt(ARGUMENT_APP_WIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID)
+            .takeIf { it != AppWidgetManager.INVALID_APPWIDGET_ID }
+            ?: error("Missing argument '$ARGUMENT_APP_WIDGET_ID'")
 
         unreadAccount = findPreference(PREFERENCE_UNREAD_ACCOUNT)!!
         unreadAccount.onPreferenceClickListener = Preference.OnPreferenceClickListener {
