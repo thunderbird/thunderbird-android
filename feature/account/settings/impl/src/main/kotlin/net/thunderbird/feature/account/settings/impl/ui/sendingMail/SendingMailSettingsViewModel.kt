@@ -39,7 +39,7 @@ internal class SendingMailSettingsViewModel(
         quotedTextPrefix = ">",
         uploadSentMessages = false,
         supportsUpload = true,
-        shouldShowQuoteSettings = true,
+        isQuoteSettingsEnabled = true,
     ),
 ) : BaseViewModel<State, Event, Effect>(initialState = initialState), SendingMailSettingContract.ViewModel {
 
@@ -124,7 +124,7 @@ internal class SendingMailSettingsViewModel(
                             updateState { state ->
                                 state.copy(
                                     replyQuotingStyle = event.replyQuotingStyle,
-                                    shouldShowQuoteSettings = QuoteStyle.PREFIX.name == event.replyQuotingStyle.id,
+                                    isQuoteSettingsEnabled = QuoteStyle.PREFIX.name == event.replyQuotingStyle.id,
                                 )
                             }
                         },
@@ -280,7 +280,7 @@ internal class SendingMailSettingsViewModel(
                     val quotedTextPrefix = it.quotePrefix ?: ""
                     val uploadSentMessages = it.isUploadSentMessages
                     val supportsUpload = accountCapabilities.supportsUpload(accountId)
-                    val shouldShowQuoteSettings = QuoteStyle.PREFIX.name == replyQuotingStyle.id
+                    val isQuoteSettingsEnabled = QuoteStyle.PREFIX.name == replyQuotingStyle.id
 
                     updateState { state ->
                         state.copy(
@@ -294,7 +294,7 @@ internal class SendingMailSettingsViewModel(
                             quotedTextPrefix = quotedTextPrefix,
                             uploadSentMessages = uploadSentMessages,
                             supportsUpload = supportsUpload,
-                            shouldShowQuoteSettings = shouldShowQuoteSettings,
+                            isQuoteSettingsEnabled = isQuoteSettingsEnabled,
                         )
                     }
                 },
