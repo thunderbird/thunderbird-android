@@ -4,6 +4,7 @@ import assertk.all
 import assertk.assertThat
 import assertk.assertions.hasSize
 import assertk.assertions.isEqualTo
+import assertk.assertions.isFalse
 import assertk.assertions.isInstanceOf
 import assertk.assertions.isTrue
 import assertk.assertions.prop
@@ -273,6 +274,25 @@ internal class SendingMailSettingsBuilderTest {
         )
     }
 
+    @Test
+    fun `quote settings should be disabled when isQuoteSettingsEnabled is false`() {
+        val settings = builder.buildSettings(
+            createState(isQuoteSettingsEnabled = false),
+            onEvent = {},
+        )
+
+        val replyAfterQuotedText = settings
+            .filterIsInstance<SettingValue.Switch>()
+            .first { it.id == SendingMailSettingsId.REPLY_AFTER_QUOTED_TEXT }
+
+        val quotePrefix = settings
+            .filterIsInstance<SettingValue.Text>()
+            .first { it.id == SendingMailSettingsId.QUOTED_TEXT_PREFIX }
+
+        assertThat(replyAfterQuotedText.enabled).isFalse()
+        assertThat(quotePrefix.enabled).isFalse()
+    }
+
     private fun createState(
         messageFormat: SelectOption = SelectOption("TEXT") { "Plain Text" },
         alwaysShowCcBcc: Boolean = false,
@@ -283,6 +303,7 @@ internal class SendingMailSettingsBuilderTest {
         stripSignatureOnReply: Boolean = false,
         quotedTextPrefix: String = "",
         uploadSentMessages: Boolean = false,
+        isQuoteSettingsEnabled: Boolean = true,
     ) = SendingMailSettingContract.State(
         subtitle = "",
         messageFormat = messageFormat,
@@ -294,5 +315,6 @@ internal class SendingMailSettingsBuilderTest {
         stripSignatureOnReply = stripSignatureOnReply,
         quotedTextPrefix = quotedTextPrefix,
         uploadSentMessages = uploadSentMessages,
+        isQuoteSettingsEnabled = isQuoteSettingsEnabled,
     )
 }
