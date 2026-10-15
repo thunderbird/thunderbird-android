@@ -87,6 +87,10 @@ class DefaultDisplayVisualSettingsPreferenceManager(
             DisplayVisualSettingKey.MessageViewDeleteActionVisible.value,
             DISPLAY_SETTINGS_DEFAULT_MESSAGE_VIEW_DELETE_ACTION_VISIBLE,
         ),
+        isMessageViewToggleUnreadActionVisible = storage.getBoolean(
+            DisplayVisualSettingKey.MessageViewToggleUnreadActionVisible.value,
+            DISPLAY_SETTINGS_DEFAULT_MESSAGE_VIEW_TOGGLE_UNREAD_ACTION_VISIBLE,
+        ),
         isMessageViewMoveActionVisible = storage.getBoolean(
             DisplayVisualSettingKey.MessageViewMoveActionVisible.value,
             DISPLAY_SETTINGS_DEFAULT_MESSAGE_VIEW_MOVE_ACTION_VISIBLE,
@@ -124,6 +128,10 @@ class DefaultDisplayVisualSettingsPreferenceManager(
                 storageEditor.putBoolean(
                     DisplayVisualSettingKey.MessageViewDeleteActionVisible.value,
                     config.isMessageViewDeleteActionVisible,
+                )
+                storageEditor.putBoolean(
+                    DisplayVisualSettingKey.MessageViewToggleUnreadActionVisible.value,
+                    config.isMessageViewToggleUnreadActionVisible,
                 )
                 storageEditor.putBoolean(
                     DisplayVisualSettingKey.MessageViewMoveActionVisible.value,
