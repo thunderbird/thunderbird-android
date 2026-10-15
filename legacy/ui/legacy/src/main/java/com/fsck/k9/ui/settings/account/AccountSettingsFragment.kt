@@ -22,8 +22,6 @@ import androidx.preference.PreferenceCategory
 import androidx.preference.SwitchPreference
 import app.k9mail.feature.launcher.FeatureLauncherActivity
 import app.k9mail.feature.launcher.FeatureLauncherTarget
-import com.fsck.k9.activity.ManageIdentities
-import com.fsck.k9.activity.setup.AccountSetupComposition
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.crypto.OpenPgpApiHelper
 import com.fsck.k9.fragment.ConfirmationDialogFragment
@@ -40,8 +38,8 @@ import com.fsck.k9.ui.settings.remove
 import com.fsck.k9.ui.settings.removeEntry
 import com.takisoft.preferencex.PreferenceFragmentCompat
 import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.NO_OPENPGP_KEY
-import net.thunderbird.core.android.account.LegacyAccountDto
-import net.thunderbird.core.android.account.QuoteStyle
+import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.core.common.provider.AppNameProvider
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.AccountIdFactory
@@ -430,9 +428,6 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
     }
 
     private fun initializeFolderSettings(accountId: AccountId) {
-        findPreference<Preference>(PREFERENCE_FOLDER_VISIBILITY_AND_SYNC)?.onClick {
-            ManageFoldersActivity.launch(requireActivity(), accountId)
-        }
         findPreference<Preference>(PREFERENCE_FOLDERS)?.let {
             if (!messagingController.supportsFolderSubscriptions(accountId)) {
                 findPreference<Preference>(PREFERENCE_SUBSCRIBED_FOLDERS_ONLY).remove()
@@ -531,10 +526,8 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         private const val PREFERENCE_GENERAL = "general"
 
         private const val PREFERENCE_READING_MAIL = "reading_mail"
-        private const val PREFERENCE_FETCHING_MAIL = "fetching_mail"
         private const val PREFERENCE_SYNC_AND_NOTIFICATIONS = "sync_and_notifications"
         private const val PREFERENCE_FETCHING_MAIL = "fetching_mail"
-
         private const val PREFERENCE_SENDING_MAIL = "composing"
         private const val PREFERENCE_SEARCH = "search"
         private const val PREFERENCE_INCOMING_SERVER = "incoming"

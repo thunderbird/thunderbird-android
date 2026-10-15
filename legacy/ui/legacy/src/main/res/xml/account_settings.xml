@@ -27,13 +27,6 @@
         />
 
     <Preference
-        android:icon="@drawable/ic_sync"
-        android:key="fetching_mail"
-        android:title="@string/account_settings_sync"
-        />
-
-
-    <Preference
         android:icon="@drawable/ic_edit"
         android:key="composing"
         android:title="@string/account_settings_composition"/>
