@@ -4,7 +4,6 @@ import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.os.Build
 import android.provider.Browser
 import android.webkit.WebResourceError
 import android.webkit.WebResourceRequest
@@ -12,7 +11,6 @@ import android.webkit.WebResourceResponse
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import com.fsck.k9.helper.ClipboardManager
 import com.fsck.k9.mailstore.AttachmentResolver
 import com.fsck.k9.ui.R
@@ -36,7 +34,6 @@ class K9WebViewClient(
         return shouldOverrideUrlLoading(webView, Uri.parse(url))
     }
 
-    @RequiresApi(Build.VERSION_CODES.N)
     override fun shouldOverrideUrlLoading(webView: WebView, request: WebResourceRequest): Boolean {
         return shouldOverrideUrlLoading(webView, request.url)
     }
@@ -124,7 +121,6 @@ class K9WebViewClient(
         onPageFinishedListener?.onPageFinished()
     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
     override fun onReceivedError(view: WebView, request: WebResourceRequest, error: WebResourceError) {
         super.onReceivedError(view, request, error)
         if (request.isForMainFrame) {
