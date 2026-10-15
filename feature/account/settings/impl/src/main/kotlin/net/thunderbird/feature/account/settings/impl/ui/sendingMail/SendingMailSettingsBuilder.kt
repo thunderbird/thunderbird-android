@@ -25,13 +25,15 @@ internal class SendingMailSettingsBuilder(
         settings += readReceipt(state.readReceipt)
         settings += replyQuotingStyle(state.replyQuotingStyle)
         settings += quoteMessageWhenReplying(state.quoteMessageWhenReplying)
-        if (state.shouldShowQuoteSettings) {
-            settings += replyAfterQuotedText(state.replyAfterQuotedText)
-        }
+        settings += replyAfterQuotedText(
+            value = state.replyAfterQuotedText,
+            enabled = state.isQuoteSettingsEnabled,
+        )
         settings += stripSignatureOnReply(state.stripSignatureOnReply)
-        if (state.shouldShowQuoteSettings) {
-            settings += quotePrefix(state.quotedTextPrefix)
-        }
+        settings += quotePrefix(
+            value = state.quotedTextPrefix,
+            enabled = state.isQuoteSettingsEnabled,
+        )
         if (state.supportsUpload) {
             settings += uploadSentMessages(state.uploadSentMessages)
         }
@@ -110,11 +112,12 @@ internal class SendingMailSettingsBuilder(
         value = value,
     )
 
-    fun replyAfterQuotedText(value: Boolean): Setting = SettingValue.Switch(
+    fun replyAfterQuotedText(value: Boolean, enabled: Boolean): Setting = SettingValue.Switch(
         id = SendingMailSettingsId.REPLY_AFTER_QUOTED_TEXT,
         title = { resources.stringResource(R.string.account_settings_reply_after_quote_label) },
         description = { resources.stringResource(R.string.account_settings_reply_after_quote_summary) },
         value = value,
+        enabled = enabled,
     )
 
     fun stripSignatureOnReply(value: Boolean): Setting = SettingValue.Switch(
@@ -124,12 +127,13 @@ internal class SendingMailSettingsBuilder(
         value = value,
     )
 
-    fun quotePrefix(value: String): Setting = SettingValue.Text(
+    fun quotePrefix(value: String, enabled: Boolean): Setting = SettingValue.Text(
         id = SendingMailSettingsId.QUOTED_TEXT_PREFIX,
         title = { resources.stringResource(R.string.account_settings_quote_prefix_label) },
         description = { null },
         icon = { null },
         value = value,
+        enabled = enabled,
     )
 
     fun uploadSentMessages(value: Boolean): Setting = SettingValue.Switch(
