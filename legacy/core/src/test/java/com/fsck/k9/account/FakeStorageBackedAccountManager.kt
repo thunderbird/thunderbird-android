@@ -17,7 +17,7 @@ class FakeStorageBackedAccountManager(
     private val accountDefaultsProvider: AccountDefaultsProvider,
 ) : LegacyAccountManager {
     override fun findAll(): List<LegacyAccount> {
-        val storage = storageProvider.loadLatestStorage()
+        val storage = storageProvider.storage
         return storage.getStringOrNull("accountUuids")
             ?.split(',')
             ?.filter { it.isNotEmpty() }

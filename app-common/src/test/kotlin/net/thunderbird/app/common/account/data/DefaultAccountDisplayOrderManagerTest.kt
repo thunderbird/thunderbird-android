@@ -141,7 +141,6 @@ class DefaultAccountDisplayOrderManagerTest {
         var commitCalls = 0
 
         override val storage: Storage get() = storageInstance
-        override fun loadLatestStorage(): Storage = storageInstance
         override fun createStorageEditor(): StorageEditor = FakeStorageEditor(this)
     }
 }
