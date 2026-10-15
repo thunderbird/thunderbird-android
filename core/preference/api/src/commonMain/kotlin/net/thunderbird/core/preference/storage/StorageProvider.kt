@@ -7,15 +7,10 @@ interface StorageProvider {
 
     /**
      * The current [Storage] snapshot.
+     *
+     * It is loaded from disk once and updated whenever an editor created by [createStorageEditor] commits.
      */
     val storage: Storage
-
-    /**
-     * Loads the latest [Storage] from disk.
-     *
-     * @return The latest loaded [Storage].
-     */
-    fun loadLatestStorage(): Storage
 
     /**
      * Creates a [StorageEditor] for updating preferences in storage.
