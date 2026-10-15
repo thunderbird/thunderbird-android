@@ -3,7 +3,7 @@ package com.fsck.k9.notification
 import androidx.core.app.NotificationManagerCompat
 import app.k9mail.legacy.message.controller.MessageReference
 import com.fsck.k9.mailstore.LocalMessage
-import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.feature.account.AccountId
 
 /**
  * Handle notifications for new messages.
@@ -15,7 +15,7 @@ internal class NewMailNotificationController(
     private val singleMessageNotificationCreator: SingleMessageNotificationCreator,
 ) {
     @Synchronized
-    fun restoreNewMailNotifications(accounts: List<LegacyAccountDto>) {
+    fun restoreNewMailNotifications(accounts: List<AccountId>) {
         for (account in accounts) {
             val notificationData = newMailNotificationManager.restoreNewMailNotifications(account)
 
@@ -26,8 +26,8 @@ internal class NewMailNotificationController(
     }
 
     @Synchronized
-    fun addNewMailNotification(account: LegacyAccountDto, message: LocalMessage, silent: Boolean) {
-        val notificationData = newMailNotificationManager.addNewMailNotification(account, message, silent)
+    fun addNewMailNotification(accountId: AccountId, message: LocalMessage, silent: Boolean) {
+        val notificationData = newMailNotificationManager.addNewMailNotification(accountId, message, silent)
 
         if (notificationData != null) {
             processNewMailNotificationData(notificationData)
@@ -36,12 +36,12 @@ internal class NewMailNotificationController(
 
     @Synchronized
     fun removeNewMailNotifications(
-        account: LegacyAccountDto,
+        accountId: AccountId,
         clearNewMessageState: Boolean,
         selector: (List<MessageReference>) -> List<MessageReference>,
     ) {
         val notificationData = newMailNotificationManager.removeNewMailNotifications(
-            account,
+            accountId,
             clearNewMessageState,
             selector,
         )
@@ -52,8 +52,9 @@ internal class NewMailNotificationController(
     }
 
     @Synchronized
-    fun clearNewMailNotifications(account: LegacyAccountDto, clearNewMessageState: Boolean) {
-        val cancelNotificationIds = newMailNotificationManager.clearNewMailNotifications(account, clearNewMessageState)
+    fun clearNewMailNotifications(accountId: AccountId, clearNewMessageState: Boolean) {
+        val cancelNotificationIds =
+            newMailNotificationManager.clearNewMailNotifications(accountId, clearNewMessageState)
 
         cancelNotifications(cancelNotificationIds)
     }

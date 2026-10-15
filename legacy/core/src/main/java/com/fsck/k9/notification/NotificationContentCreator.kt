@@ -7,7 +7,6 @@ import com.fsck.k9.helper.MessageHelper
 import com.fsck.k9.mail.Address
 import com.fsck.k9.mail.Message
 import com.fsck.k9.mailstore.LocalMessage
-import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.preference.display.visualSettings.message.list.MessageListPreferencesManager
 
 internal class NotificationContentCreator(
@@ -15,8 +14,8 @@ internal class NotificationContentCreator(
     private val contactRepository: ContactRepository,
     private val messageListPreferencesManager: MessageListPreferencesManager,
 ) {
-    fun createFromMessage(account: LegacyAccountDto, message: LocalMessage): NotificationContent {
-        val sender = getMessageSender(account, message)
+    fun createFromMessage(message: LocalMessage, isFromSelf: Boolean): NotificationContent {
+        val sender = getMessageSender(message, isFromSelf)
 
         return NotificationContent(
             messageReference = message.makeMessageReference(),
@@ -71,15 +70,13 @@ internal class NotificationContentCreator(
     }
 
     @Suppress("ReturnCount")
-    private fun getMessageSender(account: LegacyAccountDto, message: Message): Address {
+    private fun getMessageSender(message: Message, isFromSelf: Boolean): Address {
         val messageListPreferences = messageListPreferencesManager.getConfig()
         val localContactRepository = if (messageListPreferences.isShowContactName) contactRepository else null
-        var isSelf = false
 
         val fromAddresses = message.from
         if (!fromAddresses.isNullOrEmpty()) {
-            isSelf = account.isAnIdentity(fromAddresses)
-            if (!isSelf) {
+            if (!isFromSelf) {
                 val firstFrom = fromAddresses.first()
                 val personal = MessageHelper.toFriendly(
                     firstFrom,
@@ -92,7 +89,7 @@ internal class NotificationContentCreator(
             }
         }
 
-        if (isSelf) {
+        if (isFromSelf) {
             // show To: if the message was sent from me
             val recipients = message.getRecipients(Message.RecipientType.TO)
             if (!recipients.isNullOrEmpty()) {

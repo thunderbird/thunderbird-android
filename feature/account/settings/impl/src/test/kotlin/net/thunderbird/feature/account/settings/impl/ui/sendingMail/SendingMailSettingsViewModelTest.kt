@@ -97,12 +97,12 @@ internal class SendingMailSettingsViewModelTest {
             isStripSignature = isStripSignature,
             quotePrefix = "> ",
             isUploadSentMessages = true,
-            isSensitiveDebugLoggingEnabled = { true },
             profile = net.thunderbird.feature.account.storage.profile.ProfileDto(
                 id = accountId,
                 name = "Demo",
                 color = 0xFF0000,
                 avatar = net.thunderbird.feature.account.storage.profile.AvatarDto(
+                    accountId = accountId,
                     avatarType = net.thunderbird.feature.account.storage.profile.AvatarTypeDto.ICON,
                     avatarMonogram = null,
                     avatarImageUri = null,

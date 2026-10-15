@@ -8,14 +8,14 @@ import com.fsck.k9.helper.ContactNameProvider
 import com.fsck.k9.mail.Address
 import com.fsck.k9.ui.R
 import net.thunderbird.core.android.account.Identity
-import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.preference.display.visualSettings.message.list.MessageListPreferencesManager
 
 /**
  * Get the display name for a participant to be shown in the message details screen.
  */
 internal interface MessageDetailsParticipantFormatter {
-    fun getDisplayName(address: Address, account: LegacyAccountDto, isSender: Boolean): CharSequence?
+    fun getDisplayName(address: Address, account: LegacyAccount, isSender: Boolean): CharSequence?
 }
 
 internal class RealMessageDetailsParticipantFormatter(
@@ -25,7 +25,7 @@ internal class RealMessageDetailsParticipantFormatter(
     private val toMeText: String,
     private val fromMeText: String,
 ) : MessageDetailsParticipantFormatter {
-    override fun getDisplayName(address: Address, account: LegacyAccountDto, isSender: Boolean): CharSequence? {
+    override fun getDisplayName(address: Address, account: LegacyAccount, isSender: Boolean): CharSequence? {
         val identity = account.findIdentity(address)
         if (identity != null) {
             return getIdentityName(identity, account, isSender)
@@ -38,7 +38,7 @@ internal class RealMessageDetailsParticipantFormatter(
         }
     }
 
-    private fun getIdentityName(identity: Identity, account: LegacyAccountDto, isSender: Boolean): String {
+    private fun getIdentityName(identity: Identity, account: LegacyAccount, isSender: Boolean): String {
         val meText = if (isSender) fromMeText else toMeText
         return if (account.identities.size == 1) {
             meText

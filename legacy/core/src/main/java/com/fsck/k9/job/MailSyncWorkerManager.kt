@@ -10,8 +10,8 @@ import androidx.work.workDataOf
 import java.util.concurrent.TimeUnit
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
-import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.components.core.logging.Logger
+import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.legacy.logging.Log
 import net.thunderbird.core.preference.BackgroundOps
 import net.thunderbird.core.preference.GeneralSettingsManager
@@ -28,13 +28,13 @@ constructor(
     val generalSettingsManager: GeneralSettingsManager,
 ) {
 
-    fun cancelMailSync(account: LegacyAccountDto) {
+    fun cancelMailSync(account: LegacyAccount) {
         Log.v(TAG, "Canceling mail sync worker for %s", account)
         val uniqueWorkName = createUniqueWorkName(account.id)
         workManager.cancelUniqueWork(uniqueWorkName)
     }
 
-    fun scheduleMailSync(account: LegacyAccountDto) {
+    fun scheduleMailSync(account: LegacyAccount) {
         if (isNeverSyncInBackground()) return
 
         getSyncIntervalIfEnabled(account)?.let { syncIntervalMinutes ->
@@ -78,9 +78,9 @@ constructor(
     private fun isNeverSyncInBackground() =
         generalSettingsManager.getConfig().network.backgroundOps == BackgroundOps.NEVER
 
-    private fun getSyncIntervalIfEnabled(account: LegacyAccountDto): Long? {
+    private fun getSyncIntervalIfEnabled(account: LegacyAccount): Long? {
         val intervalMinutes = account.automaticCheckIntervalMinutes
-        if (intervalMinutes <= LegacyAccountDto.INTERVAL_MINUTES_NEVER) {
+        if (intervalMinutes <= INTERVAL_MINUTES_NEVER) {
             return null
         }
 
@@ -104,6 +104,7 @@ constructor(
     }
 
     companion object {
+        const val INTERVAL_MINUTES_NEVER = -1
         const val MAIL_SYNC_TAG = "MailSync"
         private const val INITIAL_BACKOFF_DELAY_MINUTES = 5L
     }

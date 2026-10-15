@@ -6,8 +6,6 @@ import com.fsck.k9.backend.api.Backend
 import java.util.concurrent.Future
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.runBlocking
-import net.thunderbird.core.android.account.LegacyAccountDto
-import net.thunderbird.core.android.account.LegacyAccountDtoManager
 import net.thunderbird.core.common.exception.MessagingException
 import net.thunderbird.core.common.mail.Flag
 import net.thunderbird.feature.account.AccountId
@@ -19,35 +17,23 @@ import net.thunderbird.feature.account.AccountId
 @Suppress("TooManyFunctions")
 class MessagingControllerWrapper(
     private val messagingController: MessagingController,
-    private val accountManager: LegacyAccountDtoManager,
 ) {
 
-    private fun getAccountDtoOrThrow(id: AccountId): LegacyAccountDto {
-        return accountManager.getById(id) ?: error("Account not found: $id")
-    }
-
-    private fun getAccountDtoOrNull(id: AccountId): LegacyAccountDto? {
-        return accountManager.getById(id)
-    }
-
-    fun loadMoreMessages(id: AccountId, folderId: Long) {
-        val account = getAccountDtoOrThrow(id)
-        messagingController.loadMoreMessages(account, folderId)
+    fun loadMoreMessages(accountId: AccountId, folderId: Long) {
+        messagingController.loadMoreMessages(accountId, folderId)
     }
 
     fun loadSearchResults(
-        id: AccountId,
+        accountId: AccountId,
         folderId: Long,
         messageServerIds: List<String>,
         listener: MessagingListener,
     ) {
-        val account = getAccountDtoOrThrow(id)
-        messagingController.loadSearchResults(account, folderId, messageServerIds, listener)
+        messagingController.loadSearchResults(accountId, folderId, messageServerIds, listener)
     }
 
-    fun clearNewMessages(id: AccountId) {
-        val account = getAccountDtoOrThrow(id)
-        messagingController.clearNewMessages(account)
+    fun clearNewMessages(accountId: AccountId) {
+        messagingController.clearNewMessages(accountId)
     }
 
     fun searchRemoteMessages(
@@ -67,33 +53,27 @@ class MessagingControllerWrapper(
     )
 
     fun expunge(id: AccountId, folderId: Long) {
-        val account = getAccountDtoOrThrow(id)
-        messagingController.expunge(account, folderId)
+        messagingController.expunge(id, folderId)
     }
 
-    fun sendPendingMessages(id: AccountId, listener: MessagingListener?) {
-        val account = getAccountDtoOrThrow(id)
-        messagingController.sendPendingMessages(account, listener)
+    fun sendPendingMessages(accountId: AccountId, listener: MessagingListener?) {
+        messagingController.sendPendingMessages(accountId, listener)
     }
 
-    fun setFlagForThreads(id: AccountId, threadIds: List<Long>, flag: Flag, newState: Boolean) {
-        val account = getAccountDtoOrThrow(id)
-        messagingController.setFlagForThreads(account, threadIds, flag, newState)
+    fun setFlagForThreads(accountId: AccountId, threadIds: List<Long>, flag: Flag, newState: Boolean) {
+        messagingController.setFlagForThreads(accountId, threadIds, flag, newState)
     }
 
-    fun setFlag(id: AccountId, messageIds: List<Long>, flag: Flag, newState: Boolean) {
-        val account = getAccountDtoOrThrow(id)
-        messagingController.setFlag(account, messageIds, flag, newState)
+    fun setFlag(accountId: AccountId, messageIds: List<Long>, flag: Flag, newState: Boolean) {
+        messagingController.setFlag(accountId, messageIds, flag, newState)
     }
 
-    fun isMoveCapable(id: AccountId): Boolean {
-        val account = getAccountDtoOrNull(id) ?: return false
-        return messagingController.isMoveCapable(account)
+    fun isMoveCapable(accountId: AccountId): Boolean {
+        return messagingController.isMoveCapable(accountId)
     }
 
-    fun isCopyCapable(id: AccountId): Boolean {
-        val account = getAccountDtoOrNull(id) ?: return false
-        return messagingController.isCopyCapable(account)
+    fun isCopyCapable(accountId: AccountId): Boolean {
+        return messagingController.isCopyCapable(accountId)
     }
 
     fun moveMessagesInThread(
@@ -102,9 +82,8 @@ class MessagingControllerWrapper(
         messages: List<MessageReference>,
         destinationFolderId: Long,
     ) {
-        val account = getAccountDtoOrThrow(id)
         messagingController.moveMessagesInThread(
-            account,
+            id,
             folderId,
             messages,
             destinationFolderId,
@@ -117,9 +96,8 @@ class MessagingControllerWrapper(
         messages: List<MessageReference>,
         destinationFolderId: Long,
     ) {
-        val account = getAccountDtoOrThrow(id)
         messagingController.moveMessages(
-            account,
+            id,
             folderId,
             messages,
             destinationFolderId,
@@ -132,9 +110,8 @@ class MessagingControllerWrapper(
         messages: List<MessageReference>,
         destinationFolderId: Long,
     ) {
-        val account = getAccountDtoOrThrow(id)
         messagingController.copyMessagesInThread(
-            account,
+            id,
             folderId,
             messages,
             destinationFolderId,
@@ -147,9 +124,8 @@ class MessagingControllerWrapper(
         messages: List<MessageReference>,
         destinationFolderId: Long,
     ) {
-        val account = getAccountDtoOrThrow(id)
         messagingController.copyMessages(
-            account,
+            id,
             folderId,
             messages,
             destinationFolderId,
@@ -157,23 +133,19 @@ class MessagingControllerWrapper(
     }
 
     fun moveToDraftsFolder(id: AccountId, folderId: Long, messages: List<MessageReference>) {
-        val account = getAccountDtoOrThrow(id)
-        messagingController.moveToDraftsFolder(account, folderId, messages)
+        messagingController.moveToDraftsFolder(id, folderId, messages)
     }
 
     fun emptySpam(id: AccountId) {
-        val account = getAccountDtoOrThrow(id)
-        messagingController.emptySpam(account, null)
+        messagingController.emptySpam(id, null)
     }
 
     fun emptyTrash(id: AccountId) {
-        val account = getAccountDtoOrThrow(id)
-        messagingController.emptyTrash(account, null)
+        messagingController.emptyTrash(id, null)
     }
 
     fun synchronizeMailbox(id: AccountId, folderId: Long, notify: Boolean, listener: MessagingListener?) {
-        val account = getAccountDtoOrThrow(id)
-        messagingController.synchronizeMailbox(account, folderId, notify, listener)
+        messagingController.synchronizeMailbox(id, folderId, notify, listener)
     }
 
     fun checkMail(
@@ -183,10 +155,8 @@ class MessagingControllerWrapper(
         notify: Boolean,
         listener: MessagingListener?,
     ) {
-        val account = id?.let { getAccountDtoOrNull(it) }
-
         messagingController.checkMail(
-            account,
+            id,
             ignoreLastCheckedTime,
             useManualWakeLock,
             notify,
@@ -194,24 +164,20 @@ class MessagingControllerWrapper(
         )
     }
 
-    fun supportsExpunge(id: AccountId): Boolean {
-        val account = getAccountDtoOrNull(id) ?: return false
-        return messagingController.supportsExpunge(account)
+    fun supportsExpunge(accountId: AccountId): Boolean {
+        return messagingController.supportsExpunge(accountId)
     }
 
-    fun isPushCapable(id: AccountId): Boolean {
-        val account = getAccountDtoOrNull(id) ?: return false
-        return messagingController.isPushCapable(account)
+    fun isPushCapable(accountId: AccountId): Boolean {
+        return messagingController.isPushCapable(accountId)
     }
 
-    fun markAllMessagesRead(id: AccountId, folderId: Long) {
-        val account = getAccountDtoOrThrow(id)
-        messagingController.markAllMessagesRead(account, folderId)
+    fun markAllMessagesRead(accountId: AccountId, folderId: Long) {
+        messagingController.markAllMessagesRead(accountId, folderId)
     }
 
-    fun checkAuthenticationProblem(id: AccountId) {
-        val account = getAccountDtoOrThrow(id)
-        messagingController.checkAuthenticationProblem(account)
+    fun checkAuthenticationProblem(accountId: AccountId) {
+        messagingController.checkAuthenticationProblem(accountId)
     }
 
     fun isMoveCapable(message: MessageReference) = messagingController.isMoveCapable(message)

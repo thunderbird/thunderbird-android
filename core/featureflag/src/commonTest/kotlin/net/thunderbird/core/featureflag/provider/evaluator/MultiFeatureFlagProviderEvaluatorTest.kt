@@ -208,6 +208,7 @@ class MultiFeatureFlagProviderEvaluatorTest {
             }
         }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun `enabledFlags should fall back to the lower priority provider when the higher one is cleared`() =
         runTest(UnconfinedTestDispatcher()) {
@@ -234,6 +235,7 @@ class MultiFeatureFlagProviderEvaluatorTest {
             }
         }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun `enabledFlags should ignore keys unknown to the app`() = runTest(UnconfinedTestDispatcher()) {
         // Arrange
@@ -249,6 +251,7 @@ class MultiFeatureFlagProviderEvaluatorTest {
         }
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun `enabledFlags should be empty when no provider enables a flag`() = runTest(UnconfinedTestDispatcher()) {
         // Arrange

@@ -36,12 +36,13 @@ val settingsUiModule = module {
     viewModel { AccountSettingsViewModel(get(), get(), get()) }
     single {
         AccountSettingsDataStoreFactory(
-            preferences = get(),
+            accountManager = get(),
             jobManager = get(),
             executorService = get(named("SaveSettingsExecutorService")),
             notificationChannelManager = get(),
             notificationController = get(),
             messagingController = get(),
+            logger = get(),
         )
     }
     factory { getSystemVibrator(context = get()) }

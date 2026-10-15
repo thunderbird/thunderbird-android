@@ -6,7 +6,7 @@ import assertk.assertions.isEqualTo
 import kotlin.test.Test
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
-import net.thunderbird.feature.navigation.drawer.dropdown.ui.FakeData
+import net.thunderbird.feature.account.AccountIdFactory
 
 internal class SyncAccountTest {
 
@@ -15,26 +15,21 @@ internal class SyncAccountTest {
         val listenerExecutor: (MessagingListener?) -> Unit = { listener ->
             listener?.checkMailFinished(null, null)
         }
-        val account = FakeData.ACCOUNT
-        val accountManager = FakeLegacyAccountDtoManager(
-            accounts = listOf(account),
-        )
+        val accountId = AccountIdFactory.create()
         val messagingController = FakeMessagingControllerMailChecker(
             listenerExecutor = listenerExecutor,
         )
         val testSubject = SyncAccount(
-            accountManager = accountManager,
             messagingController = messagingController,
         )
 
-        val result = testSubject(account.id).first()
+        val result = testSubject(accountId).first()
 
         assertThat(result.isSuccess).isEqualTo(true)
-        assertThat(accountManager.recordedParameters).isEqualTo(listOf(account.id))
         assertThat(messagingController.recordedParameters).isEqualTo(
             listOf(
                 CheckMailParameters(
-                    account = account,
+                    accountId = accountId,
                     ignoreLastCheckedTime = true,
                     useManualWakeLock = true,
                     notify = true,

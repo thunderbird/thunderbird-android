@@ -24,7 +24,7 @@ import net.thunderbird.core.preference.storage.StorageUpdater;
 
 public class K9StoragePersister implements StoragePersister {
     private static final String TAG = "K9StoragePersister";
-    private static final int DB_VERSION = 30;
+    private static final int DB_VERSION = 31;
     private static final String DB_NAME = "preferences_storage";
 
     private final Context context;
@@ -87,15 +87,18 @@ public class K9StoragePersister implements StoragePersister {
 
             StoragePersistOperations storagePersistOperations = new StoragePersistOperations(workingStorage, workingDb);
             workingDb.beginTransaction();
-            operationCallback.persist(storagePersistOperations);
-            storagePersistOperations.close();
-            workingDb.setTransactionSuccessful();
-
-            operationCallback.onPersistTransactionSuccess(workingStorage);
+            try {
+                operationCallback.persist(storagePersistOperations);
+                workingDb.setTransactionSuccessful();
+            } finally {
+                storagePersistOperations.close();
+                workingDb.endTransaction();
+            }
         } finally {
-            workingDb.endTransaction();
             workingDb.close();
         }
+
+        operationCallback.onPersistTransactionSuccess(workingStorage);
     }
 
     @NonNull

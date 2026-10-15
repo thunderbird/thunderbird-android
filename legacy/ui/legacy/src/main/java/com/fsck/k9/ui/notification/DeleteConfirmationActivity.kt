@@ -5,22 +5,22 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.DialogFragment
 import app.k9mail.legacy.message.controller.MessageReference
-import com.fsck.k9.Preferences
 import com.fsck.k9.controller.MessageReferenceHelper
+import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.fragment.ConfirmationDialogFragment
 import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmentListener
 import com.fsck.k9.notification.NotificationActionIntents
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.BaseActivity
 import com.fsck.k9.ui.base.ThemeType
-import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.AccountIdFactory
 import org.koin.android.ext.android.inject
 
 class DeleteConfirmationActivity : BaseActivity(ThemeType.DIALOG), ConfirmationDialogFragmentListener {
-    private val preferences: Preferences by inject()
+    private val messagingController: MessagingController by inject()
 
-    private lateinit var account: LegacyAccountDto
+    private lateinit var accountId: AccountId
     private lateinit var messagesToDelete: List<MessageReference>
 
     public override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,10 +43,7 @@ class DeleteConfirmationActivity : BaseActivity(ThemeType.DIALOG), ConfirmationD
         requireNotNull(messagesToDelete) { "$EXTRA_MESSAGE_REFERENCES can't be null" }
         require(messagesToDelete.isNotEmpty()) { "$EXTRA_MESSAGE_REFERENCES can't be empty" }
 
-        val account = preferences.getById(accountId)
-            ?: error("$EXTRA_ACCOUNT_UUID couldn't be resolved to an account")
-
-        this.account = account
+        this.accountId = accountId
         this.messagesToDelete = messagesToDelete
     }
 
@@ -76,14 +73,21 @@ class DeleteConfirmationActivity : BaseActivity(ThemeType.DIALOG), ConfirmationD
     }
 
     private fun deleteAndFinish() {
+        cancelNotifications()
         triggerDelete()
         finish()
+    }
+
+    private fun cancelNotifications() {
+        for (messageReference in messagesToDelete) {
+            messagingController.cancelNotificationForMessage(accountId, messageReference)
+        }
     }
 
     private fun triggerDelete() {
         val intent = NotificationActionIntents.createDeleteAllMessagesIntent(
             this,
-            account.id.toString(),
+            accountId,
             messagesToDelete,
         )
         startService(intent)

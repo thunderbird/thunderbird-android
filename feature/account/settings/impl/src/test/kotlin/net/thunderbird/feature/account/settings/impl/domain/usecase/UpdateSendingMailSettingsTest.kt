@@ -9,6 +9,7 @@ import com.fsck.k9.mail.ServerSettings
 import kotlin.test.Test
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import net.thunderbird.components.core.outcome.Outcome
@@ -32,7 +33,6 @@ internal class UpdateSendingMailSettingsTest {
         val id = AccountIdFactory.create()
 
         return LegacyAccount(
-            isSensitiveDebugLoggingEnabled = { true },
             id = id,
             name = "Test Account",
             email = "test@example.com",
@@ -41,6 +41,7 @@ internal class UpdateSendingMailSettingsTest {
                 name = "Test Account",
                 color = 0xFF0000,
                 avatar = AvatarDto(
+                    accountId = id,
                     avatarType = AvatarTypeDto.ICON,
                     avatarMonogram = null,
                     avatarImageUri = null,
@@ -93,9 +94,11 @@ internal class UpdateSendingMailSettingsTest {
             override fun observeById(id: AccountId): Flow<LegacyAccount?> =
                 flowOf(account)
 
-            override suspend fun update(account: LegacyAccount) {
-                updated = account
-            }
+            override suspend fun update(
+                accountId: AccountId,
+                transform: (LegacyAccount) -> LegacyAccount,
+            ): LegacyAccount? =
+                observeById(accountId).firstOrNull()?.let(transform)?.also { updated = it }
         }
 
     @Test
@@ -104,7 +107,11 @@ internal class UpdateSendingMailSettingsTest {
             override fun observeById(id: AccountId): Flow<LegacyAccount?> =
                 emptyFlow()
 
-            override suspend fun update(account: LegacyAccount) = Unit
+            override suspend fun update(
+                accountId: AccountId,
+                transform: (LegacyAccount) -> LegacyAccount,
+            ): LegacyAccount? =
+                observeById(accountId).firstOrNull()?.let(transform)
         }
 
         val useCase = UpdateSendingMailSettings(repo)

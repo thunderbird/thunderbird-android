@@ -17,6 +17,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.robolectric.RuntimeEnvironment;
 
+import net.thunderbird.feature.account.AccountId;
+import net.thunderbird.feature.account.AccountIdFactory;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -28,7 +31,7 @@ public class AttachmentInfoExtractorTest extends RobolectricTest {
     public static final Uri TEST_URI = Uri.parse("uri://test");
     public static final String TEST_MIME_TYPE = "text/plain";
     public static final long TEST_SIZE = 123L;
-    public static final String TEST_ACCOUNT_UUID = "uuid";
+    public static final AccountId TEST_ACCOUNT_ID = AccountIdFactory.INSTANCE.create();
     public static final long TEST_ID = 234L;
     public static final String TEST_CONTENT_ID = "test-content-id";
 
@@ -53,12 +56,12 @@ public class AttachmentInfoExtractorTest extends RobolectricTest {
 
     @Test
     public void extractInfo__fromLocalBodyPart__shouldReturnProvidedValues() throws Exception {
-        LocalBodyPart part = new LocalBodyPart(TEST_ACCOUNT_UUID, null, TEST_ID, TEST_SIZE);
+        LocalBodyPart part = new LocalBodyPart(TEST_ACCOUNT_ID, null, TEST_ID, TEST_SIZE);
         part.setHeader(MimeHeader.HEADER_CONTENT_TYPE, TEST_MIME_TYPE);
 
         AttachmentViewInfo attachmentViewInfo = attachmentInfoExtractor.extractAttachmentInfo(part);
 
-        assertEquals(AttachmentProvider.getAttachmentUri(TEST_ACCOUNT_UUID, TEST_ID), attachmentViewInfo.internalUri);
+        assertEquals(AttachmentProvider.getAttachmentUri(TEST_ACCOUNT_ID, TEST_ID), attachmentViewInfo.internalUri);
         assertEquals(TEST_SIZE, attachmentViewInfo.size);
         assertEquals(TEST_MIME_TYPE, attachmentViewInfo.mimeType);
     }

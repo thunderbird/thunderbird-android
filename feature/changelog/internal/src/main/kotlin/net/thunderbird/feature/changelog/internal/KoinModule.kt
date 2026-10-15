@@ -13,8 +13,7 @@ val changelogUiModule = module {
             context = get(),
             changeLogProvider = get(),
             logger = get(),
-            storagePersister = get(),
-            storageEditor = get(),
+            storageProvider = get(),
         )
     }
     single { ChangeLogManager(changelogVersionHistory = get(), appCoroutineScope = get(named("AppCoroutineScope"))) }

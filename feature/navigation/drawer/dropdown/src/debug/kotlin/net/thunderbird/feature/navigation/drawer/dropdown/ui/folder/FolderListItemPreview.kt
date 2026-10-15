@@ -30,7 +30,7 @@ internal fun FolderListItemSelectedPreview() {
     PreviewWithThemes {
         FolderListItem(
             displayFolder = DISPLAY_FOLDER,
-            selectedFolderId = DISPLAY_FOLDER.id,
+            selectedFolderId = DISPLAY_FOLDER.folderId,
             showStarredCount = false,
             onClick = {},
             folderNameFormatter = FolderNameFormatter(LocalResources.current),
@@ -58,7 +58,7 @@ internal fun FolderListItemWithStarredSelectedPreview() {
     PreviewWithThemes {
         FolderListItem(
             displayFolder = DISPLAY_FOLDER,
-            selectedFolderId = DISPLAY_FOLDER.id,
+            selectedFolderId = DISPLAY_FOLDER.folderId,
             showStarredCount = true,
             onClick = {},
             folderNameFormatter = FolderNameFormatter(LocalResources.current),
@@ -105,7 +105,7 @@ internal fun FolderListItemWithUnifiedFolderSelectedPreview() {
         FolderListItem(
             displayFolder = UNIFIED_FOLDER,
             treeFolder = DISPLAY_TREE_FOLDER_WITH_UNIFIED_FOLDER,
-            selectedFolderId = UNIFIED_FOLDER.id,
+            selectedFolderId = UNIFIED_FOLDER.folderId,
             showStarredCount = false,
             onClick = {},
             folderNameFormatter = FolderNameFormatter(LocalResources.current),

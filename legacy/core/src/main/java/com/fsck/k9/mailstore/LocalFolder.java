@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import app.k9mail.legacy.di.DI;
 import app.k9mail.legacy.mailstore.MoreMessages;
 import app.k9mail.legacy.message.controller.MessageReference;
 import com.fsck.k9.helper.FileHelper;
@@ -14,6 +15,8 @@ import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyPart;
 import com.fsck.k9.mail.BoundaryGenerator;
 import com.fsck.k9.mail.FetchProfile;
+import net.thunderbird.core.android.account.LegacyAccount;
+import net.thunderbird.core.android.account.LegacyAccountManager;
 import net.thunderbird.core.common.mail.Flag;
 import com.fsck.k9.mail.FolderType;
 import com.fsck.k9.mail.Message;
@@ -31,7 +34,6 @@ import com.fsck.k9.mail.message.MessageHeaderParser;
 import com.fsck.k9.mailstore.LockableDatabase.DbCallback;
 import com.fsck.k9.message.extractors.AttachmentInfoExtractor;
 
-import net.thunderbird.core.android.account.LegacyAccountDto;
 import net.thunderbird.core.preference.GeneralSettingsManager;
 import net.thunderbird.feature.account.AccountId;
 import net.thunderbird.feature.mail.message.list.LocalMessageUidPrefixProvider;
@@ -69,6 +71,8 @@ public class LocalFolder {
     private final GeneralSettingsManager generalSettingsManager;
     private final LocalMessageUidPrefixProvider localMessageUidPrefixProvider;
 
+    private final LegacyAccountManager accountManager;
+
     private String status = null;
     private long lastChecked = 0;
     private FolderType type = FolderType.REGULAR;
@@ -105,6 +109,7 @@ public class LocalFolder {
         this.name = name;
         this.type = type;
         this.generalSettingsManager = generalSettingsManager;
+        this.accountManager = DI.get(LegacyAccountManager.class);
         attachmentInfoExtractor = localStore.getAttachmentInfoExtractor();
         this.localMessageUidPrefixProvider = localMessageUidPrefixProvider;
     }
@@ -116,6 +121,7 @@ public class LocalFolder {
         this.databaseId = databaseId;
         attachmentInfoExtractor = localStore.getAttachmentInfoExtractor();
         this.generalSettingsManager = generalSettingsManager;
+        this.accountManager = DI.get(LegacyAccountManager.class);
         this.localMessageUidPrefixProvider = localMessageUidPrefixProvider;
     }
 
@@ -131,9 +137,8 @@ public class LocalFolder {
         return databaseId;
     }
 
-    public AccountId getAccountId()
-    {
-        return getAccount().getId();
+    public AccountId getAccountId() {
+        return localStore.getAccountId();
     }
 
     public boolean getSignatureUse() {
@@ -416,11 +421,11 @@ public class LocalFolder {
 
             String parentMimeType = parentPart.getMimeType();
             if (MimeUtility.isMultipart(parentMimeType)) {
-                BodyPart bodyPart = new LocalBodyPart(getAccountId().toString(), message, id, size);
+                BodyPart bodyPart = new LocalBodyPart(getAccountId(), message, id, size);
                 ((Multipart) parentPart.getBody()).addBodyPart(bodyPart);
                 part = bodyPart;
             } else if (MimeUtility.isMessage(parentMimeType)) {
-                Message innerMessage = new LocalMimeMessage(getAccountId().toString(), message, id);
+                Message innerMessage = new LocalMimeMessage(getAccountId(), message, id);
                 parentPart.setBody(innerMessage);
                 part = innerMessage;
             } else {
@@ -1211,8 +1216,12 @@ public class LocalFolder {
         });
     }
 
-    private LegacyAccountDto getAccount() {
-        return localStore.getAccount();
+    private LegacyAccount getAccount() {
+        LegacyAccount account = accountManager.findById(localStore.getAccountId());
+        if (account == null) {
+            throw new IllegalStateException("Account not found for ID: " + localStore.getAccountId());
+        }
+        return account;
     }
 
     // Note: The contents of the 'message_parts' table depend on these values.

@@ -27,7 +27,7 @@ internal class SetArchiveFolder(
         accountId: AccountId,
         folder: RemoteFolder,
     ): Outcome<SetAccountFolderOutcome.Success, SetAccountFolderOutcome.Error> {
-        val account = withContext(ioDispatcher) {
+        withContext(ioDispatcher) {
             accountManager.observeById(accountId).firstOrNull()
         } ?: return Outcome.Failure(SetAccountFolderOutcome.Error.AccountNotFound)
 
@@ -48,8 +48,8 @@ internal class SetArchiveFolder(
                             folderId = folder.id,
                             selection = SpecialFolderSelection.MANUAL,
                         )
+                        // The special folder updater saves the account; saving the copy read above would undo that
                         specialFolderUpdater.updateSpecialFolders()
-                        accountManager.saveAccount(account)
 
                         Outcome.success(SetAccountFolderOutcome.Success)
                     }

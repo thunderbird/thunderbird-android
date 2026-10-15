@@ -80,6 +80,7 @@ dependencies {
     implementation(libs.glide)
     annotationProcessor(libs.glide.compiler)
 
+    testImplementation(projects.core.android.account.fake)
     testImplementation(projects.feature.account.fake)
 
     // This is necessary as RecipientPresenterTest fails to inject

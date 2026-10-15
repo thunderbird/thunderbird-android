@@ -2,25 +2,24 @@ package com.fsck.k9.ui.messageview
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import com.fsck.k9.FakeLegacyAccount
 import com.fsck.k9.mail.Address
 import com.fsck.k9.mail.testing.message.buildMessage
 import net.thunderbird.account.fake.FakeAccountData.ACCOUNT_ID
-import net.thunderbird.account.fake.FakeAccountData.ACCOUNT_ID_RAW
 import net.thunderbird.core.android.account.Identity
-import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.android.account.LegacyAccount
 import org.junit.Test
 
 private const val IDENTITY_ADDRESS = "me@domain.example"
 
 class DisplayRecipientsExtractorTest {
-    private val account = LegacyAccountDto(ACCOUNT_ID).apply {
-        identities += Identity(
-            email = IDENTITY_ADDRESS,
-        )
-    }
+    private val account = FakeLegacyAccount.create(
+        id = ACCOUNT_ID,
+        identities = listOf(Identity(email = IDENTITY_ADDRESS)),
+    )
 
     private val recipientFormatter = object : MessageViewRecipientFormatter {
-        override fun getDisplayName(address: Address, account: LegacyAccountDto): CharSequence {
+        override fun getDisplayName(address: Address, account: LegacyAccount): CharSequence {
             return if (account.isAnIdentity(address)) {
                 "me"
             } else {
@@ -174,7 +173,7 @@ class DisplayRecipientsExtractorTest {
         }
         var numberOfTimesCalled = 0
         val recipientFormatter = object : MessageViewRecipientFormatter {
-            override fun getDisplayName(address: Address, account: LegacyAccountDto): CharSequence {
+            override fun getDisplayName(address: Address, account: LegacyAccount): CharSequence {
                 numberOfTimesCalled++
                 return address.address
             }
