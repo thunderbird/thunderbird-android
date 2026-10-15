@@ -261,11 +261,12 @@ internal class GeneralSettingsBuilder(
             title = { resources.stringResource(R.string.account_settings_manage_folders) },
             description = { null },
             icon = { null },
-            value =
-                resources.stringResource(R.string.account_settings_folder_visibility_and_sort_description),
+            value = resources.stringResource(
+                R.string.account_settings_folder_visibility_and_sort_description,
+            ),
             onClick = {
                 onEvent(Event.OnManageFoldersSelected)
-            }
+            },
         )
 
     private companion object {
