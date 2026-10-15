@@ -13,7 +13,6 @@ import com.fsck.k9.mail.FetchProfile
 import com.fsck.k9.mail.FolderType
 import com.fsck.k9.mail.MessageDownloadState
 import com.fsck.k9.mail.Multipart
-import com.fsck.k9.mail.Part
 import com.fsck.k9.mail.internet.BinaryTempFileBody
 import com.fsck.k9.mail.internet.MimeMessage
 import com.fsck.k9.provider.AttachmentProvider
@@ -38,29 +37,48 @@ class LocalFolderTest : K9RobolectricTest() {
     fun setUp() {
         val accountManager: LegacyAccountManager by inject()
         whenever(accountManager.findById(accountId)).thenReturn(FakeLegacyAccount.create(id = accountId))
+        // Core.restoreNotifications() runs in the background at app start and creates NotificationChannelManager,
+        // whose init collects observeAll(). The unstubbed mock would return null.
         whenever(accountManager.observeAll()).thenReturn(flowOf(emptyList()))
         BinaryTempFileBody.setTempDirectory(RuntimeEnvironment.getApplication().cacheDir)
         AttachmentProvider.CONTENT_URI = Uri.parse("content://test.attachmentprovider")
     }
 
     @Test
-    fun `message_rfc822 attachment should have unknown stored size and use the Content-Disposition size`() = runTest {
+    fun `message_rfc822 attachment should show the size from Content-Disposition`() = runTest {
         // Arrange
-        saveRemoteMessage(MESSAGE_WITH_ATTACHED_MESSAGE)
+        saveRemoteMessage(createMessageWithAttachedMessage("attachment; filename=\"attached.eml\"; size=16893"))
+
+        // Act
+        val attachmentViewInfo = loadAttachedMessageInfo()
+
+        // Assert
+        assertThat(attachmentViewInfo.size).isEqualTo(16893L)
+    }
+
+    @Test
+    fun `message_rfc822 attachment without size parameter should have unknown size`() = runTest {
+        // Arrange
+        saveRemoteMessage(createMessageWithAttachedMessage("attachment; filename=\"attached.eml\""))
+
+        // Act
+        val attachmentViewInfo = loadAttachedMessageInfo()
+
+        // Assert
+        assertThat(attachmentViewInfo.size).isEqualTo(AttachmentViewInfo.UNKNOWN_SIZE)
+    }
+
+    private fun loadAttachedMessageInfo(): AttachmentViewInfo {
         val localStore = localStoreProvider.getInstance(accountId)
         val testSubject = localStore.getFolder(FOLDER_SERVER_ID)
         val message = testSubject.getMessage(MESSAGE_SERVER_ID)
         assertThat(message).isNotNull()
 
-        // Act
         testSubject.fetch(listOf(message), FetchProfile().apply { add(FetchProfile.Item.BODY) }, null)
 
-        // Assert
         val attachmentPart = (message.body as Multipart).getBodyPart(1)
         assertThat(attachmentPart.mimeType).isEqualTo("message/rfc822")
-        assertThat((attachmentPart as LocalPart).size).isEqualTo(AttachmentViewInfo.UNKNOWN_SIZE)
-        val attachmentViewInfo = localStore.attachmentInfoExtractor.extractAttachmentInfo(attachmentPart as Part)
-        assertThat(attachmentViewInfo.size).isEqualTo(16893L)
+        return localStore.attachmentInfoExtractor.extractAttachmentInfo(attachmentPart)
     }
 
     private suspend fun saveRemoteMessage(rawMessage: String) {
@@ -87,7 +105,7 @@ class LocalFolderTest : K9RobolectricTest() {
         private const val FOLDER_NAME = "Test Folder"
         private const val MESSAGE_SERVER_ID = "msg001"
 
-        private val MESSAGE_WITH_ATTACHED_MESSAGE = """
+        private fun createMessageWithAttachedMessage(contentDisposition: String): String = """
             From: bob@domain.example
             To: alice@domain.example
             Subject: Fwd: Attached
@@ -100,7 +118,7 @@ class LocalFolderTest : K9RobolectricTest() {
             See attachment
             --outer
             Content-Type: message/rfc822; name="attached.eml"
-            Content-Disposition: attachment; filename="attached.eml"; size=16893
+            Content-Disposition: $contentDisposition
 
             From: alice@domain.example
             Subject: Attached
@@ -108,6 +126,7 @@ class LocalFolderTest : K9RobolectricTest() {
 
             Text of the attached message
             --outer--
-        """.trimIndent().replace("\n", "\r\n")
+        """
+            .trimIndent().replace("\n", "\r\n")
     }
 }
