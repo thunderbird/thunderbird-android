@@ -1226,7 +1226,7 @@ open class MessageHomeActivity :
     override fun startSearch(query: String, accountId: AccountId?, folderId: Long?): Boolean {
         // If this search was started from a MessageList of a single folder, pass along that folder info
         // so that we can enable remote search.
-        val appData = if (account != null && folderId != null) {
+        val appData = if (accountId != null && folderId != null) {
             Bundle().apply {
                 putString(EXTRA_SEARCH_ACCOUNT, accountId.toString())
                 putLong(EXTRA_SEARCH_FOLDER, folderId)
