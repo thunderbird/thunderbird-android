@@ -13,9 +13,10 @@ class NotifierMessageStore(
     private val localStore: LocalStore,
 ) : MessageStore by messageStore {
 
-    override fun saveRemoteMessage(folderId: Long, messageServerId: String, messageData: SaveMessageData) {
-        messageStore.saveRemoteMessage(folderId, messageServerId, messageData)
-        notifyChange()
+    override fun saveRemoteMessage(folderId: Long, messageServerId: String, messageData: SaveMessageData): Long {
+        return messageStore.saveRemoteMessage(folderId, messageServerId, messageData).also {
+            notifyChange()
+        }
     }
 
     override fun saveLocalMessage(folderId: Long, messageData: SaveMessageData, existingMessageId: Long?): Long {

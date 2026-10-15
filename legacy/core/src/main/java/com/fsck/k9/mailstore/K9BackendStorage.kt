@@ -6,7 +6,11 @@ import com.fsck.k9.backend.api.BackendFolder
 import com.fsck.k9.backend.api.BackendFolderUpdater
 import com.fsck.k9.backend.api.BackendStorage
 import com.fsck.k9.backend.api.FolderInfo
+import com.fsck.k9.mail.Message
 import kotlinx.coroutines.runBlocking
+import net.thunderbird.feature.mail.message.domain.MessageLifecycleRepository
+import net.thunderbird.feature.mail.message.domain.MessageQueryRepository
+import net.thunderbird.feature.mail.message.mapper.MessageDataMapper
 import com.fsck.k9.mail.FolderType as RemoteFolderType
 
 class K9BackendStorage(
@@ -14,10 +18,18 @@ class K9BackendStorage(
     private val folderSettingsProvider: FolderSettingsProvider,
     private val saveMessageDataCreator: SaveMessageDataCreator,
     private val listeners: List<BackendFoldersRefreshListener>,
+    private val messageLifecycleRepository: MessageLifecycleRepository,
+    private val messageQueryRepository: MessageQueryRepository,
+    private val messageDataMapper: MessageDataMapper<Message>,
 ) : BackendStorage {
-    override fun getFolder(folderServerId: String): BackendFolder {
-        return K9BackendFolder(messageStore, saveMessageDataCreator, folderServerId)
-    }
+    override fun getFolder(folderServerId: String): BackendFolder = K9BackendFolder(
+        messageStore,
+        saveMessageDataCreator,
+        folderServerId,
+        messageLifecycleRepository,
+        messageQueryRepository,
+        messageDataMapper,
+    )
 
     override fun getFolderServerIds(): List<String> {
         return messageStore.getFolders(excludeLocalOnly = true) { folder -> folder.serverIdOrThrow() }
