@@ -1,6 +1,5 @@
 package com.fsck.k9.notification
 
-import app.k9mail.legacy.mailstore.MessageStoreManager
 import app.k9mail.legacy.message.controller.MessageReference
 import assertk.assertThat
 import assertk.assertions.containsExactlyInAnyOrder
@@ -16,8 +15,6 @@ import assertk.assertions.isTrue
 import com.fsck.k9.FakeLegacyAccount
 import com.fsck.k9.mail.Address
 import com.fsck.k9.mailstore.LocalMessage
-import com.fsck.k9.mailstore.LocalStore
-import com.fsck.k9.mailstore.LocalStoreProvider
 import com.fsck.k9.mailstore.NotificationMessage
 import kotlin.test.assertNotNull
 import kotlin.time.Clock
@@ -47,7 +44,6 @@ import org.koin.core.context.GlobalContext.startKoin
 import org.koin.core.context.GlobalContext.stopKoin
 import org.koin.dsl.module
 import org.mockito.kotlin.any
-import org.mockito.kotlin.doAnswer
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
@@ -61,7 +57,7 @@ private const val TIMESTAMP = 23L
 @OptIn(ExperimentalTime::class)
 class NewMailNotificationManagerTest {
     private val accountId = AccountIdFactory.create()
-    private val mockedNotificationMessages = mutableListOf<NotificationMessage>()
+    private val notificationMessageProvider = FakeNotificationMessageProvider()
     private val account = createAccount()
     private val accountManager = mock<LegacyAccountManager> {
         on { findById(accountId) } doReturn account
@@ -69,7 +65,6 @@ class NewMailNotificationManagerTest {
     private val notificationIdRegistry = DefaultAccountNotificationIdRegistry(accountManager)
     private val notificationDataStore = NotificationDataStore(accountManager, notificationIdRegistry)
     private val notificationContentCreator = mock<NotificationContentCreator>()
-    private val localStoreProvider = createLocalStoreProvider()
     private val generalSettingsManager = FakeGeneralSettingManager()
     private val clock = TestClock(Instant.fromEpochMilliseconds(TIMESTAMP))
     private val generalSettings = GeneralSettings(
@@ -505,7 +500,7 @@ class NewMailNotificationManagerTest {
         val message = mock<LocalMessage>()
 
         val notificationMessage = NotificationMessage(message, notificationId, timestamp)
-        mockedNotificationMessages.add(notificationMessage)
+        notificationMessageProvider.add(accountId, notificationMessage)
 
         stubbing(notificationContentCreator) {
             on { createFromMessage(any(), any()) } doReturn
@@ -537,31 +532,11 @@ class NewMailNotificationManagerTest {
         return MessageReference(accountId, FOLDER_ID, messageUid)
     }
 
-    private fun createLocalStoreProvider(): LocalStoreProvider {
-        val localStore = createLocalStore()
-        return mock {
-            on { getInstance(accountId) } doReturn localStore
-        }
-    }
-
-    private fun createLocalStore(): LocalStore {
-        return mock {
-            on { notificationMessages } doAnswer { mockedNotificationMessages.toList() }
-        }
-    }
-
     private fun createNotificationRepository(): NotificationRepository {
-        val notificationStoreProvider = mock<NotificationStoreProvider> {
-            on { getNotificationStore(accountId) } doReturn mock()
-        }
-        val messageStoreManager = mock<MessageStoreManager> {
-            on { getMessageStore(accountId) } doReturn mock()
-        }
-
         return NotificationRepository(
-            notificationStoreProvider = notificationStoreProvider,
-            localStoreProvider = localStoreProvider,
-            messageStoreManager = messageStoreManager,
+            notificationStoreProvider = FakeNotificationStoreProvider(),
+            notificationMessageProvider = notificationMessageProvider,
+            newMessageStateStore = FakeNewMessageStateStore(),
             notificationContentCreator = notificationContentCreator,
             generalSettingsManager = generalSettingsManager,
             notificationDataStore = notificationDataStore,
