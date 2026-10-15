@@ -25,8 +25,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.GlobalScope
 import net.thunderbird.core.android.network.coreAndroidNetworkModule
 import net.thunderbird.core.preference.storage.DefaultStorageProvider
-import net.thunderbird.core.preference.storage.Storage
-import net.thunderbird.core.preference.storage.StorageEditor
 import net.thunderbird.core.preference.storage.StorageProvider
 import net.thunderbird.feature.account.storage.legacy.featureAccountStorageLegacyModule
 import org.koin.core.qualifier.named
@@ -58,8 +56,6 @@ val legacyCoreModule = module {
             storagePersister = get(),
         )
     }
-    single<Storage> { get<StorageProvider>().storage }
-    factory<StorageEditor> { get<StorageProvider>().createStorageEditor() }
     single { get<Context>().resources }
     single { get<Context>().contentResolver }
     single { LocalStoreProvider() }

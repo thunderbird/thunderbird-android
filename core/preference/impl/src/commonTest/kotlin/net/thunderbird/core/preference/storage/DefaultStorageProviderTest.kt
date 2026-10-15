@@ -51,5 +51,6 @@ class DefaultStorageProviderTest {
         editor.commit()
 
         assertThat(provider.storage.getStringOrDefault("key1", "")).isEqualTo("value1")
+        assertThat(provider.storage.getStringOrDefault("key2", "")).isEqualTo("value2")
     }
 }

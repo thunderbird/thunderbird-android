@@ -2,7 +2,6 @@ package net.thunderbird.app.common.account.data
 
 import net.thunderbird.core.android.account.AccountDefaultsProvider
 import net.thunderbird.core.android.account.LegacyAccount
-import net.thunderbird.core.preference.storage.Storage
 import net.thunderbird.core.preference.storage.StorageProvider
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.AccountIdFactory
@@ -14,11 +13,8 @@ internal class LegacyAccountLocalDataSource(
     private val accountDefaultsProvider: AccountDefaultsProvider,
 ) : AccountLocalDataSource {
 
-    // Reads the whole preferences table, so each operation reads it once and passes it on
-    private fun loadStorage(): Storage = storageProvider.loadLatestStorage()
-
     override fun loadAll(): List<LegacyAccount> {
-        val storage = loadStorage()
+        val storage = storageProvider.storage
         val accountUuids = storage.getStringOrNull("accountUuids") ?: return emptyList()
 
         return accountUuids.split(",")
@@ -31,7 +27,7 @@ internal class LegacyAccountLocalDataSource(
     }
 
     override fun getById(accountId: AccountId): LegacyAccount? {
-        val storage = loadStorage()
+        val storage = storageProvider.storage
         val accountUuids = storage.getStringOrNull("accountUuids")?.split(",")
         if (accountUuids == null || accountId.toString() !in accountUuids) return null
 
@@ -41,13 +37,13 @@ internal class LegacyAccountLocalDataSource(
 
     override fun save(account: LegacyAccount) {
         val editor = storageProvider.createStorageEditor()
-        accountStorageHandler.save(account, loadStorage(), editor)
+        accountStorageHandler.save(account, storageProvider.storage, editor)
         check(editor.commit()) { "Failed to save account settings" }
     }
 
     override fun delete(accountId: AccountId) {
         val editor = storageProvider.createStorageEditor()
-        accountStorageHandler.delete(accountId, loadStorage(), editor)
+        accountStorageHandler.delete(accountId, storageProvider.storage, editor)
         check(editor.commit()) { "Failed to delete account settings" }
     }
 }

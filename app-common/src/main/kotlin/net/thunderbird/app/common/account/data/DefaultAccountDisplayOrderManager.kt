@@ -1,6 +1,5 @@
 package net.thunderbird.app.common.account.data
 
-import net.thunderbird.core.preference.storage.Storage
 import net.thunderbird.core.preference.storage.StorageProvider
 import net.thunderbird.feature.account.AccountId
 
@@ -8,11 +7,8 @@ class DefaultAccountDisplayOrderManager(
     private val storageProvider: StorageProvider,
 ) : AccountDisplayOrderManager {
 
-    private val storage: Storage
-        get() = storageProvider.loadLatestStorage()
-
     override fun moveToPosition(accountId: AccountId, newPosition: Int) {
-        val accountUuids = storage.getStringOrDefault("accountUuids", "")
+        val accountUuids = storageProvider.storage.getStringOrDefault("accountUuids", "")
             .split(",")
             .filter { it.isNotEmpty() }
 

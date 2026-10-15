@@ -74,6 +74,7 @@ dependencies {
     testImplementation(projects.core.testing)
     testImplementation(projects.core.android.testing)
     testImplementation(projects.core.configstore.testing)
+    testImplementation(projects.legacy.storage)
 
     testImplementation(libs.mockito.kotlin)
 }

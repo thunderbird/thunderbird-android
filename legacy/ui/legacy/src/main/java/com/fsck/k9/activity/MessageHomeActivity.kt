@@ -66,7 +66,7 @@ import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.SplitViewMode
 import net.thunderbird.core.preference.interaction.PostMarkAsUnreadNavigation
 import net.thunderbird.core.preference.interaction.PostRemoveNavigation
-import net.thunderbird.core.preference.storage.Storage
+import net.thunderbird.core.preference.storage.StorageProvider
 import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.account.usecase.GetDefaultAccountId
 import net.thunderbird.feature.account.AccountId
@@ -127,7 +127,7 @@ open class MessageHomeActivity :
 
     private val foldableStateObserver: FoldableStateObserver by inject { parametersOf(this) }
     private val featureFlagProvider: MultiFeatureFlagProviderEvaluator by inject()
-    private val storage: Storage by inject()
+    private val storageProvider: StorageProvider by inject()
 
     private lateinit var actionBar: ActionBar
 
@@ -168,7 +168,7 @@ open class MessageHomeActivity :
         super.onCreate(savedInstanceState)
 
         featureFlagProvider.provide(GeneratedFeatureFlagKey.DISABLE_FONT_SIZE_CONFIG)
-            .onDisabledOrUnavailable { fontSizes.load(storage) }
+            .onDisabledOrUnavailable { fontSizes.load(storageProvider.storage) }
 
         if (databaseUpgradeInterceptor.checkAndHandleUpgrade(this, intent)) {
             finish()
