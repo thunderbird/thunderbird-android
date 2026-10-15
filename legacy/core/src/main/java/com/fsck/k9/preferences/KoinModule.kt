@@ -204,6 +204,7 @@ val preferencesModule = module {
             serverSettingsDtoSerializer = get(),
             context = get(),
             generalSettingsManager = get(),
+            avatarImageRepository = get()
         )
     }
 
