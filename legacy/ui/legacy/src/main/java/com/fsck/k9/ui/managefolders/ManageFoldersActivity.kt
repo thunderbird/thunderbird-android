@@ -3,7 +3,6 @@ package com.fsck.k9.ui.managefolders
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import androidx.core.os.bundleOf
 import androidx.navigation.NavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -28,9 +27,9 @@ class ManageFoldersActivity : BaseActivity() {
     private fun initializeNavController(accountUuid: String) {
         navController = findNavController(R.id.nav_host_fragment)
 
-        val fragmentArguments = bundleOf(
-            ManageFoldersFragment.EXTRA_ACCOUNT to accountUuid,
-        )
+        val fragmentArguments = Bundle().apply {
+            putString(ManageFoldersFragment.EXTRA_ACCOUNT, accountUuid)
+        }
         navController.setGraph(R.navigation.navigation_manage_folders, fragmentArguments)
 
         val appBarConfiguration = AppBarConfiguration(topLevelDestinationIds = emptySet())
