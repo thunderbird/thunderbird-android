@@ -400,7 +400,7 @@ public class LocalFolder {
         long id = cursor.getLong(0);
         long parentId = cursor.getLong(2);
         String mimeType = cursor.getString(3);
-        long size = cursor.getLong(4);
+        long size = cursor.isNull(4) ? AttachmentViewInfo.UNKNOWN_SIZE : cursor.getLong(4);
         byte[] header = cursor.getBlob(6);
         int dataLocation = cursor.getInt(9);
         String serverExtra = cursor.getString(15);
