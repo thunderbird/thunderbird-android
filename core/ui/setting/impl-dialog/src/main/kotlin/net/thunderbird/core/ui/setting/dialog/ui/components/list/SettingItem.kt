@@ -51,6 +51,7 @@ private fun RenderSettingValue(
     when (setting) {
         is SettingValue.Text -> {
             TextItem(
+                enabled = setting.enabled,
                 setting = setting,
                 onClick = onClick,
                 modifier = modifier,
@@ -99,6 +100,7 @@ private fun RenderSettingValue(
         is SettingValue.Switch -> {
             SwitchItem(
                 setting = setting,
+                enabled = setting.enabled,
                 onSettingValueChange = onSettingValueChange,
                 modifier = modifier,
             )
