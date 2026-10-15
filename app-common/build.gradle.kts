@@ -18,6 +18,7 @@ dependencies {
     api(projects.legacy.ui.legacy)
 
     api(projects.feature.account.core)
+    api(projects.feature.account.internal)
     api(projects.feature.launcher)
     api(projects.feature.navigation.drawer.api)
 
@@ -68,10 +69,12 @@ dependencies {
 
     implementation(libs.okio)
 
+    testImplementation(projects.core.android.account.fake)
     testImplementation(projects.feature.account.fake)
     testImplementation(projects.core.testing)
     testImplementation(projects.core.android.testing)
     testImplementation(projects.core.configstore.testing)
+    testImplementation(projects.legacy.storage)
 
     testImplementation(libs.mockito.kotlin)
 }

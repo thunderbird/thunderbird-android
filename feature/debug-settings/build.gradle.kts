@@ -15,7 +15,7 @@ dependencies {
     implementation(projects.core.ui.navigation)
     implementation(projects.core.featureflag)
     implementation(projects.feature.account.api)
-    implementation(projects.feature.mail.account.api)
+    implementation(projects.feature.account.profile.api)
     implementation(projects.feature.notification.api)
     implementation(projects.core.android.common)
 }

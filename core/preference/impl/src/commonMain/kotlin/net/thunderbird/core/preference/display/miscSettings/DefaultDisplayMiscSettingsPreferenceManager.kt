@@ -17,13 +17,13 @@ import net.thunderbird.core.preference.PreferenceScope
 import net.thunderbird.core.preference.storage.Storage
 import net.thunderbird.core.preference.storage.StorageEditor
 import net.thunderbird.core.preference.storage.StoragePersister
+import net.thunderbird.core.preference.storage.StorageProvider
 
 private const val TAG = "DefaultDisplayMiscSettingsPreferenceManager"
 
 class DefaultDisplayMiscSettingsPreferenceManager(
     private val logger: Logger,
-    private val storagePersister: StoragePersister,
-    private val storageEditor: StorageEditor,
+    private val storageProvider: StorageProvider,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
     private var scope: CoroutineScope = CoroutineScope(SupervisorJob()),
     preferenceChangeBroker: PreferenceChangeBroker,
@@ -35,7 +35,7 @@ class DefaultDisplayMiscSettingsPreferenceManager(
     private val configState: MutableStateFlow<DisplayMiscSettings> = MutableStateFlow(value = loadConfig())
     private val mutex = Mutex()
     private val storage: Storage
-        get() = storagePersister.loadValues()
+        get() = storageProvider.loadLatestStorage()
     override fun save(config: DisplayMiscSettings) {
         logger.debug(TAG) { "save() called with: config = $config" }
         writeConfig(config)
@@ -61,6 +61,7 @@ class DefaultDisplayMiscSettingsPreferenceManager(
         logger.debug(TAG) { "writeConfig() called with: config = $config" }
         scope.launch(ioDispatcher) {
             mutex.withLock {
+                val storageEditor = storageProvider.createStorageEditor()
                 storageEditor.putBoolean(
                     DisplayMiscSettingKey.ShouldShowSetupArchiveFolderDialog.value,
                     config.shouldShowSetupArchiveFolderDialog,

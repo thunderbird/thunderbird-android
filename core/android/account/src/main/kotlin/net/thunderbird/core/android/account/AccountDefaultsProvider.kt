@@ -4,18 +4,18 @@ import net.thunderbird.core.preference.storage.Storage
 
 interface AccountDefaultsProvider {
     /**
-     * Apply default values to the account.
+     * Apply default values to the account and return the updated account.
      *
      * This method should only be called when creating a new account.
      */
-    fun applyDefaults(account: LegacyAccountDto)
+    fun applyDefaults(account: LegacyAccount): LegacyAccount
 
     /**
-     * Apply any additional default values to the account.
+     * Apply any additional default values to the account and return the updated account.
      *
      * This method should be called when updating an existing account.
      */
-    fun applyOverwrites(account: LegacyAccountDto, storage: Storage)
+    fun applyOverwrites(account: LegacyAccount, storage: Storage): LegacyAccount
 
     companion object {
         const val DEFAULT_MAXIMUM_AUTO_DOWNLOAD_MESSAGE_SIZE = 131072

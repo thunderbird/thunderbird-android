@@ -10,12 +10,12 @@ import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
 import assertk.assertions.isNotNull
 import assertk.assertions.isNull
+import com.fsck.k9.FakeLegacyAccount
 import com.fsck.k9.helper.ContactNameProvider
 import com.fsck.k9.mail.Address
 import net.thunderbird.account.fake.FakeAccountData.ACCOUNT_ID
-import net.thunderbird.account.fake.FakeAccountData.ACCOUNT_ID_RAW
 import net.thunderbird.core.android.account.Identity
-import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.testing.RobolectricTest
 import org.junit.Test
 
@@ -35,9 +35,10 @@ class MessageDetailsParticipantFormatterTest : RobolectricTest() {
         }
     }
 
-    private val account = LegacyAccountDto(ACCOUNT_ID).apply {
-        identities += Identity(name = IDENTITY_NAME, email = IDENTITY_ADDRESS)
-    }
+    private val account = FakeLegacyAccount.create(
+        id = ACCOUNT_ID,
+        identities = listOf(Identity(name = IDENTITY_NAME, email = IDENTITY_ADDRESS)),
+    )
 
     private val participantFormatter = createParticipantFormatter()
 
@@ -65,13 +66,16 @@ class MessageDetailsParticipantFormatterTest : RobolectricTest() {
 
     @Test
     fun `identity address with multiple identities`() {
-        val account = LegacyAccountDto(ACCOUNT_ID).apply {
-            identities += Identity(name = IDENTITY_NAME, email = IDENTITY_ADDRESS)
-            identities += Identity(
-                name = "Another identity",
-                email = "irrelevant@domain.example",
-            )
-        }
+        val account = FakeLegacyAccount.create(
+            id = ACCOUNT_ID,
+            identities = listOf(
+                Identity(name = IDENTITY_NAME, email = IDENTITY_ADDRESS),
+                Identity(
+                    name = "Another identity",
+                    email = "irrelevant@domain.example",
+                ),
+            ),
+        )
 
         val displayName = participantFormatter.getDisplayName(
             address = Address(IDENTITY_ADDRESS, "irrelevant"),
@@ -84,9 +88,10 @@ class MessageDetailsParticipantFormatterTest : RobolectricTest() {
 
     @Test
     fun `identity without a display name`() {
-        val account = LegacyAccountDto(ACCOUNT_ID).apply {
-            identities += Identity(name = null, email = IDENTITY_ADDRESS)
-        }
+        val account = FakeLegacyAccount.create(
+            id = ACCOUNT_ID,
+            identities = listOf(Identity(name = null, email = IDENTITY_ADDRESS)),
+        )
 
         val displayName = participantFormatter.getDisplayName(
             address = Address(IDENTITY_ADDRESS, "Bob"),
@@ -99,13 +104,16 @@ class MessageDetailsParticipantFormatterTest : RobolectricTest() {
 
     @Test
     fun `identity and address without a display name`() {
-        val account = LegacyAccountDto(ACCOUNT_ID).apply {
-            identities += Identity(name = null, email = IDENTITY_ADDRESS)
-            identities += Identity(
-                name = "Another identity",
-                email = "irrelevant@domain.example",
-            )
-        }
+        val account = FakeLegacyAccount.create(
+            id = ACCOUNT_ID,
+            identities = listOf(
+                Identity(name = null, email = IDENTITY_ADDRESS),
+                Identity(
+                    name = "Another identity",
+                    email = "irrelevant@domain.example",
+                ),
+            ),
+        )
 
         val displayName = participantFormatter.getDisplayName(
             address = Address(IDENTITY_ADDRESS),

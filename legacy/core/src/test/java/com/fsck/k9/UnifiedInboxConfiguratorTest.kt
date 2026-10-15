@@ -4,7 +4,7 @@ import assertk.assertThat
 import assertk.assertions.isEqualTo
 import com.fsck.k9.notification.FakePlatformConfigProvider
 import com.fsck.k9.preferences.UnifiedInboxConfigurator
-import net.thunderbird.core.android.account.LegacyAccountDtoManager
+import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.core.preference.GeneralSettings
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.display.DisplaySettings
@@ -23,13 +23,13 @@ import org.mockito.junit.MockitoJUnitRunner
 @RunWith(MockitoJUnitRunner::class)
 class UnifiedInboxConfiguratorTest {
 
-    private lateinit var accountManager: LegacyAccountDtoManager
+    private lateinit var accountManager: LegacyAccountManager
     private lateinit var generalSettingsManager: GeneralSettingsManager
     private lateinit var configurator: UnifiedInboxConfigurator
 
     @Before
     fun setUp() {
-        accountManager = mock(LegacyAccountDtoManager::class.java)
+        accountManager = mock(LegacyAccountManager::class.java)
         generalSettingsManager =
             FakeGeneralSettingsManager(
                 GeneralSettings(
@@ -60,7 +60,7 @@ class UnifiedInboxConfiguratorTest {
     @Test
     fun `configureUnifiedInbox should enable unified inbox when there are exactly two accounts`() {
         // Given
-        `when`(accountManager.getAccounts()).thenReturn(listOf(mock(), mock()))
+        `when`(accountManager.findAll()).thenReturn(listOf(mock(), mock()))
 
         // When
         configurator.configureUnifiedInbox()
@@ -72,7 +72,7 @@ class UnifiedInboxConfiguratorTest {
     @Test
     fun `configureUnifiedInbox should disable unified inbox when there is only one account`() {
         // Given
-        `when`(accountManager.getAccounts()).thenReturn(listOf(mock()))
+        `when`(accountManager.findAll()).thenReturn(listOf(mock()))
 
         // When
         configurator.configureUnifiedInbox()
@@ -84,7 +84,7 @@ class UnifiedInboxConfiguratorTest {
     @Test
     fun `configureUnifiedInbox should not enable unified inbox when there are less than two accounts`() {
         // Given
-        `when`(accountManager.getAccounts()).thenReturn(listOf(mock()))
+        `when`(accountManager.findAll()).thenReturn(listOf(mock()))
 
         // When
         configurator.configureUnifiedInbox()
@@ -96,7 +96,7 @@ class UnifiedInboxConfiguratorTest {
     @Test
     fun `configureUnifiedInbox should not enable unified inbox when there are more than two accounts`() {
         // Given
-        `when`(accountManager.getAccounts()).thenReturn(listOf(mock(), mock(), mock()))
+        `when`(accountManager.findAll()).thenReturn(listOf(mock(), mock(), mock()))
 
         // When
         configurator.configureUnifiedInbox()

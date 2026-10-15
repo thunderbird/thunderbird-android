@@ -1,19 +1,19 @@
 package com.fsck.k9.activity
 
-import net.thunderbird.core.android.account.LegacyAccountDto
-import net.thunderbird.core.android.account.LegacyAccountDtoManager
+import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.search.legacy.LocalMessageSearch
 
 internal fun LocalMessageSearch.resolveAccount(
-    currentAccount: LegacyAccountDto?,
-    accountManager: LegacyAccountDtoManager,
-): LegacyAccountDto? {
+    currentAccount: LegacyAccount?,
+    accountManager: LegacyAccountManager,
+): LegacyAccount? {
     return if (searchAllAccounts()) {
         null
     } else {
-        accountUuids.singleOrNull()
-            ?.let { accountManager.getById(AccountIdFactory.of(it)) }
+        accountIds.singleOrNull()
+            ?.let { accountManager.findById(it) }
             ?: currentAccount
     }
 }

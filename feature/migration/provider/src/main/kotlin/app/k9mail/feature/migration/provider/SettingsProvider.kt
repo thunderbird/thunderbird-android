@@ -14,7 +14,7 @@ import com.fsck.k9.helper.mapToSet
 import com.fsck.k9.preferences.SettingsExporter
 import kotlin.concurrent.thread
 import kotlinx.coroutines.runBlocking
-import net.thunderbird.core.android.account.LegacyAccountDtoManager
+import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.legacy.logging.Log
 import okio.ByteString.Companion.toByteString
 import org.koin.android.ext.android.inject
@@ -30,7 +30,7 @@ private const val TAG = "SettingsProvider"
  * settings (including passwords).
  */
 class SettingsProvider : ContentProvider(), KoinComponent {
-    private val accountManager: LegacyAccountDtoManager by inject()
+    private val accountManager: LegacyAccountManager by inject()
     private val settingsExporter: SettingsExporter by inject()
 
     override fun onCreate(): Boolean {
@@ -50,7 +50,7 @@ class SettingsProvider : ContentProvider(), KoinComponent {
         val (readFileDescriptor, writeFileDescriptor) = ParcelFileDescriptor.createPipe()
 
         thread {
-            val accountIds = accountManager.getAccounts().mapToSet { it.id.toString() }
+            val accountIds = accountManager.findAll().mapToSet { it.id.toString() }
             ParcelFileDescriptor.AutoCloseOutputStream(writeFileDescriptor).use { outputStream ->
                 runBlocking {
                     settingsExporter.exportPreferences(

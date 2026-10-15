@@ -9,6 +9,7 @@ import net.thunderbird.core.preference.PreferenceChangeSubscriber
 import net.thunderbird.core.preference.PreferenceScope
 import net.thunderbird.core.preference.storage.Storage
 import net.thunderbird.core.preference.storage.StorageEditor
+import net.thunderbird.core.preference.storage.StorageProvider
 import net.thunderbird.core.preference.storage.getEnumOrDefault
 import net.thunderbird.core.preference.storage.putEnum
 
@@ -16,8 +17,7 @@ private const val TAG = "DefaultMessageListPreferencesManager"
 
 class DefaultMessageListPreferencesManager(
     private val logger: Logger,
-    private val storage: Storage,
-    private val storageEditor: StorageEditor,
+    private val storageProvider: StorageProvider,
     preferenceChangeBroker: PreferenceChangeBroker,
 ) : MessageListPreferencesManager, PreferenceChangeSubscriber {
 
@@ -25,6 +25,10 @@ class DefaultMessageListPreferencesManager(
         preferenceChangeBroker.subscribe(this)
     }
     private val preferences = MutableStateFlow(value = loadPreferences())
+
+    private val storage: Storage
+        get() = storageProvider.loadLatestStorage()
+
     override fun save(config: DisplayMessageListSettings) {
         logger.debug(TAG) { "save() called with: config = $config" }
         write(config)
@@ -75,6 +79,7 @@ class DefaultMessageListPreferencesManager(
     )
 
     private fun write(preferences: DisplayMessageListSettings) {
+        val storageEditor = storageProvider.createStorageEditor()
         storageEditor.putBoolean(
             DisplayMessageListSettingKey.ChangeRegisteredNameColor.value,
             preferences.isChangeContactNameColor,

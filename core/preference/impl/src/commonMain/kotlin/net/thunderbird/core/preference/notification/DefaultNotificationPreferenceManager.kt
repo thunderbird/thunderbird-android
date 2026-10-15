@@ -19,6 +19,7 @@ import net.thunderbird.core.preference.PreferenceScope
 import net.thunderbird.core.preference.storage.Storage
 import net.thunderbird.core.preference.storage.StorageEditor
 import net.thunderbird.core.preference.storage.StoragePersister
+import net.thunderbird.core.preference.storage.StorageProvider
 import net.thunderbird.core.preference.storage.getEnumOrDefault
 import net.thunderbird.core.preference.storage.putEnum
 
@@ -26,8 +27,7 @@ private const val TAG = "DefaultNotificationPreferenceManager"
 
 class DefaultNotificationPreferenceManager(
     private val logger: Logger,
-    private val storagePersister: StoragePersister,
-    private val storageEditor: StorageEditor,
+    private val storageProvider: StorageProvider,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
     private var scope: CoroutineScope = CoroutineScope(SupervisorJob()),
     preferenceChangeBroker: PreferenceChangeBroker,
@@ -38,7 +38,8 @@ class DefaultNotificationPreferenceManager(
     }
     private val mutex = Mutex()
     private val storage: Storage
-        get() = storagePersister.loadValues()
+        get() = storageProvider.loadLatestStorage()
+
     private val initialConfig: NotificationPreference
         get() = getConfigFromStorage(storage)
     private val configState = MutableStateFlow(
@@ -108,6 +109,7 @@ class DefaultNotificationPreferenceManager(
             )
         } else {
             val derivedValue = quickDeleteBehaviour == NotificationQuickDelete.ALWAYS
+            val storageEditor = storageProvider.createStorageEditor()
             storageEditor.putBoolean(NotificationSettingKey.IsSummaryDeleteActionEnabled.value, derivedValue)
             storageEditor.commit()
             derivedValue
@@ -121,6 +123,7 @@ class DefaultNotificationPreferenceManager(
         logger.debug(TAG) { "writeConfig() called with: config = $config" }
         scope.launch(ioDispatcher) {
             mutex.withLock {
+                val storageEditor = storageProvider.createStorageEditor()
                 storageEditor.putString(NotificationSettingKey.QuietTimeEnds.value, config.quietTimeEnds)
                 storageEditor.putString(NotificationSettingKey.QuietTimeStarts.value, config.quietTimeStarts)
                 storageEditor.putBoolean(

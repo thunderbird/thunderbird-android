@@ -29,6 +29,7 @@ dependencies {
     implementation(libs.glide)
     annotationProcessor(libs.glide.compiler)
 
+    testImplementation(projects.core.android.account.fake)
     testImplementation(libs.robolectric)
     testImplementation(projects.feature.account.fake)
 }

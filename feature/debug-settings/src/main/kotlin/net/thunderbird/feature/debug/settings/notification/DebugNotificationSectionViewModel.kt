@@ -10,17 +10,17 @@ import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import net.thunderbird.core.common.resources.StringsResourceManager
 import net.thunderbird.core.ui.contract.mvi.BaseViewModel
-import net.thunderbird.feature.account.AccountIdFactory
+import net.thunderbird.feature.account.profile.AccountProfile
+import net.thunderbird.feature.account.profile.AccountProfileRepository
 import net.thunderbird.feature.debug.settings.R
 import net.thunderbird.feature.debug.settings.notification.DebugNotificationSectionContract.Effect
 import net.thunderbird.feature.debug.settings.notification.DebugNotificationSectionContract.Event
 import net.thunderbird.feature.debug.settings.notification.DebugNotificationSectionContract.State
-import net.thunderbird.feature.mail.account.api.AccountManager
-import net.thunderbird.feature.mail.account.api.BaseAccount
 import net.thunderbird.feature.notification.api.NotificationGroup
 import net.thunderbird.feature.notification.api.NotificationGroupKey
 import net.thunderbird.feature.notification.api.content.AuthenticationErrorNotification
@@ -36,7 +36,7 @@ import net.thunderbird.feature.notification.api.sender.NotificationSender
 
 internal class DebugNotificationSectionViewModel(
     private val stringsResourceManager: StringsResourceManager,
-    private val accountManager: AccountManager<BaseAccount>,
+    private val accountProfileRepository: AccountProfileRepository,
     private val notificationSender: NotificationSender,
     private val inAppNotificationStream: InAppNotificationStream,
     private val notificationIconResourceProvider: NotificationIconResourceProvider,
@@ -46,7 +46,7 @@ internal class DebugNotificationSectionViewModel(
 
     init {
         viewModelScope.launch(ioDispatcher) {
-            val accounts = accountManager.getAccounts()
+            val accounts = accountProfileRepository.getAll().first()
             withContext(mainDispatcher) {
                 updateState {
                     val systemNotificationTypes = buildList {
@@ -75,7 +75,7 @@ internal class DebugNotificationSectionViewModel(
                     }.toPersistentList()
                     State(
                         accounts = accounts.toPersistentList(),
-                        selectedAccount = accounts.first(),
+                        selectedAccount = accounts.firstOrNull(),
                         systemNotificationTypes = systemNotificationTypes,
                         inAppNotificationTypes = inAppNotificationTypes,
                         selectedSystemNotificationType = systemNotificationTypes.first(),
@@ -190,7 +190,7 @@ internal class DebugNotificationSectionViewModel(
 
         val state = state.value
         val selectedAccount = state.selectedAccount ?: return null
-        val accountDisplay = selectedAccount.name ?: selectedAccount.email
+        val accountDisplay = selectedAccount.name
 
         val notification = buildNotification(
             notificationType = notificationType,
@@ -214,7 +214,7 @@ internal class DebugNotificationSectionViewModel(
     @Suppress("CyclomaticComplexMethod", "LongMethod")
     private suspend fun buildNotification(
         notificationType: KClass<out Notification>?,
-        selectedAccount: BaseAccount,
+        selectedAccount: AccountProfile,
         accountDisplay: String,
         state: State,
     ): Notification? = when (notificationType) {
@@ -293,7 +293,7 @@ internal class DebugNotificationSectionViewModel(
     }
 
     private fun State.buildSingleMailNotification(
-        selectedAccount: BaseAccount,
+        selectedAccount: AccountProfile,
         accountDisplay: String,
     ): MailNotification.NewMailSingleMail? = MailNotification.NewMailSingleMail(
         accountId = selectedAccount.id,

@@ -4,14 +4,14 @@ import android.content.SharedPreferences
 import androidx.core.content.edit
 import app.k9mail.feature.widget.unread.UnreadWidgetRepository.Companion.PREFS_VERSION
 import app.k9mail.feature.widget.unread.UnreadWidgetRepository.Companion.PREF_VERSION_KEY
-import com.fsck.k9.Preferences
 import net.thunderbird.components.core.outcome.fold
+import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.mail.folder.api.FolderServerId
 import net.thunderbird.feature.mail.folder.api.data.repository.FolderQueryRepository
 
 internal class UnreadWidgetMigrations(
-    private val accountRepository: Preferences,
+    private val accountManager: LegacyAccountManager,
     private val folderQueryRepository: FolderQueryRepository,
 ) {
     suspend fun upgradePreferences(preferences: SharedPreferences, version: Int) {
@@ -34,7 +34,7 @@ internal class UnreadWidgetMigrations(
             for (widgetId in widgetIds) {
                 val accountUuid = preferences.getString("unread_widget.$widgetId", null) ?: continue
                 val accountId = runCatching { AccountIdFactory.of(accountUuid) }.getOrNull() ?: continue
-                val account = accountRepository.getById(accountId) ?: continue
+                val account = accountManager.findById(accountId) ?: continue
 
                 val folderServerId = preferences.getString("unread_widget.$widgetId.folder_name", null)
                 if (folderServerId != null) {

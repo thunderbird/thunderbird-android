@@ -60,7 +60,6 @@ val navigationDropDownDrawerModule: Module = module {
 
     single<UseCase.SyncAccount> {
         SyncAccount(
-            accountManager = get(),
             messagingController = get(),
         )
     }

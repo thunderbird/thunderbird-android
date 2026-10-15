@@ -30,7 +30,7 @@ val newAccountModule = module {
     factory<SettingsImportExternalContract.AccountActivator> {
         AccountActivator(
             context = get(),
-            preferences = get(),
+            accountManager = get(),
             messagingController = get(),
         )
     }

@@ -5,15 +5,17 @@ import com.fsck.k9.controller.MessagingController.MessageActor
 import com.fsck.k9.controller.MessagingController.MoveOrCopyFlavor
 import com.fsck.k9.mailstore.LocalFolder
 import com.fsck.k9.mailstore.LocalMessage
-import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.featureflag.keys.GeneratedFeatureFlagKey
+import net.thunderbird.feature.account.AccountId
 import net.thunderbird.legacy.logging.Log
 
 private const val TAG = "ArchiveOperations"
 
 internal class ArchiveOperations(
     private val messagingController: MessagingController,
+    private val accountManager: LegacyAccountManager,
     private val featureFlagProvider: FeatureFlagProvider,
 ) {
     fun archiveThreads(messages: List<MessageReference>) {
@@ -36,17 +38,18 @@ internal class ArchiveOperations(
         description: String,
         messages: List<MessageReference>,
         action: (
-            account: LegacyAccountDto,
+            accountId: AccountId,
             folderId: Long,
             messagesInFolder: List<LocalMessage>,
             archiveFolderId: Long,
         ) -> Unit,
     ) {
-        actOnMessagesGroupedByAccountAndFolder(messages) { account, messageFolder, messagesInFolder ->
+        actOnMessagesGroupedByAccountAndFolder(messages) { accountId, messageFolder, messagesInFolder ->
             val sourceFolderId = messageFolder.databaseId
+            val account = accountManager.findById(accountId) ?: return@actOnMessagesGroupedByAccountAndFolder
             when (val archiveFolderId = account.archiveFolderId) {
                 null -> {
-                    Log.v(TAG, "No archive folder configured for account %s", account)
+                    Log.v(TAG, "No archive folder configured for account %s", accountId)
                 }
 
                 sourceFolderId -> {
@@ -54,9 +57,9 @@ internal class ArchiveOperations(
                 }
 
                 else -> {
-                    messagingController.suppressMessages(account, messagesInFolder)
+                    messagingController.suppressMessages(accountId, messagesInFolder)
                     messagingController.putBackground(description, null) {
-                        action(account, sourceFolderId, messagesInFolder, archiveFolderId)
+                        action(accountId, sourceFolderId, messagesInFolder, archiveFolderId)
                     }
                 }
             }
@@ -64,17 +67,17 @@ internal class ArchiveOperations(
     }
 
     private fun archiveThreads(
-        account: LegacyAccountDto,
+        accountId: AccountId,
         sourceFolderId: Long,
         messages: List<LocalMessage>,
         archiveFolderId: Long,
     ) {
-        val messagesInThreads = messagingController.collectMessagesInThreads(account, messages)
-        archiveMessages(account, sourceFolderId, messagesInThreads, archiveFolderId)
+        val messagesInThreads = messagingController.collectMessagesInThreads(accountId, messages)
+        archiveMessages(accountId, sourceFolderId, messagesInThreads, archiveFolderId)
     }
 
     private fun archiveMessages(
-        account: LegacyAccountDto,
+        accountId: AccountId,
         sourceFolderId: Long,
         messages: List<LocalMessage>,
         archiveFolderId: Long,
@@ -85,7 +88,7 @@ internal class ArchiveOperations(
                 onDisabledOrUnavailable = { MoveOrCopyFlavor.MOVE },
             )
         messagingController.moveOrCopyMessageSynchronous(
-            account,
+            accountId,
             sourceFolderId,
             messages,
             archiveFolderId,
@@ -95,10 +98,10 @@ internal class ArchiveOperations(
 
     private fun actOnMessagesGroupedByAccountAndFolder(
         messages: List<MessageReference>,
-        block: (account: LegacyAccountDto, messageFolder: LocalFolder, messages: List<LocalMessage>) -> Unit,
+        block: (accountId: AccountId, messageFolder: LocalFolder, messages: List<LocalMessage>) -> Unit,
     ) {
-        val actor = MessageActor { account, messageFolder, messagesInFolder ->
-            block(account, messageFolder, messagesInFolder)
+        val actor = MessageActor { accountId, messageFolder, messagesInFolder ->
+            block(accountId, messageFolder, messagesInFolder)
         }
 
         messagingController.actOnMessagesGroupedByAccountAndFolder(messages, actor)

@@ -11,10 +11,11 @@ val activityModule = module {
             messageViewInfoExtractorFactory = get(),
             messageReaderHtmlSettingsProvider = get(),
             messageComposerHtmlSettingsProvider = get(),
+            accountManager = get(),
         )
     }
     factory<AttachmentLoadingController> {
-        DefaultAttachmentLoadingController(messagingController = get(), accountManager = get())
+        DefaultAttachmentLoadingController(messagingController = get())
     }
     single<FeatureLauncherExternalContract.AccountManageIdentitiesLauncher> {
         DefaultAccountManageIdentitiesLauncher()

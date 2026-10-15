@@ -26,7 +26,6 @@ import net.openid.appauth.AppAuthConfiguration
 import net.thunderbird.app.common.feature.account.AccountRemoverWorker
 import net.thunderbird.core.common.mail.html.HtmlSettings
 import net.thunderbird.core.configstore.ConfigId
-import net.thunderbird.core.preference.storage.Storage
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.changelog.internal.ChangelogViewModel
 import net.thunderbird.feature.mail.message.list.ui.dialog.SetupArchiveFolderDialogContract
@@ -57,7 +56,6 @@ class DependencyInjectionTest {
                 InteractionMode::class,
                 NotificationManager::class,
                 Resources::class,
-                Storage::class,
                 ConfigId::class,
             ),
             injections = injectedParameters(

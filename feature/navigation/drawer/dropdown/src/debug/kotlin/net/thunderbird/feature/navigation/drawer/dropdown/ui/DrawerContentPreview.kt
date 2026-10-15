@@ -80,7 +80,7 @@ internal fun DrawerContentWithSelectedFolderPreview() {
                     UNIFIED_FOLDER,
                     DISPLAY_FOLDER,
                 ),
-                selectedFolderId = DISPLAY_FOLDER.id,
+                selectedFolderId = DISPLAY_FOLDER.folderId,
             ),
             onEvent = {},
         )
@@ -101,7 +101,7 @@ internal fun DrawerContentWithSelectedUnifiedFolderPreview() {
                     UNIFIED_FOLDER,
                     DISPLAY_FOLDER,
                 ),
-                selectedFolderId = UNIFIED_FOLDER.id,
+                selectedFolderId = UNIFIED_FOLDER.folderId,
             ),
             onEvent = {},
         )
@@ -121,7 +121,7 @@ internal fun DrawerContentSingleAccountPreview() {
                 ),
                 selectedAccountId = MAIL_DISPLAY_ACCOUNT.id,
                 folders = displayFolders,
-                selectedFolderId = displayFolders[0].id,
+                selectedFolderId = displayFolders[0].folderId,
                 config = DrawerConfig(
                     showUnifiedFolders = false,
                     showStarredCount = false,
@@ -147,7 +147,7 @@ internal fun DrawerContentSingleAccountWithAccountSelectionPreview() {
                 ),
                 selectedAccountId = MAIL_DISPLAY_ACCOUNT.id,
                 folders = displayFolders,
-                selectedFolderId = displayFolders[0].id,
+                selectedFolderId = displayFolders[0].folderId,
                 config = DrawerConfig(
                     showUnifiedFolders = false,
                     showStarredCount = false,
@@ -172,7 +172,7 @@ internal fun DrawerContentMultipleAccountsAccountPreview() {
                 accounts = accountList,
                 selectedAccountId = accountList[0].id,
                 folders = displayFolders,
-                selectedFolderId = UNIFIED_FOLDER.id,
+                selectedFolderId = UNIFIED_FOLDER.folderId,
                 config = DrawerConfig(
                     showUnifiedFolders = false,
                     showStarredCount = false,
@@ -196,7 +196,7 @@ internal fun DrawerContentMultipleAccountsWithAccountSelectionPreview() {
                 accounts = accountList,
                 selectedAccountId = accountList[1].id,
                 folders = createDisplayFolderList(hasUnifiedFolder = true),
-                selectedFolderId = UNIFIED_FOLDER.id,
+                selectedFolderId = UNIFIED_FOLDER.folderId,
                 config = DrawerConfig(
                     showUnifiedFolders = false,
                     showStarredCount = false,
@@ -220,7 +220,7 @@ internal fun DrawerContentMultipleAccountsWithDifferentAccountSelectionPreview()
                 accounts = accountList,
                 selectedAccountId = accountList[2].id,
                 folders = createDisplayFolderList(hasUnifiedFolder = true),
-                selectedFolderId = UNIFIED_FOLDER.id,
+                selectedFolderId = UNIFIED_FOLDER.folderId,
                 config = DrawerConfig(
                     showUnifiedFolders = false,
                     showStarredCount = false,
@@ -249,7 +249,7 @@ internal fun DrawerContentSmallScreenPreview() {
                     accounts = accountList,
                     selectedAccountId = accountList[2].id,
                     folders = createDisplayFolderList(hasUnifiedFolder = true),
-                    selectedFolderId = UNIFIED_FOLDER.id,
+                    selectedFolderId = UNIFIED_FOLDER.folderId,
                     config = DrawerConfig(
                         showUnifiedFolders = false,
                         showStarredCount = false,
@@ -279,7 +279,7 @@ internal fun DrawerContentVerySmallScreenPreview() {
                     accounts = accountList,
                     selectedAccountId = accountList[2].id,
                     folders = createDisplayFolderList(hasUnifiedFolder = true),
-                    selectedFolderId = UNIFIED_FOLDER.id,
+                    selectedFolderId = UNIFIED_FOLDER.folderId,
                     config = DrawerConfig(
                         showUnifiedFolders = false,
                         showStarredCount = false,

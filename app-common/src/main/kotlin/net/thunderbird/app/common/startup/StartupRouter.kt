@@ -17,7 +17,7 @@ class DefaultStartupRouter(
     private val accountRemover: BackgroundAccountRemover,
 ) : StartupRouter {
     override fun routeToNextScreen(activity: Activity) {
-        val accounts = accountManager.getAccounts()
+        val accounts = accountManager.findAll()
         deleteIncompleteAccounts(accounts)
 
         val hasAccountSetup = accounts.any { it.isFinishedSetup }
