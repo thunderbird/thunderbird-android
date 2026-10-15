@@ -1,15 +1,20 @@
 package net.thunderbird.app.common.feature.mail.message.data.repository
 
+import app.k9mail.legacy.mailstore.MessageStoreManager
 import com.fsck.k9.mailstore.LocalStoreProvider
+import kotlin.coroutines.cancellation.CancellationException
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.components.core.outcome.Outcome
+import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.feature.account.AccountId
+import net.thunderbird.feature.mail.folder.FolderId
 import net.thunderbird.feature.mail.folder.LegacyFolderIdFactory
 import net.thunderbird.feature.mail.message.LegacyMessageIdFactory
 import net.thunderbird.feature.mail.message.MessageId
+import net.thunderbird.feature.mail.message.MessageServerId
 import net.thunderbird.feature.mail.message.domain.GetMessageIdCriteria
 import net.thunderbird.feature.mail.message.domain.MessageQueryError
 import net.thunderbird.feature.mail.message.domain.MessageQueryRepository
@@ -19,7 +24,9 @@ private const val LOG_ID = "[repository][message-query]"
 
 class DefaultMessageQueryRepository(
     private val logger: Logger,
+    private val accountManager: LegacyAccountManager,
     private val localStoreProvider: LocalStoreProvider,
+    private val messageStoreManager: MessageStoreManager,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : MessageQueryRepository {
     override suspend fun findIdByCriteria(
@@ -27,30 +34,68 @@ class DefaultMessageQueryRepository(
         criteria: GetMessageIdCriteria,
     ): Outcome<MessageId?, MessageQueryError> = withContext(ioDispatcher) {
         logger.verbose(TAG) { "$LOG_ID finding message id by account id = '$accountId' and criteria = $criteria" }
-        val localStore = localStoreProvider.getInstance(accountId)
-        val lockableDatabase = localStore.database
-        val legacyFolderId = LegacyFolderIdFactory.toLegacyId(criteria.folderId)
-        val rawServerId = criteria.messageServerId.value
-        val legacyMessageId = lockableDatabase.execute(false) { db ->
-            db.query(
-                "messages",
-                arrayOf("id"),
-                "folder_id = ? AND uid = ?",
-                arrayOf(legacyFolderId.toString(), rawServerId),
-                null,
-                null,
-                null,
-            ).use { cursor ->
-                if (cursor.moveToFirst()) {
-                    val messageId = cursor.getLong(0)
-                    messageId
-                } else {
-                    null
+        runLegacy(operation = "find message id by $criteria") {
+            accountManager.findById(accountId) ?: return@withContext accountNotFound(accountId)
+            val lockableDatabase = localStoreProvider.getInstance(accountId).database
+            val legacyFolderId = LegacyFolderIdFactory.toLegacyId(criteria.folderId)
+            val rawServerId = criteria.messageServerId.value
+            val legacyMessageId = lockableDatabase.execute(false) { db ->
+                db.query(
+                    "messages",
+                    arrayOf("id"),
+                    "folder_id = ? AND uid = ?",
+                    arrayOf(legacyFolderId.toString(), rawServerId),
+                    null,
+                    null,
+                    null,
+                ).use { cursor ->
+                    if (cursor.moveToFirst()) cursor.getLong(0) else null
                 }
             }
+            legacyMessageId?.let(LegacyMessageIdFactory::of).also { messageId ->
+                logger.verbose(TAG) { "$LOG_ID message id = '$messageId'" }
+            }
         }
-        val messageId = legacyMessageId?.let(LegacyMessageIdFactory::of)
-        logger.verbose(TAG) { "message id = '$messageId'" }
-        Outcome.success(messageId)
+    }
+
+    override suspend fun getAllServerIdByFolderId(
+        folderId: FolderId,
+        accountId: AccountId,
+    ): Outcome<Set<MessageServerId>, MessageQueryError> = withContext(ioDispatcher) {
+        logger.verbose(TAG) {
+            "$LOG_ID getting message server ids by folder id '$folderId' and account id = '$accountId'"
+        }
+        accountManager.findById(accountId) ?: return@withContext accountNotFound(accountId)
+
+        runLegacy(operation = "get server ids of folder '$folderId'") {
+            val messageStore = messageStoreManager.getMessageStore(accountId)
+            val legacyFolderId = LegacyFolderIdFactory.toLegacyId(folderId)
+            messageStore.getMessageServerIds(legacyFolderId)
+                .map(::MessageServerId)
+                .toSet()
+                .also { serverIds -> logger.verbose(TAG) { "$LOG_ID found ${serverIds.size} server ids" } }
+        }
+    }
+
+    private fun <T> accountNotFound(accountId: AccountId): Outcome<T, MessageQueryError> {
+        logger.warn(TAG) { "$LOG_ID account '$accountId' not found" }
+        return Outcome.failure(MessageQueryError.AccountNotFound(accountId))
+    }
+
+    /**
+     * Runs a legacy store operation and converts any thrown exception into a [MessageQueryError.UnhandledError].
+     * [CancellationException] is rethrown so structured concurrency keeps working.
+     */
+    @Suppress("TooGenericExceptionCaught")
+    private inline fun <T> runLegacy(
+        operation: String,
+        block: () -> T,
+    ): Outcome<T, MessageQueryError> = try {
+        Outcome.success(block())
+    } catch (e: CancellationException) {
+        throw e
+    } catch (e: Exception) {
+        logger.error(TAG, throwable = e) { "$LOG_ID $operation failed" }
+        Outcome.failure(MessageQueryError.UnhandledError(e))
     }
 }
