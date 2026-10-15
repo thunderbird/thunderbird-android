@@ -10,7 +10,6 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
-import androidx.core.os.bundleOf
 import androidx.core.view.MenuProvider
 import androidx.lifecycle.Lifecycle
 import androidx.preference.CheckBoxPreference
@@ -231,7 +230,9 @@ class UnreadWidgetConfigurationFragment : PreferenceFragmentCompat() {
 
         fun create(appWidgetId: Int): UnreadWidgetConfigurationFragment {
             return UnreadWidgetConfigurationFragment().apply {
-                arguments = bundleOf(ARGUMENT_APP_WIDGET_ID to appWidgetId)
+                arguments = Bundle().apply {
+                    putInt(ARGUMENT_APP_WIDGET_ID, appWidgetId)
+                }
             }
         }
     }

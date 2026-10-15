@@ -8,7 +8,6 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
-import androidx.core.os.bundleOf
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
@@ -115,10 +114,10 @@ class ManageFoldersFragment : Fragment() {
     }
 
     private fun openFolderSettings(folderId: Long) {
-        val folderSettingsArguments = bundleOf(
-            FolderSettingsFragment.EXTRA_ACCOUNT to accountId.toString(),
-            FolderSettingsFragment.EXTRA_FOLDER_ID to folderId,
-        )
+        val folderSettingsArguments = Bundle().apply {
+            putString(FolderSettingsFragment.EXTRA_ACCOUNT, accountId.toString())
+            putLong(FolderSettingsFragment.EXTRA_FOLDER_ID, folderId)
+        }
         findNavController().navigate(R.id.action_manageFoldersScreen_to_folderSettingsScreen, folderSettingsArguments)
     }
 

@@ -312,10 +312,10 @@ class MessageViewContainerFragment : Fragment() {
             reference: MessageReference,
             isShowAccountIndicator: Boolean,
         ): MessageViewContainerFragment {
-            return MessageViewContainerFragment().withArguments(
-                ARG_REFERENCE to reference.toIdentityString(),
-                ARG_SHOW_ACCOUNT_INDICATOR to isShowAccountIndicator,
-            )
+            return MessageViewContainerFragment().withArguments {
+                putString(ARG_REFERENCE, reference.toIdentityString())
+                putBoolean(ARG_SHOW_ACCOUNT_INDICATOR, isShowAccountIndicator)
+            }
         }
     }
 }

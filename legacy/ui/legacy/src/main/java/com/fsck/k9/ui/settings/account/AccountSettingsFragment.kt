@@ -567,9 +567,9 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         const val PREFERENCE_NOTIFICATION_STYLE = "notifications"
         const val PREFERENCE_FOLDERS = "folders"
 
-        fun create(accountUuid: String, rootKey: String?) = AccountSettingsFragment().withArguments(
-            ARG_ACCOUNT_UUID to accountUuid,
-            ARG_PREFERENCE_ROOT to rootKey,
-        )
+        fun create(accountUuid: String, rootKey: String?) = AccountSettingsFragment().withArguments {
+            putString(ARG_ACCOUNT_UUID, accountUuid)
+            putString(ARG_PREFERENCE_ROOT, rootKey)
+        }
     }
 }

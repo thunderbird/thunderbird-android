@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import androidx.constraintlayout.widget.Group
-import androidx.core.os.bundleOf
 import androidx.core.view.isGone
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
@@ -137,14 +136,14 @@ class PasswordPromptDialogFragment : DialogFragment() {
             targetFragment: Fragment,
             requestCode: Int,
         ) = PasswordPromptDialogFragment().apply {
-            arguments = bundleOf(
-                ARG_ACCOUNT_UUID to accountUuid,
-                ARG_ACCOUNT_NAME to accountName,
-                ARG_INPUT_INCOMING_SERVER_PASSWORD to inputIncomingServerPassword,
-                ARG_INCOMING_SERVER_NAME to incomingServerName,
-                ARG_INPUT_OUTGOING_SERVER_PASSWORD to inputOutgoingServerPassword,
-                ARG_OUTGOING_SERVER_NAME to outgoingServerName,
-            )
+            arguments = Bundle().apply {
+                putString(ARG_ACCOUNT_UUID, accountUuid)
+                putString(ARG_ACCOUNT_NAME, accountName)
+                putBoolean(ARG_INPUT_INCOMING_SERVER_PASSWORD, inputIncomingServerPassword)
+                putString(ARG_INCOMING_SERVER_NAME, incomingServerName)
+                putBoolean(ARG_INPUT_OUTGOING_SERVER_PASSWORD, inputOutgoingServerPassword)
+                putString(ARG_OUTGOING_SERVER_NAME, outgoingServerName)
+            }
             setTargetFragment(targetFragment, requestCode)
         }
     }

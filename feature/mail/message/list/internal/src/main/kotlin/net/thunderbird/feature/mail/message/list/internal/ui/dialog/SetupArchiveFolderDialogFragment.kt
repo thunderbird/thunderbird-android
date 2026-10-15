@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.view.Window
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
-import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.setFragmentResult
@@ -57,7 +56,7 @@ internal class SetupArchiveFolderDialogFragment : DialogFragment() {
         override fun show(accountUuid: String, fragmentManager: FragmentManager) {
             SetupArchiveFolderDialogFragment()
                 .apply {
-                    arguments = bundleOf(ACCOUNT_UUID_ARG to accountUuid)
+                    arguments = Bundle().apply { putString(ACCOUNT_UUID_ARG, accountUuid) }
                 }
                 .show(fragmentManager, TAG)
         }
