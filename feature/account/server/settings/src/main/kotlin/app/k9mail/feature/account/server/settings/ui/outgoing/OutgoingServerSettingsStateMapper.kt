@@ -50,7 +50,7 @@ internal fun State.toServerSettings(): ServerSettings {
     return ServerSettings(
         type = "smtp",
         host = server.value.trim(),
-        port = port.value!!.toInt(),
+        port = checkNotNull(port.value) { "Missing port" }.toInt(),
         connectionSecurity = security.toMailConnectionSecurity(),
         authenticationType = authenticationType.toAuthType(),
         username = if (authenticationType.isUsernameRequired) username.value.trim() else "",
