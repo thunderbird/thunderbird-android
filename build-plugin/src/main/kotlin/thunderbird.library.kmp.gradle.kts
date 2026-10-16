@@ -1,3 +1,5 @@
+import net.thunderbird.gradle.plugin.ProjectConfig
+
 plugins {
     id("com.android.kotlin.multiplatform.library")
     id("org.jetbrains.kotlin.multiplatform")
@@ -13,21 +15,21 @@ kotlin {
     }
 
     android {
-        compileSdk = ThunderbirdProjectConfig.Android.sdkCompile
-        minSdk = ThunderbirdProjectConfig.Android.sdkMin
+        compileSdk = ProjectConfig.Android.sdkCompile
+        minSdk = ProjectConfig.Android.sdkMin
 
         withHostTest {
             isIncludeAndroidResources = true
         }
 
         compilerOptions {
-            jvmTarget.set(ThunderbirdProjectConfig.Compiler.jvmTarget)
+            jvmTarget.set(ProjectConfig.Compiler.jvmTarget)
         }
     }
 
     jvm {
         compilerOptions {
-            jvmTarget.set(ThunderbirdProjectConfig.Compiler.jvmTarget)
+            jvmTarget.set(ProjectConfig.Compiler.jvmTarget)
         }
     }
 
@@ -67,11 +69,11 @@ kotlin {
 configureKotlinJavaCompatibility()
 
 tasks.withType<Test>().configureEach {
-    jvmArgs(ThunderbirdProjectConfig.Testing.robolectricJvmArgs)
+    jvmArgs(ProjectConfig.Testing.robolectricJvmArgs)
 }
 
 tasks.register("testsOnCi") {
     dependsOn(
-        tasks.withType<Test>()
+        tasks.withType<Test>(),
     )
 }

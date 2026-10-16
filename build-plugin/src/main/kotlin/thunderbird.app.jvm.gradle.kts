@@ -1,3 +1,5 @@
+import net.thunderbird.gradle.plugin.ProjectConfig
+
 plugins {
     id("application")
     id("org.jetbrains.kotlin.jvm")
@@ -7,8 +9,8 @@ plugins {
 }
 
 java {
-    sourceCompatibility = ThunderbirdProjectConfig.Compiler.javaCompatibility
-    targetCompatibility = ThunderbirdProjectConfig.Compiler.javaCompatibility
+    sourceCompatibility = ProjectConfig.Compiler.javaCompatibility
+    targetCompatibility = ProjectConfig.Compiler.javaCompatibility
 }
 
 configureKotlinJavaCompatibility()
@@ -26,9 +28,10 @@ dependencies {
 }
 
 tasks.register("testsOnCi") {
+    description = "Run all tests except the unit tests on the release build."
     dependsOn(
         tasks.withType<Test>().matching {
             it.name != "testReleaseUnitTest"
-        }
+        },
     )
 }
