@@ -63,13 +63,15 @@ class UnreadWidgetConfigurationFragment : PreferenceFragmentCompat() {
             .takeIf { it != AppWidgetManager.INVALID_APPWIDGET_ID }
             ?: error("Missing argument '$ARGUMENT_APP_WIDGET_ID'")
 
-        unreadAccount = findPreference(PREFERENCE_UNREAD_ACCOUNT)!!
+        unreadAccount = findPreference<Preference>(PREFERENCE_UNREAD_ACCOUNT)
+            ?: error("Missing preference '$PREFERENCE_UNREAD_ACCOUNT'")
         unreadAccount.onPreferenceClickListener = Preference.OnPreferenceClickListener {
             chooseAccountLauncher.launch(Unit)
             false
         }
 
-        unreadFolderEnabled = findPreference(PREFERENCE_UNREAD_FOLDER_ENABLED)!!
+        unreadFolderEnabled = findPreference<CheckBoxPreference>(PREFERENCE_UNREAD_FOLDER_ENABLED)
+            ?: error("Missing preference '$PREFERENCE_UNREAD_FOLDER_ENABLED'")
         unreadFolderEnabled.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, _ ->
             unreadFolder.summary = getString(R.string.unread_widget_folder_summary)
             selectedFolderId = null
@@ -77,7 +79,8 @@ class UnreadWidgetConfigurationFragment : PreferenceFragmentCompat() {
             true
         }
 
-        unreadFolder = findPreference(PREFERENCE_UNREAD_FOLDER)!!
+        unreadFolder = findPreference<Preference>(PREFERENCE_UNREAD_FOLDER)
+            ?: error("Missing preference '$PREFERENCE_UNREAD_FOLDER'")
         unreadFolder.onPreferenceClickListener = Preference.OnPreferenceClickListener {
             selectedAccountId?.let { accountId ->
                 chooseFolderLauncher.launch(input = ChooseFolderResultContract.Input(accountId = accountId))
