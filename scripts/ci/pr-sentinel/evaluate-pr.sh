@@ -44,45 +44,52 @@ title="$(jq -r '.title // ""' <<<"$PR_JSON")"
 body="$(jq -r '.body // ""' <<<"$PR_JSON")"
 author_type="$(jq -r '.user.type // ""' <<<"$PR_JSON")"
 draft="$(jq -r '.draft // false' <<<"$PR_JSON")"
-
 missing=()
-# Deduped set of doc-link topics, one per kind of failing check. render_status_body
-# maps these keys to the matching "How to fix" links so only relevant links are shown.
 topics=""
-add_topic() { case " $topics " in *" $1 "*) ;; *) topics="${topics}${topics:+ }$1" ;; esac; }
-
-m="$(check_title "$title")";        if [[ -n "$m" ]]; then missing+=("$m"); add_topic commit; fi
-m="$(check_linked_issue "$body")";  if [[ -n "$m" ]]; then missing+=("$m"); add_topic issue; fi
-m="$(check_ai_disclosure "$body")"; if [[ -n "$m" ]]; then missing+=("$m"); add_topic workflow; fi
-
 merge_shas=()
-while IFS= read -r commit; do
-  [[ -z "$commit" ]] && continue
-  sha="$(jq -r '.sha[0:7]' <<<"$commit")"
-  parents="$(jq -r '.parents | length' <<<"$commit")"
-  if (( parents >= 2 )); then merge_shas+=("$sha"); continue; fi   # merge commit: flag below, skip format checks
-  message="$(jq -r '.commit.message' <<<"$commit")"
-  subject="${message%%$'\n'*}"
-  m="$(check_commit_subject "$sha" "$subject")";  if [[ -n "$m" ]]; then missing+=("$m"); add_topic commit; fi
-  m="$(check_commit_coauthor "$sha" "$message")"; if [[ -n "$m" ]]; then missing+=("$m"); add_topic workflow; fi
-done < <(jq -c '.[]' <<<"$COMMITS_JSON")
-
-# Merge commits are not allowed: ask the author to rebase onto the base branch.
-if [[ ${#merge_shas[@]} -gt 0 ]]; then
-  merge_list=""
-  for s in "${merge_shas[@]}"; do merge_list="${merge_list:+$merge_list, }\`${s}\`"; done
-  missing+=("Merge commit(s) found (${merge_list}) — rebase onto the base branch instead of merging.")
-  add_topic workflow
-fi
-
-if [[ ${#missing[@]} -eq 0 ]]; then compliant=true; else compliant=false; fi
+missing_markdown=""
+compliant=true
 
 exempt_reason="$(is_exempt "$author_type")"
 if [[ -n "$exempt_reason" ]]; then exempt=true; else exempt=false; fi
 
-missing_markdown=""
-if [[ ${#missing[@]} -gt 0 ]]; then
-  for item in "${missing[@]}"; do missing_markdown+="- [ ] ${item}"$'\n'; done
+# Deduped set of doc-link topics, one per kind of failing check. render_status_body
+# maps these keys to the matching "How to fix" links so only relevant links are shown.
+add_topic() { case " $topics " in *" $1 "*) ;; *) topics="${topics}${topics:+ }$1" ;; esac; }
+
+_check_when_not_exempt() {
+  m="$(check_title "$title")";        if [[ -n "$m" ]]; then missing+=("$m"); add_topic commit; fi
+  m="$(check_linked_issue "$body")";  if [[ -n "$m" ]]; then missing+=("$m"); add_topic issue; fi
+  m="$(check_ai_disclosure "$body")"; if [[ -n "$m" ]]; then missing+=("$m"); add_topic workflow; fi
+
+  while IFS= read -r commit; do
+    [[ -z "$commit" ]] && continue
+    sha="$(jq -r '.sha[0:7]' <<<"$commit")"
+    parents="$(jq -r '.parents | length' <<<"$commit")"
+    if (( parents >= 2 )); then merge_shas+=("$sha"); continue; fi   # merge commit: flag below, skip format checks
+    message="$(jq -r '.commit.message' <<<"$commit")"
+    subject="${message%%$'\n'*}"
+    m="$(check_commit_subject "$sha" "$subject")";  if [[ -n "$m" ]]; then missing+=("$m"); add_topic commit; fi
+    m="$(check_commit_coauthor "$sha" "$message")"; if [[ -n "$m" ]]; then missing+=("$m"); add_topic workflow; fi
+  done < <(jq -c '.[]' <<<"$COMMITS_JSON")
+
+  # Merge commits are not allowed: ask the author to rebase onto the base branch.
+  if [[ ${#merge_shas[@]} -gt 0 ]]; then
+    merge_list=""
+    for s in "${merge_shas[@]}"; do merge_list="${merge_list:+$merge_list, }\`${s}\`"; done
+    missing+=("Merge commit(s) found (${merge_list}) — rebase onto the base branch instead of merging.")
+    add_topic workflow
+  fi
+
+  if [[ ${#missing[@]} -eq 0 ]]; then compliant=true; else compliant=false; fi
+
+  if [[ ${#missing[@]} -gt 0 ]]; then
+    for item in "${missing[@]}"; do missing_markdown+="- [ ] ${item}"$'\n'; done
+  fi
+}
+
+if [[ "$exempt" != "true" ]]; then
+  _check_when_not_exempt
 fi
 
 jq -n \
