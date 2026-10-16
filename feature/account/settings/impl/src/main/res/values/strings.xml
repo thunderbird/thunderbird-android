@@ -193,4 +193,14 @@
 
     <string name="account_settings_composition">Sending mail</string>
 
+    <string name="account_settings_notificaction_and_sync">Notification &amp; sync</string>
+    <string name="account_settings_notification_style">Notification style</string>
+    <string name="account_settings_notification_style_description">Customize sound, vibrate, badges</string>
+    <string name="account_settings_folder_sync_and_push">Folder sync &amp; push</string>
+    <string name="account_settings_folder_sync_and_push_description">Enable poll/push, per folder</string>
+    <string name="account_settings_manage_folders">Manage folders</string>
+    <string name="account_settings_folder_visibility_and_sort_description">Change default folders and folder visibility</string>
+    <string name="account_settings_fetching_and_data_limits">Fetching &amp; data limits</string>
+    <string name="account_settings_fetching_and_data_limits_description">Frequency and sync limits</string>
+
 </resources>

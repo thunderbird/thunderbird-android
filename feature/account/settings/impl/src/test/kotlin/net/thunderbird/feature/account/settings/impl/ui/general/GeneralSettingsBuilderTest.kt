@@ -75,7 +75,7 @@ internal class GeneralSettingsBuilderTest {
     }
 
     @Test
-    fun `should always include profile, name and color settings`() {
+    fun `should always include profile, name, color, and folder settings`() {
         // Arrange
         val builder = GeneralSettingsBuilder(
             resources = resources,
@@ -106,6 +106,10 @@ internal class GeneralSettingsBuilderTest {
         assertThat(settings[2]).all {
             isInstanceOf<SettingValue.Color>()
             prop(Setting::id).isEqualTo(GeneralSettingId.COLOR)
+        }
+        assertThat(settings[3]).all {
+            isInstanceOf<SettingValue.ActionText>()
+            prop(Setting::id).isEqualTo(GeneralSettingId.FOLDER_VISIBILITY_AND_SORT)
         }
     }
 

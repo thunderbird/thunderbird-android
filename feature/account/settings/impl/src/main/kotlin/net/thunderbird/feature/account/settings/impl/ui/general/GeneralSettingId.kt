@@ -8,4 +8,5 @@ internal object GeneralSettingId {
     const val AVATAR_MONOGRAM = "account_avatar_monogram"
     const val AVATAR_IMAGE = "account_avatar_image"
     const val AVATAR_ICON = "account_avatar_icon"
+    const val FOLDER_VISIBILITY_AND_SORT = "folder_visibility_and_sort"
 }
