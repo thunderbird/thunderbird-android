@@ -157,7 +157,7 @@ class MessageViewRecipientFormatterTest : RobolectricTest() {
     }
 
     @Test
-    fun `do not show display name that looks like an email address`() {
+    fun `spoof prevention expands to show both display name and actual address`() {
         val recipientFormatter = createRecipientFormatter()
 
         val displayName = recipientFormatter.getDisplayName(
@@ -165,7 +165,19 @@ class MessageViewRecipientFormatterTest : RobolectricTest() {
             account,
         )
 
-        assertThat(displayName).isEqualTo("mallory@domain.example")
+        assertThat(displayName).isEqualTo("potus@whitehouse.gov <mallory@domain.example>")
+    }
+
+    @Test
+    fun `firefox relay address shows original sender and relay address`() {
+        val recipientFormatter = createRecipientFormatter()
+
+        val displayName = recipientFormatter.getDisplayName(
+            Address("alias123@mozmail.com", "sender@example.com [via Relay]"),
+            account,
+        )
+
+        assertThat(displayName).isEqualTo("sender@example.com [via Relay] <alias123@mozmail.com>")
     }
 
     @Test

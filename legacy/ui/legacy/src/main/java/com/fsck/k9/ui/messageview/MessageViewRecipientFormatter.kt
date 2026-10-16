@@ -61,9 +61,9 @@ internal class RealMessageViewRecipientFormatter(
     }
 
     private fun buildDisplayName(address: Address): CharSequence {
-        return address.personal?.takeIf {
-            it.isNotBlank() && !it.equals(meText, ignoreCase = true) && !isSpoofAddress(it)
-        } ?: address.address
+        val personal = address.personal?.takeIf { it.isNotBlank() && !it.equals(meText, ignoreCase = true) }
+            ?: return address.address
+        return if (isSpoofAddress(personal)) "$personal <${address.address}>" else personal
     }
 
     private fun isSpoofAddress(displayName: String): Boolean {
