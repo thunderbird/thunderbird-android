@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="message_list_widget_text_read">#E0E0E0</color>
+    <color name="message_list_widget_text_unread">#FFFFFF</color>
+</resources>
