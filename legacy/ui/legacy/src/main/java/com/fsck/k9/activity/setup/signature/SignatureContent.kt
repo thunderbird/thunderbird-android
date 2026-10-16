@@ -1,5 +1,6 @@
 package com.fsck.k9.activity.setup.signature
 
+import android.view.View
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -208,15 +209,19 @@ private fun SignatureHtmlPreview(
 
     AndroidView(
         factory = { context ->
-            MessageWebView(context).apply {
-                configureForSignaturePreview(webViewConfig)
+            try {
+                MessageWebView(context).apply {
+                    configureForSignaturePreview(webViewConfig)
 
-                isVerticalScrollBarEnabled = false
-                isHorizontalScrollBarEnabled = false
+                    isVerticalScrollBarEnabled = false
+                    isHorizontalScrollBarEnabled = false
+                }
+            } catch (e: Exception) {
+                View(context)
             }
         },
         update = { webView ->
-            if (webView.tag != debouncedSignature) {
+            if (webView is MessageWebView && webView.tag != debouncedSignature) {
                 webView.tag = debouncedSignature
                 webView.displayHtmlContentWithInlineAttachments(
                     htmlText = debouncedSignature,
@@ -226,7 +231,9 @@ private fun SignatureHtmlPreview(
             }
         },
         onRelease = { webView ->
-            webView.destroy()
+            if (webView is MessageWebView) {
+                webView.destroy()
+            }
         },
         modifier = modifier
             .heightIn(min = 1.dp)
