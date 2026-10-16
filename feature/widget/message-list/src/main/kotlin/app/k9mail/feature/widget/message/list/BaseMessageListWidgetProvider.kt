@@ -59,7 +59,7 @@ abstract class BaseMessageListWidgetProvider : AppWidgetProvider(), KoinComponen
             openInUnifiedInbox = true,
             messageViewOnly = true,
         )
-        return PendingIntentCompat.getActivity(context, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT, true)!!
+        return createActivityPendingIntent(context, requestCode = 1, intent, isMutable = true)
     }
 
     private fun viewUnifiedFoldersPendingIntent(context: Context): PendingIntent {
@@ -74,13 +74,27 @@ abstract class BaseMessageListWidgetProvider : AppWidgetProvider(), KoinComponen
             newTask = true,
             clearTop = true,
         )
-        return PendingIntentCompat.getActivity(context, -1, intent, PendingIntent.FLAG_UPDATE_CURRENT, false)!!
+        return createActivityPendingIntent(context, requestCode = -1, intent, isMutable = false)
     }
 
     private fun composeActionPendingIntent(context: Context): PendingIntent {
         val intent = Intent(context, MessageCompose::class.java).apply {
             action = MessageCompose.ACTION_COMPOSE
         }
-        return PendingIntentCompat.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT, false)!!
+        return createActivityPendingIntent(context, requestCode = 0, intent, isMutable = false)
+    }
+
+    private fun createActivityPendingIntent(
+        context: Context,
+        requestCode: Int,
+        intent: Intent,
+        isMutable: Boolean,
+    ): PendingIntent {
+        // Only returns null when using FLAG_NO_CREATE
+        return checkNotNull(
+            PendingIntentCompat.getActivity(context, requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT, isMutable),
+        ) {
+            "Failed to create activity PendingIntent"
+        }
     }
 }

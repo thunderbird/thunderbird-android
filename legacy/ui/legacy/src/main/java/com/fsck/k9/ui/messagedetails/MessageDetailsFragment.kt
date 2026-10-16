@@ -14,7 +14,6 @@ import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.ContextCompat
-import androidx.core.os.bundleOf
 import androidx.core.view.MenuCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.setFragmentResult
@@ -358,12 +357,12 @@ class MessageDetailsFragment : ToolbarBottomSheetDialogFragment() {
     }
 
     private fun searchCryptoKeys() {
-        setFragmentResult(FRAGMENT_RESULT_KEY, bundleOf(RESULT_ACTION to ACTION_SEARCH_KEYS))
+        setFragmentResult(FRAGMENT_RESULT_KEY, Bundle().apply { putString(RESULT_ACTION, ACTION_SEARCH_KEYS) })
         dismissAllowingStateLoss()
     }
 
     private fun showCryptoWarning() {
-        setFragmentResult(FRAGMENT_RESULT_KEY, bundleOf(RESULT_ACTION to ACTION_SHOW_WARNING))
+        setFragmentResult(FRAGMENT_RESULT_KEY, Bundle().apply { putString(RESULT_ACTION, ACTION_SHOW_WARNING) })
         dismissAllowingStateLoss()
     }
 
@@ -376,9 +375,9 @@ class MessageDetailsFragment : ToolbarBottomSheetDialogFragment() {
         const val ACTION_SHOW_WARNING = "show_warning"
 
         fun create(messageReference: MessageReference): MessageDetailsFragment {
-            return MessageDetailsFragment().withArguments(
-                ARG_REFERENCE to messageReference.toIdentityString(),
-            )
+            return MessageDetailsFragment().withArguments {
+                putString(ARG_REFERENCE, messageReference.toIdentityString())
+            }
         }
     }
 }

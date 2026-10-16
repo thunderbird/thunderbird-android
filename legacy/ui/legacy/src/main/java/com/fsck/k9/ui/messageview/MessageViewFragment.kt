@@ -1296,10 +1296,10 @@ class MessageViewFragment :
         private const val STATE_IS_ACTIVE = "isActive"
 
         fun newInstance(reference: MessageReference, showAccountIndicator: Boolean): MessageViewFragment {
-            return MessageViewFragment().withArguments(
-                ARG_REFERENCE to reference.toIdentityString(),
-                ARG_SHOW_ACCOUNT_INDICATOR to showAccountIndicator,
-            )
+            return MessageViewFragment().withArguments {
+                putString(ARG_REFERENCE, reference.toIdentityString())
+                putBoolean(ARG_SHOW_ACCOUNT_INDICATOR, showAccountIndicator)
+            }
         }
     }
 }

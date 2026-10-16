@@ -9,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.os.bundleOf
 import androidx.core.view.isGone
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
@@ -290,9 +289,9 @@ class SettingsImportFragment : Fragment() {
     private fun setFragmentResult(accountImported: Boolean) {
         setFragmentResult(
             requestKey = FRAGMENT_RESULT_KEY,
-            result = bundleOf(
-                FRAGMENT_RESULT_ACCOUNT_IMPORTED to accountImported,
-            ),
+            result = Bundle().apply {
+                putBoolean(FRAGMENT_RESULT_ACCOUNT_IMPORTED, accountImported)
+            },
         )
     }
 
