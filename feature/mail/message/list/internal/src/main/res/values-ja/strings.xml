@@ -26,4 +26,8 @@
     <string name="message_list_state_new_message_description">新着</string>
     <string name="message_list_state_read_message_description">既読</string>
     <string name="message_list_state_unread_message_description">未読</string>
+    <string name="message_list_state_active_unread_message_description">有効、未読</string>
+    <string name="message_list_state_selected_new_message_description">選択中、新着</string>
+    <string name="message_list_state_selected_read_message_description">選択中、既読</string>
+    <string name="message_list_state_selected_unread_message_description">選択中、未読</string>
 </resources>
