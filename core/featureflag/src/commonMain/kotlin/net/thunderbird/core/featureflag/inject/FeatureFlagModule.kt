@@ -69,7 +69,10 @@ val featureFlagModule = module {
             providers = buildList {
                 getOrNull<CatalogFeatureFlagProvider>(named(InjectQualifier.InMemory))
                     ?.let { add(it) }
-                add(get<CatalogFeatureFlagProvider>(named(InjectQualifier.Remote)))
+                // FIXME(#11759): The Remote catalog provider is temporarily disabled until we diagnose if it was
+                //  the root cause for the app startup issue. This should be overridden when the next main -> beta
+                //  merge is done. See also #11719.
+                // add(get<CatalogFeatureFlagProvider>(named(InjectQualifier.Remote)))
                 add(get<CatalogFeatureFlagProvider>(named(InjectQualifier.Local)))
             },
             logger = get(),
