@@ -8,10 +8,7 @@ import net.thunderbird.feature.account.settings.impl.ui.syncAndNotifications.Syn
 
 internal class SyncAndNotificationSettingsViewModel(
     private val accountId: AccountId, // TODO #11683, will be necessary for feature
-    initialState: State = State(
-        enablePushNotifications = true,
-    ),
-) : BaseViewModel<State, Event, Effect>(initialState), SyncAndNotificationSettingsContract.ViewModel {
+) : SyncAndNotificationSettingsContract.ViewModel() {
     override fun event(event: Event) {
         when (event) {
             is Event.OnBackPressed -> emitEffect(Effect.NavigateBack)

@@ -23,7 +23,7 @@ internal fun SyncAndNotificationsScreen(
     accountId: AccountId,
     onBack: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: SyncAndNotificationSettingsViewModel = koinViewModel<SyncAndNotificationSettingsViewModel> {
+    viewModel: SyncAndNotificationSettingsViewModel = koinViewModel {
         parametersOf(accountId)
     },
     provider: SettingViewProvider = koinInject(),

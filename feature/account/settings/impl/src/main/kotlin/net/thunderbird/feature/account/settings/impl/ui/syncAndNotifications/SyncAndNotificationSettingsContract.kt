@@ -1,6 +1,7 @@
 package net.thunderbird.feature.account.settings.impl.ui.syncAndNotifications
 
 import androidx.compose.runtime.Stable
+import net.thunderbird.core.ui.contract.mvi.BaseViewModel
 import net.thunderbird.core.ui.contract.mvi.UnidirectionalViewModel
 import net.thunderbird.core.ui.setting.SettingValue
 import net.thunderbird.core.ui.setting.Settings
@@ -11,7 +12,9 @@ import net.thunderbird.core.ui.setting.Settings
  */
 interface SyncAndNotificationSettingsContract {
 
-    interface ViewModel : UnidirectionalViewModel<State, Event, Effect>
+    abstract class ViewModel : BaseViewModel<State, Event, Effect>(
+        initialState = State(enablePushNotifications = false),
+    )
 
     @Stable
     data class State(
