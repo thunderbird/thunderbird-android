@@ -30,7 +30,7 @@ internal fun SyncAndNotificationsScreen(
     builder: SyncAndNotificationSettingsContract.SettingsBuilder = koinInject(),
 ) {
     val context = LocalContext.current
-    val activityContext = LocalActivity.current!!
+    val activityContext = LocalActivity.current
 
     val (state, dispatch) = viewModel.observe { effect ->
         when (effect) {
@@ -48,7 +48,9 @@ internal fun SyncAndNotificationsScreen(
 
             is Effect.NavigateToFolderSyncAndPush -> {
                 ManageFoldersActivity.launch(
-                    activityContext,
+                    requireNotNull(activityContext) {
+                        "Can't initialize ManageFoldersActivity. The activityContext was null."
+                    },
                     accountId,
                 )
             }
