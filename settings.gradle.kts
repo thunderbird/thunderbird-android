@@ -85,7 +85,7 @@ include(
     ":app-thunderbird",
 )
 
-include(":benchmark")
+include(":benchmarks")
 
 include(
     ":app-common",
