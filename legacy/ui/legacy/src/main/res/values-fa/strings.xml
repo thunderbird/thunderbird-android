@@ -331,13 +331,13 @@
     <string name="account_settings_strip_signature_summary">امضای نقل‌قول‌ها حذف خواهد شد</string>
     <string name="account_settings_message_format_label">قالب پیام</string>
     <string name="account_settings_message_format_text">متن ساده (حذف تصاویر و قالب‌بندی)</string>
-    <string name="account_settings_message_format_html">HTML (نگهداری عکس‌ها و قالب‌بندی)</string>
+    <string name="account_settings_message_format_html">اچ‌تی‌ام‌ال (نگهداری عکس‌ها و قالب‌بندی)</string>
     <string name="account_settings_message_format_auto">خودکار</string>
     <string name="account_settings_always_show_cc_bcc_label">همیشه «رونوشت به» و «مخفیانه به» را نشان بده</string>
     <string name="account_settings_message_read_receipt_label">رسید دریافت</string>
     <string name="account_settings_message_read_receipt_summary">همیشه یک رسید دریافت درخواست کن</string>
     <string name="account_settings_quote_style_label">شیوهٔ نقل‌قول در پاسخ</string>
-    <string name="account_settings_quote_style_prefix">پیشوند (چون جی‌میل)</string>
+    <string name="account_settings_quote_style_prefix">پیشوند (مثل جی‌میل)</string>
     <string name="account_settings_quote_style_header">سرایند (مثل اوت‌لوک)</string>
     <string name="account_settings_upload_sent_messages_label">بارگذاری پیام‌های ارسالی</string>
     <string name="account_settings_upload_sent_messages_summary">پیام‌ها پس از ارسال در پوشه ارسال (Sent) بارگذاری شوند</string>
@@ -395,8 +395,8 @@
     <string name="folder_settings_clear_local_folder_action">پاک‌کردن پیام‌ها از روی دستگاه</string>
     <string name="account_settings_incoming_label">کارساز ورودی</string>
     <string name="account_settings_incoming_summary">پیکربندی کارساز رایانامه ورودی</string>
-    <string name="account_settings_outgoing_label">کارساز خروجی</string>
-    <string name="account_settings_outgoing_summary">کارساز خروجی رایانامه (SMTP) را پیکربندی کنید</string>
+    <string name="account_settings_outgoing_label">سرور خروجی</string>
+    <string name="account_settings_outgoing_summary">سرور خروجی رایانامه (SMTP) را پیکربندی کنید</string>
     <string name="account_settings_name_label">نام شما</string>
     <string name="notifications_title">آگاهی‌ها</string>
     <string name="account_settings_vibration">لرزش</string>
@@ -425,7 +425,7 @@
     <string name="account_settings_composition_title">گزینه‌های نوشتن پیام</string>
     <string name="account_settings_composition_label">پیش‌فرض‌های نوشتن</string>
     <string name="account_settings_composition_summary">پیش‌فرض‌های خودتان را برای «از»، «مخفیانه به» و «امضا» تنظیم کنید</string>
-    <string name="account_settings_identities_label">مدیریت هویت‌ها</string>
+    <string name="account_settings_identities_label">مدیریت شخصیت‌ها</string>
     <string name="account_settings_identities_summary">نشانی‌های دیگر برای «از» و امضاهای دیگری تنظیم کنید</string>
     <string name="manage_identities_title">مدیریت هویت‌ها</string>
     <string name="manage_identities_context_menu_title">مدیریت هویت</string>
@@ -936,4 +936,17 @@
         <item quantity="other">‫‏<xliff:g id="count">%1$d</xliff:g> پیوست (<xliff:g id="اندازه">%2$s</xliff:g>)</item>
     </plurals>
     <string name="notification_summary_delete_summary">کنش حذف را به آگاهی‌ای که چندین پیام جدید را خلاصه می‌کند می‌افزاید</string>
+    <string name="camera_capture_lost">تصویر ثبت‌شده به دلیل بسته‌شدن برنامه از دست رفت. لطفاً دوباره تلاش کنید.</string>
+    <string name="changelog_latest_label_text">جدیدترین</string>
+    <string name="changelog_type_new_text">جدید</string>
+    <string name="changelog_type_changed_text">تغییر‌یافته</string>
+    <string name="changelog_type_fixed_text">رفع‌شده</string>
+    <string name="notification_show_contact_picture_title">نمایش تصویر مخاطب در اعلان‌ها</string>
+    <string name="notification_show_contact_picture_summary">نمایش تصویر فرستنده در اعلان پیام‌های جدید</string>
+    <string name="notification_actions_cutoff_description">حد نمایش اقدام‌ها</string>
+    <string name="accessibility_move_cutoff_up">انتقال مرز نمایش اقدامات به بالا</string>
+    <string name="accessibility_move_cutoff_down">انتقال مرز نمایش اقدامات به پایین</string>
+    <string name="message_view_from_me_text">من</string>
+    <string name="global_settings_privacy_incognito_keyboard">صفحه‌کلید ناشناس</string>
+    <string name="global_settings_privacy_incognito_keyboard_detail">هنگام نوشتن پیام‌ها، از صفحه‌کلید بخواهید آنچه تایپ می‌کنید یاد نگیرد</string>
 </resources>
