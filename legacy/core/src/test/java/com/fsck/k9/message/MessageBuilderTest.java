@@ -38,6 +38,7 @@ import net.thunderbird.core.preference.GeneralSettings;
 import net.thunderbird.core.preference.GeneralSettingsManager;
 import net.thunderbird.core.preference.debugging.DebuggingSettings;
 import net.thunderbird.core.preference.display.DisplaySettings;
+import net.thunderbird.core.preference.imageCompression.ImageCompressionSettings;
 import net.thunderbird.core.preference.interaction.InteractionSettings;
 import net.thunderbird.core.preference.network.NetworkSettings;
 import net.thunderbird.core.preference.notification.NotificationPreference;
@@ -221,7 +222,8 @@ public class MessageBuilderTest extends RobolectricTest {
                 new DisplaySettings(),
                 new PrivacySettings(),
                 new DebuggingSettings(true,false,false),
-                new InteractionSettings()
+                new InteractionSettings(),
+                new ImageCompressionSettings()
             );
         }
 
