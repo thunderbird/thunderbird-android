@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="onboarding_welcome_start_button">شروع</string>
-    <string name="onboarding_welcome_import_button">درون‌برد تنظیمات</string>
+    <string name="onboarding_welcome_import_button">درون‌برد تنظیمات K-9</string>
     <string name="onboarding_welcome_text">کارهٔ رایانامه‌ای نرم‌افزار آزاد، محرمانگی‌محور و بدون تبلیغ برای اندروید.</string>
-    <string name="onboarding_welcome_developed_by">توسط یک تیم اختصاصی در MZLA Technologies و یک جامعه سراسری از داوطلبان توسعه یافته است. بخشی از خانواده Mozilla است.</string>
+    <string name="onboarding_welcome_developed_by">توسط یک تیم اختصاصی در Thunderbird Technologies Corporation و یک جامعه سراسری از داوطلبان توسعه یافته است.با افتخار بخشی از خانواده Mozilla است.</string>
 </resources>
