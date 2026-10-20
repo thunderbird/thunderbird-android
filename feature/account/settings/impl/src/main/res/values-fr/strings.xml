@@ -156,4 +156,13 @@
     <string name="account_settings_outgoing_label">Serveur sortant</string>
     <string name="account_settings_outgoing_summary">Configurer le serveur de courrier sortant (SMTP)</string>
     <string name="account_settings_composition">Envoi des courriels</string>
+    <string name="account_settings_notificaction_and_sync">Notification et synchronisation</string>
+    <string name="account_settings_notification_style">Style de notification</string>
+    <string name="account_settings_folder_sync_and_push">Synchronisation des dossiers et poussé</string>
+    <string name="account_settings_folder_sync_and_push_description">Activer l’interrogation, le poussé , par dossier</string>
+    <string name="account_settings_manage_folders">Gérer les dossiers</string>
+    <string name="account_settings_folder_visibility_and_sort_description">Changer les dossiers par défaut et la visibilité des dossiers</string>
+    <string name="account_settings_fetching_and_data_limits">Récupération et limites de données</string>
+    <string name="account_settings_fetching_and_data_limits_description">Limites de fréquence et de synchronisation</string>
+    <string name="account_settings_notification_style_description">Personnaliser les sons, les vibrations et les pastilles</string>
 </resources>
