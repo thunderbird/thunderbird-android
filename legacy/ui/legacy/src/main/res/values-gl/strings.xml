@@ -964,4 +964,6 @@
     <string name="debug_invalidate_access_token_already_modified">O token de acceso almacenado xa foi modificado.</string>
     <string name="debug_feature_flags">DEPURACIÓN: Indicadores de funcionalidade</string>
     <string name="no_network_message_will_be_sent_later_toast">Sen conexión. A mensaxe enviarase cando haxa conexión</string>
+    <string name="account_settings_folder_sync_and_push">Sincronización de carpetas e push</string>
+    <string name="account_settings_fetching_and_data_limits">Recuperación e límites de datos</string>
 </resources>
