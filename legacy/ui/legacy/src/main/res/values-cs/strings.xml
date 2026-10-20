@@ -978,4 +978,5 @@
     <string name="error_no_contact_provider">Nebyla nalezena aplikace kontaktů. Pro přidání této adresy si nainstalujte aplikaci kontaktů.</string>
     <string name="account_setup_visibility_and_syncing">Viditelnost a synchronizace</string>
     <string name="remote_feature_flag_preferences">Vzdálené příznaky funkcí</string>
+    <string name="account_settings_folder_sync_and_push">Synchronizace složek a služba push</string>
 </resources>
