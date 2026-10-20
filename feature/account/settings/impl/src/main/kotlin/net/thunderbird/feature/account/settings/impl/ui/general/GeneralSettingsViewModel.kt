@@ -42,6 +42,7 @@ internal class GeneralSettingsViewModel(
             is Event.OnNameChange -> updateSetting(UpdateGeneralSettingCommand.UpdateName(event.name))
             is Event.OnSelectAvatarImageClick -> emitEffect(Effect.OpenAvatarImagePicker)
             is Event.OnAvatarImagePicked -> onAvatarImagePicked(event)
+            is Event.OnManageFoldersSelected -> emitEffect(Effect.OpenManageFolders)
         }
     }
 
