@@ -156,4 +156,13 @@
     <string name="account_settings_outgoing_label">Postausgangsserver</string>
     <string name="account_settings_outgoing_summary">Postausgangsserver (SMTP) konfigurieren</string>
     <string name="account_settings_composition">E-Mails senden</string>
+    <string name="account_settings_notificaction_and_sync">Benachrichtigung und Synchronisation</string>
+    <string name="account_settings_notification_style">Benachrichtigungsart</string>
+    <string name="account_settings_notification_style_description">Ton, Vibration und Badges anpassen</string>
+    <string name="account_settings_folder_sync_and_push">Ordnersynchronisation und Push</string>
+    <string name="account_settings_fetching_and_data_limits">Abruf- und Datenlimits</string>
+    <string name="account_settings_folder_sync_and_push_description">Polling/Push pro Ordner aktivieren</string>
+    <string name="account_settings_manage_folders">Ordner verwalten</string>
+    <string name="account_settings_folder_visibility_and_sort_description">Standardordner und Ordnersichtbarkeit ändern</string>
+    <string name="account_settings_fetching_and_data_limits_description">Häufigkeit und Synchronisationslimits</string>
 </resources>
