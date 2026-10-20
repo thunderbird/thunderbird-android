@@ -46,7 +46,7 @@
     <string name="account_settings_remote_search_num_results_entries_500">۵۰۰</string>
     <string name="account_settings_remote_search_num_results_entries_1000">۱۰۰۰</string>
     <string name="account_settings_remote_search_num_label">محدودیت جست‌و‌جوی کارساز</string>
-    <string name="account_settings_mail_display_count_label">اندازه شاخه محلی</string>
+    <string name="account_settings_mail_display_count_label">اندازه پوشه محلی</string>
     <string name="account_settings_options_mail_display_count_10">۱۰ پیام</string>
     <string name="account_settings_options_mail_display_count_25">۲۵ پیام</string>
     <string name="account_settings_options_mail_display_count_50">۵۰ پیام</string>
@@ -87,7 +87,7 @@
     <string name="account_settings_autodownload_message_size_5120">۵ مبی‌بایت</string>
     <string name="account_settings_autodownload_message_size_10240">۱۰ مبی‌بایت</string>
     <string name="account_settings_autodownload_message_size_any">هر اندازه‌ای (بدون محدودیت)</string>
-    <string name="account_settings_mail_check_frequency_label">فواصل بررسی شاخه</string>
+    <string name="account_settings_mail_check_frequency_label">فواصل بررسی پوشه</string>
     <string name="account_settings_options_mail_check_frequency_never">هرگز</string>
     <string name="account_settings_options_mail_check_frequency_15min">هر ۱۵ دقیقه</string>
     <string name="account_settings_options_mail_check_frequency_30min">هر ۳۰ دقیقه</string>
@@ -112,7 +112,7 @@
     <string name="account_settings_incoming_label">کارساز ورودی</string>
     <string name="account_settings_incoming_summary">پیکربندی کارساز رایانامه ورودی</string>
     <string name="account_settings_push_advanced_title">پیشرفته</string>
-    <string name="account_settings_push_limit_label">حداکثر شاخه‌ها برای بررسی با push</string>
+    <string name="account_settings_push_limit_label">حداکثر پوشه‌ها برای بررسی با پیشرانی</string>
     <string name="account_settings_push_limit_5">۵ شاخه</string>
     <string name="account_settings_push_limit_10">۱۰ شاخه</string>
     <string name="account_settings_push_limit_25">۲۵ شاخه</string>
