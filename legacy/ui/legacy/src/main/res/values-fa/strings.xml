@@ -776,7 +776,7 @@
     <string name="ac_transfer_will_be_sent">پیام به نشانی شما ارسال خواهد شد:</string>
     <string name="ac_transfer_generating">در حال ساخت پیام راه‌انداز…</string>
     <string name="ac_transfer_sending_to">ارسال پیام به:</string>
-    <string name="ac_transfer_finish">برای پایان پیام را روی دیگر افزاره‌تان گشوده و کد برپایی را وارد کنید.</string>
+    <string name="ac_transfer_finish">برای پایان پیام را روی دیگر دستگاه‌تان گشوده و کد برپایی را وارد کنید.</string>
     <string name="ac_transfer_show_code">نمایش کد راه‌انداز</string>
     <string name="ac_transfer_msg_subject">پیام راه‌انداز Autocrypt</string>
     <string name="ac_transfer_msg_body">این پیام حاوی تمام اطلاعات لازم برای انتقال امن تنظیمات Autocrypt و کلید سرّی‌تان از دستگاه اصلی‌تان است. برای اینکه دستگاه جدیدتان را برای Autocrypt آماده کنید، لطفاً دستورالعمل‌هایی که روی دستگاه جدید به شما ارائه می‌شود را دنبال کنید. می‌توانید این پیام را پیش خود نگه دارید و آن را به‌عنوان پشتیبان کلید سرّی‌تان به‌کار ببرید. برای انجام این کار باید گذرواژه را یادداشت و در جای امنی نگهداری کنید.</string>
@@ -911,7 +911,7 @@
     <string name="general_settings_message_list_date_time_format_title">قالب تاریخ و زمان</string>
     <string name="general_settings_message_list_date_time_format_contextual">بافتاری</string>
     <string name="general_settings_message_list_date_time_format_full">کامل</string>
-    <string name="global_settings_splitview_when_unfolded">هنگام باز شدن افزاره</string>
+    <string name="global_settings_splitview_when_unfolded">هنگام باز شدن دستگاه(تاشو)</string>
     <string name="general_settings_message_list_date_time_format_iso">ایزو</string>
     <string name="message_view_attachments_view">دیدن</string>
     <string name="message_view_attachments_title">پیوست‌ها</string>
