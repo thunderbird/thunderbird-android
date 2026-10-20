@@ -39,7 +39,7 @@ class DefaultDebuggingSettingsPreferenceManager(
     private val configState: MutableStateFlow<DebuggingSettings> = MutableStateFlow(value = loadConfig())
     private val mutex = Mutex()
     private val storage: Storage
-        get() = storageProvider.loadLatestStorage()
+        get() = storageProvider.storage
 
     override fun getConfig(): DebuggingSettings = configState.value
     override fun getConfigFlow(): Flow<DebuggingSettings> = configState

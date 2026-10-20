@@ -16,7 +16,6 @@ import net.thunderbird.core.preference.PreferenceChangeSubscriber
 import net.thunderbird.core.preference.PreferenceScope
 import net.thunderbird.core.preference.storage.Storage
 import net.thunderbird.core.preference.storage.StorageEditor
-import net.thunderbird.core.preference.storage.StoragePersister
 import net.thunderbird.core.preference.storage.StorageProvider
 import net.thunderbird.core.preference.storage.getEnumOrDefault
 import net.thunderbird.core.preference.storage.putEnum
@@ -37,7 +36,7 @@ class DefaultDisplayCoreSettingsPreferenceManager(
     private val configState: MutableStateFlow<DisplayCoreSettings> = MutableStateFlow(value = loadConfig())
     private val mutex = Mutex()
     private val storage: Storage
-        get() = storageProvider.loadLatestStorage()
+        get() = storageProvider.storage
 
     override fun getConfig(): DisplayCoreSettings = configState.value
 
