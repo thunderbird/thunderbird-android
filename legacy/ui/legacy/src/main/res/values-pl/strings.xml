@@ -976,5 +976,9 @@
     <string name="account_settings_signature_preview_empty">Tutaj pojawi się podgląd Twojego podpisu</string>
     <string name="error_no_contact_provider">Nie znaleziono aplikacji kontaktów. Zainstaluj aplikację kontaktów, aby dodać ten adres.</string>
     <string name="remote_feature_flag_preferences">Flagi funkcji zdalnych</string>
-    <string name="account_setup_visibility_and_syncing">Widoczność i synchronizacja</string>
+    <string name="account_setup_visibility_and_syncing">Synchronizacja folderów i przesyłanie</string>
+    <string name="account_settings_folder_sync_and_push">Synchronizacja folderów i przesyłanie</string>
+    <string name="account_settings_fetching_and_data_limits">Limity pobierania i danych</string>
+    <string name="account_settings_folder_visibility">Widoczność folderów</string>
+    <string name="account_settings_sync_and_notifications">Synchronizacja i powiadomienia</string>
 </resources>
