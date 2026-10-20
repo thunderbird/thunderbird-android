@@ -156,4 +156,13 @@
     <string name="account_settings_outgoing_label">Servidor de saída</string>
     <string name="account_settings_outgoing_summary">Configura o servidor de correo saínte (SMTP)</string>
     <string name="account_settings_composition">Enviando correo</string>
+    <string name="account_settings_notificaction_and_sync">Notificaciones y sincronización</string>
+    <string name="account_settings_notification_style">Estilo de notificación</string>
+    <string name="account_settings_notification_style_description">Personalizar son, vibración, insignias</string>
+    <string name="account_settings_folder_sync_and_push">Sincronización de carpetas e push</string>
+    <string name="account_settings_folder_sync_and_push_description">Habilitar a poll/push, por cartafol</string>
+    <string name="account_settings_manage_folders">Xestionar cartafoles</string>
+    <string name="account_settings_folder_visibility_and_sort_description">Cambiar cartafoles predeterminados e visibilidade do cartafol</string>
+    <string name="account_settings_fetching_and_data_limits">Recuperación e límites de datos</string>
+    <string name="account_settings_fetching_and_data_limits_description">Límites de frecuencia e sincronización</string>
 </resources>
