@@ -156,4 +156,13 @@
     <string name="account_settings_outgoing_label">Serwer poczty wychodzącej</string>
     <string name="account_settings_outgoing_summary">Ustawienia serwera poczty wychodzącej (SMTP)</string>
     <string name="account_settings_composition">Wysyłanie poczty</string>
+    <string name="account_settings_notificaction_and_sync">Powiadomienia i synchronizacja</string>
+    <string name="account_settings_notification_style">Styl powiadomień</string>
+    <string name="account_settings_notification_style_description">Dostosuj dźwięk, wibracje, plakietki</string>
+    <string name="account_settings_folder_sync_and_push">Synchronizacja folderów i przesyłanie</string>
+    <string name="account_settings_folder_sync_and_push_description">Włącz sondowanie/przesyłanie, dla każdego folderu</string>
+    <string name="account_settings_manage_folders">Zarządzaj folderami</string>
+    <string name="account_settings_folder_visibility_and_sort_description">Zmień foldery domyślne oraz widoczność folderów</string>
+    <string name="account_settings_fetching_and_data_limits">Limity pobierania i danych</string>
+    <string name="account_settings_fetching_and_data_limits_description">Limity częstotliwości i synchronizacji</string>
 </resources>
