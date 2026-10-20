@@ -970,5 +970,9 @@
     <string name="message_compose_encrypting_message">Chiffrement du courriel…</string>
     <string name="account_settings_signature_preview_empty">L’aperçu de votre signature s’affichera ici</string>
     <string name="remote_feature_flag_preferences">Indicateurs de fonction distants</string>
-    <string name="account_setup_visibility_and_syncing">Visibilité et synchronisation</string>
+    <string name="account_setup_visibility_and_syncing">Synchronisation des dossiers et poussé</string>
+    <string name="account_settings_folder_sync_and_push">Synchronisation des dossiers et poussé</string>
+    <string name="account_settings_fetching_and_data_limits">Récupération et limites de données</string>
+    <string name="account_settings_sync_and_notifications">Synchronisation et notifications</string>
+    <string name="account_settings_folder_visibility">Visibilité des dossiers</string>
 </resources>
