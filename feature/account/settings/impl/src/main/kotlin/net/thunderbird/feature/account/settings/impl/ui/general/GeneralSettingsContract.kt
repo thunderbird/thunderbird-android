@@ -38,6 +38,7 @@ internal interface GeneralSettingsContract {
         data class OnAvatarChange(val avatar: Avatar) : Event
         data object OnSelectAvatarImageClick : Event
         data class OnAvatarImagePicked(val uri: Uri) : Event
+        data object OnManageFoldersSelected : Event
 
         data object OnBackPressed : Event
     }
@@ -45,6 +46,7 @@ internal interface GeneralSettingsContract {
     sealed interface Effect {
         object NavigateBack : Effect
         object OpenAvatarImagePicker : Effect
+        object OpenManageFolders : Effect
     }
 
     interface Validator {

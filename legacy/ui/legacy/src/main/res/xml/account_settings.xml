@@ -22,10 +22,9 @@
 
     <Preference
         android:icon="@drawable/ic_sync"
-        android:key="fetching_mail"
-        android:title="@string/account_settings_sync"
+        android:key="sync_and_notifications"
+        android:title="@string/account_settings_sync_and_notifications"
         />
-
 
     <Preference
         android:icon="@drawable/ic_edit"
@@ -33,16 +32,13 @@
         android:title="@string/account_settings_composition"/>
 
 
+    <!-- TODO: Replace with Jetpack Compose settings in #11723 and #11724 -->
     <PreferenceScreen
         android:icon="@drawable/ic_folder"
         android:key="folders"
         android:title="@string/account_settings_folders"
+        app:isPreferenceVisible="false"
         >
-
-        <Preference
-            android:key="visibility_and_syncing"
-            android:title="@string/account_setup_visibility_and_syncing"
-            />
 
         <com.fsck.k9.ui.settings.account.FolderListPreference
             android:key="auto_select_folder"
@@ -87,10 +83,12 @@
 
     </PreferenceScreen>
 
+    <!-- TODO: Replace with Jetpack Compose settings in #11722 -->
     <PreferenceScreen
         android:icon="@drawable/ic_notifications"
         android:key="notifications"
         android:title="@string/notifications_title"
+        app:isPreferenceVisible="false"
         >
 
         <CheckBoxPreference
