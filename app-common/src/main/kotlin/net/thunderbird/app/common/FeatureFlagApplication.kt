@@ -17,6 +17,14 @@ private const val TAG = "FeatureFlagApplication"
 abstract class FeatureFlagApplication : BaseApplication() {
     protected abstract val appName: String
     protected abstract val appVersion: String
+
+    /**
+     * The build type of the app, `BuildConfig.BUILD_TYPE` from the app module.
+     *
+     * Don't use the `BuildConfig` of a library module. Libraries only have `debug` and `release`, so the `daily` and
+     * `beta` apps would get the `release` feature flags.
+     */
+    protected abstract val buildType: String
     private val evaluator: MultiFeatureFlagProviderEvaluator by inject()
     private val targetingKeyStore: FeatureFlagConfigStore by inject()
 
@@ -34,7 +42,7 @@ abstract class FeatureFlagApplication : BaseApplication() {
                 evaluator = evaluator,
                 featureFlagConfigStore = targetingKeyStore,
                 app = appName,
-                buildType = BuildConfig.BUILD_TYPE,
+                buildType = featureFlagBuildType(buildType),
                 appVersion = appVersion,
                 extras = mapOf("os_sdk_int" to Value.Int(Build.VERSION.SDK_INT)),
             )
