@@ -17,7 +17,7 @@
     <string name="changelog_loading_error">گزارش تغییرات بار نشد.</string>
     <string name="changelog_version_title">نسخهٔ %s</string>
     <string name="changelog_recent_changes_title">تازه‌ها</string>
-    <string name="changelog_show_recent_changes">هنگامی که برنامه روزآمد شد تغییرات تازه را نشان بده</string>
+    <string name="changelog_show_recent_changes">هنگامی که برنامه به‌روز‌رسانی شد تغییرات تازه را نشان بده</string>
     <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
     <string name="changelog_snackbar_text">از تازه‌های این نسخه باخبر شوید</string>
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
@@ -356,8 +356,8 @@
     <string name="account_settings_crypto_encrypt_all_drafts">ذخیرهٔ همهٔ پیش‌نویس‌ها به‌صورت رمزنگاری‌شده</string>
     <string name="account_settings_crypto_encrypt_all_drafts_on">همهٔ پیش‌نویس‌ها به‌صورت رمزنگاری‌شده ذخیره می‌شوند</string>
     <string name="account_settings_crypto_encrypt_all_drafts_off">پیش‌نویس‌ها فقط در صورتی رمزنگاری شوند که رمزنگاری فعال باشد</string>
-    <string name="account_settings_mail_check_frequency_label">فواصل بررسی شاخه</string>
-    <string name="account_settings_mail_display_count_label">اندازه شاخه محلی</string>
+    <string name="account_settings_mail_check_frequency_label">فواصل بررسی پوشه</string>
+    <string name="account_settings_mail_display_count_label">اندازه پوشه محلی</string>
     <string name="account_settings_autodownload_message_size_label">دریافت پیام‌ها تا حداکثر</string>
     <string name="account_settings_autodownload_message_size_1">۱ کیبی‌بایت</string>
     <string name="account_settings_autodownload_message_size_2">۲ کیبی‌بایت</string>
@@ -855,7 +855,7 @@
     <string name="push_notification_state_alarm_permission_missing">اجازهٔ زمان‌بندی هشدارها وجود نداره</string>
     <string name="push_notification_grant_alarm_permission">زدن برای اعطای اجازه.</string>
     <string name="account_delete_dlg_instructions_fmt">حساب کاربری \"<xliff:g id="account">%1$s</xliff:g>\" از <xliff:g id="app_name">%2$s</xliff:g> حذف خواهد شد.</string>
-    <string name="about_title">درباره<xliff:g id="app_name">%s</xliff:g></string>
+    <string name="about_title">درباره <xliff:g id="app_name">%s</xliff:g></string>
     <string name="dialog_openkeychain_info_text">برنامه کاربردی OpenKeychain جهت فعال‌سازی رمزگذاری سرتاسری مورد نیاز است.</string>
     <string name="push_info_notification_explanation_text">در زمان استفاده از پیشرانی، <xliff:g id="app_name">%1$s</xliff:g> اتصال به کارساز را نگاه می‌دارد. اندروید نیازمند یک آگاهی همیشگی جهت فعال ماندن برنامه در پس‌زمینه است. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
     <string name="about_app_authors_thunderbird">گروه همراه تاندربرد</string>
@@ -949,4 +949,19 @@
     <string name="message_view_from_me_text">من</string>
     <string name="global_settings_privacy_incognito_keyboard">صفحه‌کلید ناشناس</string>
     <string name="global_settings_privacy_incognito_keyboard_detail">هنگام نوشتن پیام‌ها، از صفحه‌کلید بخواهید آنچه تایپ می‌کنید یاد نگیرد</string>
+    <string name="account_setup_visibility_and_syncing">نمایش و همگام‌سازی</string>
+    <string name="account_settings_signature_html_label">امضای اچ‌تی‌ام‌ال</string>
+    <string name="account_settings_signature_is_html_label">ذخیره‌ی امضا به‌صورت اچ‌تی‌ام‌ال</string>
+    <string name="account_settings_signature_is_html_summary">تفسیر امضا به‌صورت اچ‌تی‌ام‌ال. برای حفظ امنیت، اسکریپت‌ها و گرداننده‌های رویداد حذف خواهند شد.</string>
+    <string name="account_settings_signature_preview">پیش‌نمایش امضا</string>
+    <string name="account_settings_signature_preview_empty">پیش‌نمایش امضای شما در اینجا نمایش داده می‌شود</string>
+    <string name="account_settings_signature_clear_label">پاک کردن امضا</string>
+    <string name="sort_by_then_by">سپس بر اساس…</string>
+    <string name="sort_by_indicator">•</string>
+    <string name="remote_feature_flag_preferences">پرچم‌های قابلیت از راه دور</string>
+    <string name="animation_setting_on">روشن</string>
+    <string name="animation_setting_off">خاموش</string>
+    <string name="animation_setting_follow_system">پیروی از تنظیمات پیش‌فرض سیستم</string>
+    <string name="message_compose_encrypting_message">در حال رمزگذاری پیام…</string>
+    <string name="error_no_contact_provider">هیچ برنامه‌ی مخاطبینی پیدا نشد. برای افزودن این نشانی، یک برنامه‌ی مخاطبین نصب کنید.</string>
 </resources>
