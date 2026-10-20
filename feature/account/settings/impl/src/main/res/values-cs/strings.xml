@@ -156,4 +156,10 @@
     <string name="account_settings_outgoing_label">Server odchozí pošty</string>
     <string name="account_settings_outgoing_summary">Nastavit server odchozí pošty (SMTP)</string>
     <string name="account_settings_composition">Odesílání pošty</string>
+    <string name="account_settings_notificaction_and_sync">Oznámení a synchronizace</string>
+    <string name="account_settings_notification_style">Styl oznámení</string>
+    <string name="account_settings_notification_style_description">Přizpůsobit zvuk, vibrace, odznaky</string>
+    <string name="account_settings_folder_sync_and_push">Synchronizace složek a služba push</string>
+    <string name="account_settings_folder_sync_and_push_description">Povolit službu poll/push, podle složek</string>
+    <string name="account_settings_manage_folders">Správa složek</string>
 </resources>
