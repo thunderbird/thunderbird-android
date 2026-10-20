@@ -890,7 +890,7 @@
     <string name="changelog_type_fixed_text">FIXO</string>
     <string name="notification_actions_settings_title">Accións de notificación</string>
     <string name="notification_actions_settings_summary">Escolle que accións aparecen nas notificacións por correo electrónico</string>
-    <string name="notification_summary_delete_title">Amosar Eliminarnas notificacións de varias mensaxes</string>
+    <string name="notification_summary_delete_title">Amosar Eliminar nas notificacións de varias mensaxes</string>
     <string name="notification_summary_delete_summary">Engade unha acción de Eliminar ás notificacións que resumen varias mensaxes novas</string>
     <string name="notification_show_contact_picture_title">Amosar imaxes de contacto nas notificacións</string>
     <string name="notification_show_contact_picture_summary">Amosar os avatares dos remitentes nas notificacións de mensaxes novas</string>
