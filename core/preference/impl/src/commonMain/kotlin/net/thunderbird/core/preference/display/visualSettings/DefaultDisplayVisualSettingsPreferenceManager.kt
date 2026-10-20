@@ -49,7 +49,7 @@ class DefaultDisplayVisualSettingsPreferenceManager(
     }.stateIn(scope = scope, started = SharingStarted.Eagerly, initialValue = internalConfigState.value)
     private val mutex = Mutex()
     private val storage: Storage
-        get() = storageProvider.loadLatestStorage()
+        get() = storageProvider.storage
 
     override fun save(config: DisplayVisualSettings) {
         logger.debug(TAG) { "save() called with: config = $config" }

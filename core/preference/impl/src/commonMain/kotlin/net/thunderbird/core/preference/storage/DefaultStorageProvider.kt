@@ -18,12 +18,6 @@ class DefaultStorageProvider(
             }
         }
 
-    override fun loadLatestStorage(): Storage = synchronized(storageLock) {
-        storagePersister.loadValues().also { newStorage ->
-            currentStorage = newStorage
-        }
-    }
-
     override fun createStorageEditor(): StorageEditor {
         return storagePersister.createStorageEditor { updater ->
             synchronized(storageLock) {

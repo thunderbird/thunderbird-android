@@ -43,7 +43,7 @@ class ChangelogVersionHistoryTest {
     fun setUp() {
         whenever(context.packageManager).thenReturn(packageManager)
         whenever(context.packageName).thenReturn("net.thunderbird.android")
-        whenever(storageProvider.loadLatestStorage()).thenReturn(storage)
+        whenever(storageProvider.storage).thenReturn(storage)
         whenever(storageProvider.createStorageEditor()).thenReturn(storageEditor)
 
         whenever(

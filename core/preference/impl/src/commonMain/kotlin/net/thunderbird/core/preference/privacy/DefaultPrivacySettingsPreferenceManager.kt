@@ -16,7 +16,6 @@ import net.thunderbird.core.preference.PreferenceChangeSubscriber
 import net.thunderbird.core.preference.PreferenceScope
 import net.thunderbird.core.preference.storage.Storage
 import net.thunderbird.core.preference.storage.StorageEditor
-import net.thunderbird.core.preference.storage.StoragePersister
 import net.thunderbird.core.preference.storage.StorageProvider
 
 private const val TAG = "DefaultPrivacySettingsPreferenceManager"
@@ -35,7 +34,7 @@ class DefaultPrivacySettingsPreferenceManager(
     private val configState: MutableStateFlow<PrivacySettings> = MutableStateFlow(value = loadConfig())
     private val mutex = Mutex()
     private val storage: Storage
-        get() = storageProvider.loadLatestStorage()
+        get() = storageProvider.storage
 
     override fun getConfig(): PrivacySettings = configState.value
     override fun getConfigFlow(): Flow<PrivacySettings> = configState

@@ -27,7 +27,7 @@ class DefaultMessageListPreferencesManager(
     private val preferences = MutableStateFlow(value = loadPreferences())
 
     private val storage: Storage
-        get() = storageProvider.loadLatestStorage()
+        get() = storageProvider.storage
 
     override fun save(config: DisplayMessageListSettings) {
         logger.debug(TAG) { "save() called with: config = $config" }

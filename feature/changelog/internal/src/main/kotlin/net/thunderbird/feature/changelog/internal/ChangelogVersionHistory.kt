@@ -30,7 +30,7 @@ class ChangelogVersionHistory(
     val recentChanges by lazy { changeLogProvider.getChangeLogSince(lastVersionCode) }
     private val mutex = Mutex()
     private val storage: Storage
-        get() = storageProvider.loadLatestStorage()
+        get() = storageProvider.storage
 
     private var firstVersionCode = 0
     private var lastVersionCode = 0
