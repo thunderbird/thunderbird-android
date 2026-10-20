@@ -976,7 +976,10 @@
     <string name="message_view_from_me_text">já</string>
     <string name="account_settings_signature_preview_empty">Náhled vašeho podpisu se objeví zde</string>
     <string name="error_no_contact_provider">Nebyla nalezena aplikace kontaktů. Pro přidání této adresy si nainstalujte aplikaci kontaktů.</string>
-    <string name="account_setup_visibility_and_syncing">Viditelnost a synchronizace</string>
+    <string name="account_setup_visibility_and_syncing">Synchronizace složek a služba push</string>
     <string name="remote_feature_flag_preferences">Vzdálené příznaky funkcí</string>
     <string name="account_settings_folder_sync_and_push">Synchronizace složek a služba push</string>
+    <string name="account_settings_fetching_and_data_limits">Načítání a omezení dat</string>
+    <string name="account_settings_sync_and_notifications">Synchronizace a oznámení</string>
+    <string name="account_settings_folder_visibility">Viditelnost složek</string>
 </resources>
