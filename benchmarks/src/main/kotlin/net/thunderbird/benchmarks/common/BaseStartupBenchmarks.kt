@@ -10,6 +10,7 @@ import androidx.test.uiautomator.By
 import androidx.test.uiautomator.UiDevice
 import androidx.test.uiautomator.Until
 import net.thunderbird.benchmarks.common.extension.ensureAccountConfigured
+import net.thunderbird.benchmarks.common.extension.waitForMessageListItems
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -19,8 +20,10 @@ import org.junit.Test
  *
  * Extend it in the app's benchmark module, annotated with `@RunWith(AndroidJUnit4::class)` and `@LargeTest`.
  *
+ * Reports `timeToInitialDisplayMs` (first frame) and `timeToFullDisplayMs` (message list items shown).
+ *
  * To compare two code changes, run the same test before and after the change, on the same device,
- * and compare the `timeToInitialDisplayMs` median. Run on a physical device, not an emulator.
+ * and compare the medians. Run on a physical device, not an emulator.
  *
  * See: https://d.android.com/topic/performance/benchmarking/macrobenchmark-overview
  */
@@ -41,12 +44,28 @@ abstract class BaseStartupBenchmarks {
     fun startupCompilationNone() = benchmark(CompilationMode.None())
 
     /**
+     * Baseline Profile ignored, but the app is warmed up once first, so ART compiles the code it saw at runtime.
+     *
+     * Compare with [startupCompilationBaselineProfiles] to see what the Baseline Profile adds over JIT warm-up.
+     */
+    @Test
+    fun startupCompilationBaselineProfilesDisabled() = benchmark(
+        CompilationMode.Partial(baselineProfileMode = BaselineProfileMode.Disable, warmupIterations = 1),
+    )
+
+    /**
      * Closest to what users get on install from the Play Store: AOT compilation driven by the Baseline Profile.
      *
      * Fails if the APK doesn't contain a Baseline Profile; generate one first.
      */
     @Test
     fun startupCompilationBaselineProfiles() = benchmark(CompilationMode.Partial(BaselineProfileMode.Require))
+
+    /**
+     * Best case: the whole app is AOT compiled. Users don't get this, it shows how far the Baseline Profile could go.
+     */
+    @Test
+    fun startupCompilationFull() = benchmark(CompilationMode.Full())
 
     private fun benchmark(compilationMode: CompilationMode) {
         rule.measureRepeated(
@@ -66,6 +85,7 @@ abstract class BaseStartupBenchmarks {
                         MESSAGE_LIST_TIMEOUT_MS,
                     ),
                 ) { "Startup did not reach the message list" }
+                device.waitForMessageListItems(packageName, MESSAGE_LIST_TIMEOUT_MS)
             },
         )
     }

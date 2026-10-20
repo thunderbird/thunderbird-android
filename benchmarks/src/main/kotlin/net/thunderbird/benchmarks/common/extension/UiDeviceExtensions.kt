@@ -10,6 +10,7 @@ import androidx.test.uiautomator.StaleObjectException
 import androidx.test.uiautomator.UiDevice
 import androidx.test.uiautomator.UiObject2
 import androidx.test.uiautomator.Until
+import net.thunderbird.benchmarks.common.MESSAGE_LIST_RESOURCE_ID
 import net.thunderbird.benchmarks.common.account.InstrumentationBenchmarkAccountProvider
 import net.thunderbird.benchmarks.common.account.setup.AccountSetupRunner
 import net.thunderbird.benchmarks.common.account.setup.step.AutoDiscoveryPasswordStep
@@ -66,6 +67,18 @@ internal fun UiDevice.launch(packageName: String) {
 
     context.startActivity(intent)
     wait(Until.hasObject(By.pkg(packageName).depth(0)), TIMEOUT_MS)
+}
+
+/**
+ * Waits until the message list shows at least one item.
+ *
+ * The app reports fully drawn when the message list gets its first items. Waiting for them makes sure that moment is
+ * part of the measurement, so the time to full display is captured.
+ */
+internal fun UiDevice.waitForMessageListItems(packageName: String, timeoutMs: Long) {
+    pollUntil(timeoutMs, { "Message list has no items. The benchmark account needs messages in its inbox." }) {
+        findObject(By.res(packageName, MESSAGE_LIST_RESOURCE_ID))?.takeIf { it.childCount > 0 }
+    }
 }
 
 internal fun UiDevice.waitFor(selector: BySelector): UiObject2 {
