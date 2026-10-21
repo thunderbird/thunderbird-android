@@ -130,4 +130,6 @@
     <string name="account_settings_autodownload_message_size_2">2 KiB</string>
     <string name="account_settings_autodownload_message_size_4">4 KiB</string>
     <string name="account_settings_autodownload_message_size_8">8 KiB</string>
+    <string name="account_settings_folder_sync_and_push">폴더 동기화 및 푸시</string>
+    <string name="account_settings_fetching_and_data_limits">가져오기 및 데이터 한도</string>
 </resources>
