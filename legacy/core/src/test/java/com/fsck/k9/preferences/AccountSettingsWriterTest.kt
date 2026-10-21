@@ -102,6 +102,7 @@ class AccountSettingsWriterTest : K9RobolectricTest() {
             clock = get(),
             generalSettingsManager = get(),
             serverSettingsDtoSerializer = get(),
+            avatarImageRepository = get(),
             context = get(),
         )
         val account = createValidatedAccount(accountId).copy(
