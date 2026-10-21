@@ -1,8 +1,6 @@
 package com.fsck.k9.notification
 
-import app.k9mail.legacy.mailstore.MessageStoreManager
 import app.k9mail.legacy.message.controller.MessageReference
-import com.fsck.k9.mailstore.LocalStoreProvider
 import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.LockScreenNotificationVisibility
@@ -10,8 +8,8 @@ import net.thunderbird.feature.account.AccountId
 
 internal class NotificationRepository(
     private val notificationStoreProvider: NotificationStoreProvider,
-    private val localStoreProvider: LocalStoreProvider,
-    private val messageStoreManager: MessageStoreManager,
+    private val notificationMessageProvider: NotificationMessageProvider,
+    private val newMessageStateStore: NewMessageStateStore,
     private val notificationContentCreator: NotificationContentCreator,
     private val generalSettingsManager: GeneralSettingsManager,
     private val notificationDataStore: NotificationDataStore,
@@ -25,22 +23,18 @@ internal class NotificationRepository(
         if (notificationDataStore.isAccountInitialized(accountId)) return null
 
         return accountManager.findById(accountId)?.let { account ->
-            val localStore = localStoreProvider.getInstance(accountId)
+            val activeNotifications = mutableListOf<NotificationHolder>()
+            val inactiveNotifications = mutableListOf<InactiveNotificationHolder>()
 
-            val (activeNotificationMessages, inactiveNotificationMessages) = localStore.notificationMessages.partition {
-                it.notificationId != null
-            }
-
-            val activeNotifications = activeNotificationMessages.map { notificationMessage ->
+            for (notificationMessage in notificationMessageProvider.getNotificationMessages(accountId)) {
                 val isFromSelf = account.isAnIdentity(notificationMessage.message.from)
                 val content = notificationContentCreator.createFromMessage(notificationMessage.message, isFromSelf)
-                NotificationHolder(notificationMessage.notificationId!!, notificationMessage.timestamp, content)
-            }
-
-            val inactiveNotifications = inactiveNotificationMessages.map { notificationMessage ->
-                val isFromSelf = account.isAnIdentity(notificationMessage.message.from)
-                val content = notificationContentCreator.createFromMessage(notificationMessage.message, isFromSelf)
-                InactiveNotificationHolder(notificationMessage.timestamp, content)
+                val notificationId = notificationMessage.notificationId
+                if (notificationId != null) {
+                    activeNotifications.add(NotificationHolder(notificationId, notificationMessage.timestamp, content))
+                } else {
+                    inactiveNotifications.add(InactiveNotificationHolder(notificationMessage.timestamp, content))
+                }
             }
 
             notificationDataStore.initializeAccount(
@@ -92,7 +86,7 @@ internal class NotificationRepository(
         clearNotificationStore(accountId)
 
         if (clearNewMessageState) {
-            clearNewMessageState(accountId)
+            newMessageStateStore.clearNewMessageState(accountId)
         }
     }
 
@@ -110,34 +104,17 @@ internal class NotificationRepository(
     }
 
     private fun setNewMessageState(accountId: AccountId, operations: List<NotificationStoreOperation>) {
-        val messageStore = messageStoreManager.getMessageStore(accountId)
-
         for (operation in operations) {
             when (operation) {
                 is NotificationStoreOperation.Add -> {
-                    val messageReference = operation.messageReference
-                    messageStore.setNewMessageState(
-                        folderId = messageReference.folderId,
-                        messageServerId = messageReference.uid,
-                        newMessage = true,
-                    )
+                    newMessageStateStore.setNewMessageState(accountId, operation.messageReference, newMessage = true)
                 }
                 is NotificationStoreOperation.Remove -> {
-                    val messageReference = operation.messageReference
-                    messageStore.setNewMessageState(
-                        folderId = messageReference.folderId,
-                        messageServerId = messageReference.uid,
-                        newMessage = false,
-                    )
+                    newMessageStateStore.setNewMessageState(accountId, operation.messageReference, newMessage = false)
                 }
                 else -> Unit
             }
         }
-    }
-
-    private fun clearNewMessageState(accountId: AccountId) {
-        val messageStore = messageStoreManager.getMessageStore(accountId)
-        messageStore.clearNewMessageState()
     }
 
     private fun clearNotificationStore(accountId: AccountId) {
