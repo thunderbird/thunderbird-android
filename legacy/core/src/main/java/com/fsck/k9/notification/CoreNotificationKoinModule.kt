@@ -164,11 +164,21 @@ val coreNotificationModule = module {
             notificationIdRegistry = get(),
         )
     }
+    factory<NotificationMessageProvider> {
+        LocalStoreNotificationMessageProvider(
+            localStoreProvider = get(),
+        )
+    }
+    factory<NewMessageStateStore> {
+        MessageStoreNewMessageStateStore(
+            messageStoreManager = get(),
+        )
+    }
     single {
         NotificationRepository(
             notificationStoreProvider = get(),
-            localStoreProvider = get(),
-            messageStoreManager = get(),
+            notificationMessageProvider = get(),
+            newMessageStateStore = get(),
             notificationContentCreator = get(),
             generalSettingsManager = get(),
             notificationDataStore = get(),
