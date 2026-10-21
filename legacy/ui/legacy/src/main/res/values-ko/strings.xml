@@ -960,5 +960,9 @@
     <string name="account_settings_signature_preview_empty">서명 미리보기가 여기에 나타납니다</string>
     <string name="error_no_contact_provider">연락처 앱을 찾을 수 없습니다. 이 주소를 추가하려면 연락처 앱을 설치하세요.</string>
     <string name="remote_feature_flag_preferences">원격 기능 플래그</string>
-    <string name="account_setup_visibility_and_syncing">표시 및 동기화</string>
+    <string name="account_setup_visibility_and_syncing">폴더 동기화 및 푸시</string>
+    <string name="account_settings_sync_and_notifications">동기화 및 알림</string>
+    <string name="account_settings_folder_sync_and_push">폴더 동기화 및 푸시</string>
+    <string name="account_settings_fetching_and_data_limits">가져오기 및 데이터 한도</string>
+    <string name="account_settings_folder_visibility">폴더 표시 여부</string>
 </resources>
