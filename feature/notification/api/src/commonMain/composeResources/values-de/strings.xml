@@ -18,7 +18,7 @@
     <string name="notification_bg_send_title">E-Mail wird gesendet</string>
     <string name="send_failure_subject">Nachrichten konnten nicht gesendet werden</string>
     <string name="notification_additional_messages">+ %1$d weitere auf %2$s</string>
-    <string name="push_notification_state_initializing">Initialisieren…</string>
+    <string name="push_notification_state_initializing">Wird initialisiert…</string>
     <string name="push_notification_state_listening">Warte auf neue E-Mails</string>
     <string name="push_notification_state_wait_background_sync">Wartet, bis die Hintergrundsynchronisation erlaubt ist</string>
     <string name="push_notification_state_wait_network">Wartet, bis ein Netzwerk verfügbar ist</string>
