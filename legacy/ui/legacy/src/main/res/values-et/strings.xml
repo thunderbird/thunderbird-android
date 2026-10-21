@@ -963,5 +963,9 @@
     <string name="account_settings_signature_preview_empty">Sinu allkirja eelvaade saab olema nähtav siin</string>
     <string name="error_no_contact_provider">Ühtegi kontaktide haldusrakendust ei leidunud. Selle aadressi lisamiseks paigalda mõni vastav rakendus.</string>
     <string name="remote_feature_flag_preferences">Kaugjuhtavad funktsionaalsustunnused</string>
-    <string name="account_setup_visibility_and_syncing">Nähtavus ja sünkroonimine</string>
+    <string name="account_setup_visibility_and_syncing">Kaustade sünkroonimine ja tõuketeenused</string>
+    <string name="account_settings_sync_and_notifications">Sünkroonimine ja teavitused</string>
+    <string name="account_settings_folder_sync_and_push">Kaustade sünkroonimine ja tõuketeenused</string>
+    <string name="account_settings_fetching_and_data_limits">Laadimine ja andmemahu piirangud</string>
+    <string name="account_settings_folder_visibility">Kausta nähtavus</string>
 </resources>
