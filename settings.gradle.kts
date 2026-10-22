@@ -82,8 +82,12 @@ if (useLocalComponents || useLocalBolt) {
 
 include(
     ":app-k9mail",
+    ":app-k9mail:benchmarks",
     ":app-thunderbird",
+    ":app-thunderbird:benchmarks",
 )
+
+include(":benchmarks")
 
 include(
     ":app-common",

@@ -1849,6 +1849,10 @@ class MessageListFragment :
         resetActionMode()
         invalidateMenu()
 
+        if (initialMessageListLoad) {
+            // Tells the system the message list is shown, so startup benchmarks can measure the time to full display.
+            activity?.reportFullyDrawn()
+        }
         initialMessageListLoad = false
 
         currentFolder?.let { currentFolder ->

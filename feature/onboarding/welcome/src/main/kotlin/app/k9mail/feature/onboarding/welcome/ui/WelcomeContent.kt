@@ -26,7 +26,6 @@ import net.thunderbird.components.ui.bolt.atom.button.ButtonText
 import net.thunderbird.components.ui.bolt.atom.text.TextBodyLarge
 import net.thunderbird.components.ui.bolt.atom.text.TextBodySmall
 import net.thunderbird.components.ui.bolt.atom.text.TextDisplayMediumAutoResize
-import net.thunderbird.components.ui.bolt.common.window.WindowSizeClass
 import net.thunderbird.components.ui.bolt.common.window.WindowWidthSizeClass
 import net.thunderbird.components.ui.bolt.common.window.calculateWindowSizeInfo
 import net.thunderbird.components.ui.bolt.template.LazyColumnWithHeaderFooter
@@ -224,7 +223,7 @@ private fun WelcomeFooter(
         ButtonFilled(
             text = stringResource(id = R.string.onboarding_welcome_start_button),
             onClick = onStartClick,
-            modifier = Modifier.testTag("onboarding_welcome_start_button"),
+            modifier = Modifier.testTag(OnboardingWelcomeTestTags.TEST_TAG_BTN_WELCOME_GET_STARTED),
         )
         ButtonText(
             text = stringResource(id = R.string.onboarding_welcome_import_button),

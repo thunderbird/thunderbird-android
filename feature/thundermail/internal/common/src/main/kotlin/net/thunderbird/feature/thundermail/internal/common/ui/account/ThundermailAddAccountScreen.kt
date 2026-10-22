@@ -14,6 +14,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.SpanStyle
@@ -33,6 +34,7 @@ import net.thunderbird.components.ui.bolt.template.ResponsiveWidthContainer
 import net.thunderbird.components.ui.bolt.template.Scaffold
 import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.feature.thundermail.internal.common.R
+import net.thunderbird.feature.thundermail.ui.ThundermailTestTags
 import net.thunderbird.feature.thundermail.R as ThundermailApiR
 
 @Composable
@@ -94,6 +96,7 @@ private fun ButtonsPanel(
         ButtonFilled(
             text = stringResource(R.string.thundermail_add_an_email_account),
             onClick = onAddAccountClick,
+            modifier = Modifier.testTag(ThundermailTestTags.TEST_TAG_BTN_ADD_AN_EMAIL),
         )
         TextTitleSmall(
             text = buildAnnotatedString {
@@ -110,6 +113,7 @@ private fun ButtonsPanel(
                 iconColor = BoltTheme.colors.primary,
                 contentColor = BoltTheme.colors.primary,
             ),
+            modifier = Modifier.testTag(ThundermailTestTags.TEST_TAG_BTN_SIGN_IN_WITH_THUNDERMAIL),
         )
         TextBodySmall(
             text = buildAnnotatedString {
