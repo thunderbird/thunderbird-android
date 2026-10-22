@@ -709,6 +709,8 @@
     <string name="background_ops_never">Never</string>
     <string name="background_ops_always">Always</string>
     <string name="background_ops_auto_sync_only">When \'Auto-sync\' is checked</string>
+    <string name="check_mail_on_app_start_title">Check mail on app start</string>
+    <string name="check_mail_on_app_start_summary">Check all accounts for new mail when the app is opened</string>
 
     <string name="batch_select_all">Select all</string>
 

@@ -52,6 +52,10 @@ class DefaultNetworkSettingsPreferenceManager(
             NetworkSettingKey.BackgroundOperations.value,
             NETWORK_SETTINGS_DEFAULT_BACKGROUND_OPS,
         ),
+        isCheckMailOnAppStart = storage.getBoolean(
+            NetworkSettingKey.CheckMailOnAppStart.value,
+            NETWORK_SETTINGS_DEFAULT_IS_CHECK_MAIL_ON_APP_START,
+        ),
     )
 
     private fun writeConfig(config: NetworkSettings) {
@@ -60,6 +64,7 @@ class DefaultNetworkSettingsPreferenceManager(
             mutex.withLock {
                 val storageEditor = storageProvider.createStorageEditor()
                 storageEditor.putEnum(NetworkSettingKey.BackgroundOperations.value, config.backgroundOps)
+                storageEditor.putBoolean(NetworkSettingKey.CheckMailOnAppStart.value, config.isCheckMailOnAppStart)
                 storageEditor.commit().also { commited ->
                     logger.verbose(TAG) { "writeConfig: storageEditor.commit() resulted in: $commited" }
                 }
