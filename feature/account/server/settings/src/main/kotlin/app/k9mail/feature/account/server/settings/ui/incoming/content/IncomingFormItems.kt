@@ -2,6 +2,7 @@ package app.k9mail.feature.account.server.settings.ui.incoming.content
 
 import android.content.res.Resources
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.text.KeyboardOptions
@@ -23,6 +24,7 @@ import app.k9mail.feature.account.server.settings.ui.incoming.isPasswordFieldVis
 import net.thunderbird.components.ui.bolt.molecule.input.NumberInput
 import net.thunderbird.components.ui.bolt.molecule.input.SelectInput
 import net.thunderbird.components.ui.bolt.molecule.input.TextInput
+import net.thunderbird.components.ui.bolt.organism.banner.inline.InfoBannerInlineNotificationCard
 import net.thunderbird.components.ui.bolt.theme.BoltTheme
 
 @Suppress("LongMethod")
@@ -45,6 +47,17 @@ internal fun LazyListScope.incomingFormItems(
                 label = stringResource(id = R.string.account_server_settings_protocol_type_label),
                 contentPadding = defaultItemPadding(),
             )
+        }
+
+        if (state.protocolType == IncomingProtocolType.POP3) {
+            item(key = "pop3_hint") {
+                InfoBannerInlineNotificationCard(
+                    title = stringResource(id = R.string.account_server_settings_pop3_hint_title),
+                    supportingText = stringResource(id = R.string.account_server_settings_pop3_hint_text),
+                    actions = {},
+                    modifier = Modifier.padding(defaultItemPadding()),
+                )
+            }
         }
     }
 
