@@ -156,4 +156,5 @@
     <string name="account_settings_outgoing_label">Сервер исходящих</string>
     <string name="account_settings_outgoing_summary">Настройки сервера исходящей почты</string>
     <string name="account_settings_composition">Отправка</string>
+    <string name="account_settings_folder_sync_and_push">Синхронизация папки и push</string>
 </resources>
