@@ -1,3 +1,4 @@
+import net.thunderbird.gradle.plugin.ProjectConfig
 import org.gradle.jvm.tasks.Jar
 
 plugins {
@@ -9,8 +10,8 @@ plugins {
 }
 
 java {
-    sourceCompatibility = ThunderbirdProjectConfig.Compiler.javaCompatibility
-    targetCompatibility = ThunderbirdProjectConfig.Compiler.javaCompatibility
+    sourceCompatibility = ProjectConfig.Compiler.javaCompatibility
+    targetCompatibility = ProjectConfig.Compiler.javaCompatibility
 }
 
 tasks.withType<Jar> {

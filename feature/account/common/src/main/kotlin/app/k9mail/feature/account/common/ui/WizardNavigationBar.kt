@@ -53,7 +53,7 @@ fun WizardNavigationBar(
                     text = nextButtonText,
                     onClick = onNextClick,
                     enabled = state.isNextEnabled,
-                    modifier = Modifier.testTag("account_setup_next_button"),
+                    modifier = Modifier.testTag(AccountCommonTestTags.TEST_TAG_BTN_ACCOUNT_SETUP_NEXT),
                 )
             }
         }
