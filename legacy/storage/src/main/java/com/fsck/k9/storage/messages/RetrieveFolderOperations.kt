@@ -215,35 +215,32 @@ private class CursorFolderAccessor(val cursor: Cursor) : FolderDetailsAccessor {
     override val isInTopGroup: Boolean
         get() = cursor.getInt(5) == 1
 
-    override val isIntegrate: Boolean
+    override val isSyncEnabled: Boolean
         get() = cursor.getInt(6) == 1
 
-    override val isSyncEnabled: Boolean
+    override val isVisible: Boolean
         get() = cursor.getInt(7) == 1
 
-    override val isVisible: Boolean
+    override val isNotificationsEnabled: Boolean
         get() = cursor.getInt(8) == 1
 
-    override val isNotificationsEnabled: Boolean
+    override val isPushEnabled: Boolean
         get() = cursor.getInt(9) == 1
 
-    override val isPushEnabled: Boolean
-        get() = cursor.getInt(10) == 1
-
     override val visibleLimit: Int
-        get() = cursor.getInt(11)
+        get() = cursor.getInt(10)
 
     override val moreMessages: MoreMessages
-        get() = MoreMessages.fromDatabaseName(cursor.getString(12))
+        get() = MoreMessages.fromDatabaseName(cursor.getString(11))
 
     override val lastChecked: Long?
-        get() = cursor.getLongOrNull(13)
+        get() = cursor.getLongOrNull(12)
 
     override val unreadMessageCount: Int
-        get() = cursor.getInt(14)
+        get() = cursor.getInt(13)
 
     override val starredMessageCount: Int
-        get() = cursor.getInt(15)
+        get() = cursor.getInt(14)
 
     override fun serverIdOrThrow(): String {
         return serverId ?: error("No server ID found for folder '$name' ($id)")
@@ -257,7 +254,6 @@ private val FOLDER_COLUMNS = arrayOf(
     "server_id",
     "local_only",
     "top_group",
-    "integrate",
     "sync_enabled",
     "visible",
     "notifications_enabled",

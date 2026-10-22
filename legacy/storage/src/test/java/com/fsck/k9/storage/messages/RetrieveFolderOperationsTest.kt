@@ -18,8 +18,6 @@ import com.fsck.k9.storage.RobolectricTest
 import net.thunderbird.legacy.logging.Log
 import net.thunderbird.components.core.logging.testing.TestLogger
 import net.thunderbird.feature.search.legacy.LocalMessageSearch
-import net.thunderbird.feature.search.legacy.api.MessageSearchField
-import net.thunderbird.feature.search.legacy.api.SearchAttribute
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -48,7 +46,6 @@ class RetrieveFolderOperationsTest : RobolectricTest() {
             type = "inbox",
             serverId = "uid",
             isLocalOnly = false,
-            integrate = true,
             inTopGroup = true,
             visible = true,
             syncEnabled = true,
@@ -62,7 +59,6 @@ class RetrieveFolderOperationsTest : RobolectricTest() {
             assertThat(folder.type).isEqualTo(FolderType.INBOX)
             assertThat(folder.serverId).isEqualTo("uid")
             assertThat(folder.isLocalOnly).isEqualTo(false)
-            assertThat(folder.isIntegrate).isEqualTo(true)
             assertThat(folder.isInTopGroup).isEqualTo(true)
             assertThat(folder.isVisible).isEqualTo(true)
             assertThat(folder.isSyncEnabled).isEqualTo(true)
@@ -82,7 +78,6 @@ class RetrieveFolderOperationsTest : RobolectricTest() {
             type = FolderType.OUTBOX.toDatabaseFolderType(),
             serverId = null,
             isLocalOnly = true,
-            integrate = true,
             inTopGroup = true,
             visible = true,
             syncEnabled = false,
@@ -96,7 +91,6 @@ class RetrieveFolderOperationsTest : RobolectricTest() {
             assertThat(folder.type).isEqualTo(FolderType.OUTBOX)
             assertThat(folder.serverId).isNull()
             assertThat(folder.isLocalOnly).isEqualTo(true)
-            assertThat(folder.isIntegrate).isEqualTo(true)
             assertThat(folder.isInTopGroup).isEqualTo(true)
             assertThat(folder.isVisible).isEqualTo(true)
             assertThat(folder.isSyncEnabled).isEqualTo(false)
@@ -122,7 +116,6 @@ class RetrieveFolderOperationsTest : RobolectricTest() {
             type = "inbox",
             serverId = "folder1",
             isLocalOnly = false,
-            integrate = true,
             inTopGroup = true,
             visible = true,
             syncEnabled = true,
@@ -136,7 +129,6 @@ class RetrieveFolderOperationsTest : RobolectricTest() {
             assertThat(folder.type).isEqualTo(FolderType.INBOX)
             assertThat(folder.serverId).isEqualTo("folder1")
             assertThat(folder.isLocalOnly).isEqualTo(false)
-            assertThat(folder.isIntegrate).isEqualTo(true)
             assertThat(folder.isInTopGroup).isEqualTo(true)
             assertThat(folder.isVisible).isEqualTo(true)
             assertThat(folder.isSyncEnabled).isEqualTo(true)
@@ -162,7 +154,6 @@ class RetrieveFolderOperationsTest : RobolectricTest() {
             type = "inbox",
             serverId = "uid",
             isLocalOnly = false,
-            integrate = true,
             inTopGroup = true,
             visible = true,
             syncEnabled = true,
@@ -176,7 +167,6 @@ class RetrieveFolderOperationsTest : RobolectricTest() {
             assertThat(folder.type).isEqualTo(FolderType.INBOX)
             assertThat(folder.serverId).isEqualTo("uid")
             assertThat(folder.isLocalOnly).isEqualTo(false)
-            assertThat(folder.isIntegrate).isEqualTo(true)
             assertThat(folder.isInTopGroup).isEqualTo(true)
             assertThat(folder.isVisible).isEqualTo(true)
             assertThat(folder.isSyncEnabled).isEqualTo(true)
@@ -388,42 +378,39 @@ class RetrieveFolderOperationsTest : RobolectricTest() {
 
     @Test
     fun `get unread message count with condition from empty folder`() {
-        sqliteDatabase.createFolder(integrate = true)
+        val folderId = sqliteDatabase.createFolder()
 
-        val result = retrieveFolderOperations.getUnreadMessageCount(unifiedInboxConditions)
+        val result = retrieveFolderOperations.getUnreadMessageCount(folderConditions(folderId))
 
         assertThat(result).isEqualTo(0)
     }
 
     @Test
     fun `get unread message count with condition from non-existent folder`() {
-        val result = retrieveFolderOperations.getUnreadMessageCount(unifiedInboxConditions)
+        val result = retrieveFolderOperations.getUnreadMessageCount(folderConditions(NON_EXISTENT_FOLDER_ID))
 
         assertThat(result).isEqualTo(0)
     }
 
     @Test
     fun `get unread message count with condition from non-empty folder`() {
-        val folderId1 = sqliteDatabase.createFolder(integrate = true)
+        val folderId1 = sqliteDatabase.createFolder()
         sqliteDatabase.createMessage(folderId = folderId1, read = false)
         sqliteDatabase.createMessage(folderId = folderId1, read = false)
         sqliteDatabase.createMessage(folderId = folderId1, read = true)
-        val folderId2 = sqliteDatabase.createFolder(integrate = true)
+        val folderId2 = sqliteDatabase.createFolder()
         sqliteDatabase.createMessage(folderId = folderId2, read = false)
-        sqliteDatabase.createMessage(folderId = folderId2, read = true)
-        val folderId3 = sqliteDatabase.createFolder(integrate = false)
-        sqliteDatabase.createMessage(folderId = folderId3, read = false)
 
-        val result = retrieveFolderOperations.getUnreadMessageCount(unifiedInboxConditions)
+        val result = retrieveFolderOperations.getUnreadMessageCount(folderConditions(folderId1))
 
-        assertThat(result).isEqualTo(3)
+        assertThat(result).isEqualTo(2)
     }
 
     @Test
     fun `get unread message count without condition`() {
-        val folderId1 = sqliteDatabase.createFolder(integrate = true)
+        val folderId1 = sqliteDatabase.createFolder()
         sqliteDatabase.createMessage(folderId = folderId1, read = false)
-        val folderId2 = sqliteDatabase.createFolder(integrate = false)
+        val folderId2 = sqliteDatabase.createFolder()
         sqliteDatabase.createMessage(folderId = folderId2, read = false)
         sqliteDatabase.createMessage(folderId = folderId2, read = true)
 
@@ -434,42 +421,39 @@ class RetrieveFolderOperationsTest : RobolectricTest() {
 
     @Test
     fun `get starred message count with condition from empty folder`() {
-        sqliteDatabase.createFolder(integrate = true)
+        val folderId = sqliteDatabase.createFolder()
 
-        val result = retrieveFolderOperations.getStarredMessageCount(unifiedInboxConditions)
+        val result = retrieveFolderOperations.getStarredMessageCount(folderConditions(folderId))
 
         assertThat(result).isEqualTo(0)
     }
 
     @Test
     fun `get starred message count with condition from non-existent folder`() {
-        val result = retrieveFolderOperations.getStarredMessageCount(unifiedInboxConditions)
+        val result = retrieveFolderOperations.getStarredMessageCount(folderConditions(NON_EXISTENT_FOLDER_ID))
 
         assertThat(result).isEqualTo(0)
     }
 
     @Test
     fun `get starred message count with condition from non-empty folder`() {
-        val folderId1 = sqliteDatabase.createFolder(integrate = true)
+        val folderId1 = sqliteDatabase.createFolder()
         sqliteDatabase.createMessage(folderId = folderId1, flagged = false)
         sqliteDatabase.createMessage(folderId = folderId1, flagged = true)
-        val folderId2 = sqliteDatabase.createFolder(integrate = true)
+        sqliteDatabase.createMessage(folderId = folderId1, flagged = true)
+        val folderId2 = sqliteDatabase.createFolder()
         sqliteDatabase.createMessage(folderId = folderId2, flagged = true)
-        sqliteDatabase.createMessage(folderId = folderId2, flagged = true)
-        sqliteDatabase.createMessage(folderId = folderId2, flagged = false)
-        val folderId3 = sqliteDatabase.createFolder(integrate = false)
-        sqliteDatabase.createMessage(folderId = folderId3, flagged = true)
 
-        val result = retrieveFolderOperations.getStarredMessageCount(unifiedInboxConditions)
+        val result = retrieveFolderOperations.getStarredMessageCount(folderConditions(folderId1))
 
-        assertThat(result).isEqualTo(3)
+        assertThat(result).isEqualTo(2)
     }
 
     @Test
     fun `get starred message count without condition`() {
-        val folderId1 = sqliteDatabase.createFolder(integrate = true)
+        val folderId1 = sqliteDatabase.createFolder()
         sqliteDatabase.createMessage(folderId = folderId1, flagged = true)
-        val folderId2 = sqliteDatabase.createFolder(integrate = false)
+        val folderId2 = sqliteDatabase.createFolder()
         sqliteDatabase.createMessage(folderId = folderId2, flagged = true)
         sqliteDatabase.createMessage(folderId = folderId2, flagged = false)
 
@@ -513,11 +497,11 @@ class RetrieveFolderOperationsTest : RobolectricTest() {
         assertThat(result).isEqualTo(MoreMessages.TRUE)
     }
 
-    private val unifiedInboxConditions = LocalMessageSearch().apply {
-        and(
-            MessageSearchField.INTEGRATE,
-            "1",
-            SearchAttribute.EQUALS,
-        )
+    private fun folderConditions(folderId: Long) = LocalMessageSearch().apply {
+        addAllowedFolder(folderId)
     }.conditions
+
+    private companion object {
+        const val NON_EXISTENT_FOLDER_ID = 1L
+    }
 }

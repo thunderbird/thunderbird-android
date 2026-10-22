@@ -50,7 +50,6 @@ class UpdateFolderOperationsTest : RobolectricTest() {
     fun `update folder settings`() {
         val folderId = sqliteDatabase.createFolder(
             inTopGroup = false,
-            integrate = false,
             visible = false,
             syncEnabled = false,
             notificationsEnabled = false,
@@ -66,7 +65,6 @@ class UpdateFolderOperationsTest : RobolectricTest() {
                     isLocalOnly = false,
                 ),
                 isInTopGroup = true,
-                isIntegrate = true,
                 isVisible = true,
                 isSyncEnabled = true,
                 isNotificationsEnabled = true,
@@ -77,22 +75,10 @@ class UpdateFolderOperationsTest : RobolectricTest() {
         val folder = sqliteDatabase.readFolders().first()
         assertThat(folder.id).isEqualTo(folderId)
         assertThat(folder.inTopGroup).isEqualTo(1)
-        assertThat(folder.integrate).isEqualTo(1)
         assertThat(folder.visible).isEqualTo(1)
         assertThat(folder.syncEnabled).isEqualTo(1)
         assertThat(folder.notificationsEnabled).isEqualTo(1)
         assertThat(folder.pushEnabled).isEqualTo(1)
-    }
-
-    @Test
-    fun `update integrate setting`() {
-        val folderId = sqliteDatabase.createFolder(integrate = false)
-
-        updateFolderOperations.setIncludeInUnifiedInbox(folderId = folderId, includeInUnifiedInbox = true)
-
-        val folder = sqliteDatabase.readFolders().first()
-        assertThat(folder.id).isEqualTo(folderId)
-        assertThat(folder.integrate).isEqualTo(1)
     }
 
     @Test

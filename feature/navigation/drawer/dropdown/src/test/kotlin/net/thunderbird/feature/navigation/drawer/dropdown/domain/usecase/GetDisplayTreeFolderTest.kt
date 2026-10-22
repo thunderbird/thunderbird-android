@@ -8,13 +8,13 @@ import kotlinx.collections.immutable.persistentListOf
 import net.thunderbird.components.core.logging.testing.TestLogger
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.AccountIdFactory
+import net.thunderbird.feature.mail.folder.FolderRole
 import net.thunderbird.feature.mail.folder.FolderType
 import net.thunderbird.feature.mail.folder.api.Folder
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayFolder
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayTreeFolder
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.MailDisplayFolder
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.UnifiedDisplayFolder
-import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.UnifiedDisplayFolderType
 
 class GetDisplayTreeFolderTest {
 
@@ -55,7 +55,7 @@ class GetDisplayTreeFolderTest {
     fun `should create tree from display unified folder`() {
         // arrange
         val unifiedFolder = createDisplayUnifiedFolder(
-            unifiedFolderType = UnifiedDisplayFolderType.INBOX,
+            role = FolderRole.INBOX,
             unreadMessageCount = 5,
             starredMessageCount = 2,
         )
@@ -74,7 +74,7 @@ class GetDisplayTreeFolderTest {
             children = persistentListOf(
                 createDisplayTreeFolder(
                     displayFolder = unifiedFolder,
-                    displayName = unifiedFolder.unifiedType.id,
+                    displayName = unifiedFolder.folderId,
                     totalUnreadCount = unifiedFolder.unreadMessageCount,
                     totalStarredCount = unifiedFolder.starredMessageCount,
                 ),
@@ -87,7 +87,7 @@ class GetDisplayTreeFolderTest {
     fun `should create tree from unified folders and regular folders`() {
         // arrange
         val unifiedFolder = createDisplayUnifiedFolder(
-            unifiedFolderType = UnifiedDisplayFolderType.INBOX,
+            role = FolderRole.INBOX,
             unreadMessageCount = 3,
             starredMessageCount = 1,
         )
@@ -113,7 +113,7 @@ class GetDisplayTreeFolderTest {
             children = persistentListOf(
                 createDisplayTreeFolder(
                     displayFolder = unifiedFolder,
-                    displayName = unifiedFolder.unifiedType.id,
+                    displayName = unifiedFolder.folderId,
                     totalUnreadCount = unifiedFolder.unreadMessageCount,
                     totalStarredCount = unifiedFolder.starredMessageCount,
                 ),
@@ -468,13 +468,12 @@ class GetDisplayTreeFolderTest {
         }
 
         fun createDisplayUnifiedFolder(
-            unifiedFolderType: UnifiedDisplayFolderType,
+            role: FolderRole,
             unreadMessageCount: Int,
             starredMessageCount: Int,
         ): UnifiedDisplayFolder {
             return UnifiedDisplayFolder(
-                folderId = unifiedFolderType.name.lowercase(),
-                unifiedType = unifiedFolderType,
+                role = role,
                 unreadMessageCount = unreadMessageCount,
                 starredMessageCount = starredMessageCount,
             )

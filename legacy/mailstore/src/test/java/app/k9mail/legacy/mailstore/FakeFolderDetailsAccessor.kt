@@ -9,7 +9,6 @@ internal class FakeFolderDetailsAccessor(
     override val type: FolderType = FolderType.REGULAR,
     override val isLocalOnly: Boolean = false,
     override val isInTopGroup: Boolean = false,
-    override val isIntegrate: Boolean = false,
     override val isSyncEnabled: Boolean = true,
     override val isVisible: Boolean = true,
     override val isNotificationsEnabled: Boolean = true,

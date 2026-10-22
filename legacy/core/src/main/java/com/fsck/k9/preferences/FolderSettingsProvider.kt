@@ -24,7 +24,6 @@ class FolderSettingsProvider(private val remoteFolderDetailsRepository: RemoteFo
 
     private fun RemoteFolderDetails.containsOnlyDefaultValues(): Boolean {
         return isInTopGroup == getDefaultValue("inTopGroup") &&
-            isIntegrate == getDefaultValue("integrate") &&
             isSyncEnabled == getDefaultValue("syncEnabled") &&
             isVisible == getDefaultValue("visible") &&
             isNotificationsEnabled == getDefaultValue("notificationsEnabled") &&
@@ -42,7 +41,6 @@ class FolderSettingsProvider(private val remoteFolderDetailsRepository: RemoteFo
         return FolderSettings(
             folder.serverId,
             isInTopGroup,
-            isIntegrate,
             isSyncEnabled,
             isVisible,
             isNotificationsEnabled,
@@ -54,7 +52,6 @@ class FolderSettingsProvider(private val remoteFolderDetailsRepository: RemoteFo
 data class FolderSettings(
     val serverId: String,
     val isInTopGroup: Boolean,
-    val isIntegrate: Boolean,
     val isSyncEnabled: Boolean,
     val isVisible: Boolean,
     val isNotificationsEnabled: Boolean,
