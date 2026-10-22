@@ -963,5 +963,9 @@
     <string name="account_settings_signature_preview_empty">Het voorbeeld van uw ondertekening zal hier verschijnen</string>
     <string name="error_no_contact_provider">Er is geen contacten-app gevonden. Installeer een contacten-app om dit adres toe te voegen.</string>
     <string name="remote_feature_flag_preferences">Externe functievlag</string>
-    <string name="account_setup_visibility_and_syncing">Zichtbaarheid &amp; synchronisatie</string>
+    <string name="account_setup_visibility_and_syncing">Mapsynchronisatie &amp; push</string>
+    <string name="account_settings_folder_sync_and_push">Mapsynchronisatie &amp; push</string>
+    <string name="account_settings_fetching_and_data_limits">Ophalen &amp; gegevenslimieten</string>
+    <string name="account_settings_sync_and_notifications">Synchronisatie &amp; meldingen</string>
+    <string name="account_settings_folder_visibility">Mapzichtbaarheid</string>
 </resources>
