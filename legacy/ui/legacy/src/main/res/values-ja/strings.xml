@@ -906,4 +906,51 @@
     <string name="general_settings_message_list_date_time_format_full">フル</string>
     <string name="sort_by_then_by">次に…</string>
     <string name="global_settings_splitview_when_unfolded">端末が折り畳まれていないとき分割</string>
+    <string name="camera_capture_lost">アプリが閉じられたため、撮影した画像が削除されました。もう一度お試しください。</string>
+    <string name="changelog_latest_label_text">最新</string>
+    <string name="changelog_type_new_text">新機能</string>
+    <string name="changelog_type_changed_text">変更</string>
+    <string name="changelog_type_fixed_text">修正</string>
+    <string name="notification_actions_settings_title">通知アクション</string>
+    <string name="notification_actions_settings_summary">メール通知に表示するアクションを選択します</string>
+    <string name="notification_summary_delete_title">複数メッセージの通知に削除ボタンを表示する</string>
+    <string name="notification_summary_delete_summary">複数の新着メッセージを要約した通知に削除アクションを追加します</string>
+    <string name="notification_show_contact_picture_title">連絡先画像を通知に表示する</string>
+    <string name="notification_show_contact_picture_summary">差出人のアバターを新着メッセージ通知に表示します</string>
+    <string name="notification_actions_settings_description">通知アクションを並べ替えてください。</string>
+    <string name="notification_actions_cutoff_description">ここまで</string>
+    <string name="notification_actions_cutoff_state">この線より上のをアクションを通知に表示します</string>
+    <string name="notification_actions_shown_state">通知に表示します</string>
+    <string name="notification_actions_hidden_state">通知に表示しません</string>
+    <string name="accessibility_move_up">上に移動</string>
+    <string name="accessibility_move_down">下に移動</string>
+    <string name="accessibility_move_item_up"><xliff:g id="item">%1$s</xliff:g> を上に移動</string>
+    <string name="accessibility_move_item_down"><xliff:g id="item">%1$s</xliff:g> を下に移動</string>
+    <string name="notification_action_star">スター</string>
+    <plurals name="message_view_attachment_summary">
+        <item quantity="other">添付ファイル <xliff:g id="count">%1$d</xliff:g> 個 (<xliff:g id="size">%2$s</xliff:g>)</item>
+    </plurals>
+    <string name="message_view_single_attachment_summary"><xliff:g id="name">%1$s</xliff:g> (<xliff:g id="size">%2$s</xliff:g>)</string>
+    <string name="message_view_attachments_view_all">すべて表示</string>
+    <string name="message_view_attachments_view">表示</string>
+    <string name="message_view_attachments_title">添付ファイル</string>
+    <string name="message_view_attachments_save_all">すべて保存</string>
+    <string name="message_view_from_me_text">自分</string>
+    <string name="general_settings_message_list_date_time_format_iso">ISO</string>
+    <string name="global_settings_privacy_incognito_keyboard">プライベートキーボード</string>
+    <string name="global_settings_privacy_incognito_keyboard_detail">メッセージ作成時の入力内容をキーボードが学習しないように指示します</string>
+    <string name="account_setup_visibility_and_syncing">表示と同期</string>
+    <string name="account_settings_signature_html_label">HTML 署名</string>
+    <string name="account_settings_signature_is_html_label">署名を HTML として保存する</string>
+    <string name="account_settings_signature_is_html_summary">署名を HTML として解釈します。スクリプトとイベントハンドラーは、セキュリティのため削除されます。</string>
+    <string name="account_settings_signature_preview">署名のプレビュー</string>
+    <string name="account_settings_signature_preview_empty">こちらに署名のプレビューが表示されます</string>
+    <string name="account_settings_signature_clear_label">署名をクリア</string>
+    <string name="remote_feature_flag_preferences">リモート機能フラグ</string>
+    <string name="animation_setting_on">オン</string>
+    <string name="animation_setting_off">オフ</string>
+    <string name="animation_setting_follow_system">システム標準を使用</string>
+    <string name="message_compose_encrypting_message">メッセージを暗号化中…</string>
+    <string name="error_no_contact_provider">連絡先アプリが見つかりませんでした。アドレスを追加するには、アプリをインストールしてください。</string>
+    <string name="no_network_message_will_be_sent_later_toast">オフラインです。メッセージは接続が利用可能になった後に送信されます</string>
 </resources>
