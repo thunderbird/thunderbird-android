@@ -22,7 +22,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.ComposeView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.core.os.bundleOf
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.core.view.ViewCompat
@@ -2712,11 +2711,11 @@ class LegacyMessageListFragment :
             val searchBytes = LocalMessageSearchSerializer.serialize(search)
 
             return LegacyMessageListFragment().apply {
-                arguments = bundleOf(
-                    ARG_SEARCH to searchBytes,
-                    ARG_IS_THREAD_DISPLAY to isThreadDisplay,
-                    ARG_THREADED_LIST to threadedList,
-                )
+                arguments = Bundle().apply {
+                    putByteArray(ARG_SEARCH, searchBytes)
+                    putBoolean(ARG_IS_THREAD_DISPLAY, isThreadDisplay)
+                    putBoolean(ARG_THREADED_LIST, threadedList)
+                }
             }
         }
     }
