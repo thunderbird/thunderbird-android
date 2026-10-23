@@ -34,6 +34,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.core.app.ShareCompat.IntentBuilder
+import androidx.core.text.HtmlCompat
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import com.fsck.k9.helper.ClipboardManager
@@ -60,6 +61,9 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import org.koin.core.qualifier.named
 
+private val HEAD_TAG_REGEX = Regex("(?is)<head>.*?</head>")
+private val STYLE_TAG_REGEX = Regex("(?is)<style.*?>.*?</style>")
+
 class MessageContainerView(context: Context, attrs: AttributeSet?) :
     LinearLayout(context, attrs),
     OnCreateContextMenuListener,
@@ -74,7 +78,8 @@ class MessageContainerView(context: Context, attrs: AttributeSet?) :
 
     private lateinit var layoutInflater: LayoutInflater
 
-    private lateinit var messageContentView: MessageWebView
+    private var messageContentView: MessageWebView? = null
+    private var fallbackTextView: MaterialTextView? = null
     private lateinit var attachmentsContainer: ViewGroup
     private lateinit var unsignedTextContainer: View
     private lateinit var unsignedTextDivider: View
@@ -96,13 +101,25 @@ class MessageContainerView(context: Context, attrs: AttributeSet?) :
 
         layoutInflater = LayoutInflater.from(context)
 
-        messageContentView = findViewById<MessageWebView>(R.id.message_content).apply {
-            if (!isInEditMode) {
-                configure(webViewConfigProvider.createForMessageView())
-            }
+        val wrapper = findViewById<ViewGroup>(R.id.message_content_wrapper)
+        fallbackTextView = findViewById(R.id.message_content_fallback)
+        try {
+            messageContentView = MessageWebView(context).apply {
+                id = R.id.message_content
+                layoutParams = ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                )
+                if (!isInEditMode) {
+                    configure(webViewConfigProvider.createForMessageView())
+                }
 
-            setOnCreateContextMenuListener(this@MessageContainerView)
-            visibility = VISIBLE
+                setOnCreateContextMenuListener(this@MessageContainerView)
+                visibility = VISIBLE
+            }
+            wrapper.addView(messageContentView)
+        } catch (e: Exception) {
+            fallbackTextView?.visibility = VISIBLE
         }
 
         attachmentsContainer = findViewById(R.id.attachments_container)
@@ -421,7 +438,7 @@ class MessageContainerView(context: Context, attrs: AttributeSet?) :
     }
 
     private fun setLoadPictures(enable: Boolean) {
-        messageContentView.blockNetworkData(!enable)
+        messageContentView?.blockNetworkData(!enable)
         isShowingPictures = enable
     }
 
@@ -482,22 +499,35 @@ class MessageContainerView(context: Context, attrs: AttributeSet?) :
 
     private fun displayHtmlContentWithInlineAttachments(
         htmlText: String,
-        attachmentResolver: AttachmentResolver,
-        onPageFinishedListener: OnPageFinishedListener,
+        attachmentResolver: AttachmentResolver?,
+        onPageFinishedListener: OnPageFinishedListener?,
     ) {
         currentHtmlText = htmlText
         currentAttachmentResolver = attachmentResolver
-        messageContentView.displayHtmlContentWithInlineAttachments(htmlText, attachmentResolver, onPageFinishedListener)
+        messageContentView?.displayHtmlContentWithInlineAttachments(htmlText, attachmentResolver, onPageFinishedListener)
+        if (messageContentView == null) {
+            val cleanHtml = htmlText
+                .replace(HEAD_TAG_REGEX, "")
+                .replace(STYLE_TAG_REGEX, "")
+            fallbackTextView?.text = HtmlCompat.fromHtml(cleanHtml, HtmlCompat.FROM_HTML_MODE_COMPACT)
+            onPageFinishedListener?.onPageFinished()
+        }
     }
 
     private fun refreshDisplayedContent() {
         val htmlText = checkNotNull(currentHtmlText)
 
-        messageContentView.displayHtmlContentWithInlineAttachments(
+        messageContentView?.displayHtmlContentWithInlineAttachments(
             htmlText = htmlText,
             attachmentResolver = currentAttachmentResolver,
             onPageFinishedListener = null,
         )
+        if (messageContentView == null) {
+            val cleanHtml = htmlText
+                .replace(HEAD_TAG_REGEX, "")
+                .replace(STYLE_TAG_REGEX, "")
+            fallbackTextView?.text = HtmlCompat.fromHtml(cleanHtml, HtmlCompat.FROM_HTML_MODE_COMPACT)
+        }
     }
 
     private fun renderAttachments(
@@ -556,11 +586,12 @@ class MessageContainerView(context: Context, attrs: AttributeSet?) :
     }
 
     private fun clearDisplayedContent() {
-        messageContentView.displayHtmlContentWithInlineAttachments(
+        messageContentView?.displayHtmlContentWithInlineAttachments(
             htmlText = "",
             attachmentResolver = null,
             onPageFinishedListener = null,
         )
+        fallbackTextView?.text = null
 
         unsignedTextContainer.isVisible = false
         unsignedText.text = ""

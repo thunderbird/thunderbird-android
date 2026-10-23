@@ -24,7 +24,11 @@ class MessagePrinter(
             .replace(Regex("(?i)</a>"), "")
         val fullHtml = buildFullHtml(headerHtml, cleanBodyHtml)
 
-        val printWebView = MessageWebView(context)
+        val printWebView = try {
+            MessageWebView(context)
+        } catch (e: Exception) {
+            return
+        }
         printWebView.displayHtmlContentWithInlineAttachments(
             htmlText = fullHtml,
             attachmentResolver = null,
