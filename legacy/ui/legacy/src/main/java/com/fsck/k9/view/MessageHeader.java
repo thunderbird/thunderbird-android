@@ -74,6 +74,9 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
     private MessageHeaderClickListener messageHeaderClickListener;
     private ReplyActions replyActions;
 
+    private Address currentFromAddress;
+    private boolean fromViewExpanded = false;
+
 
     public MessageHeader(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -109,6 +112,8 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         subjectView.setOnClickListener(this);
         subjectView.setOnLongClickListener(this);
 
+        fromView.setOnClickListener(this);
+
         menuPrimaryActionView = findViewById(R.id.menu_primary_action);
         menuPrimaryActionView.setOnClickListener(this);
 
@@ -132,6 +137,8 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         int id = view.getId();
         if (id == R.id.subject) {
             toggleSubjectViewMaxLines();
+        } else if (id == R.id.from) {
+            toggleFromViewDetails();
         } else if (id == R.id.menu_primary_action) {
             performPrimaryReplyAction();
         } else if (id == R.id.menu_overflow) {
@@ -194,6 +201,32 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         }
     }
 
+    /**
+     * Toggles the "from" line between its default single-line, ellipsized display name (or
+     * email address, whichever {@link MessageHelper#getSenderDisplayName} picks) and a fully
+     * expanded view showing both the decoded display name and the actual email address
+     * together, e.g. "Jane Doe <jane@example.com>". A truncated or single-field view can hide
+     * exactly the mismatch a spoofed sender relies on.
+     */
+    private void toggleFromViewDetails() {
+        fromViewExpanded = !fromViewExpanded;
+        updateFromView();
+    }
+
+    private void updateFromView() {
+        if (fromViewExpanded) {
+            fromView.setMaxLines(Integer.MAX_VALUE);
+            fromView.setEllipsize(null);
+            fromView.setText(messageHelper.getSenderFullDetails(currentFromAddress));
+            fromView.setContentDescription(getResources().getString(R.string.collapse_content_description));
+        } else {
+            fromView.setMaxLines(1);
+            fromView.setEllipsize(android.text.TextUtils.TruncateAt.END);
+            fromView.setText(messageHelper.getSenderDisplayName(currentFromAddress));
+            fromView.setContentDescription(getResources().getString(R.string.expand_content_description));
+        }
+    }
+
     private void onAddSubjectToClipboard(String subject) {
         ClipboardManager clipboardManager = DI.get(ClipboardManager.class);
         clipboardManager.setText("subject", subject);
@@ -225,6 +258,9 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
             fromAddress = fromAddresses[0];
         }
 
+        currentFromAddress = fromAddress;
+        fromViewExpanded = false;
+
         if (messageListPreferencesManager.getConfig().isShowContactPicture()) {
             contactPictureView.setVisibility(View.VISIBLE);
             if (fromAddress != null) {
@@ -237,8 +273,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
             contactPictureView.setVisibility(View.GONE);
         }
 
-        CharSequence from = messageHelper.getSenderDisplayName(fromAddress);
-        fromView.setText(from);
+        updateFromView();
 
         if (showStar) {
             starView.setVisibility(View.VISIBLE);

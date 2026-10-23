@@ -220,6 +220,60 @@ class MessageHelperTest : RobolectricTest() {
     }
 
     @Test
+    fun getSenderDisplayName_withCleanAddress_hasNoWarningPrefix() {
+        val address = Address("jane@example.com", "Jane Doe")
+
+        val displayName = messageHelper.getSenderDisplayName(address)
+
+        assertThat(displayName.toString()).isEqualTo("Jane Doe")
+    }
+
+    @Test
+    fun getSenderDisplayName_withHomoglyphSpoofedName_hasWarningPrefix() {
+        // "PayPal" with a Cyrillic 'а' (U+0430) substituted for the Latin 'a'.
+        val address = Address("support@paypal.com", "PаyPal Support")
+
+        val displayName = messageHelper.getSenderDisplayName(address)
+
+        assertThat(displayName.toString()).isEqualTo("Possibly spoofed: PаyPal Support")
+    }
+
+    @Test
+    fun getSenderFullDetails_combinesNameAndEmail() {
+        val address = Address("jane@example.com", "Jane Doe")
+
+        val fullDetails = messageHelper.getSenderFullDetails(address)
+
+        assertThat(fullDetails.toString()).isEqualTo("Jane Doe <jane@example.com>")
+    }
+
+    @Test
+    fun getSenderFullDetails_withoutPersonalName_returnsJustTheEmail() {
+        val address = Address("jane@example.com")
+
+        val fullDetails = messageHelper.getSenderFullDetails(address)
+
+        assertThat(fullDetails.toString()).isEqualTo("jane@example.com")
+    }
+
+    @Test
+    fun getSenderFullDetails_withSpoofedAddress_hasWarningPrefix() {
+        val spoofedEmail = "sup​port@example.com"
+        val address = Address(spoofedEmail, "Support")
+
+        val fullDetails = messageHelper.getSenderFullDetails(address)
+
+        assertThat(fullDetails.toString()).isEqualTo("Possibly spoofed: Support <$spoofedEmail>")
+    }
+
+    @Test
+    fun getSenderFullDetails_withNullAddress_returnsUnknownSender() {
+        val fullDetails = messageHelper.getSenderFullDetails(null)
+
+        assertThat(fullDetails.toString()).isEqualTo(resourceProvider.contactUnknownSender())
+    }
+
+    @Test
     fun testGetSenderDisplayNameWithoutInputReturnCorrectOutput() {
         val displayName =
             messageHelper.getRecipientDisplayNames(
