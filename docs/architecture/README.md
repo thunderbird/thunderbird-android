@@ -30,6 +30,13 @@ We use a structured engineering process to propose, decide, and deliver technica
 
 For more details on how these artifacts work together, see the [Engineering](../engineering/README.md) documentation.
 
+## Data Formats
+
+- [Portable Profile Data Format](portable-profile-data-format.md) defines the password-protected ZIP64 Thunderbird archive and
+  independently importable PDPArchive account packages used for mail and profile portability.
+- [Portable Profile Data Standards](../standards/portable-profile-data.md) records the adopted specifications, local
+  profiles, compatibility scope, and implementation evidence.
+
 ## 📦 Module Structure
 
 The application is organized into several module types:
