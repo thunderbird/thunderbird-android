@@ -7,15 +7,19 @@ import assertk.assertions.isEqualTo
 import com.fsck.k9.FakeLegacyAccount
 import com.fsck.k9.K9RobolectricTest
 import com.fsck.k9.backend.api.BackendStorage
+import com.fsck.k9.mail.Message
 import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.feature.account.AccountIdFactory
+import net.thunderbird.feature.mail.message.domain.MessageLifecycleRepository
+import net.thunderbird.feature.mail.message.domain.MessageQueryRepository
+import net.thunderbird.feature.mail.message.mapper.MessageDataMapper
 import org.junit.Before
 import org.junit.Test
 import org.koin.core.component.inject
 import org.mockito.kotlin.any
 import org.mockito.kotlin.doReturn
-import org.mockito.kotlin.whenever
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.whenever
 
 class K9BackendDefaultStorageTest : K9RobolectricTest() {
     val messageStoreManager: MessageStoreManager by inject()
@@ -68,7 +72,15 @@ class K9BackendDefaultStorageTest : K9RobolectricTest() {
     private fun createBackendStorage(): BackendStorage {
         val messageStore = messageStoreManager.getMessageStore(accountId)
         val folderSettingsProvider = createFolderSettingsProvider()
-        return K9BackendStorage(messageStore, folderSettingsProvider, saveMessageDataCreator, emptyList())
+        return K9BackendStorage(
+            messageStore = messageStore,
+            folderSettingsProvider = folderSettingsProvider,
+            saveMessageDataCreator = saveMessageDataCreator,
+            listeners = emptyList(),
+            messageLifecycleRepository = mock<MessageLifecycleRepository>(),
+            messageQueryRepository = mock<MessageQueryRepository>(),
+            messageDataMapper = mock<MessageDataMapper<Message>>(),
+        )
     }
 }
 
