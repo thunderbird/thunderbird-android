@@ -261,4 +261,8 @@ data class LegacyAccount(
             lastFolderListRefreshTime = lastFolderListRefreshTime,
         )
     }
+
+    // FIXME Java interop code, remove once MessagingControllerTest is converted to Kotlin
+    fun updateUploadSentMessages(isUploadSentMessages: Boolean): LegacyAccount =
+        copy(isUploadSentMessages = isUploadSentMessages)
 }
