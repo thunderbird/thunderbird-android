@@ -445,7 +445,7 @@ jobs:
 
           python ./scripts/ci/contributor_list.py \
             --regex "$TAG_REGEX" \
-            --head "HEAD" \
+            --head $(git rev-parse HEAD) \
             --changelog-head "$TAG_NAME" \
           "$CONTRIBUTORS_FILE"
 
