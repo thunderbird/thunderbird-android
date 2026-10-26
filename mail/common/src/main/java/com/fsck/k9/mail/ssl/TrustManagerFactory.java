@@ -14,6 +14,8 @@ import com.fsck.k9.mail.CertificateChainException;
 import javax.net.ssl.SSLException;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
+import net.thunderbird.core.common.net.tls.CertificateBlocklist;
+import net.thunderbird.core.common.net.tls.CompromisedCertificateException;
 import net.thunderbird.legacy.logging.Log;
 import org.apache.hc.client5.http.ssl.DefaultHostnameVerifier;
 
@@ -33,6 +35,7 @@ public class TrustManagerFactory {
 
 
     private X509TrustManager defaultTrustManager;
+    private final CertificateBlocklist certificateBlocklist = new CertificateBlocklist();
     private LocalKeyStore keyStore;
     private final Map<String, SecureX509TrustManager> cachedTrustManagers = new HashMap<>();
 
@@ -85,17 +88,19 @@ public class TrustManagerFactory {
             defaultTrustManager.checkClientTrusted(chain, authType);
         }
 
-        public void checkServerTrusted(X509Certificate[] chain, String authType)
-                throws CertificateException {
+        public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
             String message;
-            X509Certificate certificate = chain[0];
-
             Throwable cause;
-
+            X509Certificate certificate = chain[0];
             try {
+                certificateBlocklist.isBlockedSpkiSha256(chain);
                 defaultTrustManager.checkServerTrusted(chain, authType);
                 hostnameVerifier.verify(mHost, certificate);
                 return;
+            } catch (CompromisedCertificateException e) {
+                // part of cert. chain is on blocked list
+                message = e.getMessage();
+                cause = e;
             } catch (CertificateException e) {
                 // cert. chain can't be validated
                 message = e.getMessage();
