@@ -4,7 +4,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.InternalComposeApi
 import androidx.compose.ui.input.key.Key
-import androidx.compose.ui.platform.findDefaultNavigationEventDispatcherOwner
 import androidx.compose.ui.test.ComposeUiTest
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.isRoot
@@ -14,6 +13,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performKeyInput
 import androidx.compose.ui.test.pressKey
 import androidx.navigationevent.NavigationEventInput
+import androidx.navigationevent.compose.LocalNavigationEventDispatcherOwner
 
 /**
  * A scope for Compose UI tests on JVM.
@@ -30,7 +30,7 @@ internal class JvmComposeUiTestScope(
 
     override fun setContent(content: @Composable (() -> Unit)) {
         delegate.setContent {
-            val navigationEventDispatcher = findDefaultNavigationEventDispatcherOwner()?.navigationEventDispatcher
+            val navigationEventDispatcher = LocalNavigationEventDispatcherOwner.current?.navigationEventDispatcher
 
             DisposableEffect(navigationEventDispatcher) {
                 if (navigationEventDispatcher == null) {

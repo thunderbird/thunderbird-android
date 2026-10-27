@@ -8,8 +8,8 @@ import app.k9mail.core.ui.compose.testing.mvi.turbines
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import kotlinx.coroutines.flow.flowOf
+import net.thunderbird.components.core.outcome.Outcome
 import net.thunderbird.core.logging.testing.TestLogger
-import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract.ContributionError
 import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract.UseCase
 import net.thunderbird.feature.funding.googleplay.ui.contribution.FakeContributionRepository

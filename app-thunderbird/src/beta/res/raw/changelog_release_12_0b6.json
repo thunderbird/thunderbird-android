@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "version": "12.0b6",
+  "versioncode": 24,
+  "date": "2025-08-11",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Enable edge-to-edge support on beta",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Selected/read/unread message states were hard to distinguish visually",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Crash occurred when attempting to access account general settings",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

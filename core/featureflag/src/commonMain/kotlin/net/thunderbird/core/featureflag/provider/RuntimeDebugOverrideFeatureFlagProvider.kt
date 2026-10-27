@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.stateIn
 import net.thunderbird.core.featureflag.FeatureFlagKey
 import net.thunderbird.core.featureflag.data.configstore.FeatureFlagConfigData
 import net.thunderbird.core.featureflag.data.configstore.FeatureFlagConfigStore
-import net.thunderbird.core.featureflag.data.configstore.update
+import net.thunderbird.core.featureflag.data.configstore.safeUpdate
 import net.thunderbird.core.featureflag.model.FlagOverrides
 import net.thunderbird.core.featureflag.provider.context.FeatureFlagContext
 import net.thunderbird.core.logging.Logger
@@ -34,7 +34,7 @@ class RuntimeDebugOverrideFeatureFlagProvider(
     val data: StateFlow<FeatureFlagConfigData> = configStore
         .config
         .onEach { data ->
-            logger.verbose { "[feature-flag] runtime override data update: $data" }
+            logger.verbose { "$logPrefix runtime override data update: $data" }
             // Keeps flag evaluation in sync with the persisted overrides, so a toggle takes effect
             // without recreating the provider.
             resolvedFlags = data.overrides
@@ -56,8 +56,8 @@ class RuntimeDebugOverrideFeatureFlagProvider(
     /** Sets the override for [key] to [enabled] and persists it. */
     suspend fun setOverride(key: FeatureFlagKey, enabled: Boolean) {
         val key = key.key
-        logger.verbose { "[feature-flag] overriding '$key' with '$enabled' value" }
-        configStore.update { current: FeatureFlagConfigData ->
+        logger.verbose { "$logPrefix overriding '$key' with '$enabled' value" }
+        configStore.safeUpdate { current: FeatureFlagConfigData ->
             current.copy(overrides = current.overrides + (key to enabled))
         }
     }
@@ -65,18 +65,18 @@ class RuntimeDebugOverrideFeatureFlagProvider(
     /** Removes the override for [key] and persists the change. */
     suspend fun clearOverride(key: FeatureFlagKey) {
         val key = key.key
-        logger.verbose { "[feature-flag] clearing '$key' override" }
-        configStore.update { current: FeatureFlagConfigData ->
+        logger.verbose { "$logPrefix clearing '$key' override" }
+        configStore.safeUpdate { current: FeatureFlagConfigData ->
             current.copy(overrides = current.overrides - key)
         }
     }
 
     /** Removes all overrides and persists the change. */
     suspend fun clearAllOverrides() {
-        logger.verbose { "[feature-flag] clearing all flag overrides" }
+        logger.verbose { "$logPrefix clearing all flag overrides" }
         // Only the overrides are dropped; clearing the whole store would also discard the
         // per-install targeting key used for rollout bucketing.
-        configStore.update { current: FeatureFlagConfigData ->
+        configStore.safeUpdate { current: FeatureFlagConfigData ->
             current.copy(overrides = emptyMap())
         }
     }

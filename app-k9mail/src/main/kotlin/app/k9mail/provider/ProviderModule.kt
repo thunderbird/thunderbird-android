@@ -6,6 +6,7 @@ import net.thunderbird.core.common.provider.AppNameProvider
 import net.thunderbird.core.common.provider.BrandNameProvider
 import net.thunderbird.core.ui.theme.api.FeatureThemeProvider
 import net.thunderbird.core.ui.theme.api.ThemeProvider
+import net.thunderbird.feature.navigation.changelog.api.ChangelogConfigProvider
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.binds
 import org.koin.dsl.module
@@ -21,5 +22,9 @@ internal val providerModule = module {
 
     single<NotificationIconResourceProvider> {
         K9AppNotificationIconProvider()
+    }
+
+    single<ChangelogConfigProvider> {
+        K9ChangelogConfigProvider()
     }
 }

@@ -40,9 +40,12 @@ internal fun AvatarLayout(
                 shape = CircleShape,
                 color = color,
             )
-            .clickable(
-                enabled = onClick != null,
-                onClick = { onClick?.invoke() },
+            .then(
+                if (onClick != null) {
+                    Modifier.clickable(onClick = onClick)
+                } else {
+                    Modifier
+                },
             ),
         contentAlignment = Alignment.Center,
     ) {

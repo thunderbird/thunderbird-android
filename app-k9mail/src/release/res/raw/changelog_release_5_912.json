@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "version": "5.912",
+  "versioncode": 29012,
+  "date": "2022-02-22",
+  "notes": [
+    {
+      "type": "fixed",
+      "text": "Fixed bugs where notifications weren't removed when they should have been",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Added a setting to configure the notification sound on Android 8+ (because some vendor-specific Android versions removed this feature from their user interface)",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Automatically recover in situations where messages can't be sent because the Outbox folder is missing",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Added more logging around 'new message' notifications",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Always prompt which app to use when sharing links",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Removed the the button bar in the drawer and switched back to the sticky footer",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Don't expose MessageProvider to third-party apps",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Updated the app to target the Android 12 API",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

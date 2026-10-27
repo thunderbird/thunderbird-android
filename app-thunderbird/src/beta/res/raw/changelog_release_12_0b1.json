@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "version": "12.0b1",
+  "versioncode": 19,
+  "date": "2025-07-14",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Improve support for SMTPUTF8 and other UTF-8 email standards (RFC 6531, 6855)",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Support Android's IME autofill for password managers when adding new account",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Add support for avatars in account settings",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Long words and links in email messages did not wrap properly",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Swipe right to archive failed if the archive folder did not exist",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Edit Text dialogs in Account Settings did not automatically request focus",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Account Settings did not display account name",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "In Unified Inbox, tapping a non-main account email redirected to the main inbox",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "In dark system mode with light message theme, navigation bar was not clearly visible",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Threaded View toggle did not automatically update the Threaded View display",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Gmail prefixes were shown in the folder structure",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Crash could occur when adding Gmail account after removing primary Gmail account",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

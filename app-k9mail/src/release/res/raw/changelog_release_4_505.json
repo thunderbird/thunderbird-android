@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "version": "4.505",
+  "versioncode": 18005,
+  "date": "2013-07-08",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Major performance improvements in folder lists",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Catalan, Chinese and Russian translation updates",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Several bugfixes",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

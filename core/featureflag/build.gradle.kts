@@ -1,4 +1,9 @@
+@file:OptIn(ExperimentalKotlinGradlePluginApi::class)
+@file:Suppress("UnstableApiUsage")
+
+import com.android.build.api.withAndroid
 import net.thunderbird.gradle.plugin.featureflag.task.registerGenerateFeatureFlagRawResTask
+import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 
 plugins {
     id(ThunderbirdPlugins.Library.kmp)
@@ -10,6 +15,14 @@ featureFlag {
 }
 
 kotlin {
+    applyDefaultHierarchyTemplate {
+        common {
+            group("commonJvm") {
+                withAndroid()
+                withJvm()
+            }
+        }
+    }
     android {
         namespace = "net.thunderbird.core.featureflag"
         // Required so the generated `res/raw` catalog is merged into the module's Android resources.
@@ -17,9 +30,17 @@ kotlin {
     }
 
     sourceSets {
+        val commonJvmMain = getByName("commonJvmMain")
         commonMain.dependencies {
             api(projects.core.configstore.api)
+            implementation(projects.core.file)
             implementation(projects.core.logging.api)
+            implementation(libs.ktor.client.core)
+            implementation(libs.ktor.client.content.negotiation)
+            implementation(libs.ktor.serialization.json)
+        }
+        commonJvmMain.dependencies {
+            implementation(libs.ktor.client.cio)
         }
         commonTest.dependencies {
             implementation(projects.core.configstore.testing)

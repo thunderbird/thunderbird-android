@@ -1,6 +1,5 @@
 package com.fsck.k9.controller.push
 
-import app.k9mail.legacy.mailstore.FolderRepository
 import com.fsck.k9.backend.BackendManager
 import com.fsck.k9.helper.mapToSet
 import com.fsck.k9.notification.PushNotificationManager
@@ -15,21 +14,26 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.asCoroutineDispatcher
+import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.toSet
 import kotlinx.coroutines.launch
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.account.LegacyAccountDtoManager
 import net.thunderbird.core.android.network.ConnectivityChangeListener
 import net.thunderbird.core.android.network.ConnectivityManager
-import net.thunderbird.legacy.logging.Log
+import net.thunderbird.components.core.outcome.fold
 import net.thunderbird.core.preference.BackgroundOps
 import net.thunderbird.core.preference.BackgroundSync
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.AccountIdFactory
+import net.thunderbird.feature.mail.folder.api.data.repository.PushFolderTrackingRepository
+import net.thunderbird.legacy.logging.Log
 
 /**
  * Starts and stops [AccountPushController]s as necessary. Manages the Push foreground service.
@@ -46,7 +50,7 @@ class PushController internal constructor(
     private val pushNotificationManager: PushNotificationManager,
     private val connectivityManager: ConnectivityManager,
     private val accountPushControllerFactory: AccountPushControllerFactory,
-    private val folderRepository: FolderRepository,
+    private val pushFolderTrackingRepository: PushFolderTrackingRepository,
     private val coroutineScope: CoroutineScope = GlobalScope,
     private val coroutineDispatcher: CoroutineDispatcher = Executors.newSingleThreadExecutor().asCoroutineDispatcher(),
 ) {
@@ -87,7 +91,7 @@ class PushController internal constructor(
 
         coroutineScope.launch(coroutineDispatcher) {
             for (account in accountManager.getAccounts()) {
-                folderRepository.setPushDisabled(account.id)
+                pushFolderTrackingRepository.disable(account.id)
             }
         }
     }
@@ -99,7 +103,9 @@ class PushController internal constructor(
         listenForBackgroundSyncChanges()
         backendManager.addListener(::onBackendChanged)
 
-        updatePushers()
+        coroutineScope.launch {
+            updatePushers()
+        }
     }
 
     private fun listenForBackgroundSyncChanges() {
@@ -158,7 +164,7 @@ class PushController internal constructor(
     }
 
     @Suppress("LongMethod", "CyclomaticComplexMethod")
-    private fun updatePushers() {
+    private suspend fun updatePushers() {
         Log.v("PushController.updatePushers()")
 
         val generalSettings = generalSettingsManager.getSettings()
@@ -251,10 +257,13 @@ class PushController internal constructor(
             .toSet()
     }
 
-    private fun getPushAccounts(): Set<LegacyAccountDto> {
+    private suspend fun getPushAccounts(): Set<LegacyAccountDto> {
         return getPushCapableAccounts()
-            .asSequence()
-            .filter { account -> folderRepository.hasPushEnabledFolder(account.id) }
+            .asFlow()
+            .filter { account ->
+                val outcome = pushFolderTrackingRepository.isEnabled(account.id)
+                outcome.fold(onSuccess = { it }, onFailure = { false })
+            }
             .toSet()
     }
 
@@ -321,7 +330,7 @@ class PushController internal constructor(
             for (account in newAccounts) {
                 pushEnabledCollectorJobs[account.uuid] = coroutineScope.launch(coroutineDispatcher) {
                     Log.v("..Starting to listen for push enabled changes in account: %s", account.uuid)
-                    folderRepository.hasPushEnabledFolderFlow(account.id)
+                    pushFolderTrackingRepository.observeEnabled(account.id)
                         .collect {
                             updatePushers()
                         }

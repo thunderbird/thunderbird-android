@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "version": "5.804",
+  "versioncode": 28004,
+  "date": "2021-08-18",
+  "notes": [
+    {
+      "type": "fixed",
+      "text": "Fixed a bug where Push didn't work with some servers",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Don't connect to the incoming or outgoing server when passwords haven't been provided after import",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Added missing scrollbars in screens showing the folder list",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Tapping the app icon should now always bring the app to the foreground instead of adding another message list screen",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Updated translations",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

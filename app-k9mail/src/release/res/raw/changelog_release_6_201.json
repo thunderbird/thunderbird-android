@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "version": "6.201",
+  "versioncode": 32001,
+  "date": "2022-07-15",
+  "notes": [
+    {
+      "type": "new",
+      "text": "Added support for using OAuth 2.0 with Office365 accounts",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed a bug that could lead to two message lists being displayed on top of each other",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Avoid a crash when trying to create new message notifications but the notification sound couldn't be accessed",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed a bug where multi-select mode was exited early in some cases",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Don't require re-authorization when getting an OAuth token fails due to a temporary error",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Updated translations",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

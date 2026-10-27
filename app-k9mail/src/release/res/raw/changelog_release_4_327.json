@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "version": "4.327",
+  "versioncode": 17028,
+  "date": "2013-02-20",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Fix dialog message when deleting multiple messages from a notification",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Message view / list: fix NPE when list is empty",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "If there is no message when resuming, K-9 should return to a MessageList.",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Add a caching layer to EmailProvider.  Database updates can be surprisingly slow. This lead to slow updates of the user interface which in turn made working with K-9 Mail not as fun as it should be. This commit hopefully changes that.",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Updated Japanese translation",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Updated French translation",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Updated Czech localization",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

@@ -7,6 +7,7 @@ on:
       - main
     paths:
       - 'docs/**'
+      - 'config/featureflag/**'
 
   workflow_dispatch:
 
@@ -32,12 +33,12 @@ jobs:
           private-key: ${{ secrets.BOT_PRIVATE_KEY }}
 
       - name: Checkout
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0  # v7.0.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
         with:
           token: ${{ steps.app-token.outputs.token || github.token }}
 
       - name: Cargo cache
-        uses: actions-rust-lang/setup-rust-toolchain@166cdcfd11aee3cb47222f9ddb555ce30ddb9659  # v1.17.0
+        uses: actions-rust-lang/setup-rust-toolchain@ecabd13d1c56bd1345c230e542e9144811ad706f  # v2.0.0
 
       - name: Install mdbook and extensions
         run: ./docs/install.sh
@@ -51,6 +52,10 @@ jobs:
           echo "BUILD_DIR=${BUILD_DIR}" >> $GITHUB_ENV
           echo "Building docs into ${BUILD_DIR}"
           mdbook build docs --dest-dir="${BUILD_DIR}"
+
+          # Copy the remote feature-flag catalog to the assets folder
+          cp "config/featureflag/thunderbird_mobile_featureflag.catalog.json" "${BUILD_DIR}/assets/thunderbird_mobile_featureflag.catalog.json"
+
           echo "Build output preview:"
           ls -la "${BUILD_DIR}" || true
 

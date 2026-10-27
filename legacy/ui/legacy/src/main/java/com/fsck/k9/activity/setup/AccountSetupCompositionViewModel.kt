@@ -69,7 +69,7 @@ internal class AccountSetupCompositionViewModel(
                 account = account.copy(signature = event.signature)
                 state.copy(
                     signature = account.signature ?: "",
-                    signaturePreviewHtmlText = account.signature?.buildSignatureHtmlPreviewText(),
+                    signaturePreviewHtmlText = account.signature.buildSignatureHtmlPreviewText(),
                 )
             }
 
@@ -101,7 +101,7 @@ internal class AccountSetupCompositionViewModel(
                     Pair(2, resources.stringResource(R.string.account_settings_signature__location_after_quoted_text))
                 },
                 saveSignatureAsHtml = account.signatureIsHtml,
-                signaturePreviewHtmlText = account.signature?.buildSignatureHtmlPreviewText(),
+                signaturePreviewHtmlText = account.signature.buildSignatureHtmlPreviewText(),
                 webViewConfig = legacyIdentitySignatureWebViewConfigurator.buildWebConfig(),
             )
         }
@@ -116,6 +116,10 @@ internal class AccountSetupCompositionViewModel(
         updateState { it.copy(saveSignatureAsHtml = event.checked) }
     }
 
-    private fun String?.buildSignatureHtmlPreviewText(): String? =
-        legacyIdentitySignatureWebViewConfigurator.buildSignatureHtmlPreviewText(signature = this)
+    private fun String?.buildSignatureHtmlPreviewText(): String? {
+        val previewContent = takeUnless { it.isNullOrBlank() }
+            ?: resources.stringResource(R.string.account_settings_signature_preview_empty)
+
+        return legacyIdentitySignatureWebViewConfigurator.buildSignatureHtmlPreviewText(signature = previewContent)
+    }
 }

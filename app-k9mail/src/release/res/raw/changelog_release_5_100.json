@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "version": "5.100",
+  "versioncode": 23000,
+  "date": "2014-10-08",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Removed SSL/TLS session caching because it was causing problems",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

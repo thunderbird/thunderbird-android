@@ -173,7 +173,7 @@
     <!--Displayed in the message view screen in front of the number of additional recipients (the ones that are not displayed).-->
     <string name="message_view_additional_recipient_prefix">+</string>
     <!--Displayed in the message view screen if the message was addressed to the user. Make sure this works with 'message_view_recipient_prefix'. In English it's "to me".-->
-    <string name="message_view_me_text">my</string>
+    <string name="message_view_to_me_text">my</string>
     <!--Text of the button that is displayed below the message header when the message body references one or more remote images-->
     <string name="message_view_show_remote_images_action">Eksterne ôfbyldingen toane</string>
     <string name="message_view_no_viewer">Gjin viewer te finen foar <xliff:g id="mimetype">%s</xliff:g>.</string>
@@ -952,4 +952,14 @@
     <string name="global_settings_privacy_incognito_keyboard">Ynkognitotoetseboerd</string>
     <string name="global_settings_privacy_incognito_keyboard_detail">It toetseboerd freegje net te learen fan wat jo type wannear’t jo berjochten opstelle</string>
     <string name="sort_by_indicator">•</string>
+    <string name="camera_capture_lost">Skermôfdruk is ferlern gean, omdat de app sletten wie. Probearje it nochris.</string>
+    <string name="account_settings_signature_html_label">HTML-ûndertekening</string>
+    <string name="account_settings_signature_is_html_label">Undertekening as HTML bewarje</string>
+    <string name="account_settings_signature_is_html_summary">Ynterpretearje de ûndertekening as HTML. Scripts en barrens-handlers sille foar befeiliging fuortsmiten wurde.</string>
+    <string name="account_settings_signature_preview">Foarbyld ûndertekening</string>
+    <string name="account_settings_signature_clear_label">Undertekening wiskje</string>
+    <string name="message_compose_encrypting_message">Berjocht fersiferje…</string>
+    <string name="message_view_from_me_text">ik</string>
+    <string name="account_settings_signature_preview_empty">It foarbyld fan jo ûndertekening sil hjir ferskine</string>
+    <string name="error_no_contact_provider">Der is gjin kontakte-app fûn. Ynstallearje in kontakte-app om dit adres ta te foegjen.</string>
 </resources>

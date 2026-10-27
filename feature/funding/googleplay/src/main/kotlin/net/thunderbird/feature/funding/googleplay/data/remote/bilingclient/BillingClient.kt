@@ -22,11 +22,11 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import net.thunderbird.components.core.outcome.Outcome
+import net.thunderbird.components.core.outcome.handleAsync
+import net.thunderbird.components.core.outcome.mapFailure
 import net.thunderbird.core.android.common.activity.ActivityProvider
 import net.thunderbird.core.logging.Logger
-import net.thunderbird.core.outcome.Outcome
-import net.thunderbird.core.outcome.handleAsync
-import net.thunderbird.core.outcome.mapFailure
 import net.thunderbird.feature.funding.googleplay.data.FundingDataContract
 import net.thunderbird.feature.funding.googleplay.data.FundingDataContract.Remote
 import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract.ContributionError

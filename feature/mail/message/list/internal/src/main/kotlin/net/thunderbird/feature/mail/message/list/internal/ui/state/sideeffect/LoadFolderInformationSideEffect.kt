@@ -1,14 +1,16 @@
 package net.thunderbird.feature.mail.message.list.internal.ui.state.sideeffect
 
 import androidx.compose.ui.graphics.Color
-import app.k9mail.legacy.mailstore.FolderRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.first
+import net.thunderbird.components.core.outcome.fold
 import net.thunderbird.core.logging.Logger
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.UnifiedAccountId
 import net.thunderbird.feature.account.profile.AccountProfileRepository
-import net.thunderbird.feature.mail.folder.api.FolderType
+import net.thunderbird.feature.mail.folder.FolderType
+import net.thunderbird.feature.mail.folder.api.data.repository.FolderQueryRepository
+import net.thunderbird.feature.mail.folder.api.data.repository.RemoteFolderQueryRepository
 import net.thunderbird.feature.mail.message.list.ui.effect.MessageListEffect
 import net.thunderbird.feature.mail.message.list.ui.event.FolderEvent
 import net.thunderbird.feature.mail.message.list.ui.event.MessageListEvent
@@ -25,7 +27,8 @@ internal class LoadFolderInformationSideEffect(
     private val folderId: Long?,
     dispatch: suspend (MessageListEvent) -> Unit,
     private val logger: Logger,
-    private val folderRepository: FolderRepository,
+    private val folderQueryRepository: FolderQueryRepository,
+    private val remoteFolderQueryRepository: RemoteFolderQueryRepository,
     private val profileRepository: AccountProfileRepository,
 ) : MessageListStateSideEffectHandler(logger, dispatch) {
     override fun accept(event: MessageListEvent, oldState: MessageListState, newState: MessageListState): Boolean =
@@ -61,10 +64,23 @@ internal class LoadFolderInformationSideEffect(
 
     private suspend fun consumeSingleAccountFolder(folderId: Long): ConsumeResult {
         val accountId = accountIds.first()
-        val folder = folderRepository.getFolder(accountId, folderId)
+        val folder = folderQueryRepository
+            .findById(accountId, folderId)
+            .fold(
+                onSuccess = { it },
+                onFailure = { error ->
+                    when (val throwable = error.throwable) {
+                        null -> null
+                        else -> throw throwable
+                    }
+                },
+            )
         return if (folder != null) {
             val remoteFolder = if (!folder.isLocalOnly) {
-                folderRepository.getRemoteFolders(accountId).first { it.id == folderId }
+                remoteFolderQueryRepository
+                    .getAllByAccountId(accountId)
+                    .fold(onSuccess = { it }, onFailure = { emptyList() })
+                    .first { it.id == folderId }
             } else {
                 null
             }
@@ -91,7 +107,8 @@ internal class LoadFolderInformationSideEffect(
         private val accountIds: Set<AccountId>,
         private val folderId: Long?,
         private val logger: Logger,
-        private val folderRepository: FolderRepository,
+        private val folderQueryRepository: FolderQueryRepository,
+        private val remoteFolderQueryRepository: RemoteFolderQueryRepository,
         private val profileRepository: AccountProfileRepository,
     ) : MessageListStateSideEffectHandlerFactory {
         override fun create(
@@ -103,7 +120,8 @@ internal class LoadFolderInformationSideEffect(
             folderId = folderId,
             dispatch = dispatch,
             logger = logger,
-            folderRepository = folderRepository,
+            folderQueryRepository = folderQueryRepository,
+            remoteFolderQueryRepository = remoteFolderQueryRepository,
             profileRepository = profileRepository,
         )
     }

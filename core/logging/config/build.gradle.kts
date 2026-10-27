@@ -15,6 +15,9 @@ kotlin {
             implementation(projects.core.logging.implComposite)
             implementation(projects.core.logging.implFile)
         }
+        commonTest.dependencies {
+            implementation(projects.core.testing)
+        }
     }
 }
 

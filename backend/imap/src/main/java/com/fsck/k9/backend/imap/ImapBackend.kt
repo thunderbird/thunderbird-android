@@ -13,6 +13,10 @@ import com.fsck.k9.mail.power.PowerManager
 import com.fsck.k9.mail.store.imap.IdleRefreshManager
 import com.fsck.k9.mail.store.imap.ImapStore
 import com.fsck.k9.mail.transport.smtp.SmtpTransport
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import net.thunderbird.core.common.mail.Flag
 import net.thunderbird.feature.mail.folder.api.FolderPathDelimiter
 
@@ -24,6 +28,7 @@ class ImapBackend(
     private val idleRefreshManager: IdleRefreshManager,
     private val pushConfigProvider: ImapPushConfigProvider,
     private val smtpTransport: SmtpTransport,
+    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : Backend {
     private val imapSync = ImapSync(accountName, backendStorage, imapStore)
     private val commandRefreshFolderList = CommandRefreshFolderList(backendStorage, imapStore)
@@ -53,21 +58,24 @@ class ImapBackend(
         return commandRefreshFolderList.refreshFolderList()
     }
 
-    override fun sync(folderServerId: String, syncConfig: SyncConfig, listener: SyncListener) {
-        imapSync.sync(folderServerId, syncConfig, listener)
-    }
+    override fun sync(folderServerId: String, syncConfig: SyncConfig, listener: SyncListener) =
+        runBlocking(ioDispatcher) {
+            imapSync.sync(folderServerId, syncConfig, listener)
+        }
 
-    override fun downloadMessage(syncConfig: SyncConfig, folderServerId: String, messageServerId: String) {
-        imapSync.downloadMessage(syncConfig, folderServerId, messageServerId)
-    }
+    override fun downloadMessage(syncConfig: SyncConfig, folderServerId: String, messageServerId: String) =
+        runBlocking(ioDispatcher) {
+            imapSync.downloadMessage(syncConfig, folderServerId, messageServerId)
+        }
 
-    override fun downloadMessageStructure(folderServerId: String, messageServerId: String) {
+    override fun downloadMessageStructure(folderServerId: String, messageServerId: String) = runBlocking(ioDispatcher) {
         commandDownloadMessage.downloadMessageStructure(folderServerId, messageServerId)
     }
 
-    override fun downloadCompleteMessage(folderServerId: String, messageServerId: String) {
-        commandDownloadMessage.downloadCompleteMessage(folderServerId, messageServerId)
-    }
+    override suspend fun downloadCompleteMessage(folderServerId: String, messageServerId: String) =
+        withContext(ioDispatcher) {
+            commandDownloadMessage.downloadCompleteMessage(folderServerId, messageServerId)
+        }
 
     override fun setFlag(folderServerId: String, messageServerIds: List<String>, flag: Flag, newState: Boolean) {
         commandSetFlag.setFlag(folderServerId, messageServerIds, flag, newState)

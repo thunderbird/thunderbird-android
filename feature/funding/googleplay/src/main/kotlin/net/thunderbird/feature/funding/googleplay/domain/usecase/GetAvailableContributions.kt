@@ -3,7 +3,7 @@ package net.thunderbird.feature.funding.googleplay.domain.usecase
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
-import net.thunderbird.core.outcome.Outcome
+import net.thunderbird.components.core.outcome.Outcome
 import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract.ContributionError
 import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract.ContributionIdProvider
 import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract.ContributionRepository

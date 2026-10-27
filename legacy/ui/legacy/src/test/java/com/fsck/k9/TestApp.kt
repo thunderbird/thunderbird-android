@@ -37,7 +37,7 @@ class TestApp : Application() {
         Log.logger = logger
         DI.start(
             application = this,
-            modules = legacyCoreModules + legacyCommonAppModules + legacyUiModules + telemetryModule + testModule,
+            modules = legacyCoreModule + legacyCommonAppModules + legacyUiModules + telemetryModule + testModule,
             allowOverride = true,
         )
 
@@ -47,8 +47,8 @@ class TestApp : Application() {
 
     companion object {
         val logger: Logger = TestLogger()
-        val sinkManager: CompositeLogSinkManager = org.mockito.kotlin.mock<CompositeLogSinkManager>()
-        val fileSink: FileLogSink = org.mockito.kotlin.mock<FileLogSink>()
+        val sinkManager: CompositeLogSinkManager = mock<CompositeLogSinkManager>()
+        val fileSink: FileLogSink = mock<FileLogSink>()
 
         val compositeSink: CompositeLogSink = CompositeLogSink(
             logLevelProvider = { LogLevel.DEBUG },

@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "version": "14.0b3",
+  "versioncode": 34,
+  "date": "2025-10-27",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Thunderbird could crash when deleting an account and returning to the message list",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

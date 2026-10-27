@@ -171,7 +171,7 @@
     <!--Displayed in the message view screen in front of the number of additional recipients (the ones that are not displayed).-->
     <string name="message_view_additional_recipient_prefix">+</string>
     <!--Displayed in the message view screen if the message was addressed to the user. Make sure this works with 'message_view_recipient_prefix'. In English it's "to me".-->
-    <string name="message_view_me_text">我</string>
+    <string name="message_view_to_me_text">我</string>
     <!--Text of the button that is displayed below the message header when the message body references one or more remote images-->
     <string name="message_view_show_remote_images_action">显示远程图片</string>
     <string name="message_view_no_viewer">无法找到查看 <xliff:g id="mimetype">%s</xliff:g> 的应用。</string>
@@ -951,4 +951,8 @@
     <string name="account_settings_signature_clear_label">清除签名</string>
     <string name="account_settings_signature_is_html_summary">将签名解析为 HTML。出于安全考虑，脚本和事件处理程序将被移除。</string>
     <string name="camera_capture_lost">由于应用已关闭，捕获的图片已丢失。请重试。</string>
+    <string name="message_compose_encrypting_message">正在加密邮件…</string>
+    <string name="message_view_from_me_text">我</string>
+    <string name="account_settings_signature_preview_empty">您的签名预览将显示在此处</string>
+    <string name="error_no_contact_provider">未找到联系人应用。请安装联系人应用以添加此地址。</string>
 </resources>

@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "version": "4.319",
+  "versioncode": 17020,
+  "date": "2013-01-08",
+  "notes": [
+    {
+      "type": "new",
+      "text": "Added Jelly Bean-style notifications",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

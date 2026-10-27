@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "version": "5.901",
+  "versioncode": 29001,
+  "date": "2021-09-17",
+  "notes": [
+    {
+      "type": "new",
+      "text": "Added support for entering Reply-To addresses when composing a message",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Display the unread message count for the Unified Inbox in the drawer",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed crash when using the split-screen view",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Hide notification category settings on Android versions that don't support them",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Update the sync notification for an account instead of adding and removing it for each folder",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "A lot of internal changes to the notification code - please report any bugs or odd behavior you encounter",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

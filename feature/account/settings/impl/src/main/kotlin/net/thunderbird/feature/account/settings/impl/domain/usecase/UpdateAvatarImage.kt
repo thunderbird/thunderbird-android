@@ -2,9 +2,9 @@ package net.thunderbird.feature.account.settings.impl.domain.usecase
 
 import com.eygraber.uri.Uri
 import java.io.IOException
+import net.thunderbird.components.core.outcome.Outcome
 import net.thunderbird.core.file.MimeType
 import net.thunderbird.core.file.MimeTypeResolver
-import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.avatar.Avatar
 import net.thunderbird.feature.account.avatar.AvatarImageRepository

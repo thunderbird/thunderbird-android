@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "version": "5.731",
+  "versioncode": 27031,
+  "date": "2021-02-23",
+  "notes": [
+    {
+      "type": "fixed",
+      "text": "Fixed display bug when opening Unified Inbox from a launcher shortcut",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed functionality to download and save linked images on Android 10+",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Moved 'show headers' functionality to a separate screen",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Added save button to 'edit identity' screen",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Added translation: Malayalam",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

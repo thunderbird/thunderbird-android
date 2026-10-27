@@ -1,8 +1,5 @@
 package net.thunderbird.core.featureflag.provider
 
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
 import net.thunderbird.core.featureflag.data.FeatureFlagCatalogDataSource
 import net.thunderbird.core.logging.Logger
 
@@ -15,12 +12,10 @@ import net.thunderbird.core.logging.Logger
 class BundledCatalogFeatureFlagProvider(
     dataSource: FeatureFlagCatalogDataSource,
     logger: Logger,
-    scope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Default),
 ) : DataSourceCatalogFeatureFlagProvider(
     dataSource = dataSource,
     providerName = "bundled_catalog",
     logger = logger,
-    scope = scope,
 ),
     BundledFeatureFlagDefaults {
     override fun defaults(): Map<String, Boolean> = resolvedFlags()

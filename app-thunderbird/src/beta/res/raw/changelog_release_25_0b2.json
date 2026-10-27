@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "version": "25.0b2",
+  "versioncode": 62,
+  "date": "2026-10-19",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Remote Feature Flags temporarily disabled to investigate startup freeze on splash screen",
+      "source": "thunderbird-notes",
+      "issues": [
+        11759
+      ]
+    },
+    {
+      "type": "fixed",
+      "text": "Message composer could crash when rotating the screen or editing a message as new",
+      "source": "thunderbird-notes",
+      "issues": [
+        11302
+      ]
+    }
+  ]
+}

@@ -45,4 +45,15 @@
     <string name="funding_googleplay_contribution_tfa_recurring_s_title">Kontribusi Bulanan Berharga</string>
     <string name="funding_googleplay_contribution_reminder_title">Mari dukung Thunderbird</string>
     <string name="funding_googleplay_contribution_reminder_message">Misi kami adalah untuk menyediakan aplikask surel bersumber terbuka yang aman, privat, sekaligus gratis untuk semua pengguna di seantero dunia. Dukungan dana dari Anda sungguh dapat menyokong proyek ini. Maukah Anda berdonasi sekarang?</string>
+    <string name="funding_googleplay_contribution_header_thank_you">Terima kasih yang tulus dari kami semua!</string>
+    <string name="funding_googleplay_contribution_footer_payment_processing_button">Memproses pembelian…</string>
+    <string name="funding_googleplay_contribution_footer_payment_cancel_button">Batal</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_m_title">Kontribusi Bulanan yang Signifikan</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_xl_title">Kontribusi Bulanan yang Luar Biasa</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_xxl_title">Kontribusi Bulanan yang Istimewa</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_m_description">Kontribusi Anda bersinar! Anda berperan penting dalam memajukan misi kami dan menghasilkan dampak.</string>
+    <string name="funding_googleplay_contribution_reminder_statement">Thunderbird gratis dan open source.</string>
+    <string name="funding_googleplay_contribution_reminder_statement_point_1">Kami tidak menampilkan iklan.</string>
+    <string name="funding_googleplay_contribution_reminder_statement_point_2">Kami tidak menjual data Anda.</string>
+    <string name="funding_googleplay_contribution_reminder_claim">Kami didanai sepenuhnya oleh pengguna seperti Anda.</string>
 </resources>

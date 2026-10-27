@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "version": "5.735",
+  "versioncode": 27035,
+  "date": "2021-06-24",
+  "notes": [
+    {
+      "type": "new",
+      "text": "Added back support for IMAP IDLE (Push)",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Show unread count on account list in drawer",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Added 'search everywhere' to menu when displaying results of a search in a single folder",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Long-pressing the subject when viewing a message now copies the text to the clipboard",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Removed \"Notification opens unread messages\" setting",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Honor expunge policy when deleting messages without Trash folder (IMAP)",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed multiple bugs related to remote search (IMAP)",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed instances where the system language instead of the app language was used for some texts",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed bug that prevented forwarding encrypted attachments",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed various crashes",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Updated translations",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

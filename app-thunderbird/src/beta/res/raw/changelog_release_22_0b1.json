@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "version": "22.0b1",
+  "versioncode": 56,
+  "date": "2026-07-20",
+  "notes": [
+    {
+      "type": "new",
+      "text": "New: Incognito Keyboard privacy setting disables Google keyboard from learning words",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "New: Thundermail interim screen when adding an account",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Changed: Selected sort option now shows an indicator in the sort menu",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed: Messages could scroll horizontally when content fit the screen",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed: Thread deletion confirmation incorrectly said only one message would be deleted",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed: Notification actions were difficult to scroll and reorder on small screen",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed: Show Headers collapsed multi-line email headers into a single line",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed: Notification previews displayed HTML entities and markup instead of clean text",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed: Select Image icon was hard to see in dark theme",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed: Printed message headers always used US date format instead of local format",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed: Splash screen truncated the Thunderbird name on small displays",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

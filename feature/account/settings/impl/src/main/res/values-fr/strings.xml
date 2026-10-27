@@ -45,7 +45,7 @@
     <string name="account_settings_remote_search_num_results_entries_500">500</string>
     <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
     <string name="account_settings_remote_search_num_label">Limite de recherche sur le serveur</string>
-    <string name="account_settings_fetching_mail">Récupération du courrier</string>
+    <string name="account_settings_fetching_mail">Récupération des courriels</string>
     <string name="account_settings_mail_display_count_label">Taille du dossier local</string>
     <string name="account_settings_options_mail_display_count_10">10 messages</string>
     <string name="account_settings_options_mail_display_count_25">25 messages</string>
@@ -57,7 +57,7 @@
     <string name="account_settings_options_mail_display_count_2500">2500 messages</string>
     <string name="account_settings_options_mail_display_count_5000">5000 messages</string>
     <string name="account_settings_options_mail_display_count_10000">10000 messages</string>
-    <string name="account_settings_options_mail_display_count_all">tous les messages</string>
+    <string name="account_settings_options_mail_display_count_all">Tous les messages</string>
     <string name="account_settings_message_age_label">Synchroniser les messages depuis</string>
     <string name="account_settings_message_age_any">à tout moment (pas de limite)</string>
     <string name="account_settings_message_age_0">aujourd\'hui</string>

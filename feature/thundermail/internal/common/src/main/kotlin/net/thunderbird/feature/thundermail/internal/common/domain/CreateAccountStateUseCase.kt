@@ -6,7 +6,7 @@ import app.k9mail.feature.account.common.domain.entity.AccountState
 import app.k9mail.feature.account.common.domain.entity.AuthorizationState
 import com.fsck.k9.mail.ServerSettings
 import net.openid.appauth.AuthState
-import net.thunderbird.core.outcome.Outcome
+import net.thunderbird.components.core.outcome.Outcome
 import org.json.JSONException
 
 internal class CreateAccountStateUseCase(

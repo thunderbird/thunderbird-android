@@ -31,9 +31,9 @@ Expose a repository contract from an `:api` module only when another area needs 
 contract, criteria, errors, and domain models in that module. Keep repository implementations, data sources, mappers,
 and storage models in the area's `:internal` module.
 
-Bind the contract to its implementation in `:app-common` or an app-specific composition module. Dependency injection
-then provides the implementation when a caller requests the contract, without exposing the implementation to that
-caller. This maintains the API/internal boundary defined by
+Bind shared KMP contracts to their implementations in `:app-composition`. Keep Android, legacy, and app-specific
+bindings in `:app-common` or an app module. Dependency injection then provides the implementation when a caller requests
+the contract, without exposing the implementation to that caller. This maintains the API/internal boundary defined by
 [ADR-0009](../engineering/adr/0009-api-internal-split.md).
 
 ## Scope and identifiers
@@ -58,7 +58,7 @@ encounter an expected, recoverable condition that the caller needs to handle, su
 failure, a rejected operation, or a missing required entity. Return a value directly only when the contract guarantees
 a meaningful result, possibly by using a default.
 
-Use [`net.thunderbird.core.outcome.Outcome`](../../core/outcome/src/commonMain/kotlin/net/thunderbird/core/outcome/Outcome.kt)
+Use [`net.thunderbird.components.core.outcome.Outcome`](https://github.com/thunderbird/thunderbird-mobile-components/tree/main/components/core/outcome)
 for fallible repository results. `ERROR` is a domain-specific sealed type. Do not expose database, HTTP, or platform
 exceptions from a contract.
 

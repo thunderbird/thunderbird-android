@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 1,
+  "version": "11.0b1",
+  "versioncode": 14,
+  "date": "2025-05-05",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Testing drawer improvements in this beta, feedback on bugs is welcome",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Option added to attach images directly from Camera",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Improve dark mode emails with algorithmic darkening",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Welcome screen logo layout improved",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Selection now shown on active items by adjusting color priority",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Folder settings now use switches instead of checkboxes",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Message list colors updated for better contrast",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Account setup issues with outlook.com and hotmail.com resolved",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Keyboard navigation bugs resolved",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Star and attachment icon colors corrected",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Paste of recipient lists into compose field now correctly parsed",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Back button now returns to Drafts folder when editing a draft",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Unified Inbox now appears as expected",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Dark and light mode switching issues resolved",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Scroll indicator removed following review feedback",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

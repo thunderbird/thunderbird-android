@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "version": "24.0b1",
+  "versioncode": 59,
+  "date": "2026-09-08",
+  "notes": [
+    {
+      "type": "new",
+      "text": "New: Signatures can be formatted as HTML for individual identities",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed: Reply prompts users to choose Reply or Reply All when both are applicable",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed: Selected compose text was invisible in light theme due to white highlighting",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed: Status bar icons became unreadable when selecting messages in light theme",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed: Recipient expander would not collapse after editing message subject or body",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed: Thunderbird could crash when adding an attachment to a message using the camera",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed: Save All incorrectly saved each attachment using the content of the last file",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed: Editing queued mail as new used the default identity instead of the original one",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed: QR code scanner failed to open when no accounts were configured",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed: Unsupported QR codes did not display feedback after scanning",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed: With a hardware keyboard the focus could not leave To, Cc or Bcc",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Changed: Long account names are resized to fit within two lines in the account drawer",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

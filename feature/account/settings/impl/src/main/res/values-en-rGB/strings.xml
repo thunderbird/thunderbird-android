@@ -25,4 +25,5 @@
     <string name="account_settings_avatar_hint_jpeg_only">JPEG only</string>
     <string name="account_settings_remote_search_num_results_entries_500">500</string>
     <string name="account_settings_remote_search_num_label">Server search limit</string>
+    <string name="account_settings_incoming_label">Incoming server</string>
 </resources>

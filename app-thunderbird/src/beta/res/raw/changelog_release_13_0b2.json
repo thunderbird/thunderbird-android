@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "version": "13.0b2",
+  "versioncode": 28,
+  "date": "2025-09-15",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "On IMAP servers with folder prefixes, some folder operations stopped working",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

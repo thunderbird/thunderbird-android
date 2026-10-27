@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "version": "9.0b3",
+  "versioncode": 11,
+  "date": "2024-12-11",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Hyperlink added to Thunderbird website on funding page",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Use autoconfig server after MX lookup for email providers",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Messages are now always marked as read during archiving",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

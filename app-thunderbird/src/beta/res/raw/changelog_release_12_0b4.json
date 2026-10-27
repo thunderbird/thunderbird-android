@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "version": "12.0b4",
+  "versioncode": 22,
+  "date": "2025-07-28",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Testing drawer UI improvements in this beta, feedback on bugs is welcome",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Testing new account settings page in this beta, feedback on bugs is welcome",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Crash could occur when clicking on a message thread",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Unicode folder names were malformed when using server supporting UTF-8",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

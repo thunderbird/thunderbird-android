@@ -10,7 +10,7 @@ import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSett
 import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSettingsContract.State
 import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSettingsContract.Validator
 import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSettingsContract.ViewModel
-import net.thunderbird.core.outcome.Outcome
+import net.thunderbird.components.core.outcome.Outcome
 import net.thunderbird.core.ui.contract.mvi.BaseViewModel
 import net.thunderbird.core.validation.ValidationSuccess
 

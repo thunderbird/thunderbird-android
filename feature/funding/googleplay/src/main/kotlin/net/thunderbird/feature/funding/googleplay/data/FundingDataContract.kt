@@ -6,12 +6,12 @@ import com.android.billingclient.api.PurchaseHistoryRecord
 import com.android.billingclient.api.PurchasesUpdatedListener
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
+import net.thunderbird.components.core.outcome.Outcome
 import net.thunderbird.core.common.cache.Cache
 import net.thunderbird.core.configstore.ConfigDefinition
 import net.thunderbird.core.configstore.ConfigMapper
 import net.thunderbird.core.configstore.ConfigMigration
 import net.thunderbird.core.configstore.ConfigStore
-import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.feature.funding.googleplay.data.local.configstore.ContributionConfig
 import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract.ContributionError
 import net.thunderbird.feature.funding.googleplay.domain.entity.Contribution

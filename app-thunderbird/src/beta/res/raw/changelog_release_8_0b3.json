@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "version": "8.0b3",
+  "versioncode": 6,
+  "date": "2024-10-15",
+  "notes": [
+    {
+      "type": "new",
+      "text": "Support Thunderbird with our new in-app financial contribution feature (work in progress)",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "OAuth support now available for Fastmail",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Better guidance when using the import from app feature",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed account update issues, crashes, and improved message list spacing",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Enforced email validation for better identity management",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

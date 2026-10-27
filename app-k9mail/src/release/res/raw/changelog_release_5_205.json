@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "version": "5.205",
+  "versioncode": 23250,
+  "date": "2017-02-24",
+  "notes": [
+    {
+      "type": "fixed",
+      "text": "Fixed bug where the message body wasn't displayed when no crypto provider was configured",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

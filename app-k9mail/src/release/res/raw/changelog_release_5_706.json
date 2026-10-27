@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "version": "5.706",
+  "versioncode": 27006,
+  "date": "2020-03-03",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Unified Inbox is now opened by default (if enabled)",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Back button now opens default folder before exiting the app",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed bug where the input area for the message body wasn't growing properly",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Keep read position when switching apps",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Don't open external links inside the app on old Android/WebView versions",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Update \"auto BCC\" recipients when switching accounts in message compose window",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed UI bug where BCC recipient and the date overlapped when viewing messages",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed bug that lead to display of inaccurate attachment sizes",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Opt out of anonymous WebView metrics collection",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Removed automatic display of \"What's New\" dialog because of display issues",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Updated translations",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

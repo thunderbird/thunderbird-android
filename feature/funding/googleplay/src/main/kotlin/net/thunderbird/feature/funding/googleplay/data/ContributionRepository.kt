@@ -3,7 +3,7 @@ package net.thunderbird.feature.funding.googleplay.data
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.onEach
-import net.thunderbird.core.outcome.Outcome
+import net.thunderbird.components.core.outcome.Outcome
 import net.thunderbird.feature.funding.googleplay.data.FundingDataContract.Local.ContributionPurchaseDataSource
 import net.thunderbird.feature.funding.googleplay.data.FundingDataContract.Remote.ContributionDataSource
 import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract

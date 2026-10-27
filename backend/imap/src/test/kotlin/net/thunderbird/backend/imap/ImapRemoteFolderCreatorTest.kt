@@ -15,8 +15,8 @@ import com.fsck.k9.mail.store.imap.ImapStore
 import kotlinx.coroutines.test.runTest
 import net.thunderbird.backend.api.folder.RemoteFolderCreationOutcome
 import net.thunderbird.backend.api.folder.RemoteFolderCreationOutcome.Error.FailedToCreateRemoteFolder
+import net.thunderbird.components.core.outcome.Outcome
 import net.thunderbird.core.logging.testing.TestLogger
-import net.thunderbird.core.outcome.Outcome
 import org.junit.Test
 
 class ImapRemoteFolderCreatorTest {

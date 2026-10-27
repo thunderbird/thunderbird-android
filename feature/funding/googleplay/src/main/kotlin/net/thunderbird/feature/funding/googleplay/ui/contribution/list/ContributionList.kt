@@ -4,8 +4,6 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -14,6 +12,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.SpanStyle
@@ -22,6 +21,7 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withLink
 import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.unit.Constraints
 import app.k9mail.core.ui.compose.common.resources.annotatedStringResource
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
@@ -111,28 +111,82 @@ internal fun ContributionList(
     }
 }
 
-@OptIn(ExperimentalLayoutApi::class)
+/**
+ * Lays the contribution items out on a grid of equally sized cells that fills the available width.
+ *
+ * A row that is not filled completely keeps the cell width of the rows above and is centered below them, instead of
+ * having its items stretched over the full width.
+ */
 @Composable
-private fun ChoicesRow(
+private fun ChoicesGrid(
     contributions: ImmutableList<Contribution>,
     onItemClick: (Contribution) -> Unit,
     selectedItemId: ContributionId?,
     modifier: Modifier = Modifier,
 ) {
-    FlowRow(
-        horizontalArrangement = Arrangement.spacedBy(BoltTheme.spacings.default),
-        verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.default),
+    val spacing = BoltTheme.spacings.default
+
+    Layout(
+        content = {
+            contributions.forEach {
+                ContributionListItem(
+                    text = it.priceFormatted,
+                    onClick = { onItemClick(it) },
+                    isSelected = it.id == selectedItemId,
+                )
+            }
+        },
         modifier = modifier,
-    ) {
-        contributions.forEach {
-            ContributionListItem(
-                text = it.priceFormatted,
-                onClick = { onItemClick(it) },
-                isSelected = it.id == selectedItemId,
-                modifier = Modifier.weight(1f),
-            )
+    ) { measurables, constraints ->
+        if (measurables.isEmpty()) {
+            return@Layout layout(width = 0, height = 0) {}
+        }
+
+        val spacingPx = spacing.roundToPx()
+        val widestItem = measurables.maxOf { it.maxIntrinsicWidth(Constraints.Infinity) }
+        val itemsPerRow = itemsPerRow(constraints, widestItem, spacingPx, measurables.size)
+        val width = if (constraints.hasBoundedWidth) {
+            constraints.maxWidth
+        } else {
+            itemsPerRow * widestItem + (itemsPerRow - 1) * spacingPx
+        }
+
+        // The division remainder goes to the leftmost columns, so a filled row uses the width exactly.
+        val widthForItems = width - spacingPx * (itemsPerRow - 1)
+        val itemWidth = widthForItems / itemsPerRow
+        val remainder = widthForItems % itemsPerRow
+
+        val rows = measurables
+            .mapIndexed { index, measurable ->
+                val columnWidth = if (index % itemsPerRow < remainder) itemWidth + 1 else itemWidth
+                measurable.measure(constraints.copy(minWidth = columnWidth, maxWidth = columnWidth))
+            }
+            .chunked(itemsPerRow)
+        val rowHeight = rows.maxOf { row -> row.maxOf { it.height } }
+
+        layout(width = width, height = rows.size * rowHeight + (rows.size - 1) * spacingPx) {
+            rows.forEachIndexed { rowIndex, row ->
+                val rowWidth = row.sumOf { it.width } + (row.size - 1) * spacingPx
+                var x = (width - rowWidth) / 2
+
+                row.forEach { placeable ->
+                    placeable.placeRelative(x = x, y = rowIndex * (rowHeight + spacingPx))
+                    x += placeable.width + spacingPx
+                }
+            }
         }
     }
+}
+
+/**
+ * The number of items that fit into a row when every item is as wide as the widest one.
+ */
+private fun itemsPerRow(constraints: Constraints, widestItem: Int, spacing: Int, itemCount: Int): Int {
+    if (!constraints.hasBoundedWidth) {
+        return itemCount
+    }
+
+    return ((constraints.maxWidth + spacing) / (widestItem + spacing)).coerceIn(1, itemCount)
 }
 
 @Composable
@@ -162,7 +216,7 @@ private fun ListContentView(
             modifier = Modifier.fillMaxWidth(),
         )
 
-        ChoicesRow(
+        ChoicesGrid(
             contributions = if (state.selectedType == ContributionType.Recurring) {
                 state.contributions.recurringContributions
             } else {

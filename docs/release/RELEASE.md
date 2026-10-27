@@ -173,7 +173,7 @@ The merge process enables various benefits, including:
 - Carrying forward main branch history to beta, and beta branch history to release.
 - No branch history is lost.
 - Git tags are retained in the git log.
-- Files/code that is unique per branch can remain that way (e.g. notes files such as changelog_master.xml, version codes).
+- Files/code that is unique per branch can remain that way (e.g. changelog JSON resources, version codes).
 
 **The following steps are taken when merging main into beta:**
 
@@ -196,6 +196,8 @@ The merge process enables various benefits, including:
    - Tip: use the `orig_main` and `orig_beta` repos to diff conflicting files, e.g. `vimdiff "${orig_main}/${f}" "${orig_beta}/${f}"`
 6. Review merge results and ensure correctness:
    - Review the changes to `app-thunderbird/build.gradle.kts`, `app-k9mail/build.gradle.kts`, and release note files
+   - Confirm `app-thunderbird/src/beta/res/raw/changelog_index.json` only lists beta releases, as well as
+     `app-k9mail/src/release/res/raw/changelog_index.json` and `app-thunderbird/src/release/res/raw/changelog_index.json` only lists stable releases.
    - Diff the merge commit with `git diff HEAD~1 HEAD --name-only` and sanity check the files that changed
    - Diff main vs the new beta with `diff -Naur --exclude=".git" --exclude="images" "${orig_main}" "${merge_beta}"`
      - Note: Ensure the metadata symlink is the same on each repo to ensure proper diff
@@ -227,7 +229,7 @@ The merge process enables various benefits, including:
    - Tip: use the `orig_beta` and `orig_release` repos to diff conflicting files, e.g. `vimdiff "${orig_beta}/${f}" "${orig_release}/${f}"`
 5. Review merge results and ensure correctness:
    - Review the changes to `app-thunderbird/build.gradle.kts`, `app-k9mail/build.gradle.kts`, and release note files
-   - Ensure `app-k9mail/src/main/res/raw/changelog_master.xml` does not include any beta notes
+   - Ensure the release changelog JSON under `app-thunderbird/src/release/res/raw` and `app-k9mail/src/release/res/raw` does not include beta notes
    - Diff the merge commit with `git diff HEAD~1 HEAD --name-only` and sanity check the files that changed
    - Diff beta vs the new release with `diff -Naur --exclude=".git" --exclude="images" "${orig_beta}" "${merge_release}"`
      - Note: Ensure the metadata symlink is the same on each repo to ensure proper diff
@@ -248,11 +250,11 @@ Files of particular importance are:
 
 - app-k9mail/build.gradle.kts
 - app-thunderbird/build.gradle.kts
-- app-k9mail/src/main/res/raw/changelog_master.xml
+- app-thunderbird/src/{daily,beta,release}/res/raw/changelog_*.json
+- app-k9mail/src/release/res/raw/changelog_*.json
 
-These build.gradle.kts files must be handled as described under "Merge Days" above. This is part of the do_merge.sh automation.
-
-The app-k9mail/src/main/res/raw/changelog_master.xml should not include any beta notes in the release branch.
+The build.gradle.kts files are handled as described under "Merge Days" above. The merge script preserves the destination
+branch's changelog JSON, including its index. Review the indexes and release files during the merge checks above.
 
 ## Releases
 
@@ -273,6 +275,8 @@ These are the general steps for a release:
 
 4. Review the build results by reviewing the action summary and the git commits resulting from the build
 
+- Confirm `changelog_index.json` lists the new version in version order and that its `changelog_release_*.json` file
+  exists under the app's release or beta source set. The release action generates these from `thunderbird-notes`.
 - Make sure the version code is incremented properly and not wildly off
 - Ensure the commits are correct
 - Ensure the symlink `app-metadata` points to the right product at this commit

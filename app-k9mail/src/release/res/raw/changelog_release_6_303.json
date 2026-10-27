@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "version": "6.303",
+  "versioncode": 33003,
+  "date": "2022-09-08",
+  "notes": [
+    {
+      "type": "fixed",
+      "text": "Fixed a bug that lead to search being broken",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed error reporting for (old) send failures",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed \"strip signatures on reply\"",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed a crash when tapping a toolbar action in message view before loading the message has finished",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

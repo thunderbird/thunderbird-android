@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "version": "5.736",
+  "versioncode": 27036,
+  "date": "2021-06-24",
+  "notes": [
+    {
+      "type": "fixed",
+      "text": "Fixed Push-related crash with non-IMAP accounts",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Don't show Push-related settings for non-IMAP accounts",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

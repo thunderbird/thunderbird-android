@@ -1,0 +1,78 @@
+{
+  "schemaVersion": 1,
+  "version": "17.0b1",
+  "versioncode": 42,
+  "date": "2026-02-04",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Account avatar customization",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Foldable device support with split-screen",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Email messages can be printed",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Unified folder account indicator identifies message ownership",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Display account avatar in message notifications",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Improved email rendering enabled enabled for beta",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Deleted/read messages in unified inbox may not update until manual refresh",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Edge-to-edge regressions affected account setup screens",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Tap behavior was unreliable in recipient fields",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Incorrect icon was displayed for 'Find folder'",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Device orientiation change duplicated recipient field text",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Copied link text incorrectly included CSS",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Unselecting 'Colorize contact pictures' setting did not persist",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Some general settings were not preserved after export and import",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

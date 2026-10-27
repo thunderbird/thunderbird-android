@@ -56,6 +56,7 @@ abstract class BaseCatalogFeatureFlagProvider internal constructor(
     protected var context: FeatureFlagContext? = null
 
     override val metadata: ProviderMetadata = CatalogProviderMetadata(providerName)
+    protected val logPrefix get() = "[feature-flag][${metadata.name}]"
 
     /**
      * Initializes the feature flag provider with the given context and loads the catalog.
@@ -79,20 +80,21 @@ abstract class BaseCatalogFeatureFlagProvider internal constructor(
     protected fun resolve(context: FeatureFlagContext?): Map<String, Boolean> {
         updateState { State.ResolvingFlags }
         logger.verbose { "[feature-flag] resolving feature flag catalog for '${metadata.name}' provider" }
-        val catalog = catalog ?: return emptyMap()
+        val catalog = catalog
+            ?: return emptyMap<String, Boolean>().also { updateState { State.Resolved } }
         val base = catalog.flags.associate { it.key to it.default }
-        logger.verbose { "[feature-flag][${metadata.name}] base flags: $base" }
+        logger.verbose { "$logPrefix base flags: $base" }
 
         val app = context?.get(key = "app")?.asString()
         val buildType = context?.get(key = "build_type")?.asString()
-        logger.verbose { "[feature-flag][${metadata.name}] fetching overrides for '$app/$buildType'" }
+        logger.verbose { "$logPrefix fetching overrides for '$app/$buildType'" }
         val overrides = if (app != null && buildType != null) {
             catalog.overrides[app]?.get(buildType).orEmpty()
         } else {
             emptyMap()
         }
         val resolvedFlags = base + overrides
-        logger.verbose { "[feature-flag][${metadata.name}] resolved flags: $resolvedFlags" }
+        logger.verbose { "$logPrefix resolved flags: $resolvedFlags" }
         updateState { State.Resolved }
         return resolvedFlags
     }

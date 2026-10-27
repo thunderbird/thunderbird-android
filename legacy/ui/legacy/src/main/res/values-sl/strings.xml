@@ -176,7 +176,7 @@
     <!--Displayed in the message view screen in front of the number of additional recipients (the ones that are not displayed).-->
     <string name="message_view_additional_recipient_prefix">+</string>
     <!--Displayed in the message view screen if the message was addressed to the user. Make sure this works with 'message_view_recipient_prefix'. In English it's "to me".-->
-    <string name="message_view_me_text">mene</string>
+    <string name="message_view_to_me_text">mene</string>
     <!--Text of the button that is displayed below the message header when the message body references one or more remote images-->
     <string name="message_view_show_remote_images_action">Pokaži oddaljene slike</string>
     <string name="message_view_no_viewer">Ni mogoče najti pregledovalnika za vrsto <xliff:g id="mimetype">%s</xliff:g>.</string>
@@ -972,4 +972,8 @@
     <string name="account_settings_signature_is_html_summary">Podpis obravnavaj kot HTML. Zaradi varnosti bodo odstranjeni skripti in upravljalniki dogodkov.</string>
     <string name="account_settings_signature_preview">Predogled podpisa</string>
     <string name="account_settings_signature_clear_label">Počisti podpis</string>
+    <string name="message_compose_encrypting_message">Šifriranje sporočila …</string>
+    <string name="message_view_from_me_text">mene</string>
+    <string name="account_settings_signature_preview_empty">Predogled vašega podpisa bo prikazan tukaj.</string>
+    <string name="error_no_contact_provider">Programa za stike ni bilo mogoče najti. Če želite dodati ta naslov, ga namestite.</string>
 </resources>

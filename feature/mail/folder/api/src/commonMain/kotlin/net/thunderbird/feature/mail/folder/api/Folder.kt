@@ -1,7 +1,12 @@
 package net.thunderbird.feature.mail.folder.api
 
-data class Folder(
+import net.thunderbird.feature.mail.folder.FolderType
+import net.thunderbird.piisafe.annotation.PiiSafe
+
+@PiiSafe.HasPii
+public data class Folder(
     val id: Long,
+    @get:PiiSafe.Mask
     val name: String,
     val type: FolderType,
     val isLocalOnly: Boolean,

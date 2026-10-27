@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "version": "5.722",
+  "versioncode": 27022,
+  "date": "2020-10-20",
+  "notes": [
+    {
+      "type": "fixed",
+      "text": "Fixed bug where updating drafts wouldn't upload the change to the server",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed bug where URLs were duplicated when saving drafts",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Improved HTTP URL detection when URL is wrapped in parentheses",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Don't show archive or spam action when displaying the corresponding folder",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Show recipient name for all messages in Sent, Drafts, and Outbox folders",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Use automatic identity selection when forwarding emails",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Display message headers in original order",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Updated translations",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

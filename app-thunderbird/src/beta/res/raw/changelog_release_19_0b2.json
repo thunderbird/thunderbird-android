@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "version": "19.0b2",
+  "versioncode": 51,
+  "date": "2026-05-11",
+  "notes": [
+    {
+      "type": "new",
+      "text": "New: Integrate an easily discoverable way to configure and use Thundermail",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

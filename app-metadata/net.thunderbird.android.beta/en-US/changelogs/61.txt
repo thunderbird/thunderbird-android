@@ -1,0 +1,14 @@
+Thunderbird version 25.0b1
+
+New:
+- New funding appeal helps keep Thunderbird alive!
+- Feature flags can be updated without app updates
+
+Fixed:
+- Deleted email notifications could reappear
+- HTML signature text disappeared after rotation
+- HTML drafts could hide or lose attachments
+- Add to contacts crashed without a Contacts app
+- Large PGP attachments showed no encryption progress
+- Account drawer could behave inconsistently
+- Acccount drawer controls blocked content on small displays

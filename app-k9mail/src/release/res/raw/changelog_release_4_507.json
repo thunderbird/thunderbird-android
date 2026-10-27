@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "version": "4.507",
+  "versioncode": 18007,
+  "date": "2013-07-18",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Add some Russian ISPs for autoconfiguration",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Polish and Slovak translation updates",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Performance improvements",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Build system improvements",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Move 'share' menu item up a level in the menu to ease discoverability",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

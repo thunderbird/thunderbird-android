@@ -12,5 +12,6 @@ import net.thunderbird.core.featureflag.model.FeatureFlagCatalog
  * emitted as a Flow.
  */
 internal expect class LocalFeatureFlagCatalogDataSource : FeatureFlagCatalogDataSource {
-    override fun load(): Flow<FeatureFlagCatalog>
+    override fun observe(): Flow<FeatureFlagCatalog>
+    override suspend fun load(): FeatureFlagCatalog
 }

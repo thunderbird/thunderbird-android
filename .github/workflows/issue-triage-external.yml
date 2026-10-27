@@ -1,0 +1,77 @@
+---
+name: Issue - Triage external reports
+
+on:
+  issues:
+    types:
+      - opened
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  issue-triage-external:
+    name: Classify external issues as unconfirmed bugs
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - name: Check if issue author has repository access
+        id: issue-author
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE_AUTHOR: ${{ github.event.issue.user.login }}
+        shell: bash
+        run: |
+          set +e
+          response="$(gh api --include "repos/$GITHUB_REPOSITORY/collaborators/$ISSUE_AUTHOR" 2>&1)"
+          set -e
+
+          status="$(printf '%s\n' "$response" | awk 'NR == 1 { print $2 }')"
+          case "$status" in
+            204)
+              is_external=false
+              ;;
+            404)
+              is_external=true
+              ;;
+            *)
+              echo "Unable to determine whether the issue author has repository access (HTTP $status)." >&2
+              exit 1
+              ;;
+          esac
+
+          echo "is-external=$is_external" >> "$GITHUB_OUTPUT"
+
+      - name: Classify issue
+        if: ${{ steps.issue-author.outputs.is-external == 'true' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+        run: |
+          gh issue edit "$ISSUE_NUMBER" \
+            --repo "$GITHUB_REPOSITORY" \
+            --type "Bug" \
+            --add-label "unconfirmed"
+
+      - name: Explain classification
+        if: ${{ steps.issue-author.outputs.is-external == 'true' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          MESSAGE: |
+            Thanks for reporting this issue!
+
+            New bug reports are initially labeled `unconfirmed` so a maintainer can review and triage them.
+
+            > [!NOTE]
+            > GitHub Feature, Task, and Milestone issues are created and managed by project maintainers.
+            > Please submit new feature ideas on
+            > [Mozilla Connect](https://connect.mozilla.org/t5/ideas/idb-p/ideas/label-name/thunderbird%20android).
+            > See our [contribution guide](https://github.com/thunderbird/thunderbird-android/blob/main/docs/CONTRIBUTING.md#-bug-reports-and-feature-ideas)
+            > for more information.
+        run: |
+          gh issue comment "$ISSUE_NUMBER" \
+            --repo "$GITHUB_REPOSITORY" \
+            --body "$MESSAGE"

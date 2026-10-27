@@ -35,7 +35,8 @@ For more details on how these artifacts work together, see the [Engineering](../
 The application is organized into several module types:
 
 - **📱 App Modules**: `app-thunderbird` and `app-k9mail` - Application entry points
-- **🔄 App Common**: `app-common` - Shared code between applications
+- **🧩 App Composition**: `app-composition` - Shared Kotlin Multiplatform application bindings
+- **🔄 App Common**: `app-common` - Android integration and legacy bridges
 - **✨ Feature Modules**: `feature:*` - Independent feature modules
 - **🧰 Core Modules**: `core:*` - Foundational components and utilities used across multiple features
 - **📚 Library Modules**: `library:*` - Specific implementations for reuse
@@ -343,7 +344,8 @@ maintainability an reliability.
 In Thunderbird for Android, several cross-cutting concerns are implemented as dedicated core modules to provide
 standardized solutions that can be reused across the application:
 
-- **⚠️ Error Handling**: Comprehensive error handling (`core/outcome`) transforms exceptions into domain-specific errors and provides user-friendly feedback.
+- **⚠️ Error Handling**: The Thunderbird Mobile Components `outcome` artifact transforms exceptions into domain-specific
+  errors and provides user-friendly feedback.
 - **📋 Logging**: Centralized logging system (`core/logging`) ensures consistent log formatting, levels, and storage.
 - **🔒 Security**: Modules like `core/security` handle encryption, authentication, and secure data storage.
 

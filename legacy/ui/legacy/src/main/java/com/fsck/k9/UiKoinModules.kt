@@ -3,7 +3,6 @@ package com.fsck.k9
 import app.k9mail.feature.account.oauth.featureAccountOAuthModule
 import app.k9mail.feature.launcher.di.featureLauncherModule
 import app.k9mail.legacy.ui.folder.uiFolderModule
-import com.fsck.k9.account.accountModule
 import com.fsck.k9.activity.activityModule
 import com.fsck.k9.activity.setup.setUpModule
 import com.fsck.k9.contacts.contactsModule
@@ -37,7 +36,6 @@ val legacyUiModules = listOf(
     manageFoldersUiModule,
     chooseFolderUiModule,
     contactsModule,
-    accountModule,
     composeModule,
     viewModule,
     changelogUiModule,

@@ -4,7 +4,7 @@ import androidx.compose.ui.graphics.Color
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 import net.thunderbird.feature.account.AccountId
-import net.thunderbird.feature.mail.folder.api.FolderType
+import net.thunderbird.feature.mail.folder.FolderType
 import net.thunderbird.feature.mail.message.list.ui.state.Account
 import net.thunderbird.feature.mail.message.list.ui.state.Folder
 

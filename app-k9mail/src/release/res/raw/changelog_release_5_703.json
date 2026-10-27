@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "version": "5.703",
+  "versioncode": 27003,
+  "date": "2019-12-22",
+  "notes": [
+    {
+      "type": "fixed",
+      "text": "Fixed issue where going back to the app would open the default folder",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed crash when trying to create a new identity",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Various smaller bug fixes",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "'Choose folder' now displays folders in the same order as the side drawer",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Updated translations",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

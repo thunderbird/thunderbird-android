@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "version": "17.0b2",
+  "versioncode": 43,
+  "date": "2026-02-04",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Crash occurred in 17.0b1 split view mode while in landscape",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

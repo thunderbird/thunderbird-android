@@ -1,0 +1,1211 @@
+{
+  "schemaVersion": 1,
+  "releases": [
+    {
+      "version": "6.904",
+      "versioncode": 39004,
+      "date": "2024-06-27",
+      "resourceName": "changelog_release_6_904"
+    },
+    {
+      "version": "6.903",
+      "versioncode": 39003,
+      "date": "2024-06-24",
+      "resourceName": "changelog_release_6_903"
+    },
+    {
+      "version": "6.902",
+      "versioncode": 39002,
+      "date": "2024-06-21",
+      "resourceName": "changelog_release_6_902"
+    },
+    {
+      "version": "6.901",
+      "versioncode": 39001,
+      "date": "2024-05-15",
+      "resourceName": "changelog_release_6_901"
+    },
+    {
+      "version": "6.900",
+      "versioncode": 39000,
+      "date": "2024-05-15",
+      "resourceName": "changelog_release_6_900"
+    },
+    {
+      "version": "6.802",
+      "versioncode": 38002,
+      "date": "2024-04-05",
+      "resourceName": "changelog_release_6_802"
+    },
+    {
+      "version": "6.801",
+      "versioncode": 38001,
+      "date": "2024-03-11",
+      "resourceName": "changelog_release_6_801"
+    },
+    {
+      "version": "6.800",
+      "versioncode": 38000,
+      "date": "2024-02-29",
+      "resourceName": "changelog_release_6_800"
+    },
+    {
+      "version": "6.717",
+      "versioncode": 37017,
+      "date": "2024-02-16",
+      "resourceName": "changelog_release_6_717"
+    },
+    {
+      "version": "6.716",
+      "versioncode": 37016,
+      "date": "2024-02-13",
+      "resourceName": "changelog_release_6_716"
+    },
+    {
+      "version": "6.715",
+      "versioncode": 37015,
+      "date": "2024-02-01",
+      "resourceName": "changelog_release_6_715"
+    },
+    {
+      "version": "6.714",
+      "versioncode": 37014,
+      "date": "2024-01-04",
+      "resourceName": "changelog_release_6_714"
+    },
+    {
+      "version": "6.713",
+      "versioncode": 37013,
+      "date": "2023-12-04",
+      "resourceName": "changelog_release_6_713"
+    },
+    {
+      "version": "6.712",
+      "versioncode": 37012,
+      "date": "2023-11-30",
+      "resourceName": "changelog_release_6_712"
+    },
+    {
+      "version": "6.711",
+      "versioncode": 37011,
+      "date": "2023-10-04",
+      "resourceName": "changelog_release_6_711"
+    },
+    {
+      "version": "6.710",
+      "versioncode": 37010,
+      "date": "2023-08-18",
+      "resourceName": "changelog_release_6_710"
+    },
+    {
+      "version": "6.709",
+      "versioncode": 37009,
+      "date": "2023-08-14",
+      "resourceName": "changelog_release_6_709"
+    },
+    {
+      "version": "6.708",
+      "versioncode": 37008,
+      "date": "2023-08-08",
+      "resourceName": "changelog_release_6_708"
+    },
+    {
+      "version": "6.707",
+      "versioncode": 37007,
+      "date": "2023-06-19",
+      "resourceName": "changelog_release_6_707"
+    },
+    {
+      "version": "6.706",
+      "versioncode": 37006,
+      "date": "2023-06-16",
+      "resourceName": "changelog_release_6_706"
+    },
+    {
+      "version": "6.705",
+      "versioncode": 37005,
+      "date": "2023-06-12",
+      "resourceName": "changelog_release_6_705"
+    },
+    {
+      "version": "6.704",
+      "versioncode": 37004,
+      "date": "2023-05-23",
+      "resourceName": "changelog_release_6_704"
+    },
+    {
+      "version": "6.703",
+      "versioncode": 37003,
+      "date": "2023-05-08",
+      "resourceName": "changelog_release_6_703"
+    },
+    {
+      "version": "6.702",
+      "versioncode": 37002,
+      "date": "2023-05-02",
+      "resourceName": "changelog_release_6_702"
+    },
+    {
+      "version": "6.701",
+      "versioncode": 37001,
+      "date": "2023-04-28",
+      "resourceName": "changelog_release_6_701"
+    },
+    {
+      "version": "6.700",
+      "versioncode": 37000,
+      "date": "2023-04-24",
+      "resourceName": "changelog_release_6_700"
+    },
+    {
+      "version": "6.603",
+      "versioncode": 36003,
+      "date": "2023-10-12",
+      "resourceName": "changelog_release_6_603"
+    },
+    {
+      "version": "6.602",
+      "versioncode": 36002,
+      "date": "2023-05-11",
+      "resourceName": "changelog_release_6_602"
+    },
+    {
+      "version": "6.601",
+      "versioncode": 36001,
+      "date": "2023-04-18",
+      "resourceName": "changelog_release_6_601"
+    },
+    {
+      "version": "6.600",
+      "versioncode": 36000,
+      "date": "2023-04-11",
+      "resourceName": "changelog_release_6_600"
+    },
+    {
+      "version": "6.511",
+      "versioncode": 35011,
+      "date": "2023-03-31",
+      "resourceName": "changelog_release_6_511"
+    },
+    {
+      "version": "6.510",
+      "versioncode": 35010,
+      "date": "2023-03-17",
+      "resourceName": "changelog_release_6_510"
+    },
+    {
+      "version": "6.509",
+      "versioncode": 35009,
+      "date": "2023-02-28",
+      "resourceName": "changelog_release_6_509"
+    },
+    {
+      "version": "6.508",
+      "versioncode": 35008,
+      "date": "2023-02-15",
+      "resourceName": "changelog_release_6_508"
+    },
+    {
+      "version": "6.507",
+      "versioncode": 35007,
+      "date": "2023-02-10",
+      "resourceName": "changelog_release_6_507"
+    },
+    {
+      "version": "6.506",
+      "versioncode": 35006,
+      "date": "2023-02-03",
+      "resourceName": "changelog_release_6_506"
+    },
+    {
+      "version": "6.505",
+      "versioncode": 35005,
+      "date": "2023-02-01",
+      "resourceName": "changelog_release_6_505"
+    },
+    {
+      "version": "6.504",
+      "versioncode": 35004,
+      "date": "2023-01-27",
+      "resourceName": "changelog_release_6_504"
+    },
+    {
+      "version": "6.503",
+      "versioncode": 35003,
+      "date": "2023-01-19",
+      "resourceName": "changelog_release_6_503"
+    },
+    {
+      "version": "6.502",
+      "versioncode": 35002,
+      "date": "2023-01-16",
+      "resourceName": "changelog_release_6_502"
+    },
+    {
+      "version": "6.501",
+      "versioncode": 35001,
+      "date": "2023-01-09",
+      "resourceName": "changelog_release_6_501"
+    },
+    {
+      "version": "6.500",
+      "versioncode": 35000,
+      "date": "2023-01-06",
+      "resourceName": "changelog_release_6_500"
+    },
+    {
+      "version": "6.400",
+      "versioncode": 34000,
+      "date": "2022-11-28",
+      "resourceName": "changelog_release_6_400"
+    },
+    {
+      "version": "6.312",
+      "versioncode": 33012,
+      "date": "2022-11-15",
+      "resourceName": "changelog_release_6_312"
+    },
+    {
+      "version": "6.311",
+      "versioncode": 33011,
+      "date": "2022-11-01",
+      "resourceName": "changelog_release_6_311"
+    },
+    {
+      "version": "6.310",
+      "versioncode": 33010,
+      "date": "2022-10-24",
+      "resourceName": "changelog_release_6_310"
+    },
+    {
+      "version": "6.309",
+      "versioncode": 33009,
+      "date": "2022-10-12",
+      "resourceName": "changelog_release_6_309"
+    },
+    {
+      "version": "6.308",
+      "versioncode": 33008,
+      "date": "2022-10-06",
+      "resourceName": "changelog_release_6_308"
+    },
+    {
+      "version": "6.307",
+      "versioncode": 33007,
+      "date": "2022-09-26",
+      "resourceName": "changelog_release_6_307"
+    },
+    {
+      "version": "6.306",
+      "versioncode": 33006,
+      "date": "2022-09-23",
+      "resourceName": "changelog_release_6_306"
+    },
+    {
+      "version": "6.305",
+      "versioncode": 33005,
+      "date": "2022-09-17",
+      "resourceName": "changelog_release_6_305"
+    },
+    {
+      "version": "6.304",
+      "versioncode": 33004,
+      "date": "2022-09-16",
+      "resourceName": "changelog_release_6_304"
+    },
+    {
+      "version": "6.303",
+      "versioncode": 33003,
+      "date": "2022-09-08",
+      "resourceName": "changelog_release_6_303"
+    },
+    {
+      "version": "6.302",
+      "versioncode": 33002,
+      "date": "2022-09-05",
+      "resourceName": "changelog_release_6_302"
+    },
+    {
+      "version": "6.301",
+      "versioncode": 33001,
+      "date": "2022-08-09",
+      "resourceName": "changelog_release_6_301"
+    },
+    {
+      "version": "6.300",
+      "versioncode": 33000,
+      "date": "2022-08-04",
+      "resourceName": "changelog_release_6_300"
+    },
+    {
+      "version": "6.202",
+      "versioncode": 32002,
+      "date": "2022-07-26",
+      "resourceName": "changelog_release_6_202"
+    },
+    {
+      "version": "6.201",
+      "versioncode": 32001,
+      "date": "2022-07-15",
+      "resourceName": "changelog_release_6_201"
+    },
+    {
+      "version": "6.200",
+      "versioncode": 32000,
+      "date": "2022-07-08",
+      "resourceName": "changelog_release_6_200"
+    },
+    {
+      "version": "6.101",
+      "versioncode": 31001,
+      "date": "2022-07-06",
+      "resourceName": "changelog_release_6_101"
+    },
+    {
+      "version": "6.100",
+      "versioncode": 31000,
+      "date": "2022-06-15",
+      "resourceName": "changelog_release_6_100"
+    },
+    {
+      "version": "6.000",
+      "versioncode": 30000,
+      "date": "2022-04-18",
+      "resourceName": "changelog_release_6_000"
+    },
+    {
+      "version": "5.916",
+      "versioncode": 29016,
+      "date": "2022-04-12",
+      "resourceName": "changelog_release_5_916"
+    },
+    {
+      "version": "5.915",
+      "versioncode": 29015,
+      "date": "2022-04-06",
+      "resourceName": "changelog_release_5_915"
+    },
+    {
+      "version": "5.914",
+      "versioncode": 29014,
+      "date": "2022-03-24",
+      "resourceName": "changelog_release_5_914"
+    },
+    {
+      "version": "5.913",
+      "versioncode": 29013,
+      "date": "2022-03-11",
+      "resourceName": "changelog_release_5_913"
+    },
+    {
+      "version": "5.912",
+      "versioncode": 29012,
+      "date": "2022-02-22",
+      "resourceName": "changelog_release_5_912"
+    },
+    {
+      "version": "5.911",
+      "versioncode": 29011,
+      "date": "2022-02-12",
+      "resourceName": "changelog_release_5_911"
+    },
+    {
+      "version": "5.910",
+      "versioncode": 29010,
+      "date": "2022-01-25",
+      "resourceName": "changelog_release_5_910"
+    },
+    {
+      "version": "5.909",
+      "versioncode": 29009,
+      "date": "2022-01-12",
+      "resourceName": "changelog_release_5_909"
+    },
+    {
+      "version": "5.908",
+      "versioncode": 29008,
+      "date": "2022-01-06",
+      "resourceName": "changelog_release_5_908"
+    },
+    {
+      "version": "5.907",
+      "versioncode": 29007,
+      "date": "2021-12-27",
+      "resourceName": "changelog_release_5_907"
+    },
+    {
+      "version": "5.906",
+      "versioncode": 29006,
+      "date": "2021-12-07",
+      "resourceName": "changelog_release_5_906"
+    },
+    {
+      "version": "5.905",
+      "versioncode": 29005,
+      "date": "2021-11-24",
+      "resourceName": "changelog_release_5_905"
+    },
+    {
+      "version": "5.904",
+      "versioncode": 29004,
+      "date": "2021-10-05",
+      "resourceName": "changelog_release_5_904"
+    },
+    {
+      "version": "5.903",
+      "versioncode": 29003,
+      "date": "2021-09-28",
+      "resourceName": "changelog_release_5_903"
+    },
+    {
+      "version": "5.902",
+      "versioncode": 29002,
+      "date": "2021-09-21",
+      "resourceName": "changelog_release_5_902"
+    },
+    {
+      "version": "5.901",
+      "versioncode": 29001,
+      "date": "2021-09-17",
+      "resourceName": "changelog_release_5_901"
+    },
+    {
+      "version": "5.900",
+      "versioncode": 29000,
+      "date": "2021-09-09",
+      "resourceName": "changelog_release_5_900"
+    },
+    {
+      "version": "5.806",
+      "versioncode": 28006,
+      "date": "2021-08-30",
+      "resourceName": "changelog_release_5_806"
+    },
+    {
+      "version": "5.805",
+      "versioncode": 28005,
+      "date": "2021-08-21",
+      "resourceName": "changelog_release_5_805"
+    },
+    {
+      "version": "5.804",
+      "versioncode": 28004,
+      "date": "2021-08-18",
+      "resourceName": "changelog_release_5_804"
+    },
+    {
+      "version": "5.803",
+      "versioncode": 28003,
+      "date": "2021-08-12",
+      "resourceName": "changelog_release_5_803"
+    },
+    {
+      "version": "5.802",
+      "versioncode": 28002,
+      "date": "2021-08-04",
+      "resourceName": "changelog_release_5_802"
+    },
+    {
+      "version": "5.801",
+      "versioncode": 28001,
+      "date": "2021-07-30",
+      "resourceName": "changelog_release_5_801"
+    },
+    {
+      "version": "5.800",
+      "versioncode": 28000,
+      "date": "2021-07-24",
+      "resourceName": "changelog_release_5_800"
+    },
+    {
+      "version": "5.741",
+      "versioncode": 27041,
+      "date": "2021-07-22",
+      "resourceName": "changelog_release_5_741"
+    },
+    {
+      "version": "5.740",
+      "versioncode": 27040,
+      "date": "2021-07-16",
+      "resourceName": "changelog_release_5_740"
+    },
+    {
+      "version": "5.739",
+      "versioncode": 27039,
+      "date": "2021-07-10",
+      "resourceName": "changelog_release_5_739"
+    },
+    {
+      "version": "5.738",
+      "versioncode": 27038,
+      "date": "2021-07-08",
+      "resourceName": "changelog_release_5_738"
+    },
+    {
+      "version": "5.737",
+      "versioncode": 27037,
+      "date": "2021-06-26",
+      "resourceName": "changelog_release_5_737"
+    },
+    {
+      "version": "5.736",
+      "versioncode": 27036,
+      "date": "2021-06-24",
+      "resourceName": "changelog_release_5_736"
+    },
+    {
+      "version": "5.735",
+      "versioncode": 27035,
+      "date": "2021-06-24",
+      "resourceName": "changelog_release_5_735"
+    },
+    {
+      "version": "5.734",
+      "versioncode": 27034,
+      "date": "2021-05-01",
+      "resourceName": "changelog_release_5_734"
+    },
+    {
+      "version": "5.733",
+      "versioncode": 27033,
+      "date": "2021-03-23",
+      "resourceName": "changelog_release_5_733"
+    },
+    {
+      "version": "5.732",
+      "versioncode": 27032,
+      "date": "2021-03-04",
+      "resourceName": "changelog_release_5_732"
+    },
+    {
+      "version": "5.731",
+      "versioncode": 27031,
+      "date": "2021-02-23",
+      "resourceName": "changelog_release_5_731"
+    },
+    {
+      "version": "5.730",
+      "versioncode": 27030,
+      "date": "2021-02-16",
+      "resourceName": "changelog_release_5_730"
+    },
+    {
+      "version": "5.729",
+      "versioncode": 27029,
+      "date": "2021-02-12",
+      "resourceName": "changelog_release_5_729"
+    },
+    {
+      "version": "5.728",
+      "versioncode": 27028,
+      "date": "2021-02-10",
+      "resourceName": "changelog_release_5_728"
+    },
+    {
+      "version": "5.727",
+      "versioncode": 27027,
+      "date": "2021-01-25",
+      "resourceName": "changelog_release_5_727"
+    },
+    {
+      "version": "5.726",
+      "versioncode": 27026,
+      "date": "2021-01-06",
+      "resourceName": "changelog_release_5_726"
+    },
+    {
+      "version": "5.725",
+      "versioncode": 27025,
+      "date": "2020-11-18",
+      "resourceName": "changelog_release_5_725"
+    },
+    {
+      "version": "5.724",
+      "versioncode": 27024,
+      "date": "2020-11-01",
+      "resourceName": "changelog_release_5_724"
+    },
+    {
+      "version": "5.723",
+      "versioncode": 27023,
+      "date": "2020-10-31",
+      "resourceName": "changelog_release_5_723"
+    },
+    {
+      "version": "5.722",
+      "versioncode": 27022,
+      "date": "2020-10-20",
+      "resourceName": "changelog_release_5_722"
+    },
+    {
+      "version": "5.721",
+      "versioncode": 27021,
+      "date": "2020-10-07",
+      "resourceName": "changelog_release_5_721"
+    },
+    {
+      "version": "5.720",
+      "versioncode": 27020,
+      "date": "2020-10-06",
+      "resourceName": "changelog_release_5_720"
+    },
+    {
+      "version": "5.719",
+      "versioncode": 27019,
+      "date": "2020-10-04",
+      "resourceName": "changelog_release_5_719"
+    },
+    {
+      "version": "5.718",
+      "versioncode": 27018,
+      "date": "2020-08-18",
+      "resourceName": "changelog_release_5_718"
+    },
+    {
+      "version": "5.717",
+      "versioncode": 27017,
+      "date": "2020-06-19",
+      "resourceName": "changelog_release_5_717"
+    },
+    {
+      "version": "5.716",
+      "versioncode": 27016,
+      "date": "2020-06-04",
+      "resourceName": "changelog_release_5_716"
+    },
+    {
+      "version": "5.715",
+      "versioncode": 27015,
+      "date": "2020-05-27",
+      "resourceName": "changelog_release_5_715"
+    },
+    {
+      "version": "5.714",
+      "versioncode": 27014,
+      "date": "2020-05-13",
+      "resourceName": "changelog_release_5_714"
+    },
+    {
+      "version": "5.713",
+      "versioncode": 27013,
+      "date": "2020-05-08",
+      "resourceName": "changelog_release_5_713"
+    },
+    {
+      "version": "5.712",
+      "versioncode": 27012,
+      "date": "2020-05-08",
+      "resourceName": "changelog_release_5_712"
+    },
+    {
+      "version": "5.711",
+      "versioncode": 27011,
+      "date": "2020-05-08",
+      "resourceName": "changelog_release_5_711"
+    },
+    {
+      "version": "5.710",
+      "versioncode": 27010,
+      "date": "2020-04-24",
+      "resourceName": "changelog_release_5_710"
+    },
+    {
+      "version": "5.709",
+      "versioncode": 27009,
+      "date": "2020-04-18",
+      "resourceName": "changelog_release_5_709"
+    },
+    {
+      "version": "5.708",
+      "versioncode": 27008,
+      "date": "2020-03-19",
+      "resourceName": "changelog_release_5_708"
+    },
+    {
+      "version": "5.707",
+      "versioncode": 27007,
+      "date": "2020-03-06",
+      "resourceName": "changelog_release_5_707"
+    },
+    {
+      "version": "5.706",
+      "versioncode": 27006,
+      "date": "2020-03-03",
+      "resourceName": "changelog_release_5_706"
+    },
+    {
+      "version": "5.705",
+      "versioncode": 27005,
+      "date": "2020-02-06",
+      "resourceName": "changelog_release_5_705"
+    },
+    {
+      "version": "5.704",
+      "versioncode": 27004,
+      "date": "2020-01-09",
+      "resourceName": "changelog_release_5_704"
+    },
+    {
+      "version": "5.703",
+      "versioncode": 27003,
+      "date": "2019-12-22",
+      "resourceName": "changelog_release_5_703"
+    },
+    {
+      "version": "5.702",
+      "versioncode": 27002,
+      "date": "2019-12-13",
+      "resourceName": "changelog_release_5_702"
+    },
+    {
+      "version": "5.701",
+      "versioncode": 27001,
+      "date": "2019-12-02",
+      "resourceName": "changelog_release_5_701"
+    },
+    {
+      "version": "5.700",
+      "versioncode": 27000,
+      "date": "2019-11-24",
+      "resourceName": "changelog_release_5_700"
+    },
+    {
+      "version": "5.600",
+      "versioncode": 26000,
+      "date": "2018-09-02",
+      "resourceName": "changelog_release_5_600"
+    },
+    {
+      "version": "5.503",
+      "versioncode": 25030,
+      "date": "2018-04-02",
+      "resourceName": "changelog_release_5_503"
+    },
+    {
+      "version": "5.502",
+      "versioncode": 25020,
+      "date": "2018-03-11",
+      "resourceName": "changelog_release_5_502"
+    },
+    {
+      "version": "5.501",
+      "versioncode": 25010,
+      "date": "2018-02-25",
+      "resourceName": "changelog_release_5_501"
+    },
+    {
+      "version": "5.500",
+      "versioncode": 25000,
+      "date": "2018-02-24",
+      "resourceName": "changelog_release_5_500"
+    },
+    {
+      "version": "5.403",
+      "versioncode": 23630,
+      "date": "2018-01-06",
+      "resourceName": "changelog_release_5_403"
+    },
+    {
+      "version": "5.402",
+      "versioncode": 23620,
+      "date": "2018-01-04",
+      "resourceName": "changelog_release_5_402"
+    },
+    {
+      "version": "5.401",
+      "versioncode": 23610,
+      "date": "2018-01-03",
+      "resourceName": "changelog_release_5_401"
+    },
+    {
+      "version": "5.400",
+      "versioncode": 23600,
+      "date": "2017-12-27",
+      "resourceName": "changelog_release_5_400"
+    },
+    {
+      "version": "5.304",
+      "versioncode": 23540,
+      "date": "2017-11-10",
+      "resourceName": "changelog_release_5_304"
+    },
+    {
+      "version": "5.303",
+      "versioncode": 23530,
+      "date": "2017-11-03",
+      "resourceName": "changelog_release_5_303"
+    },
+    {
+      "version": "5.302",
+      "versioncode": 23520,
+      "date": "2017-10-28",
+      "resourceName": "changelog_release_5_302"
+    },
+    {
+      "version": "5.301",
+      "versioncode": 23510,
+      "date": "2017-10-14",
+      "resourceName": "changelog_release_5_301"
+    },
+    {
+      "version": "5.300",
+      "versioncode": 23500,
+      "date": "2017-09-10",
+      "resourceName": "changelog_release_5_300"
+    },
+    {
+      "version": "5.208",
+      "versioncode": 23271,
+      "date": "2017-08-28",
+      "resourceName": "changelog_release_5_208"
+    },
+    {
+      "version": "5.207",
+      "versioncode": 23270,
+      "date": "2017-04-13",
+      "resourceName": "changelog_release_5_207"
+    },
+    {
+      "version": "5.206",
+      "versioncode": 23260,
+      "date": "2017-03-15",
+      "resourceName": "changelog_release_5_206"
+    },
+    {
+      "version": "5.205",
+      "versioncode": 23250,
+      "date": "2017-02-24",
+      "resourceName": "changelog_release_5_205"
+    },
+    {
+      "version": "5.204",
+      "versioncode": 23240,
+      "date": "2017-02-24",
+      "resourceName": "changelog_release_5_204"
+    },
+    {
+      "version": "5.203",
+      "versioncode": 23230,
+      "date": "2017-01-17",
+      "resourceName": "changelog_release_5_203"
+    },
+    {
+      "version": "5.202",
+      "versioncode": 23220,
+      "date": "2017-01-05",
+      "resourceName": "changelog_release_5_202"
+    },
+    {
+      "version": "5.201",
+      "versioncode": 23210,
+      "date": "2016-12-31",
+      "resourceName": "changelog_release_5_201"
+    },
+    {
+      "version": "5.200",
+      "versioncode": 23200,
+      "date": "2016-12-26",
+      "resourceName": "changelog_release_5_200"
+    },
+    {
+      "version": "5.200-RC2",
+      "versioncode": 23191,
+      "date": "2016-12-11",
+      "resourceName": "changelog_release_5_200_rc2"
+    },
+    {
+      "version": "5.200-RC1",
+      "versioncode": 23190,
+      "date": "2016-12-09",
+      "resourceName": "changelog_release_5_200_rc1"
+    },
+    {
+      "version": "5.115",
+      "versioncode": 23114,
+      "date": "2016-11-18",
+      "resourceName": "changelog_release_5_115"
+    },
+    {
+      "version": "5.114",
+      "versioncode": 23113,
+      "date": "2016-10-13",
+      "resourceName": "changelog_release_5_114"
+    },
+    {
+      "version": "5.113",
+      "versioncode": 23112,
+      "date": "2016-10-06",
+      "resourceName": "changelog_release_5_113"
+    },
+    {
+      "version": "5.112",
+      "versioncode": 23111,
+      "date": "2016-10-05",
+      "resourceName": "changelog_release_5_112"
+    },
+    {
+      "version": "5.111",
+      "versioncode": 23110,
+      "date": "2016-08-27",
+      "resourceName": "changelog_release_5_111"
+    },
+    {
+      "version": "5.110",
+      "versioncode": 23100,
+      "date": "2016-07-06",
+      "resourceName": "changelog_release_5_110"
+    },
+    {
+      "version": "5.109",
+      "versioncode": 23090,
+      "date": "2016-05-21",
+      "resourceName": "changelog_release_5_109"
+    },
+    {
+      "version": "5.108",
+      "versioncode": 23080,
+      "date": "2016-03-22",
+      "resourceName": "changelog_release_5_108"
+    },
+    {
+      "version": "5.107",
+      "versioncode": 23070,
+      "date": "2015-06-09",
+      "resourceName": "changelog_release_5_107"
+    },
+    {
+      "version": "5.106",
+      "versioncode": 23060,
+      "date": "2015-05-02",
+      "resourceName": "changelog_release_5_106"
+    },
+    {
+      "version": "5.105",
+      "versioncode": 23050,
+      "date": "2015-03-14",
+      "resourceName": "changelog_release_5_105"
+    },
+    {
+      "version": "5.104",
+      "versioncode": 23040,
+      "date": "2015-03-13",
+      "resourceName": "changelog_release_5_104"
+    },
+    {
+      "version": "5.103",
+      "versioncode": 23030,
+      "date": "2014-12-06",
+      "resourceName": "changelog_release_5_103"
+    },
+    {
+      "version": "5.102",
+      "versioncode": 23020,
+      "date": "2014-11-28",
+      "resourceName": "changelog_release_5_102"
+    },
+    {
+      "version": "5.101",
+      "versioncode": 23010,
+      "date": "2014-10-10",
+      "resourceName": "changelog_release_5_101"
+    },
+    {
+      "version": "5.100",
+      "versioncode": 23000,
+      "date": "2014-10-08",
+      "resourceName": "changelog_release_5_100"
+    },
+    {
+      "version": "4.905",
+      "versioncode": 21008,
+      "date": "2014-09-10",
+      "resourceName": "changelog_release_4_905"
+    },
+    {
+      "version": "4.904",
+      "versioncode": 21007,
+      "date": "2014-04-18",
+      "resourceName": "changelog_release_4_904"
+    },
+    {
+      "version": "4.903",
+      "versioncode": 21006,
+      "date": "2014-03-06",
+      "resourceName": "changelog_release_4_903"
+    },
+    {
+      "version": "4.902",
+      "versioncode": 21005,
+      "date": "2014-02-23",
+      "resourceName": "changelog_release_4_902"
+    },
+    {
+      "version": "4.901",
+      "versioncode": 21004,
+      "date": "2014-02-14",
+      "resourceName": "changelog_release_4_901"
+    },
+    {
+      "version": "4.900",
+      "versioncode": 21003,
+      "date": "2014-01-22",
+      "resourceName": "changelog_release_4_900"
+    },
+    {
+      "version": "4.701",
+      "versioncode": 19002,
+      "date": "2013-11-06",
+      "resourceName": "changelog_release_4_701"
+    },
+    {
+      "version": "4.700",
+      "versioncode": 19001,
+      "date": "2013-10-11",
+      "resourceName": "changelog_release_4_700"
+    },
+    {
+      "version": "4.512",
+      "versioncode": 18012,
+      "date": "2013-09-16",
+      "resourceName": "changelog_release_4_512"
+    },
+    {
+      "version": "4.511",
+      "versioncode": 18011,
+      "date": "2013-08-31",
+      "resourceName": "changelog_release_4_511"
+    },
+    {
+      "version": "4.510",
+      "versioncode": 18010,
+      "date": "2013-08-27",
+      "resourceName": "changelog_release_4_510"
+    },
+    {
+      "version": "4.509",
+      "versioncode": 18009,
+      "date": "2013-08-23",
+      "resourceName": "changelog_release_4_509"
+    },
+    {
+      "version": "4.508",
+      "versioncode": 18008,
+      "date": "2013-07-18",
+      "resourceName": "changelog_release_4_508"
+    },
+    {
+      "version": "4.507",
+      "versioncode": 18007,
+      "date": "2013-07-18",
+      "resourceName": "changelog_release_4_507"
+    },
+    {
+      "version": "4.506",
+      "versioncode": 18006,
+      "date": "2013-07-11",
+      "resourceName": "changelog_release_4_506"
+    },
+    {
+      "version": "4.505",
+      "versioncode": 18005,
+      "date": "2013-07-08",
+      "resourceName": "changelog_release_4_505"
+    },
+    {
+      "version": "4.503",
+      "versioncode": 18003,
+      "date": "2013-07-05",
+      "resourceName": "changelog_release_4_503"
+    },
+    {
+      "version": "4.502",
+      "versioncode": 18002,
+      "date": "2013-05-23",
+      "resourceName": "changelog_release_4_502"
+    },
+    {
+      "version": "4.501",
+      "versioncode": 18001,
+      "date": "2013-05-10",
+      "resourceName": "changelog_release_4_501"
+    },
+    {
+      "version": "4.331",
+      "versioncode": 17032,
+      "date": "2013-05-07",
+      "resourceName": "changelog_release_4_331"
+    },
+    {
+      "version": "4.330",
+      "versioncode": 17031,
+      "date": "2013-03-19",
+      "resourceName": "changelog_release_4_330"
+    },
+    {
+      "version": "4.329",
+      "versioncode": 17030,
+      "date": "2013-03-14",
+      "resourceName": "changelog_release_4_329"
+    },
+    {
+      "version": "4.328",
+      "versioncode": 17029,
+      "date": "2013-02-20",
+      "resourceName": "changelog_release_4_328"
+    },
+    {
+      "version": "4.327",
+      "versioncode": 17028,
+      "date": "2013-02-20",
+      "resourceName": "changelog_release_4_327"
+    },
+    {
+      "version": "4.326",
+      "versioncode": 17027,
+      "date": "2013-02-16",
+      "resourceName": "changelog_release_4_326"
+    },
+    {
+      "version": "4.325",
+      "versioncode": 17026,
+      "date": "2013-02-07",
+      "resourceName": "changelog_release_4_325"
+    },
+    {
+      "version": "4.324",
+      "versioncode": 17025,
+      "date": "2013-02-06",
+      "resourceName": "changelog_release_4_324"
+    },
+    {
+      "version": "4.323",
+      "versioncode": 17024,
+      "date": "2013-02-05",
+      "resourceName": "changelog_release_4_323"
+    },
+    {
+      "version": "4.322",
+      "versioncode": 17023,
+      "date": "2013-02-04",
+      "resourceName": "changelog_release_4_322"
+    },
+    {
+      "version": "4.321",
+      "versioncode": 17022,
+      "date": "2013-01-16",
+      "resourceName": "changelog_release_4_321"
+    },
+    {
+      "version": "4.320",
+      "versioncode": 17021,
+      "date": "2013-01-11",
+      "resourceName": "changelog_release_4_320"
+    },
+    {
+      "version": "4.319",
+      "versioncode": 17020,
+      "date": "2013-01-08",
+      "resourceName": "changelog_release_4_319"
+    }
+  ]
+}

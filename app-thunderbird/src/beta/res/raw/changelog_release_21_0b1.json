@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "version": "21.0b1",
+  "versioncode": 54,
+  "date": "2026-06-22",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Changed: Animation setting now allows On, Off, and System Default options",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Changed: Modernized 'Fetching mail' account settings screen",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed: Modernized 'Composition defaults' screen",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed: Application could crash due to memory exhaustion",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed: Application could crash when rendering long messages",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed: Inline images were shown as attachments instead of displaying in message",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed: Server search results could disappear after loading",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed: Links failed when trailing punctuation was incorrectly included in URLs",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed: Android widget text scaled too large when system font size was increased",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed: Cancelling the Thundermail OAuth process incorrectly redirects users to the \"Redirecting to Thundermail\" screen",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed: Custom swipe actions were not restored from exported settings backups",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "version": "8.0b2",
+  "versioncode": 5,
+  "date": "2024-10-07",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Second public beta of Thunderbird for Android 8.0, based on K-9 Mail",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Import accounts from Desktop via QR codes",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Removed folder display classes",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Always show all folders in the Manage Folders screen",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed top crash when removing accounts",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Properly aligned welcome text",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Updated support link to support.mozilla.org",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Accessibility fixes",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Temporarily removed telemetry",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

@@ -226,7 +226,9 @@ internal class ImapBackendPusher(
     }
 
     override fun onPushNotSupported() {
-        callback.onPushNotSupported()
+        coroutineScope.launch {
+            callback.onPushNotSupported()
+        }
     }
 
     private fun startRetryTimer(folderServerId: String, timeout: Long) {

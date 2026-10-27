@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "version": "4.901",
+  "versioncode": 21004,
+  "date": "2014-02-14",
+  "notes": [
+    {
+      "type": "new",
+      "text": "Added a slider to allow picking a font size for the message body (40% to 250%) in settings",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Added support for KitKat's Storage Access Framework that allows you to attach multiple files at once",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Added support for apps that don't know how to properly use Android's 'share' functionality",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed a bug with IMAP Push that could cause excessive battery drain",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Another attempt at working around the display bug on Asus Transformer devices",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Don't lose formatting of the quoted message when changing orientation while replying",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Disabled pull-to-refresh in search views where remote search isn't allowed",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "More bug fixes",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Updated Japanese translation",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

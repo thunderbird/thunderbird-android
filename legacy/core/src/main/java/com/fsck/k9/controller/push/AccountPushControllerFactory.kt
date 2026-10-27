@@ -1,27 +1,29 @@
 package com.fsck.k9.controller.push
 
-import app.k9mail.legacy.mailstore.FolderRepository
 import com.fsck.k9.backend.BackendManager
 import com.fsck.k9.controller.MessagingController
 import net.thunderbird.core.android.account.LegacyAccountDtoManager
 import net.thunderbird.core.logging.Logger
 import net.thunderbird.feature.account.AccountId
+import net.thunderbird.feature.mail.folder.api.data.repository.PushFolderTrackingRepository
+import net.thunderbird.feature.mail.folder.api.data.repository.PushFoldersQueryRepository
 
 internal class AccountPushControllerFactory(
     private val accountManager: LegacyAccountDtoManager,
     private val backendManager: BackendManager,
     private val messagingController: MessagingController,
-    private val folderRepository: FolderRepository,
+    private val pushFolderTrackingRepository: PushFolderTrackingRepository,
+    private val pushFoldersQueryRepository: PushFoldersQueryRepository,
     private val logger: Logger,
 ) {
     fun create(accountId: AccountId): AccountPushController {
         return AccountPushController(
             backendManager,
-            folderRepository,
+            pushFoldersQueryRepository,
             backendPusherCallback = AccountBackendPusherCallback(
                 accountManager = accountManager,
                 messagingController = messagingController,
-                folderRepository = folderRepository,
+                pushFolderTrackingRepository = pushFolderTrackingRepository,
                 accountId = accountId,
                 logger = logger,
             ),

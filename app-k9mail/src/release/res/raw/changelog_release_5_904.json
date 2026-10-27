@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "version": "5.904",
+  "versioncode": 29004,
+  "date": "2021-10-05",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Tweaked toolbar in move/copy screens",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed a bug where line breaks were added when editing a draft",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed animation when switching accounts",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed crash that could occur when deleting an account",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Updated translations",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "version": "6.200",
+  "versioncode": 32000,
+  "date": "2022-07-08",
+  "notes": [
+    {
+      "type": "new",
+      "text": "Added support for using OAuth 2.0 with Google, Yahoo, AOL, and personal Microsoft accounts (Office365 accounts are not supported yet)",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Added \"Unsubscribe\" action that is displayed in the menu when viewing a message that contains an Unsubscribe header",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Various bug fixes and improvements",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Updated translations",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

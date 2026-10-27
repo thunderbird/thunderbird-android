@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "version": "6.714",
+  "versioncode": 37014,
+  "date": "2024-01-04",
+  "notes": [
+    {
+      "type": "new",
+      "text": "Added screen to configure special folders during account setup",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Added copy action to recipient dropdown in compose screen",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Improved error messages during account setup",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Internal changes",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Updated translations",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

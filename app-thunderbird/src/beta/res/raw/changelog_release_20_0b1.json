@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "version": "20.0b1",
+  "versioncode": 52,
+  "date": "2026-05-26",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Changed: Only show message notification configuration actions above the cutoff",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed: Account drawer stayed open after account switch despite auto-select Inbox setting",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed: Imported settings could incorrectly show 'XX' avatar monogram",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed: Printed emails omitted message headers and used minimal margins",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed: Compose button did not work in tablet split-screen message view",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed: Accented subfolder names sorted to bottom instead of locale order",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed: Disabled font size setting appeared in General Settings search",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed: New mail notifications showed avatars when contact pictures were disabled",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed: Mail opening still used fade-in after animations were disabled",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed: Sidebar account-switching animations were too fast",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

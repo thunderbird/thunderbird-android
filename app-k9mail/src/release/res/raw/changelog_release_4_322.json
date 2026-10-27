@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "version": "4.322",
+  "versioncode": 17023,
+  "date": "2013-02-04",
+  "notes": [
+    {
+      "type": "new",
+      "text": "Added a setting to enable split-screen mode (display message list next to message content)",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Show a thread as unread/starred if at least one message is unread/starred",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Modified the preview lines setting to allow disabling message preview in message list",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Remember the scroll position of the message list",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Changed the color picker",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Improved certificate failure notifications",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed a bug that prevented third-party apps from reading the number of unread messages",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed a bug that caused the app to load too many messages when you clicked \"Load more messages\"",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Updated Finnish, French, German, Dutch translations",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

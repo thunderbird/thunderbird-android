@@ -19,10 +19,13 @@ import kotlin.test.Test
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.MissingFieldException
 import kotlinx.serialization.SerializationException
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.modules.SerializersModule
 import net.thunderbird.core.featureflag.model.AppVariantOverridesRawType
 import net.thunderbird.core.featureflag.model.BaseAppVariantOverrides
 import net.thunderbird.core.featureflag.model.FlagAttributeType
 import net.thunderbird.core.featureflag.model.FlagRegistry
+import net.thunderbird.core.featureflag.model.FlagRegistryOverride
 
 class DefaultFeatureFlagCatalogJsonParserTest {
 
@@ -236,10 +239,19 @@ class DefaultFeatureFlagCatalogJsonParserTest {
 }
 
 private fun createTestSubject(): DefaultFeatureFlagCatalogJsonParser = DefaultFeatureFlagCatalogJsonParser(
-    registrySerializer = FlagRegistryOverrideSerializer(
-        k9Factory = { wrapper -> FakeK9Overrides(wrapper) },
-        thunderbirdFactory = { wrapper -> FakeThunderbirdOverrides(wrapper) },
-    ),
+    json = Json {
+        serializersModule = SerializersModule {
+            contextual(
+                kClass = FlagRegistryOverride::class,
+                serializer = FlagRegistryOverrideSerializer(
+                    k9Factory = { wrapper -> FakeK9Overrides(wrapper) },
+                    thunderbirdFactory = { wrapper -> FakeThunderbirdOverrides(wrapper) },
+                ),
+            )
+        }
+
+        ignoreUnknownKeys = false
+    },
 )
 
 /**

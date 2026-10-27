@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "version": "17.0b3",
+  "versioncode": 44,
+  "date": "2026-02-17",
+  "notes": [
+    {
+      "type": "fixed",
+      "text": "Fixed: Application could crash when rendering message list",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed: Avatar image updates did not propagate immediately",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

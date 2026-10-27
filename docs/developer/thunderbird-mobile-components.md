@@ -14,19 +14,21 @@ theme support, and common UI support used by Thunderbird for Android.
 
 Dependency aliases are declared in `gradle/libs.versions.toml`:
 
+- `libs.tb.mobile.components.core.outcome` -> `net.thunderbird.components.core:outcome`
 - `libs.tb.mobile.components.ui.bolt` -> `net.thunderbird.components.ui.bolt:bolt`
 
 Common UI support, design-system components, and theme support are packaged as part of the Bolt artifact.
 
-Use the aliases when consuming Bolt artifacts:
+Use the aliases when consuming component artifacts:
 
 ```kotlin
 dependencies {
+    implementation(libs.tb.mobile.components.core.outcome)
     implementation(libs.tb.mobile.components.ui.bolt)
 }
 ```
 
-The Bolt component version is managed by `libs.versions.tbMobileComponents`.
+Component versions are managed by `libs.versions.tbMobileComponents`.
 
 ## Local Development
 

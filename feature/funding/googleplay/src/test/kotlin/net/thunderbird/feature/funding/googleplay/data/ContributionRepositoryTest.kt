@@ -11,7 +11,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.LocalDateTime
-import net.thunderbird.core.outcome.Outcome
+import net.thunderbird.components.core.outcome.Outcome
 import net.thunderbird.feature.funding.googleplay.data.FundingDataContract.Local.ContributionPurchaseDataSource
 import net.thunderbird.feature.funding.googleplay.data.FundingDataContract.Remote.ContributionDataSource
 import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract.ContributionError

@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "version": "5.112",
+  "versioncode": 23111,
+  "date": "2016-10-05",
+  "notes": [
+    {
+      "type": "fixed",
+      "text": "Fixed crash when selecting folder to move message",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed bug where wrong message format was used when replying",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed position of context menus on Android 7.0",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed icon for encryption status of a message",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Hide crypto status when no crypto provider is configured",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Hide invalid email addresses of a system contact",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Added support for linkifying URLs with new TLDs",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Added server settings for more providers",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

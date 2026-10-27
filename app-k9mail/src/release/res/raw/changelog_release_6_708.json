@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "version": "6.708",
+  "versioncode": 37008,
+  "date": "2023-08-08",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Changed compose icon in the message list widget to match the icon inside the app",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Added information about the read state of a message to the data read by screen readers",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "A URI pasted when composing a message will now be surrounded by angle brackets",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Improved error handling in many situations",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed bug where account name wasn't displayed in the message view when it should",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed inconsistent behavior when replying to messages",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed bug when saving a draft message using an identity without a display name",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed display issue when removing an account",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Quite a few internal changes",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Updated translations",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

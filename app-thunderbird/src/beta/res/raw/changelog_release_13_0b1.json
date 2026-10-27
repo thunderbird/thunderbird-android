@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "version": "13.0b1",
+  "versioncode": 26,
+  "date": "2025-09-02",
+  "notes": [
+    {
+      "type": "new",
+      "text": "Added new design elements to Message List UI",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Sync logging duration is now limited to 24 hours",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Client certificate was not displayed in SMTP settings",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Outlook headers included unnecessary newlines when replying to a message",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "\"Enable debug logging\" did not provide verbose logging",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Scrolling in a short email could trigger left/right swipe",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Scrolling only worked in center of Welcome and New Account screens (landscape)",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

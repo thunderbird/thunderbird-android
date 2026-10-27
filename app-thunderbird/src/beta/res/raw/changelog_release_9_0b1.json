@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "version": "9.0b1",
+  "versioncode": 9,
+  "date": "2024-11-19",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Account initials now use the display name, improving customizability",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Account icons remain in the same position when selected",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Unified inbox enabled only when multiple accounts are configured",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Push service now starts reliably when expected",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Correct default delete message action for QR-imported accounts. Please check your fetch mail settings!",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Folder drawer updates properly on account configuration changes",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

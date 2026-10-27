@@ -114,7 +114,7 @@ class InMemoryBackendFolder(override var name: String, var type: FolderType) : B
         }
     }
 
-    override fun saveMessage(message: Message, downloadState: MessageDownloadState) {
+    override suspend fun saveMessage(message: Message, downloadState: MessageDownloadState) {
         val messageServerId = checkNotNull(message.uid)
         messages[messageServerId] = message
         val flags = message.flags.toMutableSet()

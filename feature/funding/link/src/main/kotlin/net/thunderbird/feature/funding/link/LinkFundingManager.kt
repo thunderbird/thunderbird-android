@@ -1,0 +1,17 @@
+package net.thunderbird.feature.funding.link
+
+import net.thunderbird.feature.funding.api.FundingManager
+import net.thunderbird.feature.funding.api.FundingType
+import net.thunderbird.feature.funding.common.api.FundingReminderContract
+
+class LinkFundingManager(
+    private val reminder: FundingReminderContract.Reminder,
+) : FundingManager {
+    override fun getFundingType(): FundingType {
+        return FundingType.LINK
+    }
+
+    override fun addFundingReminder(onOpenFunding: () -> Unit) {
+        reminder.registerReminder(onOpenFunding)
+    }
+}

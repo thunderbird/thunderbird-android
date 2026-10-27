@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "version": "4.506",
+  "versioncode": 18006,
+  "date": "2013-07-11",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Performance improvements",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Added autoconfiguration for Fastmail.FM",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "New Slovak translation",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Updated Italian and Russian translations",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Don't save signature to identity header if identity doesn't use a signature",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 package net.thunderbird.feature.mail.message.export
 
-import net.thunderbird.core.outcome.Outcome
+import net.thunderbird.components.core.outcome.Outcome
 
 /**
  * Result type for message export using the shared Outcome abstraction.

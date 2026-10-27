@@ -1,0 +1,7 @@
+Thunderbird version 25.0b2
+
+Changed:
+- Remote Feature Flags temporarily disabled to investigate startup freeze on splash screen
+
+Fixed:
+- Message composer could crash when rotating screen or editing message as new

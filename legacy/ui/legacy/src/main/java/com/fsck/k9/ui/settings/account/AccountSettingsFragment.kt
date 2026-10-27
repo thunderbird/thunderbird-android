@@ -44,7 +44,7 @@ import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.account.QuoteStyle
 import net.thunderbird.core.common.provider.AppNameProvider
 import net.thunderbird.feature.account.settings.api.BackgroundAccountRemover
-import net.thunderbird.feature.mail.folder.api.FolderType
+import net.thunderbird.feature.mail.folder.FolderType
 import net.thunderbird.feature.mail.folder.api.RemoteFolder
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.activityViewModel

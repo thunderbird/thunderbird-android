@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "version": "20.0b2",
+  "versioncode": 53,
+  "date": "2026-06-04",
+  "notes": [
+    {
+      "type": "new",
+      "text": "New: Enable easily discoverable way to configure and use Thundermail",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed: K-9 Mail crashed when scanning Thundermail QR code",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

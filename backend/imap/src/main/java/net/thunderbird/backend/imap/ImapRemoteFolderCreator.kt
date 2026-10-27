@@ -12,7 +12,7 @@ import net.thunderbird.backend.api.folder.RemoteFolderCreationOutcome
 import net.thunderbird.backend.api.folder.RemoteFolderCreator
 import net.thunderbird.core.common.exception.MessagingException
 import net.thunderbird.core.logging.Logger
-import net.thunderbird.core.outcome.Outcome
+import net.thunderbird.components.core.outcome.Outcome
 import net.thunderbird.feature.account.AccountId
 
 class ImapRemoteFolderCreator(

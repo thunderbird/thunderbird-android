@@ -17,7 +17,7 @@ dependencies {
     api(projects.core.logging.implComposite)
     api(projects.core.logging.config)
     api(projects.core.android.network)
-    api(projects.core.outcome)
+    api(libs.tb.mobile.components.core.outcome)
     api(projects.feature.mail.folder.api)
     api(projects.feature.account.storage.legacy)
 
