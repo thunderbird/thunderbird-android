@@ -8,6 +8,7 @@ import java.security.cert.CertificateFactory
 import java.security.cert.X509Certificate
 import kotlin.io.encoding.Base64
 import kotlin.jvm.java
+import kotlin.test.Ignore
 import kotlin.test.assertFailsWith
 import kotlinx.coroutines.test.runTest
 import net.thunderbird.core.common.net.tls.CertificateBlocklist
@@ -26,28 +27,26 @@ class CertificateBlocklistTest {
         assertAll { certificateBlockList.isBlockedSpkiSha256(arrayOf(hostCert)) }
     }
 
+    @Ignore("TODO: Create unsafe hash in resources/certificates/badHost.pem")
     @Test
     fun `known unsafe certificate hash is blocked`() = runTest {
-        TODO()
-//        val certificateBlockList = CertificateBlocklist()
-//        val certificateFactory = CertificateFactory.getInstance("X.509")
-//        val unsafeByteArray = CVE_2026_111943.random().hex().toByteArray()
-//        // TODO: generate a certificate from the byte array
-//        val unsafeByteStream = generateCertificateInputStream(unsafeByteArray)
-//        val unsafeCert = certificateFactory.generateCertificate(unsafeByteStream) as X509Certificate
-//        assertFailsWith(CompromisedCertificateException::class) {
-//            certificateBlockList.isBlockedSpkiSha256(arrayOf(unsafeCert))
-//        }
-    }
-
-    @Test
-    fun `uppercase unsafe certificate hash is blocked`() = runTest {
-        TODO()
+        val certificateBlockList = CertificateBlocklist()
+        val badCert = getBadHostCertificate()
+        assertFailsWith(CompromisedCertificateException::class) {
+            certificateBlockList.isBlockedSpkiSha256(arrayOf(badCert))
+        }
     }
 
     private fun getGoodHostCertificate(): X509Certificate {
         val certificateFactory = CertificateFactory.getInstance("X.509")
-        CertificateBlocklist::class.java.getResourceAsStream("/certificates/goodHost.pem")!!.let { inputStream ->
+        CertificateBlocklistTest::class.java.getResourceAsStream("/certificates/goodHost.pem")!!.let { inputStream ->
+            return certificateFactory.generateCertificate(inputStream) as X509Certificate
+        }
+    }
+
+    private fun getBadHostCertificate(): X509Certificate {
+        val certificateFactory = CertificateFactory.getInstance("X.509")
+        CertificateBlocklistTest::class.java.getResourceAsStream("/certificates/badHost.pem")!!.let { inputStream ->
             return certificateFactory.generateCertificate(inputStream) as X509Certificate
         }
     }
