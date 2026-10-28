@@ -752,8 +752,8 @@ open class MessageHomeActivity :
         performSearch(search)
     }
 
-    private fun openFolderImmediately(folderId: Long) {
-        openFolder(account!!.id, folderId)
+    private fun openFolderImmediately(accountId: AccountId, folderId: Long) {
+        openFolder(accountId, folderId)
         commitOpenFolderTransaction()
     }
 
@@ -839,8 +839,12 @@ open class MessageHomeActivity :
 
     @Suppress("NestedBlockDepth")
     private fun handleOnBackPressed(callback: OnBackPressedCallback) {
-        if (isDrawerEnabled && navigationDrawer!!.isOpen) {
-            navigationDrawer!!.close()
+        val drawer = navigationDrawer
+        val currentAccount = account
+        val currentSearch = search
+
+        if (isDrawerEnabled && drawer?.isOpen == true) {
+            drawer.close()
         } else if (displayMode == DisplayMode.MESSAGE_VIEW) {
             if (messageViewOnly) {
                 finish()
@@ -849,18 +853,18 @@ open class MessageHomeActivity :
             }
         } else if (!isSearchViewCollapsed()) {
             collapseSearchView()
-        } else if (isDrawerEnabled && account != null && supportFragmentManager.backStackEntryCount == 0) {
+        } else if (isDrawerEnabled && currentAccount != null && supportFragmentManager.backStackEntryCount == 0) {
             if (generalSettingsManager.getConfig().display.inboxSettings.isShowUnifiedInbox) {
-                if (!search!!.isUnifiedInbox) {
+                if (currentSearch?.isUnifiedInbox != true) {
                     openUnifiedFolders()
                 } else {
                     dispatchOnBackPressed(callback)
                 }
             } else {
-                val defaultFolderId = defaultFolderProvider.getDefaultFolder(account!!.id)
-                val currentFolder = if (singleFolderMode) search!!.folderIds[0] else null
+                val defaultFolderId = defaultFolderProvider.getDefaultFolder(currentAccount.id)
+                val currentFolder = if (singleFolderMode) currentSearch?.folderIds?.firstOrNull() else null
                 if (currentFolder == null || defaultFolderId != currentFolder) {
-                    openFolderImmediately(defaultFolderId)
+                    openFolderImmediately(currentAccount.id, defaultFolderId)
                 } else {
                     dispatchOnBackPressed(callback)
                 }

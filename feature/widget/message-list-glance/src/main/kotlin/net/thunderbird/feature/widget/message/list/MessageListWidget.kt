@@ -81,12 +81,18 @@ internal class MessageListWidget : GlanceAppWidget(), KoinComponent {
         ).apply {
             action = nextInt().toString()
         }
-        PendingIntentCompat.getActivity(
-            context,
-            nextInt(),
-            intent,
-            PendingIntent.FLAG_UPDATE_CURRENT,
-            false,
-        )!!.send()
+        // Only returns null when using FLAG_NO_CREATE
+        val pendingIntent = checkNotNull(
+            PendingIntentCompat.getActivity(
+                context,
+                nextInt(),
+                intent,
+                PendingIntent.FLAG_UPDATE_CURRENT,
+                false,
+            ),
+        ) {
+            "Failed to create activity PendingIntent"
+        }
+        pendingIntent.send()
     }
 }
