@@ -23,8 +23,8 @@ class TestCoreResourceProvider : CoreResourceProvider {
     override fun replyHeader(sender: String) = "$sender wrote:"
     override fun replyHeader(sender: String, sentDate: String) = "On $sentDate, $sender wrote:"
 
-    override fun searchUnifiedFoldersTitle() = "Unified Folders"
-    override fun searchUnifiedFoldersDetail() = "All messages in unified folders"
+    override fun unifiedInboxTitle() = "Unified Inbox"
+    override fun unifiedInboxDetail() = "Messages in the inbox of every account"
 
     override fun pushNotificationText(notificationState: PushNotificationState): String {
         throw UnsupportedOperationException("not implemented")

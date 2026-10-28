@@ -82,7 +82,6 @@ internal fun createFolderSettingsProvider(): FolderSettingsProvider {
                 isNotificationsEnabled = false,
                 isPushEnabled = false,
                 inTopGroup = false,
-                integrate = false,
             )
     }
 }

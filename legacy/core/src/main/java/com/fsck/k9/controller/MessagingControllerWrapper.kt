@@ -9,6 +9,8 @@ import kotlinx.coroutines.runBlocking
 import net.thunderbird.core.common.exception.MessagingException
 import net.thunderbird.core.common.mail.Flag
 import net.thunderbird.feature.account.AccountId
+import net.thunderbird.feature.mail.folder.FolderId
+import net.thunderbird.feature.mail.folder.LegacyFolderIdFactory
 
 /**
  * A wrapper around [MessagingController] that takes care of loading the account by [AccountId] and
@@ -17,7 +19,7 @@ import net.thunderbird.feature.account.AccountId
 @Suppress("TooManyFunctions")
 class MessagingControllerWrapper(
     private val messagingController: MessagingController,
-) {
+) : FolderSynchronizer {
 
     fun loadMoreMessages(accountId: AccountId, folderId: Long) {
         messagingController.loadMoreMessages(accountId, folderId)
@@ -56,7 +58,7 @@ class MessagingControllerWrapper(
         messagingController.expunge(id, folderId)
     }
 
-    fun sendPendingMessages(accountId: AccountId, listener: MessagingListener?) {
+    override fun sendPendingMessages(accountId: AccountId, listener: MessagingListener?) {
         messagingController.sendPendingMessages(accountId, listener)
     }
 
@@ -146,6 +148,10 @@ class MessagingControllerWrapper(
 
     fun synchronizeMailbox(id: AccountId, folderId: Long, notify: Boolean, listener: MessagingListener?) {
         messagingController.synchronizeMailbox(id, folderId, notify, listener)
+    }
+
+    override fun synchronizeFolder(accountId: AccountId, folderId: FolderId, listener: MessagingListener?) {
+        messagingController.synchronizeMailbox(accountId, LegacyFolderIdFactory.toLegacyId(folderId), false, listener)
     }
 
     fun checkMail(

@@ -86,7 +86,6 @@ public class LocalFolder {
     private boolean notificationsEnabled = false;
 
     private boolean isInTopGroup = false;
-    private boolean isIntegrate = false;
 
     private MoreMessages moreMessages = MoreMessages.UNKNOWN;
     private boolean localOnly = false;
@@ -187,7 +186,6 @@ public class LocalFolder {
         // does a DB update on setLastChecked
         lastChecked = cursor.getLong(LocalStore.FOLDER_LAST_CHECKED_INDEX);
         isInTopGroup = cursor.getInt(LocalStore.FOLDER_TOP_GROUP_INDEX) == 1;
-        isIntegrate = cursor.getInt(LocalStore.FOLDER_INTEGRATE_INDEX) == 1;
         visible = cursor.getInt(LocalStore.FOLDER_VISIBLE_INDEX) == 1;
         notificationsEnabled = cursor.getInt(LocalStore.FOLDER_NOTIFICATIONS_ENABLED_INDEX) == 1;
         syncEnabled = cursor.getInt(LocalStore.FOLDER_SYNC_ENABLED_INDEX) == 1;
@@ -318,15 +316,6 @@ public class LocalFolder {
 
     public boolean isNotificationsEnabled() {
         return notificationsEnabled;
-    }
-
-    public boolean isIntegrate() {
-        return isIntegrate;
-    }
-
-    public void setIntegrate(boolean integrate) throws MessagingException {
-        isIntegrate = integrate;
-        updateFolderColumn("integrate", isIntegrate ? 1 : 0);
     }
 
     public boolean hasMoreMessages() {

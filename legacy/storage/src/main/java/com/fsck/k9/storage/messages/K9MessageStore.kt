@@ -182,10 +182,6 @@ class K9MessageStore(
         return retrieveFolderOperations.getDisplayFolders(includeHiddenFolders, outboxFolderId, mapper)
     }
 
-    override fun areAllIncludedInUnifiedInbox(folderIds: Collection<Long>): Boolean {
-        return checkFolderOperations.areAllIncludedInUnifiedInbox(folderIds)
-    }
-
     override fun getFolderId(folderServerId: String): Long? {
         return retrieveFolderOperations.getFolderId(folderServerId)
     }
@@ -220,10 +216,6 @@ class K9MessageStore(
 
     override fun updateFolderSettings(folderDetails: FolderDetails) {
         updateFolderOperations.updateFolderSettings(folderDetails)
-    }
-
-    override fun setIncludeInUnifiedInbox(folderId: Long, includeInUnifiedInbox: Boolean) {
-        updateFolderOperations.setIncludeInUnifiedInbox(folderId, includeInUnifiedInbox)
     }
 
     override fun setVisible(folderId: Long, visible: Boolean) {

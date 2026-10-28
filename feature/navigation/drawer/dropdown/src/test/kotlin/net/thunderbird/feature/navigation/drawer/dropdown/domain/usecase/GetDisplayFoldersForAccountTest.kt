@@ -9,10 +9,10 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import net.thunderbird.account.fake.FakeAccountData.ACCOUNT_ID
 import net.thunderbird.feature.account.UnifiedAccountId
+import net.thunderbird.feature.mail.folder.FolderRole
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayFolder
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.MailDisplayFolder
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.UnifiedDisplayFolder
-import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.UnifiedDisplayFolderType
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.FakeData
 import app.k9mail.legacy.ui.folder.DisplayFolder as LegacyDisplayFolder
 
@@ -23,11 +23,9 @@ internal class GetDisplayFoldersForAccountTest {
         val accountId = ACCOUNT_ID
         val legacyDisplayFolderFlow = MutableStateFlow(LEGACY_DISPLAY_FOLDERS)
         val displayFolderRepository = FakeDisplayFolderRepository(legacyDisplayFolderFlow)
-        val unifiedFolderFlow = MutableStateFlow(DISPLAY_UNIFIED_FOLDER)
-        val unifiedFolderRepository = FakeUnifiedFolderRepository(unifiedFolderFlow)
         val testSubject = GetDisplayFoldersForAccount(
             displayFolderRepository = displayFolderRepository,
-            unifiedFolderRepository = unifiedFolderRepository,
+            unifiedFolderRepository = FakeUnifiedFolderRepository(),
         )
 
         val result = testSubject(accountId).first()
@@ -36,12 +34,11 @@ internal class GetDisplayFoldersForAccountTest {
     }
 
     @Test
-    fun `should return unifed account folders when account id is unified`() = runTest {
+    fun `should return all unified folders in drawer order when account id is unified`() = runTest {
         val accountId = UnifiedAccountId
         val legacyDisplayFolderFlow = MutableStateFlow(LEGACY_DISPLAY_FOLDERS)
         val displayFolderRepository = FakeDisplayFolderRepository(legacyDisplayFolderFlow)
-        val unifiedFolderFlow = MutableStateFlow(DISPLAY_UNIFIED_FOLDER)
-        val unifiedFolderRepository = FakeUnifiedFolderRepository(unifiedFolderFlow)
+        val unifiedFolderRepository = FakeUnifiedFolderRepository(createUnifiedFolderFlows())
         val testSubject = GetDisplayFoldersForAccount(
             displayFolderRepository = displayFolderRepository,
             unifiedFolderRepository = unifiedFolderRepository,
@@ -49,7 +46,17 @@ internal class GetDisplayFoldersForAccountTest {
 
         val result = testSubject(accountId).first()
 
-        assertThat(result).isEqualTo(DISPLAY_UNIFIED_FOLDERS)
+        assertThat(result).isEqualTo(
+            listOf(
+                createUnifiedFolder(FolderRole.INBOX),
+                createUnifiedFolder(FolderRole.OUTBOX),
+                createUnifiedFolder(FolderRole.DRAFTS),
+                createUnifiedFolder(FolderRole.SENT),
+                createUnifiedFolder(FolderRole.ARCHIVE),
+                createUnifiedFolder(FolderRole.SPAM),
+                createUnifiedFolder(FolderRole.TRASH),
+            ),
+        )
     }
 
     @Test
@@ -57,8 +64,8 @@ internal class GetDisplayFoldersForAccountTest {
         val accountId = ACCOUNT_ID
         val legacyDisplayFolderFlow = MutableStateFlow(LEGACY_DISPLAY_FOLDERS)
         val displayFolderRepository = FakeDisplayFolderRepository(legacyDisplayFolderFlow)
-        val unifiedFolderFlow = MutableStateFlow(DISPLAY_UNIFIED_FOLDER)
-        val unifiedFolderRepository = FakeUnifiedFolderRepository(unifiedFolderFlow)
+        val unifiedFolderFlows = createUnifiedFolderFlows()
+        val unifiedFolderRepository = FakeUnifiedFolderRepository(unifiedFolderFlows)
         val testSubject = GetDisplayFoldersForAccount(
             displayFolderRepository = displayFolderRepository,
             unifiedFolderRepository = unifiedFolderRepository,
@@ -71,7 +78,9 @@ internal class GetDisplayFoldersForAccountTest {
 
             assertThat(awaitItem()).isEqualTo(DISPLAY_ACCOUNT_FOLDERS_2)
 
-            unifiedFolderFlow.emit(DISPLAY_UNIFIED_FOLDER_2)
+            unifiedFolderFlows.getValue(FolderRole.INBOX).emit(
+                createUnifiedFolder(FolderRole.INBOX, unreadMessageCount = 3),
+            )
         }
     }
 
@@ -80,21 +89,39 @@ internal class GetDisplayFoldersForAccountTest {
         val accountId = UnifiedAccountId
         val legacyDisplayFolderFlow = MutableStateFlow(LEGACY_DISPLAY_FOLDERS)
         val displayFolderRepository = FakeDisplayFolderRepository(legacyDisplayFolderFlow)
-        val unifiedFolderFlow = MutableStateFlow(DISPLAY_UNIFIED_FOLDER)
-        val unifiedFolderRepository = FakeUnifiedFolderRepository(unifiedFolderFlow)
+        val unifiedFolderFlows = createUnifiedFolderFlows()
+        val unifiedFolderRepository = FakeUnifiedFolderRepository(unifiedFolderFlows)
         val testSubject = GetDisplayFoldersForAccount(
             displayFolderRepository = displayFolderRepository,
             unifiedFolderRepository = unifiedFolderRepository,
         )
+        val updatedSentFolder = createUnifiedFolder(FolderRole.SENT, unreadMessageCount = 3)
 
         testSubject(accountId).test {
-            assertThat(awaitItem()).isEqualTo(DISPLAY_UNIFIED_FOLDERS)
+            val initialFolders = awaitItem()
 
             legacyDisplayFolderFlow.emit(LEGACY_DISPLAY_FOLDERS_2)
-            unifiedFolderFlow.emit(DISPLAY_UNIFIED_FOLDER_2)
+            unifiedFolderFlows.getValue(FolderRole.SENT).emit(updatedSentFolder)
 
-            assertThat(awaitItem()).isEqualTo(listOf(DISPLAY_UNIFIED_FOLDER_2))
+            assertThat(awaitItem()).isEqualTo(
+                initialFolders.map { if (it.folderId == updatedSentFolder.folderId) updatedSentFolder else it },
+            )
         }
+    }
+
+    private fun createUnifiedFolderFlows(): Map<FolderRole, MutableStateFlow<UnifiedDisplayFolder>> {
+        return FolderRole.entries.associateWith { MutableStateFlow(createUnifiedFolder(it)) }
+    }
+
+    private fun createUnifiedFolder(
+        role: FolderRole,
+        unreadMessageCount: Int = 2,
+    ): UnifiedDisplayFolder {
+        return UnifiedDisplayFolder(
+            role = role,
+            unreadMessageCount = unreadMessageCount,
+            starredMessageCount = 2,
+        )
     }
 
     private companion object {
@@ -128,22 +155,6 @@ internal class GetDisplayFoldersForAccountTest {
             starredMessageCount = 0,
             pathDelimiter = "/",
         )
-
-        val DISPLAY_UNIFIED_FOLDER = UnifiedDisplayFolder(
-            folderId = "unified_inbox",
-            unifiedType = UnifiedDisplayFolderType.INBOX,
-            unreadMessageCount = 2,
-            starredMessageCount = 2,
-        )
-
-        val DISPLAY_UNIFIED_FOLDER_2 = UnifiedDisplayFolder(
-            folderId = "unified_inbox",
-            unifiedType = UnifiedDisplayFolderType.INBOX,
-            unreadMessageCount = 3,
-            starredMessageCount = 3,
-        )
-
-        val DISPLAY_UNIFIED_FOLDERS = listOf(DISPLAY_UNIFIED_FOLDER)
 
         val DISPLAY_ACCOUNT_FOLDERS = listOf<DisplayFolder>(
             MailDisplayFolder(

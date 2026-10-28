@@ -45,11 +45,6 @@
             android:title="@string/folder_settings_notifications_label"
             />
 
-        <SwitchPreference
-            android:key="folder_settings_include_in_integrated_inbox"
-            android:title="@string/folder_settings_include_in_integrated_inbox_label"
-            />
-
     </PreferenceCategory>
 
 </PreferenceScreen>

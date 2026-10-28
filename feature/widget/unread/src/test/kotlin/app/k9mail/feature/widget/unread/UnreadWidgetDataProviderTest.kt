@@ -84,7 +84,7 @@ class UnreadWidgetDataProviderTest : AutoCloseKoinTest() {
         val widgetData = provider.loadUnreadWidgetData(configuration)
 
         with(widgetData!!) {
-            assertThat(title).isEqualTo("Unified Folders")
+            assertThat(title).isEqualTo("Unified Inbox")
             assertThat(unreadCount).isEqualTo(SEARCH_ACCOUNT_UNREAD_COUNT)
         }
     }
@@ -206,8 +206,8 @@ class UnreadWidgetDataProviderTest : AutoCloseKoinTest() {
     }
 
     private fun createCoreResourceProvider(): CoreResourceProvider = mock {
-        on { searchUnifiedFoldersTitle() } doReturn UNIFIED_FOLDERS_NAME
-        on { searchUnifiedFoldersDetail() } doReturn UNIFIED_FOLDERS_DETAIL
+        on { unifiedInboxTitle() } doReturn UNIFIED_INBOX_TITLE
+        on { unifiedInboxDetail() } doReturn UNIFIED_INBOX_DETAIL
     }
 
     companion object {
@@ -218,8 +218,8 @@ class UnreadWidgetDataProviderTest : AutoCloseKoinTest() {
         const val ACCOUNT_UNREAD_COUNT = 2
         const val FOLDER_UNREAD_COUNT = 3
         const val LOCALIZED_FOLDER_NAME = "Posteingang"
-        const val UNIFIED_FOLDERS_NAME = "Unified Folders"
-        const val UNIFIED_FOLDERS_DETAIL = "All Messages"
+        const val UNIFIED_INBOX_TITLE = "Unified Inbox"
+        const val UNIFIED_INBOX_DETAIL = "Messages in the inbox of every account"
         val FOLDER = Folder(
             id = FOLDER_ID,
             name = "INBOX",

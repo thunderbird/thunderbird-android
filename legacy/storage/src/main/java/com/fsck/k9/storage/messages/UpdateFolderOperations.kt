@@ -23,7 +23,6 @@ internal class UpdateFolderOperations(private val lockableDatabase: LockableData
         lockableDatabase.execute(false) { db ->
             val contentValues = ContentValues().apply {
                 put("top_group", folderDetails.isInTopGroup)
-                put("integrate", folderDetails.isIntegrate)
                 put("sync_enabled", folderDetails.isSyncEnabled)
                 put("visible", folderDetails.isVisible)
                 put("notifications_enabled", folderDetails.isNotificationsEnabled)
@@ -32,10 +31,6 @@ internal class UpdateFolderOperations(private val lockableDatabase: LockableData
 
             db.update("folders", contentValues, "id = ?", arrayOf(folderDetails.folder.id.toString()))
         }
-    }
-
-    fun setIncludeInUnifiedInbox(folderId: Long, includeInUnifiedInbox: Boolean) {
-        setBoolean(folderId, columnName = "integrate", value = includeInUnifiedInbox)
     }
 
     fun setVisible(folderId: Long, visible: Boolean) {

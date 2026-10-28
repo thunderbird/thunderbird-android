@@ -69,6 +69,7 @@ import androidx.lifecycle.setViewTreeLifecycleOwner
 import androidx.savedstate.SavedStateRegistryOwner
 import androidx.savedstate.setViewTreeSavedStateRegistryOwner
 import app.k9mail.core.android.common.contact.ContactRepository
+import com.fsck.k9.controller.UnifiedFolderSynchronizer
 import net.thunderbird.components.ui.bolt.atom.DividerHorizontal
 import net.thunderbird.components.ui.bolt.atom.Surface
 import net.thunderbird.components.ui.bolt.atom.text.TextBodyLarge
@@ -92,6 +93,7 @@ import com.fsck.k9.mailstore.LocalStoreProvider
 import com.fsck.k9.search.getLegacyAccounts
 import com.fsck.k9.search.isNewMessages
 import com.fsck.k9.search.isUnified
+import com.fsck.k9.search.unifiedFolderRole
 import com.fsck.k9.ui.BuildConfig
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.choosefolder.ChooseFolderActivity
@@ -213,6 +215,7 @@ class MessageListFragment :
     private val sortTypeToastProvider: SortTypeToastProvider by inject()
     private val folderNameFormatter: FolderNameFormatter by inject { parametersOf(requireContext()) }
     private val messagingController: MessagingControllerWrapper by inject()
+    private val unifiedFolderSynchronizer: UnifiedFolderSynchronizer by inject()
     private val messagingControllerRegistry: MessagingControllerRegistry by inject()
     private val accountManager: LegacyAccountManager by inject()
     private val lastSelectedFolderStore: LastSelectedFolderStore by inject()
@@ -670,7 +673,7 @@ class MessageListFragment :
 
     private fun setWindowTitle() {
         val title = when {
-            isUnifiedFoldersView -> getString(R.string.integrated_inbox_title)
+            isUnifiedFoldersView -> getString(localSearch.unifiedFolderTitleResId)
             isNewMessagesView -> getString(R.string.new_messages_title)
             isManualSearch -> getString(R.string.search_results)
             isThreadDisplay -> threadTitle ?: ""
@@ -1651,10 +1654,13 @@ class MessageListFragment :
     }
 
     private fun checkMail() {
+        val unifiedFolderRole = localSearch.unifiedFolderRole
         if (isSingleAccountMode && isSingleFolderMode) {
             val folderId = currentFolder!!.databaseId
             account?.id?.let { messagingController.synchronizeMailbox(it, folderId, false, activityListener) }
             account?.id?.let { messagingController.sendPendingMessages(it, activityListener) }
+        } else if (unifiedFolderRole != null) {
+            unifiedFolderSynchronizer.synchronize(unifiedFolderRole, activityListener)
         } else if (allAccounts) {
             messagingController.checkMail(null, true, true, false, activityListener)
         } else {

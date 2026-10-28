@@ -23,6 +23,7 @@ internal class CommandSync(
 
         val localMessageServerIds = backendFolder.getMessageServerIds()
         if (localMessageServerIds.isNotEmpty()) {
+            backendFolder.setLastChecked(System.currentTimeMillis())
             listener.syncFinished(folderServerId)
             return
         }
@@ -34,6 +35,7 @@ internal class CommandSync(
         }
 
         backendFolder.setMoreMessages(MoreMessages.FALSE)
+        backendFolder.setLastChecked(System.currentTimeMillis())
 
         listener.syncFinished(folderServerId)
     }

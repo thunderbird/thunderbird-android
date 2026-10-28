@@ -5,6 +5,7 @@ import app.k9mail.legacy.message.controller.MessageCounts
 import app.k9mail.legacy.message.controller.MessageCountsProvider
 import app.k9mail.legacy.message.controller.MessagingControllerRegistry
 import app.k9mail.legacy.message.controller.SimpleMessagingListener
+import com.fsck.k9.search.conditionsFor
 import com.fsck.k9.search.getLegacyAccounts
 import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.Dispatchers
@@ -63,7 +64,8 @@ internal class DefaultMessageCountsProvider(
         var unreadCount = 0
         var starredCount = 0
         for (account in accounts) {
-            val accountMessageCount = getMessageCounts(account.id, search.conditions)
+            val conditions = search.conditionsFor(account, outboxFolderManager) ?: continue
+            val accountMessageCount = getMessageCounts(account.id, conditions)
             unreadCount += accountMessageCount.unread
             starredCount += accountMessageCount.starred
         }
