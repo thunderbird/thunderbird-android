@@ -156,4 +156,13 @@
     <string name="account_settings_outgoing_label">Freastalaí amach</string>
     <string name="account_settings_outgoing_summary">Cumraigh an freastalaí ríomhphoist amach (SMTP)</string>
     <string name="account_settings_composition">Ag seoladh poist</string>
+    <string name="account_settings_folder_sync_and_push">Sioncronú agus brú fillteán</string>
+    <string name="account_settings_fetching_and_data_limits">A fháil &amp; teorainneacha sonraí</string>
+    <string name="account_settings_notificaction_and_sync">Fógraí &amp; sioncronú</string>
+    <string name="account_settings_notification_style">Stíl fógraí</string>
+    <string name="account_settings_notification_style_description">Saincheap fuaim, creathadh, suaitheantais</string>
+    <string name="account_settings_folder_sync_and_push_description">Cumasaigh vótáil/brú, de réir fillteáin</string>
+    <string name="account_settings_manage_folders">Bainistigh fillteáin</string>
+    <string name="account_settings_folder_visibility_and_sort_description">Athraigh fillteáin réamhshocraithe agus infheictheacht fillteán</string>
+    <string name="account_settings_fetching_and_data_limits_description">Teorainneacha minicíochta agus sioncronaithe</string>
 </resources>

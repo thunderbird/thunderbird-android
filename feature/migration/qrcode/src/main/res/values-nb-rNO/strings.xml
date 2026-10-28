@@ -6,4 +6,5 @@
     <string name="migration_qrcode_go_to_settings_button_text">Gå til innstillinger</string>
     <string name="migration_qrcode_done_button_text">Ferdig</string>
     <string name="migration_qrcode_permission_denied_message">Gå til Android-innstillingene, trykk på tillatelser, og gi tilgang til kamera.</string>
+    <string name="migration_qrcode_unsupported_code">QR-koden ble sett, men den inneholder ugyldige eller ustøttede data.</string>
 </resources>

@@ -962,5 +962,9 @@
     <string name="account_settings_signature_preview_empty">İmzanızın ön izlemesi burada görünecek</string>
     <string name="error_no_contact_provider">Kişiler uygulaması bulunamadı. Bu adresi eklemek için bir kişiler uygulaması kurun.</string>
     <string name="remote_feature_flag_preferences">Uzak Özellik Bayrakları</string>
-    <string name="account_setup_visibility_and_syncing">Görünürlük ve eşitleme</string>
+    <string name="account_setup_visibility_and_syncing">Klasör eşitleme ve anında iletim</string>
+    <string name="account_settings_folder_sync_and_push">Klasör eşitleme ve anında iletim</string>
+    <string name="account_settings_fetching_and_data_limits">Alma ve veri sınırları</string>
+    <string name="account_settings_sync_and_notifications">Eşitleme ve bildirimler</string>
+    <string name="account_settings_folder_visibility">Klasör görünürlüğü</string>
 </resources>

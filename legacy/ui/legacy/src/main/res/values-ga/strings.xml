@@ -922,5 +922,9 @@
     <string name="account_settings_signature_preview_empty">Beidh réamhamharc do shíniú le feiceáil anseo</string>
     <string name="error_no_contact_provider">Níor aimsíodh aon aip teagmhálaithe. Suiteáil aip teagmhálaithe chun an seoladh seo a chur leis.</string>
     <string name="remote_feature_flag_preferences">Bratacha Gné Cianda</string>
-    <string name="account_setup_visibility_and_syncing">Infheictheacht agus sioncronú</string>
+    <string name="account_setup_visibility_and_syncing">Sioncronú agus brú fillteán</string>
+    <string name="account_settings_sync_and_notifications">Sioncronú agus fógraí</string>
+    <string name="account_settings_folder_sync_and_push">Sioncronú agus brú fillteán</string>
+    <string name="account_settings_fetching_and_data_limits">A fháil &amp; teorainneacha sonraí</string>
+    <string name="account_settings_folder_visibility">Infheictheacht fillteáin</string>
 </resources>

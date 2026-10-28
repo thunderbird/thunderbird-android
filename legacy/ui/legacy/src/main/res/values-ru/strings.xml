@@ -977,5 +977,9 @@
     <string name="error_no_contact_provider">Приложение \"Контакты\" не найдено. Установите приложение для работы с контактами, чтобы добавить этот адрес.</string>
     <string name="account_settings_signature_preview_empty">Здесь будет отображаться ваша подпись</string>
     <string name="remote_feature_flag_preferences">Флаги удалённых функций</string>
-    <string name="account_setup_visibility_and_syncing">Видимость и синхронизация</string>
+    <string name="account_setup_visibility_and_syncing">Синхронизация папок и push</string>
+    <string name="account_settings_sync_and_notifications">Синхронизация и удаление</string>
+    <string name="account_settings_folder_sync_and_push">Синхронизация папки и push</string>
+    <string name="account_settings_folder_visibility">Видимость папки</string>
+    <string name="account_settings_fetching_and_data_limits">Получение и ограничения объёма данных</string>
 </resources>
