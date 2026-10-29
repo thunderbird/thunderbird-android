@@ -31,7 +31,6 @@ import app.k9mail.legacy.di.DI;
 import app.k9mail.legacy.mailstore.FolderDetailsAccessor;
 import app.k9mail.legacy.mailstore.MessageStore;
 import app.k9mail.legacy.mailstore.MessageStoreManager;
-import app.k9mail.legacy.mailstore.SaveMessageData;
 import app.k9mail.legacy.message.controller.MessageReference;
 import app.k9mail.legacy.message.controller.MessagingControllerMailChecker;
 import app.k9mail.legacy.message.controller.MessagingControllerRegistry;
@@ -62,7 +61,6 @@ import com.fsck.k9.mail.AuthenticationFailedException;
 import com.fsck.k9.mail.CertificateValidationException;
 import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.Message;
-import com.fsck.k9.mail.MessageDownloadState;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.power.PowerManager;
@@ -79,6 +77,7 @@ import com.fsck.k9.mailstore.SendState;
 import com.fsck.k9.mailstore.SpecialLocalFoldersCreator;
 import com.fsck.k9.notification.NotificationController;
 import com.fsck.k9.notification.NotificationStrategy;
+import kotlin.Unit;
 import kotlinx.coroutines.Dispatchers;
 import net.thunderbird.core.android.account.DeletePolicy;
 import net.thunderbird.core.android.account.LegacyAccount;
@@ -93,8 +92,11 @@ import net.thunderbird.feature.account.AccountId;
 import net.thunderbird.feature.mail.folder.api.FolderDetails;
 import net.thunderbird.feature.mail.folder.api.OutboxFolderManager;
 import net.thunderbird.feature.mail.folder.api.OutboxFolderManagerKt;
+import net.thunderbird.feature.mail.message.LegacyMessageIdFactory;
+import net.thunderbird.feature.mail.message.domain.MessageLifecycleRepository;
 import net.thunderbird.feature.mail.message.list.LocalDeleteOperationDecider;
 import net.thunderbird.feature.mail.message.list.LocalMessageUidPrefixProvider;
+import net.thunderbird.feature.mail.message.mapper.MessageDataMapper;
 import net.thunderbird.feature.notification.api.NotificationManager;
 import net.thunderbird.feature.notification.api.content.AuthenticationErrorNotification;
 import net.thunderbird.feature.notification.api.content.NotificationFactoryCoroutineCompat;
@@ -153,6 +155,8 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
     private final NotificationSenderCompat notificationSender;
     private final NotificationDismisserCompat notificationDismisser;
     private final LegacyAccountManager accountManager;
+    private final MessageLifecycleRepository messageLifecycleRepository;
+    private final MessageDataMapper<Message> messageDataMapper;
 
     private volatile boolean stopped = false;
 
@@ -178,7 +182,9 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
         Logger syncDebugLogger,
         NotificationManager notificationManager,
         OutboxFolderManager outboxFolderManager,
-        LegacyAccountManager accountManager
+        LegacyAccountManager accountManager,
+        MessageLifecycleRepository messageLifecycleRepository,
+        MessageDataMapper<Message> messageDataMapper
     ) {
         this.context = context;
         this.notificationController = notificationController;
@@ -196,6 +202,8 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
         this.notificationDismisser = new NotificationDismisserCompat(notificationManager);
         this.outboxFolderManager = outboxFolderManager;
         this.accountManager = accountManager;
+        this.messageLifecycleRepository = messageLifecycleRepository;
+        this.messageDataMapper = messageDataMapper;
 
         controllerThread = new Thread(new Runnable() {
             @Override
@@ -210,8 +218,8 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
         initializeControllerExtensions(controllerExtensions);
 
         draftOperations = new DraftOperations(
-                this, messageStoreManager, saveMessageDataCreator, localMessageUidPrefixProvider,
-                accountManager
+                Log.INSTANCE, this, messageStoreManager, saveMessageDataCreator, localMessageUidPrefixProvider,
+                messageLifecycleRepository, messageDataMapper, accountManager
         );
         notificationOperations =
             new NotificationOperations(notificationController, accountManager, messageStoreManager);
@@ -1528,24 +1536,16 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
     public void sendMessage(AccountId accountId, Message message, String plaintextSubject,
         MessagingListener listener) {
         try {
-            final long outboxFolderId = OutboxFolderManagerKt.getOutboxFolderIdSync(
-                outboxFolderManager,
-                accountId,
-                true
-            );
-
-            message.setFlag(Flag.SEEN, true);
-
-            MessageStore messageStore = messageStoreManager.getMessageStore(accountId);
-            SaveMessageData messageData = saveMessageDataCreator.createSaveMessageData(
-                message, MessageDownloadState.FULL, plaintextSubject);
-            long messageId = messageStore.saveLocalMessage(outboxFolderId, messageData, null);
-
-            LocalStore localStore = localStoreProvider.getInstance(accountId);
-            OutboxStateRepository outboxStateRepository = localStore.getOutboxStateRepository();
-            outboxStateRepository.initializeOutboxState(messageId);
-
-            sendPendingMessages(accountId, listener);
+            final LocalStore localStore = localStoreProvider.getInstance(accountId);
+            MessagingControllerWrapperKt.sendMessageCompat(
+                messageDataMapper, messageLifecycleRepository, accountId, message, plaintextSubject,
+                messageId -> {
+                    OutboxStateRepository outboxStateRepository = localStore.getOutboxStateRepository();
+                    final long legacyMessageId = LegacyMessageIdFactory.INSTANCE.toLegacyId(messageId);
+                    outboxStateRepository.initializeOutboxState(legacyMessageId);
+                    sendPendingMessages(accountId, listener);
+                    return Unit.INSTANCE;
+                });
         } catch (Exception e) {
             Log.e(TAG, e, "Error sending message");
         }
