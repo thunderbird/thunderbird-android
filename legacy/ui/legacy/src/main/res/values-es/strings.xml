@@ -508,6 +508,8 @@
     <string name="background_ops_never">Nunca</string>
     <string name="background_ops_always">Siempre</string>
     <string name="background_ops_auto_sync_only">Cuando «sincronización automática» esté activo</string>
+    <string name="check_mail_on_app_start_title">Comprobar correo al iniciar</string>
+    <string name="check_mail_on_app_start_summary">Comprobar si hay correo nuevo en todas las cuentas al abrir la aplicación</string>
     <string name="batch_select_all">Seleccionar todos</string>
     <string name="account_setup_push_limit_label">Número máximo de carpetas al hacer una comprobación rápida («push»)</string>
     <string name="account_setup_push_limit_5">5 carpetas</string>

@@ -532,6 +532,12 @@
             android:title="@string/background_ops_label"
             />
 
+        <CheckBoxPreference
+            android:key="check_mail_on_app_start"
+            android:summary="@string/check_mail_on_app_start_summary"
+            android:title="@string/check_mail_on_app_start_title"
+            />
+
     </PreferenceScreen>
 
     <PreferenceScreen

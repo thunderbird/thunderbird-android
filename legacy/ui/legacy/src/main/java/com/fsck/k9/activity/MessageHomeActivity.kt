@@ -206,12 +206,22 @@ open class MessageHomeActivity :
         displayViews()
         initializeFoldableObserver()
 
+        if (savedInstanceState == null) {
+            checkMailOnAppStartIfEnabled()
+        }
+
         val backPressedCallback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 this@MessageHomeActivity.handleOnBackPressed(this)
             }
         }
         onBackPressedDispatcher.addCallback(this, backPressedCallback)
+    }
+
+    private fun checkMailOnAppStartIfEnabled() {
+        if (generalSettingsManager.getConfig().network.isCheckMailOnAppStart) {
+            messagingController.checkMail(null, true, true, false, null)
+        }
     }
 
     private fun initializeFoldableObserver() {

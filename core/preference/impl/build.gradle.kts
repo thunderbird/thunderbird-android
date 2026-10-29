@@ -14,6 +14,9 @@ kotlin {
             implementation(projects.core.common)
             implementation(projects.core.logging.api)
         }
+        commonTest.dependencies {
+            implementation(projects.core.logging.testing)
+        }
     }
 }
 
