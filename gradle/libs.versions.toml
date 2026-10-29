@@ -47,7 +47,7 @@ androidxProfileInstaller = "1.4.1"
 # to get a stale state when navigating back from Message Reader.
 # Review again once a new version is released in case we didn't finish
 # the Message List compose migration.
-androidxSwiperefreshlayout = "1.1.0"
+androidxSwiperefreshlayout = "1.2.0"
 androidxTestCore = "1.7.0"
 androidxTestEspresso = "3.7.0"
 androidxTestExt = "1.3.0"

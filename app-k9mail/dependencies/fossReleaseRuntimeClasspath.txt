@@ -174,7 +174,7 @@ androidx.sqlite:sqlite-framework-android:2.5.0
 androidx.sqlite:sqlite-framework:2.5.0
 androidx.sqlite:sqlite:2.5.0
 androidx.startup:startup-runtime:1.2.0
-androidx.swiperefreshlayout:swiperefreshlayout:1.1.0
+androidx.swiperefreshlayout:swiperefreshlayout:1.2.0
 androidx.tracing:tracing-android:1.3.0
 androidx.tracing:tracing-ktx:1.3.0
 androidx.tracing:tracing:1.3.0
