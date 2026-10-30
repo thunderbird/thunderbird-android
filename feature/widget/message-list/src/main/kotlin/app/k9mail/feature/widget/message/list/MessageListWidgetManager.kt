@@ -9,6 +9,8 @@ import app.k9mail.legacy.mailstore.MessageListRepository
 import com.fsck.k9.core.BuildConfig
 import net.thunderbird.legacy.logging.Log
 
+private const val TAG = "MessageListWidgetManager"
+
 class MessageListWidgetManager(
     private val context: Context,
     private val messageListRepository: MessageListRepository,
@@ -24,7 +26,7 @@ class MessageListWidgetManager(
     fun init() {
         appWidgetManager = AppWidgetManager.getInstance(context)
         if (appWidgetManager == null) {
-            Log.v("Message list widget is not supported on this device.")
+            Log.v(TAG, "Message list widget is not supported on this device.")
         }
 
         if (isAtLeastOneMessageListWidgetAdded()) {
@@ -41,19 +43,19 @@ class MessageListWidgetManager(
             if (BuildConfig.DEBUG) {
                 throw e
             } else {
-                Log.e(e, "Error while updating message list widget")
+                Log.e(TAG, e, "Error while updating message list widget")
             }
         }
     }
 
     internal fun onWidgetAdded() {
-        Log.v("Message list widget added")
+        Log.v(TAG, "Message list widget added")
 
         registerMessageListChangedListener()
     }
 
     internal fun onWidgetRemoved() {
-        Log.v("Message list widget removed")
+        Log.v(TAG, "Message list widget removed")
 
         if (!isAtLeastOneMessageListWidgetAdded()) {
             unregisterMessageListChangedListener()
@@ -66,7 +68,7 @@ class MessageListWidgetManager(
             listenerAdded = true
             messageListRepository.addListener(listener)
 
-            Log.v("Message list widget is now listening for message list changes…")
+            Log.v(TAG, "Message list widget is now listening for message list changes…")
         }
     }
 
@@ -76,7 +78,7 @@ class MessageListWidgetManager(
             listenerAdded = false
             messageListRepository.removeListener(listener)
 
-            Log.v("Message list widget stopped listening for message list changes.")
+            Log.v(TAG, "Message list widget stopped listening for message list changes.")
         }
     }
 

@@ -6,8 +6,8 @@ import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
 import kotlin.test.Test
 import kotlinx.coroutines.test.runTest
+import net.thunderbird.components.core.logging.testing.TestLogger
 import net.thunderbird.core.common.state.sideeffect.StateSideEffectHandler
-import net.thunderbird.core.logging.testing.TestLogger
 import net.thunderbird.feature.mail.message.list.internal.fakes.RecordingSuspendFunction
 import net.thunderbird.feature.mail.message.list.internal.ui.state.sideeffect.ui.ToggleMessageSideEffect
 import net.thunderbird.feature.mail.message.list.ui.event.MessageItemEvent

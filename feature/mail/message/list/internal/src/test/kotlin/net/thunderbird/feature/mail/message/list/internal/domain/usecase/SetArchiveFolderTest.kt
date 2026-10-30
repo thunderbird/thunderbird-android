@@ -71,7 +71,8 @@ class SetArchiveFolderTest {
                 ),
             )
         assertThat(fakeSpecialFolderUpdaterFactory.specialFolderUpdater.updateSpecialFoldersCalls).isEqualTo(1)
-        assertThat(fakeAccountManager.savedAccounts.map { it.id }).containsExactly(AccountIdFactory.of(accountUuid))
+        // Saving the account read before the change would undo the archive folder set by the special folder updater
+        assertThat(fakeAccountManager.savedAccounts).isEmpty()
     }
 
     @Test

@@ -8,7 +8,6 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
-import androidx.core.os.bundleOf
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
@@ -18,14 +17,14 @@ import androidx.recyclerview.widget.RecyclerView
 import app.k9mail.legacy.ui.folder.DisplayFolder
 import app.k9mail.legacy.ui.folder.FolderIconProvider
 import app.k9mail.legacy.ui.folder.FolderNameFormatter
-import com.fsck.k9.Preferences
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.livedata.observeNotNull
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import java.util.Locale
-import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.feature.account.AccountId
+import net.thunderbird.feature.account.AccountIdFactory
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -34,18 +33,17 @@ class ManageFoldersFragment : Fragment() {
     private val viewModel: ManageFoldersViewModel by viewModel()
     private val folderNameFormatter: FolderNameFormatter by inject()
     private val messagingController: MessagingController by inject()
-    private val preferences: Preferences by inject()
     private val folderIconProvider: FolderIconProvider by inject { parametersOf(requireActivity().theme) }
 
-    private lateinit var account: LegacyAccountDto
+    private lateinit var accountId: AccountId
     private lateinit var itemAdapter: ItemAdapter<FolderListItem>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         val arguments = arguments ?: error("Missing arguments")
-        val accountUuid = arguments.getString(EXTRA_ACCOUNT) ?: error("Missing argument '$EXTRA_ACCOUNT'")
-        account = preferences.getAccount(accountUuid) ?: error("Missing account: $accountUuid")
+        val accountIdRaw = arguments.getString(EXTRA_ACCOUNT) ?: error("Missing argument '$EXTRA_ACCOUNT'")
+        accountId = AccountIdFactory.of(accountIdRaw)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -82,7 +80,7 @@ class ManageFoldersFragment : Fragment() {
 
         initializeFolderList()
 
-        viewModel.getFolders(account).observeNotNull(this) { folders ->
+        viewModel.getFolders(accountId).observeNotNull(this) { folders ->
             updateFolderList(folders)
         }
     }
@@ -116,10 +114,10 @@ class ManageFoldersFragment : Fragment() {
     }
 
     private fun openFolderSettings(folderId: Long) {
-        val folderSettingsArguments = bundleOf(
-            FolderSettingsFragment.EXTRA_ACCOUNT to account.uuid,
-            FolderSettingsFragment.EXTRA_FOLDER_ID to folderId,
-        )
+        val folderSettingsArguments = Bundle().apply {
+            putString(FolderSettingsFragment.EXTRA_ACCOUNT, accountId.toString())
+            putLong(FolderSettingsFragment.EXTRA_FOLDER_ID, folderId)
+        }
         findNavController().navigate(R.id.action_manageFoldersScreen_to_folderSettingsScreen, folderSettingsArguments)
     }
 
@@ -154,7 +152,7 @@ class ManageFoldersFragment : Fragment() {
     }
 
     private fun refreshFolderList() {
-        messagingController.refreshFolderList(account)
+        messagingController.refreshFolderList(accountId)
     }
 
     private fun folderListFilter(item: FolderListItem, constraint: CharSequence?): Boolean {

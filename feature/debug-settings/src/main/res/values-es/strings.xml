@@ -15,4 +15,14 @@
     <string name="debug_settings_feature_flag_apply_changes">Aplicar cambios</string>
     <string name="debug_settings_feature_flag_modified_indicator">"* "</string>
     <string name="debug_settings_feature_flag_default_value">valor por defecto: %1$b</string>
+    <string name="debug_settings_screen_title">Pantalla de ajustes secretos de depuración</string>
+    <string name="debug_settings_notifications_trigger_notification">Notificación de activación</string>
+    <string name="debug_settings_notifications_single_mail_preview">Vista previa</string>
+    <string name="debug_settings_notifications_common_notification_information">Información habitual sobre las notificaciones</string>
+    <string name="debug_settings_notifications_in_app_notification">Notificación dentro de la aplicación</string>
+    <string name="debug_settings_notifications_preparing_notification">Preparando la notificación %1$s</string>
+    <string name="debug_settings_notification_status_log">Registro del estado de las notificaciones</string>
+    <string name="debug_settings_notifications_clear_status_log">Borrar el registro de estado</string>
+    <string name="debug_settings_feature_flag_title">Indicadores de funciones</string>
+    <string name="debug_settings_feature_flag_overridden">"anulado; "</string>
 </resources>

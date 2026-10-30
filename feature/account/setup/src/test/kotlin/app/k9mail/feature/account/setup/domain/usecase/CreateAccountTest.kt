@@ -18,19 +18,21 @@ import com.fsck.k9.mail.ServerSettings
 import com.fsck.k9.mail.folders.FolderServerId
 import com.fsck.k9.mail.folders.RemoteFolder
 import kotlinx.coroutines.test.runTest
+import net.thunderbird.feature.account.AccountIdFactory
 import org.junit.Test
 
 class CreateAccountTest {
 
     @Test
     fun `should successfully create account`() = runTest {
+        val accountId = AccountIdFactory.create()
         var recordedAccount: Account? = null
         val createAccount = CreateAccount(
             accountCreator = { account ->
                 recordedAccount = account
-                AccountCreatorResult.Success(accountUuid = "uuid")
+                AccountCreatorResult.Success(accountId = accountId)
             },
-            uuidGenerator = { "uuid" },
+            uuidGenerator = { accountId },
         )
 
         val result = createAccount.execute(
@@ -45,10 +47,10 @@ class CreateAccountTest {
             ),
         )
 
-        assertThat(result).isEqualTo(AccountCreatorResult.Success("uuid"))
+        assertThat(result).isEqualTo(AccountCreatorResult.Success(accountId))
         assertThat(recordedAccount).isEqualTo(
             Account(
-                uuid = "uuid",
+                id = accountId,
                 emailAddress = EMAIL_ADDRESS,
                 incomingServerSettings = INCOMING_SETTINGS,
                 outgoingServerSettings = OUTGOING_SETTINGS,

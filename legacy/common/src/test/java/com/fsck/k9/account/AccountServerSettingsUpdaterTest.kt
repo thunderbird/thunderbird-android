@@ -13,12 +13,18 @@ import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ConnectionSecurity
 import com.fsck.k9.mail.ServerSettings
 import kotlinx.coroutines.test.runTest
-import net.thunderbird.account.fake.FakeAccountData.ACCOUNT_ID_RAW
+import net.thunderbird.account.fake.FakeAccountData.ACCOUNT_ID
+import net.thunderbird.core.android.account.Identity
+import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.fake.FakeLegacyAccountManager
 import net.thunderbird.legacy.logging.Log
-import net.thunderbird.core.logging.testing.TestLogger
+import net.thunderbird.components.core.logging.testing.TestLogger
+import net.thunderbird.feature.account.AccountId
+import net.thunderbird.feature.account.storage.profile.AvatarDto
+import net.thunderbird.feature.account.storage.profile.AvatarTypeDto
+import net.thunderbird.feature.account.storage.profile.ProfileDto
 import org.junit.Before
 import org.junit.Test
-import net.thunderbird.core.android.account.LegacyAccountDto as K9Account
 
 class AccountServerSettingsUpdaterTest {
 
@@ -29,11 +35,11 @@ class AccountServerSettingsUpdaterTest {
 
     @Test
     fun `updateServerSettings() SHOULD return account not found exception WHEN none present with uuid`() = runTest {
-        val accountManager = FakeLegacyAccountDtoManager(accounts = mutableMapOf())
+        val accountManager = FakeLegacyAccountManager()
         val testSubject = AccountServerSettingsUpdater(accountManager)
 
         val result = testSubject.updateServerSettings(
-            accountUuid = ACCOUNT_ID_RAW,
+            accountId = ACCOUNT_ID,
             isIncoming = true,
             serverSettings = INCOMING_SERVER_SETTINGS,
             authorizationState = AUTHORIZATION_STATE,
@@ -41,73 +47,66 @@ class AccountServerSettingsUpdaterTest {
 
         assertThat(result).isEqualTo(
             AccountUpdaterResult.Failure(
-                error = AccountUpdaterFailure.AccountNotFound(ACCOUNT_ID_RAW),
+                error = AccountUpdaterFailure.AccountNotFound(ACCOUNT_ID),
             ),
         )
     }
 
     @Test
     fun `updateServerSettings() SHOULD return success with updated incoming settings WHEN is incoming`() = runTest {
-        val accountManager = FakeLegacyAccountDtoManager(
-            accounts = mutableMapOf(ACCOUNT_ID_RAW to createAccount(ACCOUNT_ID_RAW)),
-        )
+        val accountManager = FakeLegacyAccountManager(listOf(createAccount(ACCOUNT_ID)))
         val updatedIncomingServerSettings = INCOMING_SERVER_SETTINGS.copy(port = 123)
         val updatedAuthorizationState = AuthorizationState("new")
         val testSubject = AccountServerSettingsUpdater(accountManager)
 
         val result = testSubject.updateServerSettings(
-            accountUuid = ACCOUNT_ID_RAW,
+            accountId = ACCOUNT_ID,
             isIncoming = true,
             serverSettings = updatedIncomingServerSettings,
             authorizationState = updatedAuthorizationState,
         )
 
-        assertThat(result).isEqualTo(AccountUpdaterResult.Success(ACCOUNT_ID_RAW))
+        assertThat(result).isEqualTo(AccountUpdaterResult.Success(ACCOUNT_ID))
 
-        val k9Account = accountManager.getAccount(ACCOUNT_ID_RAW)
-        assertThat(k9Account).isNotNull().all {
-            prop(K9Account::incomingServerSettings).isEqualTo(updatedIncomingServerSettings)
-            prop(K9Account::outgoingServerSettings).isEqualTo(OUTGOING_SERVER_SETTINGS)
-            prop(K9Account::oAuthState).isEqualTo(updatedAuthorizationState.value)
+        val legacyAccount = accountManager.findById(ACCOUNT_ID)
+        assertThat(legacyAccount).isNotNull().all {
+            prop(LegacyAccount::incomingServerSettings).isEqualTo(updatedIncomingServerSettings)
+            prop(LegacyAccount::outgoingServerSettings).isEqualTo(OUTGOING_SERVER_SETTINGS)
+            prop(LegacyAccount::oAuthState).isEqualTo(updatedAuthorizationState.value)
         }
     }
 
     @Test
     fun `updateServerSettings() SHOULD return success with updated outgoing settings WHEN is not incoming`() = runTest {
-        val accountManager = FakeLegacyAccountDtoManager(
-            accounts = mutableMapOf(ACCOUNT_ID_RAW to createAccount(ACCOUNT_ID_RAW)),
-        )
+        val accountManager = FakeLegacyAccountManager(listOf(createAccount(ACCOUNT_ID)))
         val updatedOutgoingServerSettings = OUTGOING_SERVER_SETTINGS.copy(port = 123)
         val updatedAuthorizationState = AuthorizationState("new")
         val testSubject = AccountServerSettingsUpdater(accountManager)
 
         val result = testSubject.updateServerSettings(
-            accountUuid = ACCOUNT_ID_RAW,
+            accountId = ACCOUNT_ID,
             isIncoming = false,
             serverSettings = updatedOutgoingServerSettings,
             authorizationState = updatedAuthorizationState,
         )
 
-        assertThat(result).isEqualTo(AccountUpdaterResult.Success(ACCOUNT_ID_RAW))
+        assertThat(result).isEqualTo(AccountUpdaterResult.Success(ACCOUNT_ID))
 
-        val k9Account = accountManager.getAccount(ACCOUNT_ID_RAW)
+        val k9Account = accountManager.findById(ACCOUNT_ID)
         assertThat(k9Account).isNotNull().all {
-            prop(K9Account::incomingServerSettings).isEqualTo(INCOMING_SERVER_SETTINGS)
-            prop(K9Account::outgoingServerSettings).isEqualTo(updatedOutgoingServerSettings)
-            prop(K9Account::oAuthState).isEqualTo(updatedAuthorizationState.value)
+            prop(LegacyAccount::incomingServerSettings).isEqualTo(INCOMING_SERVER_SETTINGS)
+            prop(LegacyAccount::outgoingServerSettings).isEqualTo(updatedOutgoingServerSettings)
+            prop(LegacyAccount::oAuthState).isEqualTo(updatedAuthorizationState.value)
         }
     }
 
     @Test
     fun `updateServerSettings() SHOULD return unknown error when exception thrown`() = runTest {
-        val accountManager = FakeLegacyAccountDtoManager(
-            accounts = mutableMapOf(ACCOUNT_ID_RAW to createAccount(ACCOUNT_ID_RAW)),
-            isFailureOnSave = true,
-        )
+        val accountManager = FailingSaveAccountManager(listOf(createAccount(ACCOUNT_ID)))
         val testSubject = AccountServerSettingsUpdater(accountManager)
 
         val result = testSubject.updateServerSettings(
-            accountUuid = ACCOUNT_ID_RAW,
+            accountId = ACCOUNT_ID,
             isIncoming = true,
             serverSettings = INCOMING_SERVER_SETTINGS,
             authorizationState = AUTHORIZATION_STATE,
@@ -145,14 +144,34 @@ class AccountServerSettingsUpdaterTest {
 
         val AUTHORIZATION_STATE = AuthorizationState("auth state")
 
-        fun createAccount(accountUuid: String): K9Account {
-            return K9Account(
-                uuid = accountUuid,
-            ).apply {
-                incomingServerSettings = INCOMING_SERVER_SETTINGS
-                outgoingServerSettings = OUTGOING_SERVER_SETTINGS
-                oAuthState = AUTHORIZATION_STATE.value
-            }
+        fun createAccount(accountId: AccountId): LegacyAccount {
+            return LegacyAccount(
+                id = accountId,
+                name = "Account",
+                email = "user@example.com",
+                profile = ProfileDto(
+                    id = accountId,
+                    name = "Account",
+                    color = -1,
+                    avatar = AvatarDto(
+                        accountId = accountId,
+                        avatarType = AvatarTypeDto.MONOGRAM,
+                        avatarMonogram = "AC",
+                        avatarImageUri = null,
+                        avatarIconName = null,
+                    ),
+                ),
+                incomingServerSettings = INCOMING_SERVER_SETTINGS,
+                outgoingServerSettings = OUTGOING_SERVER_SETTINGS,
+                oAuthState = AUTHORIZATION_STATE.value,
+                identities = listOf(Identity(email = "user@example.com")),
+            )
+        }
+    }
+
+    private class FailingSaveAccountManager(accounts: List<LegacyAccount>) : FakeLegacyAccountManager(accounts) {
+        override fun updateSync(accountId: AccountId, transform: (LegacyAccount) -> LegacyAccount): LegacyAccount? {
+            error("Simulated save failure")
         }
     }
 }

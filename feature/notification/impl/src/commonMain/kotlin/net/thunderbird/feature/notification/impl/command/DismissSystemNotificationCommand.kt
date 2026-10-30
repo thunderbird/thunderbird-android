@@ -1,9 +1,9 @@
 package net.thunderbird.feature.notification.impl.command
 
+import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.core.featureflag.FeatureFlagKey
 import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.featureflag.keys.GeneratedFeatureFlagKey
-import net.thunderbird.core.logging.Logger
 import net.thunderbird.feature.notification.api.NotificationRegistry
 import net.thunderbird.feature.notification.api.content.SystemNotification
 import net.thunderbird.feature.notification.api.receiver.NotificationNotifier

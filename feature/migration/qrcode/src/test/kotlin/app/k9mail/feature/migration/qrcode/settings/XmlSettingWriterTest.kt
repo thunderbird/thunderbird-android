@@ -9,6 +9,9 @@ import net.thunderbird.core.android.account.DeletePolicy
 import net.thunderbird.core.common.mail.toUserEmailAddress
 import net.thunderbird.core.common.net.toHostname
 import net.thunderbird.core.common.net.toPort
+import net.thunderbird.core.featureflag.FeatureFlagKey
+import net.thunderbird.core.featureflag.FeatureFlagProvider
+import net.thunderbird.core.featureflag.FeatureFlagResult
 import okio.Buffer
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
@@ -17,6 +20,7 @@ import org.robolectric.RobolectricTestRunner
 class XmlSettingWriterTest {
     private val xmlSettingsWriter = XmlSettingWriter(
         uuidGenerator = { "test-uuid" },
+        featureFlagProvider = FakeFeatureFlagProvider(),
     )
 
     @Test
@@ -32,6 +36,19 @@ class XmlSettingWriterTest {
         assertThat(xmlString).isEqualTo(EXPECTED_OUTPUT)
     }
 
+    @Test
+    fun `XML should match expected output for POP3`() {
+        val buffer = Buffer()
+        val accounts = listOf(POP3ACCOUNT)
+
+        buffer.outputStream().use { outputStream ->
+            xmlSettingsWriter.writeSettings(outputStream, accounts)
+        }
+
+        val xmlString = buffer.readUtf8().normalizeLineBreaks()
+        assertThat(xmlString).isEqualTo(EXPECTED_POP3_OUTPUT)
+    }
+
     private fun String.normalizeLineBreaks() = replace("\r\n", "\n")
 
     companion object {
@@ -41,6 +58,39 @@ class XmlSettingWriterTest {
             incomingServer = AccountData.IncomingServer(
                 protocol = AccountData.IncomingServerProtocol.Imap,
                 hostname = "imap.domain.example".toHostname(),
+                port = 993.toPort(),
+                connectionSecurity = ConnectionSecurity.Tls,
+                authenticationType = AccountData.AuthenticationType.PasswordCleartext,
+                username = "user@domain.example",
+                password = "password",
+            ),
+            outgoingServerGroups = listOf(
+                AccountData.OutgoingServerGroup(
+                    outgoingServer = AccountData.OutgoingServer(
+                        protocol = AccountData.OutgoingServerProtocol.Smtp,
+                        hostname = "smtp.domain.example".toHostname(),
+                        port = 465.toPort(),
+                        connectionSecurity = ConnectionSecurity.Tls,
+                        authenticationType = AccountData.AuthenticationType.PasswordCleartext,
+                        username = "user@domain.example",
+                        password = "password",
+                    ),
+                    identities = listOf(
+                        AccountData.Identity(
+                            emailAddress = "user@domain.example".toUserEmailAddress(),
+                            displayName = "Firstname Lastname",
+                        ),
+                    ),
+                ),
+            ),
+        )
+
+        private val POP3ACCOUNT = AccountData.Account(
+            accountName = "Account name",
+            deletePolicy = DeletePolicy.ON_DELETE,
+            incomingServer = AccountData.IncomingServer(
+                protocol = AccountData.IncomingServerProtocol.Pop3,
+                hostname = "pop.domain.example".toHostname(),
                 port = 993.toPort(),
                 connectionSecurity = ConnectionSecurity.Tls,
                 authenticationType = AccountData.AuthenticationType.PasswordCleartext,
@@ -100,9 +150,61 @@ class XmlSettingWriterTest {
                       <email>user@domain.example</email>
                     </identity>
                   </identities>
+                  <folders>
+                    <folder name="INBOX">
+                      <value key="integrate">false</value>
+                      <value key="inTopGroup">false</value>
+                      <value key="syncEnabled">true</value>
+                      <value key="visible">true</value>
+                      <value key="notificationsEnabled">true</value>
+                      <value key="pushEnabled">true</value>
+                    </folder>
+                  </folders>
+                </account>
+              </accounts>
+            </k9settings>
+            """.trimIndent()
+
+        private val EXPECTED_POP3_OUTPUT =
+            """
+            <?xml version='1.0' encoding='UTF-8' standalone='yes' ?>
+            <k9settings version="99" format="1">
+              <accounts>
+                <account uuid="test-uuid">
+                  <name>Account name</name>
+                  <settings>
+                    <value key="deletePolicy">DELETE</value>
+                  </settings>
+                  <incoming-server type="POP3">
+                    <host>pop.domain.example</host>
+                    <port>993</port>
+                    <connection-security>SSL_TLS_REQUIRED</connection-security>
+                    <authentication-type>PLAIN</authentication-type>
+                    <username>user@domain.example</username>
+                    <password>password</password>
+                  </incoming-server>
+                  <outgoing-server type="SMTP">
+                    <host>smtp.domain.example</host>
+                    <port>465</port>
+                    <connection-security>SSL_TLS_REQUIRED</connection-security>
+                    <authentication-type>PLAIN</authentication-type>
+                    <username>user@domain.example</username>
+                    <password>password</password>
+                  </outgoing-server>
+                  <identities>
+                    <identity>
+                      <name>Firstname Lastname</name>
+                      <email>user@domain.example</email>
+                    </identity>
+                  </identities>
                 </account>
               </accounts>
             </k9settings>
             """.trimIndent()
     }
+}
+
+private class FakeFeatureFlagProvider : FeatureFlagProvider {
+    // Disabled as the test is primarily concerned with the XML based UI
+    override fun provide(key: FeatureFlagKey): FeatureFlagResult = FeatureFlagResult.Enabled
 }

@@ -12,7 +12,6 @@ import app.k9mail.feature.account.common.domain.entity.AuthorizationState
 import app.k9mail.feature.account.common.domain.entity.SpecialFolderOption
 import app.k9mail.feature.account.common.domain.entity.SpecialFolderSettings
 import app.k9mail.feature.account.setup.AccountSetupExternalContract.AccountCreator.AccountCreatorResult
-import app.k9mail.feature.account.setup.domain.entity.AccountUuid
 import app.k9mail.feature.account.setup.ui.createaccount.CreateAccountContract.Effect
 import app.k9mail.feature.account.setup.ui.createaccount.CreateAccountContract.Event
 import app.k9mail.feature.account.setup.ui.createaccount.CreateAccountContract.State
@@ -32,6 +31,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import net.thunderbird.components.ui.testing.coroutines.MainDispatcherHelper
+import net.thunderbird.feature.account.AccountIdFactory
 
 class CreateAccountViewModelTest {
 
@@ -64,8 +64,8 @@ class CreateAccountViewModelTest {
 
     @Test
     fun `should change state and emit navigate effect after successfully creating account`() = runMviTest {
-        val accountUuid = "accountUuid"
-        fakeCreateAccount.result = AccountCreatorResult.Success(accountUuid)
+        val accountId = AccountIdFactory.create()
+        fakeCreateAccount.result = AccountCreatorResult.Success(accountId)
         val turbines = turbinesWithInitialStateCheck(createAccountViewModel, State(isLoading = true, error = null))
 
         createAccountViewModel.event(Event.CreateAccount)
@@ -84,7 +84,7 @@ class CreateAccountViewModelTest {
             ),
         )
 
-        assertThat(turbines.effectTurbine.awaitItem()).isEqualTo(Effect.NavigateNext(AccountUuid(accountUuid)))
+        assertThat(turbines.effectTurbine.awaitItem()).isEqualTo(Effect.NavigateNext(accountId))
     }
 
     @Test
@@ -114,7 +114,7 @@ class CreateAccountViewModelTest {
     @Test
     fun `should emit NavigateBack effect when OnBackClicked event was received while in success state`() = runTest {
         turbineScope {
-            fakeCreateAccount.result = AccountCreatorResult.Success("accountUuid")
+            fakeCreateAccount.result = AccountCreatorResult.Success(AccountIdFactory.create())
             createAccountViewModel.event(Event.CreateAccount)
             val effectTurbine = createAccountViewModel.effect.testIn(backgroundScope)
 

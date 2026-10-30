@@ -3,7 +3,6 @@ package com.fsck.k9.preferences
 import android.content.ContentResolver
 import android.net.Uri
 import android.util.Xml
-import com.fsck.k9.Preferences
 import com.fsck.k9.notification.NotificationSettingsUpdater
 import com.fsck.k9.preferences.ServerTypeConverter.fromServerSettingsType
 import com.fsck.k9.preferences.Settings.InvalidSettingValueException
@@ -13,18 +12,29 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 import net.thunderbird.components.core.outcome.fold
-import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountManager
+import net.thunderbird.core.preference.storage.StorageProvider
+import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.account.storage.legacy.LegacyAccountStorageHandler.Companion.ACCOUNT_DESCRIPTION_KEY
 import net.thunderbird.feature.account.storage.legacy.LegacyAccountStorageHandler.Companion.IDENTITY_DESCRIPTION_KEY
 import net.thunderbird.feature.account.storage.legacy.LegacyAccountStorageHandler.Companion.IDENTITY_EMAIL_KEY
 import net.thunderbird.feature.account.storage.legacy.LegacyAccountStorageHandler.Companion.IDENTITY_NAME_KEY
 import net.thunderbird.feature.mail.folder.api.data.repository.FolderQueryRepository
+import net.thunderbird.feature.account.storage.profile.AvatarTypeDto
 import net.thunderbird.legacy.logging.Log
 import org.xmlpull.v1.XmlSerializer
+import androidx.core.net.toUri
+import android.util.Base64
+import java.io.IOException
+import net.thunderbird.feature.account.storage.profile.AvatarDto
+
+private const val TAG = "SettingsExporter"
 
 class SettingsExporter(
     private val contentResolver: ContentResolver,
-    private val preferences: Preferences,
+    private val accountManager: LegacyAccountManager,
+    private val storageProvider: StorageProvider,
     private val folderSettingsProvider: FolderSettingsProvider,
     private val folderQueryRepository: FolderQueryRepository,
     private val notificationSettingsUpdater: NotificationSettingsUpdater,
@@ -63,9 +73,9 @@ class SettingsExporter(
             serializer.attribute(null, VERSION_ATTRIBUTE, Settings.VERSION.toString())
             serializer.attribute(null, FILE_FORMAT_ATTRIBUTE, FILE_FORMAT_VERSION.toString())
 
-            Log.i("Exporting preferences")
+            Log.i(TAG, "Exporting preferences")
 
-            val storage = preferences.storage
+            val storage = storageProvider.storage
 
             val prefs: Map<String, Any> = storage.getAll().toSortedMap()
             if (includeGlobals) {
@@ -76,7 +86,8 @@ class SettingsExporter(
 
             serializer.startTag(null, ACCOUNTS_ELEMENT)
             for (accountUuid in accountUuids) {
-                preferences.getAccount(accountUuid)?.let { account ->
+                val accountId = AccountIdFactory.of(accountUuid)
+                accountManager.findById(accountId)?.let { account ->
                     writeAccount(serializer, account, prefs, includePasswords)
                 }
             }
@@ -96,7 +107,7 @@ class SettingsExporter(
         } catch (e: Exception) {
             // An error here could mean we export notification settings that don't reflect the current configuration
             // of the notification channels. But we prefer stale data over failing the export.
-            Log.w(e, "Error while updating accounts with notification configuration from system")
+            Log.w(TAG, e, "Error while updating accounts with notification configuration from system")
         }
     }
 
@@ -111,13 +122,14 @@ class SettingsExporter(
                     writeKeyAndPrettyValueFromSetting(serializer, key, setting, valueString)
                 } catch (e: InvalidSettingValueException) {
                     Log.w(
+                        TAG,
                         "Global setting \"%s\" has invalid value \"%s\" in preference storage. This shouldn't happen!",
                         key,
                         valueString,
                     )
                 }
             } else {
-                Log.d("Couldn't find key \"%s\" in preference storage. Using default value.", key)
+                Log.d(TAG, "Couldn't find key \"%s\" in preference storage. Using default value.", key)
                 writeKeyAndDefaultValueFromSetting(serializer, key, setting)
             }
         }
@@ -126,12 +138,12 @@ class SettingsExporter(
     @Suppress("LongMethod", "CyclomaticComplexMethod", "NestedBlockDepth")
     private suspend fun writeAccount(
         serializer: XmlSerializer,
-        account: LegacyAccountDto,
+        account: LegacyAccount,
         prefs: Map<String, Any>,
         includePasswords: Boolean,
     ) {
         val identities = mutableSetOf<Int>()
-        val accountUuid = account.uuid
+        val accountUuid = account.id.toString()
 
         serializer.startTag(null, ACCOUNT_ELEMENT)
         serializer.attribute(null, UUID_ATTRIBUTE, accountUuid)
@@ -246,6 +258,7 @@ class SettingsExporter(
         writeFolderNameSettings(account, folderQueryRepository, serializer)
 
         serializer.endTag(null, SETTINGS_ELEMENT)
+        writeAvatarImage(account,serializer)
 
         if (identities.isNotEmpty()) {
             serializer.startTag(null, IDENTITIES_ELEMENT)
@@ -274,7 +287,7 @@ class SettingsExporter(
         serializer: XmlSerializer,
         keyPart: String,
         valueString: String,
-        account: LegacyAccountDto,
+        account: LegacyAccount,
     ) {
         val versionedSetting = AccountSettingsDescriptions.SETTINGS[keyPart]
         if (versionedSetting != null) {
@@ -287,6 +300,7 @@ class SettingsExporter(
                     writeKeyAndPrettyValueFromSetting(serializer, keyPart, setting, valueString)
                 } catch (e: InvalidSettingValueException) {
                     Log.w(
+                        TAG,
                         "Account setting \"%s\" (%s) has invalid value \"%s\" in preference storage. " +
                             "This shouldn't happen!",
                         keyPart,
@@ -298,8 +312,37 @@ class SettingsExporter(
         }
     }
 
+    private fun writeAvatarImage(
+        account: LegacyAccount,
+        serializer: XmlSerializer
+    ){
+        val avatar = account.profile.avatar
+        val uriString = avatar.avatarImageUri
+
+        if (avatar.avatarType != AvatarTypeDto.IMAGE ||
+            uriString == null ||
+            uriString == AvatarDto.PLACEHOLDER_IMAGE_URI
+            ){
+            return
+        }
+        val uri = uriString.toUri()
+
+        val bytes = try {
+            contentResolver.openInputStream(uri)?.use { input ->
+                input.readBytes()
+            }
+        } catch (e: IOException) {
+            Log.w(TAG, e, "Avatar image could not be exported")
+            null
+        }?: return
+
+        val encoded = Base64.encodeToString(bytes, Base64.NO_WRAP)
+        serializer.startTag(null, AVATAR_IMAGE_ELEMENT)
+        serializer.text(encoded)
+        serializer.endTag(null, AVATAR_IMAGE_ELEMENT)
+    }
     private suspend fun writeFolderNameSettings(
-        account: LegacyAccountDto,
+        account: LegacyAccount,
         folderQueryRepository: FolderQueryRepository,
         serializer: XmlSerializer,
     ) {
@@ -405,6 +448,7 @@ class SettingsExporter(
                         writeKeyAndPrettyValueFromSetting(serializer, identityKey, setting, valueString)
                     } catch (e: InvalidSettingValueException) {
                         Log.w(
+                            TAG,
                             "Identity setting \"%s\" has invalid value \"%s\" in preference storage. " +
                                 "This shouldn't happen!",
                             identityKey,
@@ -445,6 +489,7 @@ class SettingsExporter(
                     writeKeyAndPrettyValueFromSetting(serializer, key, setting, value)
                 } catch (e: InvalidSettingValueException) {
                     Log.w(
+                        TAG,
                         "Folder setting \"%s\" has invalid value \"%s\" in preference storage. This shouldn't happen!",
                         key,
                         value,
@@ -547,6 +592,8 @@ class SettingsExporter(
         const val NAME_ELEMENT = "name"
         const val EMAIL_ELEMENT = "email"
         const val DESCRIPTION_ELEMENT = "description"
+
+        const val AVATAR_IMAGE_ELEMENT = "avatar-image"
 
         private val FOLDER_NAME_KEYS = setOf(
             "autoExpandFolderName",

@@ -27,7 +27,7 @@ internal class SyncAllAccountsTest {
         assertThat(messagingController.recordedParameters).isEqualTo(
             listOf(
                 CheckMailParameters(
-                    account = null,
+                    accountId = null,
                     ignoreLastCheckedTime = true,
                     useManualWakeLock = true,
                     notify = true,

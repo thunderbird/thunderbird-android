@@ -1,5 +1,6 @@
 package net.thunderbird.feature.notification.api
 
+import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.notification.resources.api.Res
 import net.thunderbird.feature.notification.resources.api.notification_channel_messages_description
 import net.thunderbird.feature.notification.resources.api.notification_channel_messages_title
@@ -28,14 +29,14 @@ sealed class NotificationChannel(
     /**
      * Represents a notification channel for new messages.
      *
-     * @property accountUuid The unique identifier of the account associated with these messages.
+     * @property accountId The [AccountId] of the account associated with these messages.
      * @property suffix An optional suffix to further differentiate the channel, e.g., for different folder types.
      */
     data class Messages(
-        val accountUuid: String,
+        val accountId: AccountId,
         val suffix: String,
     ) : NotificationChannel(
-        id = "messages_channel_$accountUuid$suffix",
+        id = "messages_channel_$accountId$suffix",
         name = Res.string.notification_channel_messages_title,
         description = Res.string.notification_channel_messages_description,
         importance = NotificationChannelImportance.Default,
@@ -45,18 +46,18 @@ sealed class NotificationChannel(
      * Represents a notification channel for miscellaneous notifications.
      *
      * This channel is used for notifications that don't fit into other specific categories.
-     * The channel ID is "misc" if no account is specified, or "miscellaneous_channel_[accountUuid]" if an
+     * The channel ID is "misc" if no account is specified, or "miscellaneous_channel_[accountId]" if an
      * account is provided.
      *
-     * @property accountUuid The unique identifier of the account associated with these notifications, if applicable.
+     * @property accountId The [AccountId] of the account associated with these notifications, if applicable.
      */
     data class Miscellaneous(
-        val accountUuid: String? = null,
+        val accountId: AccountId? = null,
     ) : NotificationChannel(
-        id = if (accountUuid.isNullOrBlank()) {
+        id = if (accountId == null) {
             "misc"
         } else {
-            "miscellaneous_channel_$accountUuid"
+            "miscellaneous_channel_$accountId"
         },
         name = Res.string.notification_channel_miscellaneous_title,
         description = Res.string.notification_channel_miscellaneous_description,

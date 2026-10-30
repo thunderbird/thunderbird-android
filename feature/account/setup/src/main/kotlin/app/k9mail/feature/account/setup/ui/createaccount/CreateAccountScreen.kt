@@ -14,17 +14,17 @@ import androidx.compose.ui.Modifier
 import app.k9mail.feature.account.common.ui.AppTitleTopHeader
 import app.k9mail.feature.account.common.ui.WizardNavigationBar
 import app.k9mail.feature.account.common.ui.WizardNavigationBarState
-import app.k9mail.feature.account.setup.domain.entity.AccountUuid
 import app.k9mail.feature.account.setup.ui.createaccount.CreateAccountContract.Effect
 import app.k9mail.feature.account.setup.ui.createaccount.CreateAccountContract.Event
 import app.k9mail.feature.account.setup.ui.createaccount.CreateAccountContract.ViewModel
 import net.thunderbird.components.ui.bolt.template.Scaffold
 import net.thunderbird.core.common.provider.BrandNameProvider
 import net.thunderbird.core.ui.contract.mvi.observe
+import net.thunderbird.feature.account.AccountId
 
 @Composable
 internal fun CreateAccountScreen(
-    onNext: (AccountUuid) -> Unit,
+    onNext: (AccountId) -> Unit,
     onBack: () -> Unit,
     viewModel: ViewModel,
     brandNameProvider: BrandNameProvider,
@@ -33,7 +33,7 @@ internal fun CreateAccountScreen(
     val (state, dispatch) = viewModel.observe { effect ->
         when (effect) {
             Effect.NavigateBack -> onBack()
-            is Effect.NavigateNext -> onNext(effect.accountUuid)
+            is Effect.NavigateNext -> onNext(effect.accountId)
         }
     }
 

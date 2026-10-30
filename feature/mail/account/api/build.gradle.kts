@@ -6,4 +6,10 @@ kotlin {
     android {
         namespace = "net.thunderbird.feature.mail.account.api"
     }
+
+    sourceSets {
+        commonMain.dependencies {
+            api(projects.feature.account.api)
+        }
+    }
 }

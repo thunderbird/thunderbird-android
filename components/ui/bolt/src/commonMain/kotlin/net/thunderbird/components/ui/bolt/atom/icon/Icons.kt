@@ -39,6 +39,7 @@ import net.thunderbird.components.ui.bolt.atom.icon.dualtone.DualToneWarningIcon
 import net.thunderbird.components.ui.bolt.atom.icon.filled.FilledDotIcon
 import net.thunderbird.components.ui.bolt.atom.icon.filled.FilledStarIcon
 import net.thunderbird.components.ui.bolt.atom.icon.filled.FilledThundermail
+import net.thunderbird.components.ui.bolt.atom.icon.outlined.OutlineBugReport
 import net.thunderbird.components.ui.bolt.atom.icon.outlined.OutlinedAccountIcon
 import net.thunderbird.components.ui.bolt.atom.icon.outlined.OutlinedBadgeIcon
 import net.thunderbird.components.ui.bolt.atom.icon.outlined.OutlinedBankIcon
@@ -121,6 +122,7 @@ object Icons {
         val Badge: ImageVector = OutlinedBadgeIcon
         val Bank: ImageVector = OutlinedBankIcon
         val Book: ImageVector = OutlinedBookIcon
+        val BugReport: ImageVector = OutlineBugReport
 
         val Check: ImageVector = Icons.Outlined.Check
         val CheckCircle: ImageVector = Icons.Outlined.CheckCircle

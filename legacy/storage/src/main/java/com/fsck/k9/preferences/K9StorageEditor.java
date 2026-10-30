@@ -12,13 +12,14 @@ import android.os.SystemClock;
 import androidx.annotation.NonNull;
 import com.fsck.k9.preferences.K9StoragePersister.StoragePersistOperationCallback;
 import com.fsck.k9.preferences.K9StoragePersister.StoragePersistOperations;
-import net.thunderbird.core.logging.Logger;
+import net.thunderbird.components.core.logging.Logger;
 import net.thunderbird.core.preference.storage.InMemoryStorage;
 import net.thunderbird.core.preference.storage.Storage;
 import net.thunderbird.core.preference.storage.StorageEditor;
 import net.thunderbird.core.preference.storage.StorageUpdater;
 
 public class K9StorageEditor implements StorageEditor {
+    private static final String TAG = "K9StorageEditor";
     private StorageUpdater storageUpdater;
     private K9StoragePersister storagePersister;
 
@@ -44,14 +45,14 @@ public class K9StorageEditor implements StorageEditor {
             storageUpdater.updateStorage(this::commitChanges);
             return true;
         } catch (Exception e) {
-            logger.error(null, e, () -> "Failed to save preferences");
+            logger.error(TAG, e, () -> "Failed to save preferences");
             return false;
         }
     }
 
     private Storage commitChanges(Storage storage) {
         long startTime = SystemClock.elapsedRealtime();
-        logger.info(null, null, () -> "Committing preference changes");
+        logger.info(TAG, null, () -> "Committing preference changes");
 
         Map<String, String> newValues = new HashMap<>();
         Map<String, String> oldValues = storage.getAll();
@@ -83,7 +84,7 @@ public class K9StorageEditor implements StorageEditor {
         };
         storagePersister.doInTransaction(committer);
         long endTime = SystemClock.elapsedRealtime();
-        logger.info(null, null, () -> String.format("Preferences commit took %d ms", endTime - startTime));
+        logger.info(TAG, null, () -> String.format("Preferences commit took %d ms", endTime - startTime));
 
         return new InMemoryStorage(
             newValues,

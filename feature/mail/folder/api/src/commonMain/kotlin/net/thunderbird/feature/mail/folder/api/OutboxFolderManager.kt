@@ -66,8 +66,8 @@ public interface OutboxFolderManager {
         "Always use getOutboxFolderIdSync(uuid: AccountId) instead on Kotlin files.",
 )
 @JvmOverloads
-public fun OutboxFolderManager.getOutboxFolderIdSync(accountId: String, createIfMissing: Boolean = true): Long {
-    return getOutboxFolderIdSync(accountId = AccountIdFactory.of(accountId), createIfMissing = createIfMissing)
+public fun OutboxFolderManager.getOutboxFolderIdSync(accountId: AccountId, createIfMissing: Boolean = true): Long {
+    return getOutboxFolderIdSync(accountId, createIfMissing = createIfMissing)
 }
 
 /**
@@ -84,6 +84,6 @@ public fun OutboxFolderManager.getOutboxFolderIdSync(accountId: String, createIf
     message = "This is a wrapper for Java compatibility. " +
         "Always use hasPendingMessages(uuid: AccountId): Boolean instead on Kotlin files.",
 )
-public fun OutboxFolderManager.hasPendingMessagesSync(accountId: String): Boolean = runBlocking {
-    hasPendingMessages(accountId = AccountIdFactory.of(accountId))
+public fun OutboxFolderManager.hasPendingMessagesSync(accountId: AccountId): Boolean = runBlocking {
+    hasPendingMessages(accountId)
 }

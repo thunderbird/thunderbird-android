@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.dependency.guard)
     alias(libs.plugins.tb.app.badging)
     alias(libs.plugins.tb.app.versioning)
+    alias(libs.plugins.tb.baselineprofile.consumer.app)
 }
 
 val testCoverageEnabled = providers
@@ -17,7 +18,7 @@ android {
         testApplicationId = "net.thunderbird.android.tests"
 
         versionCode = 62
-        versionName = "25.0"
+        versionName = "26.0"
 
         buildConfigField("String", "CLIENT_INFO_APP_NAME", "\"Thunderbird for Android\"")
     }
@@ -117,7 +118,7 @@ android {
             signingConfig = signingConfigs.getByType(SigningType.TB_BETA)
 
             applicationIdSuffix = ".beta"
-            versionNameSuffix = "b2"
+            versionNameSuffix = "b0"
 
             isMinifyEnabled = isCI.get()
             isShrinkResources = isCI.get()
@@ -278,6 +279,8 @@ dependencies {
     testImplementation(projects.feature.changelog.internal)
 
     testImplementation(libs.appauth)
+
+    baselineProfile(projects.appThunderbird.benchmarks)
 }
 
 dependencyGuard {

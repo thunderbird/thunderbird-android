@@ -1,6 +1,8 @@
 package net.thunderbird.core.preference.storage
 
-import net.thunderbird.core.logging.Logger
+import net.thunderbird.components.core.logging.Logger
+
+private const val TAG = "InMemoryStorage"
 
 class InMemoryStorage(
     private val values: Map<String, String>,
@@ -24,6 +26,7 @@ class InMemoryStorage(
             value.toInt()
         } catch (e: NumberFormatException) {
             logger.error(
+                tag = TAG,
                 message = { "Could not parse int" },
                 throwable = e,
             )
@@ -37,6 +40,7 @@ class InMemoryStorage(
             value.toLong()
         } catch (e: NumberFormatException) {
             logger.error(
+                tag = TAG,
                 message = { "Could not parse long" },
                 throwable = e,
             )

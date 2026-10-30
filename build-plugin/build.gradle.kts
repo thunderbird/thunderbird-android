@@ -22,6 +22,8 @@ dependencies {
     implementation(plugin(libs.plugins.spotless))
     implementation(plugin(libs.plugins.kover))
 
+    implementation(plugin(libs.plugins.androidx.baselineprofile))
+
     // Make custom plugins in ":plugin" available to precompiled convention plugins by classpath
     implementation(project(":plugin"))
 

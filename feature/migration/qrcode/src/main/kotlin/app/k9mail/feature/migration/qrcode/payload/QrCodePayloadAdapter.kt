@@ -5,6 +5,8 @@ import com.squareup.moshi.JsonReader
 import com.squareup.moshi.JsonWriter
 import net.thunderbird.legacy.logging.Log
 
+private const val TAG = "QrCodePayloadAdapter"
+
 internal class QrCodePayloadAdapter : JsonAdapter<QrCodeData>() {
     override fun fromJson(jsonReader: JsonReader): QrCodeData? {
         jsonReader.beginArray()
@@ -12,7 +14,7 @@ internal class QrCodePayloadAdapter : JsonAdapter<QrCodeData>() {
         val version = jsonReader.nextInt()
         if (version != 1) {
             // We don't even attempt to read something that is newer than version 1.
-            Log.d("Unsupported version: %s", version)
+            Log.d(TAG, "Unsupported version: %s", version)
             return null
         }
 

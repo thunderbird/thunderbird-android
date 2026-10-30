@@ -18,6 +18,7 @@ dependencies {
     api(projects.legacy.ui.legacy)
 
     api(projects.feature.account.core)
+    api(projects.feature.account.internal)
     api(projects.feature.launcher)
     api(projects.feature.navigation.drawer.api)
 
@@ -26,7 +27,9 @@ dependencies {
     implementation(projects.core.android.account)
     implementation(projects.core.android.common)
 
-    implementation(projects.core.logging.api)
+    implementation(libs.tb.mobile.components.core.logging.file)
+    implementation(libs.filekit.core)
+    implementation(projects.core.logging.internal)
     implementation(projects.legacy.logging)
     implementation(projects.core.configstore.api)
     implementation(projects.core.configstore.implBackend)
@@ -64,11 +67,14 @@ dependencies {
     implementation(libs.androidx.work.runtime)
     implementation(libs.androidx.lifecycle.process)
 
+    implementation(libs.okio)
+
+    testImplementation(projects.core.android.account.fake)
     testImplementation(projects.feature.account.fake)
     testImplementation(projects.core.testing)
     testImplementation(projects.core.android.testing)
     testImplementation(projects.core.configstore.testing)
-    testImplementation(projects.core.logging.testing)
+    testImplementation(projects.legacy.storage)
 
     testImplementation(libs.mockito.kotlin)
 }

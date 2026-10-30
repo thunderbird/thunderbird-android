@@ -34,4 +34,5 @@
     <string name="account_server_settings_incoming_imap_send_client_info_label">Enviar información del cliente</string>
     <string name="account_server_settings_password_authentication_failed">¡La autenticación ha fallado!</string>
     <string name="account_server_settings_password_authentication_unable_to_start">No se pudo enseñar el diálogo de biometría.</string>
+    <string name="account_server_settings_password_input_label">Contraseña</string>
 </resources>

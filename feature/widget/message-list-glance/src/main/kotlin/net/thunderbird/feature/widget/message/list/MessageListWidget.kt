@@ -20,7 +20,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import net.thunderbird.core.android.account.SortType
 import net.thunderbird.core.preference.GeneralSettingsManager
-import net.thunderbird.feature.search.legacy.SearchAccount.Companion.createUnifiedFoldersSearch
+import net.thunderbird.feature.search.legacy.SearchAccount.Companion.createUnifiedInboxSearch
 import net.thunderbird.feature.widget.message.list.ui.MessageListWidgetContent
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -42,7 +42,7 @@ internal class MessageListWidget : GlanceAppWidget(), KoinComponent {
 
             LaunchedEffect(Unit) {
                 CoroutineScope(Dispatchers.IO).launch {
-                    val unifiedInboxSearch = createUnifiedFoldersSearch(
+                    val unifiedInboxSearch = createUnifiedInboxSearch(
                         title = coreResourceProvider.searchUnifiedFoldersTitle(),
                         detail = coreResourceProvider.searchUnifiedFoldersDetail(),
                     ).relatedSearch
@@ -68,7 +68,7 @@ internal class MessageListWidget : GlanceAppWidget(), KoinComponent {
     }
 
     private fun openApp(context: Context) {
-        val unifiedFoldersSearch = createUnifiedFoldersSearch(
+        val unifiedFoldersSearch = createUnifiedInboxSearch(
             title = coreResourceProvider.searchUnifiedFoldersTitle(),
             detail = coreResourceProvider.searchUnifiedFoldersDetail(),
         )

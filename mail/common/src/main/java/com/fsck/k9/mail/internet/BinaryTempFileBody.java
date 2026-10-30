@@ -24,6 +24,8 @@ import org.apache.james.mime4j.util.MimeUtil;
  * getInputStream is closed the file is deleted and the Body should be considered disposed of.
  */
 public class BinaryTempFileBody implements RawDataBody, SizeAware {
+    private static final String TAG = "BinaryTempFileBody";
+
     private static File mTempDirectory;
 
     private File mFile;
@@ -134,10 +136,10 @@ public class BinaryTempFileBody implements RawDataBody, SizeAware {
             try {
                 super.close();
             } finally {
-                Log.d("Deleting temporary binary file: %s", mFile.getName());
+                Log.d(TAG, "Deleting temporary binary file: %s", mFile.getName());
                 boolean fileSuccessfullyDeleted = mFile.delete();
                 if (!fileSuccessfullyDeleted) {
-                    Log.i("Failed to delete temporary binary file: %s", mFile.getName());
+                    Log.i(TAG, "Failed to delete temporary binary file: %s", mFile.getName());
                 }
             }
         }

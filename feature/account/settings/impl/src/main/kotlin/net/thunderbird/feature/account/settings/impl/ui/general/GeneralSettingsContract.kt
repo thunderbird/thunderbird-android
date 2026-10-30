@@ -7,6 +7,7 @@ import net.thunderbird.core.ui.contract.mvi.UnidirectionalViewModel
 import net.thunderbird.core.ui.setting.Settings
 import net.thunderbird.core.validation.input.IntegerInputField
 import net.thunderbird.core.validation.input.StringInputField
+import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.avatar.Avatar
 import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.ValidateAccountNameError
 import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.ValidateMonogramError
@@ -37,6 +38,7 @@ internal interface GeneralSettingsContract {
         data class OnAvatarChange(val avatar: Avatar) : Event
         data object OnSelectAvatarImageClick : Event
         data class OnAvatarImagePicked(val uri: Uri) : Event
+        data object OnManageFoldersSelected : Event
 
         data object OnBackPressed : Event
     }
@@ -44,6 +46,7 @@ internal interface GeneralSettingsContract {
     sealed interface Effect {
         object NavigateBack : Effect
         object OpenAvatarImagePicker : Effect
+        object OpenManageFolders : Effect
     }
 
     interface Validator {
@@ -53,6 +56,7 @@ internal interface GeneralSettingsContract {
 
     fun interface SettingsBuilder {
         fun build(
+            accountId: AccountId,
             state: State,
             onEvent: (Event) -> Unit,
         ): Settings

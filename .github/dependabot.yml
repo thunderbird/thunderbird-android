@@ -1,4 +1,8 @@
 version: 2
+registries:
+  mozilla-maven:
+    type: maven-repository
+    url: https://maven.mozilla.org/maven2
 updates:
   # Dependabot does not support GitHub composite actions by default (.github/actions)
   # so we need to add the folder by hand to the directories entry.
@@ -25,6 +29,8 @@ updates:
   - package-ecosystem: "gradle"
     open-pull-requests-limit: 20
     directory: "/"
+    registries:
+      - mozilla-maven
     schedule:
       interval: "weekly"
     labels:

@@ -5,19 +5,20 @@ import app.k9mail.legacy.mailstore.MessageListRepository
 import app.k9mail.legacy.mailstore.MessageMapper
 import app.k9mail.legacy.mailstore.MessageStoreManager
 import java.util.concurrent.CopyOnWriteArraySet
+import net.thunderbird.feature.account.AccountId
 
 class DefaultMessageListRepository(
     private val messageStoreManager: MessageStoreManager,
 ) : MessageListRepository {
     private val globalListeners = CopyOnWriteArraySet<MessageListChangedListener>()
-    private val accountListeners = CopyOnWriteArraySet<Pair<String, MessageListChangedListener>>()
+    private val accountListeners = CopyOnWriteArraySet<Pair<AccountId, MessageListChangedListener>>()
 
     override fun addListener(listener: MessageListChangedListener) {
         globalListeners.add(listener)
     }
 
-    override fun addListener(accountUuid: String, listener: MessageListChangedListener) {
-        accountListeners.add(accountUuid to listener)
+    override fun addListener(accountId: AccountId, listener: MessageListChangedListener) {
+        accountListeners.add(accountId to listener)
     }
 
     override fun removeListener(listener: MessageListChangedListener) {
@@ -29,13 +30,13 @@ class DefaultMessageListRepository(
         }
     }
 
-    override fun notifyMessageListChanged(accountUuid: String) {
+    override fun notifyMessageListChanged(accountId: AccountId) {
         for (listener in globalListeners) {
             listener.onMessageListChanged()
         }
 
         for (listener in accountListeners) {
-            if (listener.first == accountUuid) {
+            if (listener.first == accountId) {
                 listener.second.onMessageListChanged()
             }
         }
@@ -45,14 +46,14 @@ class DefaultMessageListRepository(
      * Retrieve list of messages from [MessageStore] but override values with data from [MessageListCache].
      */
     override fun <T> getMessages(
-        accountUuid: String,
+        accountId: AccountId,
         selection: String,
         selectionArgs: Array<String>,
         sortOrder: String,
         messageMapper: MessageMapper<T>,
     ): List<T> {
-        val messageStore = messageStoreManager.getMessageStore(accountUuid)
-        val cache = MessageListCache.getCache(accountUuid)
+        val messageStore = messageStoreManager.getMessageStore(accountId)
+        val cache = MessageListCache.getCache(accountId)
 
         val mapper = if (cache.isEmpty()) messageMapper else CacheAwareMessageMapper(cache, messageMapper)
         return messageStore.getMessages(selection, selectionArgs, sortOrder, mapper)
@@ -62,14 +63,14 @@ class DefaultMessageListRepository(
      * Retrieve threaded list of messages from [MessageStore] but override values with data from [MessageListCache].
      */
     override fun <T> getThreadedMessages(
-        accountUuid: String,
+        accountId: AccountId,
         selection: String,
         selectionArgs: Array<String>,
         sortOrder: String,
         messageMapper: MessageMapper<T>,
     ): List<T> {
-        val messageStore = messageStoreManager.getMessageStore(accountUuid)
-        val cache = MessageListCache.getCache(accountUuid)
+        val messageStore = messageStoreManager.getMessageStore(accountId)
+        val cache = MessageListCache.getCache(accountId)
 
         val mapper = if (cache.isEmpty()) messageMapper else CacheAwareMessageMapper(cache, messageMapper)
         return messageStore.getThreadedMessages(selection, selectionArgs, sortOrder, mapper)
@@ -79,13 +80,13 @@ class DefaultMessageListRepository(
      * Retrieve list of messages in a thread from [MessageStore] but override values with data from [MessageListCache].
      */
     override fun <T> getThread(
-        accountUuid: String,
+        accountId: AccountId,
         threadId: Long,
         sortOrder: String,
         messageMapper: MessageMapper<T>,
     ): List<T> {
-        val messageStore = messageStoreManager.getMessageStore(accountUuid)
-        val cache = MessageListCache.getCache(accountUuid)
+        val messageStore = messageStoreManager.getMessageStore(accountId)
+        val cache = MessageListCache.getCache(accountId)
 
         val mapper = if (cache.isEmpty()) messageMapper else CacheAwareMessageMapper(cache, messageMapper)
         return messageStore.getThread(threadId, sortOrder, mapper)

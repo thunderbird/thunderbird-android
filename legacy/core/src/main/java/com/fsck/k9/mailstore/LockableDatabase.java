@@ -20,6 +20,8 @@ import static java.lang.System.currentTimeMillis;
 
 
 public class LockableDatabase {
+    private static final String TAG = "LockableDatabase";
+
 
     /**
      * Callback interface for DB operations. Concept is similar to Spring
@@ -163,7 +165,7 @@ public class LockableDatabase {
                     // not doing endTransaction in the same 'finally' block of unlockRead() because endTransaction() may throw an exception
                     mDb.endTransaction();
                     if (debug) {
-                        Log.v("LockableDatabase: Transaction ended, took %d ms / %s",
+                        Log.v(TAG, "LockableDatabase: Transaction ended, took %d ms / %s",
                                 currentTimeMillis() - begin,
                                 new Exception().getStackTrace()[1]);
                     }
@@ -194,9 +196,9 @@ public class LockableDatabase {
                 doOpenOrCreateDb(databaseFile);
             } catch (SQLiteException e) {
                 // TODO handle this error in a better way!
-                Log.w(e, "Unable to open DB %s - removing file and retrying", databaseFile);
+                Log.w(TAG, e, "Unable to open DB %s - removing file and retrying", databaseFile);
                 if (databaseFile.exists() && !databaseFile.delete()) {
-                    Log.d("Failed to remove %s that couldn't be opened", databaseFile);
+                    Log.d(TAG, "Failed to remove %s that couldn't be opened", databaseFile);
                 }
                 doOpenOrCreateDb(databaseFile);
             }
@@ -261,7 +263,7 @@ public class LockableDatabase {
             try {
                 mDb.close();
             } catch (Exception e) {
-                Log.d("Exception caught in DB close: %s", e.getMessage());
+                Log.d(TAG, "Exception caught in DB close: %s", e.getMessage());
             }
             try {
                 final File attachmentDirectory = storageFilesProvider.getAttachmentDirectory();
@@ -270,23 +272,23 @@ public class LockableDatabase {
                     if (attachment.exists()) {
                         boolean attachmentWasDeleted = attachment.delete();
                         if (!attachmentWasDeleted) {
-                            Log.d("Attachment was not deleted!");
+                            Log.d(TAG, "Attachment was not deleted!");
                         }
                     }
                 }
                 if (attachmentDirectory.exists()) {
                     boolean attachmentDirectoryWasDeleted = attachmentDirectory.delete();
                     if (!attachmentDirectoryWasDeleted) {
-                        Log.d("Attachment directory was not deleted!");
+                        Log.d(TAG, "Attachment directory was not deleted!");
                     }
                 }
             } catch (Exception e) {
-                Log.d("Exception caught in clearing attachments: %s", e.getMessage());
+                Log.d(TAG, "Exception caught in clearing attachments: %s", e.getMessage());
             }
             try {
                 deleteDatabase(storageFilesProvider.getDatabaseFile());
             } catch (Exception e) {
-                Log.i(e, "LockableDatabase: delete(): Unable to delete backing DB file");
+                Log.i(TAG, e, "LockableDatabase: delete(): Unable to delete backing DB file");
             }
 
             if (recreate) {
@@ -300,7 +302,7 @@ public class LockableDatabase {
     private void deleteDatabase(File database) {
         boolean deleted = SQLiteDatabase.deleteDatabase(database);
         if (!deleted) {
-            Log.i("LockableDatabase: deleteDatabase(): No files deleted.");
+            Log.i(TAG, "LockableDatabase: deleteDatabase(): No files deleted.");
         }
     }
 }

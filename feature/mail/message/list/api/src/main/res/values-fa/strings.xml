@@ -13,4 +13,19 @@
     <string name="swipe_action_spam">هرزنامه</string>
     <string name="swipe_action_move">انتقال…</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> انتخاب</string>
+    <string name="sort_by">به ترتیبِ…</string>
+    <string name="sort_by_date_asc">تاریخ (ابتدا قدیمی‌ترین)</string>
+    <string name="sort_by_date_desc">تاریخ (ابتدا جدیدترین)</string>
+    <string name="sort_by_arrival_asc">رسیدن (ابتدا قدیمی‌ترین)</string>
+    <string name="sort_by_arrival_desc">رسیدن (ابتدا جدیدترین)</string>
+    <string name="sort_by_subject_asc">موضوع (به‌ترتیب الفبا)</string>
+    <string name="sort_by_subject_desc">موضوع (به‌ترتیب الفبای معکوس)</string>
+    <string name="sort_by_sender_asc">فرستنده (به‌ترتیب الفبا)</string>
+    <string name="sort_by_sender_desc">فرستنده (به‌ترتیب الفبای معکوس)</string>
+    <string name="sort_by_flag_asc">ابتدا ستاره‌دارها</string>
+    <string name="sort_by_flag_desc">ابتدا بدون ستاره‌ها</string>
+    <string name="sort_by_unread_asc">ابتدا خوانده‌نشده‌ها</string>
+    <string name="sort_by_unread_desc">ابتدا خوانده‌شده‌ها</string>
+    <string name="sort_by_attach_asc">ابتدا دارای پیوست‌ها</string>
+    <string name="sort_by_attach_desc">ابتدا بدون پیوست‌ها</string>
 </resources>

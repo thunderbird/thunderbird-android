@@ -1,7 +1,6 @@
 package net.thunderbird.app.common.account.data
 
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.feature.account.AccountId
@@ -15,7 +14,7 @@ internal class DefaultAccountProfileLocalDataSource(
 ) : AccountProfileLocalDataSource {
 
     override fun getAll(): Flow<List<AccountProfile>> {
-        return accountManager.getAll()
+        return accountManager.observeAll()
             .map { accounts ->
                 accounts.map { dto ->
                     dataMapper.toDomain(dto.profile)
@@ -24,7 +23,7 @@ internal class DefaultAccountProfileLocalDataSource(
     }
 
     override fun getById(accountId: AccountId): Flow<AccountProfile?> {
-        return accountManager.getById(accountId)
+        return accountManager.observeById(accountId)
             .map { account ->
                 account?.let { dto ->
                     dataMapper.toDomain(dto.profile)
@@ -33,15 +32,8 @@ internal class DefaultAccountProfileLocalDataSource(
     }
 
     override suspend fun update(accountProfile: AccountProfile) {
-        val currentAccount = accountManager.getById(accountProfile.id)
-            .firstOrNull() ?: return
-
         val accountProfileDto = dataMapper.toDto(accountProfile)
 
-        val updatedAccount = currentAccount.copy(
-            profile = accountProfileDto,
-        )
-
-        accountManager.update(updatedAccount)
+        accountManager.update(accountProfile.id) { account -> account.copy(profile = accountProfileDto) }
     }
 }

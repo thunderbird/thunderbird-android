@@ -17,9 +17,9 @@ import com.fsck.k9.mail.store.imap.ImapStoreSettings.autoDetectNamespace
 import com.fsck.k9.mail.store.imap.ImapStoreSettings.pathPrefix
 import com.fsck.k9.mailstore.MigrationsHelper
 import net.thunderbird.core.android.account.Expunge
-import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.common.mail.Protocols
-import net.thunderbird.core.logging.Logger
+import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.legacy.logging.Log
 import okio.IOException
 import org.intellij.lang.annotations.Language
@@ -44,12 +44,12 @@ internal class MigrationTo90(
         val account = migrationsHelper.account
         if (account.incomingServerSettings.type != Protocols.IMAP) {
             logger.verbose(TAG) {
-                "account ${account.uuid} is not an IMAP account, skipping db migration for this account."
+                "account ${account.id} is not an IMAP account, skipping db migration for this account."
             }
             return
         }
 
-        logger.verbose(TAG) { "started db migration to version 90 to account ${account.uuid}" }
+        logger.verbose(TAG) { "started db migration to version 90 to account ${account.id}" }
 
         val imapStore = createImapStore(account)
 
@@ -66,7 +66,7 @@ internal class MigrationTo90(
                 logger.verbose(TAG) { "No Imap Prefix detected, skipping db migration" }
             }
 
-            logger.verbose(TAG) { "completed db migration to version 90 for account ${account.uuid}" }
+            logger.verbose(TAG) { "completed db migration to version 90 for account ${account.id}" }
         } catch (e: AuthenticationFailedException) {
             logger.warn(TAG, e) {
                 "failed to fetch IMAP prefix due to authentication error. skipping db migration"
@@ -78,7 +78,7 @@ internal class MigrationTo90(
         }
     }
 
-    private fun createImapStore(account: LegacyAccountDto): ImapStore {
+    private fun createImapStore(account: LegacyAccount): ImapStore {
         val serverSettings = account.toImapServerSettings()
         val oAuth2TokenProvider = if (serverSettings.authenticationType == AuthType.XOAUTH2) {
             val authStateStorage = object : AuthStateStorage {
@@ -98,7 +98,7 @@ internal class MigrationTo90(
         )
     }
 
-    private fun LegacyAccountDto.toImapServerSettings(): ServerSettings {
+    private fun LegacyAccount.toImapServerSettings(): ServerSettings {
         val serverSettings = incomingServerSettings
         return serverSettings.copy(
             extra = ImapStoreSettings.createExtra(
@@ -110,10 +110,10 @@ internal class MigrationTo90(
         )
     }
 
-    private fun createImapStoreConfig(account: LegacyAccountDto): ImapStoreConfig {
+    private fun createImapStoreConfig(account: LegacyAccount): ImapStoreConfig {
         return object : ImapStoreConfig {
             override val logLabel
-                get() = account.uuid
+                get() = account.id.toString()
 
             override fun isSubscribedFoldersOnly() = account.isSubscribedFoldersOnly
 

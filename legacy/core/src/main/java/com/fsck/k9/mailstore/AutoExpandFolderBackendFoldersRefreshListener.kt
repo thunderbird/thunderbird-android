@@ -26,9 +26,9 @@ class AutoExpandFolderBackendFoldersRefreshListener(
 
         account = checkAutoExpandFolder(account)
 
-        removeImportedAutoExpandFolder(account)
+        account = removeImportedAutoExpandFolder(account)
 
-        updateAccount(account)
+        saveAutoExpandFolder(account)
     }
 
     private suspend fun checkAutoExpandFolder(account: LegacyAccount): LegacyAccount {
@@ -71,11 +71,21 @@ class AutoExpandFolderBackendFoldersRefreshListener(
     }
 
     private fun getAccountById(id: AccountId): LegacyAccount {
-        return accountManager.getByIdSync(id)
+        return accountManager.findById(id)
             ?: error("Account not found with ID: $id")
     }
 
-    private fun updateAccount(account: LegacyAccount) {
-        accountManager.updateSync(account)
+    /**
+     * Saves the auto-expand folder settings of [account] onto the latest version of the account.
+     *
+     * [account] was read before querying folders, so saving it as a whole could undo changes made in the meantime.
+     */
+    private fun saveAutoExpandFolder(account: LegacyAccount) {
+        accountManager.updateSync(accountId) { latestAccount ->
+            latestAccount.copy(
+                autoExpandFolderId = account.autoExpandFolderId,
+                importedAutoExpandFolder = account.importedAutoExpandFolder,
+            )
+        }
     }
 }

@@ -12,10 +12,11 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.flowOf
 import net.thunderbird.components.ui.bolt.PreviewWithThemesLightDark
 import net.thunderbird.core.common.resources.StringsResourceManager
+import net.thunderbird.feature.account.AccountId
+import net.thunderbird.feature.account.profile.AccountProfile
+import net.thunderbird.feature.account.profile.AccountProfileRepository
 import net.thunderbird.feature.debug.settings.navigation.SecretDebugSettingsRoute
 import net.thunderbird.feature.debug.settings.notification.DebugNotificationSectionViewModel
-import net.thunderbird.feature.mail.account.api.AccountManager
-import net.thunderbird.feature.mail.account.api.BaseAccount
 import net.thunderbird.feature.notification.api.content.InAppNotification
 import net.thunderbird.feature.notification.api.content.Notification
 import net.thunderbird.feature.notification.api.receiver.InAppNotificationStream
@@ -41,17 +42,10 @@ private fun SecretDebugSettingsScreenPreview() {
 
                     override fun stringResource(resourceId: Int, vararg formatArgs: Any?): String = "fake"
                 },
-                accountManager = object : AccountManager<BaseAccount> {
-                    override fun getAccounts(): List<BaseAccount> = listOf()
-                    override fun getAccountsFlow(): Flow<List<BaseAccount>> = flowOf(listOf())
-                    override fun getAccount(accountUuid: String): BaseAccount? = null
-                    override fun getAccountFlow(accountUuid: String): Flow<BaseAccount?> = flowOf(null)
-                    override fun moveAccount(
-                        account: BaseAccount,
-                        newPosition: Int,
-                    ) = Unit
-
-                    override fun saveAccount(account: BaseAccount) = Unit
+                accountProfileRepository = object : AccountProfileRepository {
+                    override fun getAll(): Flow<List<AccountProfile>> = flowOf(listOf())
+                    override fun getById(id: AccountId): Flow<AccountProfile?> = flowOf(null)
+                    override suspend fun update(accountProfile: AccountProfile) = Unit
                 },
                 notificationSender = { _: Notification -> error("not implemented") },
                 inAppNotificationStream = get(),

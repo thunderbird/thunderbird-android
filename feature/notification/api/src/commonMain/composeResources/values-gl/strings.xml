@@ -33,7 +33,21 @@
     <string name="notification_action_delete_all">Borrar todo</string>
     <string name="notification_action_archive">Archivo</string>
     <string name="notification_action_archive_all">Arquivar todo</string>
-    <string name="notification_action_spam">Spam</string>
+    <string name="notification_action_spam">Correo lixo</string>
     <string name="notification_authentication_incoming_server_error_text">Non foi posible iniciar sesión en %1$s. Actualiza os axustes do teu servidor de entrada.</string>
     <string name="notification_authentication_outgoing_server_error_text">Erro de autenticación para %1$s. Actualiza os axustes do teu servidor de saída.</string>
+    <string name="notification_action_retry">Reintentar</string>
+    <string name="notification_action_update_server_settings">Actualizar a configuración do servidor</string>
+    <string name="notification_action_assign_sent_folder">Asignar cartafol</string>
+    <string name="banner_inline_notification_check_error_notifications">Comprobar as notificacións de erro</string>
+    <string name="banner_inline_notification_some_messages_need_attention">Algunhas mensaxes require a túa atención.</string>
+    <string name="banner_inline_notification_open_notifications">Abrir notificacións</string>
+    <string name="banner_inline_notification_learn_more">Máis información</string>
+    <string name="banner_inline_notification_view_support_article">Ver o artigo de axuda</string>
+    <string name="sent_folder_not_found_title">Cartafol de enviados non dispoñible.</string>
+    <plurals name="notification_new_messages_title">
+        <item quantity="one">%1$d nova mensaxe</item>
+        <item quantity="other">%1$d novas mensaxes</item>
+    </plurals>
+    <string name="notification_bg_sync_text">%1$s: %2$s</string>
 </resources>

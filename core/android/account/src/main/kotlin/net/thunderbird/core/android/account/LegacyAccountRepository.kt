@@ -5,16 +5,19 @@ import net.thunderbird.feature.account.AccountId
 
 interface LegacyAccountRepository {
     /**
-     * Returns a flow of the account with the specified [id].
+     * Returns a flow of the account with the specified [accountId].
      *
-     * @param id The ID of the account.
+     * @param accountId The ID of the account.
      */
-    fun getById(id: AccountId): Flow<LegacyAccount?>
+    fun observeById(accountId: AccountId): Flow<LegacyAccount?>
 
     /**
-     * Updates the specified [account].
+     * Atomically updates the account with the specified [accountId].
      *
-     * @param account The account to update.
+     * [transform] receives the latest version of the account, and its result is saved, so no change made elsewhere in
+     * the meantime is lost.
+     *
+     * @return The saved account, or `null` if no account with the specified [accountId] exists.
      */
-    suspend fun update(account: LegacyAccount)
+    suspend fun update(accountId: AccountId, transform: (LegacyAccount) -> LegacyAccount): LegacyAccount?
 }

@@ -10,6 +10,7 @@ import com.fsck.k9.mail.ServerSettings
 import kotlin.test.Test
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import net.thunderbird.components.core.outcome.Outcome
@@ -30,8 +31,12 @@ internal class UpdateSearchSettingsTest {
         val accountId = AccountIdFactory.create()
 
         val repository = object : LegacyAccountRepository {
-            override fun getById(id: AccountId): Flow<LegacyAccount?> = emptyFlow()
-            override suspend fun update(account: LegacyAccount) = Unit
+            override fun observeById(id: AccountId): Flow<LegacyAccount?> = emptyFlow()
+            override suspend fun update(
+                accountId: AccountId,
+                transform: (LegacyAccount) -> LegacyAccount,
+            ): LegacyAccount? =
+                observeById(accountId).firstOrNull()?.let(transform)
         }
 
         val testSubject = UpdateSearchSettings(repository)
@@ -53,11 +58,13 @@ internal class UpdateSearchSettingsTest {
         val existing = createLegacyAccount(accountId)
 
         val repository = object : LegacyAccountRepository {
-            override fun getById(id: AccountId) = flowOf(existing)
+            override fun observeById(id: AccountId) = flowOf(existing)
 
-            override suspend fun update(account: LegacyAccount) {
-                updatedAccount = account
-            }
+            override suspend fun update(
+                accountId: AccountId,
+                transform: (LegacyAccount) -> LegacyAccount,
+            ): LegacyAccount? =
+                observeById(accountId).firstOrNull()?.let(transform)?.also { updatedAccount = it }
         }
 
         val testSubject = UpdateSearchSettings(repository)
@@ -90,11 +97,13 @@ internal class UpdateSearchSettingsTest {
         val existing = createLegacyAccount(accountId)
 
         val repository = object : LegacyAccountRepository {
-            override fun getById(id: AccountId) = flowOf(existing)
+            override fun observeById(id: AccountId) = flowOf(existing)
 
-            override suspend fun update(account: LegacyAccount) {
-                updatedAccount = account
-            }
+            override suspend fun update(
+                accountId: AccountId,
+                transform: (LegacyAccount) -> LegacyAccount,
+            ): LegacyAccount? =
+                observeById(accountId).firstOrNull()?.let(transform)?.also { updatedAccount = it }
         }
 
         val testSubject = UpdateSearchSettings(repository)
@@ -116,7 +125,6 @@ internal class UpdateSearchSettingsTest {
             displayName: String = "AccountProfileName",
             color: Int = 0xFF0000,
         ) = LegacyAccount(
-            isSensitiveDebugLoggingEnabled = { true },
             id = id,
             name = displayName,
             email = "demo@example.com",
@@ -125,6 +133,7 @@ internal class UpdateSearchSettingsTest {
                 name = displayName,
                 color = color,
                 avatar = AvatarDto(
+                    accountId = id,
                     avatarType = AvatarTypeDto.ICON,
                     avatarMonogram = null,
                     avatarImageUri = null,

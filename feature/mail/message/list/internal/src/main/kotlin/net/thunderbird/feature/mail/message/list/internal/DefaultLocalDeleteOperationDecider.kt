@@ -1,13 +1,18 @@
 package net.thunderbird.feature.mail.message.list.internal
 
-import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.android.account.LegacyAccountManager
+import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.mail.message.list.LocalDeleteOperationDecider
 
-internal class DefaultLocalDeleteOperationDecider : LocalDeleteOperationDecider {
+internal class DefaultLocalDeleteOperationDecider(
+    private val accountManager: LegacyAccountManager,
+) : LocalDeleteOperationDecider {
     override fun isDeleteImmediately(
-        account: LegacyAccountDto,
+        accountId: AccountId,
         folderId: Long,
     ): Boolean {
+        val account = accountManager.findById(accountId) ?: error("Account not found $accountId")
+
         // If there's no trash folder configured, all messages are deleted immediately.
         if (!account.hasTrashFolder()) {
             return true

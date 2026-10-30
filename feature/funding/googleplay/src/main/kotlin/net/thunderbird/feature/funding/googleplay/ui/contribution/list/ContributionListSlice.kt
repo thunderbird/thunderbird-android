@@ -2,8 +2,8 @@ package net.thunderbird.feature.funding.googleplay.ui.contribution.list
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.components.core.outcome.handle
-import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.ui.contract.udf.BaseUnidirectionalSlice
 import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract.UseCase
 import net.thunderbird.feature.funding.googleplay.domain.entity.AvailableContributions
@@ -13,6 +13,8 @@ import net.thunderbird.feature.funding.googleplay.ui.contribution.list.Contribut
 import net.thunderbird.feature.funding.googleplay.ui.contribution.list.ContributionListSliceContract.Effect
 import net.thunderbird.feature.funding.googleplay.ui.contribution.list.ContributionListSliceContract.Event
 import net.thunderbird.feature.funding.googleplay.ui.contribution.list.ContributionListSliceContract.State
+
+private const val TAG = "ContributionListSlice"
 
 internal class ContributionListSlice(
     private val getAvailableContributions: UseCase.GetAvailableContributions,
@@ -36,7 +38,7 @@ internal class ContributionListSlice(
     }
 
     private fun onTypeClicked(type: ContributionType) {
-        logger.debug { "Contribution type selected: $type" }
+        logger.debug(TAG) { "Contribution type selected: $type" }
 
         val selectedContribution = selectContribution(
             contributions = state.value.contributions,
@@ -56,7 +58,7 @@ internal class ContributionListSlice(
     }
 
     private fun onItemClicked(contributionId: ContributionId) {
-        logger.debug { "Contribution item clicked: $contributionId" }
+        logger.debug(TAG) { "Contribution item clicked: $contributionId" }
 
         updateState { state ->
             state.copy(
@@ -74,7 +76,7 @@ internal class ContributionListSlice(
     }
 
     private fun onRetryClicked() {
-        logger.debug { "Retrying to load contributions" }
+        logger.debug(TAG) { "Retrying to load contributions" }
 
         updateState { state ->
             state.copy(
@@ -87,20 +89,20 @@ internal class ContributionListSlice(
     }
 
     private fun loadContributions() {
-        logger.debug { "Loading contributions" }
+        logger.debug(TAG) { "Loading contributions" }
 
         scope.launch {
             getAvailableContributions().collect { outcome ->
                 outcome.handle(
                     onSuccess = { contributions ->
-                        logger.debug { "Contributions loaded successfully" }
+                        logger.debug(TAG) { "Contributions loaded successfully" }
                         updateState { state ->
                             state.onLoaded(contributions)
                         }
                         emitEffectSelectionChanged()
                     },
                     onFailure = { error ->
-                        logger.error { "Failed to load contributions: ${error.message}" }
+                        logger.error(TAG) { "Failed to load contributions: ${error.message}" }
                         updateState { state ->
                             state.copy(
                                 isLoading = false,

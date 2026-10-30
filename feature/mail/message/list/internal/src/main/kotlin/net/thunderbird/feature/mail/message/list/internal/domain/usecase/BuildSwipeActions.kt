@@ -31,7 +31,7 @@ internal class BuildSwipeActions(
             val shouldShowSetupArchiveFolderDialog = config.display.miscSettings.shouldShowSetupArchiveFolderDialog
 
             accountManager
-                .getAll()
+                .observeAll()
                 .map { accounts ->
                     accounts
                         .associate { account ->

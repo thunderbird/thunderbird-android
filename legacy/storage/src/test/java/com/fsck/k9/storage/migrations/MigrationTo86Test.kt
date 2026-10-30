@@ -4,12 +4,11 @@ import android.content.ContentValues
 import android.database.sqlite.SQLiteDatabase
 import assertk.assertThat
 import assertk.assertions.containsExactlyInAnyOrder
-import com.fsck.k9.mailstore.MigrationsHelper
 import com.fsck.k9.storage.messages.FolderEntry
 import com.fsck.k9.storage.messages.readFolders
 import kotlin.test.Test
 import net.thunderbird.core.android.account.FolderMode
-import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.android.account.LegacyAccount
 import org.junit.After
 import org.junit.runner.RunWith
 import org.mockito.kotlin.doAnswer
@@ -22,7 +21,7 @@ class MigrationTo86Test {
 
     private val database = createDatabaseVersion85()
     private val account = createAccount()
-    private val migrationHelper = createMigrationsHelper(account)
+    private val migrationHelper = FakeMigrationsHelper(account)
     private val migration = MigrationTo86(database, migrationHelper)
 
     @After
@@ -130,21 +129,9 @@ class MigrationTo86Test {
         )
     }
 
-    private fun createAccount(): LegacyAccountDto {
-        return mock<LegacyAccountDto> {
+    private fun createAccount(): LegacyAccount {
+        return mock<LegacyAccount> {
             on { folderPushMode } doAnswer { folderPushMode }
-        }
-    }
-
-    private fun createMigrationsHelper(account: LegacyAccountDto): MigrationsHelper {
-        return object : MigrationsHelper {
-            override fun getAccount(): LegacyAccountDto {
-                return account
-            }
-
-            override fun saveAccount() {
-                throw UnsupportedOperationException("not implemented")
-            }
         }
     }
 

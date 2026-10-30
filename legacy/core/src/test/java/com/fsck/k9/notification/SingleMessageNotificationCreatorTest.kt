@@ -13,11 +13,11 @@ import com.fsck.k9.mail.Address
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
-import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.testing.MockHelper.mockBuilder
 import net.thunderbird.core.android.testing.RobolectricTest
 import net.thunderbird.core.preference.notification.NotificationPreference
 import net.thunderbird.core.preference.notification.NotificationPreferenceManager
+import net.thunderbird.feature.account.AccountIdFactory
 import org.junit.Before
 import org.junit.Test
 import org.mockito.kotlin.any
@@ -27,6 +27,7 @@ import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
 
 class SingleMessageNotificationCreatorTest : RobolectricTest() {
+    private val accountId = AccountIdFactory.create()
     private val notificationPreferenceManager = FakeNotificationPreferenceManager()
     private val resourceProvider = TestAvatarNotificationResourceProvider()
     private val notification = mock<Notification>()
@@ -89,12 +90,12 @@ class SingleMessageNotificationCreatorTest : RobolectricTest() {
             singleNotificationData = createSingleNotificationData(),
         )
 
-        verify(notificationHelper).notify(any(), eq(23), eq(notification))
+        verify(notificationHelper).notify(eq(accountId), eq(23), eq(notification))
     }
 
     private fun createNotificationHelper(): NotificationHelper {
         return mock {
-            on { createNotificationBuilder(any(), any()) } doReturn builder
+            on { createNotificationBuilder(eq(accountId), any(), any()) } doReturn builder
         }
     }
 
@@ -108,8 +109,9 @@ class SingleMessageNotificationCreatorTest : RobolectricTest() {
 
     private fun createBaseNotificationData(): BaseNotificationData {
         return BaseNotificationData(
-            account = LegacyAccountDto("00000000-0000-0000-0000-000000000000"),
+            accountId = accountId,
             accountName = "Account name",
+            messagesNotificationChannelVersion = 1,
             groupKey = "group",
             color = 0,
             newMessagesCount = 1,
@@ -128,7 +130,7 @@ class SingleMessageNotificationCreatorTest : RobolectricTest() {
             isSilent = true,
             timestamp = 9000,
             content = NotificationContent(
-                messageReference = MessageReference("account", 1, "uid"),
+                messageReference = MessageReference(accountId, 1, "uid"),
                 sender = Address("alice@example.com", "Alice"),
                 subject = "Subject",
                 preview = "Preview",

@@ -64,16 +64,19 @@ import com.fsck.k9.activity.listener.RecipientExpanderListener;
 import com.fsck.k9.ui.settings.account.AccountSettingsActivity;
 import com.fsck.k9.ui.settings.account.AccountSettingsFragment;
 import com.fsck.k9.message.html.DisplayHtml;
+import net.thunderbird.core.android.account.LegacyAccount;
+import net.thunderbird.core.android.account.LegacyAccountManager;
+import net.thunderbird.feature.account.AccountIdFactory;
 import net.thunderbird.feature.mail.message.composer.signature.HtmlSignatureSanitizer;
 import com.fsck.k9.ui.helper.DisplayHtmlUiFactory;
 import com.fsck.k9.view.MessageWebView;
 import com.fsck.k9.view.WebViewConfigProvider;
 import kotlin.Unit;
-import net.thunderbird.core.android.account.LegacyAccountDto;
+import net.thunderbird.feature.account.AccountId;
+import net.thunderbird.feature.account.usecase.GetDefaultAccountId;
 import app.k9mail.legacy.di.DI;
 import net.thunderbird.core.android.account.Identity;
 import com.fsck.k9.K9;
-import com.fsck.k9.Preferences;
 import com.fsck.k9.activity.MessageLoaderHelper.MessageLoaderCallbacks;
 import com.fsck.k9.activity.compose.AttachmentPresenter;
 import com.fsck.k9.activity.compose.AttachmentPresenter.AttachmentMvpView;
@@ -173,6 +176,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
     OnOpenPgpInlineChangeListener, OnOpenPgpSignOnlyChangeListener, MessageBuilder.Callback,
     AttachmentPresenter.AttachmentsChangedListener, OnOpenPgpDisableListener {
 
+    private static final String TAG = "MessageCompose";
     private static final int DIALOG_SAVE_OR_DISCARD_DRAFT_MESSAGE = 1;
     private static final int DIALOG_CONFIRM_DISCARD_ON_BACK = 2;
 
@@ -234,7 +238,8 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
     private final MessageLoaderHelperFactory messageLoaderHelperFactory = DI.get(MessageLoaderHelperFactory.class);
     private final DefaultFolderProvider defaultFolderProvider = DI.get(DefaultFolderProvider.class);
     private final MessagingController messagingController = DI.get(MessagingController.class);
-    private final Preferences preferences = DI.get(Preferences.class);
+    private final LegacyAccountManager accountManager = DI.get(LegacyAccountManager.class);
+    private final GetDefaultAccountId getDefaultAccountId = DI.get(GetDefaultAccountId.class);
     private final GeneralSettingsManager generalSettingsManager = DI.get(GeneralSettingsManager.class);
     private final WebViewConfigProvider webViewConfigProvider = DI.get(WebViewConfigProvider.class);
     private final DisplayHtml displayHtml = DI.get(DisplayHtmlUiFactory.class).createForMessageCompose();
@@ -250,6 +255,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
     private final NotificationSenderCompat notificationSenderCompat = new NotificationSenderCompat(notificationSender);
     private final NotificationDismisser notificationDismisser = DI.get(NotificationDismisser.class);
     private final ConnectivityManager connectivityManager = DI.get(ConnectivityManager.class);
+
     private final NotificationDismisserCompat notificationDismisserCompat =
         new NotificationDismisserCompat(notificationDismisser);
     private final SentFolderNotFoundConfirmationDialogFragmentFactory sentFolderNotFoundDialogFragmentFactory =
@@ -265,7 +271,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
     /**
      * The account used for message composition.
      */
-    private LegacyAccountDto account;
+    private LegacyAccount account;
     private Identity identity;
     private boolean identityChanged = false;
     private boolean signatureChanged = false;
@@ -348,7 +354,10 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
         fetchAccount(intent);
 
         if (account == null) {
-            account = preferences.getDefaultAccount();
+            AccountId defaultAccountId = getDefaultAccountId.invoke();
+            if (defaultAccountId != null) {
+                account = accountManager.findById(defaultAccountId);
+            }
         }
 
         if (account == null) {
@@ -516,7 +525,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
                 this.action = Action.EDIT_DRAFT;
             } else {
                 // This shouldn't happen
-                Log.w("MessageCompose was started with an unsupported action");
+                Log.w(TAG, "MessageCompose was started with an unsupported action");
                 this.action = Action.COMPOSE;
             }
         }
@@ -645,12 +654,18 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
         String messageReferenceString = intent.getStringExtra(EXTRA_MESSAGE_REFERENCE);
         relatedMessageReference = MessageReference.parse(messageReferenceString);
 
-        final String accountUuid = (relatedMessageReference != null) ?
-            relatedMessageReference.getAccountUuid() :
-            intent.getStringExtra(EXTRA_ACCOUNT);
+        AccountId accountId = null;
+        if (relatedMessageReference != null) {
+            accountId = relatedMessageReference.getAccountId();
+        } else {
+            String accountUuid = intent.getStringExtra(EXTRA_ACCOUNT);
+            if (accountUuid != null) {
+                accountId = AccountIdFactory.INSTANCE.of(accountUuid);
+            }
+        }
 
-        if (accountUuid != null) {
-            account = preferences.getAccount(accountUuid);
+        if (accountId != null) {
+            account = accountManager.findById(accountId);
         }
     }
 
@@ -670,7 +685,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
     private void triggerIfNeededSentFolderNotFoundInAppNotification() {
         if (account != null && account.isUploadSentMessages() && !account.hasSentFolder()) {
             final SentFolderNotFoundNotification notification = NotificationFactoryCoroutineCompat.create(
-                continuation -> SentFolderNotFoundNotification(account.getUuid(), continuation)
+                continuation -> SentFolderNotFoundNotification(account.getId(), continuation)
             );
             notificationSenderCompat.send(notification, outcome -> {
                 OutcomeKt.handle(
@@ -683,7 +698,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
                         final Throwable throwable = failure instanceof CommandExecutionFailed<?>
                             ? ((CommandExecutionFailed<?>) failure).getThrowable()
                             : null;
-                        Log.e(throwable, "Failed to send in-app notification. Failure = " + failure);
+                        Log.e(TAG, throwable, "Failed to send in-app notification. Failure = " + failure);
                         return Unit.INSTANCE;
                     });
             });
@@ -705,7 +720,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
                             final Throwable throwable = failure instanceof CommandExecutionFailed<?>
                                 ? ((CommandExecutionFailed<?>) failure).getThrowable()
                                 : null;
-                            Log.e(throwable, "Failed to dismiss in-app notification. Failure = " + failure);
+                            Log.e(TAG, throwable, "Failed to dismiss in-app notification. Failure = " + failure);
                             return Unit.INSTANCE;
                         }
                     );
@@ -814,7 +829,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
 
         ComposeCryptoStatus cryptoStatus = recipientPresenter.getCurrentCachedCryptoStatus();
         if (cryptoStatus == null) {
-            Log.w("Couldn't retrieve crypto status; not creating MessageBuilder!");
+            Log.w(TAG, "Couldn't retrieve crypto status; not creating MessageBuilder!");
             return null;
         }
 
@@ -929,7 +944,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
 
         if (account.isUploadSentMessages()
             && !ignoreSentFolderNotAssigned && !account.hasSentFolder()) {
-            sentFolderNotFoundDialogFragmentFactory.show(account.getUuid(), getSupportFragmentManager());
+            sentFolderNotFoundDialogFragmentFactory.show(account.getId().toString(), getSupportFragmentManager());
             return;
         }
 
@@ -975,7 +990,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
 
     private void onDiscard() {
         if (draftMessageId != null) {
-            messagingController.deleteDraft(account, draftMessageId);
+            messagingController.deleteDraft(account.getId(), draftMessageId);
         }
         internalMessageHandler.sendEmptyMessage(MSG_DISCARDED_DRAFT);
         finishWithoutChanges();
@@ -1021,7 +1036,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
             if ((requestCode & REQUEST_MASK_MESSAGE_BUILDER) == REQUEST_MASK_MESSAGE_BUILDER) {
                 requestCode ^= REQUEST_MASK_MESSAGE_BUILDER;
                 if (currentMessageBuilder == null) {
-                    Log.e("Got a message builder activity result for no message builder, " +
+                    Log.e(TAG, "Got a message builder activity result for no message builder, " +
                             "this is an illegal state!");
                     return;
                 }
@@ -1077,9 +1092,9 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
     }
 
 
-    private void onAccountChosen(LegacyAccountDto account, Identity identity) {
+    private void onAccountChosen(LegacyAccount account, Identity identity) {
         if (!this.account.equals(account)) {
-            Log.v("Switching account from %s to %s", this.account, account);
+            Log.v(TAG, "Switching account from %s to %s", this.account.getId(), account.getId());
 
             // on draft edit, make sure we don't keep previous message UID
             if (action == Action.EDIT_DRAFT) {
@@ -1089,7 +1104,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
             // test whether there is something to save
             if (changesMadeSinceLastSave || (draftMessageId != null)) {
                 final Long previousDraftId = draftMessageId;
-                final LegacyAccountDto previousAccount = this.account;
+                final AccountId previousAccountId = this.account.getId();
 
                 // make current message appear as new
                 draftMessageId = null;
@@ -1097,13 +1112,13 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
                 // actual account switch
                 this.account = account;
 
-                Log.v("Account switch, saving new draft in new account");
+                Log.v(TAG, "Account switch, saving new draft in new account");
                 checkToSaveDraftImplicitly();
 
                 if (previousDraftId != null) {
-                    Log.v("Account switch, deleting draft from previous account: %d", previousDraftId);
+                    Log.v(TAG, "Account switch, deleting draft from previous account: %d", previousDraftId);
 
-                    messagingController.deleteDraft(previousAccount, previousDraftId);
+                    messagingController.deleteDraft(previousAccountId, previousDraftId);
                 }
             } else {
                 this.account = account;
@@ -1351,9 +1366,9 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
     }
 
     private void openDefaultFolder() {
-        long folderId = defaultFolderProvider.getDefaultFolder(account);
+        long folderId = defaultFolderProvider.getDefaultFolder(account.getId());
         LocalMessageSearch search = new LocalMessageSearch();
-        search.addAccountUuid(account.getUuid());
+        search.addAccountId(account.getId());
         search.addAllowedFolder(folderId);
         MessageHomeActivity.actionDisplaySearch(this, search, false, true);
         finish();
@@ -1517,7 +1532,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
                     break;
                 }
                 default: {
-                    Log.w("processSourceMessage() called with unsupported action");
+                    Log.w(TAG, "processSourceMessage() called with unsupported action");
                     break;
                 }
             }
@@ -1526,7 +1541,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
              * Let the user continue composing their message even if we have a problem processing
              * the source message. Log it as an error, though.
              */
-            Log.e(e, "Error while processing source message: ");
+            Log.e(TAG, e, "Error while processing source message: ");
         } finally {
             relatedMessageProcessed = true;
             changesMadeSinceLastSave = false;
@@ -1568,7 +1583,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
             }
 
         } else {
-            Log.d("could not get Message-ID.");
+            Log.d(TAG, "could not get Message-ID.");
         }
 
         // Quote the message and setup the UI.
@@ -1598,7 +1613,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
             repliedToMessageId = message.getMessageId();
             referencedMessageIds = repliedToMessageId;
         } else {
-            Log.d("could not get Message-ID.");
+            Log.d(TAG, "could not get Message-ID.");
         }
 
         // Quote the message and setup the UI.
@@ -1702,7 +1717,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
 
             if (messageReference != null) {
                 // Check if this is a valid account in our database
-                LegacyAccountDto account = preferences.getAccount(messageReference.getAccountUuid());
+                LegacyAccount account = accountManager.findById(messageReference.getAccountId());
                 if (account != null) {
                     relatedMessageReference = messageReference;
                 }
@@ -1719,9 +1734,9 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
     }
 
     static class SendMessageTask extends AsyncTask<Void, Void, Void> {
+
         final MessagingController messagingController;
-        final Preferences preferences;
-        final LegacyAccountDto account;
+        final AccountId account;
         final Contacts contacts;
         final Message message;
         final Long draftId;
@@ -1729,12 +1744,11 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
         final MessageReference messageReference;
         final Flag flag;
 
-        SendMessageTask(MessagingController messagingController, Preferences preferences, LegacyAccountDto account,
+        SendMessageTask(MessagingController messagingController, AccountId accountId,
                 Contacts contacts, Message message, Long draftId, String plaintextSubject,
                 MessageReference messageReference, Flag flag) {
             this.messagingController = messagingController;
-            this.preferences = preferences;
-            this.account = account;
+            this.account = accountId;
             this.contacts = contacts;
             this.message = message;
             this.draftId = draftId;
@@ -1751,7 +1765,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
                 contacts.markAsContacted(message.getRecipients(RecipientType.BCC));
                 addFlagToReferencedMessage();
             } catch (Exception e) {
-                Log.e(e, "Failed to mark contact as contacted.");
+                Log.e(TAG, e, "Failed to mark contact as contacted.");
             }
 
             messagingController.sendMessage(account, message, plaintextSubject, null);
@@ -1768,14 +1782,13 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
          **/
         private void addFlagToReferencedMessage() {
             if (messageReference != null && flag != null) {
-                String accountUuid = messageReference.getAccountUuid();
-                LegacyAccountDto account = preferences.getAccount(accountUuid);
+                AccountId accountId = messageReference.getAccountId();
                 long folderId = messageReference.getFolderId();
                 String sourceMessageUid = messageReference.getUid();
 
-                Log.d("Setting referenced message (%d, %s) flag to %s", folderId, sourceMessageUid, flag);
+                Log.d(TAG, "Setting referenced message (%d, %s) flag to %s", folderId, sourceMessageUid, flag);
 
-                messagingController.setFlag(account, folderId, sourceMessageUid, flag, true);
+                messagingController.setFlag(accountId, folderId, sourceMessageUid, flag, true);
             }
         }
     }
@@ -1856,7 +1869,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
             changesMadeSinceLastSave = false;
             currentMessageBuilder = null;
 
-            new SaveMessageTask(messagingController, account, internalMessageHandler, message, draftMessageId,
+            new SaveMessageTask(messagingController, account.getId(), internalMessageHandler, message, draftMessageId,
                     plaintextSubject).execute();
             if (finishAfterDraftSaved) {
                 finish();
@@ -1865,7 +1878,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
             }
         } else {
             currentMessageBuilder = null;
-            new SendMessageTask(messagingController, preferences, account, contacts, message,
+            new SendMessageTask(messagingController, account.getId(), contacts, message,
                     draftMessageId, plaintextSubject, relatedMessageReference, relatedFlag).execute();
             finish();
         }
@@ -1882,7 +1895,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
     @Override
     public void onMessageBuildException(MessagingException me) {
         dismissEncryptedMessageProgressIndicator();
-        Log.e(me, "Error sending message");
+        Log.e(TAG, me, "Error sending message");
         Toast.makeText(MessageCompose.this,
                 getString(R.string.send_failed_reason, me.getLocalizedMessage()), Toast.LENGTH_LONG).show();
         sendMessageHasBeenTriggered = false;
@@ -1897,7 +1910,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
         try {
             OpenPgpIntentStarter.startIntentSenderForResult(this, pendingIntent.getIntentSender(), requestCode);
         } catch (SendIntentException e) {
-            Log.e(e, "Error starting pending intent from builder!");
+            Log.e(TAG, e, "Error starting pending intent from builder!");
         }
     }
 
@@ -1906,7 +1919,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
         try {
             OpenPgpIntentStarter.startIntentSenderForResult(this, pendingIntent.getIntentSender(), requestCode);
         } catch (SendIntentException e) {
-            Log.e(e, "Error starting pending intent from builder!");
+            Log.e(TAG, e, "Error starting pending intent from builder!");
         }
     }
 
@@ -1923,7 +1936,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
             } catch (MessagingException e) {
                 // Hm, if we couldn't populate the UI after source reprocessing, let's just delete it?
                 quotedMessagePresenter.showOrHideQuotedText(QuotedTextMode.HIDE);
-                Log.e(e, "Could not re-process source message; deleting quoted text to be safe.");
+                Log.e(TAG, e, "Could not re-process source message; deleting quoted text to be safe.");
             }
             updateMessageFormat();
         } else {
@@ -1989,7 +2002,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
                 requestCode |= REQUEST_MASK_LOADER_HELPER;
                 OpenPgpIntentStarter.startIntentSenderForResult(MessageCompose.this, intentSender, requestCode);
             } catch (SendIntentException e) {
-                Log.e(e, "Irrecoverable error calling PendingIntent!");
+                Log.e(TAG, e, "Irrecoverable error calling PendingIntent!");
             }
 
             return true;
@@ -2032,9 +2045,9 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
             return;
         }
 
-        final List<LegacyAccountDto> accounts = preferences.getAccounts();
+        final List<LegacyAccount> accounts = accountManager.findAll();
         if (accounts.isEmpty()) {
-            Log.w("Can't initialize in-app notifications. No accounts were found.");
+            Log.w(TAG, "Can't initialize in-app notifications. No accounts were found.");
             return;
         }
         final FragmentManager fragmentManager = getSupportFragmentManager();
@@ -2045,12 +2058,12 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
             return;
         }
 
-        final ArrayList<String> uuids = new ArrayList<>();
-        for (LegacyAccountDto legacyAccountDto : accounts) {
-            uuids.add(legacyAccountDto.getUuid());
+        final ArrayList<String> accountIds = new ArrayList<>();
+        for (LegacyAccount legacyAccount : accounts) {
+            accountIds.add(legacyAccount.getId().toString());
         }
         final MessageComposeInAppNotificationFragment inAppNotificationFragment =
-            MessageComposeInAppNotificationFragment.newInstance(uuids);
+            MessageComposeInAppNotificationFragment.newInstance(accountIds);
         fragmentManager
             .beginTransaction()
             .add(R.id.message_compose_in_app_notifications_container, inAppNotificationFragment,
@@ -2062,16 +2075,16 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
     public MessagingListener messagingListener = new SimpleMessagingListener() {
 
         @Override
-        public void messageUidChanged(LegacyAccountDto account, long folderId, String oldUid, String newUid) {
+        public void messageUidChanged(AccountId accountId, long folderId, String oldUid, String newUid) {
             if (relatedMessageReference == null) {
                 return;
             }
 
-            String sourceAccountUuid = relatedMessageReference.getAccountUuid();
+            AccountId sourceAccountId = relatedMessageReference.getAccountId();
             long sourceFolderId = relatedMessageReference.getFolderId();
             String sourceMessageUid = relatedMessageReference.getUid();
 
-            boolean changedMessageIsCurrent = account.getUuid().equals(sourceAccountUuid) &&
+            boolean changedMessageIsCurrent = accountId.equals(sourceAccountId) &&
                     folderId == sourceFolderId &&
                     oldUid.equals(sourceMessageUid);
 

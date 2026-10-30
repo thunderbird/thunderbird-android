@@ -1,3 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    </resources>
+    <string name="setup_archive_folder_dialog_dont_show_again">دیگر این پیام را نشان نده</string>
+    <string name="setup_archive_folder_dialog_email_can_not_be_archived">این ایمیل را نمی‌توان بایگانی کرد</string>
+    <string name="setup_archive_folder_dialog_configure_archive_folder">تنظیم پوشه‌ی بایگانی</string>
+    <string name="setup_archive_folder_dialog_skip_for_now">فعلاً رد شو</string>
+    <string name="setup_archive_folder_dialog_set_archive_folder">انتخاب پوشه‌ی بایگانی</string>
+    <string name="setup_archive_folder_dialog_error_retrieve_folders">متأسفانه هنگام دریافت پوشه‌های حساب مشکلی پیش آمد!</string>
+    <string name="setup_archive_folder_dialog_error_retrieve_folders_detailed_message">جزئیات خطا: %1$s</string>
+    <string name="setup_archive_folder_dialog_create_new_folder">ایجاد پوشه‌ی جدید</string>
+    <string name="setup_archive_folder_dialog_done">انجام شد</string>
+    <string name="setup_archive_folder_dialog_cancel">لغو</string>
+    <string name="setup_archive_folder_dialog_create_and_set_new_folder"><![CDATA[ایجاد و انتخاب پوشه‌ی جدید]]></string>
+    <string name="setup_archive_folder_set_archive_error_account_not_found">حساب مرتبط با شناسه‌ی «%1$s» پیدا نشد</string>
+    <string name="setup_archive_folder_unhandled_error">خطای مدیریت‌نشده: %1$s</string>
+    <string name="setup_archive_folder_create_archive_folder_syncing">در حال همگام‌سازی…</string>
+    <string name="setup_archive_folder_create_archive_folder_local_folder_created">پوشه‌ی محلی ایجاد شد. همگام‌سازی آغاز می‌شود…</string>
+    <string name="setup_archive_folder_create_archive_folder_remote_folder_created">پوشه‌ی راه‌دور ایجاد شد.</string>
+    <string name="setup_archive_folder_create_archive_folder_creating_folder_email_provider">در حال ایجاد پوشه در سرویس‌دهنده‌ی ایمیل…</string>
+    <string name="setup_archive_folder_create_archive_folder_updating_special_folder_rules">در حال به‌روزرسانی قوانین پوشه‌های ویژه…</string>
+    <string name="setup_archive_folder_create_archive_folder_account_not_found">حساب (%1$s) پیدا نشد</string>
+    <string name="setup_archive_folder_create_archive_folder_failed_create_local_folder">ایجاد پوشه‌ی محلی «%1$s» ناموفق بود.</string>
+    <string name="setup_archive_folder_create_archive_folder_failed_sync_folder">همگام‌سازی پوشه‌ی «%1$s» با سرور ناموفق بود. پیام: %2$s</string>
+    <string name="setup_archive_folder_create_archive_folder_error_folder_name_blank">نام پوشه نمی‌تواند خالی باشد</string>
+    <string name="setup_archive_folder_create_archive_folder_invalid_folder_name">نام پوشه‌ی «%1$s» نامعتبر است</string>
+    <string name="message_list_state_new_message_description">جدید</string>
+    <string name="message_list_state_read_message_description">خوانده‌شده</string>
+    <string name="message_list_state_unread_message_description">خوانده‌نشده</string>
+    <string name="message_list_state_active_new_message_description">فعال، جدید</string>
+    <string name="message_list_state_active_read_message_description">فعال، خوانده‌شده</string>
+    <string name="message_list_state_active_unread_message_description">فعال، خوانده‌نشده</string>
+    <string name="message_list_state_selected_new_message_description">انتخاب‌شده، جدید</string>
+    <string name="message_list_state_selected_read_message_description">انتخاب‌شده، خوانده‌شده</string>
+    <string name="message_list_state_selected_unread_message_description">انتخاب‌شده، خوانده‌نشده</string>
+</resources>

@@ -9,6 +9,7 @@ import assertk.assertions.isEqualTo
 import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ConnectionSecurity
 import com.fsck.k9.mail.ServerSettings
+import net.thunderbird.feature.account.AccountIdFactory
 import org.junit.Test
 
 class InMemoryAccountStateRepositoryTest {
@@ -21,7 +22,7 @@ class InMemoryAccountStateRepositoryTest {
 
         assertThat(result).isEqualTo(
             AccountState(
-                uuid = null,
+                id = null,
                 emailAddress = null,
                 incomingServerSettings = null,
                 outgoingServerSettings = null,
@@ -36,7 +37,7 @@ class InMemoryAccountStateRepositoryTest {
     fun `should set state`() {
         val testSubject = InMemoryAccountStateRepository(
             AccountState(
-                uuid = "uuid",
+                id = AccountIdFactory.create(),
                 emailAddress = "emailAddress",
                 incomingServerSettings = INCOMING_SERVER_SETTINGS,
                 outgoingServerSettings = OUTGOING_SERVER_SETTINGS,
@@ -46,7 +47,7 @@ class InMemoryAccountStateRepositoryTest {
             ),
         )
         val newState = AccountState(
-            uuid = "uuid2",
+            id = AccountIdFactory.create(),
             emailAddress = "emailAddress2",
             incomingServerSettings = INCOMING_SERVER_SETTINGS.copy(host = "imap2.example.org"),
             outgoingServerSettings = OUTGOING_SERVER_SETTINGS.copy(host = "smtp2.example.org"),
@@ -130,7 +131,7 @@ class InMemoryAccountStateRepositoryTest {
     fun `should clear state`() {
         val testSubject = InMemoryAccountStateRepository(
             AccountState(
-                uuid = "uuid",
+                id = AccountIdFactory.create(),
                 emailAddress = "emailAddress",
                 incomingServerSettings = INCOMING_SERVER_SETTINGS,
                 outgoingServerSettings = OUTGOING_SERVER_SETTINGS,
@@ -144,7 +145,7 @@ class InMemoryAccountStateRepositoryTest {
 
         assertThat(testSubject.getState()).isEqualTo(
             AccountState(
-                uuid = null,
+                id = null,
                 emailAddress = null,
                 incomingServerSettings = null,
                 outgoingServerSettings = null,

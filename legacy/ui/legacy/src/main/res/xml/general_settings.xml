@@ -606,4 +606,9 @@
 
     </PreferenceScreen>
 
+    <Preference
+        android:icon="@drawable/ic_remote_feature_flag"
+        android:key="remote_feature_flag"
+        android:title="@string/remote_feature_flag_preferences"/>
+
 </PreferenceScreen>

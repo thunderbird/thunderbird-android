@@ -14,6 +14,8 @@ import net.openid.appauth.AuthorizationException.GeneralErrors
 import net.openid.appauth.AuthorizationService
 import net.thunderbird.legacy.logging.Log
 
+private const val TAG = "RealOAuth2TokenProvider"
+
 class RealOAuth2TokenProvider(
     context: Context,
     private val authStateStorage: AuthStateStorage,
@@ -75,7 +77,7 @@ class RealOAuth2TokenProvider(
 
             latch.await(timeoutMillis, TimeUnit.MILLISECONDS)
         } catch (e: Exception) {
-            Log.w(e, "Failed to fetch an access token. Clearing authorization state.")
+            Log.w(TAG, e, "Failed to fetch an access token. Clearing authorization state.")
 
             authStateStorage.updateAuthorizationState(authorizationState = null)
 

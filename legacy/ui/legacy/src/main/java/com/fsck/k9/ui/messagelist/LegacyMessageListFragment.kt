@@ -22,7 +22,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.ComposeView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.core.os.bundleOf
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.core.view.ViewCompat
@@ -62,6 +61,8 @@ import com.fsck.k9.helper.mapToSet
 import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mailstore.LocalStoreProvider
 import com.fsck.k9.search.getLegacyAccounts
+import com.fsck.k9.search.isNewMessages
+import com.fsck.k9.search.isUnified
 import com.fsck.k9.ui.BuildConfig
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.choosefolder.ChooseFolderActivity
@@ -71,6 +72,7 @@ import com.fsck.k9.ui.messagelist.MessageListFragmentBridgeContract.MessageListF
 import com.fsck.k9.ui.messagelist.MessageListFragmentBridgeContract.MessageListFragmentListener.Companion.MAX_PROGRESS
 import com.fsck.k9.ui.messagelist.debug.AuthDebugActions
 import com.fsck.k9.ui.messagelist.item.MessageViewHolder
+import com.fsck.k9.ui.messageview.LastSelectedFolderStore
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.BaseTransientBottomBar.BaseCallback
 import com.google.android.material.snackbar.Snackbar
@@ -86,7 +88,6 @@ import kotlinx.coroutines.launch
 import net.jcip.annotations.GuardedBy
 import net.thunderbird.core.android.account.Expunge
 import net.thunderbird.core.android.account.LegacyAccount
-import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.core.android.account.SortType
 import net.thunderbird.core.android.network.ConnectivityManager
@@ -96,12 +97,14 @@ import net.thunderbird.core.common.mail.Flag
 import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.featureflag.FeatureFlagResult
 import net.thunderbird.core.featureflag.keys.GeneratedFeatureFlagKey
-import net.thunderbird.core.logging.Logger
+import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.components.core.outcome.Outcome
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.display.visualSettings.message.list.DisplayMessageListSettings
 import net.thunderbird.core.preference.interaction.InteractionSettings
 import net.thunderbird.core.ui.theme.api.FeatureThemeProvider
+import net.thunderbird.feature.account.AccountId
+import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.account.avatar.AvatarMonogramCreator
 import net.thunderbird.feature.changelog.internal.RecentChangesViewModel
 import net.thunderbird.feature.mail.folder.api.OutboxFolderManager
@@ -118,7 +121,6 @@ import net.thunderbird.feature.notification.api.ui.host.DisplayInAppNotification
 import net.thunderbird.feature.notification.api.ui.host.visual.SnackbarVisual
 import net.thunderbird.feature.notification.api.ui.style.SnackbarDuration
 import net.thunderbird.feature.search.legacy.LocalMessageSearch
-import net.thunderbird.feature.search.legacy.SearchAccount
 import net.thunderbird.feature.search.legacy.serialization.LocalMessageSearchSerializer
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -164,6 +166,7 @@ class LegacyMessageListFragment :
     private val messagingController: MessagingControllerWrapper by inject()
     private val messagingControllerRegistry: MessagingControllerRegistry by inject()
     private val accountManager: LegacyAccountManager by inject()
+    private val lastSelectedFolderStore: LastSelectedFolderStore by inject()
     private val connectivityManager: ConnectivityManager by inject()
     private val localStoreProvider: LocalStoreProvider by inject()
 
@@ -212,7 +215,7 @@ class LegacyMessageListFragment :
     private var initialSearchViewQuery: String? = null
     private var initialSearchViewIconified = true
 
-    private lateinit var accountUuids: Array<String>
+    private lateinit var accountIds: Array<AccountId>
     private var accounts: List<LegacyAccount> = emptyList()
 
     private var account: LegacyAccount? = null
@@ -248,11 +251,11 @@ class LegacyMessageListFragment :
     private var isRemoteSearch = false
     private var initialMessageListLoad = true
 
-    private val isUnifiedFolders: Boolean
-        get() = localSearch.id == SearchAccount.UNIFIED_FOLDERS
+    private val isUnifiedFoldersView: Boolean
+        get() = localSearch.isUnified
 
     private val isNewMessagesView: Boolean
-        get() = localSearch.id == SearchAccount.NEW_MESSAGES
+        get() = localSearch.isNewMessages
 
     /**
      * `true` after [.onCreate] was executed. Used in [.updateTitle] to
@@ -290,7 +293,7 @@ class LegacyMessageListFragment :
     }
 
     override val isShowAccountIndicator: Boolean
-        get() = isUnifiedFolders || !isSingleAccountMode
+        get() = isUnifiedFoldersView || !isSingleAccountMode
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -377,11 +380,11 @@ class LegacyMessageListFragment :
             isSingleAccountMode = true
             val singleAccount = searchAccounts[0]
             account = singleAccount
-            accountUuids = arrayOf(singleAccount.uuid)
+            accountIds = arrayOf(singleAccount.id)
         } else {
             isSingleAccountMode = false
             account = null
-            accountUuids = searchAccounts.map { it.uuid }.toTypedArray()
+            accountIds = searchAccounts.map { it.id }.toTypedArray()
         }
 
         isSingleFolderMode = false
@@ -754,7 +757,7 @@ class LegacyMessageListFragment :
 
     private fun setWindowTitle() {
         val title = when {
-            isUnifiedFolders -> getString(R.string.integrated_inbox_title)
+            isUnifiedFoldersView -> getString(R.string.integrated_inbox_title)
             isNewMessagesView -> getString(R.string.new_messages_title)
             isManualSearch -> getString(R.string.search_results)
             isThreadDisplay -> threadTitle ?: ""
@@ -763,7 +766,7 @@ class LegacyMessageListFragment :
         }
 
         val subtitle = account.let { account ->
-            if (account == null || isUnifiedFolders || accountManager.getAccounts().size == 1) {
+            if (account == null || isUnifiedFoldersView || accountManager.findAll().size == 1) {
                 null
             } else {
                 account.profile.name
@@ -828,7 +831,7 @@ class LegacyMessageListFragment :
         } else {
             lastMessageClick = clickTime
             if (showingThreadedList && messageListItem.threadCount > 1) {
-                fragmentListener.showThread(messageListItem.account, messageListItem.threadRoot)
+                fragmentListener.showThread(messageListItem.account.id, messageListItem.threadRoot)
             } else {
                 openMessage(messageListItem.messageReference)
             }
@@ -889,7 +892,7 @@ class LegacyMessageListFragment :
         )
 
     private fun getFolderInfoHolder(account: LegacyAccount, folderId: Long): FolderInfoHolder {
-        val localStore = localStoreProvider.getInstanceByLegacyAccount(account)
+        val localStore = localStoreProvider.getInstance(account.id)
         val localFolder = localStore.getFolder(folderId)
         localFolder.open()
         return FolderInfoHolder(folderNameFormatter, outboxFolderManager, localFolder, account)
@@ -921,7 +924,7 @@ class LegacyMessageListFragment :
         if (!isSingleAccountMode) {
             fragmentListener.onCompose(null)
         } else {
-            fragmentListener.onCompose(account)
+            fragmentListener.onCompose(account?.id)
         }
     }
 
@@ -972,13 +975,16 @@ class LegacyMessageListFragment :
 
             this.sortDateAscending = newSortAscendingMap[SortType.SORT_DATE] ?: SortType.SORT_DATE.isDefaultAscending
 
-            val updatedAccount = account.copy(
-                sortType = sortType,
-                sortAscending = newSortAscendingMap,
-            )
             lifecycleScope.launch(Dispatchers.IO) {
-                accountManager.saveAccount(updatedAccount)
-                this@LegacyMessageListFragment.account = updatedAccount
+                val updatedAccount = accountManager.updateSync(account.id) { latestAccount ->
+                    latestAccount.copy(
+                        sortType = sortType,
+                        sortAscending = latestAccount.sortAscending + (sortType to resolvedAscending),
+                    )
+                }
+                if (updatedAccount != null) {
+                    this@LegacyMessageListFragment.account = updatedAccount
+                }
             }
         } else {
             K9.sortType = this.sortType
@@ -1177,7 +1183,7 @@ class LegacyMessageListFragment :
 
     private fun prepareSortMenu(menu: Menu) {
         menu.findItem(R.id.set_sort).isVisible = true
-        
+
         menu.findItem(R.id.set_sort_date).setTitle(R.string.sort_by_date)
         menu.findItem(R.id.set_sort_arrival).setTitle(R.string.sort_by_arrival)
         menu.findItem(R.id.set_sort_subject).setTitle(R.string.sort_by_subject)
@@ -1271,7 +1277,7 @@ class LegacyMessageListFragment :
     }
 
     private fun onDebugInvalidateAccessTokenServer() {
-        val uuid = account?.uuid
+        val uuid = account?.id
         if (!BuildConfig.DEBUG || uuid == null) {
             Toast.makeText(
                 requireContext(),
@@ -1322,8 +1328,8 @@ class LegacyMessageListFragment :
     }
 
     private fun onDebugInvalidateAccessTokenLocal() {
-        val uuid = account?.uuid
-        if (!BuildConfig.DEBUG || uuid == null) {
+        val accountId = account?.id
+        if (!BuildConfig.DEBUG || accountId == null) {
             Toast.makeText(
                 requireContext(),
                 R.string.debug_invalidate_access_token_unavailable,
@@ -1331,7 +1337,7 @@ class LegacyMessageListFragment :
             ).show()
             return
         }
-        when (val outcome = authDebugActions.invalidateAccessTokenLocal(uuid)) {
+        when (val outcome = authDebugActions.invalidateAccessTokenLocal(accountId)) {
             is Outcome.Success -> {
                 Toast.makeText(
                     requireContext(),
@@ -1359,12 +1365,12 @@ class LegacyMessageListFragment :
     }
 
     private fun onDebugForceAuthFailure() {
-        val uuid = account?.uuid
-        if (!BuildConfig.DEBUG || uuid == null) {
+        val accountId = account?.id
+        if (!BuildConfig.DEBUG || accountId == null) {
             Toast.makeText(requireContext(), R.string.debug_force_auth_failure_unavailable, Toast.LENGTH_SHORT).show()
             return
         }
-        when (val outcome = authDebugActions.forceAuthFailure(uuid)) {
+        when (val outcome = authDebugActions.forceAuthFailure(accountId)) {
             is Outcome.Success -> {
                 Toast.makeText(requireContext(), R.string.debug_force_auth_failure_done, Toast.LENGTH_SHORT).show()
             }
@@ -1572,8 +1578,7 @@ class LegacyMessageListFragment :
         displayFolderChoice(
             operation = FolderOperation.MOVE,
             sourceFolderId = folderId,
-            accountUuid = messages.first().accountUuid,
-            lastSelectedFolderId = null,
+            accountId = messages.first().accountId,
             messages = messages,
         )
     }
@@ -1594,8 +1599,7 @@ class LegacyMessageListFragment :
         displayFolderChoice(
             operation = FolderOperation.COPY,
             sourceFolderId = folderId,
-            accountUuid = messages.first().accountUuid,
-            lastSelectedFolderId = null,
+            accountId = messages.first().accountId,
             messages = messages,
         )
     }
@@ -1603,17 +1607,15 @@ class LegacyMessageListFragment :
     private fun displayFolderChoice(
         operation: FolderOperation,
         sourceFolderId: Long?,
-        accountUuid: String,
-        lastSelectedFolderId: Long?,
+        accountId: AccountId,
         messages: List<MessageReference>,
     ) {
         // Remember the selected messages so they are available in the registerForActivityResult() callbacks
         activeMessages = messages
 
         val input = ChooseFolderResultContract.Input(
-            accountUuid = accountUuid,
+            accountId = accountId,
             currentFolderId = sourceFolderId,
-            scrollToFolderId = lastSelectedFolderId,
         )
         when (operation) {
             FolderOperation.COPY -> chooseFolderForCopyLauncher.launch(input)
@@ -1633,9 +1635,7 @@ class LegacyMessageListFragment :
         if (destinationFolderId != -1L) {
             activeMessages = null
 
-            if (messages.isNotEmpty()) {
-                setLastSelectedFolder(messages, destinationFolderId)
-            }
+            setLastSelectedFolder(messages, destinationFolderId)
 
             action(destinationFolderId, messages)
         }
@@ -1643,12 +1643,7 @@ class LegacyMessageListFragment :
 
     private fun setLastSelectedFolder(messages: List<MessageReference>, folderId: Long) {
         val firstMessage = messages.firstOrNull() ?: return
-        val account = accountManager.getAccount(firstMessage.accountUuid) ?: return
-        accountManager.saveAccount(
-            account.copy(
-                lastSelectedFolderId = folderId,
-            ),
-        )
+        lastSelectedFolderStore.set(firstMessage.accountId, folderId)
     }
 
     private fun onArchive(message: MessageReference) {
@@ -1668,7 +1663,7 @@ class LegacyMessageListFragment :
     private fun groupMessagesByAccount(
         messages: List<MessageReference>,
     ): Map<LegacyAccount, List<MessageReference>> {
-        return messages.groupBy { accountManager.getAccount(it.accountUuid)!! }
+        return messages.groupBy { accountManager.findById(it.accountId)!! }
     }
 
     private fun onSpam(messages: List<MessageReference>, count: Int) {
@@ -1692,7 +1687,7 @@ class LegacyMessageListFragment :
     private fun checkCopyOrMovePossible(messages: List<MessageReference>, operation: FolderOperation): Boolean {
         if (messages.isEmpty()) return false
 
-        val account = accountManager.getAccount(messages.first().accountUuid) ?: return false
+        val account = accountManager.findById(messages.first().accountId) ?: return false
         if (operation == FolderOperation.MOVE &&
             !messagingController.isMoveCapable(account.id) ||
             operation == FolderOperation.COPY &&
@@ -1736,7 +1731,7 @@ class LegacyMessageListFragment :
             .groupBy { it.folderId }
 
         for ((folderId, messagesInFolder) in folderMap) {
-            val account = accountManager.getAccount(messagesInFolder.first().accountUuid)
+            val account = accountManager.findById(messagesInFolder.first().accountId)
             if (account == null) {
                 logger.debug(logTag) {
                     "Account for message ${messagesInFolder.first()} not found, skipping copy/move operation"
@@ -1852,8 +1847,8 @@ class LegacyMessageListFragment :
         } else if (allAccounts) {
             messagingController.checkMail(null, true, true, false, activityListener)
         } else {
-            for (accountUuid in accountUuids) {
-                val account = accountManager.getAccount(accountUuid)
+            for (accountId in accountIds) {
+                val account = accountManager.findById(accountId)
                 account?.id?.let { messagingController.checkMail(it, true, true, false, activityListener) }
             }
         }
@@ -2013,7 +2008,7 @@ class LegacyMessageListFragment :
 
     fun onSearchRequested(query: String): Boolean {
         val folderId = currentFolder?.databaseId
-        return fragmentListener.startSearch(query, account, folderId)
+        return fragmentListener.startSearch(query, account?.id, folderId)
     }
 
     private fun setMessageList(messageListInfo: MessageListInfo) {
@@ -2064,6 +2059,10 @@ class LegacyMessageListFragment :
 
         invalidateMenu()
 
+        if (initialMessageListLoad) {
+            // Tells the system the message list is shown, so startup benchmarks can measure the time to full display.
+            activity?.reportFullyDrawn()
+        }
         initialMessageListLoad = false
 
         currentFolder?.let { currentFolder ->
@@ -2257,7 +2256,7 @@ class LegacyMessageListFragment :
                         .show()
 
                 SwipeAction.ArchiveSetupArchiveFolder -> setupArchiveFolderDialogFragmentFactory.show(
-                    accountUuid = item.account.uuid,
+                    accountUuid = item.account.id.toString(),
                     fragmentManager = parentFragmentManager,
                 )
 
@@ -2311,10 +2310,10 @@ class LegacyMessageListFragment :
     }
 
     override fun filterInAppNotificationEvents(notification: InAppNotification): Boolean {
-        val accountUuid = notification.accountUuid
+        val accountId = notification.accountId
         return notification !is SentFolderNotFoundNotification &&
-            accountUuid != null &&
-            accountUuid in accountUuids
+            accountId != null &&
+            accountId in accountIds
     }
 
     override fun onNotificationActionClicked(action: NotificationAction) = onNotificationActionClick(action)
@@ -2324,13 +2323,13 @@ class LegacyMessageListFragment :
             is NotificationAction.UpdateIncomingServerSettings ->
                 FeatureLauncherActivity.launch(
                     context = requireContext(),
-                    target = FeatureLauncherTarget.AccountEditIncomingSettings(action.accountUuid),
+                    target = FeatureLauncherTarget.AccountEditIncomingSettings(action.accountId),
                 )
 
             is NotificationAction.UpdateOutgoingServerSettings ->
                 FeatureLauncherActivity.launch(
                     context = requireContext(),
-                    target = FeatureLauncherTarget.AccountEditOutgoingSettings(action.accountUuid),
+                    target = FeatureLauncherTarget.AccountEditOutgoingSettings(action.accountId),
                 )
 
             is NotificationAction.OpenNotificationCentre ->
@@ -2405,8 +2404,8 @@ class LegacyMessageListFragment :
             handler.refreshTitle()
         }
 
-        override fun synchronizeMailboxStarted(account: LegacyAccountDto, folderId: Long) {
-            if (updateForMe(account, folderId)) {
+        override fun synchronizeMailboxStarted(accountId: AccountId, folderId: Long) {
+            if (updateForMe(accountId, folderId)) {
                 handler.progress(true)
                 handler.folderLoading(folderId, true)
 
@@ -2420,7 +2419,7 @@ class LegacyMessageListFragment :
         }
 
         override fun synchronizeMailboxHeadersProgress(
-            account: LegacyAccountDto,
+            accountId: AccountId,
             folderServerId: String,
             completed: Int,
             total: Int,
@@ -2434,7 +2433,7 @@ class LegacyMessageListFragment :
         }
 
         override fun synchronizeMailboxHeadersFinished(
-            account: LegacyAccountDto,
+            accountId: AccountId,
             folderServerId: String,
             total: Int,
             completed: Int,
@@ -2447,7 +2446,7 @@ class LegacyMessageListFragment :
             informUserOfStatus()
         }
 
-        override fun synchronizeMailboxProgress(account: LegacyAccountDto, folderId: Long, completed: Int, total: Int) {
+        override fun synchronizeMailboxProgress(accountId: AccountId, folderId: Long, completed: Int, total: Int) {
             synchronized(lock) {
                 folderCompleted = completed
                 folderTotal = total
@@ -2456,26 +2455,26 @@ class LegacyMessageListFragment :
             informUserOfStatus()
         }
 
-        override fun synchronizeMailboxFinished(account: LegacyAccountDto, folderId: Long) {
-            if (updateForMe(account, folderId)) {
+        override fun synchronizeMailboxFinished(accountId: AccountId, folderId: Long) {
+            if (updateForMe(accountId, folderId)) {
                 handler.progress(false)
                 handler.folderLoading(folderId, false)
             }
         }
 
-        override fun synchronizeMailboxFailed(account: LegacyAccountDto, folderId: Long, message: String) {
-            if (updateForMe(account, folderId)) {
+        override fun synchronizeMailboxFailed(accountId: AccountId, folderId: Long, message: String) {
+            if (updateForMe(accountId, folderId)) {
                 handler.progress(false)
                 handler.folderLoading(folderId, false)
             }
         }
 
-        override fun checkMailFinished(context: Context?, account: LegacyAccountDto?) {
+        override fun checkMailFinished(context: Context?, accountId: AccountId?) {
             handler.progress(false)
         }
 
-        private fun updateForMe(account: LegacyAccountDto?, folderId: Long): Boolean {
-            if (account == null || account.uuid !in accountUuids) return false
+        private fun updateForMe(accountId: AccountId?, folderId: Long): Boolean {
+            if (accountId == null || accountId !in accountIds) return false
 
             val folderIds = localSearch.folderIds
             return folderIds.isEmpty() || folderId in folderIds
@@ -2513,7 +2512,7 @@ class LegacyMessageListFragment :
             // we don't support cross account actions atm
             if (!isSingleAccountMode) {
                 val accounts = accountUuidsForSelected.mapNotNull { accountUuid ->
-                    accountManager.getAccount(accountUuid)
+                    accountManager.findById(AccountIdFactory.of(accountUuid))
                 }
 
                 menu.findItem(R.id.move).isVisible = true
@@ -2532,7 +2531,7 @@ class LegacyMessageListFragment :
         }
 
         private val accountUuidsForSelected: Set<String>
-            get() = adapter.selectedMessages.mapToSet { it.account.uuid }
+            get() = adapter.selectedMessages.mapToSet { it.account.id.toString() }
 
         override fun onDestroyActionMode(mode: ActionMode) {
             actionMode = null
@@ -2712,11 +2711,11 @@ class LegacyMessageListFragment :
             val searchBytes = LocalMessageSearchSerializer.serialize(search)
 
             return LegacyMessageListFragment().apply {
-                arguments = bundleOf(
-                    ARG_SEARCH to searchBytes,
-                    ARG_IS_THREAD_DISPLAY to isThreadDisplay,
-                    ARG_THREADED_LIST to threadedList,
-                )
+                arguments = Bundle().apply {
+                    putByteArray(ARG_SEARCH, searchBytes)
+                    putBoolean(ARG_IS_THREAD_DISPLAY, isThreadDisplay)
+                    putBoolean(ARG_THREADED_LIST, threadedList)
+                }
             }
         }
     }

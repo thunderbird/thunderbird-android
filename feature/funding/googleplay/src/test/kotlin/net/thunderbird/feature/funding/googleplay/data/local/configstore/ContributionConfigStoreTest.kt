@@ -5,11 +5,11 @@ import assertk.assertions.isEqualTo
 import assertk.assertions.isNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
+import net.thunderbird.components.core.logging.testing.TestLogger
 import net.thunderbird.core.configstore.ConfigId
 import net.thunderbird.core.configstore.backend.ConfigBackend
 import net.thunderbird.core.configstore.backend.ConfigBackendProvider
 import net.thunderbird.core.configstore.testing.TestConfigBackend
-import net.thunderbird.core.logging.testing.TestLogger
 import org.junit.Test
 
 class ContributionConfigStoreTest {

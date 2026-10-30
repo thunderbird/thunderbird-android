@@ -5,7 +5,7 @@ import assertk.assertions.isNotSameInstanceAs
 import assertk.assertions.isSameInstanceAs
 import kotlin.test.Test
 import kotlinx.coroutines.test.runTest
-import net.thunderbird.app.common.account.data.FakeLegacyAccountManager
+import net.thunderbird.core.android.account.fake.FakeLegacyAccountManager
 import net.thunderbird.core.common.mail.Protocols
 
 class RemoteFolderCreatorResolverTest {
@@ -25,7 +25,7 @@ class RemoteFolderCreatorResolverTest {
         val account = FakeData.legacyAccount.copy(
             incomingServerSettings = FakeData.legacyAccount.incomingServerSettings.copy(type = Protocols.IMAP),
         )
-        accountManager.update(account)
+        accountManager.create(account)
 
         // Act
         val result = router.create(account.id)
@@ -40,7 +40,7 @@ class RemoteFolderCreatorResolverTest {
         val account = FakeData.legacyAccount.copy(
             incomingServerSettings = FakeData.legacyAccount.incomingServerSettings.copy(type = Protocols.POP3),
         )
-        accountManager.update(account)
+        accountManager.create(account)
 
         // Act
         val result = router.create(account.id)

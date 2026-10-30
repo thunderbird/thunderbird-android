@@ -6,11 +6,13 @@ import net.thunderbird.core.common.net.toHostname
 import net.thunderbird.core.common.net.toPort
 import net.thunderbird.legacy.logging.Log
 
+private const val TAG = "QrCodePayloadValidator"
+
 @Suppress("TooManyFunctions")
 internal class QrCodePayloadValidator {
     fun isValid(data: QrCodeData): Boolean {
         if (data.version != 1) {
-            Log.d("Unsupported version: %s", data.version)
+            Log.d(TAG, "Unsupported version: %s", data.version)
             return false
         }
 
@@ -18,7 +20,7 @@ internal class QrCodePayloadValidator {
             validateData(data)
             true
         } catch (e: IllegalArgumentException) {
-            Log.d(e, "QR code payload failed validation")
+            Log.d(TAG, e, "QR code payload failed validation")
             false
         }
     }

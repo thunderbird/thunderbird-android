@@ -8,14 +8,14 @@ import com.fsck.k9.helper.ContactNameProvider
 import com.fsck.k9.mail.Address
 import com.fsck.k9.ui.R
 import net.thunderbird.core.android.account.Identity
-import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.preference.display.visualSettings.message.list.MessageListPreferencesManager
 
 /**
  * Get the display name for a recipient to be shown in the message view screen.
  */
 internal interface MessageViewRecipientFormatter {
-    fun getDisplayName(address: Address, account: LegacyAccountDto): CharSequence
+    fun getDisplayName(address: Address, account: LegacyAccount): CharSequence
 }
 
 internal class RealMessageViewRecipientFormatter(
@@ -25,7 +25,7 @@ internal class RealMessageViewRecipientFormatter(
     private val contactNameColor: Int?,
     private val meText: String,
 ) : MessageViewRecipientFormatter {
-    override fun getDisplayName(address: Address, account: LegacyAccountDto): CharSequence {
+    override fun getDisplayName(address: Address, account: LegacyAccount): CharSequence {
         val identity = account.findIdentity(address)
         if (identity != null) {
             return getIdentityName(identity, account)
@@ -40,7 +40,7 @@ internal class RealMessageViewRecipientFormatter(
         }
     }
 
-    private fun getIdentityName(identity: Identity, account: LegacyAccountDto): String {
+    private fun getIdentityName(identity: Identity, account: LegacyAccount): String {
         return if (account.identities.size == 1) {
             meText
         } else {

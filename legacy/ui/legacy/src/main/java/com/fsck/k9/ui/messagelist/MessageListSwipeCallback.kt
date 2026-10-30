@@ -104,7 +104,7 @@ class MessageListSwipeCallback(
         get() {
             val swipeActions = this@MessageListSwipeCallback.swipeActions
             return requireNotNull(swipeActions.value[account.id]) {
-                "Could not find swipe actions for account ${account.uuid}. swipeActions = $swipeActions"
+                "Could not find swipe actions for account ${account.id}. swipeActions = $swipeActions"
             }
         }
 

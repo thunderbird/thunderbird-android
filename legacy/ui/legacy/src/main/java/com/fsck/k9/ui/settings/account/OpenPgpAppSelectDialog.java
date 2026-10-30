@@ -23,18 +23,22 @@ import android.widget.ListAdapter;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
-import net.thunderbird.core.android.account.LegacyAccountDto;
-import com.fsck.k9.Preferences;
+import app.k9mail.legacy.di.DI;
+import net.thunderbird.core.android.account.LegacyAccount;
 import com.fsck.k9.ui.R;
 import com.fsck.k9.ui.base.BaseActivity;
 import com.fsck.k9.ui.base.ThemeType;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import net.thunderbird.core.android.account.LegacyAccountManager;
+import net.thunderbird.feature.account.AccountIdFactory;
 import org.openintents.openpgp.util.OpenPgpApi;
 import org.openintents.openpgp.util.OpenPgpProviderUtil;
 import net.thunderbird.legacy.logging.Log;
 
 
 public class OpenPgpAppSelectDialog extends BaseActivity {
+    private static final String TAG = "OpenPgpAppSelectDialog";
+
     private static final String EXTRA_ACCOUNT = "account";
 
     private static final String OPENKEYCHAIN_PACKAGE = "org.sufficientlysecure.keychain";
@@ -47,12 +51,13 @@ public class OpenPgpAppSelectDialog extends BaseActivity {
     private static final Intent MARKET_INTENT_FALLBACK = new Intent(Intent.ACTION_VIEW, Uri.parse(
             String.format("https://play.google.com/store/apps/details?id=%s", OPENKEYCHAIN_PACKAGE)));
 
+    private LegacyAccountManager accountManager = DI.get(LegacyAccountManager.class);
 
-    private LegacyAccountDto account;
+    private LegacyAccount account;
 
-    public static void startOpenPgpChooserActivity(Context context, LegacyAccountDto account) {
+    public static void startOpenPgpChooserActivity(Context context, LegacyAccount account) {
         Intent i = new Intent(context, OpenPgpAppSelectDialog.class);
-        i.putExtra(EXTRA_ACCOUNT, account.getUuid());
+        i.putExtra(EXTRA_ACCOUNT, account.getId().toString());
         context.startActivity(i);
     }
 
@@ -65,7 +70,12 @@ public class OpenPgpAppSelectDialog extends BaseActivity {
         super.onCreate(savedInstanceState);
 
         String accountUuid = getIntent().getStringExtra(EXTRA_ACCOUNT);
-        account = Preferences.getPreferences().getAccount(accountUuid);
+        if (accountUuid == null) {
+            Log.e(TAG, "Account UUID is null");
+            finish();
+        } else {
+            account = accountManager.findById(AccountIdFactory.INSTANCE.of(accountUuid));
+        }
     }
 
     @Override
@@ -76,7 +86,7 @@ public class OpenPgpAppSelectDialog extends BaseActivity {
         if (openPgpProviderPackages.isEmpty()) {
             showOpenKeychainInfoFragment();
         } else if (openPgpProviderPackages.size() == 1) {
-            Log.d("Only one OpenPGP provider - just choosing that one!");
+            Log.d(TAG, "Only one OpenPGP provider - just choosing that one!");
             persistOpenPgpProviderSetting(openPgpProviderPackages.get(0));
             finish();
         } else {
@@ -282,8 +292,13 @@ public class OpenPgpAppSelectDialog extends BaseActivity {
     }
 
     private void persistOpenPgpProviderSetting(String selectedPackage) {
-        account.setOpenPgpProvider(selectedPackage);
-        Preferences.getPreferences().saveAccount(account);
+        LegacyAccount updatedAccount = accountManager.updateSync(
+            account.getId(),
+            latestAccount -> latestAccount.updateOpenPgpProvider(selectedPackage)
+        );
+        if (updatedAccount != null) {
+            account = updatedAccount;
+        }
     }
 
     private static class OpenPgpProviderEntry {

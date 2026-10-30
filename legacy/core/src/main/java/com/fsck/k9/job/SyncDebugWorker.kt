@@ -3,19 +3,21 @@ package com.fsck.k9.job
 import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import com.eygraber.uri.toKmpUri
-import java.io.IOException
-import net.thunderbird.core.logging.Logger
-import net.thunderbird.core.logging.composite.CompositeLogSink
-import net.thunderbird.core.logging.file.FileLogSink
+import com.eygraber.uri.Uri
+import kotlinx.coroutines.CancellationException
+import net.thunderbird.components.core.logging.Logger
+import net.thunderbird.core.logging.DebugLogConfigurator
+import net.thunderbird.core.logging.SyncDebugLogExporter
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.update
+
+private const val TAG = "SyncDebugWorker"
 
 class SyncDebugWorker(
     context: Context,
     val baseLogger: Logger,
-    val fileLogSink: FileLogSink,
-    val syncDebugCompositeSink: CompositeLogSink,
+    private val logExporter: SyncDebugLogExporter,
+    private val debugLogConfigurator: DebugLogConfigurator,
     parameters: WorkerParameters,
     val generalSettingsManager: GeneralSettingsManager,
 ) : CoroutineWorker(context, parameters) {
@@ -26,17 +28,19 @@ class SyncDebugWorker(
             if (uriString == null) {
                 Result.failure()
             } else {
-                fileLogSink.export(uriString.toKmpUri())
+                logExporter.export(Uri.parse(uriString))
                 Result.success()
             }
-        } catch (e: IOException) {
-            baseLogger.error(message = { "Failed to export log" }, throwable = e)
+        } catch (e: CancellationException) {
+            throw e
+        } catch (@Suppress("TooGenericExceptionCaught") e: Exception) {
+            baseLogger.error(tag = TAG, message = { "Failed to export log" }, throwable = e)
             Result.failure()
-        }
-
-        syncDebugCompositeSink.manager.remove(fileLogSink)
-        generalSettingsManager.update { settings ->
-            settings.copy(debugging = settings.debugging.copy(isSyncLoggingEnabled = false))
+        } finally {
+            debugLogConfigurator.updateSyncLogging(false)
+            generalSettingsManager.update { settings ->
+                settings.copy(debugging = settings.debugging.copy(isSyncLoggingEnabled = false))
+            }
         }
 
         return result

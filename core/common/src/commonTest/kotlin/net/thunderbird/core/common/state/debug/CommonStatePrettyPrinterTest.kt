@@ -12,12 +12,12 @@ import kotlin.time.Clock
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 import kotlin.time.Instant
+import net.thunderbird.components.core.logging.LogLevel
+import net.thunderbird.components.core.logging.testing.TestLogger
 import net.thunderbird.core.common.state.StateMachine
 import net.thunderbird.core.common.state.debug.StatePrettyPrinterVocabulary.STATE_HISTORY_DUMP_BEGIN
 import net.thunderbird.core.common.state.debug.StatePrettyPrinterVocabulary.STATE_HISTORY_DUMP_END
 import net.thunderbird.core.common.state.debug.StatePrettyPrinterVocabulary.STATE_HISTORY_STATE_SEPARATOR
-import net.thunderbird.core.logging.LogLevel
-import net.thunderbird.core.logging.testing.TestLogger
 import org.junit.Test
 
 class CommonStatePrettyPrinterTest {

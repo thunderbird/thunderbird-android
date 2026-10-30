@@ -14,7 +14,6 @@ import net.thunderbird.backend.api.BackendStorageFactory
 import net.thunderbird.backend.api.folder.RemoteFolderCreationOutcome
 import net.thunderbird.backend.api.folder.RemoteFolderCreator
 import net.thunderbird.components.core.outcome.Outcome
-import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.core.common.exception.MessagingException
 import net.thunderbird.feature.account.AccountId
@@ -41,8 +40,8 @@ internal class CreateArchiveFolder(
             return@flow
         }
 
-        val account = withContext(ioDispatcher) {
-            accountManager.getById(accountId).firstOrNull()
+        withContext(ioDispatcher) {
+            accountManager.observeById(accountId).firstOrNull()
         } ?: run {
             emit(Outcome.failure(CreateArchiveFolderOutcome.Error.AccountNotFound))
             return@flow
@@ -89,7 +88,6 @@ internal class CreateArchiveFolder(
                     is Outcome.Success<RemoteFolderCreationOutcome.Success> -> handleRemoteFolderCreationSuccess(
                         localFolderId = folderId,
                         accountId = accountId,
-                        account = account,
                         emit = ::emit,
                     )
                 }
@@ -102,7 +100,6 @@ internal class CreateArchiveFolder(
     private suspend fun handleRemoteFolderCreationSuccess(
         localFolderId: Long,
         accountId: AccountId,
-        account: LegacyAccount,
         emit: suspend (Outcome<CreateArchiveFolderOutcome.Success, CreateArchiveFolderOutcome.Error>) -> Unit,
     ) {
         val specialFolderUpdater = specialFolderUpdaterFactory.create(accountId)
@@ -113,8 +110,8 @@ internal class CreateArchiveFolder(
                 folderId = localFolderId,
                 selection = SpecialFolderSelection.MANUAL,
             )
+            // The special folder updater saves the account; saving the copy read earlier would undo that
             specialFolderUpdater.updateSpecialFolders()
-            accountManager.saveAccount(account)
         }
         emit(Outcome.success(CreateArchiveFolderOutcome.Success.Created))
     }

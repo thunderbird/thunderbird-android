@@ -6,17 +6,16 @@ import net.thunderbird.backend.imap.ImapRemoteFolderCreatorFactory
 import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.core.common.mail.Protocols
 import net.thunderbird.feature.account.AccountId
-import net.thunderbird.feature.mail.account.api.BaseAccount
 
 /**
- * Resolves the correct [RemoteFolderCreator] implementation based on the [BaseAccount] type.
+ * Resolves the correct [RemoteFolderCreator] implementation based on the account's incoming server type.
  */
 class RemoteFolderCreatorResolver(
     private val accountManager: LegacyAccountManager,
     private val imapFactory: ImapRemoteFolderCreatorFactory,
 ) : RemoteFolderCreator.Factory {
     override suspend fun create(accountId: AccountId): RemoteFolderCreator {
-        val account = accountManager.getById(accountId).firstOrNull()
+        val account = accountManager.observeById(accountId).firstOrNull()
             ?: error("Account not found: $accountId")
 
         return when (account.incomingServerSettings.type) {

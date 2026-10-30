@@ -12,6 +12,8 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 import net.thunderbird.components.core.outcome.Outcome
 import net.thunderbird.legacy.logging.Log
 
+private const val TAG = "BiometricAuthenticator"
+
 /**
  * An [Authenticator] implementation that uses Android's BiometricPrompt to authenticate the user.
  *
@@ -63,7 +65,7 @@ class BiometricAuthenticator(
             try {
                 BiometricPrompt(activity, executor, authenticationCallback).authenticate(promptInfo)
             } catch (e: Exception) {
-                Log.e("BiometricAuthenticator", "Failed to start biometric authentication", e)
+                Log.e(TAG, "BiometricAuthenticator", "Failed to start biometric authentication", e)
                 if (continuation.isActive) continuation.resume(Outcome.Failure(AuthenticationError.UnableToStart))
             }
 

@@ -78,13 +78,13 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
-import net.thunderbird.core.android.account.LegacyAccountDto
-import net.thunderbird.core.android.account.LegacyAccountDtoManager
+import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.core.common.mail.Flag
 import net.thunderbird.core.common.provider.AppNameProvider
 import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.featureflag.keys.GeneratedFeatureFlagKey
-import net.thunderbird.core.logging.Logger
+import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.interaction.InteractionSettings
 import net.thunderbird.core.ui.contract.mvi.observe
@@ -107,6 +107,8 @@ import org.koin.compose.koinInject
 import org.openintents.openpgp.util.OpenPgpIntentStarter
 import net.thunderbird.feature.mail.message.reader.api.R as MessageReaderR
 
+private const val TAG = "MessageViewFragment"
+
 @Suppress("LargeClass", "TooManyFunctions")
 class MessageViewFragment :
     Fragment(),
@@ -117,7 +119,8 @@ class MessageViewFragment :
     private val themeManager: ThemeManager by inject()
     private val themeProvider: FeatureThemeProvider by inject()
     private val messageLoaderHelperFactory: MessageLoaderHelperFactory by inject()
-    private val accountManager: LegacyAccountDtoManager by inject()
+    private val accountManager: LegacyAccountManager by inject()
+    private val lastSelectedFolderStore: LastSelectedFolderStore by inject()
     private val messagingController: MessagingController by inject()
     private val attachmentLoadingController: AttachmentLoadingController by inject()
     private val shareIntentBuilder: ShareIntentBuilder by inject()
@@ -127,7 +130,7 @@ class MessageViewFragment :
     private val appNameProvider: AppNameProvider by inject()
     private val messageReaderViewModel: MessageReaderViewContract.ViewModel<Part> by viewModel()
     private val logger: Logger by inject()
-    private val replayAllStrategy: ReplyActionStrategy<LegacyAccountDto, Message> by inject()
+    private val replayAllStrategy: ReplyActionStrategy<LegacyAccount, Message> by inject()
 
     private val createDocumentLauncher: ActivityResultLauncher<CreateDocumentResultContract.Input> =
         registerForActivityResult(CreateDocumentResultContract()) { documentUri ->
@@ -166,7 +169,7 @@ class MessageViewFragment :
     private var destinationFolderId: Long? = null
     private lateinit var fragmentListener: MessageViewFragmentListener
 
-    private lateinit var account: LegacyAccountDto
+    private lateinit var account: LegacyAccount
     lateinit var messageReference: MessageReference
     private var showAccountIndicator: Boolean = true
 
@@ -331,10 +334,10 @@ class MessageViewFragment :
     }
 
     private fun loadMessage(messageReference: MessageReference) {
-        Log.d("MessageViewFragment displaying message %s", messageReference)
+        Log.d(TAG, "MessageViewFragment displaying message %s", messageReference)
 
-        account = accountManager.getAccount(messageReference.accountUuid)
-            ?: error("Account ${messageReference.accountUuid} not found")
+        account = accountManager.findById(messageReference.accountId)
+            ?: error("Account ${messageReference.accountId} not found")
 
         messageLoaderHelper.asyncStartOrResumeLoadingMessage(messageReference, null)
 
@@ -509,7 +512,7 @@ class MessageViewFragment :
 
             R.id.set_format_plain -> onDisplayPlainText()
             R.id.set_format_html -> onDisplayHTML()
-            R.id.view_compose -> MessageActions.actionCompose(requireActivity(), account)
+            R.id.view_compose -> MessageActions.actionCompose(requireActivity(), account.id)
             else -> return false
         }
 
@@ -547,7 +550,7 @@ class MessageViewFragment :
         if (!handledByCryptoPresenter) {
             messageTopView.showMessage(account, messageViewInfo)
 
-            if (account.isOpenPgpProviderConfigured) {
+            if (account.isOpenPgpProviderConfigured()) {
                 messageTopView.messageHeaderView.setCryptoStatusDisabled()
             } else {
                 messageTopView.messageHeaderView.hideCryptoStatus()
@@ -571,7 +574,7 @@ class MessageViewFragment :
         val showStar = !isOutbox
         messageTopView.setHeaders(message, account, showStar)
 
-        if (account.isOpenPgpProviderConfigured) {
+        if (account.isOpenPgpProviderConfigured()) {
             messageTopView.messageHeaderView.setCryptoStatusLoading()
         }
 
@@ -676,7 +679,7 @@ class MessageViewFragment :
     }
 
     private fun onRefile(destinationFolderId: Long?) {
-        if (destinationFolderId == null || !messagingController.isMoveCapable(account)) {
+        if (destinationFolderId == null || !messagingController.isMoveCapable(account.id)) {
             return
         }
 
@@ -697,7 +700,7 @@ class MessageViewFragment :
         fragmentListener.performNavigationAfterMessageRemoval()
 
         val sourceFolderId = messageReference.folderId
-        messagingController.moveMessage(account, sourceFolderId, messageReference, destinationFolderId)
+        messagingController.moveMessage(account.id, sourceFolderId, messageReference, destinationFolderId)
     }
 
     fun onReply(forceReplyAction: Boolean = false) {
@@ -748,7 +751,7 @@ class MessageViewFragment :
     }
 
     fun onMove() {
-        check(messagingController.isMoveCapable(account))
+        check(messagingController.isMoveCapable(account.id))
         checkNotNull(message)
 
         if (!messagingController.isMoveCapable(messageReference)) {
@@ -758,16 +761,16 @@ class MessageViewFragment :
 
         chooseFolderForMoveLauncher.launch(
             input = ChooseFolderResultContract.Input(
-                accountUuid = account.uuid,
+                accountId = account.id,
                 currentFolderId = messageReference.folderId,
-                scrollToFolderId = account.lastSelectedFolderId,
+                scrollToFolderId = lastSelectedFolderStore.get(account.id),
                 messageReference = messageReference,
             ),
         )
     }
 
     fun onCopy() {
-        check(messagingController.isCopyCapable(account))
+        check(messagingController.isCopyCapable(account.id))
         checkNotNull(message)
 
         if (!messagingController.isCopyCapable(messageReference)) {
@@ -777,9 +780,9 @@ class MessageViewFragment :
 
         chooseFolderForCopyLauncher.launch(
             input = ChooseFolderResultContract.Input(
-                accountUuid = account.uuid,
+                accountId = account.id,
                 currentFolderId = messageReference.folderId,
-                scrollToFolderId = account.lastSelectedFolderId,
+                scrollToFolderId = lastSelectedFolderStore.get(account.id),
                 messageReference = messageReference,
             ),
         )
@@ -791,7 +794,7 @@ class MessageViewFragment :
         val account = account
         val folderId = messageReference.folderId
         val messages = listOf(messageReference)
-        messagingController.moveToDraftsFolder(account, folderId, messages)
+        messagingController.moveToDraftsFolder(account.id, folderId, messages)
     }
 
     fun onArchive() {
@@ -884,7 +887,7 @@ class MessageViewFragment :
         val messageReference = MessageReference.parse(messageReferenceString)
         if (this.messageReference != messageReference) return
 
-        account.setLastSelectedFolderId(destinationFolderId)
+        setLastSelectedFolderId(destinationFolderId)
 
         fragmentListener.performNavigationAfterMessageRemoval()
 
@@ -899,9 +902,13 @@ class MessageViewFragment :
         val messageReference = MessageReference.parse(messageReferenceString)
         if (this.messageReference != messageReference) return
 
-        account.setLastSelectedFolderId(destinationFolderId)
+        setLastSelectedFolderId(destinationFolderId)
 
         copyMessage(messageReference, destinationFolderId)
+    }
+
+    private fun setLastSelectedFolderId(folderId: Long) {
+        lastSelectedFolderStore.set(account.id, folderId)
     }
 
     @OptIn(ExperimentalTime::class)
@@ -961,7 +968,7 @@ class MessageViewFragment :
         val message = checkNotNull(this.message)
 
         val newState = !message.isSet(flag)
-        messagingController.setFlag(account, message.folder.databaseId, listOf(message), flag, newState)
+        messagingController.setFlag(account.id, message.folder.databaseId, listOf(message), flag, newState)
 
         messageTopView.setHeaders(message, account, true)
 
@@ -969,11 +976,11 @@ class MessageViewFragment :
     }
 
     private fun moveMessage(reference: MessageReference?, folderId: Long) {
-        messagingController.moveMessage(account, messageReference.folderId, reference, folderId)
+        messagingController.moveMessage(account.id, messageReference.folderId, reference, folderId)
     }
 
     private fun copyMessage(reference: MessageReference?, folderId: Long) {
-        messagingController.copyMessage(account, messageReference.folderId, reference, folderId)
+        messagingController.copyMessage(account.id, messageReference.folderId, reference, folderId)
     }
 
     private fun showDialog(dialogId: Int) {
@@ -1062,10 +1069,10 @@ class MessageViewFragment :
         get() = message?.isSet(Flag.SEEN) == true
 
     private val isCopyCapable: Boolean
-        get() = !isOutbox && messagingController.isCopyCapable(account)
+        get() = !isOutbox && messagingController.isCopyCapable(account.id)
 
     private val isMoveCapable: Boolean
-        get() = !isOutbox && messagingController.isMoveCapable(account)
+        get() = !isOutbox && messagingController.isMoveCapable(account.id)
 
     private fun canMessageBeArchived(): Boolean {
         val archiveFolderId = account.archiveFolderId ?: return false
@@ -1087,7 +1094,7 @@ class MessageViewFragment :
                 Intent(requireContext(), MessageCompose::class.java).apply {
                     action = Intent.ACTION_VIEW
                     data = unsubscribeUri.uri
-                    putExtra(MessageCompose.EXTRA_ACCOUNT, messageReference.accountUuid)
+                    putExtra(MessageCompose.EXTRA_ACCOUNT, messageReference.accountId.toString())
                 }
             }
 
@@ -1123,7 +1130,7 @@ class MessageViewFragment :
         val message = message ?: return
 
         if (!wasMessageMarkedAsOpened) {
-            messagingController.markMessageAsOpened(account, message)
+            messagingController.markMessageAsOpened(account.id, message)
             wasMessageMarkedAsOpened = true
         }
     }
@@ -1145,7 +1152,7 @@ class MessageViewFragment :
         }
 
         override fun showCryptoConfigDialog() {
-            AccountSettingsActivity.startCryptoSettings(requireActivity(), account.uuid)
+            AccountSettingsActivity.startCryptoSettings(requireActivity(), account.id.toString())
         }
     }
 
@@ -1225,7 +1232,7 @@ class MessageViewFragment :
                     maskedRequestCode,
                 )
             } catch (e: SendIntentException) {
-                Log.e(e, "Irrecoverable error calling PendingIntent!")
+                Log.e(TAG, e, "Irrecoverable error calling PendingIntent!")
             }
 
             return true
@@ -1289,10 +1296,10 @@ class MessageViewFragment :
         private const val STATE_IS_ACTIVE = "isActive"
 
         fun newInstance(reference: MessageReference, showAccountIndicator: Boolean): MessageViewFragment {
-            return MessageViewFragment().withArguments(
-                ARG_REFERENCE to reference.toIdentityString(),
-                ARG_SHOW_ACCOUNT_INDICATOR to showAccountIndicator,
-            )
+            return MessageViewFragment().withArguments {
+                putString(ARG_REFERENCE, reference.toIdentityString())
+                putBoolean(ARG_SHOW_ACCOUNT_INDICATOR, showAccountIndicator)
+            }
         }
     }
 }

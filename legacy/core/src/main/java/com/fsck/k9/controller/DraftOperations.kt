@@ -11,54 +11,59 @@ import com.fsck.k9.mail.MessageDownloadState
 import com.fsck.k9.mailstore.LocalFolder
 import com.fsck.k9.mailstore.LocalMessage
 import com.fsck.k9.mailstore.SaveMessageDataCreator
-import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.core.common.exception.MessagingException
+import net.thunderbird.feature.account.AccountId
 import net.thunderbird.legacy.logging.Log
 import net.thunderbird.feature.mail.message.list.LocalMessageUidPrefixProvider
 import org.jetbrains.annotations.NotNull
+
+private const val TAG = "DraftOperations"
 
 internal class DraftOperations(
     private val messagingController: @NotNull MessagingController,
     private val messageStoreManager: @NotNull MessageStoreManager,
     private val saveMessageDataCreator: SaveMessageDataCreator,
     private val localMessageUidPrefixProvider: LocalMessageUidPrefixProvider,
+    private val accountManager: LegacyAccountManager,
 ) {
 
     fun saveDraft(
-        account: LegacyAccountDto,
+        accountId: AccountId,
         message: Message,
         existingDraftId: Long?,
         plaintextSubject: String?,
     ): Long? {
+        val account = accountManager.findById(accountId) ?: return null
         return try {
             val draftsFolderId = account.draftsFolderId ?: error("No Drafts folder configured")
 
-            val messageId = if (messagingController.supportsUpload(account)) {
-                saveAndUploadDraft(account, message, draftsFolderId, existingDraftId, plaintextSubject)
+            val messageId = if (messagingController.supportsUpload(accountId)) {
+                saveAndUploadDraft(accountId, message, draftsFolderId, existingDraftId, plaintextSubject)
             } else {
-                saveDraftLocally(account, message, draftsFolderId, existingDraftId, plaintextSubject)
+                saveDraftLocally(accountId, message, draftsFolderId, existingDraftId, plaintextSubject)
             }
 
             messageId
         } catch (e: MessagingException) {
-            Log.e(e, "Unable to save message as draft.")
+            Log.e(TAG, e, "Unable to save message as draft.")
             null
         }
     }
 
     private fun saveAndUploadDraft(
-        account: LegacyAccountDto,
+        accountId: AccountId,
         message: Message,
         folderId: Long,
         existingDraftId: Long?,
         subject: String?,
     ): Long {
-        val messageStore = messageStoreManager.getMessageStore(account)
+        val messageStore = messageStoreManager.getMessageStore(accountId)
 
         val messageId = messageStore.saveLocalMessage(folderId, message.toSaveMessageData(subject))
 
         val previousDraftMessage = existingDraftId?.let {
-            val localStore = messagingController.getLocalStoreOrThrow(account)
+            val localStore = messagingController.getLocalStoreOrThrow(accountId)
             val localFolder = localStore.getFolder(folderId)
             localFolder.open()
 
@@ -70,49 +75,49 @@ internal class DraftOperations(
 
             val deleteMessageId = previousDraftMessage.databaseId
             val command = PendingReplace.create(folderId, messageId, deleteMessageId)
-            messagingController.queuePendingCommand(account, command)
+            messagingController.queuePendingCommand(accountId, command)
         } else {
             val fakeMessageServerId = messageStore.getMessageServerId(messageId)
             if (fakeMessageServerId != null) {
                 val command = PendingAppend.create(folderId, fakeMessageServerId)
-                messagingController.queuePendingCommand(account, command)
+                messagingController.queuePendingCommand(accountId, command)
             }
         }
 
-        messagingController.processPendingCommands(account)
+        messagingController.processPendingCommands(accountId)
 
         return messageId
     }
 
     private fun saveDraftLocally(
-        account: LegacyAccountDto,
+        accountId: AccountId,
         message: Message,
         folderId: Long,
         existingDraftId: Long?,
         plaintextSubject: String?,
     ): Long {
-        val messageStore = messageStoreManager.getMessageStore(account)
+        val messageStore = messageStoreManager.getMessageStore(accountId)
         val messageData = message.toSaveMessageData(plaintextSubject)
 
         return messageStore.saveLocalMessage(folderId, messageData, existingDraftId)
     }
 
-    fun processPendingReplace(command: PendingReplace, account: LegacyAccountDto) {
-        val localStore = messagingController.getLocalStoreOrThrow(account)
+    fun processPendingReplace(command: PendingReplace, accountId: AccountId) {
+        val localStore = messagingController.getLocalStoreOrThrow(accountId)
         val localFolder = localStore.getFolder(command.folderId)
         localFolder.open()
 
-        val backend = messagingController.getBackend(account)
+        val backend = messagingController.getBackend(accountId)
 
         val uploadMessageId = command.uploadMessageId
         val localMessage = localFolder.getMessage(uploadMessageId)
         if (localMessage == null) {
-            Log.w("Couldn't find local copy of message to upload [ID: %d]", uploadMessageId)
+            Log.w(TAG, "Couldn't find local copy of message to upload [ID: %d]", uploadMessageId)
             return
         } else if (!localMessage.uid.startsWith(localMessageUidPrefixProvider.get())) {
-            Log.i("Message [ID: %d] to be uploaded already has a server ID set. Skipping upload.", uploadMessageId)
+            Log.i(TAG, "Message [ID: %d] to be uploaded already has a server ID set. Skipping upload.", uploadMessageId)
         } else {
-            uploadMessage(backend, account, localFolder, localMessage)
+            uploadMessage(backend, accountId, localFolder, localMessage)
         }
 
         deleteMessage(backend, localFolder, command.deleteMessageId)
@@ -120,12 +125,12 @@ internal class DraftOperations(
 
     private fun uploadMessage(
         backend: Backend,
-        account: LegacyAccountDto,
+        accountId: AccountId,
         localFolder: LocalFolder,
         localMessage: LocalMessage,
     ) {
         val folderServerId = localFolder.serverId
-        Log.d("Uploading message [ID: %d] to remote folder '%s'", localMessage.databaseId, folderServerId)
+        Log.d(TAG, "Uploading message [ID: %d] to remote folder '%s'", localMessage.databaseId, folderServerId)
 
         val fetchProfile = FetchProfile().apply {
             add(FetchProfile.Item.BODY)
@@ -136,6 +141,7 @@ internal class DraftOperations(
 
         if (messageServerId == null) {
             Log.w(
+                TAG,
                 "Failed to get a server ID for the uploaded message. Removing local copy [ID: %d]",
                 localMessage.databaseId,
             )
@@ -147,14 +153,14 @@ internal class DraftOperations(
             localFolder.changeUid(localMessage)
 
             for (listener in messagingController.listeners) {
-                listener.messageUidChanged(account, localFolder.databaseId, oldUid, localMessage.uid)
+                listener.messageUidChanged(accountId, localFolder.databaseId, oldUid, localMessage.uid)
             }
         }
     }
 
     private fun deleteMessage(backend: Backend, localFolder: LocalFolder, messageId: Long) {
         val messageServerId = localFolder.getMessageUidById(messageId) ?: run {
-            Log.i("Couldn't find local copy of message [ID: %d] to be deleted. Skipping delete.", messageId)
+            Log.i(TAG, "Couldn't find local copy of message [ID: %d] to be deleted. Skipping delete.", messageId)
             return
         }
 

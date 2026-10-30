@@ -7,12 +7,8 @@ kotlin {
         namespace = "net.thunderbird.core.logging"
     }
     sourceSets {
-        commonTest.dependencies {
-            implementation(projects.core.testing)
+        commonMain.dependencies {
+            api(libs.uri)
         }
     }
-}
-
-codeCoverage {
-    lineCoverage = 68
 }

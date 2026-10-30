@@ -48,6 +48,8 @@ import net.thunderbird.core.common.exception.MessagingException;
  * RFC 2045 style headers.
  */
 public class MimeMessage extends Message {
+    private static final String TAG = "MimeMessage";
+
     private MimeHeader mHeader = new MimeHeader();
     protected Address[] mFrom;
     protected Address[] mSender;
@@ -152,7 +154,7 @@ public class MimeMessage extends Message {
                 DateTimeField field = (DateTimeField) DefaultFieldParser.parse("Date: " + dateHeaderBody);
                 mSentDate = field.getDate();
             } catch (Exception e) {
-                Log.d(e, "Couldn't parse Date header field");
+                Log.d(TAG, e, "Couldn't parse Date header field");
             }
         }
         return mSentDate;

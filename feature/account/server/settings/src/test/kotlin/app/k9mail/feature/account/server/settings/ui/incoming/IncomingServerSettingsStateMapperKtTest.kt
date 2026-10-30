@@ -38,6 +38,24 @@ class IncomingServerSettingsStateMapperKtTest {
     }
 
     @Test
+    fun `should map to default state when incoming server settings use an unsupported protocol`() {
+        val email = "test@example.com"
+        val accountState = AccountState(
+            emailAddress = email,
+            incomingServerSettings = DEMO_SERVER_SETTINGS,
+        )
+
+        val result = accountState.toIncomingServerSettingsState()
+
+        assertThat(result).isEqualTo(
+            State(
+                username = StringInputField(value = email),
+                server = StringInputField(value = email.toInvalidEmailDomain()),
+            ),
+        )
+    }
+
+    @Test
     fun `should map from IMAP server settings to state`() {
         val serverSettings = AccountState(
             incomingServerSettings = IMAP_SERVER_SETTINGS,
@@ -138,6 +156,17 @@ class IncomingServerSettingsStateMapperKtTest {
             authenticationType = AuthType.PLAIN,
             username = "user",
             password = "password",
+            clientCertificateAlias = null,
+        )
+
+        private val DEMO_SERVER_SETTINGS = ServerSettings(
+            type = "demo",
+            host = "irrelevant",
+            port = 23,
+            connectionSecurity = MailConnectionSecurity.SSL_TLS_REQUIRED,
+            authenticationType = AuthType.PLAIN,
+            username = "irrelevant",
+            password = "irrelevant",
             clientCertificateAlias = null,
         )
     }

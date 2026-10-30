@@ -81,7 +81,11 @@ val featureMessageListModule = module {
             stringsResourceManager = get(),
         )
     }
-    single<LocalDeleteOperationDecider> { DefaultLocalDeleteOperationDecider() }
+    single<LocalDeleteOperationDecider> {
+        DefaultLocalDeleteOperationDecider(
+            accountManager = get(),
+        )
+    }
     single<LocalMessageUidPrefixProvider> { DefaultLocalMessageUidPrefixProvider() }
     factory<MessageListContract.MessageListScreenRenderer> { MessageListScreenRenderer() }
 }

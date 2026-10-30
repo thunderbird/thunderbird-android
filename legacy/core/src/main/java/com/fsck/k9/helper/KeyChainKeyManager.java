@@ -29,6 +29,8 @@ import net.thunderbird.legacy.logging.Log;
  * during the TLS handshake using the Android 4.0 KeyChain API.
  */
 class KeyChainKeyManager extends X509ExtendedKeyManager {
+    private static final String TAG = "KeyChainKeyManager";
+
     private final String mAlias;
     private final X509Certificate[] mChain;
     private final PrivateKey mPrivateKey;
@@ -177,10 +179,10 @@ class KeyChainKeyManager extends X509ExtendedKeyManager {
                     return mAlias;
                 }
             }
-            Log.w("Client certificate %s not issued by any of the requested issuers", mAlias);
+            Log.w(TAG, "Client certificate %s not issued by any of the requested issuers", mAlias);
             return null;
         }
-        Log.w("Client certificate %s does not match any of the requested key types", mAlias);
+        Log.w(TAG, "Client certificate %s does not match any of the requested key types", mAlias);
         return null;
     }
 }

@@ -24,11 +24,11 @@ import net.thunderbird.components.ui.bolt.molecule.input.SelectInput
 import net.thunderbird.components.ui.bolt.molecule.input.TextInput
 import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.core.ui.contract.mvi.observeWithoutEffect
+import net.thunderbird.feature.account.profile.AccountProfile
 import net.thunderbird.feature.debug.settings.DebugSubSection
 import net.thunderbird.feature.debug.settings.R
 import net.thunderbird.feature.debug.settings.notification.DebugNotificationSectionContract.Event
 import net.thunderbird.feature.debug.settings.notification.DebugNotificationSectionContract.ViewModel
-import net.thunderbird.feature.mail.account.api.BaseAccount
 import net.thunderbird.feature.notification.api.content.MailNotification
 import net.thunderbird.feature.notification.api.content.Notification
 import org.koin.compose.viewmodel.koinViewModel
@@ -65,7 +65,7 @@ internal fun DebugNotificationSection(
 internal fun DebugNotificationSection(
     state: DebugNotificationSectionContract.State,
     modifier: Modifier = Modifier,
-    onAccountSelect: (BaseAccount) -> Unit = {},
+    onAccountSelect: (AccountProfile) -> Unit = {},
     onOptionChange: (KClass<out Notification>) -> Unit = {},
     onTriggerSystemNotificationClick: () -> Unit = {},
     onTriggerInAppNotificationClick: () -> Unit = {},
@@ -102,7 +102,7 @@ internal fun DebugNotificationSection(
 @Composable
 private fun CommonNotificationInformation(
     state: DebugNotificationSectionContract.State,
-    onAccountSelect: (BaseAccount) -> Unit,
+    onAccountSelect: (AccountProfile) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     DebugSubSection(
@@ -118,10 +118,9 @@ private fun CommonNotificationInformation(
             },
             optionToStringTransformation = { account ->
                 account?.let { account ->
-                    val uuidStart = account.uuid.take(UUID_MAX_CHAR_DISPLAY)
-                    val uuidEnd = account.uuid.take(UUID_MAX_CHAR_DISPLAY)
-                    val accountDisplay = account.name ?: account.email
-                    "$uuidStart..$uuidEnd - $accountDisplay"
+                    val uuidStart = account.id.toString().take(UUID_MAX_CHAR_DISPLAY)
+                    val uuidEnd = account.id.toString().take(UUID_MAX_CHAR_DISPLAY)
+                    "$uuidStart..$uuidEnd - ${account.name}"
                 } ?: loadingText
             },
         )

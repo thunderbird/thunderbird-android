@@ -18,6 +18,8 @@ import net.thunderbird.core.common.exception.MessagingException
 import net.thunderbird.core.common.mail.Flag
 import net.thunderbird.legacy.logging.Log
 
+private const val TAG = "RealImapStore"
+
 private const val LAST_ASCII_CODE = 127
 
 internal open class RealImapStore(
@@ -203,7 +205,12 @@ internal open class RealImapStore(
                 serverId
             }
         } catch (e: CharacterCodingException) {
-            Log.w(e, "Folder name not correctly encoded with the UTF-7 variant as defined by RFC 3501: %s", serverId)
+            Log.w(
+                TAG,
+                e,
+                "Folder name not correctly encoded with the UTF-7 variant as defined by RFC 3501: %s",
+                serverId,
+            )
             serverId
         }
 
@@ -236,7 +243,7 @@ internal open class RealImapStore(
             connection.open()
             connection.close()
         } catch (e: Exception) {
-            Log.e(e, "Error while checking server settings")
+            Log.e(TAG, e, "Error while checking server settings")
             throw e
         }
     }
@@ -276,7 +283,7 @@ internal open class RealImapStore(
     }
 
     override fun closeAllConnections() {
-        Log.v("ImapStore.closeAllConnections()")
+        Log.v(TAG, "ImapStore.closeAllConnections()")
 
         val connectionsToClose = synchronized(connections) {
             val connectionsToClose = connections.toList()

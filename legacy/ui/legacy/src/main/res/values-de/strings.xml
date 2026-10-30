@@ -236,7 +236,7 @@
     <string name="global_settings_privacy_hide_useragent_detail">Benutzer-Agent aus E-Mail-Kopfzeilen entfernen</string>
     <string name="global_settings_privacy_hide_timezone">Zeitzone ausblenden</string>
     <string name="global_settings_privacy_hide_timezone_detail">UTC statt lokaler Zeitzone in E-Mail-Kopfzeilen und Antwort-Kopfzeilen verwenden</string>
-    <string name="global_settings_notification_quick_delete_title">Löschen erlauben</string>
+    <string name="global_settings_notification_quick_delete_title">Löschen anzeigen</string>
     <string name="global_settings_notification_quick_delete_never">Nie</string>
     <string name="global_settings_notification_quick_delete_when_single_msg">Für einzelne Nachricht</string>
     <string name="global_settings_notification_quick_delete_always">Immer</string>
@@ -321,11 +321,11 @@
     <string name="account_settings_show_pictures_never">Nein</string>
     <string name="account_settings_show_pictures_only_from_contacts">Nur von Kontakten</string>
     <string name="account_settings_show_pictures_always">Von jedem</string>
-    <string name="account_settings_composition">E-Mails versenden</string>
+    <string name="account_settings_composition">E-Mails senden</string>
     <string name="account_settings_default_quoted_text_shown_label">Nachricht beim Antworten zitieren</string>
     <string name="account_settings_default_quoted_text_shown_summary">Ursprüngliche Nachricht als Zitat in die Antwort einfügen.</string>
     <string name="account_settings_reply_after_quote_label">Antwort nach Zitat</string>
-    <string name="account_settings_reply_after_quote_summary">Die ursprüngliche Nachricht erscheint vor der Antwort.</string>
+    <string name="account_settings_reply_after_quote_summary">Die ursprüngliche Nachricht wird vor der Antwort angezeigt.</string>
     <string name="account_settings_strip_signature_label">Signatur aus Zitat entfernen</string>
     <string name="account_settings_strip_signature_summary">In Antworten werden Signaturen aus zitierten Nachrichten entfernt</string>
     <string name="account_settings_message_format_label">Formatierung</string>
@@ -336,8 +336,8 @@
     <string name="account_settings_message_read_receipt_label">Empfangsbestätigung</string>
     <string name="account_settings_message_read_receipt_summary">Immer eine Empfangsbestätigung anfordern</string>
     <string name="account_settings_quote_style_label">Antwortkopf</string>
-    <string name="account_settings_quote_style_prefix">Normal (wie in Gmail, Pine)</string>
-    <string name="account_settings_quote_style_header">Erweitert (wie in Outlook, Yahoo!, Hotmail)</string>
+    <string name="account_settings_quote_style_prefix">Normal (wie in Gmail)</string>
+    <string name="account_settings_quote_style_header">Erweitert (wie in Outlook)</string>
     <string name="account_settings_upload_sent_messages_label">Gesendete Nachrichten hochladen</string>
     <string name="account_settings_upload_sent_messages_summary">Nachrichten nach dem Senden in den Ordner „Gesendet“ hochladen</string>
     <string name="account_settings_general_title">Allgemeine Einstellungen</string>
@@ -393,9 +393,9 @@
     <string name="folder_settings_in_top_group_label">Oben anzeigen</string>
     <string name="folder_settings_clear_local_folder_action">Lokale Nachrichten löschen</string>
     <string name="account_settings_incoming_label">Posteingangsserver</string>
-    <string name="account_settings_incoming_summary">Einstellungen des Posteingangsservers bearbeiten</string>
+    <string name="account_settings_incoming_summary">Posteingangsserver konfigurieren</string>
     <string name="account_settings_outgoing_label">Postausgangsserver</string>
-    <string name="account_settings_outgoing_summary">Einstellungen des Postausgangsservers (SMTP) bearbeiten</string>
+    <string name="account_settings_outgoing_summary">Postausgangsserver (SMTP) konfigurieren</string>
     <string name="account_settings_name_label">Dein Name</string>
     <string name="notifications_title">Benachrichtigungen</string>
     <string name="account_settings_vibration">Vibration</string>
@@ -421,7 +421,7 @@
     <string name="account_settings_notification_light_yellow">Gelb</string>
     <string name="account_settings_notification_light_cyan">Türkis</string>
     <string name="account_settings_notification_light_magenta">Magenta</string>
-    <string name="account_settings_composition_title">Verfassen von Nachrichten</string>
+    <string name="account_settings_composition_title">Optionen zum Verfassen von Nachrichten</string>
     <string name="account_settings_composition_label">Verfassen von Nachrichten</string>
     <string name="account_settings_composition_summary">Standard-Absender, BCC-Empfänger und Signatur konfigurieren</string>
     <string name="account_settings_identities_label">Identitäten verwalten</string>
@@ -618,7 +618,7 @@
     <string name="account_settings_remote_search_num_results_entries_500">500</string>
     <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
     <string name="account_settings_remote_search_num_label">Server-Suchlimit</string>
-    <string name="remote_search_sending_query">Sende Anfrage an den Server</string>
+    <string name="remote_search_sending_query">Anfrage an den Server senden</string>
     <plurals name="remote_search_downloading">
         <item quantity="one">%d Resultat wird abgerufen</item>
         <item quantity="other">%d Resultate werden abgerufen</item>
@@ -632,7 +632,7 @@
     <string name="action_remote_search">Nachrichten auf Server suchen</string>
     <string name="remote_search_unavailable_no_network">Für die Suche auf dem Server ist eine Netzwerkverbindung nötig.</string>
     <string name="global_settings_background_as_unread_indicator_label">Farbe ändern, wenn gelesen</string>
-    <string name="global_settings_background_as_unread_indicator_summary">Ein anderer Hintergrund zeigt, dass die Nachricht gelesen wurde</string>
+    <string name="global_settings_background_as_unread_indicator_summary">Ein anderer Hintergrund zeigt an, dass die Nachricht gelesen wurde</string>
     <string name="global_settings_threaded_view_label">Nachrichten gruppieren</string>
     <string name="global_settings_threaded_view_summary">Nachrichten eines Diskussionsstranges zusammenfassen</string>
     <string name="upgrade_databases_title">Datenbankaktualisierung</string>
@@ -773,7 +773,7 @@
     <string name="ac_transfer_intro">Eine Autocrypt-Setup-Nachricht teilt dein Ende-zu-Ende-Setup auf sichere Art und Weise mit anderen Geräten.</string>
     <string name="ac_transfer_button_send">Setup-Nachricht senden</string>
     <string name="ac_transfer_will_be_sent">Diese Nachricht wird an dein Adresse gesendet:</string>
-    <string name="ac_transfer_generating">Erstelle Setup-Nachricht…</string>
+    <string name="ac_transfer_generating">Setup-Nachricht wird erstellt…</string>
     <string name="ac_transfer_sending_to">Sende Nachricht an:</string>
     <string name="ac_transfer_finish">Um abzuschließen, öffne die Nachricht auf einem anderen Gerät und gib den Setup-Code ein.</string>
     <string name="ac_transfer_show_code">Setup-Code anzeigen</string>
@@ -783,7 +783,7 @@
     <string name="switch_on">An</string>
     <string name="switch_off">Aus</string>
     <string name="generic_loading_error">Beim Laden der Daten ist ein Fehler aufgetreten</string>
-    <string name="push_notification_state_initializing">Initialisieren…</string>
+    <string name="push_notification_state_initializing">Wird initialisiert…</string>
     <string name="push_notification_state_listening">Warte auf neue E-Mails</string>
     <string name="push_notification_state_wait_background_sync">Wartet, bis die Hintergrundsynchronisation erlaubt ist</string>
     <string name="push_notification_state_wait_network">Wartet, bis ein Netzwerk verfügbar ist</string>
@@ -792,7 +792,7 @@
     <string name="push_info_configure_notification_text">Allerdings erlaubt Android auch, dass die Benachrichtigung ausgeblendet wird.</string>
     <string name="push_info_learn_more_text">Mehr erfahren</string>
     <string name="push_info_configure_notification_action">Benachrichtigung einstellen</string>
-    <string name="push_info_disable_push_text">Wenn du keine sofortigen Benachrichtigungen über neue Nachrichten benötigst, solltest du Push deaktivieren und die Abfrage verwenden. Die Abfrage prüft in regelmäßigen Abständen auf neue E-Mails und benötigt die Benachrichtigung nicht.</string>
+    <string name="push_info_disable_push_text">Wenn du keine sofortigen Benachrichtigungen über neue Nachrichten benötigst, solltest du Push deaktivieren und stattdessen Polling verwenden. Bei Polling wird in regelmäßigen Abständen auf neue E-Mails geprüft, sodass keine Benachrichtigung erforderlich ist.</string>
     <string name="push_info_disable_push_action">Push deaktivieren</string>
     <!--Name of the swipe action to select a message. Try to keep it short.-->
     <!--Name of the swipe action to deselect a message. Try to keep it short.-->
@@ -961,4 +961,10 @@
     <string name="message_view_from_me_text">mir</string>
     <string name="account_settings_signature_preview_empty">Deine Signaturvorschau wird hier angezeigt</string>
     <string name="error_no_contact_provider">Es wurde keine Kontakte-App gefunden. Installiere eine Kontakte-App, um diese Adresse hinzuzufügen.</string>
+    <string name="remote_feature_flag_preferences">Remote-Feature-Flags</string>
+    <string name="account_setup_visibility_and_syncing">Ordnersynchronisation und Push</string>
+    <string name="account_settings_folder_sync_and_push">Ordnersynchronisation und Push</string>
+    <string name="account_settings_sync_and_notifications">Synchronisation und Benachrichtigungen</string>
+    <string name="account_settings_folder_visibility">Ordnersichtbarkeit</string>
+    <string name="account_settings_fetching_and_data_limits">Abruf- und Datenlimits</string>
 </resources>

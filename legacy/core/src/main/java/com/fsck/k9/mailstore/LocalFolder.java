@@ -8,7 +8,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import app.k9mail.legacy.di.DI;
 import app.k9mail.legacy.mailstore.MoreMessages;
-import com.fsck.k9.K9;
 import app.k9mail.legacy.message.controller.MessageReference;
 import com.fsck.k9.helper.FileHelper;
 import com.fsck.k9.helper.Utility;
@@ -16,6 +15,8 @@ import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyPart;
 import com.fsck.k9.mail.BoundaryGenerator;
 import com.fsck.k9.mail.FetchProfile;
+import net.thunderbird.core.android.account.LegacyAccount;
+import net.thunderbird.core.android.account.LegacyAccountManager;
 import net.thunderbird.core.common.mail.Flag;
 import com.fsck.k9.mail.FolderType;
 import com.fsck.k9.mail.Message;
@@ -33,8 +34,8 @@ import com.fsck.k9.mail.message.MessageHeaderParser;
 import com.fsck.k9.mailstore.LockableDatabase.DbCallback;
 import com.fsck.k9.message.extractors.AttachmentInfoExtractor;
 
-import net.thunderbird.core.android.account.LegacyAccountDto;
 import net.thunderbird.core.preference.GeneralSettingsManager;
+import net.thunderbird.feature.account.AccountId;
 import net.thunderbird.feature.mail.message.list.LocalMessageUidPrefixProvider;
 import org.apache.commons.io.IOUtils;
 import org.apache.james.mime4j.util.MimeUtil;
@@ -59,6 +60,8 @@ import net.thunderbird.legacy.logging.Log;
 
 
 public class LocalFolder {
+    private static final String TAG = "LocalFolder";
+
     private static final int MAX_BODY_SIZE_FOR_DATABASE = 16 * 1024;
     private static final long INVALID_MESSAGE_PART_ID = -1;
 
@@ -67,6 +70,8 @@ public class LocalFolder {
     private final AttachmentInfoExtractor attachmentInfoExtractor;
     private final GeneralSettingsManager generalSettingsManager;
     private final LocalMessageUidPrefixProvider localMessageUidPrefixProvider;
+
+    private final LegacyAccountManager accountManager;
 
     private String status = null;
     private long lastChecked = 0;
@@ -104,6 +109,7 @@ public class LocalFolder {
         this.name = name;
         this.type = type;
         this.generalSettingsManager = generalSettingsManager;
+        this.accountManager = DI.get(LegacyAccountManager.class);
         attachmentInfoExtractor = localStore.getAttachmentInfoExtractor();
         this.localMessageUidPrefixProvider = localMessageUidPrefixProvider;
     }
@@ -115,6 +121,7 @@ public class LocalFolder {
         this.databaseId = databaseId;
         attachmentInfoExtractor = localStore.getAttachmentInfoExtractor();
         this.generalSettingsManager = generalSettingsManager;
+        this.accountManager = DI.get(LegacyAccountManager.class);
         this.localMessageUidPrefixProvider = localMessageUidPrefixProvider;
     }
 
@@ -130,9 +137,8 @@ public class LocalFolder {
         return databaseId;
     }
 
-    public String getAccountUuid()
-    {
-        return getAccount().getUuid();
+    public AccountId getAccountId() {
+        return localStore.getAccountId();
     }
 
     public boolean getSignatureUse() {
@@ -415,11 +421,11 @@ public class LocalFolder {
 
             String parentMimeType = parentPart.getMimeType();
             if (MimeUtility.isMultipart(parentMimeType)) {
-                BodyPart bodyPart = new LocalBodyPart(getAccountUuid(), message, id, size);
+                BodyPart bodyPart = new LocalBodyPart(getAccountId(), message, id, size);
                 ((Multipart) parentPart.getBody()).addBodyPart(bodyPart);
                 part = bodyPart;
             } else if (MimeUtility.isMessage(parentMimeType)) {
-                Message innerMessage = new LocalMimeMessage(getAccountUuid(), message, id);
+                Message innerMessage = new LocalMimeMessage(getAccountId(), message, id);
                 parentPart.setBody(innerMessage);
                 part = innerMessage;
             } else {
@@ -587,12 +593,12 @@ public class LocalFolder {
             throws MessagingException {
         open();
 
-        String accountUuid = getAccountUuid();
+        AccountId accountId = getAccountId();
         long folderId = getDatabaseId();
 
         List<LocalMessage> messages = new ArrayList<>();
         for (MessageReference messageReference : messageReferences) {
-            if (!accountUuid.equals(messageReference.getAccountUuid())) {
+            if (!accountId.equals(messageReference.getAccountId())) {
                 throw new IllegalArgumentException("all message references must belong to this Account!");
             }
             if (folderId != messageReference.getFolderId()) {
@@ -814,7 +820,7 @@ public class LocalFolder {
                 try {
                     updateOrInsertMessagePart(db, new ContentValues(), part, messagePartId);
                 } catch (Exception e) {
-                    Log.e(e, "Error writing message part");
+                    Log.e(TAG, e, "Error writing message part");
                 }
 
                 return null;
@@ -858,7 +864,7 @@ public class LocalFolder {
                     try {
                         message.setFlags(flags, value);
                     } catch (MessagingException e) {
-                        Log.e(e, "Something went wrong while setting flag");
+                        Log.e(TAG, e, "Something went wrong while setting flag");
                     }
                 }
 
@@ -1128,7 +1134,7 @@ public class LocalFolder {
                 File file = localStore.getAttachmentFile(messagePartId);
                 if (file.exists()) {
                     if (!file.delete() && generalSettingsManager.getConfig().getDebugging().isDebugLoggingEnabled()) {
-                        Log.d("Couldn't delete message part file: %s", file.getAbsolutePath());
+                        Log.d(TAG, "Couldn't delete message part file: %s", file.getAbsolutePath());
                     }
                 }
             }
@@ -1210,8 +1216,12 @@ public class LocalFolder {
         });
     }
 
-    private LegacyAccountDto getAccount() {
-        return localStore.getAccount();
+    private LegacyAccount getAccount() {
+        LegacyAccount account = accountManager.findById(localStore.getAccountId());
+        if (account == null) {
+            throw new IllegalStateException("Account not found for ID: " + localStore.getAccountId());
+        }
+        return account;
     }
 
     // Note: The contents of the 'message_parts' table depend on these values.

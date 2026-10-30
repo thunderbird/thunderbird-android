@@ -12,6 +12,8 @@ import net.thunderbird.core.preference.GeneralSettingsManager;
 
 
 class TextBodyBuilder {
+    private static final String TAG = "TextBodyBuilder";
+
     public static final String HTML_AND_BODY_START = "<!DOCTYPE html><html><body>";
     public static final String HTML_AND_BODY_END = "</body></html>";
 
@@ -57,7 +59,7 @@ class TextBodyBuilder {
             InsertableHtmlContent quotedHtmlContent = getQuotedTextHtml();
 
             if (generalSettingsManager.getConfig().getDebugging().isDebugLoggingEnabled()) {
-                Log.d("insertable: %s", quotedHtmlContent.toDebugString());
+                Log.d(TAG, "insertable: %s", quotedHtmlContent.toDebugString());
             }
 
             // Convert the text to HTML

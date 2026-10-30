@@ -401,6 +401,7 @@
     <string name="archive_folder_label">Archive folder</string>
     <string name="spam_folder_label">Spam folder</string>
 
+    <string name="account_setup_visibility_and_syncing">Folder sync &amp; push</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">Show only subscribed folders</string>
     <string name="account_setup_auto_select_folder">Auto-select folder</string>
 
@@ -496,6 +497,10 @@
 
     <string name="account_settings_general_title">General settings</string>
     <string name="account_settings_reading_mail">Reading mail</string>
+    <string name="account_settings_sync_and_notifications">Sync &amp; notifications</string>
+    <string name="account_settings_folder_sync_and_push">Folder sync &amp; push</string>
+    <string name="account_settings_fetching_and_data_limits">Fetching &amp; data limits</string>
+    <string name="account_settings_folder_visibility">Folder visibility</string>
     <string name="account_settings_sync">Fetching mail</string>
     <string name="account_settings_folders">Folders</string>
     <string name="account_settings_quote_prefix_label">Quoted text prefix</string>
@@ -686,6 +691,7 @@
     <string name="navigation_drawer_preferences">Side Menu</string>
     <string name="messagelist_preferences">Message lists</string>
     <string name="messageview_preferences">Messages</string>
+    <string name="remote_feature_flag_preferences">Remote Feature Flags</string>
     <string name="settings_theme_label">Theme</string>
     <string name="settings_message_theme_label">Message view theme</string>
     <string name="settings_compose_theme_label">Composer theme</string>

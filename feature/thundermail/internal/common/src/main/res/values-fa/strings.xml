@@ -1,3 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    </resources>
+    <string name="thundermail_redirecting">در حال هدایت به Thundermail…</string>
+    <string name="thundermail_something_went_wrong">مشکلی پیش آمد</string>
+    <string name="thundermail_browser_is_not_available">مرورگر در دسترس نیست. لطفاً تنظیمات دستگاه خود را بررسی کنید</string>
+    <string name="thundermail_operation_was_canceled">عملیات لغو شد</string>
+    <string name="thundermail_unknown_error_please_consider_reporting">خطای ناشناخته‌ای رخ داد. لطفاً گزارش این خطا را در نظر بگیرید.</string>
+    <string name="thundermail_add_account">افزودن حساب</string>
+    <string name="thundermail_add_an_email_account">افزودن حساب ایمیل</string>
+    <string name="thundermail_what_is_thundermail">Thundermail چیست؟</string>
+    <string name="thundermail_or_divider">– یا –</string>
+</resources>

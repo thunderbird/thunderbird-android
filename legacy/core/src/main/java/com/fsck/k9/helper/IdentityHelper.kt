@@ -3,7 +3,7 @@ package com.fsck.k9.helper
 import com.fsck.k9.mail.Message
 import com.fsck.k9.mail.Message.RecipientType
 import net.thunderbird.core.android.account.Identity
-import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.android.account.LegacyAccount
 
 object IdentityHelper {
     private val RECIPIENT_TYPES = listOf(
@@ -25,10 +25,10 @@ object IdentityHelper {
      * @return The identity the message was sent to, or the account's default identity if it
      * couldn't be determined which identity this message was sent to.
      *
-     * @see LegacyAccountDto.findIdentity
+     * @see LegacyAccount.findIdentity
      */
     @JvmStatic
-    fun getRecipientIdentityFromMessage(account: LegacyAccountDto, message: Message): Identity {
+    fun getRecipientIdentityFromMessage(account: LegacyAccount, message: Message): Identity {
         val recipient: Identity? = RECIPIENT_TYPES.asSequence()
             .flatMap { recipientType -> message.getRecipients(recipientType).asSequence() }
             .map { address -> account.findIdentity(address) }
@@ -49,10 +49,10 @@ object IdentityHelper {
      * @return The identity the message was sent from, or `null` if it couldn't be determined which
      * identity sent this message.
      *
-     * @see LegacyAccountDto.findIdentity
+     * @see LegacyAccount.findIdentity
      */
     @JvmStatic
-    fun getSenderIdentityFromMessage(account: LegacyAccountDto, message: Message): Identity? {
+    fun getSenderIdentityFromMessage(account: LegacyAccount, message: Message): Identity? {
         return message.from.firstNotNullOfOrNull { address -> account.findIdentity(address) }
     }
 }

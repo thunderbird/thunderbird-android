@@ -422,7 +422,7 @@
     <string name="account_settings_notification_light_magenta">洋红</string>
     <string name="account_settings_composition_title">邮件撰写选项</string>
     <string name="account_settings_composition_label">撰写默认值</string>
-    <string name="account_settings_composition_summary">设置您的默认发件人、密送和签名</string>
+    <string name="account_settings_composition_summary">设置默认的发件地址、Bcc 密送地址和签名</string>
     <string name="account_settings_identities_label">管理身份</string>
     <string name="account_settings_identities_summary">设置备用“发件人”地址和签名</string>
     <string name="manage_identities_title">管理身份</string>
@@ -955,4 +955,6 @@
     <string name="message_view_from_me_text">我</string>
     <string name="account_settings_signature_preview_empty">您的签名预览将显示在此处</string>
     <string name="error_no_contact_provider">未找到联系人应用。请安装联系人应用以添加此地址。</string>
+    <string name="account_setup_visibility_and_syncing">可见性和同步</string>
+    <string name="remote_feature_flag_preferences">远程特性标记</string>
 </resources>

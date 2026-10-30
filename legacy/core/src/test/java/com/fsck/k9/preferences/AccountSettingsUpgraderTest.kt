@@ -10,7 +10,7 @@ import com.fsck.k9.preferences.Settings.StringSetting
 import kotlin.test.Test
 import net.thunderbird.core.common.appConfig.PlatformConfigProvider
 import net.thunderbird.legacy.logging.Log
-import net.thunderbird.core.logging.testing.TestLogger
+import net.thunderbird.components.core.logging.testing.TestLogger
 import net.thunderbird.core.preference.GeneralSettings
 import org.junit.Before
 import org.mockito.kotlin.doReturn

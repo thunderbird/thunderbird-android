@@ -1,5 +1,6 @@
 package net.thunderbird.feature.notification.api.ui.action
 
+import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.notification.api.content.SystemNotification
 import net.thunderbird.feature.notification.api.ui.action.icon.Archive
 import net.thunderbird.feature.notification.api.ui.action.icon.Delete
@@ -94,7 +95,7 @@ sealed class NotificationAction {
     /**
      * Action to prompt the user to update server settings, typically when authentication fails.
      */
-    data class UpdateIncomingServerSettings(val accountUuid: String, val accountNumber: Int) : NotificationAction() {
+    data class UpdateIncomingServerSettings(val accountId: AccountId, val accountNumber: Int) : NotificationAction() {
         override val icon: NotificationIcon = NotificationActionIcons.UpdateServerSettings
         override val labelResource: StringResource = Res.string.notification_action_update_server_settings
     }
@@ -102,7 +103,7 @@ sealed class NotificationAction {
     /**
      * Action to prompt the user to update server settings, typically when authentication fails.
      */
-    data class UpdateOutgoingServerSettings(val accountUuid: String, val accountNumber: Int) : NotificationAction() {
+    data class UpdateOutgoingServerSettings(val accountId: AccountId, val accountNumber: Int) : NotificationAction() {
         override val icon: NotificationIcon = NotificationActionIcons.UpdateServerSettings
         override val labelResource: StringResource = Res.string.notification_action_update_server_settings
     }
@@ -123,7 +124,7 @@ sealed class NotificationAction {
         override val labelResource: StringResource = Res.string.banner_inline_notification_open_notifications
     }
 
-    data class AssignSentFolder(val accountUuid: String) : NotificationAction() {
+    data class AssignSentFolder(val accountId: AccountId) : NotificationAction() {
         override val icon: NotificationIcon? = null
         override val labelResource: StringResource = Res.string.notification_action_assign_sent_folder
     }

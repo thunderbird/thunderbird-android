@@ -48,7 +48,7 @@ internal class MessageListItemMapper(
             hasAttachments = message.hasAttachments,
             threadCount = message.threadCount,
             accountColor = account.profile.color,
-            messageReference = MessageReference(account.uuid, message.folderId, message.messageServerId),
+            messageReference = MessageReference(account.id, message.folderId, message.messageServerId),
             uniqueId = uniqueId,
             sortSubject = message.subject,
             sortMessageDate = message.messageDate,

@@ -42,7 +42,7 @@ internal fun FetchingMailSettingsScreen(
             is Effect.NavigateToIncomingServerSettings -> {
                 FeatureLauncherActivity.launch(
                     context = context,
-                    target = FeatureLauncherTarget.AccountEditIncomingSettings(accountUuid = "${accountId.value}"),
+                    target = FeatureLauncherTarget.AccountEditIncomingSettings(accountId = accountId),
                 )
             }
 
@@ -50,7 +50,7 @@ internal fun FetchingMailSettingsScreen(
                 FeatureLauncherActivity.launch(
                     context = context,
                     target = FeatureLauncherTarget.AccountAdvancedFetchingMailSettings(
-                        accountUuid = "${accountId.value}",
+                        accountId = accountId,
                     ),
                 )
             }

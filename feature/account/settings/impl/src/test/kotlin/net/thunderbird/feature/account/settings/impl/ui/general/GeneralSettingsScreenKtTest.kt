@@ -26,7 +26,7 @@ internal class GeneralSettingsScreenKtTest : ComposeTest() {
                 onBack = { onBackCounter++ },
                 viewModel = viewModel,
                 provider = FakeSettingViewProvider(),
-                builder = { _, _ -> emptySettings() },
+                builder = { _, _, _ -> emptySettings() },
             )
         }
 
@@ -50,7 +50,7 @@ internal class GeneralSettingsScreenKtTest : ComposeTest() {
                 onBack = { onBackCounter++ },
                 viewModel = viewModel,
                 provider = FakeSettingViewProvider(),
-                builder = { _, _ -> emptySettings() },
+                builder = { _, _, _ -> emptySettings() },
             )
         }
 

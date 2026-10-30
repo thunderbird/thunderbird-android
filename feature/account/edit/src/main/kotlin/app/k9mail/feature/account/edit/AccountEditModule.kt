@@ -15,6 +15,7 @@ import app.k9mail.feature.account.oauth.featureAccountOAuthModule
 import app.k9mail.feature.account.server.certificate.featureAccountServerCertificateModule
 import app.k9mail.feature.account.server.settings.featureAccountServerSettingsModule
 import app.k9mail.feature.account.server.validation.featureAccountServerValidationModule
+import net.thunderbird.feature.account.AccountIdFactory
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
@@ -51,7 +52,7 @@ val featureAccountEditModule = module {
 
     viewModel { (accountUuid: String) ->
         ModifyIncomingServerSettingsViewModel(
-            accountUuid = accountUuid,
+            accountId = AccountIdFactory.of(accountUuid),
             accountStateLoader = get(),
             validator = get(),
             accountStateRepository = get(),
@@ -60,7 +61,7 @@ val featureAccountEditModule = module {
 
     viewModel { (accountUuid: String) ->
         ModifyOutgoingServerSettingsViewModel(
-            accountUuid = accountUuid,
+            accountId = AccountIdFactory.of(accountUuid),
             accountStateLoader = get(),
             validator = get(),
             accountStateRepository = get(),
@@ -69,14 +70,14 @@ val featureAccountEditModule = module {
 
     viewModel { (accountUuid: String) ->
         SaveIncomingServerSettingsViewModel(
-            accountUuid = accountUuid,
+            accountId = AccountIdFactory.of(accountUuid),
             saveServerSettings = get(),
         )
     }
 
     viewModel { (accountUuid: String) ->
         SaveOutgoingServerSettingsViewModel(
-            accountUuid = accountUuid,
+            accountId = AccountIdFactory.of(accountUuid),
             saveServerSettings = get(),
         )
     }

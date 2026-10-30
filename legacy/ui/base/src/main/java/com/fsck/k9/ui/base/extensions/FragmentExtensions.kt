@@ -1,6 +1,6 @@
 package com.fsck.k9.ui.base.extensions
 
-import androidx.core.os.bundleOf
+import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentTransaction
@@ -22,6 +22,6 @@ inline fun FragmentActivity.fragmentTransactionWithBackStack(
     }
 }
 
-fun <T : Fragment> T.withArguments(vararg argumentPairs: Pair<String, Any?>) = apply {
-    arguments = bundleOf(*argumentPairs)
+fun <T : Fragment> T.withArguments(block: Bundle.() -> Unit) = apply {
+    arguments = Bundle().apply(block)
 }

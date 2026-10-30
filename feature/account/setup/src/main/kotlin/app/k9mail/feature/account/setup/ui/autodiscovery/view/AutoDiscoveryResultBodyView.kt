@@ -9,11 +9,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import app.k9mail.autodiscovery.api.AutoDiscoveryResult
 import app.k9mail.autodiscovery.api.ImapServerSettings
 import app.k9mail.autodiscovery.api.SmtpServerSettings
 import app.k9mail.feature.account.setup.R
+import app.k9mail.feature.account.setup.ui.autodiscovery.AccountSetupTestTags
 import net.thunderbird.components.ui.bolt.atom.button.ButtonText
 import net.thunderbird.components.ui.bolt.atom.text.TextBodyMedium
 import net.thunderbird.components.ui.bolt.theme.BoltTheme
@@ -90,6 +92,7 @@ internal fun EditConfigurationButton(
             text = stringResource(id = R.string.account_setup_auto_discovery_result_edit_configuration_button_label),
             onClick = onEditConfigurationClick,
             color = BoltTheme.colors.warning,
+            modifier = Modifier.testTag(AccountSetupTestTags.TEST_TAG_BTN_EDIT_CONFIG),
         )
     }
 }

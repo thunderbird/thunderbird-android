@@ -1,24 +1,27 @@
 package com.fsck.k9.mailstore;
 
 
+import androidx.annotation.NonNull;
 import com.fsck.k9.mail.internet.MimeMessage;
+import net.thunderbird.feature.account.AccountId;
 
 
 public class LocalMimeMessage extends MimeMessage implements LocalPart {
-    private final String accountUuid;
+    private final AccountId accountId;
     private final LocalMessage message;
     private final long messagePartId;
 
-    public LocalMimeMessage(String accountUuid, LocalMessage message, long messagePartId) {
+    public LocalMimeMessage(@NonNull AccountId accountId, LocalMessage message, long messagePartId) {
         super();
-        this.accountUuid = accountUuid;
+        this.accountId = accountId;
         this.message = message;
         this.messagePartId = messagePartId;
     }
 
+    @NonNull
     @Override
-    public String getAccountUuid() {
-        return accountUuid;
+    public AccountId getAccountId() {
+        return accountId;
     }
 
     @Override

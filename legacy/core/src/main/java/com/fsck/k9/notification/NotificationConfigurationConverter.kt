@@ -1,6 +1,6 @@
 package com.fsck.k9.notification
 
-import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.feature.notification.NotificationSettings
 
 /**
@@ -11,13 +11,13 @@ class NotificationConfigurationConverter(
     private val notificationVibrationDecoder: NotificationVibrationDecoder,
 ) {
     fun convert(
-        account: LegacyAccountDto,
+        account: LegacyAccount,
         notificationConfiguration: NotificationConfiguration,
     ): NotificationSettings {
         val light = notificationLightDecoder.decode(
             isBlinkLightsEnabled = notificationConfiguration.isBlinkLightsEnabled,
             lightColor = notificationConfiguration.lightColor,
-            accountColor = account.chipColor,
+            accountColor = account.profile.color,
         )
 
         val vibration = notificationVibrationDecoder.decode(

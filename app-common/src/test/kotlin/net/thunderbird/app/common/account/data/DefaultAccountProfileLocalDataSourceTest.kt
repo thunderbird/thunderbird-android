@@ -11,6 +11,7 @@ import net.thunderbird.account.fake.FakeAccountProfileData.PROFILE_COLOR
 import net.thunderbird.account.fake.FakeAccountProfileData.PROFILE_NAME
 import net.thunderbird.core.android.account.Identity
 import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.fake.FakeLegacyAccountManager
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.account.avatar.Avatar
@@ -111,7 +112,6 @@ class DefaultAccountProfileLocalDataSourceTest {
             color: Int = PROFILE_COLOR,
         ): LegacyAccount {
             return LegacyAccount(
-                isSensitiveDebugLoggingEnabled = { true },
                 id = id,
                 name = displayName,
                 email = "demo@example.com",
@@ -120,6 +120,7 @@ class DefaultAccountProfileLocalDataSourceTest {
                     name = displayName,
                     color = color,
                     avatar = AvatarDto(
+                        accountId = id,
                         avatarType = AvatarTypeDto.ICON,
                         avatarMonogram = null,
                         avatarImageUri = null,
@@ -165,6 +166,7 @@ class DefaultAccountProfileLocalDataSourceTest {
                 name = name,
                 color = color,
                 avatar = Avatar.Icon(
+                    accountId = accountId,
                     name = "star",
                 ),
             )

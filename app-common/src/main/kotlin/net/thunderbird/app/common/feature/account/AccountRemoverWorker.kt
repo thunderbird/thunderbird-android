@@ -10,6 +10,8 @@ import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.fsck.k9.notification.BackgroundWorkNotificationController
 import com.fsck.k9.ui.R
+import net.thunderbird.feature.account.AccountId
+import net.thunderbird.feature.account.AccountIdFactory
 
 /**
  * A [androidx.work.Worker] to remove an account in the background.
@@ -23,9 +25,11 @@ class AccountRemoverWorker(
 ) : Worker(context, workerParams) {
 
     override fun doWork(): Result {
-        val accountUuid = requireNotNull(inputData.getString(ARG_ACCOUNT_UUID)) { "No account UUID provided" }
+        val accountId = requireNotNull(
+            inputData.getString(ARG_ACCOUNT_UUID)?.let { AccountIdFactory.of(it) },
+        ) { "No account UUID provided" }
 
-        accountRemover.removeAccount(accountUuid)
+        accountRemover.removeAccount(accountId)
 
         return Result.success()
     }
@@ -40,9 +44,9 @@ class AccountRemoverWorker(
     companion object {
         private const val ARG_ACCOUNT_UUID = "accountUuid"
 
-        fun enqueueRemoveAccountWorker(context: Context, accountUuid: String) {
+        fun enqueueRemoveAccountWorker(context: Context, accountId: AccountId) {
             val data = Data.Builder()
-                .putString(ARG_ACCOUNT_UUID, accountUuid)
+                .putString(ARG_ACCOUNT_UUID, accountId.toString())
                 .build()
 
             val request = OneTimeWorkRequest.Builder(AccountRemoverWorker::class.java)

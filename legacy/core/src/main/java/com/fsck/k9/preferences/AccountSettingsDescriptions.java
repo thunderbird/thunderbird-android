@@ -20,6 +20,7 @@ import com.fsck.k9.preferences.Settings.StringSetting;
 import com.fsck.k9.preferences.Settings.V;
 import com.fsck.k9.preferences.upgrader.AccountSettingsUpgraderTo106;
 import com.fsck.k9.preferences.upgrader.AccountSettingsUpgraderTo107;
+import com.fsck.k9.preferences.upgrader.AccountSettingsUpgraderTo112;
 import com.fsck.k9.preferences.upgrader.AccountSettingsUpgraderTo53;
 import com.fsck.k9.preferences.upgrader.AccountSettingsUpgraderTo54;
 import com.fsck.k9.preferences.upgrader.AccountSettingsUpgraderTo74;
@@ -152,7 +153,8 @@ class AccountSettingsDescriptions {
                 ))
         ));
         s.put("messageFormatAuto", Settings.versions(
-                new V(2, new BooleanSetting(DEFAULT_MESSAGE_FORMAT_AUTO))
+                new V(2, new BooleanSetting(DEFAULT_MESSAGE_FORMAT_AUTO)),
+                new V(112, null)
         ));
         s.put("messageReadReceipt", Settings.versions(
                 new V(1, new BooleanSetting(DEFAULT_MESSAGE_READ_RECEIPT))
@@ -325,6 +327,7 @@ class AccountSettingsDescriptions {
         u.put(91, new AccountSettingsUpgraderTo91());
         u.put(106, new AccountSettingsUpgraderTo106(new ServerSettingsDtoSerializer()));
         u.put(107, new AccountSettingsUpgraderTo107());
+        u.put(112, new AccountSettingsUpgraderTo112());
 
         UPGRADERS = Collections.unmodifiableMap(u);
     }

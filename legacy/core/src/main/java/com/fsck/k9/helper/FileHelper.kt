@@ -6,6 +6,8 @@ import net.thunderbird.legacy.logging.Log
 
 object FileHelper {
 
+    private const val TAG = "FileHelper"
+
     @JvmStatic
     @Suppress("TooGenericExceptionCaught")
     fun touchFile(parentDir: File, name: String) {
@@ -13,15 +15,15 @@ object FileHelper {
         try {
             if (!file.exists()) {
                 if (!file.createNewFile()) {
-                    Log.d("Unable to create file: %s", file.absolutePath)
+                    Log.d(TAG, "Unable to create file: %s", file.absolutePath)
                 }
             } else {
                 if (!file.setLastModified(System.currentTimeMillis())) {
-                    Log.d("Unable to change last modification date: %s", file.absolutePath)
+                    Log.d(TAG, "Unable to change last modification date: %s", file.absolutePath)
                 }
             }
         } catch (e: Exception) {
-            Log.d(e, "Unable to touch file: %s", file.absolutePath)
+            Log.d(TAG, e, "Unable to touch file: %s", file.absolutePath)
         }
     }
 
@@ -34,7 +36,7 @@ object FileHelper {
             from.copyTo(target = to, overwrite = true)
             val deleteFromFailed = !from.delete()
             if (deleteFromFailed) {
-                Log.e("Unable to delete source file after copying to destination!")
+                Log.e(TAG, "Unable to delete source file after copying to destination!")
             }
         }
     }
@@ -50,23 +52,23 @@ object FileHelper {
     fun move(from: File, to: File): Boolean {
         if (to.exists()) {
             if (!to.delete()) {
-                Log.d("Unable to delete file: %s", to.absolutePath)
+                Log.d(TAG, "Unable to delete file: %s", to.absolutePath)
             }
         }
 
         val parent = to.parentFile
         if (parent != null && !parent.mkdirs()) {
-            Log.d("Unable to make directories: %s", parent.absolutePath)
+            Log.d(TAG, "Unable to make directories: %s", parent.absolutePath)
         }
         return try {
             from.copyTo(target = to, overwrite = true)
             val deleteFromFailed = !from.delete()
             if (deleteFromFailed) {
-                Log.e("Unable to delete source file after copying to destination!")
+                Log.e(TAG, "Unable to delete source file after copying to destination!")
             }
             true
         } catch (e: Exception) {
-            Log.w(e, "cannot move %s to %s", from.absolutePath, to.absolutePath)
+            Log.w(TAG, e, "cannot move %s to %s", from.absolutePath, to.absolutePath)
             false
         }
     }

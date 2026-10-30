@@ -11,6 +11,8 @@ import com.google.zxing.common.HybridBinarizer
 import com.google.zxing.multi.qrcode.QRCodeMultiReader
 import net.thunderbird.legacy.logging.Log
 
+private const val TAG = "QrCodeAnalyzer"
+
 /**
  * An [ImageAnalysis.Analyzer] that scans for QR codes and notifies the listener for each one found.
  */
@@ -47,7 +49,7 @@ internal class QrCodeAnalyzer(
         } catch (e: NotFoundException) {
             emptyList()
         } catch (e: Exception) {
-            Log.e(e, "Error while trying to read QR code")
+            Log.e(TAG, e, "Error while trying to read QR code")
             emptyList()
         } finally {
             qrCodeReader.reset()

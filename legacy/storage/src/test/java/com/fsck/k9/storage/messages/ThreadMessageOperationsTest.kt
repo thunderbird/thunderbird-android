@@ -8,7 +8,7 @@ import assertk.assertions.isEqualTo
 import assertk.assertions.isNull
 import com.fsck.k9.storage.RobolectricTest
 import net.thunderbird.legacy.logging.Log
-import net.thunderbird.core.logging.testing.TestLogger
+import net.thunderbird.components.core.logging.testing.TestLogger
 import org.junit.After
 import org.junit.Before
 import org.junit.Test

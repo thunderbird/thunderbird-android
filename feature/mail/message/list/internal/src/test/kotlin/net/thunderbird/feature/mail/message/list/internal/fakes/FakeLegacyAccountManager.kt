@@ -1,43 +1,18 @@
 package net.thunderbird.feature.mail.message.list.internal.fakes
 
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
 import net.thunderbird.core.android.account.LegacyAccount
-import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.feature.account.AccountId
+import net.thunderbird.core.android.account.fake.FakeLegacyAccountManager as SharedFakeLegacyAccountManager
 
-internal open class FakeLegacyAccountManager(
-    private val accounts: List<LegacyAccount>,
-) : LegacyAccountManager {
-    val getByIdCalls = mutableListOf<AccountId>()
-    val savedAccounts = mutableListOf<LegacyAccount>()
+/** Shared [SharedFakeLegacyAccountManager] that also records the accounts observed via [observeById]. */
+internal class FakeLegacyAccountManager(
+    accounts: List<LegacyAccount> = emptyList(),
+) : SharedFakeLegacyAccountManager(accounts) {
+    val getByIdFlowCalls = mutableListOf<AccountId>()
 
-    override fun getAccounts(): List<LegacyAccount> = accounts
-
-    override fun getAccountsFlow(): Flow<List<LegacyAccount>> = flowOf(accounts)
-
-    override fun getAccount(accountUuid: String): LegacyAccount? = accounts.firstOrNull { it.uuid == accountUuid }
-
-    override fun getAccountFlow(accountUuid: String): Flow<LegacyAccount?> = flowOf(getAccount(accountUuid))
-
-    override fun moveAccount(
-        account: LegacyAccount,
-        newPosition: Int,
-    ) = error("not implemented.")
-
-    override fun saveAccount(account: LegacyAccount) {
-        savedAccounts += account
+    override fun observeById(accountId: AccountId): Flow<LegacyAccount?> {
+        getByIdFlowCalls += accountId
+        return super.observeById(accountId)
     }
-    override fun getAll(): Flow<List<LegacyAccount>> = flowOf(getAccounts())
-
-    override fun getById(id: AccountId): Flow<LegacyAccount?> {
-        getByIdCalls += id
-        return flowOf(getAccount(id.toString()))
-    }
-
-    override suspend fun update(account: LegacyAccount) = saveAccount(account)
-
-    override fun getByIdSync(id: AccountId): LegacyAccount? = getAccount(id.toString())
-
-    override fun updateSync(account: LegacyAccount) = saveAccount(account)
 }

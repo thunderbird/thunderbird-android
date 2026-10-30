@@ -2,9 +2,9 @@ package com.fsck.k9.ui.messagelist.debug
 
 import com.fsck.k9.mail.oauth.AuthStateStorage
 import com.fsck.k9.mail.oauth.OAuth2TokenProviderFactory
-import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.components.core.outcome.Outcome
+import net.thunderbird.feature.account.AccountId
 
 /**
  * Encapsulates debug-only authentication test actions.
@@ -22,8 +22,8 @@ class AuthDebugActions(
         data object AlreadyModified : Error
     }
 
-    fun invalidateAccessTokenLocal(accountUuid: String): Outcome<Unit, Error> {
-        val account = accountManager.getAccount(accountUuid)
+    fun invalidateAccessTokenLocal(accountId: AccountId): Outcome<Unit, Error> {
+        val account = accountManager.findById(accountId)
 
         return when {
             account == null -> Outcome.failure(Error.AccountNotFound)
@@ -32,8 +32,7 @@ class AuthDebugActions(
                 val storage = object : AuthStateStorage {
                     override fun getAuthorizationState(): String? = account.oAuthState
                     override fun updateAuthorizationState(authorizationState: String?) {
-                        val updated = account.copy(oAuthState = authorizationState)
-                        accountManager.saveAccount(updated)
+                        accountManager.updateSync(accountId) { it.copy(oAuthState = authorizationState) }
                     }
                 }
                 val provider = oAuth2TokenProviderFactory.create(storage)
@@ -43,8 +42,8 @@ class AuthDebugActions(
         }
     }
 
-    fun invalidateAccessTokenServer(accountUuid: String): Outcome<Unit, Error> {
-        val account = accountManager.getAccount(accountUuid)
+    fun invalidateAccessTokenServer(accountId: AccountId): Outcome<Unit, Error> {
+        val account = accountManager.findById(accountId)
         return when {
             account == null -> Outcome.failure(Error.AccountNotFound)
             account.oAuthState == null -> Outcome.failure(Error.NoOAuthState)
@@ -58,19 +57,16 @@ class AuthDebugActions(
                     return Outcome.failure(Error.AlreadyModified)
                 }
 
-                val updated = account.copy(oAuthState = modified)
-                accountManager.saveAccount(updated)
+                accountManager.updateSync(accountId) { it.copy(oAuthState = modified) }
                 Outcome.success(Unit)
             }
         }
     }
 
-    fun forceAuthFailure(accountUuid: String): Outcome<Unit, Error> {
-        val account: LegacyAccount = accountManager.getAccount(accountUuid)
-            ?: return Outcome.failure(Error.AccountNotFound)
+    fun forceAuthFailure(accountId: AccountId): Outcome<Unit, Error> {
         // Clear OAuth state to force immediate authentication failure
-        val updated = account.copy(oAuthState = null)
-        accountManager.saveAccount(updated)
+        accountManager.updateSync(accountId) { it.copy(oAuthState = null) }
+            ?: return Outcome.failure(Error.AccountNotFound)
         return Outcome.success(Unit)
     }
 }

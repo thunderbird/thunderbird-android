@@ -328,16 +328,16 @@
     <string name="account_settings_show_pictures_always">Всегда</string>
     <string name="account_settings_composition">Отправка</string>
     <string name="account_settings_default_quoted_text_shown_label">Цитировать при ответе</string>
-    <string name="account_settings_default_quoted_text_shown_summary">Включать исходное сообщение в свой ответ.</string>
+    <string name="account_settings_default_quoted_text_shown_summary">Включать исходное сообщение в свой ответ</string>
     <string name="account_settings_reply_after_quote_label">Цитата над ответом</string>
-    <string name="account_settings_reply_after_quote_summary">Разместить исходное сообщение над текстом ответа.</string>
+    <string name="account_settings_reply_after_quote_summary">Разместить исходное сообщение над текстом ответа</string>
     <string name="account_settings_strip_signature_label">Без подписей в цитате</string>
     <string name="account_settings_strip_signature_summary">Удалять подписи из цитируемого текста</string>
     <string name="account_settings_message_format_label">Формат сообщений</string>
-    <string name="account_settings_message_format_text">Только текст</string>
+    <string name="account_settings_message_format_text">Только текст (без изображений и форматирования)</string>
     <string name="account_settings_message_format_html">HTML (сохранять изображения и форматирование)</string>
-    <string name="account_settings_message_format_auto">Автоматически</string>
-    <string name="account_settings_always_show_cc_bcc_label">Включать Копия/Скрытая</string>
+    <string name="account_settings_message_format_auto">Автовыбор</string>
+    <string name="account_settings_always_show_cc_bcc_label">Показывать копию/скрытую</string>
     <string name="account_settings_message_read_receipt_label">Уведомление о прочтении</string>
     <string name="account_settings_message_read_receipt_summary">Всегда запрашивать уведомление о прочтении</string>
     <string name="account_settings_quote_style_label">Стиль цитирования</string>
@@ -976,4 +976,6 @@
     <string name="message_view_from_me_text">меня</string>
     <string name="error_no_contact_provider">Приложение \"Контакты\" не найдено. Установите приложение для работы с контактами, чтобы добавить этот адрес.</string>
     <string name="account_settings_signature_preview_empty">Здесь будет отображаться ваша подпись</string>
+    <string name="remote_feature_flag_preferences">Флаги удалённых функций</string>
+    <string name="account_setup_visibility_and_syncing">Видимость и синхронизация</string>
 </resources>

@@ -1,5 +1,6 @@
 package net.thunderbird.feature.notification.api.content
 
+import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.notification.api.NotificationChannel
 import net.thunderbird.feature.notification.api.NotificationSeverity
 import net.thunderbird.feature.notification.api.ui.action.NotificationAction
@@ -42,7 +43,7 @@ sealed class PushServiceNotification : AppNotification(), SystemNotification {
         override val actions: Set<NotificationAction>,
         override val icon: NotificationIcon = NotificationIcons.PushServiceInitializing,
     ) : PushServiceNotification() {
-        override val accountUuid: String? = null
+        override val accountId: AccountId? = null
 
         companion object {
             /**
@@ -69,7 +70,7 @@ sealed class PushServiceNotification : AppNotification(), SystemNotification {
         override val actions: Set<NotificationAction>,
         override val icon: NotificationIcon = NotificationIcons.PushServiceListening,
     ) : PushServiceNotification() {
-        override val accountUuid: String? = null
+        override val accountId: AccountId? = null
 
         companion object {
             /**
@@ -96,7 +97,7 @@ sealed class PushServiceNotification : AppNotification(), SystemNotification {
         override val actions: Set<NotificationAction>,
         override val icon: NotificationIcon = NotificationIcons.PushServiceWaitBackgroundSync,
     ) : PushServiceNotification() {
-        override val accountUuid: String? = null
+        override val accountId: AccountId? = null
 
         companion object {
             /**
@@ -123,7 +124,7 @@ sealed class PushServiceNotification : AppNotification(), SystemNotification {
         override val actions: Set<NotificationAction>,
         override val icon: NotificationIcon = NotificationIcons.PushServiceWaitNetwork,
     ) : PushServiceNotification() {
-        override val accountUuid: String? = null
+        override val accountId: AccountId? = null
 
         companion object {
             /**
@@ -153,7 +154,7 @@ sealed class PushServiceNotification : AppNotification(), SystemNotification {
         override val contentText: String?,
         override val icon: NotificationIcon = NotificationIcons.AlarmPermissionMissing,
     ) : PushServiceNotification(), InAppNotification {
-        override val accountUuid: String? = null
+        override val accountId: AccountId? = null
         override val severity: NotificationSeverity = NotificationSeverity.Critical
 
         companion object {

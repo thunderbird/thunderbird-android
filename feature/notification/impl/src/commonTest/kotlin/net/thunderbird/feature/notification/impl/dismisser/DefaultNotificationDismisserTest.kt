@@ -14,11 +14,12 @@ import kotlin.random.Random
 import kotlin.test.Test
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.test.runTest
+import net.thunderbird.components.core.logging.LogLevel
+import net.thunderbird.components.core.logging.testing.TestLogger
 import net.thunderbird.components.core.outcome.Outcome
 import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.featureflag.FeatureFlagResult
-import net.thunderbird.core.logging.LogLevel
-import net.thunderbird.core.logging.testing.TestLogger
+import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.notification.api.NotificationId
 import net.thunderbird.feature.notification.api.NotificationRegistry
 import net.thunderbird.feature.notification.api.NotificationSeverity
@@ -148,7 +149,7 @@ class DefaultNotificationDismisserTest {
             inAppNotificationNotifier = inAppNotifier,
         )
         val notification = object : AppNotification() {
-            override val accountUuid: String? get() = ""
+            override val accountId: AccountId? get() = null
             override val title: String = ""
             override val contentText: String? = null
             override val severity: NotificationSeverity = NotificationSeverity.Critical

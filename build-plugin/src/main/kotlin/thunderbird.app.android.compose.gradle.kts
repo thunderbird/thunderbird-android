@@ -37,11 +37,13 @@ dependencies {
 
     implementation(libs.bundles.shared.android.app)
     implementation(libs.bundles.shared.android.app.compose)
+    implementation(libs.bundles.shared.tmc.components)
 
     debugImplementation(libs.bundles.shared.android.app.compose.debug)
 
     testImplementation(libs.bundles.shared.android.app.test)
     testImplementation(libs.bundles.shared.android.app.compose.test)
+    testImplementation(libs.bundles.shared.tmc.components.test)
 
     androidTestImplementation(libs.bundles.shared.android.app.compose.androidTest)
 

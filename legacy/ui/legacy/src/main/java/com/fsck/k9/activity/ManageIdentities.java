@@ -14,7 +14,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import net.thunderbird.core.android.account.Identity;
-import com.fsck.k9.Preferences;
+import net.thunderbird.core.android.account.LegacyAccount;
 import com.fsck.k9.ui.R;
 
 public class ManageIdentities extends ChooseIdentity {
@@ -49,7 +49,7 @@ public class ManageIdentities extends ChooseIdentity {
 
     private void editItem(int i) {
         Intent intent = new Intent(ManageIdentities.this, EditIdentity.class);
-        intent.putExtra(EditIdentity.EXTRA_ACCOUNT, mAccount.getUuid());
+        intent.putExtra(EditIdentity.EXTRA_ACCOUNT, mAccount.getId().toString());
         intent.putExtra(EditIdentity.EXTRA_IDENTITY, mAccount.getIdentity(i));
         intent.putExtra(EditIdentity.EXTRA_IDENTITY_INDEX, i);
         startActivityForResult(intent, ACTIVITY_EDIT_IDENTITY);
@@ -66,7 +66,7 @@ public class ManageIdentities extends ChooseIdentity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.new_identity) {
             Intent intent = new Intent(ManageIdentities.this, EditIdentity.class);
-            intent.putExtra(EditIdentity.EXTRA_ACCOUNT, mAccount.getUuid());
+            intent.putExtra(EditIdentity.EXTRA_ACCOUNT, mAccount.getId().toString());
             startActivityForResult(intent, ACTIVITY_EDIT_IDENTITY);
         } else if (item.getItemId() == android.R.id.home) {
             finish();
@@ -125,7 +125,6 @@ public class ManageIdentities extends ChooseIdentity {
     @Override
     public void onResume() {
         super.onResume();
-        //mAccount.refresh(Preferences.getPreferences(getApplication().getApplicationContext()));
         refreshView();
     }
 
@@ -140,8 +139,13 @@ public class ManageIdentities extends ChooseIdentity {
 
     private void saveIdentities() {
         if (mIdentitiesChanged) {
-            mAccount.setIdentities(identities);
-            Preferences.getPreferences().saveAccount(mAccount);
+            LegacyAccount updatedAccount = accountManager.updateSync(
+                mAccount.getId(),
+                account -> account.updateIdentities(identities)
+            );
+            if (updatedAccount != null) {
+                mAccount = updatedAccount;
+            }
         }
     }
 }

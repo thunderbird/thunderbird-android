@@ -1,3 +1,5 @@
+import net.thunderbird.gradle.plugin.ProjectConfig
+
 plugins {
     id("com.android.kotlin.multiplatform.library")
     id("org.jetbrains.compose")
@@ -15,8 +17,8 @@ kotlin {
     }
 
     android {
-        compileSdk = ThunderbirdProjectConfig.Android.sdkCompile
-        minSdk = ThunderbirdProjectConfig.Android.sdkMin
+        compileSdk = ProjectConfig.Android.sdkCompile
+        minSdk = ProjectConfig.Android.sdkMin
 
         androidResources.enable = true
 
@@ -25,13 +27,13 @@ kotlin {
         }
 
         compilerOptions {
-            jvmTarget.set(ThunderbirdProjectConfig.Compiler.jvmTarget)
+            jvmTarget.set(ProjectConfig.Compiler.jvmTarget)
         }
     }
 
     jvm {
         compilerOptions {
-            jvmTarget.set(ThunderbirdProjectConfig.Compiler.jvmTarget)
+            jvmTarget.set(ProjectConfig.Compiler.jvmTarget)
         }
     }
 
@@ -41,6 +43,8 @@ kotlin {
         commonMain.dependencies {
             implementation(project.dependencies.platform(libs.kotlin.bom))
             implementation(project.dependencies.platform(libs.koin.bom))
+            implementation(project.dependencies.platform(libs.tb.mobile.components.bom))
+
             implementation(libs.bundles.shared.kmp.common)
             implementation(libs.bundles.shared.kmp.compose.common)
 
@@ -50,8 +54,8 @@ kotlin {
             implementation(libs.jetbrains.compose.components.resources)
             implementation(libs.jetbrains.compose.components.ui.preview)
 
+            implementation(libs.bundles.shared.tmc.components)
             if (!isComponentsBuild) {
-                implementation(libs.bundles.shared.tfa.components)
                 implementation(libs.tb.mobile.components.ui.bolt)
             }
         }
@@ -60,6 +64,7 @@ kotlin {
             implementation(libs.bundles.shared.kmp.common.test)
             implementation(libs.bundles.shared.kmp.compose.common.test)
 
+            implementation(libs.bundles.shared.tmc.components.test)
             if (!isComponentsBuild) {
                 implementation(libs.tb.mobile.components.ui.testing)
             }
@@ -91,11 +96,11 @@ kotlin {
 configureKotlinJavaCompatibility()
 
 tasks.withType<Test>().configureEach {
-    jvmArgs(ThunderbirdProjectConfig.Testing.robolectricJvmArgs)
+    jvmArgs(ProjectConfig.Testing.robolectricJvmArgs)
 }
 
 tasks.register("testsOnCi") {
     dependsOn(
-        tasks.withType<Test>()
+        tasks.withType<Test>(),
     )
 }

@@ -10,6 +10,8 @@ import net.thunderbird.legacy.logging.Log.w
 import org.openintents.openpgp.OpenPgpError
 import org.openintents.openpgp.util.OpenPgpApi
 
+private const val TAG = "AutocryptStatusInteractor"
+
 class AutocryptStatusInteractor {
     @WorkerThread
     fun retrieveCryptoProviderRecipientStatus(
@@ -39,9 +41,9 @@ class AutocryptStatusInteractor {
                     OpenPgpError::class.java,
                 )
                 if (error != null) {
-                    w("OpenPGP API Error #%s: %s", error.getErrorId(), error.getMessage())
+                    w(TAG, "OpenPGP API Error #%s: %s", error.getErrorId(), error.getMessage())
                 } else {
-                    w("OpenPGP API Unknown Error")
+                    w(TAG, "OpenPGP API Unknown Error")
                 }
                 RecipientAutocryptStatus(RecipientAutocryptStatusType.ERROR, null)
             }

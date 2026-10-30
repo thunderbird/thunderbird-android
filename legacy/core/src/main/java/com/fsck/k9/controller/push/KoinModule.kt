@@ -8,7 +8,6 @@ internal val controllerPushModule = module {
     single { AutoSyncManager(context = get(), generalSettingsManager = get()) }
     single {
         AccountPushControllerFactory(
-            accountManager = get(),
             backendManager = get(),
             messagingController = get(),
             pushFolderTrackingRepository = get(),

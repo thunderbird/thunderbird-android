@@ -10,10 +10,14 @@ import androidx.navigation.compose.NavHost
 import app.k9mail.feature.account.edit.navigation.AccountEditNavigation
 import app.k9mail.feature.account.setup.navigation.AccountSetupNavigation
 import app.k9mail.feature.account.setup.navigation.AccountSetupRoute
+import app.k9mail.feature.launcher.FeatureLauncherExternalContract.AccountManageIdentitiesLauncher
+import app.k9mail.feature.launcher.FeatureLauncherExternalContract.AccountSetupCompositionLauncher
 import app.k9mail.feature.launcher.FeatureLauncherExternalContract.MessageListLauncher
 import app.k9mail.feature.onboarding.main.navigation.OnboardingNavigation
 import app.k9mail.feature.onboarding.main.navigation.OnboardingRoute
+import net.thunderbird.core.featureflag.navigation.RemoteFeatureFlagNavigation
 import net.thunderbird.feature.account.settings.api.AccountSettingsNavigation
+import net.thunderbird.feature.account.settings.api.AccountSettingsRoute
 import net.thunderbird.feature.debug.settings.navigation.SecretDebugSettingsNavigation
 import net.thunderbird.feature.debug.settings.navigation.SecretDebugSettingsRoute
 import net.thunderbird.feature.funding.api.FundingNavigation
@@ -29,6 +33,8 @@ fun FeatureLauncherNavHost(
     onBack: () -> Unit,
     modifier: Modifier = Modifier,
     messageListLauncher: MessageListLauncher = koinInject(),
+    accountSetupCompositionLauncher: AccountSetupCompositionLauncher = koinInject(),
+    accountManageIdentitiesLauncher: AccountManageIdentitiesLauncher = koinInject(),
     accountEditNavigation: AccountEditNavigation = koinInject(),
     accountSettingsNavigation: AccountSettingsNavigation = koinInject(),
     accountSetupNavigation: AccountSetupNavigation = koinInject(),
@@ -37,6 +43,7 @@ fun FeatureLauncherNavHost(
     secretDebugSettingsNavigation: SecretDebugSettingsNavigation = koinInject(),
     thundermailNavigation: ThundermailNavigation = koinInject(),
     changelogNavigation: ChangelogNavigation = koinInject(),
+    remoteFeatureFlagNavigation: RemoteFeatureFlagNavigation = koinInject(),
 ) {
     val activity = LocalActivity.current as ComponentActivity
 
@@ -107,7 +114,19 @@ fun FeatureLauncherNavHost(
             navGraphBuilder = this,
             onBack = onBack,
             onFinish = {
-                onBack()
+                when (it) {
+                    is AccountSettingsRoute.CompositionSettings -> {
+                        accountSetupCompositionLauncher.launch(activity, it.accountId)
+                        activity.finish()
+                    }
+
+                    is AccountSettingsRoute.ManageIdentities -> {
+                        accountManageIdentitiesLauncher.launch(activity, it.accountId)
+                        activity.finish()
+                    }
+
+                    else -> onBack()
+                }
             },
         )
 
@@ -125,6 +144,16 @@ fun FeatureLauncherNavHost(
                     SecretDebugSettingsRoute.Tab.Notification -> onBack()
                     SecretDebugSettingsRoute.Tab.FeatureFlag -> messageListLauncher.launch(accountUuid = null)
                 }
+            },
+        )
+
+        remoteFeatureFlagNavigation.registerRoutes(
+            navGraphBuilder = this,
+            onBack = onBack,
+            onFinish = { route ->
+                navController.navigate(
+                    route = SecretDebugSettingsRoute(tab = SecretDebugSettingsRoute.Tab.FeatureFlag),
+                )
             },
         )
     }

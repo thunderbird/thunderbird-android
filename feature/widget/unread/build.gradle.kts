@@ -12,8 +12,6 @@ dependencies {
 
     implementation(libs.preferencex)
 
-    testImplementation(projects.core.logging.testing)
-
     testImplementation(libs.mockito.kotlin)
     testImplementation(libs.koin.test)
     testImplementation(libs.robolectric)

@@ -2,8 +2,8 @@ package net.thunderbird.feature.funding.googleplay.data.local.configstore
 
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
+import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.core.configstore.Config
-import net.thunderbird.core.logging.Logger
 import net.thunderbird.feature.funding.googleplay.data.FundingDataContract.Local
 
 private const val TAG = "ContributionConfigMapper"

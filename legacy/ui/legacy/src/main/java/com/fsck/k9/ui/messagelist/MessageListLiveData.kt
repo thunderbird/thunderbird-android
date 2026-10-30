@@ -9,6 +9,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import net.thunderbird.core.android.account.LegacyAccountManager
+import net.thunderbird.feature.account.AccountIdFactory
 
 class MessageListLiveData(
     private val messageListLoader: MessageListLoader,
@@ -48,7 +49,7 @@ class MessageListLiveData(
             val accountUuids = config.search.getLegacyAccountUuids(accountManager)
 
             for (accountUuid in accountUuids) {
-                messageListRepository.addListener(accountUuid, messageListChangedListener)
+                messageListRepository.addListener(AccountIdFactory.of(accountUuid), messageListChangedListener)
             }
         }
     }

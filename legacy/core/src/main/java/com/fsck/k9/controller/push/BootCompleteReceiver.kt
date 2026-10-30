@@ -11,11 +11,13 @@ import net.thunderbird.legacy.logging.Log
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
+private const val TAG = "BootCompleteReceiver"
+
 class BootCompleteReceiver : BroadcastReceiver(), KoinComponent {
     private val pushController: PushController by inject()
 
     override fun onReceive(context: Context, intent: Intent?) {
-        Log.v("BootCompleteReceiver.onReceive() - %s", intent?.action)
+        Log.v(TAG, "BootCompleteReceiver.onReceive() - %s", intent?.action)
 
         pushController.init()
     }
@@ -26,20 +28,20 @@ class BootCompleteManager(context: Context) {
     private val componentName = ComponentName(context, BootCompleteReceiver::class.java)
 
     fun enableReceiver() {
-        Log.v("Enable BootCompleteReceiver")
+        Log.v(TAG, "Enable BootCompleteReceiver")
         try {
             packageManager.setComponentEnabledSetting(componentName, COMPONENT_ENABLED_STATE_ENABLED, DONT_KILL_APP)
         } catch (e: Exception) {
-            Log.e(e, "Error enabling BootCompleteReceiver")
+            Log.e(TAG, e, "Error enabling BootCompleteReceiver")
         }
     }
 
     fun disableReceiver() {
-        Log.v("Disable BootCompleteReceiver")
+        Log.v(TAG, "Disable BootCompleteReceiver")
         try {
             packageManager.setComponentEnabledSetting(componentName, COMPONENT_ENABLED_STATE_DISABLED, DONT_KILL_APP)
         } catch (e: Exception) {
-            Log.e(e, "Error disabling BootCompleteReceiver")
+            Log.e(TAG, e, "Error disabling BootCompleteReceiver")
         }
     }
 }

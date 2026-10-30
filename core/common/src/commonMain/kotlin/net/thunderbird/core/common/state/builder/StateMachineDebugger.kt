@@ -1,9 +1,9 @@
 package net.thunderbird.core.common.state.builder
 
 import kotlin.time.Clock
+import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.core.common.state.StateMachine
 import net.thunderbird.core.common.state.debug.StatePrettyPrinter
-import net.thunderbird.core.logging.Logger
 
 /**
  * A debugging utility for tracking and logging state machine transitions.

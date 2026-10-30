@@ -13,10 +13,10 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.core.common.state.StateMachine.Transition
 import net.thunderbird.core.common.state.builder.StateMachineBuilderDsl
 import net.thunderbird.core.common.state.builder.StateMachineDebugger
-import net.thunderbird.core.logging.Logger
 
 internal typealias TransactionKey<TState, TEvent> = Pair<KClass<out TState>, KClass<out TEvent>>
 
@@ -116,9 +116,22 @@ interface StateMachine<TState : Any, TEvent : Any> {
     )
 }
 
+/**
+ * Pairs a [Logger] with the tag used for every message logged by a state machine.
+ */
+internal class StateMachineLogger(
+    val logger: Logger,
+    val tag: String,
+) {
+    fun verbose(message: () -> String) = logger.verbose(tag, message = message)
+
+    fun debug(message: () -> String) = logger.debug(tag, message = message)
+
+    fun info(message: () -> String) = logger.info(tag, message = message)
+}
+
 internal class DefaultStateMachine<TState : Any, TEvent : Any>(
-    private val logger: Logger?,
-    private val logTag: String?,
+    private val logger: StateMachineLogger?,
     private val stateMachineDebugger: StateMachineDebugger<TState, TEvent>?,
     scope: CoroutineScope,
     initialState: TState,
@@ -218,17 +231,17 @@ internal class DefaultStateMachine<TState : Any, TEvent : Any>(
 
     private fun verbose(message: () -> String) {
         if (stateMachineDebugger != null) {
-            logger?.verbose(logTag, message = message)
+            logger?.verbose(message)
         }
     }
 
     private fun debug(message: () -> String) {
         if (stateMachineDebugger != null) {
-            logger?.debug(logTag, message = message)
+            logger?.debug(message)
         }
     }
 
     private fun info(message: () -> String) {
-        logger?.info(logTag, message = message)
+        logger?.info(message)
     }
 }

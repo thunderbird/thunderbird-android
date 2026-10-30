@@ -1,7 +1,6 @@
 package app.k9mail.feature.settings.import.ui
 
 import android.os.Bundle
-import androidx.core.os.bundleOf
 
 enum class SettingsImportAction(private val bundleValue: String) {
     Overview("overview"),
@@ -9,9 +8,9 @@ enum class SettingsImportAction(private val bundleValue: String) {
     ;
 
     fun toBundle(): Bundle {
-        return bundleOf(
-            BUNDLE_KEY_ACTION to bundleValue,
-        )
+        return Bundle().apply {
+            putString(BUNDLE_KEY_ACTION, bundleValue)
+        }
     }
 
     companion object {

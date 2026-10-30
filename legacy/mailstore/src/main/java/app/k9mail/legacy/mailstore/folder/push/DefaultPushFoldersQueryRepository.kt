@@ -14,12 +14,14 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flowOn
 import net.thunderbird.components.core.outcome.Outcome
 import net.thunderbird.components.core.outcome.fold
-import net.thunderbird.core.logging.Logger
+import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.mail.folder.api.RemoteFolder
 import net.thunderbird.feature.mail.folder.api.data.FolderError
 import net.thunderbird.feature.mail.folder.api.data.repository.PushFoldersQueryRepository
 import net.thunderbird.feature.mail.folder.api.data.repository.RemoteFolderDetailsRepository
+
+private const val TAG = "DefaultPushFoldersQueryRepository"
 
 class DefaultPushFoldersQueryRepository(
     private val logger: Logger,
@@ -47,7 +49,7 @@ class DefaultPushFoldersQueryRepository(
             .flowOn(ioDispatcher)
 
     override suspend fun getAllByAccountId(accountId: AccountId): Outcome<List<RemoteFolder>, FolderError> {
-        logger.verbose { "$LOG_ID getting push folders for account '$accountId'" }
+        logger.verbose(TAG) { "$LOG_ID getting push folders for account '$accountId'" }
 
         return remoteFolderDetailsRepository.getAllByAccountId(accountId).fold(
             onSuccess = { folderDetails ->

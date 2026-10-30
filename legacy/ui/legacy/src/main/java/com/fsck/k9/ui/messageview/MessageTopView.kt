@@ -28,7 +28,7 @@ import com.fsck.k9.view.ThemeUtils
 import com.fsck.k9.view.ToolableViewAnimator
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textview.MaterialTextView
-import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.ShowPictures
 import net.thunderbird.core.common.mail.EmailAddress
 import net.thunderbird.core.common.mail.toEmailAddressOrNull
@@ -124,7 +124,7 @@ class MessageTopView(
         setShowDownloadButton(messageViewInfo)
     }
 
-    fun showMessage(account: LegacyAccountDto, messageViewInfo: MessageViewInfo) {
+    fun showMessage(account: LegacyAccount, messageViewInfo: MessageViewInfo) {
         resetAndPrepareMessageView(messageViewInfo)
 
         val showPicturesSetting = account.showPictures
@@ -259,7 +259,7 @@ class MessageTopView(
         }
     }
 
-    fun setHeaders(message: Message?, account: LegacyAccountDto?, showStar: Boolean) {
+    fun setHeaders(message: Message?, account: LegacyAccount?, showStar: Boolean) {
         messageHeaderView.populate(message, account, showStar, showAccountIndicator)
         messageHeaderView.visibility = VISIBLE
     }

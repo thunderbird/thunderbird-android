@@ -11,11 +11,11 @@ import androidx.appcompat.widget.AppCompatSpinner
 import androidx.core.view.isVisible
 import com.fsck.k9.ui.R
 import com.google.android.material.textview.MaterialTextView
-import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.android.account.LegacyAccount
 
 class AccountSelectionSpinner : AppCompatSpinner {
-    var selection: LegacyAccountDto
-        get() = selectedItem as LegacyAccountDto
+    var selection: LegacyAccount
+        get() = selectedItem as LegacyAccount
         set(account) {
             selectedAccount = account
             val adapter = adapter as AccountsAdapter
@@ -24,7 +24,7 @@ class AccountSelectionSpinner : AppCompatSpinner {
         }
 
     private val cachedBackground: Drawable
-    private var selectedAccount: LegacyAccountDto? = null
+    private var selectedAccount: LegacyAccount? = null
 
     constructor(context: Context) : super(context)
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
@@ -40,7 +40,7 @@ class AccountSelectionSpinner : AppCompatSpinner {
         adapter.notifyDataSetChanged()
     }
 
-    fun setAccounts(accounts: List<LegacyAccountDto>) {
+    fun setAccounts(accounts: List<LegacyAccount>) {
         val adapter = adapter as AccountsAdapter
         adapter.clear()
         adapter.addAll(accounts)
@@ -52,7 +52,7 @@ class AccountSelectionSpinner : AppCompatSpinner {
         background = if (showAccountSwitcher) cachedBackground else null
     }
 
-    internal class AccountsAdapter(context: Context) : ArrayAdapter<LegacyAccountDto>(context, 0) {
+    internal class AccountsAdapter(context: Context) : ArrayAdapter<LegacyAccount>(context, 0) {
         var title: CharSequence = ""
 
         override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
@@ -65,7 +65,7 @@ class AccountSelectionSpinner : AppCompatSpinner {
 
             return view.apply {
                 name.text = title
-                email.text = account.displayName
+                email.text = account.profile.name
             }
         }
 

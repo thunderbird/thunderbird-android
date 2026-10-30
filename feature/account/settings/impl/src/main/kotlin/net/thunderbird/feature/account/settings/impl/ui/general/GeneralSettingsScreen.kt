@@ -4,7 +4,10 @@ import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
 import com.eygraber.uri.toKmpUri
+import com.fsck.k9.ui.settings.account.AccountSettingsActivity
+import com.fsck.k9.ui.settings.account.AccountSettingsFragment
 import net.thunderbird.core.ui.contract.mvi.observe
 import net.thunderbird.core.ui.setting.SettingViewProvider
 import net.thunderbird.feature.account.AccountId
@@ -25,6 +28,8 @@ internal fun GeneralSettingsScreen(
     provider: SettingViewProvider = koinInject(),
     builder: SettingsBuilder = koinInject(),
 ) {
+    val context = LocalContext.current
+
     val imagePicker = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
         if (uri != null) {
             viewModel.event(Event.OnAvatarImagePicked(uri.toKmpUri()))
@@ -38,12 +43,21 @@ internal fun GeneralSettingsScreen(
             is Effect.OpenAvatarImagePicker -> {
                 imagePicker.launch(arrayOf("image/jpeg", "image/png"))
             }
+
+            is Effect.OpenManageFolders -> {
+                AccountSettingsActivity.start(
+                    context = context,
+                    accountUuid = accountId.value.toString(),
+                    startScreenKey = AccountSettingsFragment.PREFERENCE_FOLDERS,
+                )
+            }
         }
     }
 
     BackHandler(onBack = onBack)
 
     GeneralSettingsContent(
+        accountId = accountId,
         state = state.value,
         onEvent = { dispatch(it) },
         provider = provider,

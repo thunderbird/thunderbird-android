@@ -11,7 +11,6 @@ import app.k9mail.legacy.message.controller.SimpleMessagingListener
 import com.fsck.k9.mail.Message
 import com.fsck.k9.mail.Part
 import com.fsck.k9.mailstore.AttachmentViewInfo
-import com.fsck.k9.mailstore.LocalPart
 import com.fsck.k9.provider.AttachmentTempFileProvider
 import com.fsck.k9.ui.R
 import java.io.IOException
@@ -22,10 +21,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
-import net.thunderbird.core.android.account.LegacyAccountDto
-import net.thunderbird.core.android.account.LegacyAccountDtoManager
-import net.thunderbird.core.logging.Logger
+import net.thunderbird.components.core.logging.Logger
+import net.thunderbird.feature.account.AccountId
 import org.apache.commons.io.IOUtils
+
+private const val TAG = "AttachmentController"
 
 class AttachmentController internal constructor(
     private val context: Context,
@@ -88,7 +88,7 @@ class AttachmentController internal constructor(
                 writeAttachment(documentUri)
                 true
             } catch (e: IOException) {
-                logger.error(throwable = e) { "Error saving attachment" }
+                logger.error(tag = TAG, throwable = e) { "Error saving attachment" }
                 false
             }
         }
@@ -115,7 +115,7 @@ class AttachmentController internal constructor(
                 writeAttachment(documentUri)
                 true
             } catch (e: IOException) {
-                logger.error(throwable = e) { "Error saving attachment to directory" }
+                logger.error(tag = TAG, throwable = e) { "Error saving attachment to directory" }
                 false
             }
         }
@@ -127,7 +127,7 @@ class AttachmentController internal constructor(
         controller.loadAttachment(
             part = attachment.part,
             listener = object : SimpleMessagingListener() {
-                override fun loadAttachmentFinished(account: LegacyAccountDto?, message: Message?, part: Part?) {
+                override fun loadAttachmentFinished(accountId: AccountId?, message: Message?, part: Part?) {
                     attachment.setContentAvailable()
                     attachmentDisplayController.hideAttachmentLoadingDialogOnMainThread()
                     if (continuation.isActive) {
@@ -136,7 +136,7 @@ class AttachmentController internal constructor(
                 }
 
                 override fun loadAttachmentFailed(
-                    account: LegacyAccountDto?,
+                    accountId: AccountId?,
                     message: Message?,
                     part: Part?,
                     reason: String?,
@@ -185,7 +185,7 @@ class AttachmentController internal constructor(
             )
             attachment.mimeType?.let { viewIntentFinder.getBestViewIntent(intentDataUri, attachment.displayName, it) }
         } catch (e: IOException) {
-            logger.error(throwable = e) { "Error creating temp file for attachment!" }
+            logger.error(tag = TAG, throwable = e) { "Error creating temp file for attachment!" }
             return null
         }
     }

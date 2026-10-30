@@ -10,16 +10,17 @@ import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import net.thunderbird.core.common.resources.StringsResourceManager
 import net.thunderbird.core.ui.contract.mvi.BaseViewModel
+import net.thunderbird.feature.account.profile.AccountProfile
+import net.thunderbird.feature.account.profile.AccountProfileRepository
 import net.thunderbird.feature.debug.settings.R
 import net.thunderbird.feature.debug.settings.notification.DebugNotificationSectionContract.Effect
 import net.thunderbird.feature.debug.settings.notification.DebugNotificationSectionContract.Event
 import net.thunderbird.feature.debug.settings.notification.DebugNotificationSectionContract.State
-import net.thunderbird.feature.mail.account.api.AccountManager
-import net.thunderbird.feature.mail.account.api.BaseAccount
 import net.thunderbird.feature.notification.api.NotificationGroup
 import net.thunderbird.feature.notification.api.NotificationGroupKey
 import net.thunderbird.feature.notification.api.content.AuthenticationErrorNotification
@@ -35,7 +36,7 @@ import net.thunderbird.feature.notification.api.sender.NotificationSender
 
 internal class DebugNotificationSectionViewModel(
     private val stringsResourceManager: StringsResourceManager,
-    private val accountManager: AccountManager<BaseAccount>,
+    private val accountProfileRepository: AccountProfileRepository,
     private val notificationSender: NotificationSender,
     private val inAppNotificationStream: InAppNotificationStream,
     private val notificationIconResourceProvider: NotificationIconResourceProvider,
@@ -45,7 +46,7 @@ internal class DebugNotificationSectionViewModel(
 
     init {
         viewModelScope.launch(ioDispatcher) {
-            val accounts = accountManager.getAccounts()
+            val accounts = accountProfileRepository.getAll().first()
             withContext(mainDispatcher) {
                 updateState {
                     val systemNotificationTypes = buildList {
@@ -74,7 +75,7 @@ internal class DebugNotificationSectionViewModel(
                     }.toPersistentList()
                     State(
                         accounts = accounts.toPersistentList(),
-                        selectedAccount = accounts.first(),
+                        selectedAccount = accounts.firstOrNull(),
                         systemNotificationTypes = systemNotificationTypes,
                         inAppNotificationTypes = inAppNotificationTypes,
                         selectedSystemNotificationType = systemNotificationTypes.first(),
@@ -189,7 +190,7 @@ internal class DebugNotificationSectionViewModel(
 
         val state = state.value
         val selectedAccount = state.selectedAccount ?: return null
-        val accountDisplay = selectedAccount.name ?: selectedAccount.email
+        val accountDisplay = selectedAccount.name
 
         val notification = buildNotification(
             notificationType = notificationType,
@@ -213,36 +214,36 @@ internal class DebugNotificationSectionViewModel(
     @Suppress("CyclomaticComplexMethod", "LongMethod")
     private suspend fun buildNotification(
         notificationType: KClass<out Notification>?,
-        selectedAccount: BaseAccount,
+        selectedAccount: AccountProfile,
         accountDisplay: String,
         state: State,
     ): Notification? = when (notificationType) {
         AuthenticationErrorNotification::class -> AuthenticationErrorNotification(
             isIncomingServerError = true,
-            accountUuid = selectedAccount.uuid,
+            accountId = selectedAccount.id,
             accountDisplayName = accountDisplay,
             accountNumber = 0,
         )
 
         CertificateErrorNotification::class -> CertificateErrorNotification(
             isIncomingServerError = true,
-            accountUuid = selectedAccount.uuid,
+            accountId = selectedAccount.id,
             accountDisplayName = accountDisplay,
             accountNumber = 0,
         )
 
         FailedToCreateNotification::class -> FailedToCreateNotification(
-            accountUuid = selectedAccount.uuid,
+            accountId = selectedAccount.id,
             failedNotification = AuthenticationErrorNotification(
                 isIncomingServerError = true,
-                accountUuid = selectedAccount.uuid,
+                accountId = selectedAccount.id,
                 accountDisplayName = accountDisplay,
                 accountNumber = 0,
             ),
         )
 
         MailNotification.Fetching::class -> MailNotification.Fetching(
-            accountUuid = selectedAccount.uuid,
+            accountId = selectedAccount.id,
             accountDisplayName = accountDisplay,
             folderName = state.folderName,
         )
@@ -253,7 +254,7 @@ internal class DebugNotificationSectionViewModel(
         )
 
         MailNotification.NewMailSummaryMail::class -> MailNotification.NewMailSummaryMail(
-            accountUuid = selectedAccount.uuid,
+            accountId = selectedAccount.id,
             accountDisplayName = accountDisplay,
             messagesNotificationChannelSuffix = "",
             newMessageCount = 10,
@@ -265,12 +266,12 @@ internal class DebugNotificationSectionViewModel(
         )
 
         MailNotification.SendFailed::class -> MailNotification.SendFailed(
-            accountUuid = selectedAccount.uuid,
+            accountId = selectedAccount.id,
             exception = Exception("What a failure"),
         )
 
         MailNotification.Sending::class -> MailNotification.Sending(
-            accountUuid = selectedAccount.uuid,
+            accountId = selectedAccount.id,
             accountDisplayName = accountDisplay,
         )
 
@@ -292,10 +293,10 @@ internal class DebugNotificationSectionViewModel(
     }
 
     private fun State.buildSingleMailNotification(
-        selectedAccount: BaseAccount,
+        selectedAccount: AccountProfile,
         accountDisplay: String,
     ): MailNotification.NewMailSingleMail? = MailNotification.NewMailSingleMail(
-        accountUuid = selectedAccount.uuid,
+        accountId = selectedAccount.id,
         accountName = accountDisplay,
         messagesNotificationChannelSuffix = "",
         summary = singleNotificationData.summary,

@@ -344,7 +344,7 @@
     <string name="account_settings_upload_sent_messages_label">Carica messaggi inviati</string>
     <string name="account_settings_upload_sent_messages_summary">Dopo l\'invio carica i messaggi nella cartella Posta inviata</string>
     <string name="account_settings_general_title">Impostazioni generali</string>
-    <string name="account_settings_reading_mail">Lettura messaggi</string>
+    <string name="account_settings_reading_mail">Lettura e-mail</string>
     <string name="account_settings_sync">Recupero messaggi</string>
     <string name="account_settings_folders">Cartelle</string>
     <string name="account_settings_quote_prefix_label">Prefisso testo citato</string>
@@ -379,10 +379,10 @@
     <string name="account_settings_message_age_label">Sincronizza messaggi da</string>
     <string name="account_settings_message_age_any">qualsiasi data (senza limite)</string>
     <string name="account_settings_message_age_0">oggi</string>
-    <string name="account_settings_message_age_1">ultimi 2 giorni</string>
-    <string name="account_settings_message_age_2">ultimi 3 giorni</string>
-    <string name="account_settings_message_age_7">ultima settimana</string>
-    <string name="account_settings_message_age_14">ultime 2 settimane</string>
+    <string name="account_settings_message_age_1">gli ultimi 2 giorni</string>
+    <string name="account_settings_message_age_2">gli ultimi 3 giorni</string>
+    <string name="account_settings_message_age_7">l\'ultima settimana</string>
+    <string name="account_settings_message_age_14">le ultime 2 settimane</string>
     <string name="account_settings_message_age_21">ultime 3 settimane</string>
     <string name="account_settings_message_age_1_month">ultimo mese</string>
     <string name="account_settings_message_age_2_months">ultimi 2 mesi</string>
@@ -396,7 +396,7 @@
     <string name="folder_settings_in_top_group_label">Mostra in alto</string>
     <string name="folder_settings_clear_local_folder_action">Pulisci messaggi locali</string>
     <string name="account_settings_incoming_label">Server posta in arrivo</string>
-    <string name="account_settings_incoming_summary">Configura server della posta in arrivo</string>
+    <string name="account_settings_incoming_summary">Configura il server di posta in arrivo</string>
     <string name="account_settings_outgoing_label">Server posta in uscita</string>
     <string name="account_settings_outgoing_summary">Configura server della posta in uscita (SMTP)</string>
     <string name="account_settings_name_label">Il tuo nome</string>
@@ -614,7 +614,7 @@
     <string name="webview_contextmenu_email_save_action">Salva nei contatti</string>
     <string name="webview_contextmenu_email_copy_action">Copia indirizzo negli appunti</string>
     <string name="webview_contextmenu_email_clipboard_label">Indirizzo email</string>
-    <string name="account_settings_remote_search_num_results_entries_all">Tutti</string>
+    <string name="account_settings_remote_search_num_results_entries_all">Tutte</string>
     <string name="account_settings_remote_search_num_results_entries_10">10</string>
     <string name="account_settings_remote_search_num_results_entries_25">25</string>
     <string name="account_settings_remote_search_num_results_entries_50">50</string>
@@ -622,7 +622,7 @@
     <string name="account_settings_remote_search_num_results_entries_250">250</string>
     <string name="account_settings_remote_search_num_results_entries_500">500</string>
     <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
-    <string name="account_settings_remote_search_num_label">Limite risultati di ricerca sul server</string>
+    <string name="account_settings_remote_search_num_label">Limite di ricerca sul server</string>
     <string name="remote_search_sending_query">Invio richiesta al server</string>
     <plurals name="remote_search_downloading">
         <item quantity="one">Recupero di %d risultato</item>

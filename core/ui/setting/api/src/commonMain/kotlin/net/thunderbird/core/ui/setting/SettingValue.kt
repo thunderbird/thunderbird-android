@@ -29,6 +29,7 @@ sealed interface SettingValue<T> : Setting {
      */
     data class Text(
         override val id: String,
+        val enabled: Boolean = true,
         val title: () -> String,
         val description: () -> String? = { null },
         val icon: () -> ImageVector? = { null },
@@ -195,6 +196,7 @@ sealed interface SettingValue<T> : Setting {
         override val id: String,
         val title: () -> String,
         val description: () -> String? = { null },
+        val enabled: Boolean = true,
         override val value: Boolean,
     ) : SettingValue<Boolean> {
         override val requiresEditView: Boolean = false

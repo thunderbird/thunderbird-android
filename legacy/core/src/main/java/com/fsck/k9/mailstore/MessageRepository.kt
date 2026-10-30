@@ -10,12 +10,12 @@ import org.apache.james.mime4j.field.DefaultFieldParser
 
 class MessageRepository(private val messageStoreManager: MessageStoreManager) {
     fun getHeaders(messageReference: MessageReference): List<Header> {
-        val messageStore = messageStoreManager.getMessageStore(messageReference.accountUuid)
+        val messageStore = messageStoreManager.getMessageStore(messageReference.accountId)
         return messageStore.getHeaders(messageReference.folderId, messageReference.uid)
     }
 
     fun getMessageDetails(messageReference: MessageReference): MessageDetails {
-        val messageStore = messageStoreManager.getMessageStore(messageReference.accountUuid)
+        val messageStore = messageStoreManager.getMessageStore(messageReference.accountId)
         val headers = messageStore.getHeaders(messageReference.folderId, messageReference.uid, MESSAGE_DETAILS_HEADERS)
 
         val messageDate = headers.parseDate("date")

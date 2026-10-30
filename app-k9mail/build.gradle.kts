@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.dependency.guard)
     alias(libs.plugins.tb.app.badging)
     alias(libs.plugins.tb.app.versioning)
+    alias(libs.plugins.tb.baselineprofile.consumer.app)
 }
 
 val testCoverageEnabled = providers
@@ -17,8 +18,8 @@ android {
         testApplicationId = "com.fsck.k9.tests"
 
         versionCode = 39021
-        versionName = "25.0"
-        versionNameSuffix = "b1"
+        versionName = "26.0"
+        versionNameSuffix = "b0"
 
         buildConfigField("String", "CLIENT_INFO_APP_NAME", "\"K-9 Mail\"")
     }
@@ -185,6 +186,8 @@ dependencies {
     testImplementation(projects.feature.changelog.internal)
 
     testImplementation(libs.appauth)
+
+    baselineProfile(projects.appK9mail.benchmarks)
 }
 
 dependencyGuard {

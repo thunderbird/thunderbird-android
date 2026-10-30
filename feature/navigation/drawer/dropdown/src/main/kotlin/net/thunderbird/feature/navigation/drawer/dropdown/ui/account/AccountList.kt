@@ -29,7 +29,7 @@ internal fun AccountList(
     ) {
         items(
             items = accounts,
-            key = { account -> account.id },
+            key = { account -> account.id.toString() },
         ) { account ->
             AccountListItem(
                 account = account,

@@ -5,7 +5,7 @@ K-9 Mail ist eine Open-Source-E-Mail-App, der mit praktisch jedem E-Mail-Anbiete
 * Mehrere Konten werden unterstützt
 * Einheitlicher Posteingang
 * Datenschutzfreundlich (keinerlei Tracking, verbindet sich nur mit deinem E-Mail-Anbieter)
-* Automatische Hintergrundsynchronisierung oder Push-Benachrichtigungen
+* Automatische Hintergrundsynchronisation oder Push-Benachrichtigungen
 * Lokale und serverseitige Suche
 * OpenPGP-E-Mail-Verschlüsselung (PGP/MIME)
 

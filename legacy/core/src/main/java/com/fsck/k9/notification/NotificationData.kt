@@ -1,14 +1,14 @@
 package com.fsck.k9.notification
 
 import app.k9mail.legacy.message.controller.MessageReference
-import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.preference.LockScreenNotificationVisibility
 
 /**
  * Holds information about active and inactive new message notifications of an account.
  */
 internal data class NotificationData(
-    val account: LegacyAccountDto,
+    val account: LegacyAccount,
     val activeNotifications: List<NotificationHolder>,
     val inactiveNotifications: List<InactiveNotificationHolder>,
     val lockScreenNotificationVisibility: LockScreenNotificationVisibility,
@@ -37,7 +37,7 @@ internal data class NotificationData(
     fun isEmpty() = activeNotifications.isEmpty()
 
     companion object {
-        fun create(account: LegacyAccountDto): NotificationData {
+        fun create(account: LegacyAccount): NotificationData {
             return NotificationData(
                 account = account,
                 activeNotifications = emptyList(),

@@ -1,3 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    </resources>
+    <string name="setup_archive_folder_dialog_dont_show_again">Non amosar esta mensaxe de novo</string>
+    <string name="setup_archive_folder_dialog_email_can_not_be_archived">O correo non se pode arquivar</string>
+    <string name="setup_archive_folder_dialog_configure_archive_folder">Configura o cartafol de arquivo agora</string>
+    <string name="setup_archive_folder_dialog_skip_for_now">Omitir polo de agora</string>
+    <string name="setup_archive_folder_dialog_set_archive_folder">Establecer o cartafol de arquivo</string>
+    <string name="setup_archive_folder_dialog_error_retrieve_folders">Rediola, algo saíu mal ao recuperar os cartafoles da conta!</string>
+    <string name="setup_archive_folder_dialog_error_retrieve_folders_detailed_message">Detalles do erro: %1$s</string>
+    <string name="setup_archive_folder_dialog_create_new_folder">Crear un cartafol novo</string>
+    <string name="setup_archive_folder_dialog_done">Feito</string>
+    <string name="setup_archive_folder_dialog_cancel">Cancelar</string>
+    <string name="setup_archive_folder_dialog_create_and_set_new_folder"><![CDATA[Crear e establecer un novo cartafol]]></string>
+    <string name="setup_archive_folder_set_archive_error_account_not_found">Non se puido atopar unha conta asociada ao UUID «%1$s»</string>
+    <string name="setup_archive_folder_unhandled_error">Erro non xestionado: %1$s</string>
+    <string name="setup_archive_folder_create_archive_folder_syncing">Sincronizando…</string>
+    <string name="setup_archive_folder_create_archive_folder_local_folder_created">Cartafol local creado. Iniciando a sincronización…</string>
+    <string name="setup_archive_folder_create_archive_folder_remote_folder_created">Cartafol remoto creado.</string>
+    <string name="setup_archive_folder_create_archive_folder_creating_folder_email_provider">Creando un cartafol no provedor de correo…</string>
+    <string name="setup_archive_folder_create_archive_folder_updating_special_folder_rules">Actualizando as regras dos cartafoles especiais…</string>
+    <string name="setup_archive_folder_create_archive_folder_account_not_found">Non se atopou a conta (%1$s)</string>
+    <string name="setup_archive_folder_create_archive_folder_failed_create_local_folder">Non se puido crear o cartafol local «%1$s».</string>
+    <string name="setup_archive_folder_create_archive_folder_failed_sync_folder">Produciuse un fallo na sincronización do cartafol «%1$s» coa parte remota. Mensaxe: %2$s</string>
+    <string name="setup_archive_folder_create_archive_folder_error_folder_name_blank">O nome do cartafol non pode quedar baleiro</string>
+    <string name="setup_archive_folder_create_archive_folder_invalid_folder_name">Nome de cartafol non válido «%1$s»</string>
+    <string name="message_list_state_new_message_description">Novo</string>
+    <string name="message_list_state_read_message_description">Ler</string>
+    <string name="message_list_state_unread_message_description">Non lido</string>
+    <string name="message_list_state_active_new_message_description">Activo, Novo</string>
+    <string name="message_list_state_active_read_message_description">Activo, Lido</string>
+    <string name="message_list_state_active_unread_message_description">Activo, Non lido</string>
+    <string name="message_list_state_selected_new_message_description">Seleccionado, Novo</string>
+    <string name="message_list_state_selected_read_message_description">Seleccionado, Lido</string>
+    <string name="message_list_state_selected_unread_message_description">Seleccionado, Non lido</string>
+</resources>

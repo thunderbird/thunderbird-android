@@ -4,10 +4,12 @@ import com.fsck.k9.mail.store.imap.ImapStore
 import com.fsck.k9.mail.store.imap.OpenMode
 import net.thunderbird.legacy.logging.Log
 
+private const val TAG = "CommandExpunge"
+
 internal class CommandExpunge(private val imapStore: ImapStore) {
 
     fun expunge(folderServerId: String) {
-        Log.d("processPendingExpunge: folder = %s", folderServerId)
+        Log.d(TAG, "processPendingExpunge: folder = %s", folderServerId)
 
         val remoteFolder = imapStore.getFolder(folderServerId)
         try {
@@ -15,7 +17,7 @@ internal class CommandExpunge(private val imapStore: ImapStore) {
 
             remoteFolder.expunge()
 
-            Log.d("processPendingExpunge: complete for folder = %s", folderServerId)
+            Log.d(TAG, "processPendingExpunge: complete for folder = %s", folderServerId)
         } finally {
             remoteFolder.close()
         }

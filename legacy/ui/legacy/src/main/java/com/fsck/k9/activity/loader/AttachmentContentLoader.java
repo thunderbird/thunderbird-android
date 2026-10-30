@@ -21,6 +21,8 @@ import net.thunderbird.legacy.logging.Log;
  * This will copy the data to a temporary file in our app's cache directory.
  */
 public class AttachmentContentLoader extends AsyncTaskLoader<Attachment> {
+    private static final String TAG = "AttachmentContentLoader";
+
     private static final String FILENAME_PREFIX = "attachment";
 
 
@@ -56,7 +58,7 @@ public class AttachmentContentLoader extends AsyncTaskLoader<Attachment> {
             File file = File.createTempFile(FILENAME_PREFIX, null, context.getCacheDir());
             file.deleteOnExit();
 
-            Log.v("Saving attachment to %s", file.getAbsolutePath());
+            Log.v(TAG, "Saving attachment to %s", file.getAbsolutePath());
 
             InputStream in;
 
@@ -68,7 +70,7 @@ public class AttachmentContentLoader extends AsyncTaskLoader<Attachment> {
                 in = safeContentResolver.openInputStream(sourceAttachment.uri);
             }
             if (in == null) {
-                Log.w("Error opening attachment for reading: %s", sourceAttachment.uri);
+                Log.w(TAG, "Error opening attachment for reading: %s", sourceAttachment.uri);
 
                 cachedResultAttachment = sourceAttachment.deriveWithLoadCancelled();
                 return cachedResultAttachment;
@@ -88,7 +90,7 @@ public class AttachmentContentLoader extends AsyncTaskLoader<Attachment> {
             cachedResultAttachment = sourceAttachment.deriveWithLoadComplete(file.getAbsolutePath());
             return cachedResultAttachment;
         } catch (Exception e) {
-            Log.e(e, "Error saving attachment!");
+            Log.e(TAG, e, "Error saving attachment!");
         }
 
         cachedResultAttachment = sourceAttachment.deriveWithLoadCancelled();

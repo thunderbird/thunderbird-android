@@ -1,5 +1,6 @@
 package net.thunderbird.feature.notification.api.content
 
+import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.notification.api.NotificationChannel
 import net.thunderbird.feature.notification.api.NotificationSeverity
 import net.thunderbird.feature.notification.api.ui.action.NotificationAction
@@ -21,7 +22,7 @@ import org.jetbrains.compose.resources.getString
 @ConsistentCopyVisibility
 data class CertificateErrorNotification private constructor(
     val isIncomingServerError: Boolean,
-    override val accountUuid: String,
+    override val accountId: AccountId,
     val accountNumber: Int,
     override val title: String,
     override val contentText: String,
@@ -32,9 +33,9 @@ data class CertificateErrorNotification private constructor(
     override val severity: NotificationSeverity = NotificationSeverity.Fatal
     override val actions: Set<NotificationAction> = setOf(
         if (isIncomingServerError) {
-            NotificationAction.UpdateIncomingServerSettings(accountUuid, accountNumber)
+            NotificationAction.UpdateIncomingServerSettings(accountId, accountNumber)
         } else {
-            NotificationAction.UpdateOutgoingServerSettings(accountUuid, accountNumber)
+            NotificationAction.UpdateOutgoingServerSettings(accountId, accountNumber)
         },
     )
 
@@ -47,23 +48,23 @@ data class CertificateErrorNotification private constructor(
         /**
          * Creates a [CertificateErrorNotification].
          *
-         * @param accountUuid The UUID of the account associated with the notification.
+         * @param accountId The [AccountId] of the account associated with the notification.
          * @param accountDisplayName The display name of the account associated with the notification.
          * @return A [CertificateErrorNotification] instance.
          */
         suspend operator fun invoke(
-            accountUuid: String,
+            accountId: AccountId,
             accountDisplayName: String,
             accountNumber: Int,
             isIncomingServerError: Boolean,
         ): CertificateErrorNotification = CertificateErrorNotification(
             isIncomingServerError = isIncomingServerError,
-            accountUuid = accountUuid,
+            accountId = accountId,
             accountNumber = accountNumber,
             title = getString(resource = Res.string.notification_certificate_error_title, accountDisplayName),
             lockScreenTitle = getString(resource = Res.string.notification_certificate_error_public),
             contentText = getString(resource = Res.string.notification_certificate_error_text),
-            channel = NotificationChannel.Miscellaneous(accountUuid = accountUuid),
+            channel = NotificationChannel.Miscellaneous(accountId = accountId),
         )
     }
 }
