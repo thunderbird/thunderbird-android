@@ -320,7 +320,7 @@
     <string name="account_settings_autodownload_message_size_label">Hent meldinger opp til</string>
     <string name="account_settings_autodownload_message_size_1">1 KiB</string>
     <string name="account_settings_autodownload_message_size_2">2 KiB</string>
-    <string name="account_settings_autodownload_message_size_4">4 KiB</string>
+    <string name="account_settings_autodownload_message_size_4">4 КіБ</string>
     <string name="account_settings_autodownload_message_size_8">8 KiB</string>
     <string name="account_settings_autodownload_message_size_16">16 KiB</string>
     <string name="account_settings_autodownload_message_size_32">32 KiB</string>
@@ -336,16 +336,16 @@
     <string name="account_settings_message_age_label">Synkroniser meldinger fra</string>
     <string name="account_settings_message_age_any">når som helst (ingen grense)</string>
     <string name="account_settings_message_age_0">i dag</string>
-    <string name="account_settings_message_age_1">de siste 2 dager</string>
-    <string name="account_settings_message_age_2">de siste 3 dager</string>
-    <string name="account_settings_message_age_7">den siste uken</string>
+    <string name="account_settings_message_age_1">de siste 2 dagene</string>
+    <string name="account_settings_message_age_2">de siste 3 dagene</string>
+    <string name="account_settings_message_age_7">siste uke</string>
     <string name="account_settings_message_age_14">de siste 2 ukene</string>
     <string name="account_settings_message_age_21">de siste 3 ukene</string>
     <string name="account_settings_message_age_1_month">den siste måneden</string>
-    <string name="account_settings_message_age_2_months">de siste 2 måneder</string>
-    <string name="account_settings_message_age_3_months">de siste 3 måneder</string>
-    <string name="account_settings_message_age_6_months">det siste halve året</string>
-    <string name="account_settings_message_age_1_year">det siste året</string>
+    <string name="account_settings_message_age_2_months">de siste 2 månedene</string>
+    <string name="account_settings_message_age_3_months">de siste 3 månedene</string>
+    <string name="account_settings_message_age_6_months">de siste 6 månedene</string>
+    <string name="account_settings_message_age_1_year">siste året</string>
     <string name="account_settings_sync_remote_deletetions_label">Synkroniser slettinger på tjener</string>
     <string name="account_settings_sync_remote_deletetions_summary">Fjern meldinger når slettet fra tjener</string>
     <string name="account_settings_openpgp_missing">Manglende OpenPGP-program - ble det avinstallert?</string>
@@ -408,7 +408,7 @@
     <string name="sort_unread_last">Leste meldinger først</string>
     <string name="sort_attach_first">Meldinger med vedlegg først</string>
     <string name="sort_unattached_first">Meldinger uten vedlegg først</string>
-    <string name="sort_by">Sorter etter …</string>
+    <string name="sort_by">Sorter etter…</string>
     <string name="sort_by_date">Dato</string>
     <string name="sort_by_arrival">Ankomst</string>
     <string name="sort_by_subject">Emne</string>
@@ -545,7 +545,7 @@
     <string name="webview_contextmenu_email_save_action">Lagre til \"Kontakter\"</string>
     <string name="webview_contextmenu_email_copy_action">Kopier adresse til utklippstavlen</string>
     <string name="webview_contextmenu_email_clipboard_label">E-postadresse</string>
-    <string name="account_settings_remote_search_num_results_entries_all">Alt</string>
+    <string name="account_settings_remote_search_num_results_entries_all">Alle</string>
     <string name="account_settings_remote_search_num_results_entries_10">10</string>
     <string name="account_settings_remote_search_num_results_entries_25">25</string>
     <string name="account_settings_remote_search_num_results_entries_50">50</string>
@@ -553,7 +553,7 @@
     <string name="account_settings_remote_search_num_results_entries_250">250</string>
     <string name="account_settings_remote_search_num_results_entries_500">500</string>
     <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
-    <string name="account_settings_remote_search_num_label">Søkegrensen til serveren</string>
+    <string name="account_settings_remote_search_num_label">Søkegrense på serveren</string>
     <string name="remote_search_sending_query">Sender forespørsel til tjener</string>
     <plurals name="remote_search_downloading">
         <item quantity="one">Henter %d resultat</item>
@@ -941,4 +941,11 @@
     <string name="notification_action_star">Favoritt</string>
     <string name="accessibility_move_cutoff_up">Flytt grensen for tilgjengelige handlinger opp</string>
     <string name="accessibility_move_cutoff_down">Flytt grensen for tilgjengelige handlinger ned</string>
+    <string name="changelog_latest_label_text">SISTE</string>
+    <string name="changelog_type_new_text">NY</string>
+    <string name="changelog_type_changed_text">ENDRET</string>
+    <string name="changelog_type_fixed_text">FIKSET</string>
+    <string name="notification_show_contact_picture_title">Vis kontaktbilder i notifikasjoner</string>
+    <string name="message_view_from_me_text">meg</string>
+    <string name="global_settings_privacy_incognito_keyboard">Inkognitotastatur</string>
 </resources>

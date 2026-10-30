@@ -2,4 +2,14 @@
 <resources>
     <string name="account_server_certificate_warning_title">Diwallit</string>
     <string name="account_server_certificate_unknown_error_subtitle">Fazi testeni</string>
+    <string name="account_server_certificate_issuer">Skigner</string>
+    <string name="account_server_certificate_subject">Danvez</string>
+    <string name="account_server_certificate_button_advanced">Kemplesoc\'h</string>
+    <string name="account_server_certificate_fingerprints_section">Roudoù-bizied</string>
+    <string name="account_server_certificate_button_back">Mont war-gil (aliet)</string>
+    <string name="account_server_certificate_button_continue">Asantiñ ar riskl ha kenderc\'hel</string>
+    <string name="account_server_certificate_section_title">Testeni ar servijer</string>
+    <string name="account_server_certificate_subject_alternative_names">Anvioù all ar sujed</string>
+    <string name="account_server_certificate_not_valid_before">N\'eo ket reizh a-raok</string>
+    <string name="account_server_certificate_not_valid_after">N\'eo ket reizh goude</string>
 </resources>

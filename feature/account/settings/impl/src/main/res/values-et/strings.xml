@@ -156,4 +156,13 @@
     <string name="account_settings_outgoing_label">Saadetud kirjade server</string>
     <string name="account_settings_outgoing_summary">Seadista saadetud e-kirjade server (SMTP)</string>
     <string name="account_settings_composition">E-kiri on saatmisel</string>
+    <string name="account_settings_folder_sync_and_push">Kaustade sünkroonimine ja tõuketeenused</string>
+    <string name="account_settings_fetching_and_data_limits">Laadimine ja andmemahu piirangud</string>
+    <string name="account_settings_notificaction_and_sync">Teavitused ja sünkroonimine</string>
+    <string name="account_settings_notification_style">Teavituste stiil</string>
+    <string name="account_settings_notification_style_description">Kohenda heli, värinat ja silte</string>
+    <string name="account_settings_folder_sync_and_push_description">Seadista kaustakohaselt tõuke- või tõmbeteenuseid</string>
+    <string name="account_settings_manage_folders">Halda kaustu</string>
+    <string name="account_settings_folder_visibility_and_sort_description">Muuda vaikimisi kaustu ja kaustade nähtavust</string>
+    <string name="account_settings_fetching_and_data_limits_description">Sagedus ja sünkroonimispiirangud</string>
 </resources>

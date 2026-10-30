@@ -156,4 +156,13 @@
     <string name="account_settings_composition_summary">Uw standaard Van, Bcc en ondertekening instellen</string>
     <string name="account_settings_identities_summary">Alternatieve ‘Van’-adressen en ondertekeningen instellen</string>
     <string name="account_settings_quote_style_label">Citeerstijl bij beantwoorden</string>
+    <string name="account_settings_notification_style">Meldingsstijl</string>
+    <string name="account_settings_notification_style_description">Geluid, trillen en badges aanpassen</string>
+    <string name="account_settings_folder_sync_and_push">Mapsynchronisatie &amp; push</string>
+    <string name="account_settings_folder_sync_and_push_description">Peilen/push per map inschakelen</string>
+    <string name="account_settings_manage_folders">Mappen beheren</string>
+    <string name="account_settings_folder_visibility_and_sort_description">Standaard mappen en mapzichtbaarheid wijzigen</string>
+    <string name="account_settings_fetching_and_data_limits">Ophalen &amp; gegevenslimieten</string>
+    <string name="account_settings_fetching_and_data_limits_description">Frequentie- en synchronisatielimieten</string>
+    <string name="account_settings_notificaction_and_sync">Melding &amp; synchronisatie</string>
 </resources>

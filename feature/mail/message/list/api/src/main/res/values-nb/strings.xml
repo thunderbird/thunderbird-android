@@ -13,4 +13,19 @@
     <string name="swipe_action_spam">Søppelpost</string>
     <string name="swipe_action_move">Flytt …</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> valgt</string>
+    <string name="sort_by">Sorter etter…</string>
+    <string name="sort_by_date_asc">Dato (eldste først)</string>
+    <string name="sort_by_date_desc">Dato (nyeste først)</string>
+    <string name="sort_by_arrival_asc">Ankomst (eldste først)</string>
+    <string name="sort_by_arrival_desc">Ankomst (nyeste først)</string>
+    <string name="sort_by_subject_asc">Emne (A-Å)</string>
+    <string name="sort_by_subject_desc">Emne (Å-A)</string>
+    <string name="sort_by_sender_asc">Sender (A-Å)</string>
+    <string name="sort_by_sender_desc">Sender (Å-A)</string>
+    <string name="sort_by_flag_asc">Stjernemarkerte først</string>
+    <string name="sort_by_flag_desc">Uten stjerne først</string>
+    <string name="sort_by_unread_asc">Uleste først</string>
+    <string name="sort_by_unread_desc">Leste først</string>
+    <string name="sort_by_attach_asc">Med vedlegg først</string>
+    <string name="sort_by_attach_desc">Uten vedlegg først</string>
 </resources>

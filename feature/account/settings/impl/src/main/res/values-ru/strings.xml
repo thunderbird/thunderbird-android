@@ -121,7 +121,7 @@
     <string name="account_settings_incoming_delete_policy_label">При удалении сообщения</string>
     <string name="account_settings_incoming_summary">Настройка сервера входящей почты</string>
     <string name="account_settings_push_advanced_title">Дополнительные</string>
-    <string name="account_settings_push_limit_label">Лимит push-проверки</string>
+    <string name="account_settings_push_limit_label">Ограничение push-проверки</string>
     <string name="account_settings_push_limit_5">5 папок</string>
     <string name="account_settings_autodownload_message_size_label">Загружать фрагмент</string>
     <string name="account_settings_mail_check_frequency_label">Промежуток проверки</string>
@@ -156,4 +156,13 @@
     <string name="account_settings_outgoing_label">Сервер исходящих</string>
     <string name="account_settings_outgoing_summary">Настройки сервера исходящей почты</string>
     <string name="account_settings_composition">Отправка</string>
+    <string name="account_settings_folder_sync_and_push">Синхронизация папки и push</string>
+    <string name="account_settings_fetching_and_data_limits">Получение и ограничения объёма данных</string>
+    <string name="account_settings_notificaction_and_sync">Уведомления и синхронизация</string>
+    <string name="account_settings_notification_style">Стиль уведомлений</string>
+    <string name="account_settings_notification_style_description">Настройка звука, вибрации и значков</string>
+    <string name="account_settings_folder_sync_and_push_description">Настройка опроса/push для отдельной папки</string>
+    <string name="account_settings_manage_folders">Выбрать папки</string>
+    <string name="account_settings_folder_visibility_and_sort_description">Изменение папок по умолчанию и их видимости</string>
+    <string name="account_settings_fetching_and_data_limits_description">Настройка ограничений частоты и синхронизации</string>
 </resources>
