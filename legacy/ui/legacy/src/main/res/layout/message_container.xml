@@ -8,11 +8,21 @@
     >
 
     <!-- Content area -->
-    <com.fsck.k9.view.MessageWebView
-        android:id="@+id/message_content"
+    <FrameLayout
+        android:id="@+id/message_content_wrapper"
         android:layout_height="wrap_content"
-        android:layout_width="fill_parent"
-        />
+        android:layout_width="match_parent"
+        >
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/message_content_fallback"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:textIsSelectable="true"
+            android:visibility="gone"
+            />
+    </FrameLayout>
 
     <!-- Unsigned content area -->
     <LinearLayout
