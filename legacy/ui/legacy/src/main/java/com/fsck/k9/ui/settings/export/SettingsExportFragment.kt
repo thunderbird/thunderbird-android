@@ -7,136 +7,106 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
-import androidx.core.view.isVisible
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.res.stringResource
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.RecyclerView
 import app.k9mail.core.android.common.activity.CreateDocumentResultContract
 import com.fsck.k9.ui.R
-import com.fsck.k9.ui.base.livedata.observeNotNull
-import com.google.android.material.textview.MaterialTextView
-import com.mikepenz.fastadapter.FastAdapter
-import com.mikepenz.fastadapter.adapters.ItemAdapter
+import net.thunderbird.components.ui.bolt.atom.CircularProgressIndicator
+import net.thunderbird.components.ui.bolt.atom.DividerHorizontal
+import net.thunderbird.components.ui.bolt.atom.Surface
+import net.thunderbird.components.ui.bolt.atom.Switch
+import net.thunderbird.components.ui.bolt.atom.button.ButtonFilled
+import net.thunderbird.components.ui.bolt.atom.text.TextBodyMedium
+import net.thunderbird.components.ui.bolt.atom.text.TextLabelLarge
+import net.thunderbird.components.ui.bolt.atom.text.TextTitleMedium
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
+import net.thunderbird.core.ui.contract.mvi.observe
+import net.thunderbird.core.ui.theme.api.FeatureThemeProvider
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SettingsExportFragment : Fragment() {
     private val viewModel: SettingsExportViewModel by viewModel()
+    private val themeProvider: FeatureThemeProvider by inject()
 
-    private lateinit var settingsExportAdapter: FastAdapter<CheckBoxItem<*>>
-    private lateinit var itemAdapter: ItemAdapter<CheckBoxItem<*>>
+
+    private var onDocumentPicked: ((Uri) -> Unit)? = null
+    private var onDocumentPickCanceled: (() -> Unit)? = null
 
     private val createDocumentLauncher: ActivityResultLauncher<CreateDocumentResultContract.Input> =
         registerForActivityResult(
             CreateDocumentResultContract(),
         ) { contentUri ->
             if (contentUri != null) {
-                viewModel.onDocumentPicked(contentUri)
+                onDocumentPicked?.invoke(contentUri)
             } else {
-                viewModel.onDocumentPickCanceled()
+                onDocumentPickCanceled?.invoke()
             }
         }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_settings_export, container, false)
+        return ComposeView(requireContext()).apply {
+            setContent {
+                val(state,dispatch) = viewModel.observe { effect ->
+                   when(effect) {
+                       is SettingsExportContract.Effect.PickDocument -> {
+                           pickDocument(effect.fileNameSuggestion, effect.mimeType)
+                       }
+                       is SettingsExportContract.Effect.ShareDocument -> {
+                           shareDocument(effect.contentUri, effect.mimeType)
+                       }
+                   }
+                }
+
+                onDocumentPicked = { contentUri ->
+                    dispatch(SettingsExportContract.Event.OnDocumentPicked(contentUri))
+                }
+                onDocumentPickCanceled = {
+                    dispatch(SettingsExportContract.Event.OnDocumentPickCanceled)
+                }
+
+                themeProvider.WithTheme {
+                    SettingsExportScreen(
+                        onExportClick = {
+                            dispatch(SettingsExportContract.Event.OnExportClick)
+                        },
+                        onShareClick = {
+                            dispatch(SettingsExportContract.Event.OnShareClick)
+                        },
+                        state = state.value,
+                        onSettingsListItemSelect = { itemId, isSelected ->
+                            dispatch(SettingsExportContract.Event.OnSettingsItemSelectionChange(itemId,isSelected))
+                        }
+
+                    )
+                }
+            }
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        if (savedInstanceState != null) {
+        if(savedInstanceState !=null) {
             viewModel.initializeFromSavedState(savedInstanceState)
         }
-
-        val viewHolder = ViewHolder(view)
-        initializeSettingsExportList(viewHolder.settingsExportList)
-
-        viewHolder.exportButton.setOnClickListener { viewModel.onExportButtonClicked() }
-        viewHolder.shareButton.setOnClickListener { viewModel.onShareButtonClicked() }
-
-        viewModel.getUiModel().observeNotNull(this) { viewHolder.updateUi(it) }
-        viewModel.getActionEvents().observeNotNull(this) { handleActionEvents(it) }
     }
 
-    private fun initializeSettingsExportList(recyclerView: RecyclerView) {
-        itemAdapter = ItemAdapter()
-        settingsExportAdapter = FastAdapter.with(itemAdapter).apply {
-            setHasStableIds(true)
-            onClickListener = { _, _, item: CheckBoxItem<*>, position ->
-                viewModel.onSettingsListItemSelected(position, !item.isSelected)
-                true
-            }
-            addEventHook(
-                CheckBoxClickEvent { position, isSelected ->
-                    viewModel.onSettingsListItemSelected(position, isSelected)
-                },
-            )
-        }
 
-        recyclerView.adapter = settingsExportAdapter
-    }
 
-    private fun ViewHolder.updateUi(model: SettingsExportUiModel) {
-        when (model.exportButton) {
-            ButtonState.DISABLED -> {
-                exportButton.isVisible = true
-                exportButton.isEnabled = false
-            }
-
-            ButtonState.ENABLED -> {
-                exportButton.isVisible = true
-                exportButton.isEnabled = true
-            }
-
-            ButtonState.INVISIBLE -> exportButton.visibility = View.INVISIBLE
-            ButtonState.GONE -> exportButton.visibility = View.GONE
-        }
-
-        shareButton.isVisible = model.isShareButtonVisible
-        progressBar.isVisible = model.isProgressVisible
-
-        when (model.statusText) {
-            StatusText.HIDDEN -> statusText.isVisible = false
-            StatusText.EXPORT_SUCCESS -> {
-                statusText.isVisible = true
-                statusText.text = getString(R.string.settings_export_success_generic)
-            }
-
-            StatusText.PROGRESS -> {
-                statusText.isVisible = true
-                statusText.text = getString(R.string.settings_export_progress_text)
-            }
-
-            StatusText.EXPORT_FAILURE -> {
-                statusText.isVisible = true
-                statusText.text = getString(R.string.settings_export_failure)
-            }
-        }
-
-        setSettingsList(model.settingsList, model.isSettingsListEnabled)
-    }
-
-    // TODO: Update list instead of replacing it completely
-    private fun ViewHolder.setSettingsList(items: List<SettingsListItem>, enable: Boolean) {
-        val checkBoxItems = items.map { item ->
-            val checkBoxItem = when (item) {
-                is SettingsListItem.GeneralSettings -> GeneralSettingsItem()
-                is SettingsListItem.Account -> AccountItem(item)
-            }
-
-            checkBoxItem.apply {
-                isSelected = item.selected
-                isEnabled = enable
-            }
-        }
-
-        itemAdapter.set(checkBoxItems)
-
-        settingsExportList.isEnabled = enable
-    }
-
-    private fun handleActionEvents(action: Action) {
-        when (action) {
-            is Action.PickDocument -> pickDocument(action.fileNameSuggestion, action.mimeType)
-            is Action.ShareDocument -> shareDocument(action.contentUri, action.mimeType)
-        }
-    }
 
     private fun pickDocument(fileNameSuggestion: String, mimeType: String) {
         createDocumentLauncher.launch(
@@ -163,10 +133,150 @@ class SettingsExportFragment : Fragment() {
     }
 }
 
-private class ViewHolder(view: View) {
-    val exportButton: View = view.findViewById(R.id.exportButton)
-    val shareButton: View = view.findViewById(R.id.shareButton)
-    val progressBar: View = view.findViewById(R.id.progressBar)
-    val statusText: MaterialTextView = view.findViewById(R.id.statusText)
-    val settingsExportList: RecyclerView = view.findViewById(R.id.settingsExportList)
+
+@Composable
+fun SettingsExportScreen(
+    state: SettingsExportContract.State,
+    onExportClick: () -> Unit,
+    onShareClick: () -> Unit,
+    onSettingsListItemSelect: (String, Boolean) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Surface(
+        modifier = modifier.fillMaxSize(),
+    ) {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+        ) {
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f),
+            ) {
+                items(
+                    items = state.settingsList,
+                    key = { item ->
+                        item.stableId
+                    },
+                ) { setting ->
+                    SettingsExportItem(
+                        setting = setting,
+                        checked = setting.selected,
+                        onCheckedChange = { isChecked ->
+                            onSettingsListItemSelect(setting.stableId, isChecked)
+                        },
+                    )
+                }
+            }
+
+            SettingsExportBottomBar(
+                state = state,
+                onExportClick = onExportClick,
+                onShareClick = onShareClick,
+            )
+        }
+    }
 }
+
+@Composable
+fun SettingsExportItem(
+    setting: SettingsListItem,
+    checked: Boolean,
+    onCheckedChange: (Boolean) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(BoltTheme.spacings.double),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Column(
+            modifier = Modifier.weight(1f),
+        ) {
+            TextTitleMedium(
+                text = when (setting) {
+                    is SettingsListItem.GeneralSettings ->
+                        "General Settings"
+
+                    is SettingsListItem.Account ->
+                        setting.displayName
+                },
+            )
+
+            if (setting is SettingsListItem.Account) {
+                TextBodyMedium(text = setting.email)
+            }
+        }
+
+        Spacer(
+            modifier = Modifier.width(BoltTheme.spacings.default),
+        )
+
+        Switch(
+            checked = checked,
+            onCheckedChange = onCheckedChange,
+        )
+    }
+}
+
+
+@Composable
+private fun SettingsExportBottomBar(
+    state: SettingsExportContract.State,
+    onExportClick: () -> Unit,
+    onShareClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Column(modifier = modifier) {
+        DividerHorizontal()
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(BoltTheme.sizes.large)
+                .padding(
+                    horizontal = BoltTheme.spacings.double,
+                    vertical = BoltTheme.spacings.default,
+                ),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.End,
+        ) {
+            val statusLabel = when (state.statusText) {
+                StatusText.EXPORT_SUCCESS ->
+                    stringResource(R.string.settings_export_success_generic)
+
+                StatusText.PROGRESS ->
+                    stringResource(R.string.settings_export_progress_text)
+
+                StatusText.EXPORT_FAILURE ->
+                    stringResource(R.string.settings_export_failure)
+
+                StatusText.HIDDEN -> ""
+            }
+
+            if (state.statusText != StatusText.HIDDEN) {
+                TextLabelLarge(text = statusLabel)
+            }
+
+            Spacer(Modifier.weight(1f))
+
+            when {
+                state.isProgressVisible -> CircularProgressIndicator()
+
+                state.isShareButtonVisible -> ButtonFilled(
+                    text = stringResource(R.string.settings_export_share_button),
+                    onClick = onShareClick,
+                )
+
+                state.exportButtonState != ButtonState.GONE &&
+                    state.exportButtonState != ButtonState.INVISIBLE -> ButtonFilled(
+                    text = stringResource(R.string.settings_export_button),
+                    onClick = onExportClick,
+                    enabled = state.exportButtonState == ButtonState.ENABLED && state.settingsList.any { it.selected },
+                )
+            }
+        }
+    }
+}
+
