@@ -1256,13 +1256,15 @@ class MessageViewFragment :
     override fun onSaveAttachment(attachment: AttachmentViewInfo) {
         currentAttachmentViewInfo = attachment
 
+        val mimeType = requireNotNull(attachment.mimeType) {
+            "Invalid attachment type. The mimeType is null. Attachment = $attachment"
+        }
+
         try {
             createDocumentLauncher.launch(
                 input = CreateDocumentResultContract.Input(
                     title = attachment.displayName ?: getString(MessageReaderR.string.unnamed_attachment_title),
-                    mimeType = requireNotNull(attachment.mimeType) {
-                        "Invalid attachment type. The mimeType is null. Attachment = $attachment"
-                    },
+                    mimeType = getSaveAttachmentMimeType(attachment.displayName, mimeType),
                 ),
             )
         } catch (_: ActivityNotFoundException) {
