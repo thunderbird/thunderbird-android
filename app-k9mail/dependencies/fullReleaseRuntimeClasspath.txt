@@ -43,8 +43,8 @@ androidx.compose.material:material-icons-core-android:1.7.8
 androidx.compose.material:material-icons-core:1.7.8
 androidx.compose.material:material-icons-extended-android:1.7.8
 androidx.compose.material:material-icons-extended:1.7.8
-androidx.compose.material:material-ripple-android:1.11.2
-androidx.compose.material:material-ripple:1.11.2
+androidx.compose.material:material-ripple-android:1.12.1
+androidx.compose.material:material-ripple:1.12.1
 androidx.compose.runtime:runtime-android:1.12.1
 androidx.compose.runtime:runtime-annotation-android:1.12.1
 androidx.compose.runtime:runtime-annotation:1.12.1
@@ -71,7 +71,7 @@ androidx.compose.ui:ui-unit:1.12.1
 androidx.compose.ui:ui-util-android:1.12.1
 androidx.compose.ui:ui-util:1.12.1
 androidx.compose.ui:ui:1.12.1
-androidx.compose:compose-bom:2026.05.01
+androidx.compose:compose-bom:2026.09.00
 androidx.concurrent:concurrent-futures-ktx:1.1.0
 androidx.concurrent:concurrent-futures:1.1.0
 androidx.constraintlayout:constraintlayout-core:1.1.1
