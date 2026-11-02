@@ -20,6 +20,10 @@ kotlin {
         }
     }
     sourceSets {
+        commonMain.dependencies {
+            api(libs.okhttp)
+            implementation(libs.okio)
+        }
         commonTest.dependencies {
             implementation(projects.core.testing)
         }
