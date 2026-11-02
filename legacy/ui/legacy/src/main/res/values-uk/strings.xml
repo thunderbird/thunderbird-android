@@ -509,7 +509,6 @@
     <string name="background_ops_label">Фонова синхронізація</string>
     <string name="background_ops_never">Ніколи</string>
     <string name="background_ops_always">Завжди</string>
-    <string name="background_ops_auto_sync_only">Коли увімкнена \"Автосинхронізація\"</string>
     <string name="batch_select_all">Вибрати все</string>
     <string name="account_setup_push_limit_label">Максимум папок для перевірки push</string>
     <string name="account_setup_push_limit_5">5 папок</string>

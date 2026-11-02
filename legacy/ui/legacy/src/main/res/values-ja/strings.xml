@@ -503,7 +503,6 @@
     <string name="background_ops_label">バックグラウンド同期</string>
     <string name="background_ops_never">同期しない</string>
     <string name="background_ops_always">常に同期</string>
-    <string name="background_ops_auto_sync_only">自動同期にチェックしたとき</string>
     <string name="batch_select_all">すべて選択</string>
     <string name="account_setup_push_limit_label">プッシュ同期するフォルダーの最大個数</string>
     <string name="account_setup_push_limit_5">フォルダー 5 件</string>

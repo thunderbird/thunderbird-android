@@ -507,7 +507,6 @@
     <string name="background_ops_label">Synchronisation en arrière-plan</string>
     <string name="background_ops_never">Jamais</string>
     <string name="background_ops_always">Toujours</string>
-    <string name="background_ops_auto_sync_only">Quand la synchronisation automatique est activée</string>
     <string name="batch_select_all">Tout sélectionner</string>
     <string name="account_setup_push_limit_label">Maximum de dossiers à vérifier avec le poussé</string>
     <string name="account_setup_push_limit_5">5 dossiers</string>

@@ -442,7 +442,6 @@
     <string name="background_ops_label">Pozadinska sinhronizacija</string>
     <string name="background_ops_never">Nikada</string>
     <string name="background_ops_always">Uvijek</string>
-    <string name="background_ops_auto_sync_only">Kad je \'Automatska sinhronizacija\' označena</string>
     <string name="batch_select_all">Označi sve</string>
     <string name="account_setup_push_limit_label">Maksimum mapa za provjeru guranjem</string>
     <string name="account_setup_push_limit_5">5 mapa</string>

@@ -503,7 +503,6 @@
     <string name="background_ops_label">后台同步</string>
     <string name="background_ops_never">从不</string>
     <string name="background_ops_always">始终</string>
-    <string name="background_ops_auto_sync_only">当选中“自动同步”时</string>
     <string name="batch_select_all">全选</string>
     <string name="account_setup_push_limit_label">推送检查的最大文件夹数</string>
     <string name="account_setup_push_limit_5">5 个文件夹</string>

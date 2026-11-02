@@ -507,7 +507,6 @@
     <string name="background_ops_label">Sincronització en segon pla</string>
     <string name="background_ops_never">Mai</string>
     <string name="background_ops_always">Sempre</string>
-    <string name="background_ops_auto_sync_only">Quan la sincronització automàtica estigui activada</string>
     <string name="batch_select_all">Selecciona-ho tot</string>
     <string name="account_setup_push_limit_label">Nombre màxim de carpetes a comprovar amb tramesa</string>
     <string name="account_setup_push_limit_5">5 carpetes</string>

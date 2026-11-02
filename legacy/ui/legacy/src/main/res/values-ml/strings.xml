@@ -471,7 +471,6 @@
     <string name="background_ops_label">പശ്ചാത്തല സമന്വയം</string>
     <string name="background_ops_never">ഒരിക്കലും</string>
     <string name="background_ops_always">എല്ലായ്പ്പോഴും</string>
-    <string name="background_ops_auto_sync_only">\'യാന്ത്രിക സമന്വയം\' തിരഞ്ഞെടുക്കുമ്പോൾ</string>
     <string name="batch_select_all">എല്ലാം തിരഞ്ഞെടുക്കുക</string>
     <string name="account_setup_push_limit_label">പുഷ് ഉപയോഗിച്ച് പരിശോധിക്കാൻ പരമാവധി ഫോൾഡറുകൾ</string>
     <string name="account_setup_push_limit_5">5 ഫോൾഡറുകൾ</string>

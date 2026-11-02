@@ -708,7 +708,8 @@
     <string name="background_ops_label">Background sync</string>
     <string name="background_ops_never">Never</string>
     <string name="background_ops_always">Always</string>
-    <string name="background_ops_auto_sync_only">When \'Auto-sync\' is checked</string>
+    <string name="background_ops_follow_android_auto_sync">When Android auto-sync is on</string>
+    <string name="background_ops_android_auto_sync_help">Android auto-sync is a system-wide setting in your device\'s account settings. Its name and location vary by device.</string>
 
     <string name="batch_select_all">Select all</string>
 

@@ -818,7 +818,6 @@
     <string name="crypto_msg_encrypted_sign_insecure">אך מפתח קצה לקצה לא נחשב מאובטח</string>
     <string name="preference_search_no_results">לא נמצאו הגדרות</string>
     <string name="settings_message_theme_selection_summary_off">בחר את עיצוב הצגת ההודעות בזמן הצגת ההודעה</string>
-    <string name="background_ops_auto_sync_only">כאשר מסומן \'סנכרון אוטומטי\'</string>
     <string name="crypto_msg_unencrypted_sign_expired">אך מפתח קצה לקצה פג תוקף</string>
     <string name="crypto_msg_unsupported_signed">מכילה חתימת קצה לקצה שאינה נתמכת</string>
     <string name="crypto_msg_title_unencrypted_signed_e2e">תמליל פשוט שחתום מקצה לקצה (End-to-End signed plaintext)</string>

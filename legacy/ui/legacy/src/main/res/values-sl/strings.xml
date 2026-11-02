@@ -505,7 +505,6 @@
     <string name="background_ops_label">Izvajaj usklajevanje v ozadju</string>
     <string name="background_ops_never">Nikoli</string>
     <string name="background_ops_always">Vedno</string>
-    <string name="background_ops_auto_sync_only">Le, ko je omogočeno samodejno usklajevanje</string>
     <string name="batch_select_all">Izberi vse</string>
     <string name="account_setup_push_limit_label">Največje število map za preverjanje s potiskom</string>
     <string name="account_setup_push_limit_5">5 map</string>

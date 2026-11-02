@@ -505,7 +505,6 @@
     <string name="background_ops_label">Bakgrundssynkronisering</string>
     <string name="background_ops_never">Aldrig</string>
     <string name="background_ops_always">Alltid</string>
-    <string name="background_ops_auto_sync_only">När \"Automatisk synkronisering\" är aktiverad</string>
     <string name="batch_select_all">Välj alla</string>
     <string name="account_setup_push_limit_label">Max antal mappar att kontrollera med push</string>
     <string name="account_setup_push_limit_5">5 mappar</string>

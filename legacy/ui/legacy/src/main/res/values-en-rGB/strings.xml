@@ -396,7 +396,6 @@
     <string name="general_settings_ui_density_relaxed">Relaxed</string>
     <string name="account_setup_options_mail_check_frequency_never">Never</string>
     <string name="global_settings_sender_above_subject_summary">Show correspondent names above the subject line, rather than below it</string>
-    <string name="background_ops_auto_sync_only">When \'Auto-sync\' is checked</string>
     <string name="font_size_medium">Medium</string>
     <string name="message_compose_attachments_skipped_toast">Some attachments cannot be forwarded because they have not been downloaded.</string>
     <string name="account_settings_always_show_cc_bcc_label">Always show Cc/Bcc</string>

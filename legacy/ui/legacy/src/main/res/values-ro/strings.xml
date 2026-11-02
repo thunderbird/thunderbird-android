@@ -507,7 +507,6 @@
     <string name="background_ops_label">Sincronizare în fundal</string>
     <string name="background_ops_never">Niciodată</string>
     <string name="background_ops_always">Întotdeauna</string>
-    <string name="background_ops_auto_sync_only">Când \'Sincronizarea automată\' este bifată</string>
     <string name="batch_select_all">Selectează tot</string>
     <string name="account_setup_push_limit_label">Maxim de dosare de verificat prin push</string>
     <string name="account_setup_push_limit_5">5 dosare</string>

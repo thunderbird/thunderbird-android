@@ -507,7 +507,6 @@
     <string name="background_ops_label">Sincronização em segundo plano</string>
     <string name="background_ops_never">Nunca</string>
     <string name="background_ops_always">Sempre</string>
-    <string name="background_ops_auto_sync_only">Quando a \'Sincronização automática\' estiver selecionada</string>
     <string name="batch_select_all">Selecionar tudo</string>
     <string name="account_setup_push_limit_label">Número máximo de pastas a verificar com push</string>
     <string name="account_setup_push_limit_5">5 pastas</string>

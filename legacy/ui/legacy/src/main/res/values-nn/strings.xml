@@ -284,7 +284,6 @@
     <string name="background_ops_label">Synkroniser i bakgrunnen</string>
     <string name="background_ops_never">Aldri</string>
     <string name="background_ops_always">Alltid</string>
-    <string name="background_ops_auto_sync_only">Når «auto-sync» er kryssa av</string>
     <string name="batch_select_all">Vel alle</string>
     <string name="account_setup_push_limit_10">10 mapper</string>
     <string name="account_setup_push_limit_25">25 mapper</string>
