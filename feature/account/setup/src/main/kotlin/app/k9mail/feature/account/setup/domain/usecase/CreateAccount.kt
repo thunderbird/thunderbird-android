@@ -17,14 +17,24 @@ class CreateAccount(
     private val uuidGenerator: () -> AccountId = { AccountIdFactory.create() },
 ) : UseCase.CreateAccount {
     override suspend fun execute(accountState: AccountState): AccountCreatorResult {
+        val emailAddress = checkNotNull(accountState.emailAddress) { "Missing email address" }
+        val incomingServerSettings = checkNotNull(accountState.incomingServerSettings) {
+            "Missing incoming server settings"
+        }
+        val outgoingServerSettings = checkNotNull(accountState.outgoingServerSettings) {
+            "Missing outgoing server settings"
+        }
+        val displayOptions = checkNotNull(accountState.displayOptions) { "Missing display options" }
+        val syncOptions = checkNotNull(accountState.syncOptions) { "Missing sync options" }
+
         val account = Account(
             id = uuidGenerator(),
-            emailAddress = accountState.emailAddress!!,
-            incomingServerSettings = accountState.incomingServerSettings!!.copy(),
-            outgoingServerSettings = accountState.outgoingServerSettings!!.copy(),
+            emailAddress = emailAddress,
+            incomingServerSettings = incomingServerSettings.copy(),
+            outgoingServerSettings = outgoingServerSettings.copy(),
             authorizationState = accountState.authorizationState?.value,
             specialFolderSettings = accountState.specialFolderSettings,
-            options = mapOptions(accountState.displayOptions!!, accountState.syncOptions!!),
+            options = mapOptions(displayOptions, syncOptions),
         )
 
         return accountCreator.createAccount(account)
