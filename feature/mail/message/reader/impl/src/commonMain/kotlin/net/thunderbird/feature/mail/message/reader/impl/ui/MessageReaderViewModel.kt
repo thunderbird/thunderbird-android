@@ -7,7 +7,8 @@ import net.thunderbird.feature.mail.message.reader.api.ui.MessageReaderViewContr
 
 class MessageReaderViewModel(
     private val attachmentViewInfoMapper: AttachmentViewInfoMapper<MailPart>,
-) : MessageReaderViewContract.ViewModel<MailPart>(state = MessageReaderViewContract.State()) {
+    initialState: MessageReaderViewContract.State<MailPart> = MessageReaderViewContract.State(),
+) : MessageReaderViewContract.ViewModel<MailPart>(state = initialState) {
     override fun event(event: MessageReaderViewContract.Event<MailPart>) {
         when (event) {
             is MessageReaderViewContract.Event.UpdateAttachments -> updateAttachments(event)
@@ -26,6 +27,10 @@ class MessageReaderViewModel(
     }
 
     private fun handleOnMessageReaderBottomSheetActionClick(action: MessageReaderAction) {
+        updateState { state ->
+            state.copy(showReaderActionsBottomSheet = false)
+        }
+
         when (action) {
             MessageReaderAction.Reply -> emitEffect(MessageReaderViewContract.Effect.TriggerOnReplyListener)
             MessageReaderAction.ReplyAll -> emitEffect(MessageReaderViewContract.Effect.TriggerOnReplyAllListener)

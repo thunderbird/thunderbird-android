@@ -4,11 +4,14 @@ import app.cash.turbine.test
 import assertk.assertThat
 import assertk.assertions.containsExactly
 import assertk.assertions.isEmpty
+import assertk.assertions.isEqualTo
+import assertk.assertions.isFalse
 import assertk.assertions.isInstanceOf
 import com.fsck.k9.mail.Part
 import kotlin.test.Test
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.test.runTest
+import net.thunderbird.feature.mail.message.reader.api.domain.MessageReaderAction
 import net.thunderbird.feature.mail.message.reader.api.domain.mapper.AttachmentViewInfoMapper
 import net.thunderbird.feature.mail.message.reader.api.domain.mapper.AttachmentViewInfoMapper.AttachmentMetadata
 import net.thunderbird.feature.mail.message.reader.api.ui.MessageReaderViewContract
@@ -268,8 +271,39 @@ class MessageReaderViewModelTest {
         }
     }
 
-    private fun createTestSubject(): MessageReaderViewModel =
-        MessageReaderViewModel(attachmentViewInfoMapper = FakeAttachmentViewInfoMapper())
+    @Test
+    fun `message reader actions should dispatch trigger and close the sheet`() = runTest {
+        mapOf(
+            MessageReaderAction.Reply to MessageReaderViewContract.Effect.TriggerOnReplyListener,
+            MessageReaderAction.ReplyAll to MessageReaderViewContract.Effect.TriggerOnReplyAllListener,
+        ).forEach { (action, effect) ->
+            // Arrange
+            val testSubject = createTestSubject(
+                initialState = MessageReaderViewContract.State(
+                    showReaderActionsBottomSheet = true,
+                ),
+            )
+
+            testSubject.effect.test {
+                // Act
+                testSubject.event(
+                    MessageReaderViewContract.Event.OnMessageReaderBottomSheetActionClick(action),
+                )
+
+                // Assert
+                assertThat(awaitItem()).isEqualTo(effect)
+            }
+            assertThat(testSubject.state.value.showReaderActionsBottomSheet).isFalse()
+        }
+    }
+
+    private fun createTestSubject(
+        initialState: MessageReaderViewContract.State<Part> = MessageReaderViewContract.State(),
+    ): MessageReaderViewModel =
+        MessageReaderViewModel(
+            attachmentViewInfoMapper = FakeAttachmentViewInfoMapper(),
+            initialState = initialState,
+        )
 
     private fun fakeAttachment(
         uri: String,
