@@ -955,6 +955,10 @@
     <string name="message_view_from_me_text">我</string>
     <string name="account_settings_signature_preview_empty">您的签名预览将显示在此处</string>
     <string name="error_no_contact_provider">未找到联系人应用。请安装联系人应用以添加此地址。</string>
-    <string name="account_setup_visibility_and_syncing">可见性和同步</string>
+    <string name="account_setup_visibility_and_syncing">文件同步和推送</string>
     <string name="remote_feature_flag_preferences">远程特性标记</string>
+    <string name="account_settings_sync_and_notifications">同步和通知</string>
+    <string name="account_settings_folder_sync_and_push">文件同步和推送</string>
+    <string name="account_settings_fetching_and_data_limits">获取和数据限制</string>
+    <string name="account_settings_folder_visibility">文件可见性</string>
 </resources>

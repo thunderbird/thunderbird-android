@@ -963,5 +963,9 @@
     <string name="account_settings_signature_preview_empty">It foarbyld fan jo ûndertekening sil hjir ferskine</string>
     <string name="error_no_contact_provider">Der is gjin kontakte-app fûn. Ynstallearje in kontakte-app om dit adres ta te foegjen.</string>
     <string name="remote_feature_flag_preferences">Eksterne funksjeflagge</string>
-    <string name="account_setup_visibility_and_syncing">Sichtberheid &amp; syngronisaasje</string>
+    <string name="account_setup_visibility_and_syncing">Mapsyngronisaasje &amp; push</string>
+    <string name="account_settings_folder_sync_and_push">Mapsyngronisaasje &amp; push</string>
+    <string name="account_settings_fetching_and_data_limits">Ophelje &amp; gegevenslimiten</string>
+    <string name="account_settings_sync_and_notifications">Syngronisaasje &amp; meldingen</string>
+    <string name="account_settings_folder_visibility">Mapsichtberheid</string>
 </resources>

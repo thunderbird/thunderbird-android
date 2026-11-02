@@ -34,4 +34,5 @@
     <string name="notification_action_archive">Diellaouiñ</string>
     <string name="notification_action_archive_all">Diellaouiñ an holl</string>
     <string name="notification_action_spam">Lastez</string>
+    <string name="notification_bg_sync_text">%1$s : %2$s</string>
 </resources>

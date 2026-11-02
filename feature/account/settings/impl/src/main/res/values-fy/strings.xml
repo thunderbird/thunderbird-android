@@ -156,4 +156,13 @@
     <string name="account_settings_outgoing_label">Utgeande server</string>
     <string name="account_settings_outgoing_summary">Utgeande server (SMTP) konfigurearje</string>
     <string name="account_settings_composition">E-mailberjocht wurdt ferstjoerd</string>
+    <string name="account_settings_notificaction_and_sync">Melding &amp; syngronisaasje</string>
+    <string name="account_settings_notification_style">Meldingsstyl</string>
+    <string name="account_settings_notification_style_description">Lûd, trille en badges oanpasse</string>
+    <string name="account_settings_folder_sync_and_push">Mapsyngronisaasje &amp; push</string>
+    <string name="account_settings_folder_sync_and_push_description">Peile/push per map ynskeakelje</string>
+    <string name="account_settings_manage_folders">Mappen beheare</string>
+    <string name="account_settings_folder_visibility_and_sort_description">Standert mappen en mapsichtberheid wizigje</string>
+    <string name="account_settings_fetching_and_data_limits">Ophelje &amp; gegevenslimiten</string>
+    <string name="account_settings_fetching_and_data_limits_description">Frekwinsje- en syngronisaasjelimiten</string>
 </resources>

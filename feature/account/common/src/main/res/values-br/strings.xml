@@ -2,4 +2,5 @@
 <resources>
     <string name="account_common_button_next">Da heul</string>
     <string name="account_common_button_back">Kent</string>
+    <string name="account_common_error_server_message">Distroet eo ar gemennadenn da heul gant ar servijer :\n%s</string>
 </resources>

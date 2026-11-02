@@ -156,4 +156,13 @@
     <string name="account_settings_outgoing_label">Server trimitere</string>
     <string name="account_settings_outgoing_summary">Configurare server trimitere (SMTP)</string>
     <string name="account_settings_composition">Se trimite mesajul</string>
+    <string name="account_settings_folder_sync_and_push">Sincronizarea dosarelor și notificarea conținutului acestora</string>
+    <string name="account_settings_fetching_and_data_limits">Preluarea datelor și limitele de trafc</string>
+    <string name="account_settings_notificaction_and_sync">Notificări și sincronizare</string>
+    <string name="account_settings_notification_style">Stilul notificărilor</string>
+    <string name="account_settings_notification_style_description">Personalizează sunetul, vibrațiile, insignele</string>
+    <string name="account_settings_folder_sync_and_push_description">Activează interogarea/notificarea conținutului, pentru fiecare dosar</string>
+    <string name="account_settings_manage_folders">Gestionează dosarele</string>
+    <string name="account_settings_folder_visibility_and_sort_description">Schimbă dosarele implicite și vizibilitatea dosarelor</string>
+    <string name="account_settings_fetching_and_data_limits_description">Limite de frecvență și sincronizare</string>
 </resources>

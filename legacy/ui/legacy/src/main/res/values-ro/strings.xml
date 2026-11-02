@@ -970,5 +970,9 @@
     <string name="account_settings_signature_preview_empty">Previzualizarea semnăturii tale va apărea aici</string>
     <string name="error_no_contact_provider">Nu s-a găsit nicio aplicație „Agendă de contacte”. Instalează o aplicație de Agendă de contacte pentru a adăuga această adresă.</string>
     <string name="remote_feature_flag_preferences">Opțiuni de funcții la distanță</string>
-    <string name="account_setup_visibility_and_syncing">Vizibilitate și sincronizare</string>
+    <string name="account_setup_visibility_and_syncing">Sincronizarea dosarelor și notificarea conținutului acestora</string>
+    <string name="account_settings_sync_and_notifications">Sincronizare și notificări</string>
+    <string name="account_settings_folder_sync_and_push">Sincronizarea dosarelor și notificarea conținutului acestora</string>
+    <string name="account_settings_fetching_and_data_limits">Preluarea datelor și limitele de trafc</string>
+    <string name="account_settings_folder_visibility">Vizibilitatea dosarelor</string>
 </resources>

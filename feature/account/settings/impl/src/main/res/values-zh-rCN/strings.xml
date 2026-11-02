@@ -131,4 +131,6 @@
     <string name="account_settings_idle_refresh_period_48min">每 48 分钟</string>
     <string name="account_settings_idle_refresh_period_60min">每 60 分钟</string>
     <string name="account_settings_composition_summary">设置默认的发件地址、Bcc 密送地址和签名</string>
+    <string name="account_settings_folder_sync_and_push">文件同步和推送</string>
+    <string name="account_settings_fetching_and_data_limits">获取和数据限制</string>
 </resources>

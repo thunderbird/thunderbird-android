@@ -156,4 +156,13 @@
     <string name="account_settings_outgoing_summary">Nastavitev strežnika odhodne pošte (SMTP).</string>
     <string name="account_settings_composition">Pošiljanje pošte</string>
     <string name="account_settings_identities_label">Upravljaj s profili istovetnosti</string>
+    <string name="account_settings_notificaction_and_sync">Obvestila in uskladitev</string>
+    <string name="account_settings_notification_style">Slog obvestil</string>
+    <string name="account_settings_notification_style_description">Prilagodi zvok, vibriranje in značke</string>
+    <string name="account_settings_folder_sync_and_push">Usklajevanje map in potisk</string>
+    <string name="account_settings_folder_sync_and_push_description">Omogoči poizvedovanje/potisk za mape</string>
+    <string name="account_settings_manage_folders">Upravljaj z mapami</string>
+    <string name="account_settings_folder_visibility_and_sort_description">Spremeni privzete mape in vidnost map</string>
+    <string name="account_settings_fetching_and_data_limits">Pridobivanje in omejitev podatkov</string>
+    <string name="account_settings_fetching_and_data_limits_description">Pogostost in omejitve usklajevanja</string>
 </resources>
