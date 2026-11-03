@@ -11,6 +11,8 @@ import org.mockito.ArgumentMatchers.eq
 import org.mockito.kotlin.argumentCaptor
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.never
+import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.verifyNoMoreInteractions
 
@@ -78,5 +80,35 @@ class FragmentLifecycleObserverTest {
         lifecycleCallbacksCaptor.firstValue.onFragmentDetached(fragmentManager, fragment)
 
         verify(fragmentManager).unregisterFragmentLifecycleCallbacks(lifecycleCallbacksCaptor.firstValue)
+    }
+
+    @Test
+    fun `should only have one registered callback if register is called more than once`() {
+        // Arrange
+        val repetitions = 5
+        val fragmentManager = mock<FragmentManager>()
+        var showed = false
+        val onShow = { showed = true }
+        val observer = FragmentLifecycleObserver("unused")
+
+        // Act
+        repeat(repetitions) {
+            observer.register(fragmentManager, onShow)
+        }
+
+        // Assert
+        val lifecycleCallbacksCaptor = argumentCaptor<FragmentManager.FragmentLifecycleCallbacks>()
+        verify(
+            fragmentManager,
+            times(repetitions),
+        ).registerFragmentLifecycleCallbacks(lifecycleCallbacksCaptor.capture(), eq(false))
+        assertThat(showed).isFalse()
+
+        // all but the latest callback should have been unregistered
+        val callbacks = lifecycleCallbacksCaptor.allValues
+        for (stale in callbacks.dropLast(1)) {
+            verify(fragmentManager).unregisterFragmentLifecycleCallbacks(stale)
+        }
+        verify(fragmentManager, never()).unregisterFragmentLifecycleCallbacks(callbacks.last())
     }
 }
