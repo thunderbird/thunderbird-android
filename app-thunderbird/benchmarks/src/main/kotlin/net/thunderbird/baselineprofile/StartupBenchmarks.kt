@@ -14,8 +14,7 @@ import org.junit.runner.RunWith
  * ./gradlew :app-thunderbird:benchmarks:connectedFossBenchmarkDailyAndroidTest
  * ```
  *
- * Use `-Pci=true` to enable R8 for the daily build, so it matches release. With a real account configured, the
- * `benchmarkRelease` variant works too.
+ * With a real account configured, the `benchmarkRelease` variant works too.
  */
 @RunWith(AndroidJUnit4::class)
 @LargeTest
