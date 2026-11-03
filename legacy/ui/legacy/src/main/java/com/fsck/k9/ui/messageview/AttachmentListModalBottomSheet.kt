@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
+import app.k9mail.core.ui.compose.common.keypad.keypadDialogWindow
 import net.thunderbird.components.ui.bolt.atom.button.ButtonIcon
 import net.thunderbird.components.ui.bolt.atom.text.TextBodyMedium
 import net.thunderbird.components.ui.bolt.atom.text.TextBodySmall
@@ -49,6 +50,7 @@ internal fun AttachmentListModalBottomSheet(
 ) {
     ModalBottomSheet(
         onDismissRequest = onDismissRequest,
+        modifier = Modifier.keypadDialogWindow(),
     ) {
         AttachmentListContent(
             attachments = attachments,
