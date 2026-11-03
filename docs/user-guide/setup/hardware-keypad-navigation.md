@@ -5,8 +5,6 @@ It is disabled by default. Enable it under **Settings → General settings → I
 On the initial setup screen, press **Left soft key / F1**, select **Enable hardware keypad navigation**, and
 press **Center / Enter**. Opening this menu alone does not enable the mode.
 
-![Keypad navigation and independently configured phone-key actions](assets/hardware-keypad-settings.png)
-
 The keypad changes use Android APIs available on Android 8.0 (API 26) and newer. They do not require root
 or accessibility-service permissions. Device firmware must deliver the keys to the app.
 
@@ -34,15 +32,20 @@ menu. Screens without an actions menu offer **Next control**, **Previous control
 | --- | --- |
 | Up / Down | Focus a message row |
 | Center / Enter | Open the focused message, or toggle its selection if selection mode is already active |
-| `0` | Open the account and folder drawer |
-| `5` | Refresh the message list |
-| `7` | Compose a message |
-| `9` | Focus and expand search |
+| Left | Open the account and folder drawer |
+| Right while the drawer is open | Close the drawer |
+| `0` by default | Open the account and folder drawer |
+| `5` by default | Refresh the message list |
+| `7` by default | Compose a message |
+| `9` by default | Focus and expand search |
 | Left soft key / F1 | Open the list's current actions |
 
 In keypad mode, the traditional message list gives keyboard focus to the complete row, with a visible outline.
 Touching its avatar or star still performs the existing selection or star action. Closing the drawer restores
-the previous list focus when that control is still available.
+the same message by identity, even after reordering. If it has been removed, focus stays on the list container.
+Other controls regain their previous focus when available. Right otherwise keeps its normal focus navigation.
+The number-key defaults above apply when that key has no custom message action; see the dedicated settings
+screen below.
 
 Returning from the reader restores focus to the same message, including after its position changes.
 If that message has been removed, focus stays on the list container until you navigate again. Other input,
@@ -107,30 +110,34 @@ mappings. They never activate shortcuts on the screen behind the dialog.
 `*` and `#` inside a text editor still belong to the input method. F1 provides a way to leave that editor
 without using those characters as navigation keys.
 
-## Call and end-call shortcuts
+## Number key message actions
 
-In the same settings screen, **Call key action** and **End-call key action** can independently be set to
-**None** (the default), **Delete**, **Archive**, or **Toggle star**. These actions apply only to the currently
-focused message in the message list. They do not act on a previously focused message, an open message,
-or a multiple selection. Delete retains the existing delete-confirmation setting.
+Open **Settings → General settings → Interaction → Number key message actions** to configure each key
+from **0** through **9** independently. Each key offers **Default (no message action)**, **Delete**,
+**Archive**, and **Toggle star**. Every key initially uses **Default**, preserving its normal list shortcut.
 
-These two shortcuts require the optional **Phone** (`READ_PHONE_STATE`) permission to check whether a call
-is ringing, dialing, active, or on hold. No telephone numbers or call history are read. If permission is
-denied or revoked, the phone keys retain their normal handling. The shortcuts also remain inactive while
-Telecom or cellular state reports a call, or communication audio is in use. Call state, the configured action,
-and the focused message are checked again on release, and a held key executes at most once. These checks
-depend on the states reported by Android; they are not an atomic guarantee against a late or incorrect
-firmware report.
+For example, set **Key 1** to **Archive** and **Key 3** to **Toggle star**. Those keys then act on the message
+row with keyboard focus. Binding a number replaces its original list shortcut: binding **Key 5** to
+**Delete** replaces refresh with delete. Restore **Default** to use refresh again. The unbound defaults are
+`0` for folders, `5` for refresh, `7` for a new message, and `9` for search. Left still opens the folder
+drawer even if `0` has been assigned a message action.
 
-Android and device firmware may handle a phone key before an application receives it, especially the
-end-call key. This mode only handles `KEYCODE_CALL` and `KEYCODE_ENDCALL` events delivered to Thunderbird.
-It does not remap Home or Power keys, change the default phone application, or intercept system calls.
-An unavailable physical key therefore cannot be enabled by this setting alone.
+Custom actions apply only while keypad mode is enabled and a message row in the foreground message list
+has keyboard focus. They do not act on a previously focused message, an open message, a multiple selection,
+or content behind a search field, folder drawer, or dialog. A configured number never falls back to its
+original list shortcut when there is no eligible message row. Returning from the reader restores the exact
+row before it becomes an action target; a removed message never redirects an action to a neighboring row.
+Delete retains the existing delete-confirmation setting.
 
-When a configured Call key is delivered to a focused idle message list, its normal idle shortcut is replaced
-by the selected message action, including a held press. Leave the action as **None** to retain that idle behavior.
-Physical incoming-call and end-call behavior must be verified on the target phone; this guide does not claim
-that such a real-device call test has been completed for this build.
+A complete press performs the configured action once. Moving focus, leaving the list, or changing the
+setting during the press cancels that action. Text fields and search keep digits available to the input
+method. Menus, folders, and dialogs retain their normal key behavior. The reader keeps its number-key
+navigation, including `4` and `6` to pan wide message bodies, regardless of the configured list actions.
+
+Call and end-call keys keep their system behavior. This mode does not intercept them. Home and Power
+behavior is unchanged.
+
+![Independent number-key message actions](assets/hardware-keypad-settings.png)
 
 ## Scope
 

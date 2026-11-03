@@ -23,7 +23,9 @@ import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import net.thunderbird.core.android.account.AccountDefaultsProvider
 import net.thunderbird.core.android.account.LegacyAccountManager
+import net.thunderbird.core.preference.interaction.KeypadMessageAction
 import net.thunderbird.core.preference.storage.StorageProvider
+import net.thunderbird.core.preference.storage.getEnumOrDefault
 import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.account.avatar.AvatarImageRepository
 import net.thunderbird.feature.account.storage.legacy.AccountStorageHandler
@@ -80,14 +82,18 @@ class SettingsImporterTest : K9RobolectricTest() {
     }
 
     @Test
-    fun `importSettings() should restore enabled keypad navigation`() = runTest {
+    fun `importSettings() should restore keypad navigation and valid number actions`() = runTest {
         val inputStream =
             """
             <k9settings format="1" version="${Settings.VERSION}">
               <global>
                 <value key="isKeypadNavigationEnabled">true</value>
-                <value key="keypadCallAction">DELETE</value>
-                <value key="keypadEndCallAction">TOGGLE_FLAGGED</value>
+                <value key="keypadDigit0Action">DELETE</value>
+                <value key="keypadDigit1Action">NONE</value>
+                <value key="keypadDigit5Action">ARCHIVE</value>
+                <value key="keypadDigit9Action">TOGGLE_FLAGGED</value>
+                <value key="keypadDigit-1Action">DELETE</value>
+                <value key="keypadDigit10Action">DELETE</value>
               </global>
             </k9settings>
             """.trimIndent().byteInputStream()
@@ -96,8 +102,13 @@ class SettingsImporterTest : K9RobolectricTest() {
 
         assertThat(results.globalSettings).isTrue()
         assertThat(get<StorageProvider>().storage.getBoolean("isKeypadNavigationEnabled", false)).isTrue()
-        assertThat(get<StorageProvider>().storage.getString("keypadCallAction")).isEqualTo("DELETE")
-        assertThat(get<StorageProvider>().storage.getString("keypadEndCallAction")).isEqualTo("TOGGLE_FLAGGED")
+        val storage = get<StorageProvider>().storage
+        assertThat(storage.getString("keypadDigit0Action")).isEqualTo("DELETE")
+        assertThat(storage.getString("keypadDigit1Action")).isEqualTo("NONE")
+        assertThat(storage.getString("keypadDigit5Action")).isEqualTo("ARCHIVE")
+        assertThat(storage.getString("keypadDigit9Action")).isEqualTo("TOGGLE_FLAGGED")
+        assertThat(storage.contains("keypadDigit-1Action")).isFalse()
+        assertThat(storage.contains("keypadDigit10Action")).isFalse()
     }
 
     @Test
@@ -115,8 +126,38 @@ class SettingsImporterTest : K9RobolectricTest() {
 
         assertThat(results.globalSettings).isTrue()
         assertThat(get<StorageProvider>().storage.getBoolean("isKeypadNavigationEnabled", true)).isFalse()
-        assertThat(get<StorageProvider>().storage.getString("keypadCallAction")).isEqualTo("NONE")
-        assertThat(get<StorageProvider>().storage.getString("keypadEndCallAction")).isEqualTo("NONE")
+        for (digit in 0..9) {
+            assertThat(get<StorageProvider>().storage.getString("keypadDigit${digit}Action")).isEqualTo("NONE")
+        }
+    }
+
+    @Test
+    fun `importSettings() should ignore obsolete phone and directional keypad actions`() = runTest {
+        val inputStream =
+            """
+            <k9settings format="1" version="${Settings.VERSION}">
+              <global>
+                <value key="isKeypadNavigationEnabled">true</value>
+                <value key="keypadCallAction">DELETE</value>
+                <value key="keypadEndCallAction">ARCHIVE</value>
+                <value key="keypadLeftAction">TOGGLE_FLAGGED</value>
+                <value key="keypadRightAction">DELETE</value>
+              </global>
+            </k9settings>
+            """.trimIndent().byteInputStream()
+
+        val results = settingsImporter.importSettings(inputStream, globalSettings = true, emptyList())
+
+        val storage = get<StorageProvider>().storage
+        assertThat(results.globalSettings).isTrue()
+        assertThat(storage.getBoolean("isKeypadNavigationEnabled", false)).isTrue()
+        for (digit in 0..9) {
+            assertThat(storage.getEnumOrDefault("keypadDigit${digit}Action", KeypadMessageAction.NONE))
+                .isEqualTo(KeypadMessageAction.NONE)
+        }
+        for (key in listOf("keypadCallAction", "keypadEndCallAction", "keypadLeftAction", "keypadRightAction")) {
+            assertThat(storage.contains(key)).isFalse()
+        }
     }
 
     @Test

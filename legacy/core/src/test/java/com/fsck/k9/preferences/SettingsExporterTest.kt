@@ -108,8 +108,8 @@ class SettingsExporterTest : K9RobolectricTest() {
     fun exportPreferences_includesKeypadNavigationPreference() = runTest {
         storageProvider.createStorageEditor()
             .putBoolean("isKeypadNavigationEnabled", true)
-            .putString("keypadCallAction", "ARCHIVE")
-            .putString("keypadEndCallAction", "TOGGLE_FLAGGED")
+            .putString("keypadDigit0Action", "ARCHIVE")
+            .putString("keypadDigit9Action", "TOGGLE_FLAGGED")
             .commit()
 
         val document = exportPreferences(true, emptySet())
@@ -119,8 +119,36 @@ class SettingsExporterTest : K9RobolectricTest() {
         assertThat(exportedValue.text).isEqualTo("true")
         val exportedActions = document.rootElement.getChild("global").getChildren("value")
             .associate { it.getAttributeValue("key") to it.text }
-        assertThat(exportedActions["keypadCallAction"]).isEqualTo("ARCHIVE")
-        assertThat(exportedActions["keypadEndCallAction"]).isEqualTo("TOGGLE_FLAGGED")
+        val expectedActions = (0..9).associate { digit ->
+            "keypadDigit${digit}Action" to when (digit) {
+                0 -> "ARCHIVE"
+                9 -> "TOGGLE_FLAGGED"
+                else -> "NONE"
+            }
+        }
+        assertThat(exportedActions.filterKeys { it.startsWith("keypadDigit") }).isEqualTo(expectedActions)
+    }
+
+    @Test
+    fun exportPreferences_ignoresObsoleteAndInvalidKeypadActions() = runTest {
+        storageProvider.createStorageEditor()
+            .putString("keypadCallAction", "DELETE")
+            .putString("keypadEndCallAction", "ARCHIVE")
+            .putString("keypadLeftAction", "TOGGLE_FLAGGED")
+            .putString("keypadRightAction", "DELETE")
+            .putString("keypadDigit-1Action", "DELETE")
+            .putString("keypadDigit10Action", "DELETE")
+            .commit()
+
+        val document = exportPreferences(true, emptySet())
+
+        val exportedActions = document.rootElement.getChild("global").getChildren("value")
+            .associate { it.getAttributeValue("key") to it.text }
+        assertThat(exportedActions.filterKeys { it.startsWith("keypadDigit") })
+            .isEqualTo((0..9).associate { "keypadDigit${it}Action" to "NONE" })
+        for (key in listOf("keypadCallAction", "keypadEndCallAction", "keypadLeftAction", "keypadRightAction")) {
+            assertThat(exportedActions[key]).isNull()
+        }
     }
 
     @Test

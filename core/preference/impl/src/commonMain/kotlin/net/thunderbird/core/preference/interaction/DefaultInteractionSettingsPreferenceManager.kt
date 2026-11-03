@@ -22,6 +22,18 @@ import net.thunderbird.core.preference.storage.getEnumOrDefault
 import net.thunderbird.core.preference.storage.putEnum
 
 private const val TAG = "DefaultInteractionSettingsPreferenceManager"
+private val KEYPAD_DIGIT_ACTION_KEYS = listOf(
+    InteractionSettingKey.KeypadDigit0Action,
+    InteractionSettingKey.KeypadDigit1Action,
+    InteractionSettingKey.KeypadDigit2Action,
+    InteractionSettingKey.KeypadDigit3Action,
+    InteractionSettingKey.KeypadDigit4Action,
+    InteractionSettingKey.KeypadDigit5Action,
+    InteractionSettingKey.KeypadDigit6Action,
+    InteractionSettingKey.KeypadDigit7Action,
+    InteractionSettingKey.KeypadDigit8Action,
+    InteractionSettingKey.KeypadDigit9Action,
+)
 
 class DefaultInteractionSettingsPreferenceManager(
     private val logger: Logger,
@@ -44,9 +56,14 @@ class DefaultInteractionSettingsPreferenceManager(
     override fun getConfigFlow(): Flow<InteractionSettings> = configState
 
     override fun save(config: InteractionSettings) {
-        logger.debug(TAG) { "save() called with: config = $config" }
-        writeConfig(config)
-        configState.update { config }
+        val normalizedConfig = config.copy(
+            keypadMessageActions = config.keypadMessageActions
+                .filter { (digit, action) -> digit in 0..9 && action != KeypadMessageAction.NONE }
+                .toMap(),
+        )
+        logger.debug(TAG) { "save() called with: config = $normalizedConfig" }
+        writeConfig(normalizedConfig)
+        configState.update { normalizedConfig }
     }
 
     private fun loadConfig(): InteractionSettings = InteractionSettings(
@@ -58,14 +75,7 @@ class DefaultInteractionSettingsPreferenceManager(
             InteractionSettingKey.KeypadNavigationEnabled.value,
             INTERACTION_SETTINGS_DEFAULT_KEYPAD_NAVIGATION_ENABLED,
         ),
-        keypadCallAction = storage.getEnumOrDefault(
-            InteractionSettingKey.KeypadCallAction.value,
-            KeypadMessageAction.NONE,
-        ),
-        keypadEndCallAction = storage.getEnumOrDefault(
-            InteractionSettingKey.KeypadEndCallAction.value,
-            KeypadMessageAction.NONE,
-        ),
+        keypadMessageActions = loadKeypadMessageActions(),
         messageViewPostRemoveNavigation = storage.getStringOrDefault(
             InteractionSettingKey.MessageViewPostDeleteAction.value,
             INTERACTION_SETTINGS_DEFAULT_MESSAGE_VIEW_POST_REMOVE_NAVIGATION,
@@ -110,6 +120,13 @@ class DefaultInteractionSettingsPreferenceManager(
         ),
     )
 
+    private fun loadKeypadMessageActions(): Map<Int, KeypadMessageAction> = buildMap {
+        KEYPAD_DIGIT_ACTION_KEYS.forEachIndexed { digit, key ->
+            val action = storage.getEnumOrDefault(key.value, KeypadMessageAction.NONE)
+            if (action != KeypadMessageAction.NONE) put(digit, action)
+        }
+    }
+
     private fun writeConfig(config: InteractionSettings) {
         logger.debug(TAG) { "writeConfig() called with: config = $config" }
         scope.launch(ioDispatcher) {
@@ -123,8 +140,9 @@ class DefaultInteractionSettingsPreferenceManager(
                     InteractionSettingKey.KeypadNavigationEnabled.value,
                     config.isKeypadNavigationEnabled,
                 )
-                storageEditor.putEnum(InteractionSettingKey.KeypadCallAction.value, config.keypadCallAction)
-                storageEditor.putEnum(InteractionSettingKey.KeypadEndCallAction.value, config.keypadEndCallAction)
+                KEYPAD_DIGIT_ACTION_KEYS.forEachIndexed { digit, key ->
+                    storageEditor.putEnum(key.value, config.keypadMessageActions[digit] ?: KeypadMessageAction.NONE)
+                }
                 storageEditor.putString(
                     InteractionSettingKey.MessageViewPostDeleteAction.value,
                     config.messageViewPostRemoveNavigation,

@@ -1,6 +1,7 @@
 package net.thunderbird.core.preference.interaction
 
 import assertk.assertThat
+import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
 import assertk.assertions.isFalse
 import assertk.assertions.isTrue
@@ -32,14 +33,18 @@ class DefaultInteractionSettingsPreferenceManagerTest {
 
         // Assert
         assertThat(config.isKeypadNavigationEnabled).isFalse()
-        assertThat(config.keypadCallAction).isEqualTo(KeypadMessageAction.NONE)
-        assertThat(config.keypadEndCallAction).isEqualTo(KeypadMessageAction.NONE)
+        assertThat(config.keypadMessageActions).isEmpty()
     }
 
     @Test
-    fun `keypad navigation should load the stored preference`() = runTest {
+    fun `keypad navigation should load stored number actions without default entries`() = runTest {
         // Arrange
         storeKeypadNavigation(enabled = true)
+        storageProvider.createStorageEditor()
+            .putString("keypadDigit0Action", KeypadMessageAction.ARCHIVE.name)
+            .putString("keypadDigit4Action", KeypadMessageAction.NONE.name)
+            .putString("keypadDigit9Action", KeypadMessageAction.TOGGLE_FLAGGED.name)
+            .commit()
         val testSubject = createManager()
 
         // Act
@@ -47,6 +52,9 @@ class DefaultInteractionSettingsPreferenceManagerTest {
 
         // Assert
         assertThat(config.isKeypadNavigationEnabled).isTrue()
+        assertThat(config.keypadMessageActions).isEqualTo(
+            mapOf(0 to KeypadMessageAction.ARCHIVE, 9 to KeypadMessageAction.TOGGLE_FLAGGED),
+        )
     }
 
     @Test
@@ -84,22 +92,30 @@ class DefaultInteractionSettingsPreferenceManagerTest {
         // Arrange
         val testSubject = createManager()
         storeKeypadNavigation(enabled = true)
+        storageProvider.createStorageEditor()
+            .putString("keypadDigit3Action", KeypadMessageAction.DELETE.name)
+            .commit()
 
         // Act
         testSubject.receive(PreferenceScope.INTERACTION)
 
         // Assert
         assertThat(testSubject.getConfig().isKeypadNavigationEnabled).isTrue()
+        assertThat(testSubject.getConfig().keypadMessageActions).isEqualTo(mapOf(3 to KeypadMessageAction.DELETE))
     }
 
     @Test
-    fun `call and end-call actions should persist independently with keypad mode disabled`() = runTest {
+    fun `all ten number actions should persist independently with keypad mode disabled`() = runTest {
         // Arrange
         val testSubject = createManager()
-        val config = testSubject.getConfig().copy(
-            keypadCallAction = KeypadMessageAction.ARCHIVE,
-            keypadEndCallAction = KeypadMessageAction.DELETE,
-        )
+        val actions = (0..9).associateWith { digit ->
+            when (digit % 3) {
+                0 -> KeypadMessageAction.DELETE
+                1 -> KeypadMessageAction.ARCHIVE
+                else -> KeypadMessageAction.TOGGLE_FLAGGED
+            }
+        }
+        val config = testSubject.getConfig().copy(keypadMessageActions = actions)
 
         // Act
         testSubject.save(config)
@@ -108,27 +124,80 @@ class DefaultInteractionSettingsPreferenceManagerTest {
 
         // Assert
         assertThat(reloadedConfig.isKeypadNavigationEnabled).isFalse()
-        assertThat(reloadedConfig.keypadCallAction).isEqualTo(KeypadMessageAction.ARCHIVE)
-        assertThat(reloadedConfig.keypadEndCallAction).isEqualTo(KeypadMessageAction.DELETE)
+        assertThat(reloadedConfig.keypadMessageActions).isEqualTo(actions)
+        for ((digit, action) in actions) {
+            assertThat(storageProvider.storage.getString("keypadDigit${digit}Action")).isEqualTo(action.name)
+        }
     }
 
     @Test
-    fun `call action should be clearable without losing the end-call action`() = runTest {
+    fun `clearing a number action should store NONE without losing other actions`() = runTest {
         // Arrange
         storageProvider.createStorageEditor()
-            .putString(InteractionSettingKey.KeypadCallAction.value, KeypadMessageAction.DELETE.name)
-            .putString(InteractionSettingKey.KeypadEndCallAction.value, KeypadMessageAction.TOGGLE_FLAGGED.name)
+            .putString("keypadDigit0Action", KeypadMessageAction.DELETE.name)
+            .putString("keypadDigit5Action", KeypadMessageAction.TOGGLE_FLAGGED.name)
             .commit()
         val testSubject = createManager()
 
         // Act
-        testSubject.save(testSubject.getConfig().copy(keypadCallAction = KeypadMessageAction.NONE))
+        testSubject.save(
+            testSubject.getConfig().copy(keypadMessageActions = mapOf(5 to KeypadMessageAction.TOGGLE_FLAGGED)),
+        )
         advanceUntilIdle()
         val reloadedConfig = createManager().getConfig()
 
         // Assert
-        assertThat(reloadedConfig.keypadCallAction).isEqualTo(KeypadMessageAction.NONE)
-        assertThat(reloadedConfig.keypadEndCallAction).isEqualTo(KeypadMessageAction.TOGGLE_FLAGGED)
+        assertThat(reloadedConfig.keypadMessageActions).isEqualTo(mapOf(5 to KeypadMessageAction.TOGGLE_FLAGGED))
+        for (digit in (0..9) - 5) {
+            assertThat(storageProvider.storage.getString("keypadDigit${digit}Action")).isEqualTo("NONE")
+        }
+    }
+
+    @Test
+    fun `obsolete phone and directional actions should not activate number actions`() = runTest {
+        // Arrange
+        storeKeypadNavigation(enabled = true)
+        storageProvider.createStorageEditor()
+            .putString("keypadCallAction", KeypadMessageAction.DELETE.name)
+            .putString("keypadEndCallAction", KeypadMessageAction.ARCHIVE.name)
+            .putString("keypadLeftAction", KeypadMessageAction.TOGGLE_FLAGGED.name)
+            .putString("keypadRightAction", KeypadMessageAction.DELETE.name)
+            .commit()
+        val testSubject = createManager()
+
+        // Act
+        val config = testSubject.getConfig()
+
+        // Assert
+        assertThat(config.isKeypadNavigationEnabled).isTrue()
+        assertThat(config.keypadMessageActions).isEmpty()
+    }
+
+    @Test
+    fun `saving number actions should filter invalid entries and copy the mutable input before writing`() = runTest {
+        // Arrange
+        val testSubject = createManager()
+        val actions = mutableMapOf(
+            0 to KeypadMessageAction.ARCHIVE,
+            9 to KeypadMessageAction.DELETE,
+            1 to KeypadMessageAction.NONE,
+            -1 to KeypadMessageAction.DELETE,
+            10 to KeypadMessageAction.DELETE,
+        )
+        val expected = mapOf(0 to KeypadMessageAction.ARCHIVE, 9 to KeypadMessageAction.DELETE)
+
+        // Act
+        testSubject.save(testSubject.getConfig().copy(keypadMessageActions = actions))
+        val publishedActions = testSubject.getConfig().keypadMessageActions
+        actions.clear()
+        actions[3] = KeypadMessageAction.TOGGLE_FLAGGED
+        advanceUntilIdle()
+
+        // Assert
+        assertThat(publishedActions).isEqualTo(expected)
+        assertThat(testSubject.getConfig().keypadMessageActions).isEqualTo(expected)
+        assertThat(createManager().getConfig().keypadMessageActions).isEqualTo(expected)
+        assertThat(storageProvider.storage.getString("keypadDigit1Action")).isEqualTo("NONE")
     }
 
     private fun TestScope.createManager() = DefaultInteractionSettingsPreferenceManager(

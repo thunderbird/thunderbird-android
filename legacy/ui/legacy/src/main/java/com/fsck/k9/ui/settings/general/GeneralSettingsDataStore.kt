@@ -184,9 +184,9 @@ class GeneralSettingsDataStore(
             "message_list_density" -> messageListSettings.uiDensity.toString()
             "post_remove_navigation" -> interactionSettings.messageViewPostRemoveNavigation
             "post_mark_as_unread_navigation" -> interactionSettings.messageViewPostMarkAsUnreadNavigation.name
-            "keypad_call_action" -> interactionSettings.keypadCallAction.name
-            "keypad_end_call_action" -> interactionSettings.keypadEndCallAction.name
-            else -> defValue
+            else -> keypadActionDigit(key)?.let { digit ->
+                interactionSettings.keypadMessageActions[digit]?.name ?: KeypadMessageAction.NONE.name
+            } ?: defValue
         }
     }
 
@@ -229,9 +229,10 @@ class GeneralSettingsDataStore(
             "message_list_density" -> updateMessageListDensity(value)
             "post_remove_navigation" -> setMessageViewPostRemoveNavigation(value)
             "post_mark_as_unread_navigation" -> setMessageViewPostMarkAsUnreadNavigation(value)
-            "keypad_call_action" -> setKeypadMessageAction(value, isCallKey = true)
-            "keypad_end_call_action" -> setKeypadMessageAction(value, isCallKey = false)
-            else -> return
+            else -> {
+                val digit = keypadActionDigit(key) ?: return
+                setKeypadMessageAction(value, digit)
+            }
         }
 
         saveSettings()
@@ -759,17 +760,24 @@ class GeneralSettingsDataStore(
         }
     }
 
-    private fun setKeypadMessageAction(value: String, isCallKey: Boolean) {
+    private fun keypadActionDigit(key: String): Int? {
+        val digit = key.removePrefix("keypad_digit_").removeSuffix("_action").singleOrNull()?.digitToIntOrNull()
+        return digit?.takeIf { key == "keypad_digit_${it}_action" }
+    }
+
+    private fun setKeypadMessageAction(value: String, digit: Int) {
         val action = KeypadMessageAction.entries.firstOrNull { it.name == value } ?: return
         skipSaveSettings = true
         generalSettingsManager.update { settings ->
             val interaction = settings.interaction
             settings.copy(
-                interaction = if (isCallKey) {
-                    interaction.copy(keypadCallAction = action)
-                } else {
-                    interaction.copy(keypadEndCallAction = action)
-                },
+                interaction = interaction.copy(
+                    keypadMessageActions = if (action == KeypadMessageAction.NONE) {
+                        interaction.keypadMessageActions - digit
+                    } else {
+                        interaction.keypadMessageActions + (digit to action)
+                    },
+                ),
             )
         }
     }

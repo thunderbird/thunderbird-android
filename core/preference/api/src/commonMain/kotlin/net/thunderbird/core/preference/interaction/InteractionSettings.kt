@@ -22,8 +22,7 @@ const val INTERACTION_SETTINGS_DEFAULT_CONFIRM_MARK_ALL_READ = true
 data class InteractionSettings(
     val useVolumeKeysForNavigation: Boolean = INTERACTION_SETTINGS_DEFAULT_USE_VOLUME_KEYS_NAVIGATION,
     val isKeypadNavigationEnabled: Boolean = INTERACTION_SETTINGS_DEFAULT_KEYPAD_NAVIGATION_ENABLED,
-    val keypadCallAction: KeypadMessageAction = KeypadMessageAction.NONE,
-    val keypadEndCallAction: KeypadMessageAction = KeypadMessageAction.NONE,
+    val keypadMessageActions: Map<Int, KeypadMessageAction> = emptyMap(),
     val messageViewPostRemoveNavigation: String = INTERACTION_SETTINGS_DEFAULT_MESSAGE_VIEW_POST_REMOVE_NAVIGATION,
     val messageViewPostMarkAsUnreadNavigation: PostMarkAsUnreadNavigation =
         INTERACTION_SETTINGS_DEFAULT_MESSAGE_VIEW_POST_MARK_AS_UNREAD_NAVIGATION,
@@ -36,7 +35,7 @@ data class InteractionSettings(
     val isConfirmMarkAllRead: Boolean = INTERACTION_SETTINGS_DEFAULT_CONFIRM_MARK_ALL_READ,
 )
 
-/** Optional message actions assigned to a hardware keypad's call and end-call keys. */
+/** Optional message actions assigned to a hardware keypad's number keys. */
 enum class KeypadMessageAction {
     NONE,
     DELETE,

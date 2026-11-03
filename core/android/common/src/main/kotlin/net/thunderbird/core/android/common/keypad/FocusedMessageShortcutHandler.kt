@@ -2,9 +2,8 @@ package net.thunderbird.core.android.common.keypad
 
 import android.view.KeyEvent
 
-/** Pairs phone-key presses while leaving all telephone handling to Android whenever the phone is not idle. */
-class PhoneKeyShortcutHandler<Target, Action>(
-    private val isPhoneIdle: () -> Boolean,
+/** Pairs optional number-key message actions while leaving other keys unchanged. */
+class FocusedMessageShortcutHandler<Target, Action>(
     private val getShortcut: (keyCode: Int) -> Action?,
     private val getTarget: () -> Target?,
     private val performAction: (Action, Target) -> Unit,
@@ -12,18 +11,13 @@ class PhoneKeyShortcutHandler<Target, Action>(
     private val pendingShortcuts = mutableMapOf<Key, PendingShortcut<Target, Action>>()
 
     fun dispatchKeyEvent(event: KeyEvent): Boolean {
-        if (event.keyCode != KeyEvent.KEYCODE_CALL && event.keyCode != KeyEvent.KEYCODE_ENDCALL) return false
+        if (event.keyCode !in KeyEvent.KEYCODE_0..KeyEvent.KEYCODE_9) return false
 
         val key = Key(event.deviceId, event.keyCode)
-        return if (!isPhoneIdle()) {
-            pendingShortcuts.clear()
-            false
-        } else {
-            when (event.action) {
-                KeyEvent.ACTION_UP -> onKeyUp(event, key)
-                KeyEvent.ACTION_DOWN -> onKeyDown(event, key)
-                else -> false
-            }
+        return when (event.action) {
+            KeyEvent.ACTION_UP -> onKeyUp(event, key)
+            KeyEvent.ACTION_DOWN -> onKeyDown(event, key)
+            else -> false
         }
     }
 
@@ -38,7 +32,7 @@ class PhoneKeyShortcutHandler<Target, Action>(
 
     private fun onKeyDown(event: KeyEvent, key: Key): Boolean {
         if (key in pendingShortcuts) return true
-        return if (event.hasNoModifiers() && event.repeatCount == 0) {
+        return if (event.hasNoModifiers() && !event.isCanceled && event.repeatCount == 0) {
             startShortcut(event.keyCode, key)
         } else {
             false
@@ -47,7 +41,7 @@ class PhoneKeyShortcutHandler<Target, Action>(
 
     private fun startShortcut(keyCode: Int, key: Key): Boolean {
         val action = getShortcut(keyCode)
-        val target = getTarget()
+        val target = action?.let { getTarget() }
         return if (action != null && target != null) {
             pendingShortcuts[key] = PendingShortcut(target, action)
             true

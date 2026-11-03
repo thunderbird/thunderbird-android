@@ -442,39 +442,124 @@
                 android:summary="@string/keypad_help_input_summary"
                 />
             <Preference
-                android:key="keypad_help_phone"
+                android:key="keypad_help_message_actions"
                 android:persistent="false"
-                android:title="@string/keypad_help_phone_title"
-                android:summary="@string/keypad_help_phone_summary"
+                android:title="@string/keypad_help_message_actions_title"
+                android:summary="@string/keypad_help_message_actions_summary"
                 />
         </PreferenceScreen>
 
-        <ListPreference
-            android:dependency="keypad_navigation"
-            android:dialogTitle="@string/keypad_call_action_title"
-            android:entries="@array/keypad_message_action_entries"
-            android:entryValues="@array/keypad_message_action_values"
-            android:key="keypad_call_action"
-            android:title="@string/keypad_call_action_title"
-            app:useSimpleSummaryProvider="true"
-            />
+        <PreferenceScreen
+            android:key="keypad_number_actions"
+            android:title="@string/keypad_number_actions_title"
+            android:summary="@string/keypad_number_actions_summary"
+            >
+            <Preference
+                android:key="keypad_number_actions_explanation"
+                android:persistent="false"
+                android:summary="@string/keypad_number_actions_explanation"
+                />
 
-        <ListPreference
-            android:dependency="keypad_navigation"
-            android:dialogTitle="@string/keypad_end_call_action_title"
-            android:entries="@array/keypad_message_action_entries"
-            android:entryValues="@array/keypad_message_action_values"
-            android:key="keypad_end_call_action"
-            android:title="@string/keypad_end_call_action_title"
-            app:useSimpleSummaryProvider="true"
-            />
+            <ListPreference
+                android:defaultValue="NONE"
+                android:dialogTitle="@string/keypad_digit_0_action_title"
+                android:entries="@array/keypad_message_action_entries"
+                android:entryValues="@array/keypad_message_action_values"
+                android:key="keypad_digit_0_action"
+                android:title="@string/keypad_digit_0_action_title"
+                app:useSimpleSummaryProvider="true"
+                />
 
-        <Preference
-            android:dependency="keypad_navigation"
-            android:key="keypad_phone_permission"
-            android:title="@string/keypad_phone_permission_title"
-            android:summary="@string/keypad_phone_permission_summary"
-            />
+            <ListPreference
+                android:defaultValue="NONE"
+                android:dialogTitle="@string/keypad_digit_1_action_title"
+                android:entries="@array/keypad_message_action_entries"
+                android:entryValues="@array/keypad_message_action_values"
+                android:key="keypad_digit_1_action"
+                android:title="@string/keypad_digit_1_action_title"
+                app:useSimpleSummaryProvider="true"
+                />
+
+            <ListPreference
+                android:defaultValue="NONE"
+                android:dialogTitle="@string/keypad_digit_2_action_title"
+                android:entries="@array/keypad_message_action_entries"
+                android:entryValues="@array/keypad_message_action_values"
+                android:key="keypad_digit_2_action"
+                android:title="@string/keypad_digit_2_action_title"
+                app:useSimpleSummaryProvider="true"
+                />
+
+            <ListPreference
+                android:defaultValue="NONE"
+                android:dialogTitle="@string/keypad_digit_3_action_title"
+                android:entries="@array/keypad_message_action_entries"
+                android:entryValues="@array/keypad_message_action_values"
+                android:key="keypad_digit_3_action"
+                android:title="@string/keypad_digit_3_action_title"
+                app:useSimpleSummaryProvider="true"
+                />
+
+            <ListPreference
+                android:defaultValue="NONE"
+                android:dialogTitle="@string/keypad_digit_4_action_title"
+                android:entries="@array/keypad_message_action_entries"
+                android:entryValues="@array/keypad_message_action_values"
+                android:key="keypad_digit_4_action"
+                android:title="@string/keypad_digit_4_action_title"
+                app:useSimpleSummaryProvider="true"
+                />
+
+            <ListPreference
+                android:defaultValue="NONE"
+                android:dialogTitle="@string/keypad_digit_5_action_title"
+                android:entries="@array/keypad_message_action_entries"
+                android:entryValues="@array/keypad_message_action_values"
+                android:key="keypad_digit_5_action"
+                android:title="@string/keypad_digit_5_action_title"
+                app:useSimpleSummaryProvider="true"
+                />
+
+            <ListPreference
+                android:defaultValue="NONE"
+                android:dialogTitle="@string/keypad_digit_6_action_title"
+                android:entries="@array/keypad_message_action_entries"
+                android:entryValues="@array/keypad_message_action_values"
+                android:key="keypad_digit_6_action"
+                android:title="@string/keypad_digit_6_action_title"
+                app:useSimpleSummaryProvider="true"
+                />
+
+            <ListPreference
+                android:defaultValue="NONE"
+                android:dialogTitle="@string/keypad_digit_7_action_title"
+                android:entries="@array/keypad_message_action_entries"
+                android:entryValues="@array/keypad_message_action_values"
+                android:key="keypad_digit_7_action"
+                android:title="@string/keypad_digit_7_action_title"
+                app:useSimpleSummaryProvider="true"
+                />
+
+            <ListPreference
+                android:defaultValue="NONE"
+                android:dialogTitle="@string/keypad_digit_8_action_title"
+                android:entries="@array/keypad_message_action_entries"
+                android:entryValues="@array/keypad_message_action_values"
+                android:key="keypad_digit_8_action"
+                android:title="@string/keypad_digit_8_action_title"
+                app:useSimpleSummaryProvider="true"
+                />
+
+            <ListPreference
+                android:defaultValue="NONE"
+                android:dialogTitle="@string/keypad_digit_9_action_title"
+                android:entries="@array/keypad_message_action_entries"
+                android:entryValues="@array/keypad_message_action_values"
+                android:key="keypad_digit_9_action"
+                android:title="@string/keypad_digit_9_action_title"
+                app:useSimpleSummaryProvider="true"
+                />
+        </PreferenceScreen>
 
         <ListPreference
             android:dialogTitle="@string/general_settings_post_remove_action_title"

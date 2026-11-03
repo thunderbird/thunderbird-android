@@ -5,10 +5,6 @@
     android:installLocation="auto"
     >
 
-    <!-- Optional: used only to keep configured call-key shortcuts inactive during phone calls. -->
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-feature android:name="android.hardware.telephony" android:required="false" />
-
     <!-- TODO(#6476): Remove android:enableOnBackInvokedCallback once predictive back is supported -->
     <application
         android:allowBackup="false"

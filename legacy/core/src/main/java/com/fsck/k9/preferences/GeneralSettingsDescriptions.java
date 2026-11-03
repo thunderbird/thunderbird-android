@@ -229,10 +229,34 @@ class GeneralSettingsDescriptions {
         s.put("isKeypadNavigationEnabled", Settings.versions(
             new V(113, new BooleanSetting(false))
         ));
-        s.put("keypadCallAction", Settings.versions(
+        s.put("keypadDigit0Action", Settings.versions(
             new V(113, new EnumSetting<>(KeypadMessageAction.class, KeypadMessageAction.NONE))
         ));
-        s.put("keypadEndCallAction", Settings.versions(
+        s.put("keypadDigit1Action", Settings.versions(
+            new V(113, new EnumSetting<>(KeypadMessageAction.class, KeypadMessageAction.NONE))
+        ));
+        s.put("keypadDigit2Action", Settings.versions(
+            new V(113, new EnumSetting<>(KeypadMessageAction.class, KeypadMessageAction.NONE))
+        ));
+        s.put("keypadDigit3Action", Settings.versions(
+            new V(113, new EnumSetting<>(KeypadMessageAction.class, KeypadMessageAction.NONE))
+        ));
+        s.put("keypadDigit4Action", Settings.versions(
+            new V(113, new EnumSetting<>(KeypadMessageAction.class, KeypadMessageAction.NONE))
+        ));
+        s.put("keypadDigit5Action", Settings.versions(
+            new V(113, new EnumSetting<>(KeypadMessageAction.class, KeypadMessageAction.NONE))
+        ));
+        s.put("keypadDigit6Action", Settings.versions(
+            new V(113, new EnumSetting<>(KeypadMessageAction.class, KeypadMessageAction.NONE))
+        ));
+        s.put("keypadDigit7Action", Settings.versions(
+            new V(113, new EnumSetting<>(KeypadMessageAction.class, KeypadMessageAction.NONE))
+        ));
+        s.put("keypadDigit8Action", Settings.versions(
+            new V(113, new EnumSetting<>(KeypadMessageAction.class, KeypadMessageAction.NONE))
+        ));
+        s.put("keypadDigit9Action", Settings.versions(
             new V(113, new EnumSetting<>(KeypadMessageAction.class, KeypadMessageAction.NONE))
         ));
         s.put("useBackgroundAsUnreadIndicator", Settings.versions(
