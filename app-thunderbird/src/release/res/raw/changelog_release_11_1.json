@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "version": "11.1",
+  "versioncode": 13,
+  "date": "2025-08-18",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Selected/read/unread message states were hard to distinguish visually",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

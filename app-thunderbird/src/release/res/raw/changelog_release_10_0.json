@@ -1,0 +1,103 @@
+{
+  "schemaVersion": 1,
+  "version": "10.0",
+  "versioncode": 10,
+  "date": "2025-05-05",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Server field pre-filled in manual account setup",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Add a menu entry to empty the Spam folder",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Introduce an option to use the system theme on Android 10 and older",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Update PushService to run as a specialUse foreground service for Android 15",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Update Gmail OAuth client IDs to Thunderbird for Android",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Preserve the <s> tag when sanitizing HTML content",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Messages and star counts in the drawer update instantly",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Folder names in the drawer are limited to two lines",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Hide accounts setting now remembered across restarts",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Account names in the drawer display as single lines when not set",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Option to use text processing apps (like Translate) when selecting text",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Recipient field now focused automatically when composing",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Display the recipient's address instead of +1 and fix its size",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Correct MIME type for .pkpass files",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Accessibility improvements",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Restart PushService after app update",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Restrict displaying message search results to internal and system usages",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Messages with one correspondent no longer showed \"+1\" incorrectly",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Account email no longer duplicated in drawer header",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

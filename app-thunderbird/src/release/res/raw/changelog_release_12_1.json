@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "version": "12.1",
+  "versioncode": 15,
+  "date": "2025-09-03",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "There are no Thunderbird changes requiring release notes in this release",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

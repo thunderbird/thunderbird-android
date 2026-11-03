@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "version": "16.0",
+  "versioncode": 19,
+  "date": "2026-02-02",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Default folder expansion behavior can be controlled by setting",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Preferred content type can be switched between text/plain and text/html",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Switching folders required an excessive number of clicks",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Fix various edge-to-edge issues",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Application crashed at startup",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Application crashed on Pixel 10 Pro when returning to message list",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "OAuth SMTP authentication failed with some Microsoft servers",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Deleted/read messages in unified inbox may not update until manual refresh",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

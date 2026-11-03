@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "version": "23.1",
+  "versioncode": 32,
+  "date": "2026-09-21",
+  "notes": [
+    {
+      "type": "fixed",
+      "text": "Fixed: Attachment filenames with non-ASCII characters were incorrectly decoded and saved",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}
