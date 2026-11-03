@@ -47,6 +47,7 @@ import net.thunderbird.core.preference.display.visualSettings.DisplayVisualSetti
 import net.thunderbird.core.preference.display.visualSettings.message.list.MessageListDateTimeFormat;
 import net.thunderbird.core.preference.interaction.PostMarkAsUnreadNavigation;
 import net.thunderbird.core.preference.interaction.PostRemoveNavigation;
+import net.thunderbird.core.preference.interaction.KeypadMessageAction;
 import net.thunderbird.core.preference.network.NetworkSettingsKt;
 import net.thunderbird.core.preference.storage.Storage;
 import net.thunderbird.core.preference.display.visualSettings.message.list.UiDensity;
@@ -224,6 +225,15 @@ class GeneralSettingsDescriptions {
         ));
         s.put("useVolumeKeysForNavigation", Settings.versions(
             new V(1, new BooleanSetting(false))
+        ));
+        s.put("isKeypadNavigationEnabled", Settings.versions(
+            new V(113, new BooleanSetting(false))
+        ));
+        s.put("keypadCallAction", Settings.versions(
+            new V(113, new EnumSetting<>(KeypadMessageAction.class, KeypadMessageAction.NONE))
+        ));
+        s.put("keypadEndCallAction", Settings.versions(
+            new V(113, new EnumSetting<>(KeypadMessageAction.class, KeypadMessageAction.NONE))
         ));
         s.put("useBackgroundAsUnreadIndicator", Settings.versions(
             new V(19, new BooleanSetting(true)),

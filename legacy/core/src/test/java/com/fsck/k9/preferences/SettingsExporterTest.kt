@@ -105,6 +105,25 @@ class SettingsExporterTest : K9RobolectricTest() {
     }
 
     @Test
+    fun exportPreferences_includesKeypadNavigationPreference() = runTest {
+        storageProvider.createStorageEditor()
+            .putBoolean("isKeypadNavigationEnabled", true)
+            .putString("keypadCallAction", "ARCHIVE")
+            .putString("keypadEndCallAction", "TOGGLE_FLAGGED")
+            .commit()
+
+        val document = exportPreferences(true, emptySet())
+
+        val exportedValue = document.rootElement.getChild("global").getChildren("value")
+            .single { it.getAttributeValue("key") == "isKeypadNavigationEnabled" }
+        assertThat(exportedValue.text).isEqualTo("true")
+        val exportedActions = document.rootElement.getChild("global").getChildren("value")
+            .associate { it.getAttributeValue("key") to it.text }
+        assertThat(exportedActions["keypadCallAction"]).isEqualTo("ARCHIVE")
+        assertThat(exportedActions["keypadEndCallAction"]).isEqualTo("TOGGLE_FLAGGED")
+    }
+
+    @Test
     fun exportPreferences_includesAvatarImageForImageAvatar() = runTest {
         val avatarUri = "content://test/avatar".toUri()
         val imageBytes = byteArrayOf(1, 2, 3, 4)

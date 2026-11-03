@@ -1,11 +1,13 @@
 package com.fsck.k9.ui.messagelist
 
 import android.content.Context
+import android.os.Looper
 import android.text.Spannable
 import android.text.style.AbsoluteSizeSpan
 import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
+import android.view.KeyEvent
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.Composable
@@ -15,6 +17,9 @@ import assertk.Assert
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNull
+import assertk.assertions.isFalse
+import assertk.assertions.isSameInstanceAs
+import assertk.assertions.isTrue
 import assertk.assertions.support.expected
 import com.fsck.k9.FontSizes
 import com.fsck.k9.FontSizes.Companion.FONT_DEFAULT
@@ -25,6 +30,7 @@ import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ConnectionSecurity
 import com.fsck.k9.mail.ServerSettings
 import com.fsck.k9.ui.R
+import com.fsck.k9.ui.messagelist.item.MessageViewHolder
 import com.google.android.material.textview.MaterialTextView
 import kotlin.time.ExperimentalTime
 import net.thunderbird.core.android.account.Identity
@@ -42,7 +48,10 @@ import net.thunderbird.feature.account.storage.profile.AvatarTypeDto
 import net.thunderbird.feature.account.storage.profile.ProfileDto
 import org.junit.Test
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.verify
 import org.robolectric.Robolectric
+import org.robolectric.Shadows.shadowOf
+import org.robolectric.annotation.Config
 
 private val SOME_ACCOUNT_ID = AccountIdFactory.of("6b84207b-25de-4dab-97c3-953bbf03fec6")
 private const val FIRST_LINE_DEFAULT_FONT_SIZE = 16f
@@ -52,11 +61,85 @@ private const val DATE_DEFAULT_FONT_SIZE = 14f
 private val DATE_TIME_FORMAT = MessageListDateTimeFormat.Contextual
 
 class MessageListAdapterTest : RobolectricTest() {
-    val activity = Robolectric.buildActivity(AppCompatActivity::class.java).create().get()
+    private val activityController = Robolectric.buildActivity(AppCompatActivity::class.java)
+    val activity = activityController.get().apply {
+        setTheme(com.google.android.material.R.style.Theme_Material3_Light)
+    }.also {
+        activityController.setup().visible()
+    }
     val context: Context = ContextThemeWrapper(activity, com.google.android.material.R.style.Theme_Material3_Light)
 
     val contactsPictureLoader: ContactPictureLoader = mock()
     val listItemListener: MessageListItemActionListener = mock()
+
+    @Test
+    @Config(sdk = [26, 31, 36])
+    fun `keypad mode should focus the message row and center should open that message`() {
+        // Arrange
+        val testSubject = createAdapter(keypadNavigation = { true })
+        val message = createMessageListItem()
+        val row = testSubject.createAndBindView(message)
+        showRow(row)
+
+        // Act
+        assertThat(row.requestFocusFromTouch()).isTrue()
+        row.dispatchKeyEvent(KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DPAD_CENTER))
+        row.dispatchKeyEvent(KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_DPAD_CENTER))
+        shadowOf(Looper.getMainLooper()).idle()
+
+        // Assert
+        assertThat(row.findFocus()).isSameInstanceAs(row)
+        assertThat(row.contactPictureContainerView.requestFocusFromTouch()).isFalse()
+        assertThat(row.findViewById<View>(R.id.star_click_area).requestFocusFromTouch()).isFalse()
+        verify(listItemListener).onMessageClicked(message)
+    }
+
+    @Test
+    @Config(sdk = [26, 31, 36])
+    fun `keypad mode should retain avatar and star touch actions`() {
+        // Arrange
+        val testSubject = createAdapter(keypadNavigation = { true })
+        val message = createMessageListItem()
+        val row = testSubject.createAndBindView(message)
+
+        // Act
+        row.contactPictureContainerView.performClick()
+        row.findViewById<View>(R.id.star_click_area).performClick()
+
+        // Assert
+        verify(listItemListener).onToggleMessageSelection(message)
+        verify(listItemListener).onToggleMessageFlag(message)
+    }
+
+    @Test
+    @Config(sdk = [26, 31, 36])
+    fun `disabling keypad mode should restore child keyboard focus on a reused row`() {
+        // Arrange
+        var keypadEnabled = true
+        val testSubject = createAdapter(keypadNavigation = { keypadEnabled })
+        val row = testSubject.createAndBindView()
+        showRow(row)
+        assertThat(row.contactPictureContainerView.requestFocusFromTouch()).isFalse()
+
+        // Act
+        keypadEnabled = false
+        testSubject.onBindViewHolder(row.tag as MessageViewHolder, 0)
+
+        // Assert
+        assertThat(row.contactPictureContainerView.requestFocusFromTouch()).isTrue()
+        assertThat(row.findFocus()).isSameInstanceAs(row.contactPictureContainerView)
+    }
+
+    private fun showRow(row: View) {
+        activity.setContentView(row)
+        val decor = activity.window.decorView
+        decor.measure(
+            View.MeasureSpec.makeMeasureSpec(480, View.MeasureSpec.EXACTLY),
+            View.MeasureSpec.makeMeasureSpec(800, View.MeasureSpec.EXACTLY),
+        )
+        decor.layout(0, 0, 480, 800)
+        decor.dispatchWindowFocusChanged(true)
+    }
 
     @Test
     fun withShowAccountIndicator_shouldShowAccountIndicator() {
@@ -416,6 +499,7 @@ class MessageListAdapterTest : RobolectricTest() {
         showAccountIndicator: Boolean = false,
         density: UiDensity = UiDensity.Default,
         dateTimeFormat: MessageListDateTimeFormat = DATE_TIME_FORMAT,
+        keypadNavigation: () -> Boolean = { false },
     ): MessageListAdapter {
         val appearance = MessageListAppearance(
             fontSizes,
@@ -437,7 +521,7 @@ class MessageListAdapterTest : RobolectricTest() {
             layoutInflater = LayoutInflater.from(context),
             contactsPictureLoader = contactsPictureLoader,
             listItemListener = listItemListener,
-            appearance = { appearance },
+            appearance = { appearance.copy(isKeypadNavigationEnabled = keypadNavigation()) },
             themeProvider = FakeThemeProvider(),
             featureFlagProvider = FakeFeatureFlagProvider(),
             avatarMonogramCreator = mock(),

@@ -16,6 +16,20 @@
 
 <resources>
 
+    <string-array name="keypad_message_action_entries">
+        <item>@string/keypad_message_action_none</item>
+        <item>@string/keypad_message_action_delete</item>
+        <item>@string/keypad_message_action_archive</item>
+        <item>@string/keypad_message_action_flag</item>
+    </string-array>
+
+    <string-array name="keypad_message_action_values" translatable="false">
+        <item>NONE</item>
+        <item>DELETE</item>
+        <item>ARCHIVE</item>
+        <item>TOGGLE_FLAGGED</item>
+    </string-array>
+
     <string-array name="font_entries">
         <item>@string/font_size_default</item>
         <item>@string/font_size_tiniest</item>

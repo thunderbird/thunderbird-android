@@ -23,4 +23,5 @@ data class MessageListAppearance(
     val showAccountIndicator: Boolean,
     val density: UiDensity,
     val dateTimeFormat: MessageListDateTimeFormat,
+    val isKeypadNavigationEnabled: Boolean = false,
 ) : Parcelable

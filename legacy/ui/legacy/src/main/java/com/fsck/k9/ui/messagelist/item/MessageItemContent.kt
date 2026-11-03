@@ -69,6 +69,7 @@ internal fun MessageItemContent(
             excerptLines = appearance.previewLines,
             dateTimeFormat = appearance.dateTimeFormat,
             colorizeBackgroundWhenRead = appearance.backGroundAsReadIndicator,
+            isKeypadNavigationEnabled = appearance.isKeypadNavigationEnabled,
         )
     }
     val accountIndicator = remember(appearance) {

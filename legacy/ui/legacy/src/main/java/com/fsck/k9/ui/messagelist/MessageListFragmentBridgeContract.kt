@@ -4,6 +4,7 @@ import androidx.appcompat.view.ActionMode
 import androidx.fragment.app.FragmentActivity
 import app.k9mail.legacy.message.controller.MessageReference
 import net.thunderbird.core.featureflag.keys.GeneratedFeatureFlagKey
+import net.thunderbird.core.preference.interaction.KeypadMessageAction
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.search.legacy.LocalMessageSearch
 
@@ -48,6 +49,12 @@ interface MessageListFragmentBridgeContract {
     fun onMove()
     fun onArchive()
     fun onCopy()
+    /** The current input-focused message, only while the list can safely accept a single-message action. */
+    val focusedMessageReference: MessageReference?
+
+    /** Revalidates the key-down target before running its configured action on key-up. */
+    fun performFocusedMessageAction(action: KeypadMessageAction, expectedMessage: MessageReference): Boolean
+
     fun finishActionMode()
     fun setActiveMessage(messageReference: MessageReference?)
     fun onFullyActive()

@@ -175,6 +175,10 @@ class MessageListAdapter internal constructor(
         notifyItemRangeChanged(0, itemCount)
     }
 
+    fun refreshKeypadNavigation() {
+        notifyItemRangeChanged(0, itemCount)
+    }
+
     private fun getItem(position: Int): MessageListItem = (viewItems[position] as MessageListViewItem.Message).item
 
     fun getItemById(uniqueId: Long): MessageListItem? {

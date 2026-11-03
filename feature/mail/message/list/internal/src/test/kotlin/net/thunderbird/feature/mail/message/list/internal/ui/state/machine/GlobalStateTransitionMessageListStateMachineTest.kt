@@ -24,6 +24,64 @@ import net.thunderbird.feature.mail.message.list.ui.state.MessageListState
 class GlobalStateTransitionMessageListStateMachineTest : BaseMessageListStateMachineTest() {
     // region [Global state transitions]
     @Test
+    fun `late focus exit from a previous message should retain the current focused message`() = runTest {
+        // Arrange
+        val messages = createMessageUiItemList(size = 2)
+        val stateMachine = createStateMachineOnLoadedState(messages = messages)
+        stateMachine.process(MessageItemEvent.OnFocusEnter(messages[0]))
+        stateMachine.process(MessageItemEvent.OnFocusEnter(messages[1]))
+
+        // Act
+        stateMachine.process(MessageItemEvent.OnFocusExit(messages[0]))
+
+        // Assert
+        assertThat(stateMachine.currentStateSnapshot.metadata.focusedMessage).isEqualTo(messages[1])
+    }
+
+    @Test
+    fun `focus exit should match message identity after its flags have changed`() = runTest {
+        // Arrange
+        val message = createMessageUiItemList(size = 1).single()
+        val updatedMessage = message.copy(starred = !message.starred)
+        val stateMachine = createStateMachineOnLoadedState(messages = listOf(updatedMessage))
+        stateMachine.process(MessageItemEvent.OnFocusEnter(updatedMessage))
+
+        // Act
+        stateMachine.process(MessageItemEvent.OnFocusExit(message))
+
+        // Assert
+        assertThat(stateMachine.currentStateSnapshot.metadata.focusedMessage).isNull()
+    }
+
+    @Test
+    fun `focus enter from a removed message should not replace the current focus`() = runTest {
+        // Arrange
+        val messages = createMessageUiItemList(size = 2)
+        val stateMachine = createStateMachineOnLoadedState(messages = listOf(messages[0]))
+        stateMachine.process(MessageItemEvent.OnFocusEnter(messages[0]))
+
+        // Act
+        stateMachine.process(MessageItemEvent.OnFocusEnter(messages[1]))
+
+        // Assert
+        assertThat(stateMachine.currentStateSnapshot.metadata.focusedMessage).isEqualTo(messages[0])
+    }
+
+    @Test
+    fun `focus enter should use current message flags instead of a stale rendered snapshot`() = runTest {
+        // Arrange
+        val message = createMessageUiItemList(size = 1).single()
+        val updatedMessage = message.copy(starred = !message.starred)
+        val stateMachine = createStateMachineOnLoadedState(messages = listOf(updatedMessage))
+
+        // Act
+        stateMachine.process(MessageItemEvent.OnFocusEnter(message))
+
+        // Assert
+        assertThat(stateMachine.currentStateSnapshot.metadata.focusedMessage).isEqualTo(updatedMessage)
+    }
+
+    @Test
     fun `process() should update focusedMessage when event is OnFocusEnter from LoadedMessages`() =
         runTest {
             // Arrange

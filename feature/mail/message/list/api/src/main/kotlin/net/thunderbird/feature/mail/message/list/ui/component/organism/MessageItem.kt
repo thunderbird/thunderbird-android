@@ -1,6 +1,7 @@
 package net.thunderbird.feature.mail.message.list.ui.component.organism
 
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.foundation.border
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -16,9 +17,15 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.text.InlineTextContent
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithCache
+import androidx.compose.ui.focus.focusProperties
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.Size
@@ -110,8 +117,18 @@ internal fun MessageItem(
     onAvatarClick: () -> Unit = {},
     onTrailingClick: (MessageItemTrailingElement) -> Unit = {},
 ) {
+    var hasFocus by remember { mutableStateOf(false) }
+
     Surface(
         modifier = modifier
+            .onFocusChanged { hasFocus = it.hasFocus }
+            .then(
+                if (hasFocus) {
+                    Modifier.border(width = 2.dp, color = BoltTheme.colors.primary)
+                } else {
+                    Modifier
+                },
+            )
             .combinedClickable(onClick = onClick, onLongClick = onLongClick)
             .borderBottom(width = 1.dp, color = BoltTheme.colors.outlineVariant),
         color = colors.containerColor,
@@ -126,6 +143,7 @@ internal fun MessageItem(
             LeadingElements(
                 selected = selected,
                 configuration = configuration.leadingConfiguration,
+                isKeypadNavigationEnabled = configuration.isKeypadNavigationEnabled,
                 onClick = onAvatarClick,
             )
             Spacer(Modifier.width(BoltTheme.spacings.default))
@@ -171,7 +189,9 @@ internal fun MessageItem(
                             favourite = element.favourite,
                             onFavouriteChange = { onTrailingClick(element) },
                             size = BoltTheme.sizes.minTouchTarget,
-                            modifier = Modifier.height(BoltTheme.sizes.minTouchTarget / 2),
+                            modifier = Modifier
+                                .focusProperties { canFocus = !configuration.isKeypadNavigationEnabled }
+                                .height(BoltTheme.sizes.minTouchTarget / 2),
                         )
                     }
                 }
@@ -200,6 +220,7 @@ private fun Modifier.borderBottom(width: Dp, color: Color): Modifier = this then
 private fun LeadingElements(
     selected: Boolean,
     configuration: MessageItemLeadingConfiguration,
+    isKeypadNavigationEnabled: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -223,6 +244,7 @@ private fun LeadingElements(
                         contentColor = contentColorFor(backgroundColor = BoltTheme.colors.secondaryContainer),
                     ),
                     modifier = Modifier
+                        .focusProperties { canFocus = !isKeypadNavigationEnabled }
                         .size(BoltTheme.sizes.iconAvatar)
                         .padding(BoltTheme.spacings.half),
                 )
@@ -234,6 +256,7 @@ private fun LeadingElements(
                             configuration.avatarColor ?: BoltTheme.colors.secondaryContainer,
                         ),
                         onClick = onClick,
+                        modifier = Modifier.focusProperties { canFocus = !isKeypadNavigationEnabled },
                     )
 
                 else -> Unit

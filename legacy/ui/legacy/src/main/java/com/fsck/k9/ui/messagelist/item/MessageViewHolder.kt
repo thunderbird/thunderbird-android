@@ -57,9 +57,15 @@ class MessageViewHolder(
     val attachmentView: ImageView = view.findViewById(R.id.attachment)
     val statusView: ImageView = view.findViewById(R.id.status)
 
+    private val originalDescendantFocusability = (itemView as ViewGroup).descendantFocusability
+    private val originalFocusable = itemView.isFocusable
+    private val originalForeground = itemView.foreground
+    private var isKeypadNavigationEnabled = false
+
     @Suppress("LongMethod", "CyclomaticComplexMethod")
     fun bind(messageListItem: MessageListItem, isActive: Boolean, isSelected: Boolean) {
         val appearance = appearance()
+        updateKeypadNavigation(appearance.isKeypadNavigationEnabled)
         if (appearance.showContactPicture) {
             contactPictureClickArea.isSelected = isSelected
             if (isSelected) {
@@ -152,6 +158,21 @@ class MessageViewHolder(
                 statusView.isVisible = false
             }
         }
+    }
+
+    private fun updateKeypadNavigation(enabled: Boolean) {
+        if (isKeypadNavigationEnabled == enabled) return
+        isKeypadNavigationEnabled = enabled
+        val row = itemView as ViewGroup
+        val hadFocus = row.hasFocus()
+        row.descendantFocusability = if (enabled) ViewGroup.FOCUS_BLOCK_DESCENDANTS else originalDescendantFocusability
+        row.isFocusable = if (enabled) true else originalFocusable
+        row.foreground = if (enabled) {
+            ResourcesCompat.getDrawable(res, R.drawable.message_list_item_keypad_foreground, theme)
+        } else {
+            originalForeground
+        }
+        if (enabled && hadFocus) row.requestFocus()
     }
 
     private fun buildSubject(

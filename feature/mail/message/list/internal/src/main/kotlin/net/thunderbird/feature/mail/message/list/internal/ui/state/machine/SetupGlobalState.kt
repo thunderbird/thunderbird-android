@@ -53,11 +53,25 @@ internal fun StateMachineBuilder<MessageListState, MessageListEvent>.globalState
         }
 
         transition<MessageItemEvent.OnFocusEnter> { currentState, event ->
-            currentState.withMetadata { copy(focusedMessage = event.message) }
+            val message = currentState.messages.firstOrNull {
+                it.id == event.message.id && it.messageReference == event.message.messageReference
+            }
+            if (message != null) {
+                currentState.withMetadata { copy(focusedMessage = message) }
+            } else {
+                currentState
+            }
         }
 
-        transition<MessageItemEvent.OnFocusExit> { currentState, _ ->
-            currentState.withMetadata { copy(focusedMessage = null) }
+        transition<MessageItemEvent.OnFocusExit> { currentState, event ->
+            val focusedMessage = currentState.metadata.focusedMessage
+            if (focusedMessage != null && focusedMessage.id == event.message.id &&
+                focusedMessage.messageReference == event.message.messageReference
+            ) {
+                currentState.withMetadata { copy(focusedMessage = null) }
+            } else {
+                currentState
+            }
         }
 
         // #region [ Legacy support ]

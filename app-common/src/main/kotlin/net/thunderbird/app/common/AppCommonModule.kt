@@ -5,6 +5,7 @@ import com.fsck.k9.legacyCoreModule
 import com.fsck.k9.legacyUiModules
 import net.thunderbird.app.common.account.appCommonAccountModule
 import net.thunderbird.app.common.activity.DefaultActivityProvider
+import net.thunderbird.app.common.activity.KeypadNavigationActivityLifecycleCallbacks
 import net.thunderbird.app.common.appConfig.AndroidPlatformConfigProvider
 import net.thunderbird.app.common.core.appCommonCoreModule
 import net.thunderbird.app.common.feature.appCommonFeatureModule
@@ -30,6 +31,12 @@ val appCommonModule: Module = module {
     )
 
     single<PlatformConfigProvider> { AndroidPlatformConfigProvider() }
+    single {
+        KeypadNavigationActivityLifecycleCallbacks(
+            application = androidApplication(),
+            interactionPreferences = get(),
+        )
+    }
     single<ActivityProvider>(createdAtStart = true) {
         DefaultActivityProvider(
             application = androidApplication(),

@@ -59,6 +59,8 @@ import kotlinx.coroutines.launch
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.core.android.common.startup.DatabaseUpgradeInterceptor
+import net.thunderbird.core.android.common.keypad.PhoneIdleProvider
+import net.thunderbird.core.android.common.keypad.PhoneKeyShortcutHandler
 import net.thunderbird.core.featureflag.keys.GeneratedFeatureFlagKey
 import net.thunderbird.core.featureflag.provider.evaluator.MultiFeatureFlagProviderEvaluator
 import net.thunderbird.components.core.logging.Logger
@@ -66,6 +68,7 @@ import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.SplitViewMode
 import net.thunderbird.core.preference.interaction.PostMarkAsUnreadNavigation
 import net.thunderbird.core.preference.interaction.PostRemoveNavigation
+import net.thunderbird.core.preference.interaction.KeypadMessageAction
 import net.thunderbird.core.preference.storage.StorageProvider
 import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.account.usecase.GetDefaultAccountId
@@ -128,6 +131,28 @@ open class MessageHomeActivity :
     private val foldableStateObserver: FoldableStateObserver by inject { parametersOf(this) }
     private val featureFlagProvider: MultiFeatureFlagProviderEvaluator by inject()
     private val storageProvider: StorageProvider by inject()
+
+    private val phoneIdleProvider by lazy { PhoneIdleProvider(this) }
+    private val phoneKeyShortcutHandler = PhoneKeyShortcutHandler<MessageReference, KeypadMessageAction>(
+        isPhoneIdle = { phoneIdleProvider.isIdle() },
+        getShortcut = { keyCode ->
+            val interaction = generalSettingsManager.getConfig().interaction
+            val isMessageListReady = displayMode == DisplayMode.MESSAGE_LIST &&
+                navigationDrawer?.isOpen != true && isSearchViewCollapsed()
+            val hasNavigationFocus = window.decorView.hasWindowFocus() && currentFocus?.onCheckIsTextEditor() != true
+            if (!interaction.isKeypadNavigationEnabled || !isMessageListReady || !hasNavigationFocus) {
+                null
+            } else {
+                when (keyCode) {
+                    KeyEvent.KEYCODE_CALL -> interaction.keypadCallAction
+                    KeyEvent.KEYCODE_ENDCALL -> interaction.keypadEndCallAction
+                    else -> KeypadMessageAction.NONE
+                }.takeUnless { it == KeypadMessageAction.NONE }
+            }
+        },
+        getTarget = { messageListFragment?.focusedMessageReference },
+        performAction = { action, message -> messageListFragment?.performFocusedMessageAction(action, message) },
+    )
 
     private lateinit var actionBar: ActionBar
 
@@ -825,8 +850,12 @@ open class MessageHomeActivity :
     protected open val isDrawerEnabled: Boolean = true
 
     override fun dispatchKeyEvent(event: KeyEvent): Boolean {
+        if (phoneKeyShortcutHandler.dispatchKeyEvent(event)) return true
+
         var eventHandled = false
-        if (event.action == KeyEvent.ACTION_DOWN && isSearchViewCollapsed()) {
+        val isKeypadEditing = generalSettingsManager.getConfig().interaction.isKeypadNavigationEnabled &&
+            currentFocus?.onCheckIsTextEditor() == true
+        if (event.action == KeyEvent.ACTION_DOWN && isSearchViewCollapsed() && !isKeypadEditing) {
             eventHandled = onCustomKeyDown(event)
         }
 
@@ -835,6 +864,16 @@ open class MessageHomeActivity :
         }
 
         return eventHandled
+    }
+
+    override fun onPause() {
+        phoneKeyShortcutHandler.reset()
+        super.onPause()
+    }
+
+    override fun onWindowFocusChanged(hasFocus: Boolean) {
+        if (!hasFocus) phoneKeyShortcutHandler.reset()
+        super.onWindowFocusChanged(hasFocus)
     }
 
     @Suppress("NestedBlockDepth")
@@ -893,6 +932,12 @@ open class MessageHomeActivity :
     @Suppress("LongMethod", "CyclomaticComplexMethod", "ReturnCount")
     private fun onCustomKeyDown(event: KeyEvent): Boolean {
         if (!event.hasNoModifiers()) return false
+
+        if (generalSettingsManager.getConfig().interaction.isKeypadNavigationEnabled &&
+            event.keyCode in listOf(KeyEvent.KEYCODE_DPAD_LEFT, KeyEvent.KEYCODE_DPAD_RIGHT, KeyEvent.KEYCODE_DEL)
+        ) {
+            return false
+        }
 
         when (event.keyCode) {
             KeyEvent.KEYCODE_VOLUME_UP -> {

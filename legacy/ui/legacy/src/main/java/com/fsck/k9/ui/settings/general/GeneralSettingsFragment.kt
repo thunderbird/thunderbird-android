@@ -44,6 +44,8 @@ class GeneralSettingsFragment : PreferenceFragmentCompat() {
     private var currentUiState: GeneralSettingsUiState? = null
     private var snackbar: Snackbar? = null
 
+    private val keypadPhonePermissionPreferenceController = KeypadPhonePermissionPreferenceController(this)
+
     private val exportLogsResultContract = registerForActivityResult(CreateDocument("text/plain")) { contentUri ->
         if (contentUri != null) {
             viewModel.exportLogs(contentUri)
@@ -81,6 +83,7 @@ class GeneralSettingsFragment : PreferenceFragmentCompat() {
         preferenceManager.preferenceDataStore = dataStore
         this.rootKey = rootKey
         setPreferencesFromResource(R.xml.general_settings, rootKey)
+        keypadPhonePermissionPreferenceController.bindPreferences()
 
         findPreference<Preference>("notification_actions_settings")?.onPreferenceClickListener =
             Preference.OnPreferenceClickListener {
@@ -139,6 +142,11 @@ class GeneralSettingsFragment : PreferenceFragmentCompat() {
     override fun onDestroyView() {
         super.onDestroyView()
         dismissSnackbar()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        keypadPhonePermissionPreferenceController.updatePermissionState()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

@@ -54,6 +54,18 @@ class DefaultInteractionSettingsPreferenceManager(
             InteractionSettingKey.UseVolumeKeysForNavigation.value,
             INTERACTION_SETTINGS_DEFAULT_USE_VOLUME_KEYS_NAVIGATION,
         ),
+        isKeypadNavigationEnabled = storage.getBoolean(
+            InteractionSettingKey.KeypadNavigationEnabled.value,
+            INTERACTION_SETTINGS_DEFAULT_KEYPAD_NAVIGATION_ENABLED,
+        ),
+        keypadCallAction = storage.getEnumOrDefault(
+            InteractionSettingKey.KeypadCallAction.value,
+            KeypadMessageAction.NONE,
+        ),
+        keypadEndCallAction = storage.getEnumOrDefault(
+            InteractionSettingKey.KeypadEndCallAction.value,
+            KeypadMessageAction.NONE,
+        ),
         messageViewPostRemoveNavigation = storage.getStringOrDefault(
             InteractionSettingKey.MessageViewPostDeleteAction.value,
             INTERACTION_SETTINGS_DEFAULT_MESSAGE_VIEW_POST_REMOVE_NAVIGATION,
@@ -107,6 +119,12 @@ class DefaultInteractionSettingsPreferenceManager(
                     InteractionSettingKey.UseVolumeKeysForNavigation.value,
                     config.useVolumeKeysForNavigation,
                 )
+                storageEditor.putBoolean(
+                    InteractionSettingKey.KeypadNavigationEnabled.value,
+                    config.isKeypadNavigationEnabled,
+                )
+                storageEditor.putEnum(InteractionSettingKey.KeypadCallAction.value, config.keypadCallAction)
+                storageEditor.putEnum(InteractionSettingKey.KeypadEndCallAction.value, config.keypadEndCallAction)
                 storageEditor.putString(
                     InteractionSettingKey.MessageViewPostDeleteAction.value,
                     config.messageViewPostRemoveNavigation,

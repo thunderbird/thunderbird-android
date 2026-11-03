@@ -394,6 +394,39 @@
             android:summary="@string/volume_navigation_summary"
             />
 
+        <CheckBoxPreference
+            android:key="keypad_navigation"
+            android:title="@string/keypad_navigation_title"
+            android:summary="@string/keypad_navigation_summary"
+            />
+
+        <ListPreference
+            android:dependency="keypad_navigation"
+            android:dialogTitle="@string/keypad_call_action_title"
+            android:entries="@array/keypad_message_action_entries"
+            android:entryValues="@array/keypad_message_action_values"
+            android:key="keypad_call_action"
+            android:title="@string/keypad_call_action_title"
+            app:useSimpleSummaryProvider="true"
+            />
+
+        <ListPreference
+            android:dependency="keypad_navigation"
+            android:dialogTitle="@string/keypad_end_call_action_title"
+            android:entries="@array/keypad_message_action_entries"
+            android:entryValues="@array/keypad_message_action_values"
+            android:key="keypad_end_call_action"
+            android:title="@string/keypad_end_call_action_title"
+            app:useSimpleSummaryProvider="true"
+            />
+
+        <Preference
+            android:dependency="keypad_navigation"
+            android:key="keypad_phone_permission"
+            android:title="@string/keypad_phone_permission_title"
+            android:summary="@string/keypad_phone_permission_summary"
+            />
+
         <ListPreference
             android:dialogTitle="@string/general_settings_post_remove_action_title"
             android:entries="@array/post_remove_navigation_entries"

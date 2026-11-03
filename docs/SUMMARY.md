@@ -82,6 +82,7 @@ generator, in this case, **mdbook**. It defines the structure and navigation of 
   - [Setup]()
     - [Android Version Compatibility](user-guide/setup/android-version-compatibility.md)
     - [Installing ADB](user-guide/setup/installing-adb.md)
+    - [Hardware Keypad Navigation](user-guide/setup/hardware-keypad-navigation.md)
   - [Troubleshooting]()
     - [Collecting Debug Logs](user-guide/troubleshooting/collecting-debug-logs.md)
     - [Find your app version](user-guide/troubleshooting/find-your-app-version.md)

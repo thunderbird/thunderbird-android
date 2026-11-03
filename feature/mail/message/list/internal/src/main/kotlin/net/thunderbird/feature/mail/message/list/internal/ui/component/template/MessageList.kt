@@ -8,13 +8,17 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.focusProperties
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
@@ -60,6 +64,13 @@ internal fun MessageListScope.MessageList(
         ) { message ->
             val messageSwipeActions = swipeActions[message.account.id]
             val preferences = state.preferences ?: return@items
+            var hasInputFocus by remember(message.messageReference) { mutableStateOf(false) }
+            val latestDispatch by rememberUpdatedState(dispatchEvent)
+            DisposableEffect(message.messageReference) {
+                onDispose {
+                    if (hasInputFocus) latestDispatch(MessageItemEvent.OnFocusExit(message))
+                }
+            }
             MessageListSwipeableItem(message, messageSwipeActions, dispatchEvent) { accessibilityState ->
                 MessageListItem(
                     message = message,
@@ -70,13 +81,17 @@ internal fun MessageListScope.MessageList(
                         .semantics(mergeDescendants = true) {
                             stateDescription = accessibilityState.stateDescription(message)
                         }
-                        .focusProperties {
-                            // TODO: Need improvement. Once the `MessageHomeActivity.onCustomKeyDown` is executed
-                            //  the focus go back to the toolbar's navigation button.
-                            //  We may replace the `MessageHomeActivity.onCustomKeyDown` with a modifier such
-                            //  as onPreviewKeyEvent in the future as well.
-                            onEnter = { dispatchEvent(MessageItemEvent.OnFocusEnter(message)) }
-                            onExit = { dispatchEvent(MessageItemEvent.OnFocusExit(message)) }
+                        .onFocusChanged { focusState ->
+                            if (hasInputFocus != focusState.hasFocus) {
+                                hasInputFocus = focusState.hasFocus
+                                dispatchEvent(
+                                    if (hasInputFocus) {
+                                        MessageItemEvent.OnFocusEnter(message)
+                                    } else {
+                                        MessageItemEvent.OnFocusExit(message)
+                                    },
+                                )
+                            }
                         },
                     onClick = { dispatchEvent(MessageItemEvent.OnMessageClick(message)) },
                     onLongClick = { dispatchEvent(MessageItemEvent.ToggleSelectMessages(message)) },

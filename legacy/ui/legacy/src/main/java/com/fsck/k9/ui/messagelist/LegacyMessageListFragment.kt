@@ -102,6 +102,7 @@ import net.thunderbird.components.core.outcome.Outcome
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.display.visualSettings.message.list.DisplayMessageListSettings
 import net.thunderbird.core.preference.interaction.InteractionSettings
+import net.thunderbird.core.preference.interaction.KeypadMessageAction
 import net.thunderbird.core.ui.theme.api.FeatureThemeProvider
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.AccountIdFactory
@@ -322,6 +323,7 @@ class LegacyMessageListFragment :
         adapter = createMessageListAdapter()
 
         var observedDateTimeFormat = messageListSettings.dateTimeFormat
+        var observedKeypadNavigation = interactionSettings.isKeypadNavigationEnabled
         generalSettingsManager.getSettingsFlow()
             /**
              * Skips the first emitted item from the settings flow,
@@ -339,6 +341,12 @@ class LegacyMessageListFragment :
                 if (observedDateTimeFormat != dateTimeFormat) {
                     observedDateTimeFormat = dateTimeFormat
                     adapter.refreshFormattedDates()
+                }
+
+                val keypadNavigation = generalSettings.interaction.isKeypadNavigationEnabled
+                if (observedKeypadNavigation != keypadNavigation) {
+                    observedKeypadNavigation = keypadNavigation
+                    adapter.refreshKeypadNavigation()
                 }
             }
             .launchIn(lifecycleScope)
@@ -889,6 +897,7 @@ class LegacyMessageListFragment :
             showAccountIndicator = isShowAccountIndicator,
             density = messageListSettings.uiDensity,
             dateTimeFormat = messageListSettings.dateTimeFormat,
+            isKeypadNavigationEnabled = interactionSettings.isKeypadNavigationEnabled,
         )
 
     private fun getFolderInfoHolder(account: LegacyAccount, folderId: Long): FolderInfoHolder {
@@ -1900,6 +1909,31 @@ class LegacyMessageListFragment :
 
     private val selectedMessage: MessageReference?
         get() = selectedMessageListItem?.messageReference
+
+    override val focusedMessageReference: MessageReference?
+        get() = keypadFocusedMessage?.messageReference
+
+    private val keypadFocusedMessage: MessageListItem?
+        get() {
+            val listView = recyclerView ?: return null
+            val isListResumed = isActive && isResumed && isVisible
+            val hasListFocus = listView.isShown && listView.hasWindowFocus() && listView.hasFocus()
+            val hasSelection = activeMessage != null || actionMode != null || adapter.selectedCount != 0
+            if (!isListResumed || !hasListFocus || hasSelection) return null
+            return selectedMessageListItem
+        }
+
+    override fun performFocusedMessageAction(action: KeypadMessageAction, expectedMessage: MessageReference): Boolean {
+        val message = keypadFocusedMessage ?: return false
+        if (message.messageReference != expectedMessage) return false
+        when (action) {
+            KeypadMessageAction.NONE -> return false
+            KeypadMessageAction.DELETE -> onDelete(listOf(expectedMessage), message.threadCount.coerceAtLeast(1))
+            KeypadMessageAction.ARCHIVE -> onArchive(expectedMessage)
+            KeypadMessageAction.TOGGLE_FLAGGED -> setFlag(message, Flag.FLAGGED, !message.isStarred)
+        }
+        return true
+    }
 
     private val selectedMessageListItem: MessageListItem?
         get() {

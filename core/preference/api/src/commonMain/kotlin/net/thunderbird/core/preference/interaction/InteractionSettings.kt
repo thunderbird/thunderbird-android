@@ -4,6 +4,7 @@ import net.thunderbird.core.common.action.SwipeAction
 import net.thunderbird.core.common.action.SwipeActions
 
 const val INTERACTION_SETTINGS_DEFAULT_USE_VOLUME_KEYS_NAVIGATION = false
+const val INTERACTION_SETTINGS_DEFAULT_KEYPAD_NAVIGATION_ENABLED = false
 val INTERACTION_SETTINGS_DEFAULT_MESSAGE_VIEW_POST_REMOVE_NAVIGATION = PostRemoveNavigation.ReturnToMessageList.name
 val INTERACTION_SETTINGS_DEFAULT_MESSAGE_VIEW_POST_MARK_AS_UNREAD_NAVIGATION =
     PostMarkAsUnreadNavigation.ReturnToMessageList
@@ -20,6 +21,9 @@ const val INTERACTION_SETTINGS_DEFAULT_CONFIRM_MARK_ALL_READ = true
 
 data class InteractionSettings(
     val useVolumeKeysForNavigation: Boolean = INTERACTION_SETTINGS_DEFAULT_USE_VOLUME_KEYS_NAVIGATION,
+    val isKeypadNavigationEnabled: Boolean = INTERACTION_SETTINGS_DEFAULT_KEYPAD_NAVIGATION_ENABLED,
+    val keypadCallAction: KeypadMessageAction = KeypadMessageAction.NONE,
+    val keypadEndCallAction: KeypadMessageAction = KeypadMessageAction.NONE,
     val messageViewPostRemoveNavigation: String = INTERACTION_SETTINGS_DEFAULT_MESSAGE_VIEW_POST_REMOVE_NAVIGATION,
     val messageViewPostMarkAsUnreadNavigation: PostMarkAsUnreadNavigation =
         INTERACTION_SETTINGS_DEFAULT_MESSAGE_VIEW_POST_MARK_AS_UNREAD_NAVIGATION,
@@ -31,6 +35,14 @@ data class InteractionSettings(
     val isConfirmDiscardMessage: Boolean = INTERACTION_SETTINGS_DEFAULT_CONFIRM_DISCARD_MESSAGE,
     val isConfirmMarkAllRead: Boolean = INTERACTION_SETTINGS_DEFAULT_CONFIRM_MARK_ALL_READ,
 )
+
+/** Optional message actions assigned to a hardware keypad's call and end-call keys. */
+enum class KeypadMessageAction {
+    NONE,
+    DELETE,
+    ARCHIVE,
+    TOGGLE_FLAGGED,
+}
 
 /**
  * The navigation actions that can be to performed after the user has deleted or moved a message from the message

@@ -5,6 +5,9 @@ import net.thunderbird.core.preference.PreferenceManager
 enum class InteractionSettingKey(val value: String) {
 
     UseVolumeKeysForNavigation("useVolumeKeysForNavigation"),
+    KeypadNavigationEnabled("isKeypadNavigationEnabled"),
+    KeypadCallAction("keypadCallAction"),
+    KeypadEndCallAction("keypadEndCallAction"),
     MessageViewPostDeleteAction("messageViewPostDeleteAction"),
     SwipeActionLeft("swipeLeftAction"),
     SwipeActionRight("swipeRightAction"),

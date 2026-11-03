@@ -17,6 +17,7 @@ import net.thunderbird.core.preference.SplitViewMode
 import net.thunderbird.core.preference.SubTheme
 import net.thunderbird.core.preference.display.visualSettings.message.list.MessageListDateTimeFormat
 import net.thunderbird.core.preference.display.visualSettings.message.list.UiDensity
+import net.thunderbird.core.preference.interaction.KeypadMessageAction
 import net.thunderbird.core.preference.interaction.PostMarkAsUnreadNavigation
 import net.thunderbird.core.preference.update
 
@@ -69,6 +70,7 @@ class GeneralSettingsDataStore(
             "sync_debug_logging" -> debuggingSettings.isSyncLoggingEnabled
             "sensitive_logging" -> debuggingSettings.isSensitiveLoggingEnabled
             "volume_navigation" -> interactionSettings.useVolumeKeysForNavigation
+            "keypad_navigation" -> interactionSettings.isKeypadNavigationEnabled
             "enable_telemetry" -> K9.isTelemetryEnabled
             else -> defValue
         }
@@ -115,6 +117,7 @@ class GeneralSettingsDataStore(
             "sync_debug_logging" -> setIsSyncLoggingEnabled(isSyncLoggingEnabled = value)
             "sensitive_logging" -> setIsSensitiveLoggingEnabled(isSensitiveLoggingEnabled = value)
             "volume_navigation" -> setUseVolumeKeysForNavigation(value)
+            "keypad_navigation" -> setIsKeypadNavigationEnabled(value)
             "enable_telemetry" -> setTelemetryEnabled(value)
             else -> return
         }
@@ -181,6 +184,8 @@ class GeneralSettingsDataStore(
             "message_list_density" -> messageListSettings.uiDensity.toString()
             "post_remove_navigation" -> interactionSettings.messageViewPostRemoveNavigation
             "post_mark_as_unread_navigation" -> interactionSettings.messageViewPostMarkAsUnreadNavigation.name
+            "keypad_call_action" -> interactionSettings.keypadCallAction.name
+            "keypad_end_call_action" -> interactionSettings.keypadEndCallAction.name
             else -> defValue
         }
     }
@@ -224,6 +229,8 @@ class GeneralSettingsDataStore(
             "message_list_density" -> updateMessageListDensity(value)
             "post_remove_navigation" -> setMessageViewPostRemoveNavigation(value)
             "post_mark_as_unread_navigation" -> setMessageViewPostMarkAsUnreadNavigation(value)
+            "keypad_call_action" -> setKeypadMessageAction(value, isCallKey = true)
+            "keypad_end_call_action" -> setKeypadMessageAction(value, isCallKey = false)
             else -> return
         }
 
@@ -737,6 +744,32 @@ class GeneralSettingsDataStore(
                 interaction = settings.interaction.copy(
                     useVolumeKeysForNavigation = useVolumeKeysForNavigation,
                 ),
+            )
+        }
+    }
+
+    private fun setIsKeypadNavigationEnabled(isKeypadNavigationEnabled: Boolean) {
+        skipSaveSettings = true
+        generalSettingsManager.update { settings ->
+            settings.copy(
+                interaction = settings.interaction.copy(
+                    isKeypadNavigationEnabled = isKeypadNavigationEnabled,
+                ),
+            )
+        }
+    }
+
+    private fun setKeypadMessageAction(value: String, isCallKey: Boolean) {
+        val action = KeypadMessageAction.entries.firstOrNull { it.name == value } ?: return
+        skipSaveSettings = true
+        generalSettingsManager.update { settings ->
+            val interaction = settings.interaction
+            settings.copy(
+                interaction = if (isCallKey) {
+                    interaction.copy(keypadCallAction = action)
+                } else {
+                    interaction.copy(keypadEndCallAction = action)
+                },
             )
         }
     }

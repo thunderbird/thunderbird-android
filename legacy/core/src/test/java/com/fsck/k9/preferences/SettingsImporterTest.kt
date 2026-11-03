@@ -80,6 +80,46 @@ class SettingsImporterTest : K9RobolectricTest() {
     }
 
     @Test
+    fun `importSettings() should restore enabled keypad navigation`() = runTest {
+        val inputStream =
+            """
+            <k9settings format="1" version="${Settings.VERSION}">
+              <global>
+                <value key="isKeypadNavigationEnabled">true</value>
+                <value key="keypadCallAction">DELETE</value>
+                <value key="keypadEndCallAction">TOGGLE_FLAGGED</value>
+              </global>
+            </k9settings>
+            """.trimIndent().byteInputStream()
+
+        val results = settingsImporter.importSettings(inputStream, globalSettings = true, emptyList())
+
+        assertThat(results.globalSettings).isTrue()
+        assertThat(get<StorageProvider>().storage.getBoolean("isKeypadNavigationEnabled", false)).isTrue()
+        assertThat(get<StorageProvider>().storage.getString("keypadCallAction")).isEqualTo("DELETE")
+        assertThat(get<StorageProvider>().storage.getString("keypadEndCallAction")).isEqualTo("TOGGLE_FLAGGED")
+    }
+
+    @Test
+    fun `importSettings() should leave keypad navigation disabled for older exports`() = runTest {
+        val inputStream =
+            """
+            <k9settings format="1" version="112">
+              <global>
+                <value key="useVolumeKeysForNavigation">true</value>
+              </global>
+            </k9settings>
+            """.trimIndent().byteInputStream()
+
+        val results = settingsImporter.importSettings(inputStream, globalSettings = true, emptyList())
+
+        assertThat(results.globalSettings).isTrue()
+        assertThat(get<StorageProvider>().storage.getBoolean("isKeypadNavigationEnabled", true)).isFalse()
+        assertThat(get<StorageProvider>().storage.getString("keypadCallAction")).isEqualTo("NONE")
+        assertThat(get<StorageProvider>().storage.getString("keypadEndCallAction")).isEqualTo("NONE")
+    }
+
+    @Test
     fun `importSettings() should throw on missing format attribute`() = runTest {
         val inputStream = """<k9settings version="1"></k9settings>""".byteInputStream()
         val accountUuids = emptyList<String>()

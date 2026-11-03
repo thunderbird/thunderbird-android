@@ -37,6 +37,7 @@ import net.thunderbird.feature.mail.message.list.ui.state.MessageItemUi
  *  the message, including any leading items to display.
  * @property trailingConfiguration Configuration for elements displayed on the trailing
  *  edge of the message item, such as badges and action buttons.
+ * @property isKeypadNavigationEnabled Whether to keep keyboard focus on the message row instead of its action buttons.
  */
 data class MessageItemConfiguration(
     val maxExcerptLines: Int = 2,
@@ -46,6 +47,7 @@ data class MessageItemConfiguration(
     val secondaryLineConfiguration: MessageSublineConfiguration = MessageSublineConfiguration(),
     val excerptLineConfiguration: MessageSublineConfiguration = MessageSublineConfiguration(),
     val trailingConfiguration: MessageItemTrailingConfiguration = MessageItemTrailingConfiguration(),
+    val isKeypadNavigationEnabled: Boolean = false,
 )
 
 /**
@@ -72,6 +74,7 @@ internal fun rememberMessageItemConfiguration(
     val leadingItems = buildLeadingItems(messageItemUi, color)
     MessageItemConfiguration(
         maxExcerptLines = preferences.excerptLines,
+        isKeypadNavigationEnabled = preferences.isKeypadNavigationEnabled,
         leadingConfiguration = MessageItemLeadingConfiguration(
             badgeStyle = messageItemUi.state.toBadgeStyle(),
             avatar = messageItemUi.senders.avatar,

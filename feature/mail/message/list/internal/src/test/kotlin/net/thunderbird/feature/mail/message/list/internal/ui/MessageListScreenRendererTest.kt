@@ -3,17 +3,27 @@ package net.thunderbird.feature.mail.message.list.internal.ui
 import android.util.TypedValue
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusManager
+import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.assertIsFocused
+import androidx.compose.ui.test.click
 import androidx.compose.ui.test.hasAnyDescendant
 import androidx.compose.ui.test.hasScrollAction
 import androidx.compose.ui.test.hasTestTag
+import androidx.compose.ui.test.onAllNodesWithTag
+import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onFirst
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performKeyInput
 import androidx.compose.ui.test.performScrollToIndex
+import androidx.compose.ui.test.performSemanticsAction
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeDown
 import androidx.compose.ui.test.swipeLeft
@@ -66,6 +76,113 @@ import org.robolectric.util.ReflectionHelpers
 @Config(shadows = [ShadowResourcesTheme::class])
 @Suppress("MaxLineLength")
 class MessageListScreenRendererTest : ComposeTest() {
+    private lateinit var focusManager: FocusManager
+
+    @Test
+    fun `MessageListScreen - clearing input focus should clear the focused message`() = runComposeTest {
+        // Arrange
+        val events = mutableListOf<MessageListEvent>()
+        val messages = createSampleMessages()
+        setupTestSubjectComposable(
+            messages = messages,
+            preferences = createPreferences(isKeypadNavigationEnabled = true),
+            dispatchEvent = { events.add(it) },
+        )
+        val testSubject = onNodeWithTag(
+            MessageListItemDefaults.UNREAD_MESSAGE_LIST_TEST_TAG,
+            useUnmergedTree = true,
+        )
+        testSubject.performSemanticsAction(SemanticsActions.RequestFocus) { it() }
+        testSubject.assertIsFocused()
+        assertThat(events.filterIsInstance<MessageItemEvent.OnFocusEnter>()).containsExactly(
+            MessageItemEvent.OnFocusEnter(messages[0]),
+        )
+
+        // Act
+        composeTestRule.runOnUiThread { focusManager.clearFocus(force = true) }
+        waitForIdle()
+
+        // Assert
+        assertThat(events.filterIsInstance<MessageItemEvent.OnFocusExit>()).containsExactly(
+            MessageItemEvent.OnFocusExit(messages[0]),
+        )
+    }
+
+    @Test
+    fun `MessageListScreen - direction keys should move between messages and center should open the focused message`() =
+        runComposeTest {
+            // Arrange
+            val events = mutableListOf<MessageListEvent>()
+            val messages = createSampleMessages()
+            setupTestSubjectComposable(
+                messages = messages,
+                preferences = createPreferences(isKeypadNavigationEnabled = true),
+                dispatchEvent = { events.add(it) },
+            )
+            onAllNodesWithTag(MESSAGE_ITEM_FAVOURITE_ICON_BUTTON_TEST_TAG).onFirst().assertIsDisplayed()
+            onAllNodesWithText("A", useUnmergedTree = true).onFirst().assertIsDisplayed()
+            val testSubject = onNodeWithTag(
+                MessageListItemDefaults.UNREAD_MESSAGE_LIST_TEST_TAG,
+                useUnmergedTree = true,
+            )
+            val nextMessage = onNodeWithTag(
+                MessageListItemDefaults.READ_MESSAGE_LIST_TEST_TAG,
+                useUnmergedTree = true,
+            )
+
+            // Act
+            testSubject.performSemanticsAction(SemanticsActions.RequestFocus) { it() }
+            testSubject.performKeyInput {
+                keyDown(Key.DirectionDown)
+                keyUp(Key.DirectionDown)
+            }
+
+            // Assert
+            nextMessage.assertIsFocused()
+            assertThat(events.filterIsInstance<MessageItemEvent.OnFocusEnter>().last()).isEqualTo(
+                MessageItemEvent.OnFocusEnter(messages[1]),
+            )
+            assertThat(events.filterIsInstance<MessageItemEvent.OnMessageClick>()).isEmpty()
+
+            // Act
+            nextMessage.performKeyInput {
+                keyDown(Key.DirectionCenter)
+                keyUp(Key.DirectionCenter)
+            }
+
+            // Assert
+            assertThat(events.filterIsInstance<MessageItemEvent.OnMessageClick>()).containsExactly(
+                MessageItemEvent.OnMessageClick(messages[1]),
+            )
+        }
+
+    @Test
+    fun `MessageListScreen - keypad navigation should keep avatar and favourite touch actions available`() =
+        runComposeTest {
+            // Arrange
+            val events = mutableListOf<MessageListEvent>()
+            val message = MessagePreviewHelper.createMessage()
+            setupTestSubjectComposable(
+                messages = listOf(message),
+                preferences = createPreferences(isKeypadNavigationEnabled = true),
+                dispatchEvent = { events.add(it) },
+            )
+
+            // Act
+            onNodeWithTag(MESSAGE_ITEM_FAVOURITE_ICON_BUTTON_TEST_TAG).performTouchInput { click() }
+            onNodeWithText("A", useUnmergedTree = true).performTouchInput { click() }
+            waitForIdle()
+
+            // Assert
+            assertThat(events.filterIsInstance<MessageItemEvent.ToggleFavourite>()).containsExactly(
+                MessageItemEvent.ToggleFavourite(message),
+            )
+            assertThat(events.filterIsInstance<MessageItemEvent.ToggleSelectMessages>()).containsExactly(
+                MessageItemEvent.ToggleSelectMessages(message),
+            )
+            assertThat(events.filterIsInstance<MessageItemEvent.OnMessageClick>()).isEmpty()
+        }
+
     @Test
     fun `MessageListScreen - when state is LoadingMessages and isPullToRefresh is true - should display PullToRefreshIndicator composable`() =
         runComposeTest {
@@ -501,6 +618,7 @@ class MessageListScreenRendererTest : ComposeTest() {
     ) {
         val renderer = MessageListScreenRenderer()
         composeTestRule.setContent {
+            focusManager = LocalFocusManager.current
             ThunderbirdBoltTheme {
                 koinPreview {
                     single<InAppNotificationStream> { FakeInAppNotificationStream() }
@@ -529,6 +647,7 @@ class MessageListScreenRendererTest : ComposeTest() {
         dateTimeFormat: MessageListDateTimeFormat = MessageListDateTimeFormat.Contextual,
         actionRequiringUserConfirmation: ImmutableSet<ActionRequiringUserConfirmation> = persistentSetOf(),
         colorizeBackgroundWhenRead: Boolean = false,
+        isKeypadNavigationEnabled: Boolean = false,
     ) = MessageListPreferences(
         density = density,
         groupConversations = groupConversations,
@@ -540,6 +659,7 @@ class MessageListScreenRendererTest : ComposeTest() {
         dateTimeFormat = dateTimeFormat,
         actionRequiringUserConfirmation = actionRequiringUserConfirmation,
         colorizeBackgroundWhenRead = colorizeBackgroundWhenRead,
+        isKeypadNavigationEnabled = isKeypadNavigationEnabled,
     )
 
     private fun createMetadata(

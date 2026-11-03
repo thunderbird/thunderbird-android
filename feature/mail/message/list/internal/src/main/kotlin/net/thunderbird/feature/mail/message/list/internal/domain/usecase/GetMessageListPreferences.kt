@@ -31,6 +31,7 @@ class GetMessageListPreferences(
                 dateTimeFormat = messageListSettings.dateTimeFormat,
                 actionRequiringUserConfirmation = interactionSettings.actionRequiringUserConfirmation.toImmutableSet(),
                 colorizeBackgroundWhenRead = messageListSettings.isUseBackgroundAsUnreadIndicator,
+                isKeypadNavigationEnabled = interactionSettings.isKeypadNavigationEnabled,
             )
         }
 

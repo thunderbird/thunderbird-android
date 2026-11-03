@@ -22,6 +22,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import net.thunderbird.app.common.activity.KeypadNavigationActivityLifecycleCallbacks
 import net.thunderbird.app.common.feature.LoggerLifecycleObserver
 import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.components.core.logging.file.FileLogSink
@@ -43,6 +44,7 @@ abstract class BaseApplication : Application(), WorkManagerConfiguration.Provide
     private val notificationChannelManager: NotificationChannelManager by inject()
     private val messageListWidgetManager: MessageListWidgetManager by inject()
     private val workManagerConfigurationProvider: WorkManagerConfigurationProvider by inject()
+    private val keypadNavigationCallbacks: KeypadNavigationActivityLifecycleCallbacks by inject()
     protected val logger: Logger by inject()
     private val syncDebugFileLogSink: FileLogSink by inject(named("syncDebug"))
 
@@ -64,6 +66,7 @@ abstract class BaseApplication : Application(), WorkManagerConfiguration.Provide
 
         K9.init(this)
         Core.init(this)
+        keypadNavigationCallbacks.register()
         initializeAppLanguage()
         updateNotificationChannelsOnAppLanguageChanges()
         themeManager.init()

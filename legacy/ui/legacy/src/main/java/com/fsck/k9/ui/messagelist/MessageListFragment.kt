@@ -138,11 +138,13 @@ import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.components.core.outcome.Outcome
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.interaction.InteractionSettings
+import net.thunderbird.core.preference.interaction.KeypadMessageAction
 import net.thunderbird.components.ui.bolt.atom.ClickableSurface
 import net.thunderbird.components.ui.bolt.atom.icon.Icon
 import net.thunderbird.components.ui.bolt.atom.icon.Icons
 import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.core.ui.contract.mvi.observeWithoutEffect
+import net.thunderbird.core.ui.contract.mvi.observe
 import net.thunderbird.core.ui.theme.api.FeatureThemeProvider
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.UnifiedAccountId
@@ -155,6 +157,7 @@ import net.thunderbird.feature.mail.message.list.extension.toDomainSortType
 import net.thunderbird.feature.mail.message.list.preferences.MessageListPreferences
 import net.thunderbird.feature.mail.message.list.ui.MessageListContract
 import net.thunderbird.feature.mail.message.list.ui.component.MessageListScope
+import net.thunderbird.feature.mail.message.list.ui.component.rememberMessageListScope
 import net.thunderbird.feature.mail.message.list.ui.effect.MessageListEffect
 import net.thunderbird.feature.mail.message.list.ui.event.MessageItemEvent
 import net.thunderbird.feature.mail.message.list.ui.event.MessageListEvent
@@ -305,6 +308,8 @@ class MessageListFragment :
     private var error: Error? = null
 
     private var messageListSwipeCallback: MessageListSwipeCallback? = null
+    // Updated synchronously by actual Compose focus events, rather than the asynchronous state machine.
+    private var inputFocusedMessageReference: String? = null
     private val interactionSettings: InteractionSettings
         get() = generalSettingsManager.getConfig().interaction
 
@@ -750,6 +755,7 @@ class MessageListFragment :
     private fun Int?.orZero(): Int = this ?: 0
 
     override fun onDestroyView() {
+        inputFocusedMessageReference = null
         coordinatorLayout = null
         messageListSwipeCallback = null
         floatingActionButton = null
@@ -1709,8 +1715,45 @@ class MessageListFragment :
         changeSort(sortType)
     }
 
-    private val focusedMessageReference: MessageReference?
-        get() = MessageReference.parse(focusedMessage?.messageReference)
+    override val focusedMessageReference: MessageReference?
+        get() = MessageReference.parse(keypadFocusedMessage?.messageReference)
+
+    private val keypadFocusedMessage: MessageItemUi?
+        get() {
+            val listView = view?.findViewById<ComposeView>(R.id.message_list_compose_view) ?: return null
+            val isListResumed = isActive && isResumed && isVisible
+            val hasListFocus = listView.isShown && listView.hasWindowFocus() && listView.hasFocus()
+            if (!isListResumed || !hasListFocus || activeMessage != null) return null
+            if (actionMode != null) return null
+            val state = stateSnapshot as? MessageListState.LoadedMessages ?: return null
+            if (state.messages.any { it.selected } || state.metadata.activeMessage != null) return null
+            return state.messages.firstOrNull { it.messageReference == inputFocusedMessageReference && !it.active }
+        }
+
+    override fun performFocusedMessageAction(action: KeypadMessageAction, expectedMessage: MessageReference): Boolean {
+        val message = keypadFocusedMessage ?: return false
+        val reference = MessageReference.parse(message.messageReference) ?: return false
+        if (reference != expectedMessage) return false
+        when (action) {
+            KeypadMessageAction.NONE -> return false
+            KeypadMessageAction.DELETE -> onDelete(listOf(reference))
+            KeypadMessageAction.ARCHIVE -> onArchive(reference)
+            KeypadMessageAction.TOGGLE_FLAGGED -> setFlag(message, Flag.FLAGGED, !message.starred)
+        }
+        return true
+    }
+
+    private fun dispatchMessageListEvent(event: MessageListEvent) {
+        when (event) {
+            is MessageItemEvent.OnFocusEnter -> inputFocusedMessageReference = event.message.messageReference
+            is MessageItemEvent.OnFocusExit -> {
+                if (inputFocusedMessageReference == event.message.messageReference) inputFocusedMessageReference = null
+            }
+
+            else -> Unit
+        }
+        viewModel.event(event)
+    }
 
     private val focusedMessage: MessageItemUi?
         get() = stateSnapshot.metadata.focusedMessage
@@ -1723,7 +1766,7 @@ class MessageListFragment :
             .mapNotNull { MessageReference.parse(it.messageReference) }
 
     override fun onDelete() {
-        focusedMessageReference?.let { message ->
+        MessageReference.parse(focusedMessage?.messageReference)?.let { message ->
             onDelete(listOf(message))
         }
     }
@@ -1747,19 +1790,19 @@ class MessageListFragment :
     }
 
     override fun onMove() {
-        focusedMessageReference?.let { message ->
+        MessageReference.parse(focusedMessage?.messageReference)?.let { message ->
             onMove(message)
         }
     }
 
     override fun onArchive() {
-        focusedMessageReference?.let { message ->
+        MessageReference.parse(focusedMessage?.messageReference)?.let { message ->
             onArchive(message)
         }
     }
 
     override fun onCopy() {
-        focusedMessageReference?.let { message ->
+        MessageReference.parse(focusedMessage?.messageReference)?.let { message ->
             onCopy(message)
         }
     }
@@ -2397,11 +2440,15 @@ class MessageListFragment :
                     setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
                     setContent {
                         featureThemeProvider.WithTheme {
-                            messageListScreenRenderer.Render(
-                                onEffect = { handleMessageListEffect(it) },
-                                inAppNotificationEventFilter = ::filterInAppNotificationEvents,
-                                viewModel = viewModel,
-                            )
+                            val scope = rememberMessageListScope()
+                            val (state, _) = viewModel.observe { effect -> scope.handleMessageListEffect(effect) }
+                            with(messageListScreenRenderer) {
+                                scope.Render(
+                                    state = state.value,
+                                    dispatchEvent = ::dispatchMessageListEvent,
+                                    inAppNotificationEventFilter = ::filterInAppNotificationEvents,
+                                )
+                            }
                         }
                     }
                 }
