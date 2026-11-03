@@ -7,6 +7,14 @@ dependencies {
     testImplementation(libs.kotlin.test)
 }
 
-tasks.withType<Test> {
-    outputs.upToDateWhen { false }
+// Konsist reads the project's sources directly, so declare them as inputs: the tests rerun only when Kotlin
+// sources change.
+tasks.withType<Test>().configureEach {
+    inputs.files(
+        fileTree(isolated.rootProject.projectDirectory) {
+            include("**/*.kt", "**/*.kts")
+            exclude("**/build/**", ".gradle/**", ".kotlin/**")
+        },
+    ).withPathSensitivity(PathSensitivity.RELATIVE)
+        .withPropertyName("konsistSources")
 }
