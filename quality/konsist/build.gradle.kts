@@ -1,3 +1,6 @@
+import org.gradle.api.tasks.testing.logging.TestExceptionFormat
+import org.gradle.api.tasks.testing.logging.TestLogEvent
+
 plugins {
     id("org.jetbrains.kotlin.jvm")
 }
@@ -17,4 +20,12 @@ tasks.withType<Test>().configureEach {
         },
     ).withPathSensitivity(PathSensitivity.RELATIVE)
         .withPropertyName("konsistSources")
+
+    // Print Konsist's violation report (rule, message, offending declarations) to the console instead of only the
+    // exception class.
+    testLogging {
+        events(TestLogEvent.FAILED)
+        exceptionFormat = TestExceptionFormat.FULL
+        showStackTraces = false
+    }
 }
