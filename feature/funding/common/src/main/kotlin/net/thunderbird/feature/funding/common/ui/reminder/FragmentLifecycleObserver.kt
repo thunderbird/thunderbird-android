@@ -12,6 +12,8 @@ class FragmentLifecycleObserver(
     private var lifecycleCallbacks: FragmentLifecycleCallbacks? = null
 
     override fun register(fragmentManager: FragmentManager, onShow: () -> Unit) {
+        unregister(fragmentManager)
+
         lifecycleCallbacks = createFragmentLifecycleCallback(
             onCallback = {
                 onShow()
