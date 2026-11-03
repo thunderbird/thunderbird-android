@@ -71,7 +71,6 @@ import com.fsck.k9.ui.helper.RelativeDateTimeFormatter
 import com.fsck.k9.ui.messagelist.MessageListFragmentBridgeContract.MessageListFragmentListener
 import com.fsck.k9.ui.messagelist.MessageListFragmentBridgeContract.MessageListFragmentListener.Companion.MAX_PROGRESS
 import com.fsck.k9.ui.messagelist.debug.AuthDebugActions
-import com.fsck.k9.ui.messagelist.item.MessageViewHolder
 import com.fsck.k9.ui.messageview.LastSelectedFolderStore
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.BaseTransientBottomBar.BaseCallback
@@ -206,6 +205,7 @@ class LegacyMessageListFragment :
     private lateinit var recentChangesSnackbar: Snackbar
     private var coordinatorLayout: CoordinatorLayout? = null
     private var recyclerView: RecyclerView? = null
+    private var keypadFocusRestorer: MessageListFocusRestorer? = null
     private var itemTouchHelper: ItemTouchHelper? = null
     private var swipeRefreshLayout: SwipeRefreshLayout? = null
     private var floatingActionButton: FloatingActionButton? = null
@@ -283,6 +283,7 @@ class LegacyMessageListFragment :
             resetActionMode()
             invalidateMenu()
             maybeHideFloatingActionButton()
+            if (!value) keypadFocusRestorer?.cancel()
         }
 
     override fun isSearchViewCollapsed(): Boolean {
@@ -347,6 +348,7 @@ class LegacyMessageListFragment :
                 if (observedKeypadNavigation != keypadNavigation) {
                     observedKeypadNavigation = keypadNavigation
                     adapter.refreshKeypadNavigation()
+                    if (!keypadNavigation) keypadFocusRestorer?.cancel()
                 }
             }
             .launchIn(lifecycleScope)
@@ -626,8 +628,22 @@ class LegacyMessageListFragment :
         }
 
         this.recyclerView = recyclerView
+        keypadFocusRestorer = createKeypadFocusRestorer(recyclerView)
         this.itemTouchHelper = itemTouchHelper
     }
+
+    private fun createKeypadFocusRestorer(recyclerView: RecyclerView): MessageListFocusRestorer =
+        MessageListFocusRestorer(
+            recyclerView = recyclerView,
+            findPosition = { reference -> adapter.getItem(reference)?.let(adapter::getPosition) },
+            canRestoreFocus = {
+                val activeList = isActive && isResumed && isVisible
+                val safeFocus = recyclerView.isShown && recyclerView.hasWindowFocus() &&
+                    requireActivity().currentFocus?.onCheckIsTextEditor() != true
+                val hasSelection = activeMessage != null || actionMode != null || adapter.selectedCount != 0
+                activeList && safeFocus && interactionSettings.isKeypadNavigationEnabled && !hasSelection
+            },
+        )
 
     private fun requireCoordinatorLayout(): CoordinatorLayout {
         val coordinatorLayout = coordinatorLayout
@@ -847,6 +863,8 @@ class LegacyMessageListFragment :
     }
 
     override fun onDestroyView() {
+        keypadFocusRestorer?.close()
+        keypadFocusRestorer = null
         coordinatorLayout = null
         recyclerView = null
         messageListSwipeCallback = null
@@ -909,6 +927,7 @@ class LegacyMessageListFragment :
 
     override fun onResume() {
         super.onResume()
+        keypadFocusRestorer?.retry()
 
         if (hasConnectivity == null) {
             hasConnectivity = connectivityManager.isNetworkAvailable()
@@ -920,6 +939,7 @@ class LegacyMessageListFragment :
     }
 
     override fun onPause() {
+        keypadFocusRestorer?.cancelPending()
         super.onPause()
 
         messagingControllerRegistry.removeListener(activityListener)
@@ -1927,6 +1947,7 @@ class LegacyMessageListFragment :
             val hasListFocus = listView.isShown && listView.hasWindowFocus() && listView.hasFocus()
             val hasSelection = activeMessage != null || actionMode != null || adapter.selectedCount != 0
             if (!isListResumed || !hasListFocus || hasSelection) return null
+            if (keypadFocusRestorer?.isPending == true) return null
             return selectedMessageListItem
         }
 
@@ -1946,8 +1967,8 @@ class LegacyMessageListFragment :
         get() {
             val recyclerView = recyclerView ?: return null
             val focusedView = recyclerView.focusedChild ?: return null
-            val viewHolder = recyclerView.findContainingViewHolder(focusedView) as? MessageViewHolder ?: return null
-            return adapter.getItemById(viewHolder.uniqueId)
+            val viewHolder = recyclerView.findContainingViewHolder(focusedView) ?: return null
+            return adapter.getItemById(viewHolder.itemId)
         }
 
     private val selectedMessages: List<MessageReference>
@@ -2168,6 +2189,15 @@ class LegacyMessageListFragment :
 
     override fun onFullyActive() {
         maybeShowFloatingActionButton()
+        keypadFocusRestorer?.retry()
+    }
+
+    override fun revealAndFocusMessage(messageReference: MessageReference) {
+        if (interactionSettings.isKeypadNavigationEnabled) keypadFocusRestorer?.revealAndFocus(messageReference)
+    }
+
+    override fun cancelPendingMessageFocus() {
+        keypadFocusRestorer?.cancelPending()
     }
 
     private fun maybeShowFloatingActionButton() {

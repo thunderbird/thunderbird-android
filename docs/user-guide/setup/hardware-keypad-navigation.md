@@ -44,6 +44,10 @@ In keypad mode, the traditional message list gives keyboard focus to the complet
 Touching its avatar or star still performs the existing selection or star action. Closing the drawer restores
 the previous list focus when that control is still available.
 
+Returning from the reader restores focus to the same message, including after its position changes.
+If that message has been removed, focus stays on the list container until you navigate again. Other input,
+leaving the screen, or turning keypad mode off cancels a pending restoration.
+
 ![Directional focus on a complete message row](assets/hardware-keypad-message-focus.png)
 
 ## Reading a message

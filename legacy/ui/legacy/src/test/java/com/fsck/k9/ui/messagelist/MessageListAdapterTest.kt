@@ -13,6 +13,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.Composable
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import assertk.Assert
 import assertk.assertThat
 import assertk.assertions.isEqualTo
@@ -139,6 +141,58 @@ class MessageListAdapterTest : RobolectricTest() {
         )
         decor.layout(0, 0, 480, 800)
         decor.dispatchWindowFocusChanged(true)
+    }
+
+    @Test
+    @Config(sdk = [26, 31, 36])
+    fun `returning from reader restores the exact third message and center opens it`() {
+        // Arrange
+        val testSubject = createAdapter(keypadNavigation = { true })
+        val messages = (1..3).map { createMessageListItem(uniqueId = it.toLong(), messageUid = "$it") }
+        testSubject.viewItems = messages.map { MessageListViewItem.Message(it) }
+        val list = showMessages(testSubject)
+        var ready = false
+        val restoration = MessageListFocusRestorer(
+            list,
+            { reference -> testSubject.getItem(reference)?.let(testSubject::getPosition) },
+            { ready },
+        )
+        restoration.revealAndFocus(messages[2].messageReference)
+        settleList(list)
+        assertThat(list.findFocus()).isSameInstanceAs(list)
+
+        // Act
+        ready = true
+        restoration.retry()
+        settleList(list)
+        list.dispatchKeyEvent(KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DPAD_CENTER))
+        list.dispatchKeyEvent(KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_DPAD_CENTER))
+        shadowOf(Looper.getMainLooper()).idle()
+
+        // Assert
+        assertThat(list.focusedChild?.let(list::findContainingViewHolder)?.itemId).isEqualTo(messages[2].uniqueId)
+        verify(listItemListener).onMessageClicked(messages[2])
+        restoration.close()
+    }
+
+    private fun showMessages(adapter: MessageListAdapter): RecyclerView = RecyclerView(context).apply {
+        layoutManager = LinearLayoutManager(context)
+        itemAnimator = null
+        this.adapter = adapter
+        showRow(this)
+        settleList(this)
+    }
+
+    private fun settleList(list: RecyclerView) {
+        repeat(3) {
+            shadowOf(Looper.getMainLooper()).idle()
+            list.measure(
+                View.MeasureSpec.makeMeasureSpec(480, View.MeasureSpec.EXACTLY),
+                View.MeasureSpec.makeMeasureSpec(600, View.MeasureSpec.EXACTLY),
+            )
+            list.layout(0, 0, 480, 600)
+        }
+        shadowOf(Looper.getMainLooper()).idle()
     }
 
     @Test

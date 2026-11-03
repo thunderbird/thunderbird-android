@@ -28,6 +28,14 @@ interface MessageListScope {
      * @param animated Whether to animate the scroll. Defaults to `true`.
      */
     fun scrollToMessage(message: MessageItemUi, animated: Boolean = true)
+
+    /**
+     * Reveals and focuses the row with this exact stable message reference in keypad mode.
+     * If the message is absent, focus stays on the list container rather than another message.
+     * [canFocus] is checked again after scrolling to avoid taking focus from a changed screen.
+     * [onFinished] runs after the request is consumed or replaced, including when no row can be focused.
+     */
+    fun revealAndFocusMessage(messageReference: String, onFinished: () -> Unit = {}, canFocus: () -> Boolean)
 }
 
 /**
@@ -41,15 +49,30 @@ sealed interface ScrollEvent {
      * @property animated Whether the scroll should be animated.
      */
     data class ScrollToMessage(val message: MessageItemUi, val animated: Boolean = true) : ScrollEvent
+
+    data class RevealAndFocusMessage(
+        val messageReference: String,
+        val canFocus: () -> Boolean,
+        val onFinished: () -> Unit,
+    ) : ScrollEvent
 }
 
 @Stable
 internal class DefaultMessageListScope : MessageListScope {
-    private val _scrollEvents = Channel<ScrollEvent>(capacity = Channel.CONFLATED)
+    private val _scrollEvents = Channel<ScrollEvent>(
+        capacity = Channel.CONFLATED,
+        onUndeliveredElement = { event ->
+            if (event is ScrollEvent.RevealAndFocusMessage) event.onFinished()
+        },
+    )
     override val scrollEvents: Flow<ScrollEvent> = _scrollEvents.receiveAsFlow()
 
     override fun scrollToMessage(message: MessageItemUi, animated: Boolean) {
         _scrollEvents.trySend(ScrollEvent.ScrollToMessage(message, animated))
+    }
+
+    override fun revealAndFocusMessage(messageReference: String, onFinished: () -> Unit, canFocus: () -> Boolean) {
+        _scrollEvents.trySend(ScrollEvent.RevealAndFocusMessage(messageReference, canFocus, onFinished))
     }
 }
 

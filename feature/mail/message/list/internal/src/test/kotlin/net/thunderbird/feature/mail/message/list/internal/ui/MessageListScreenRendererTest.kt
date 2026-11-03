@@ -2,6 +2,7 @@ package net.thunderbird.feature.mail.message.list.internal.ui
 
 import android.util.TypedValue
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.input.key.Key
@@ -54,6 +55,7 @@ import net.thunderbird.feature.mail.message.list.internal.ui.preview.AccountPrev
 import net.thunderbird.feature.mail.message.list.internal.ui.preview.MessagePreviewHelper
 import net.thunderbird.feature.mail.message.list.preferences.ActionRequiringUserConfirmation
 import net.thunderbird.feature.mail.message.list.preferences.MessageListPreferences
+import net.thunderbird.feature.mail.message.list.ui.component.MessageListScope
 import net.thunderbird.feature.mail.message.list.ui.component.atom.MESSAGE_ITEM_FAVOURITE_ICON_BUTTON_TEST_TAG
 import net.thunderbird.feature.mail.message.list.ui.component.rememberMessageListScope
 import net.thunderbird.feature.mail.message.list.ui.event.MessageItemEvent
@@ -77,6 +79,147 @@ import org.robolectric.util.ReflectionHelpers
 @Suppress("MaxLineLength")
 class MessageListScreenRendererTest : ComposeTest() {
     private lateinit var focusManager: FocusManager
+    private lateinit var messageListScope: MessageListScope
+
+    @Test
+    fun `MessageListScreen - restoring an offscreen reference should focus and open that exact message`() = runComposeTest {
+        // Arrange
+        val events = mutableListOf<MessageListEvent>()
+        val messages = List(40) { index ->
+            MessagePreviewHelper.createMessage(id = "msg-$index").copy(
+                messageReference = "reference-$index",
+                state = if (index == 39) MessageItemUi.State.Read else MessageItemUi.State.Unread,
+            )
+        }
+        val target = messages.last()
+        setupTestSubjectComposable(
+            messages = messages,
+            preferences = createPreferences(isKeypadNavigationEnabled = true),
+            dispatchEvent = { events.add(it) },
+        )
+
+        // Act
+        composeTestRule.runOnUiThread { messageListScope.revealAndFocusMessage(target.messageReference) { true } }
+        waitForIdle()
+
+        // Assert
+        val testSubject = onNodeWithTag(MessageListItemDefaults.READ_MESSAGE_LIST_TEST_TAG, useUnmergedTree = true)
+        testSubject.assertIsDisplayed().assertIsFocused()
+        testSubject.performKeyInput {
+            keyDown(Key.DirectionCenter)
+            keyUp(Key.DirectionCenter)
+        }
+        assertThat(events.filterIsInstance<MessageItemEvent.OnMessageClick>()).containsExactly(
+            MessageItemEvent.OnMessageClick(target),
+        )
+    }
+
+    @Test
+    fun `MessageListScreen - absent restored reference should clear message focus without falling back to a reused id`() =
+        runComposeTest {
+            // Arrange
+            val events = mutableListOf<MessageListEvent>()
+            val replacement = MessagePreviewHelper.createMessage(
+                id = "reused-id",
+            ).copy(messageReference = "replacement")
+            setupTestSubjectComposable(
+                messages = listOf(replacement),
+                preferences = createPreferences(isKeypadNavigationEnabled = true),
+                dispatchEvent = { events.add(it) },
+            )
+            onNodeWithTag(MessageListItemDefaults.UNREAD_MESSAGE_LIST_TEST_TAG, useUnmergedTree = true)
+                .performSemanticsAction(SemanticsActions.RequestFocus) { it() }
+
+            // Act
+            composeTestRule.runOnUiThread { messageListScope.revealAndFocusMessage("removed-reference") { true } }
+            waitForIdle()
+
+            // Assert
+            val testSubject = onNodeWithTag(TEST_TAG_MESSAGE_LIST_ROOT, useUnmergedTree = true)
+            testSubject.assertIsFocused()
+            testSubject.performKeyInput {
+                keyDown(Key.DirectionCenter)
+                keyUp(Key.DirectionCenter)
+            }
+            assertThat(events.filterIsInstance<MessageItemEvent.OnFocusExit>()).containsExactly(
+                MessageItemEvent.OnFocusExit(replacement),
+            )
+            assertThat(events.filterIsInstance<MessageItemEvent.OnMessageClick>()).isEmpty()
+        }
+
+    @Test
+    fun `MessageListScreen - disabled keypad mode should not move focus for a restore request`() = runComposeTest {
+        // Arrange
+        val messages = createSampleMessages()
+        setupTestSubjectComposable(messages = messages)
+        val testSubject = onNodeWithTag(MessageListItemDefaults.READ_MESSAGE_LIST_TEST_TAG, useUnmergedTree = true)
+        testSubject.performSemanticsAction(SemanticsActions.RequestFocus) { it() }
+
+        // Act
+        composeTestRule.runOnUiThread {
+            messageListScope.revealAndFocusMessage(messages.first().messageReference) { true }
+        }
+        waitForIdle()
+
+        // Assert
+        testSubject.assertIsFocused()
+    }
+
+    @Test
+    fun `MessageListScreen - focus guard changing during reveal should leave focus on the neutral list`() = runComposeTest {
+        // Arrange
+        val message = MessagePreviewHelper.createMessage()
+        var checks = 0
+        setupTestSubjectComposable(
+            messages = listOf(message),
+            preferences = createPreferences(isKeypadNavigationEnabled = true),
+        )
+
+        // Act
+        composeTestRule.runOnUiThread {
+            messageListScope.revealAndFocusMessage(message.messageReference) { ++checks == 1 }
+        }
+        waitForIdle()
+
+        // Assert
+        onNodeWithTag(TEST_TAG_MESSAGE_LIST_ROOT, useUnmergedTree = true).assertIsFocused()
+        assertThat(checks).isEqualTo(2)
+    }
+
+    @Test
+    fun `MessageListScreen - removing a restored message should keep neutral focus when its id is reused`() = runComposeTest {
+        // Arrange
+        val events = mutableListOf<MessageListEvent>()
+        val message = MessagePreviewHelper.createMessage(id = "reused-id").copy(messageReference = "original")
+        val state = mutableStateOf<MessageListState>(
+            MessageListState.LoadedMessages(
+                metadata = createMetadata(),
+                preferences = createPreferences(isKeypadNavigationEnabled = true),
+                messages = listOf(message).toImmutableList(),
+            ),
+        )
+        setupTestSubjectComposable(messages = listOf(message), dispatchEvent = {
+            events.add(it)
+        }, stateProvider = { state.value })
+        composeTestRule.runOnUiThread { messageListScope.revealAndFocusMessage(message.messageReference) { true } }
+        waitForIdle()
+        onNodeWithTag(MessageListItemDefaults.UNREAD_MESSAGE_LIST_TEST_TAG, useUnmergedTree = true).assertIsFocused()
+
+        // Act
+        composeTestRule.runOnUiThread {
+            state.value = state.value.mapMessages { it.copy(messageReference = "replacement") }
+        }
+        waitForIdle()
+
+        // Assert
+        val testSubject = onNodeWithTag(TEST_TAG_MESSAGE_LIST_ROOT, useUnmergedTree = true)
+        testSubject.assertIsFocused()
+        testSubject.performKeyInput {
+            keyDown(Key.DirectionCenter)
+            keyUp(Key.DirectionCenter)
+        }
+        assertThat(events.filterIsInstance<MessageItemEvent.OnMessageClick>()).isEmpty()
+    }
 
     @Test
     fun `MessageListScreen - clearing input focus should clear the focused message`() = runComposeTest {
@@ -615,6 +758,7 @@ class MessageListScreenRendererTest : ComposeTest() {
             preferences = preferences,
             messages = messages.toImmutableList(),
         ),
+        stateProvider: () -> MessageListState = { state },
     ) {
         val renderer = MessageListScreenRenderer()
         composeTestRule.setContent {
@@ -624,9 +768,10 @@ class MessageListScreenRendererTest : ComposeTest() {
                     single<InAppNotificationStream> { FakeInAppNotificationStream() }
                 } WithContent {
                     val scope = rememberMessageListScope()
+                    messageListScope = scope
                     with(renderer) {
                         scope.Render(
-                            state = state,
+                            state = stateProvider(),
                             dispatchEvent = dispatchEvent,
                             modifier = Modifier.fillMaxSize(),
                         )

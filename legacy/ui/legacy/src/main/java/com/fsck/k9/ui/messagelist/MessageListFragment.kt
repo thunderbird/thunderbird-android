@@ -39,10 +39,13 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.compose.ui.platform.compositionContext
 import androidx.compose.ui.platform.createLifecycleAwareWindowRecomposer
@@ -310,6 +313,11 @@ class MessageListFragment :
     private var messageListSwipeCallback: MessageListSwipeCallback? = null
     // Updated synchronously by actual Compose focus events, rather than the asynchronous state machine.
     private var inputFocusedMessageReference: String? = null
+    private var messageListScope: MessageListScope? = null
+    private var messageListFocusManager: FocusManager? = null
+    private var pendingKeypadFocusReference: String? = null
+    private var isRestoringKeypadFocus = false
+    private var keypadFocusRequestGeneration = 0
     private val interactionSettings: InteractionSettings
         get() = generalSettingsManager.getConfig().interaction
 
@@ -755,6 +763,11 @@ class MessageListFragment :
     private fun Int?.orZero(): Int = this ?: 0
 
     override fun onDestroyView() {
+        keypadFocusRequestGeneration++
+        pendingKeypadFocusReference = null
+        isRestoringKeypadFocus = false
+        messageListScope = null
+        messageListFocusManager = null
         inputFocusedMessageReference = null
         coordinatorLayout = null
         messageListSwipeCallback = null
@@ -803,9 +816,11 @@ class MessageListFragment :
         messagingControllerRegistry.addListener(activityListener)
 
         updateTitle()
+        restorePendingKeypadFocus()
     }
 
     override fun onPause() {
+        cancelPendingMessageFocus()
         super.onPause()
 
         messagingControllerRegistry.removeListener(activityListener)
@@ -1727,6 +1742,7 @@ class MessageListFragment :
 
     private val keypadFocusedMessage: MessageItemUi?
         get() {
+            if (isRestoringKeypadFocus) return null
             val listView = view?.findViewById<ComposeView>(R.id.message_list_compose_view) ?: return null
             val isListResumed = isActive && isResumed && isVisible
             val hasListFocus = listView.isShown && listView.hasWindowFocus() && listView.hasFocus()
@@ -1950,8 +1966,60 @@ class MessageListFragment :
         viewModel.event(MessageItemEvent.SetMessageActive(message))
     }
 
+    override fun revealAndFocusMessage(messageReference: MessageReference) {
+        keypadFocusRequestGeneration++
+        pendingKeypadFocusReference = null
+        isRestoringKeypadFocus = false
+        if (!interactionSettings.isKeypadNavigationEnabled) return
+        isRestoringKeypadFocus = true
+        val previousFocus = stateSnapshot.metadata.focusedMessage
+        messageListFocusManager?.clearFocus(force = true)
+        inputFocusedMessageReference = null
+        previousFocus?.let { viewModel.event(MessageItemEvent.OnFocusExit(it)) }
+        pendingKeypadFocusReference = messageReference.toIdentityString()
+        restorePendingKeypadFocus()
+    }
+
+    override fun cancelPendingMessageFocus() {
+        if (pendingKeypadFocusReference != null || isRestoringKeypadFocus) keypadFocusRequestGeneration++
+        pendingKeypadFocusReference = null
+        isRestoringKeypadFocus = false
+    }
+
+    private fun restorePendingKeypadFocus() {
+        val reference = pendingKeypadFocusReference ?: return
+        val scope = messageListScope ?: return
+        val listView = view?.findViewById<ComposeView>(R.id.message_list_compose_view) ?: return
+        val isActiveScreen = isActive && isResumed && isVisible
+        if (!isActiveScreen || !listView.isShown) return
+        pendingKeypadFocusReference = null
+        if (!canRestoreKeypadFocus(listView)) {
+            isRestoringKeypadFocus = false
+            return
+        }
+        val generation = keypadFocusRequestGeneration
+        scope.revealAndFocusMessage(reference, onFinished = {
+            if (generation == keypadFocusRequestGeneration) isRestoringKeypadFocus = false
+        }) {
+            generation == keypadFocusRequestGeneration && canRestoreKeypadFocus(listView)
+        }
+    }
+
+    private fun canRestoreKeypadFocus(listView: ComposeView): Boolean {
+        val isCurrentList = listView === view?.findViewById<ComposeView>(R.id.message_list_compose_view)
+        val isActiveScreen = isActive && isResumed && isVisible
+        val isListAvailable = interactionSettings.isKeypadNavigationEnabled && isActiveScreen
+        val isViewAvailable = isCurrentList && listView.isShown && listView.hasWindowFocus()
+        val isEditing = searchView?.isIconified == false || activity?.currentFocus?.onCheckIsTextEditor() == true
+        val hasBlockingAction = actionMode != null || activeMessage != null ||
+            stateSnapshot.messages.any { it.selected }
+        val canReceiveFocus = !isEditing && !hasBlockingAction
+        return isListAvailable && isViewAvailable && canReceiveFocus
+    }
+
     override fun onFullyActive() {
         maybeShowFloatingActionButton()
+        restorePendingKeypadFocus()
     }
 
     private fun maybeShowFloatingActionButton() {
@@ -2448,6 +2516,18 @@ class MessageListFragment :
                     setContent {
                         featureThemeProvider.WithTheme {
                             val scope = rememberMessageListScope()
+                            val focusManager = LocalFocusManager.current
+                            DisposableEffect(scope, focusManager) {
+                                messageListScope = scope
+                                messageListFocusManager = focusManager
+                                restorePendingKeypadFocus()
+                                onDispose {
+                                    if (messageListScope === scope) {
+                                        messageListScope = null
+                                        messageListFocusManager = null
+                                    }
+                                }
+                            }
                             val (state, _) = viewModel.observe { effect -> scope.handleMessageListEffect(effect) }
                             with(messageListScreenRenderer) {
                                 scope.Render(

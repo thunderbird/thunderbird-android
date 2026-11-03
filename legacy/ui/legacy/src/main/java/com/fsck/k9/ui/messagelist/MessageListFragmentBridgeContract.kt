@@ -60,6 +60,8 @@ interface MessageListFragmentBridgeContract {
 
     fun finishActionMode()
     fun setActiveMessage(messageReference: MessageReference?)
+    fun revealAndFocusMessage(messageReference: MessageReference)
+    fun cancelPendingMessageFocus()
     fun onFullyActive()
     // endregion [ methods used on MessageHomeActivity ]
 

@@ -924,14 +924,18 @@ open class MessageHomeActivity :
     }
 
     fun onKeypadReaderUserInteraction() {
-        if (displayMode == DisplayMode.MESSAGE_LIST) return
         if (!generalSettingsManager.getConfig().interaction.isKeypadNavigationEnabled) return
-        messageViewContainerFragment?.onKeypadUserInteraction()
+        if (displayMode == DisplayMode.MESSAGE_LIST) {
+            messageListFragment?.cancelPendingMessageFocus()
+        } else {
+            messageViewContainerFragment?.onKeypadUserInteraction()
+        }
     }
 
     override fun onPause() {
         phoneKeyShortcutHandler.reset()
         keypadListShortcuts.reset()
+        messageListFragment?.cancelPendingMessageFocus()
         super.onPause()
     }
 
@@ -939,6 +943,7 @@ open class MessageHomeActivity :
         if (!hasFocus) {
             phoneKeyShortcutHandler.reset()
             keypadListShortcuts.reset()
+            messageListFragment?.cancelPendingMessageFocus()
         }
         super.onWindowFocusChanged(hasFocus)
     }
@@ -1464,7 +1469,9 @@ open class MessageHomeActivity :
 
     private fun returnToMessageList() {
         if (displayMode == DisplayMode.SPLIT_VIEW) {
+            val messageToFocus = keypadReturnMessage()
             showMessageViewPlaceHolder()
+            messageToFocus?.let { messageListFragment?.revealAndFocusMessage(it) }
         } else {
             showMessageList()
         }
@@ -1499,6 +1506,7 @@ open class MessageHomeActivity :
     }
 
     private fun showMessageList() {
+        val messageToFocus = keypadReturnMessage()
         messageViewOnly = false
         messageListWasDisplayed = true
         displayMode = DisplayMode.MESSAGE_LIST
@@ -1506,6 +1514,7 @@ open class MessageHomeActivity :
         messageViewContainerFragment?.isActive = false
         messageListFragment!!.isActive = true
         messageListFragment!!.setActiveMessage(null)
+        messageToFocus?.let { messageListFragment?.revealAndFocusMessage(it) }
 
         viewSwitcher!!.showFirstView()
 
@@ -1515,6 +1524,13 @@ open class MessageHomeActivity :
 
         onMessageListDisplayed()
     }
+
+    private fun keypadReturnMessage(): MessageReference? =
+        if (generalSettingsManager.getConfig().interaction.isKeypadNavigationEnabled) {
+            messageViewContainerFragment?.messageReference
+        } else {
+            null
+        }
 
     private fun setDrawerLockState() {
         if (!isDrawerEnabled) return
