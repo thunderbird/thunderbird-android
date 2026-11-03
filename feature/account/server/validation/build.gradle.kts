@@ -13,6 +13,9 @@ android {
     }
 }
 
+// Unit tests depend on code from the debug source set
+disableReleaseUnitTests()
+
 dependencies {
     implementation(projects.core.ui.contract)
     implementation(projects.core.common)

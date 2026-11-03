@@ -8,6 +8,19 @@ android {
         compose = true
     }
     namespace = "net.thunderbird.feature.widget.message.list"
+
+    testOptions {
+        // AGP's Compose Preview task (since AGP 9.5) requires Android resources in unit tests
+        unitTests.isIncludeAndroidResources = true
+    }
+}
+
+androidComponents {
+    beforeVariants { variantBuilder ->
+        // AGP's Compose Preview task (since AGP 9.5) requires unit tests for every variant
+        @Suppress("UnstableApiUsage")
+        variantBuilder.hostTests[com.android.build.api.variant.HostTestBuilder.UNIT_TEST_TYPE]?.enable = true
+    }
 }
 
 dependencies {

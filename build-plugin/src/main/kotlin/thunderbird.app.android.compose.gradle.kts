@@ -1,3 +1,5 @@
+import com.android.build.api.variant.HostTestBuilder
+
 plugins {
     id("thunderbird.app.android")
     id("org.jetbrains.kotlin.plugin.compose")
@@ -17,6 +19,11 @@ android {
         }
     }
 
+    testOptions {
+        // AGP's Compose Preview task (since AGP 9.5) requires Android resources in unit tests
+        unitTests.isIncludeAndroidResources = true
+    }
+
     packaging {
         jniLibs {
             keepDebugSymbols += listOf(
@@ -26,6 +33,14 @@ android {
                 "**/libsurface_util_jni.so",
             )
         }
+    }
+}
+
+androidComponents {
+    beforeVariants { variantBuilder ->
+        // AGP's Compose Preview task (since AGP 9.5) requires unit tests for every variant
+        @Suppress("UnstableApiUsage")
+        variantBuilder.hostTests[HostTestBuilder.UNIT_TEST_TYPE]?.enable = true
     }
 }
 
