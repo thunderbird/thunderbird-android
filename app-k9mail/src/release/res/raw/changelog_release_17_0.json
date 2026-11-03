@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "version": "17.0",
+  "versioncode": 39034,
+  "date": "2026-03-16",
+  "notes": [
+    {
+      "type": "new",
+      "text": "New: Account avatar customization",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "New: Foldable device support with split-screen",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "New: Email messages can be printed",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "New: Unified folder account indicator identifies message ownership",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "New: Display account avatar in message notifications",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed: Edge-to-edge regressions affected account setup screens",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed: Tap behavior was unreliable in recipient fields",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed: Incorrect icon was displayed for 'Find folder'",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed: Device orientiation change duplicated recipient field text",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed: Copied link text incorrectly included CSS",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed: Unselecting 'Colorize contact pictures' setting did not persist",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed: Some general settings were not preserved after export and import",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}
