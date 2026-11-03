@@ -3,6 +3,7 @@ package com.fsck.k9.ui.messageview
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.KeyEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.MenuHost
@@ -55,6 +56,28 @@ class MessageViewContainerFragment : Fragment() {
         // ViewPager2/FragmentStateAdapter don't provide an easy way to get hold of the Fragment for the active
         // page. So we're using an implementation detail (the fragment tag) to find the fragment.
         return childFragmentManager.findFragmentByTag("f$itemId") as MessageViewFragment
+    }
+
+    fun dispatchKeypadNavigation(event: KeyEvent): Boolean {
+        val readerVisible = isActive && isResumed && isVisible
+        val pagerReady = this::viewPager.isInitialized && viewPager.scrollState == ViewPager2.SCROLL_STATE_IDLE
+        if (!readerVisible || !pagerReady || view?.hasWindowFocus() != true) return false
+        return findKeypadMessageViewFragment()?.dispatchKeypadNavigation(event) ?: false
+    }
+
+    fun onKeypadUserInteraction() {
+        val readerVisible = isActive && isResumed && isVisible
+        if (!readerVisible || view?.hasWindowFocus() != true) return
+        findKeypadMessageViewFragment()?.onKeypadUserInteraction()
+    }
+
+    private fun findKeypadMessageViewFragment(): MessageViewFragment? {
+        val itemId = if (this::adapter.isInitialized) {
+            adapter.messageList.firstOrNull { it.messageReference == messageReference }?.uniqueId
+        } else {
+            null
+        }
+        return itemId?.let { childFragmentManager.findFragmentByTag("f$it") as? MessageViewFragment }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

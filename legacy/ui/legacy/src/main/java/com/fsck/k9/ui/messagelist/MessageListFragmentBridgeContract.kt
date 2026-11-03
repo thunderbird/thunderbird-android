@@ -1,5 +1,6 @@
 package com.fsck.k9.ui.messagelist
 
+import android.view.Menu
 import androidx.appcompat.view.ActionMode
 import androidx.fragment.app.FragmentActivity
 import app.k9mail.legacy.message.controller.MessageReference
@@ -39,6 +40,8 @@ interface MessageListFragmentBridgeContract {
     fun isSearchViewCollapsed(): Boolean
     fun expandSearchView()
     fun onCompose()
+    fun onRefresh()
+    val keypadActionMenu: Menu?
     fun onCycleSort()
     fun collapseSearchView()
     fun onReverseSort()

@@ -82,6 +82,7 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
     private LoaderManager loaderManager;
 
     private ListPopupWindow alternatesPopup;
+    private RecipientAlternatesKeyboardNavigation alternatesKeyboardNavigation;
     private AlternateRecipientAdapter alternatesAdapter;
     private Recipient alternatesPopupRecipient;
     private TokenListener<Recipient> listener;
@@ -121,8 +122,15 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         // TODO: validator?
 
         alternatesPopup = new ListPopupWindow(context);
+        alternatesKeyboardNavigation = new RecipientAlternatesKeyboardNavigation(alternatesPopup,
+                () -> DI.get(GeneralSettingsManager.class).getConfig().getInteraction().isKeypadNavigationEnabled());
         alternatesAdapter = new AlternateRecipientAdapter(context, this);
         alternatesPopup.setAdapter(alternatesAdapter);
+        alternatesPopup.setOnItemClickListener((parent, view, position, id) -> {
+            if (DI.get(GeneralSettingsManager.class).getConfig().getInteraction().isKeypadNavigationEnabled()) {
+                onRecipientChange(alternatesPopupRecipient, alternatesAdapter.getItem(position));
+            }
+        });
 
         // if a token is completed, pick an entry based on best guess.
         // Note that we override performCompletion, so this doesn't actually do anything
@@ -392,13 +400,18 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         alternatesAdapter.setAlternateRecipientInfo(data);
 
         // Clear the checked item.
+        alternatesKeyboardNavigation.prepareToShow();
         alternatesPopup.show();
         ListView listView = alternatesPopup.getListView();
         listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+        alternatesKeyboardNavigation.onPopupShown();
     }
 
     @Override
     public boolean onKeyPreIme(int keyCode, KeyEvent event) {
+        if (alternatesKeyboardNavigation.onKeyPreIme(keyCode, event)) {
+            return true;
+        }
         if (keyCode == KeyEvent.KEYCODE_BACK && alternatesPopup.isShowing()) {
             alternatesPopup.dismiss();
             return true;
@@ -408,8 +421,19 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
 
     @Override
     public boolean onKeyDown(int keyCode, @NonNull KeyEvent event) {
+        if (alternatesKeyboardNavigation.onKeyDown(keyCode, event)) {
+            return true;
+        }
         alternatesPopup.dismiss();
         return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    public boolean onKeyUp(int keyCode, @NonNull KeyEvent event) {
+        if (alternatesKeyboardNavigation.onKeyUp(keyCode, event)) {
+            return true;
+        }
+        return super.onKeyUp(keyCode, event);
     }
 
     @Override

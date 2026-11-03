@@ -881,6 +881,8 @@ Compose:
       LocalDateTimeConfiguration,
       LocalElevations,
       LocalImages,
+      # Internal dialog opt-in supplied by DialogSettingViewProvider's constructor.
+      LocalKeypadNavigationEnabled,
       LocalShapes,
       LocalSizes,
       LocalSpacings,

@@ -84,6 +84,7 @@ import com.fsck.k9.activity.compose.AttachmentPresenter.WaitingAction;
 import app.k9mail.core.android.common.camera.CameraCaptureHandler;
 import com.fsck.k9.activity.compose.ComposeCryptoStatus;
 import com.fsck.k9.activity.compose.ComposeCryptoStatus.SendErrorState;
+import com.fsck.k9.activity.compose.ComposeKeypadNavigation;
 import com.fsck.k9.activity.compose.IdentityAdapter;
 import com.fsck.k9.activity.compose.IdentityAdapter.IdentityContainer;
 import com.fsck.k9.activity.compose.PgpEnabledErrorDialog.OnOpenPgpDisableListener;
@@ -160,6 +161,8 @@ import net.thunderbird.feature.search.legacy.LocalMessageSearch;
 import org.openintents.openpgp.OpenPgpApiManager;
 import org.openintents.openpgp.util.OpenPgpIntentStarter;
 import net.thunderbird.core.android.common.startup.DatabaseUpgradeInterceptor;
+import net.thunderbird.core.android.common.keypad.KeypadDialogNavigation;
+import net.thunderbird.core.android.common.keypad.KeypadWindowInstaller;
 import net.thunderbird.legacy.logging.Log;
 import static com.fsck.k9.activity.compose.AttachmentPresenter.REQUEST_CODE_ATTACHMENT_URI;
 import static app.k9mail.core.android.common.camera.CameraCaptureHandler.CAMERA_PERMISSION_REQUEST_CODE;
@@ -241,6 +244,8 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
     private final LegacyAccountManager accountManager = DI.get(LegacyAccountManager.class);
     private final GetDefaultAccountId getDefaultAccountId = DI.get(GetDefaultAccountId.class);
     private final GeneralSettingsManager generalSettingsManager = DI.get(GeneralSettingsManager.class);
+    private final ComposeKeypadNavigation keypadNavigation = new ComposeKeypadNavigation(this,
+            () -> generalSettingsManager.getConfig().getInteraction().isKeypadNavigationEnabled());
     private final WebViewConfigProvider webViewConfigProvider = DI.get(WebViewConfigProvider.class);
     private final DisplayHtml displayHtml = DI.get(DisplayHtmlUiFactory.class).createForMessageCompose();
     private final HtmlSignatureSanitizer htmlSignatureSanitizer = DI.get(HtmlSignatureSanitizer.class);
@@ -1160,7 +1165,9 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
             }
             return false;
         });
-        popup.show();
+        if (!keypadNavigation.showAttachmentMenu(popup.getMenu(), () -> DI.get(KeypadWindowInstaller.class))) {
+            popup.show();
+        }
     }
 
     private void switchToIdentity(Identity identity) {
@@ -1276,6 +1283,9 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        if (keypadNavigation.onMenuItemSelected(item)) {
+            return true;
+        }
         int id = item.getItemId();
         if (id == android.R.id.home) {
             prepareToFinish(true);
@@ -1337,6 +1347,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
         super.onPrepareOptionsMenu(menu);
 
         recipientPresenter.onPrepareOptionsMenu(menu);
+        keypadNavigation.prepareMenu(menu);
 
         return true;
     }
@@ -1398,6 +1409,11 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
 
     @Override
     public Dialog onCreateDialog(int id) {
+        Dialog dialog = createComposeDialog(id);
+        return dialog != null ? KeypadDialogNavigation.bind(dialog, DI.get(KeypadWindowInstaller.class)) : null;
+    }
+
+    private Dialog createComposeDialog(int id) {
         final MaterialAlertDialogBuilder builder;
         switch (id) {
             case DIALOG_SAVE_OR_DISCARD_DRAFT_MESSAGE:
@@ -2208,7 +2224,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
         @Override
         public void removeAttachmentView(Attachment attachment) {
             View view = attachmentViews.get(attachment.uri);
-            attachmentsView.removeView(view);
+            keypadNavigation.removeAttachment(attachmentsView, view, messageContentView);
             attachmentViews.remove(attachment.uri);
 
             if (attachmentViews.isEmpty()) {

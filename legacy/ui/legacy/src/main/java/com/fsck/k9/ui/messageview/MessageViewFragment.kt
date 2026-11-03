@@ -12,6 +12,7 @@ import android.os.Parcelable
 import android.os.SystemClock
 import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
+import android.view.KeyEvent
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -243,6 +244,10 @@ class MessageViewFragment :
 
     private fun initializeMessageTopView(messageTopView: MessageTopView) {
         messageTopView.setShowAccountIndicator(showAccountIndicator)
+        messageTopView.isKeypadReaderActive = {
+            val readerVisible = isActive && isResumed && isVisible
+            readerVisible && interactionSettings.isKeypadNavigationEnabled
+        }
 
         val sizeFormatter = SizeFormatter(resources)
         val composeView = messageTopView.findViewById<ComposeView>(R.id.bottom_sheet_compose_view)
@@ -357,15 +362,34 @@ class MessageViewFragment :
 
         if (menuVisible) {
             messageLoaderHelper.resumeCryptoOperationIfNecessary()
+            if (this::messageTopView.isInitialized) messageTopView.requestInitialKeypadFocus()
         } else {
+            if (this::messageTopView.isInitialized) messageTopView.resetKeypadNavigation()
             // When the menu is hidden, the message associated with this fragment is no longer active. If the user
             // returns to it, we want to mark the message as opened again.
             wasMessageMarkedAsOpened = false
         }
     }
 
+    fun dispatchKeypadNavigation(event: KeyEvent): Boolean {
+        if (!isActive || !isResumed || !isVisible) return false
+        return interactionSettings.isKeypadNavigationEnabled && messageTopView.dispatchKeypadNavigation(event)
+    }
+
+    fun onKeypadUserInteraction() {
+        if (this::messageTopView.isInitialized) messageTopView.onKeypadUserInteraction()
+    }
+
+    override fun onPause() {
+        if (this::messageTopView.isInitialized) messageTopView.resetKeypadNavigation()
+        super.onPause()
+    }
+
     override fun onResume() {
         super.onResume()
+
+        messageTopView.setKeypadNavigationEnabled(interactionSettings.isKeypadNavigationEnabled)
+        messageTopView.requestInitialKeypadFocus()
         markMessageAsOpened()
         messageCryptoPresenter.onResume()
     }

@@ -400,6 +400,55 @@
             android:summary="@string/keypad_navigation_summary"
             />
 
+        <PreferenceScreen
+            android:key="keypad_navigation_help"
+            android:title="@string/keypad_help_title"
+            android:summary="@string/keypad_help_summary"
+            >
+            <Preference
+                android:key="keypad_help_navigation"
+                android:persistent="false"
+                android:title="@string/keypad_help_navigation_title"
+                android:summary="@string/keypad_help_navigation_summary"
+                />
+            <Preference
+                android:key="keypad_help_softkeys"
+                android:persistent="false"
+                android:title="@string/keypad_help_softkeys_title"
+                android:summary="@string/keypad_help_softkeys_summary"
+                />
+            <Preference
+                android:key="keypad_help_selection"
+                android:persistent="false"
+                android:title="@string/keypad_help_selection_title"
+                android:summary="@string/keypad_help_selection_summary"
+                />
+            <Preference
+                android:key="keypad_help_folders"
+                android:persistent="false"
+                android:title="@string/keypad_help_folders_title"
+                android:summary="@string/keypad_help_folders_summary"
+                />
+            <Preference
+                android:key="keypad_help_reader"
+                android:persistent="false"
+                android:title="@string/keypad_help_reader_title"
+                android:summary="@string/keypad_help_reader_summary"
+                />
+            <Preference
+                android:key="keypad_help_input"
+                android:persistent="false"
+                android:title="@string/keypad_help_input_title"
+                android:summary="@string/keypad_help_input_summary"
+                />
+            <Preference
+                android:key="keypad_help_phone"
+                android:persistent="false"
+                android:title="@string/keypad_help_phone_title"
+                android:summary="@string/keypad_help_phone_summary"
+                />
+        </PreferenceScreen>
+
         <ListPreference
             android:dependency="keypad_navigation"
             android:dialogTitle="@string/keypad_call_action_title"

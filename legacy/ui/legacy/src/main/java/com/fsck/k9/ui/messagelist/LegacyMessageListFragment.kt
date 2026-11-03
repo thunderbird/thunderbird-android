@@ -1853,6 +1853,13 @@ class LegacyMessageListFragment :
         doNegativeClick(dialogId)
     }
 
+    override fun onRefresh() {
+        if (isActive && isResumed) checkMail()
+    }
+
+    override val keypadActionMenu: Menu?
+        get() = actionMode?.menu
+
     private fun checkMail() {
         if (isSingleAccountMode && isSingleFolderMode) {
             val folderId = currentFolder!!.databaseId

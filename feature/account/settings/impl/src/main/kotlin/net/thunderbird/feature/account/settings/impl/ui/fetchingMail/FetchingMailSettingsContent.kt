@@ -7,6 +7,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import app.k9mail.core.ui.compose.common.keypad.keypadDialogWindow
 import kotlinx.collections.immutable.persistentListOf
 import net.thunderbird.components.ui.bolt.atom.DropdownMenuBox
 import net.thunderbird.components.ui.bolt.atom.button.ButtonIcon
@@ -73,6 +74,7 @@ internal fun FetchingMailSettingsContent(
 
     if (showDialog) {
         AlertDialog(
+            modifier = Modifier.keypadDialogWindow(),
             title = stringResource(R.string.account_settings_account_delete_dlg_title),
             text = stringResource(
                 R.string.account_settings_account_delete_dlg_instructions_fmt,

@@ -5,6 +5,7 @@ import com.fsck.k9.legacyCoreModule
 import com.fsck.k9.legacyUiModules
 import net.thunderbird.app.common.account.appCommonAccountModule
 import net.thunderbird.app.common.activity.DefaultActivityProvider
+import net.thunderbird.app.common.activity.DefaultKeypadWindowInstaller
 import net.thunderbird.app.common.activity.KeypadNavigationActivityLifecycleCallbacks
 import net.thunderbird.app.common.appConfig.AndroidPlatformConfigProvider
 import net.thunderbird.app.common.core.appCommonCoreModule
@@ -12,6 +13,7 @@ import net.thunderbird.app.common.feature.appCommonFeatureModule
 import net.thunderbird.app.common.startup.appCommonStartupModule
 import net.thunderbird.app.composition.appCompositionModule
 import net.thunderbird.core.android.common.activity.ActivityProvider
+import net.thunderbird.core.android.common.keypad.KeypadWindowInstaller
 import net.thunderbird.core.common.appConfig.PlatformConfigProvider
 import org.koin.android.ext.koin.androidApplication
 import org.koin.core.module.Module
@@ -31,6 +33,7 @@ val appCommonModule: Module = module {
     )
 
     single<PlatformConfigProvider> { AndroidPlatformConfigProvider() }
+    single<KeypadWindowInstaller> { DefaultKeypadWindowInstaller(interactionPreferences = get()) }
     single {
         KeypadNavigationActivityLifecycleCallbacks(
             application = androidApplication(),

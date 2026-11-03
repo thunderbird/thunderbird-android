@@ -8,7 +8,9 @@ import android.content.res.Configuration
 import android.os.Bundle
 import android.os.Parcelable
 import android.view.KeyEvent
+import android.view.Menu
 import android.view.MenuItem
+import android.view.MotionEvent
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.ProgressBar
@@ -60,6 +62,7 @@ import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.core.android.common.startup.DatabaseUpgradeInterceptor
 import net.thunderbird.core.android.common.keypad.PhoneIdleProvider
+import net.thunderbird.core.android.common.keypad.KeypadShortcutHandler
 import net.thunderbird.core.android.common.keypad.PhoneKeyShortcutHandler
 import net.thunderbird.core.featureflag.keys.GeneratedFeatureFlagKey
 import net.thunderbird.core.featureflag.provider.evaluator.MultiFeatureFlagProviderEvaluator
@@ -91,6 +94,7 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import org.koin.core.parameter.parametersOf
 import androidx.core.net.toUri
+import java.lang.ref.WeakReference
 import net.thunderbird.feature.account.UnifiedAccountId
 
 private const val TAG = "MainActivity"
@@ -131,6 +135,16 @@ open class MessageHomeActivity :
     private val foldableStateObserver: FoldableStateObserver by inject { parametersOf(this) }
     private val featureFlagProvider: MultiFeatureFlagProviderEvaluator by inject()
     private val storageProvider: StorageProvider by inject()
+
+    private val keypadListShortcuts = KeypadShortcutHandler(
+        mapOf(
+            KeyEvent.KEYCODE_0 to KeypadListAction.FOLDERS,
+            KeyEvent.KEYCODE_5 to KeypadListAction.REFRESH,
+            KeyEvent.KEYCODE_7 to KeypadListAction.COMPOSE,
+            KeyEvent.KEYCODE_9 to KeypadListAction.SEARCH,
+        ),
+    )
+    private var keypadDrawerReturnFocus: WeakReference<View>? = null
 
     private val phoneIdleProvider by lazy { PhoneIdleProvider(this) }
     private val phoneKeyShortcutHandler = PhoneKeyShortcutHandler<MessageReference, KeypadMessageAction>(
@@ -751,6 +765,17 @@ open class MessageHomeActivity :
                 if (openFolderTransaction != null) {
                     commitOpenFolderTransaction()
                 }
+                if (generalSettingsManager.getConfig().interaction.isKeypadNavigationEnabled) {
+                    val previous = keypadDrawerReturnFocus?.get()
+                    keypadDrawerReturnFocus = null
+                    drawerView.post {
+                        if (previous?.isAttachedToWindow == true && previous.isShown) {
+                            previous.requestFocus()
+                        } else {
+                            findViewById<View>(R.id.message_list_container)?.requestFocus(View.FOCUS_FORWARD)
+                        }
+                    }
+                }
             }
 
             override fun onDrawerStateChanged(newState: Int) = Unit
@@ -758,6 +783,11 @@ open class MessageHomeActivity :
             override fun onDrawerOpened(drawerView: View) {
                 collapseSearchView()
                 messageListFragment?.finishActionMode()
+                if (generalSettingsManager.getConfig().interaction.isKeypadNavigationEnabled) {
+                    drawerView.post {
+                        if (navigationDrawer?.isOpen == true) drawerView.requestFocus(View.FOCUS_FORWARD)
+                    }
+                }
             }
 
             override fun onDrawerSlide(drawerView: View, slideOffset: Float) = Unit
@@ -849,9 +879,31 @@ open class MessageHomeActivity :
 
     protected open val isDrawerEnabled: Boolean = true
 
-    override fun dispatchKeyEvent(event: KeyEvent): Boolean {
-        if (phoneKeyShortcutHandler.dispatchKeyEvent(event)) return true
+    val keypadContextMenu: Menu?
+        get() = if (displayMode == DisplayMode.MESSAGE_LIST) messageListFragment?.keypadActionMenu else null
 
+    override fun dispatchKeyEvent(event: KeyEvent): Boolean {
+        // Record only a new input gesture, before it can open a different message. Its release and
+        // held repeats belong to the original target and must not cancel the new reader's initial focus.
+        if (event.action == KeyEvent.ACTION_DOWN && event.repeatCount == 0) onKeypadReaderUserInteraction()
+        return phoneKeyShortcutHandler.dispatchKeyEvent(event) || dispatchContentKeypadNavigation(event) ||
+            dispatchExistingKeyEvent(event)
+    }
+
+    private fun dispatchContentKeypadNavigation(event: KeyEvent): Boolean {
+        val keypadEnabled = generalSettingsManager.getConfig().interaction.isKeypadNavigationEnabled
+        val isEditing = currentFocus?.onCheckIsTextEditor() == true
+        val canUseKeypad = keypadEnabled && !isEditing && isSearchViewCollapsed()
+        val isContentActive = window.decorView.hasWindowFocus() && navigationDrawer?.isOpen != true
+        val canUseShortcuts = canUseKeypad && isContentActive
+        val isList = displayMode == DisplayMode.MESSAGE_LIST
+        val readerHandled = canUseShortcuts && !isList &&
+            messageViewContainerFragment?.dispatchKeypadNavigation(event) == true
+        return readerHandled ||
+            keypadListShortcuts.dispatchKeyEvent(event, canUseShortcuts && isList, ::performKeypadListAction)
+    }
+
+    private fun dispatchExistingKeyEvent(event: KeyEvent): Boolean {
         var eventHandled = false
         val isKeypadEditing = generalSettingsManager.getConfig().interaction.isKeypadNavigationEnabled &&
             currentFocus?.onCheckIsTextEditor() == true
@@ -866,15 +918,46 @@ open class MessageHomeActivity :
         return eventHandled
     }
 
+    override fun dispatchTouchEvent(event: MotionEvent): Boolean {
+        if (event.actionMasked == MotionEvent.ACTION_DOWN) onKeypadReaderUserInteraction()
+        return super.dispatchTouchEvent(event)
+    }
+
+    fun onKeypadReaderUserInteraction() {
+        if (displayMode == DisplayMode.MESSAGE_LIST) return
+        if (!generalSettingsManager.getConfig().interaction.isKeypadNavigationEnabled) return
+        messageViewContainerFragment?.onKeypadUserInteraction()
+    }
+
     override fun onPause() {
         phoneKeyShortcutHandler.reset()
+        keypadListShortcuts.reset()
         super.onPause()
     }
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {
-        if (!hasFocus) phoneKeyShortcutHandler.reset()
+        if (!hasFocus) {
+            phoneKeyShortcutHandler.reset()
+            keypadListShortcuts.reset()
+        }
         super.onWindowFocusChanged(hasFocus)
     }
+
+    private fun performKeypadListAction(action: KeypadListAction) {
+        when (action) {
+            KeypadListAction.REFRESH -> messageListFragment?.onRefresh()
+            KeypadListAction.COMPOSE -> messageListFragment?.onCompose()
+            KeypadListAction.SEARCH -> messageListFragment?.expandSearchView()
+            KeypadListAction.FOLDERS -> {
+                if (isDrawerEnabled) {
+                    keypadDrawerReturnFocus = currentFocus?.let { WeakReference(it) }
+                    navigationDrawer?.open()
+                }
+            }
+        }
+    }
+
+    private enum class KeypadListAction { REFRESH, COMPOSE, SEARCH, FOLDERS }
 
     @Suppress("NestedBlockDepth")
     private fun handleOnBackPressed(callback: OnBackPressedCallback) {

@@ -3,14 +3,17 @@ package net.thunderbird.app.common.activity
 import android.view.KeyEvent
 import assertk.assertThat
 import assertk.assertions.containsExactly
+import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
 import assertk.assertions.isSameInstanceAs
+import assertk.assertions.isTrue
 import net.thunderbird.core.android.testing.RobolectricTest
 import org.junit.Test
 import org.robolectric.Robolectric
 import org.robolectric.RuntimeEnvironment
 import org.robolectric.annotation.Config
+import org.robolectric.shadows.ShadowDialog
 
 @Config(sdk = [26, 31, 36])
 class KeypadNavigationActivityLifecycleCallbacksTest : RobolectricTest() {
@@ -58,13 +61,16 @@ class KeypadNavigationActivityLifecycleCallbacksTest : RobolectricTest() {
         // Assert
         assertThat(activity.menuOpenCount).isEqualTo(0)
         assertThat(delegate.events).containsExactly(staleRelease)
+        assertThat(ShadowDialog.getShownDialogs()).isEmpty()
 
         // Act
         activity.window.callback.dispatchKeyEvent(keypadEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_F1))
         activity.window.callback.dispatchKeyEvent(keypadEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_F1))
 
         // Assert
-        assertThat(activity.menuOpenCount).isEqualTo(1)
+        assertThat(ShadowDialog.getLatestDialog().isShowing).isTrue()
+        assertThat(ShadowDialog.getShownDialogs().size).isEqualTo(1)
+        assertThat(delegate.events).containsExactly(staleRelease)
     }
 
     @Test

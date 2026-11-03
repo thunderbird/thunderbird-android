@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="keypad_compose_next_field">Next field</string>
+    <string name="keypad_compose_previous_field">Previous field</string>
+    <string name="keypad_compose_body">Message body</string>
+    <string name="keypad_compose_attachments">Attachments</string>
     <!-- === App-specific strings ============================================================= -->
 
     <!-- Used in the about dialog -->
@@ -730,6 +734,22 @@
     <string name="volume_navigation_title_short">Volume key navigation</string>
     <string name="keypad_navigation_title">Hardware keypad navigation</string>
     <string name="keypad_navigation_summary">Navigate using the directional pad and hardware keys.</string>
+    <string name="keypad_help_title">Hardware keypad help</string>
+    <string name="keypad_help_summary">Keys, message selection, menus, and folders</string>
+    <string name="keypad_help_navigation_title">Move and open</string>
+    <string name="keypad_help_navigation_summary">Use the directional pad to move focus. Press the center key or Enter to activate the focused item. Outside text fields, * moves to the previous control and # moves to the next.</string>
+    <string name="keypad_help_softkeys_title">Menus and back</string>
+    <string name="keypad_help_softkeys_summary">The left soft key or F1 opens actions. In a dialog, it moves to the next control, including out of a text field. The right soft key or F2 hides the keyboard first, then goes back or closes a cancelable dialog. Direction keys and the center key operate menu items.</string>
+    <string name="keypad_help_selection_title">Select messages</string>
+    <string name="keypad_help_selection_summary">Hold the center key on a message to select it. Use the directional pad to reach another message, then press the center key to toggle its selection. Use the selection toolbar for actions on the selected messages.</string>
+    <string name="keypad_help_folders_title">Folders and refresh</string>
+    <string name="keypad_help_folders_summary">In the message list, 0 opens folders and accounts, 5 refreshes, 7 starts a new message, and 9 searches. Select the account heading to switch accounts. Choose a folder with the directional pad and center key. These shortcuts are inactive in text fields.</string>
+    <string name="keypad_help_reader_title">Read a message</string>
+    <string name="keypad_help_reader_summary">1: top. 3: bottom. 2: page up. 8: page down. 5: focus the message body. 7: reply. 9: attachments. In the body, Up and Down scroll by a line; hold to continue scrolling.</string>
+    <string name="keypad_help_input_title">Write and search</string>
+    <string name="keypad_help_input_summary">Numbers, characters, * and # remain available to your input method in text fields. Use the directional pad to move the text cursor. Shortcuts with Ctrl, Alt or Shift keep their normal behavior.</string>
+    <string name="keypad_help_phone_title">Call and end-call keys</string>
+    <string name="keypad_help_phone_summary">Optional message actions are configured separately below. They require Phone permission and work only when no call is ringing or in progress. Keys reserved by Android may not reach Thunderbird.</string>
     <string name="keypad_call_action_title">Call key message action</string>
     <string name="keypad_end_call_action_title">End-call key message action</string>
     <string name="keypad_message_action_none">No action</string>

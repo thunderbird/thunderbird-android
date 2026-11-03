@@ -1,3 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="keypad_next_control">Next control</string>
+    <string name="keypad_previous_control">Previous control</string>
+    <string name="keypad_back">Back</string>
+    <string name="keypad_enable">Enable hardware keypad navigation</string>
 </resources>

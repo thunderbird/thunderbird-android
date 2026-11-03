@@ -13,7 +13,6 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
 import android.widget.PopupWindow
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
@@ -131,6 +130,7 @@ import net.jcip.annotations.GuardedBy
 import net.thunderbird.core.android.account.Expunge
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.LegacyAccountManager
+import net.thunderbird.core.android.common.keypad.KeypadPopupContainer
 import net.thunderbird.core.android.network.ConnectivityManager
 import net.thunderbird.core.common.exception.MessagingException
 import net.thunderbird.core.common.mail.Flag
@@ -1661,6 +1661,13 @@ class MessageListFragment :
         doNegativeClick(dialogId)
     }
 
+    override fun onRefresh() {
+        if (isActive && isResumed) checkMail()
+    }
+
+    override val keypadActionMenu: Menu?
+        get() = actionMode?.menu
+
     private fun checkMail() {
         if (isSingleAccountMode && isSingleFolderMode) {
             val folderId = currentFolder!!.databaseId
@@ -2519,7 +2526,12 @@ class MessageListFragment :
                 }
             }
         }
-        val parent = FrameLayout(context).apply {
+        lateinit var popup: PopupWindow
+        val parent = KeypadPopupContainer(
+            context = context,
+            isNavigationEnabled = { interactionSettings.isKeypadNavigationEnabled },
+            onDismissRequest = { popup.dismiss() },
+        ).apply {
             id = android.R.id.content
             compositionContext = createLifecycleAwareWindowRecomposer(lifecycle = lifecycle)
             layoutParams = ViewGroup.LayoutParams(
@@ -2528,7 +2540,7 @@ class MessageListFragment :
             )
             addView(composeView)
         }
-        val popup = PopupWindow(
+        popup = PopupWindow(
             parent,
             ViewGroup.LayoutParams.WRAP_CONTENT,
             ViewGroup.LayoutParams.WRAP_CONTENT,

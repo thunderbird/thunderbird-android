@@ -63,6 +63,11 @@ public class NonLockingScrollView extends ScrollView {
     private final List<View> mChildrenNeedingAllTouches = new ArrayList<>();
 
     private boolean mSkipWebViewScroll = true;
+    private boolean mKeypadNavigationEnabled = false;
+
+    public void setKeypadNavigationEnabled(boolean enabled) {
+        mKeypadNavigationEnabled = enabled;
+    }
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
@@ -143,7 +148,7 @@ public class NonLockingScrollView extends ScrollView {
          * assuming it already is at least partially in view.
          * 
          */
-        if (mSkipWebViewScroll  &&
+        if ((mSkipWebViewScroll || mKeypadNavigationEnabled) &&
                 focused instanceof MessageWebView &&
                 focused.getGlobalVisibleRect(new Rect())) {
             mSkipWebViewScroll = false;

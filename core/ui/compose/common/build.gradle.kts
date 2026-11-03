@@ -17,6 +17,7 @@ dependencies {
     api(projects.core.ui.contract)
 
     implementation(projects.core.common)
+    implementation(projects.core.android.common)
 
     implementation(libs.androidx.window)
 

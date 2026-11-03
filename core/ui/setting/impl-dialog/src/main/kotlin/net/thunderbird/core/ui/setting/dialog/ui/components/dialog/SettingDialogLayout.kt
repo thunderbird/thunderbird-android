@@ -23,6 +23,7 @@ internal fun SettingDialogLayout(
     onDismissRequest: () -> Unit,
     modifier: Modifier = Modifier,
     confirmButtonEnabled: Boolean = true,
+    isTextInputFocused: Boolean = false,
     content: @Composable ColumnScope.() -> Unit,
 ) {
     AlertDialog(
@@ -34,7 +35,7 @@ internal fun SettingDialogLayout(
         onDismissClick = onDismissClick,
         onDismissRequest = onDismissRequest,
         confirmButtonEnabled = confirmButtonEnabled,
-        modifier = modifier,
+        modifier = modifier.keypadDialogNavigation(onDismissRequest, isTextInputFocused),
     ) {
         Column(
             verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.half),

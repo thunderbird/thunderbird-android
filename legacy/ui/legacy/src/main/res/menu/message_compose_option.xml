@@ -4,6 +4,26 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     >
     <item
+        android:id="@+id/keypad_compose_next_field"
+        android:title="@string/keypad_compose_next_field"
+        android:visible="false"
+        />
+    <item
+        android:id="@+id/keypad_compose_previous_field"
+        android:title="@string/keypad_compose_previous_field"
+        android:visible="false"
+        />
+    <item
+        android:id="@+id/keypad_compose_body"
+        android:title="@string/keypad_compose_body"
+        android:visible="false"
+        />
+    <item
+        android:id="@+id/keypad_compose_attachments"
+        android:title="@string/keypad_compose_attachments"
+        android:visible="false"
+        />
+    <item
         android:id="@+id/add_attachment"
         android:title="@string/add_attachment_action"
         android:icon="@drawable/ic_attachment"

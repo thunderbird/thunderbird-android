@@ -1,5 +1,6 @@
 package net.thunderbird.app.common.activity
 
+import android.os.Looper
 import android.view.InputDevice
 import android.view.KeyEvent
 import android.view.View
@@ -17,7 +18,10 @@ import assertk.assertions.isTrue
 import net.thunderbird.core.android.testing.RobolectricTest
 import org.junit.Test
 import org.robolectric.Robolectric
+import org.robolectric.Shadows.shadowOf
 import org.robolectric.annotation.Config
+import org.robolectric.shadows.ShadowDialog
+import net.thunderbird.app.common.R as AppR
 
 @Config(sdk = [26, 31, 36])
 class KeypadWindowCallbackTest : RobolectricTest() {
@@ -55,7 +59,46 @@ class KeypadWindowCallbackTest : RobolectricTest() {
         testSubject.dispatchKeyEvent(keypadEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_F1))
 
         // Assert
-        assertThat(activity.menuOpenCount).isEqualTo(1)
+        assertThat(ShadowDialog.getLatestDialog().isShowing).isTrue()
+        assertThat(ShadowDialog.getShownDialogs().size).isEqualTo(1)
+        assertThat(activity.menuOpenCount).isEqualTo(0)
+        assertThat(delegate.events).isEmpty()
+    }
+
+    @Test
+    fun `fallback Next control should leave a multiline editor without inserting a tab`() {
+        // Arrange
+        val editor = EditText(activity).apply {
+            setSingleLine(false)
+            setText("First line\nSecond line")
+            isFocusableInTouchMode = true
+        }
+        val button = Button(activity).apply {
+            text = "Next control"
+            isFocusableInTouchMode = true
+        }
+        val content = LinearLayout(activity).apply {
+            orientation = LinearLayout.VERTICAL
+            addView(editor)
+            addView(button)
+        }
+        showAndFocus(content)
+        editor.requestFocus()
+
+        // Act
+        testSubject.dispatchKeyEvent(keypadEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_F1))
+        testSubject.dispatchKeyEvent(keypadEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_F1))
+        val dialog = ShadowDialog.getLatestDialog() as androidx.appcompat.app.AlertDialog
+        val position = (0 until dialog.listView.adapter.count).single { index ->
+            (dialog.listView.adapter.getItem(index) as android.view.MenuItem).title ==
+                activity.getString(AppR.string.keypad_next_control)
+        }
+        dialog.listView.performItemClick(null, position, dialog.listView.adapter.getItemId(position))
+        shadowOf(Looper.getMainLooper()).idle()
+
+        // Assert
+        assertThat(activity.currentFocus).isSameInstanceAs(button)
+        assertThat(editor.text.toString()).isEqualTo("First line\nSecond line")
         assertThat(delegate.events).isEmpty()
     }
 

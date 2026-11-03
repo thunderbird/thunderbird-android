@@ -13,6 +13,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import kotlinx.coroutines.delay
@@ -45,6 +46,7 @@ internal fun TextDialogView(
         )
     }
     var errorMessage by remember { mutableStateOf<String?>(null) }
+    var isTextInputFocused by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         delay(EDIT_TEXT_FOCUS_DELAY)
@@ -71,6 +73,7 @@ internal fun TextDialogView(
         onDismissClick = onDismissClick,
         onDismissRequest = onDismissRequest,
         confirmButtonEnabled = errorMessage == null,
+        isTextInputFocused = isTextInputFocused,
         modifier = modifier,
     ) {
         setting.description()?.let {
@@ -87,7 +90,9 @@ internal fun TextDialogView(
                 val transformedText = setting.transform(changedText.text)
                 textFieldValue = changedText.copy(text = transformedText)
             },
-            modifier = Modifier.focusRequester(focusRequester),
+            modifier = Modifier
+                .focusRequester(focusRequester)
+                .onFocusChanged { isTextInputFocused = it.hasFocus },
         )
     }
 }

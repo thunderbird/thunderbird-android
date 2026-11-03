@@ -10,11 +10,14 @@ import android.os.Parcel
 import android.os.Parcelable
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.view.KeyEvent
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ProgressBar
+import androidx.core.view.doOnLayout
 import app.k9mail.core.android.common.contact.ContactRepository
 import com.fsck.k9.mail.Message
 import com.fsck.k9.mail.Part
@@ -24,6 +27,8 @@ import com.fsck.k9.ui.R
 import com.fsck.k9.ui.helper.SizeFormatter
 import com.fsck.k9.ui.messageview.MessageContainerView.OnRenderingFinishedListener
 import com.fsck.k9.view.MessageHeader
+import com.fsck.k9.view.MessageWebView
+import com.fsck.k9.view.NonLockingScrollView
 import com.fsck.k9.view.ThemeUtils
 import com.fsck.k9.view.ToolableViewAnimator
 import com.google.android.material.button.MaterialButton
@@ -70,6 +75,60 @@ class MessageTopView(
     private var showAccountIndicator = false
 
     private var messageCryptoPresenter: MessageCryptoPresenter? = null
+    private var keypadNavigation: MessageReaderKeypadNavigation? = null
+    private val initialKeypadFocus by lazy {
+        MessageReaderInitialFocus(
+            scrollView = findViewById(R.id.message_scrollview),
+            body = { findViewById<MessageWebView>(R.id.message_content) },
+            isReaderReady = { isKeypadReaderActive() && isShown && hasWindowFocus() },
+            defaultFocusContainer = { rootView.findViewById(R.id.toolbar) },
+        )
+    }
+    var isKeypadReaderActive: () -> Boolean = { false }
+
+    fun requestInitialKeypadFocus() {
+        post { doOnLayout { initialKeypadFocus.tryFocusBody() } }
+    }
+
+    fun setKeypadNavigationEnabled(enabled: Boolean) {
+        findViewById<NonLockingScrollView>(R.id.message_scrollview).setKeypadNavigationEnabled(enabled)
+        keypadNavigation?.reset()
+    }
+
+    fun dispatchKeypadNavigation(event: KeyEvent): Boolean {
+        if (!isShown || !hasWindowFocus() || rootView.findFocus()?.onCheckIsTextEditor() == true) return false
+        if (event.action == KeyEvent.ACTION_DOWN && event.repeatCount == 0) onKeypadUserInteraction()
+        val navigation = keypadNavigation ?: MessageReaderKeypadNavigation(
+            scrollView = findViewById(R.id.message_scrollview),
+            body = { findViewById<MessageWebView>(R.id.message_content)?.takeIf { it.isShown } },
+            reply = { findViewById(R.id.menu_primary_action) },
+            attachments = { findViewById(R.id.view_all_attachments) },
+        ).also { keypadNavigation = it }
+        return navigation.dispatchKeyEvent(event)
+    }
+
+    fun onKeypadUserInteraction() {
+        if (isKeypadReaderActive() && isShown && hasWindowFocus()) initialKeypadFocus.onUserInteraction()
+    }
+
+    fun resetKeypadNavigation() {
+        keypadNavigation?.reset()
+    }
+
+    override fun onDetachedFromWindow() {
+        resetKeypadNavigation()
+        super.onDetachedFromWindow()
+    }
+
+    override fun dispatchWindowFocusChanged(hasFocus: Boolean) {
+        if (!hasFocus) resetKeypadNavigation()
+        super.dispatchWindowFocusChanged(hasFocus)
+    }
+
+    override fun dispatchTouchEvent(event: MotionEvent): Boolean {
+        if (event.actionMasked == MotionEvent.ACTION_DOWN) onKeypadUserInteraction()
+        return super.dispatchTouchEvent(event)
+    }
 
     public override fun onFinishInflate() {
         super.onFinishInflate()
@@ -144,6 +203,7 @@ class MessageTopView(
             renderPlainFormat,
             object : OnRenderingFinishedListener {
                 override fun onLoadFinished() {
+                    initialKeypadFocus.onBodyRendered()
                     displayViewOnLoadFinished(true)
                 }
             },
@@ -346,6 +406,7 @@ class MessageTopView(
     fun displayViewOnLoadFinished(finishProgressBar: Boolean) {
         if (!finishProgressBar || !isShowingProgress) {
             viewAnimator.displayedChild = 2
+            requestInitialKeypadFocus()
             return
         }
         val animator = ObjectAnimator.ofInt(
@@ -358,6 +419,7 @@ class MessageTopView(
             object : AnimatorListenerAdapter() {
                 override fun onAnimationEnd(animator: Animator) {
                     viewAnimator.displayedChild = 2
+                    requestInitialKeypadFocus()
                 }
             },
         )
