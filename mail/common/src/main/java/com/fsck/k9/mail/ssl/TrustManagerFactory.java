@@ -11,11 +11,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.fsck.k9.mail.CertificateChainException;
+import com.fsck.k9.mail.ssl.tls.CertificateBlocklist;
 import javax.net.ssl.SSLException;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
-import net.thunderbird.core.common.net.tls.CertificateBlocklist;
-import net.thunderbird.core.common.net.tls.CompromisedCertificateException;
+import com.fsck.k9.mail.ssl.tls.CompromisedCertificateException;
 import net.thunderbird.legacy.logging.Log;
 import org.apache.hc.client5.http.ssl.DefaultHostnameVerifier;
 
@@ -35,7 +35,6 @@ public class TrustManagerFactory {
 
 
     private X509TrustManager defaultTrustManager;
-    private final CertificateBlocklist certificateBlocklist = new CertificateBlocklist();
     private LocalKeyStore keyStore;
     private final Map<String, SecureX509TrustManager> cachedTrustManagers = new HashMap<>();
 
@@ -92,8 +91,9 @@ public class TrustManagerFactory {
             String message;
             Throwable cause;
             X509Certificate certificate = chain[0];
+            CertificateBlocklist certificateBlocklist = CertificateBlocklist.INSTANCE;
             try {
-                certificateBlocklist.isBlockedSpkiSha256(chain);
+                certificateBlocklist.checkCertificateBlockList(chain);
                 defaultTrustManager.checkServerTrusted(chain, authType);
                 hostnameVerifier.verify(mHost, certificate);
                 return;
