@@ -1,4 +1,4 @@
-package net.thunderbird.quality
+package net.thunderbird.quality.util
 
 import com.lemonappdev.konsist.api.Konsist
 
