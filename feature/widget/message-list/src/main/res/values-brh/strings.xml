@@ -1,3 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    </resources>
+    <string name="message_list_widget_compose_action">لکھبو</string>
+    <string name="message_list_widget_list_item_loading">لوڈ مننگ اے…</string>
+    <string name="message_list_widget_initializing">لوڈ مننگ اے…</string>
+    <string name="message_list_widget_inbox_title">اوار آ انباکس</string>
+    <string name="message_list_widget_label">کلہو تا لڑ</string>
+</resources>
