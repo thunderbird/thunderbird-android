@@ -88,14 +88,14 @@ android {
     }
 
     buildTypes {
-        val isCI = providers.gradleProperty("ci")
+        val minify = providers.gradleProperty("minify")
             .map(String::toBoolean)
-            .orElse(false)
+            .orElse(true)
         release {
             signingConfig = signingConfigs.getByType(SigningType.K9_RELEASE)
 
-            isMinifyEnabled = !isCI.get()
-            isShrinkResources = !isCI.get()
+            isMinifyEnabled = minify.get()
+            isShrinkResources = minify.get()
 
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),

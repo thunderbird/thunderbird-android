@@ -80,8 +80,8 @@ Use the startup benchmarks to check that a profile helps, or to compare startup 
 
 To see all benchmark tasks, run `./gradlew :app-thunderbird:benchmarks:tasks --all | grep connected`.
 
-The Thunderbird `daily` build doesn't use R8 by default. Add `-Pci=true` to turn it on, so the build is closer to a
-release build.
+The `release`, `beta`, and `daily` builds use R8 by default, so benchmarks run against an optimized build like the
+one users get. `-Pminify=false` turns R8 off; don't use it for benchmarks.
 
 Each test starts the app from a cold state and waits for the message list:
 
