@@ -6,7 +6,7 @@
   "notes": [
     {
       "type": "fixed",
-      "text": "Fixed: Application navigation and account switching could crash",
+      "text": "Application navigation and account switching could crash",
       "source": "ckchangelog-xml"
     }
   ]

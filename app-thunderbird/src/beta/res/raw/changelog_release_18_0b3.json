@@ -6,7 +6,7 @@
   "notes": [
     {
       "type": "fixed",
-      "text": "Fixed: Crash occurred when retrieving images from large messages",
+      "text": "Crash occurred when retrieving images from large messages",
       "source": "ckchangelog-xml"
     }
   ]

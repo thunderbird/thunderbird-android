@@ -6,12 +6,12 @@
   "notes": [
     {
       "type": "fixed",
-      "text": "Fixed: Application could crash when rendering message list",
+      "text": "Application could crash when rendering message list",
       "source": "ckchangelog-xml"
     },
     {
       "type": "fixed",
-      "text": "Fixed: Avatar image updates did not propagate immediately",
+      "text": "Avatar image updates did not propagate immediately",
       "source": "ckchangelog-xml"
     }
   ]

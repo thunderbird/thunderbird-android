@@ -6,7 +6,7 @@
   "notes": [
     {
       "type": "fixed",
-      "text": "Fixed: Deleted messages could remain visible in message list",
+      "text": "Deleted messages could remain visible in message list",
       "source": "ckchangelog-xml"
     }
   ]
