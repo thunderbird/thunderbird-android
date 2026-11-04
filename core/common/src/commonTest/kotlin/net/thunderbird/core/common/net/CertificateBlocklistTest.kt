@@ -14,17 +14,27 @@ class CertificateBlocklistTest {
 
     @Test
     fun `safe certificate hash is not blocked`() = runTest {
-        val certificateBlockList = CertificateBlocklist()
+        val certificateBlockList = CertificateBlocklist
         val hostCert = getGoodHostCertificate()
-        assertAll { certificateBlockList.isBlockedSpkiSha256(arrayOf(hostCert)) }
+        assertAll { certificateBlockList.checkCertificateBlockList(arrayOf(hostCert)) }
     }
 
     @Test
     fun `known unsafe certificate hash is blocked`() = runTest {
-        val certificateBlockList = CertificateBlocklist()
+        val certificateBlockList = CertificateBlocklist
         val badCert = getBadHostCertificate()
         assertFailsWith(CompromisedCertificateException::class) {
-            certificateBlockList.isBlockedSpkiSha256(arrayOf(badCert))
+            certificateBlockList.checkCertificateBlockList(arrayOf(badCert))
+        }
+    }
+
+    @Test
+    fun `known unsafe certificate hash is blocked in middle of chain`() = runTest {
+        val certificateBlockList = CertificateBlocklist
+        val goodCert = getGoodHostCertificate()
+        val badCert = getBadHostCertificate()
+        assertFailsWith(CompromisedCertificateException::class) {
+            certificateBlockList.checkCertificateBlockList(arrayOf(goodCert, badCert, goodCert))
         }
     }
 
