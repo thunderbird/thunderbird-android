@@ -6,12 +6,12 @@
   "notes": [
     {
       "type": "fixed",
-      "text": "Fixed: Messages containing complex CSS could be unreadable",
+      "text": "Messages containing complex CSS could be unreadable",
       "source": "ckchangelog-xml"
     },
     {
       "type": "fixed",
-      "text": "Fixed: Deleted/read messages in unified inbox may not update until manual refresh",
+      "text": "Deleted/read messages in unified inbox may not update until manual refresh",
       "source": "ckchangelog-xml"
     }
   ]

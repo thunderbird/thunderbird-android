@@ -6,7 +6,7 @@
   "notes": [
     {
       "type": "fixed",
-      "text": "Fixed: Attachment filenames with non-ASCII characters were incorrectly decoded and saved",
+      "text": "Attachment filenames with non-ASCII characters were incorrectly decoded and saved",
       "source": "ckchangelog-xml"
     }
   ]

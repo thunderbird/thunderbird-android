@@ -6,7 +6,7 @@
   "notes": [
     {
       "type": "fixed",
-      "text": "Fixed: Signature field only accepted single-line text in Composition defaults",
+      "text": "Signature field only accepted single-line text in Composition defaults",
       "source": "ckchangelog-xml"
     }
   ]

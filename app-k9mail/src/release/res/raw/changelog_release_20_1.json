@@ -6,12 +6,12 @@
   "notes": [
     {
       "type": "fixed",
-      "text": "Fixed: Application could crash when rendering long messages",
+      "text": "Application could crash when rendering long messages",
       "source": "ckchangelog-xml"
     },
     {
       "type": "fixed",
-      "text": "Fixed: Application could crash due to memory exhaustion",
+      "text": "Application could crash due to memory exhaustion",
       "source": "ckchangelog-xml"
     }
   ]

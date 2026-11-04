@@ -6,7 +6,7 @@
   "notes": [
     {
       "type": "fixed",
-      "text": "Fixed: Could not empty the Trash folder using the Empty Trash action",
+      "text": "Could not empty the Trash folder using the Empty Trash action",
       "source": "ckchangelog-xml"
     }
   ]

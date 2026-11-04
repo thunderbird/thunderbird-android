@@ -6,7 +6,7 @@
   "notes": [
     {
       "type": "fixed",
-      "text": "Fixed: K-9 Mail crashed when scanning Thundermail QR code",
+      "text": "K-9 Mail crashed when scanning Thundermail QR code",
       "source": "ckchangelog-xml"
     }
   ]

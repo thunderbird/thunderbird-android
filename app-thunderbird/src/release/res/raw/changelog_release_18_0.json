@@ -6,67 +6,67 @@
   "notes": [
     {
       "type": "new",
-      "text": "New: Add support for PNG avatars",
+      "text": "Add support for PNG avatars",
       "source": "ckchangelog-xml"
     },
     {
       "type": "new",
-      "text": "New: Add setting to display ISO date and time in message list",
+      "text": "Add setting to display ISO date and time in message list",
       "source": "ckchangelog-xml"
     },
     {
       "type": "new",
-      "text": "New: Used fixed-width font for composing when user chooses fixed-width for viewing",
+      "text": "Used fixed-width font for composing when user chooses fixed-width for viewing",
       "source": "ckchangelog-xml"
     },
     {
       "type": "changed",
-      "text": "Changed: Attachment summary moved from message bottom to header for visibility",
+      "text": "Attachment summary moved from message bottom to header for visibility",
       "source": "ckchangelog-xml"
     },
     {
       "type": "fixed",
-      "text": "Fixed: EHLO parsing exception appeared in logcat when sending email",
+      "text": "EHLO parsing exception appeared in logcat when sending email",
       "source": "ckchangelog-xml"
     },
     {
       "type": "fixed",
-      "text": "Fixed: \"Delete (from notification)\" setting did not retain state",
+      "text": "\"Delete (from notification)\" setting did not retain state",
       "source": "ckchangelog-xml"
     },
     {
       "type": "fixed",
-      "text": "Fixed: Find folder search hint text was cut off on smaller screens",
+      "text": "Find folder search hint text was cut off on smaller screens",
       "source": "ckchangelog-xml"
     },
     {
       "type": "fixed",
-      "text": "Fixed: User was not notified if they were offline when sending message",
+      "text": "User was not notified if they were offline when sending message",
       "source": "ckchangelog-xml"
     },
     {
       "type": "fixed",
-      "text": "Fixed: \"Sent folder not found\" warning occurred when uploading sent messages was disabled",
+      "text": "\"Sent folder not found\" warning occurred when uploading sent messages was disabled",
       "source": "ckchangelog-xml"
     },
     {
       "type": "fixed",
-      "text": "Fixed: Loading bar appeared detached from header, leaving visible gap",
+      "text": "Loading bar appeared detached from header, leaving visible gap",
       "source": "ckchangelog-xml"
     },
     {
       "type": "fixed",
-      "text": "Fixed: CC/BCC fields were not expanded by default for Reply All",
+      "text": "CC/BCC fields were not expanded by default for Reply All",
       "source": "ckchangelog-xml"
     },
     {
       "type": "fixed",
-      "text": "Fixed: Crash occurred when retrieving images from large messages",
+      "text": "Crash occurred when retrieving images from large messages",
       "source": "ckchangelog-xml"
     },
     {
       "type": "fixed",
-      "text": "Fixed: Deleted messages could remain visible in message list",
+      "text": "Deleted messages could remain visible in message list",
       "source": "ckchangelog-xml"
     }
   ]
