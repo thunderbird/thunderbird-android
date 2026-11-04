@@ -25,9 +25,7 @@ val featureFundingModule = module {
     }
 
     single<FundingReminderContract.ActivityLifecycleObserver> {
-        ActivityLifecycleObserver(
-            settings = get(),
-        )
+        ActivityLifecycleObserver()
     }
 
     single<FundingReminderContract.Reminder> {
