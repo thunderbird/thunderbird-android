@@ -12,7 +12,6 @@ import kotlinx.coroutines.launch
 import net.thunderbird.core.android.common.activity.ActivityProvider
 import net.thunderbird.feature.funding.api.FundingSettings
 import net.thunderbird.feature.funding.common.api.FUNDING_REMINDER_DELAY_MILLIS
-import net.thunderbird.feature.funding.common.api.FUNDING_REMINDER_MIN_ACTIVITY_MILLIS
 import net.thunderbird.feature.funding.common.api.FundingReminderContract
 import net.thunderbird.feature.funding.common.api.FundingReminderContract.ActivityLifecycleObserver
 import net.thunderbird.feature.funding.common.api.FundingReminderContract.FragmentLifecycleObserver
@@ -104,7 +103,6 @@ class FundingReminder(
 
         return settings.getReminderShownTimestamp() == 0L &&
             settings.getReminderReferenceTimestamp() + FUNDING_REMINDER_DELAY_MILLIS <= currentTime &&
-            settings.getActivityCounterInMillis() >= FUNDING_REMINDER_MIN_ACTIVITY_MILLIS &&
             settings.getLastReminderShownActivityAmount() == 0L &&
             settings.getReminderShownCount() == 0
     }
@@ -115,9 +113,7 @@ class FundingReminder(
      */
     private fun shouldShowSecondReminder(): Boolean {
         val activityAtLastReminder = settings.getLastReminderShownActivityAmount()
-        val shouldShowTime = activityAtLastReminder + FUNDING_REMINDER_MIN_ACTIVITY_MILLIS
         return settings.getReminderShownTimestamp() > 0L &&
-            settings.getActivityCounterInMillis() >= shouldShowTime &&
             settings.getReminderShownCount() > 0 &&
             settings.getReminderShownCount() < 2
     }
@@ -138,7 +134,6 @@ class FundingReminder(
         scope.launch {
             val now = clock.now().toEpochMilliseconds()
             settings.setReminderShownTimestamp(now)
-            settings.setLastReminderShownActivityAmount(settings.getActivityCounterInMillis())
             settings.incrementReminderShownCount()
         }
 
@@ -152,7 +147,6 @@ class FundingReminder(
                 settings.getReminderShownTimestamp() != 0L
 
             settings.setReminderShownTimestamp(now)
-            settings.setLastReminderShownActivityAmount(settings.getActivityCounterInMillis())
 
             // Users who saw the first popup before the counter was added will need to increment this
             // twice as to not potentially see a third one until we release another.
