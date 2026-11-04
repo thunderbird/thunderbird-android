@@ -43,7 +43,6 @@ import com.fsck.k9.search.unifiedFolderRole
 import com.fsck.k9.ui.BuildConfig
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.BaseActivity
-import com.fsck.k9.ui.managefolders.ManageFoldersActivity
 import com.fsck.k9.ui.messagelist.DefaultFolderProvider
 import com.fsck.k9.ui.messagelist.MessageListFragmentBridgeContract
 import com.fsck.k9.ui.messagelist.MessageListFragmentBridgeContract.MessageListFragmentListener
@@ -856,7 +855,7 @@ open class MessageHomeActivity :
             collapseSearchView()
         } else if (isDrawerEnabled && currentAccount != null && supportFragmentManager.backStackEntryCount == 0) {
             if (generalSettingsManager.getConfig().display.inboxSettings.isShowUnifiedInbox) {
-                if (currentSearch?.isUnifiedInbox != true) {
+                if (currentSearch?.unifiedFolderRole != FolderRole.INBOX) {
                     openUnifiedFolder(FolderRole.INBOX)
                 } else {
                     dispatchOnBackPressed(callback)
