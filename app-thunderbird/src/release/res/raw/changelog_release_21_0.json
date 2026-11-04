@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "version": "21.0",
+  "versioncode": 28,
+  "date": "2026-07-20",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Animation setting now allows On, Off, and System Default options",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Modernized 'Fetching mail' account settings screen",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Modernized 'Composition defaults' screen",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Application could crash due to memory exhaustion",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Application could crash when rendering long messages",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Inline images were shown as attachments instead of displaying in message",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Server search results could disappear after loading",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Manage Folders opened the wrong account instead of selected account",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Android widget text scaled too large when system font size was increased",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Cancelling the Thundermail OAuth process incorrectly redirects users to the \"Redirecting to Thundermail\" screen",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Custom swipe actions were not restored from exported settings backups",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Links failed when trailing punctuation was incorrectly included in URLs",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

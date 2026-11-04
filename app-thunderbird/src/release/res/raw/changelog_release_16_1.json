@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "version": "16.1",
+  "versioncode": 20,
+  "date": "2026-02-09",
+  "notes": [
+    {
+      "type": "fixed",
+      "text": "Messages containing complex CSS could be unreadable",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Deleted/read messages in unified inbox may not update until manual refresh",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

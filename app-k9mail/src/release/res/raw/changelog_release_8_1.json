@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "version": "8.1",
+  "versioncode": 39012,
+  "date": "2024-11-06",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "We've fixed one of our top crashes to give you a more stable experience",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

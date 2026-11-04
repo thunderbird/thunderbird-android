@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "version": "9.0",
+  "versioncode": 39022,
+  "date": "2025-03-03",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Basic support for Android 15",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Add a link to the support article when signing in with Google",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Account setup attempts email provider's autoconfig first, then falls back to ISPDB",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Updated translations for multiple languages",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "The changelog now properly displays release versions",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "A wrong translation of the app name has been fixed",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Dependencies have been updated to fix a couple of bugs",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

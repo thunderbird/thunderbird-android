@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "version": "18.0",
+  "versioncode": 22,
+  "date": "2026-04-14",
+  "notes": [
+    {
+      "type": "new",
+      "text": "Add support for PNG avatars",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Add setting to display ISO date and time in message list",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Used fixed-width font for composing when user chooses fixed-width for viewing",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Attachment summary moved from message bottom to header for visibility",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "EHLO parsing exception appeared in logcat when sending email",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "\"Delete (from notification)\" setting did not retain state",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Find folder search hint text was cut off on smaller screens",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "User was not notified if they were offline when sending message",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "\"Sent folder not found\" warning occurred when uploading sent messages was disabled",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Loading bar appeared detached from header, leaving visible gap",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "CC/BCC fields were not expanded by default for Reply All",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Crash occurred when retrieving images from large messages",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Deleted messages could remain visible in message list",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

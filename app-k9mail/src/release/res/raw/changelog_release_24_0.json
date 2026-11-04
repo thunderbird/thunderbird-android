@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "version": "24.0",
+  "versioncode": 39046,
+  "date": "2026-10-05",
+  "notes": [
+    {
+      "type": "new",
+      "text": "Signatures can be formatted as HTML for individual identities",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Reply prompts users to choose Reply or Reply All when both are applicable",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Long account names are resized to fit within two lines in the account drawer",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Selected compose text was invisible in light theme due to white highlighting",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Status bar icons became unreadable when selecting messages in light theme",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Recipient expander would not collapse after editing message subject or body",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Thunderbird could crash when adding an attachment to a message using the camera",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Save All incorrectly saved each attachment using the content of the last file",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "HTML signature text could disappear after rotating the screen",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Editing as new used the default identity instead of the original one for queued mail",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "QR code scanner failed to open when no accounts were configured",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Unsupported QR codes did not display feedback after scanning",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "With a hardware keyboard the focus could not leave To, Cc or Bcc",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

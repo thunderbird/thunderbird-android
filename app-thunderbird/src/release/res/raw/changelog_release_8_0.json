@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "version": "8.0",
+  "versioncode": 4,
+  "date": "2024-10-30",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Thunderbird for Android now looks like a Thunderbird!",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "New folder drawer design.",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Migrate settings from K-9 Mail and Thunderbird Desktop within the app.",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Thunderbird is funded by users just like you. Contribute today, find the link in the settings.",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Simplified folder management by revising display and push classes.",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

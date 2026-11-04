@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "version": "12.1",
+  "versioncode": 39028,
+  "date": "2025-09-03",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Improved drawer navigation with a folder hierarchy",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "K-9 mail could crash when opening",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

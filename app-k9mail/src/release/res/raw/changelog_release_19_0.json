@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "version": "19.0",
+  "versioncode": 39036,
+  "date": "2026-05-26",
+  "notes": [
+    {
+      "type": "new",
+      "text": "Message notification actions can be configured",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Message font size scales with device preferences",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Integrate an easily discoverable way to configure and use Thundermail",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Thunderbird crashed on Android 8 when fetching images",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Accidental swipe in message viewer marked unread email as read",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "version": "8.2",
+  "versioncode": 39019,
+  "date": "2024-12-09",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "You can now support K-9 Mail development with financial contributions.",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Account initials now use the display name",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Account icons remain in the same position when selected",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Help text linking to support page added for Gmail login issues",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Unified inbox enabled only when multiple accounts are configured",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Push service now starts reliably when expected",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Correct default delete message action for QR-imported accounts.",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Folder drawer updates properly on account configuration changes",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

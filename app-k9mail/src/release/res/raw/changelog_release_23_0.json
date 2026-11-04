@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "version": "23.0",
+  "versioncode": 39044,
+  "date": "2026-09-08",
+  "notes": [
+    {
+      "type": "fixed",
+      "text": "Signature field only accepted single-line text in Composition defaults",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

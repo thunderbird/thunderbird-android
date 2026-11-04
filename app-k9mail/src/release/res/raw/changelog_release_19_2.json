@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "version": "19.2",
+  "versioncode": 39038,
+  "date": "2026-06-04",
+  "notes": [
+    {
+      "type": "fixed",
+      "text": "K-9 Mail crashed when scanning Thundermail QR code",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

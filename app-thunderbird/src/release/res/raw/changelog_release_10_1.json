@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "version": "10.1",
+  "versioncode": 11,
+  "date": "2025-06-24",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Attach all images when sharing from gallery, not just the last",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Show the full changelog when it contains special characters",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

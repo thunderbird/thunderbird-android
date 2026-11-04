@@ -2,6 +2,168 @@
   "schemaVersion": 1,
   "releases": [
     {
+      "version": "24.0",
+      "versioncode": 39046,
+      "date": "2026-10-05",
+      "resourceName": "changelog_release_24_0"
+    },
+    {
+      "version": "23.1",
+      "versioncode": 39045,
+      "date": "2026-09-21",
+      "resourceName": "changelog_release_23_1"
+    },
+    {
+      "version": "23.0",
+      "versioncode": 39044,
+      "date": "2026-09-08",
+      "resourceName": "changelog_release_23_0"
+    },
+    {
+      "version": "22.0",
+      "versioncode": 39043,
+      "date": "2026-08-10",
+      "resourceName": "changelog_release_22_0"
+    },
+    {
+      "version": "21.1",
+      "versioncode": 39042,
+      "date": "2026-08-03",
+      "resourceName": "changelog_release_21_1"
+    },
+    {
+      "version": "21.0",
+      "versioncode": 39041,
+      "date": "2026-07-20",
+      "resourceName": "changelog_release_21_0"
+    },
+    {
+      "version": "20.1",
+      "versioncode": 39040,
+      "date": "2026-07-06",
+      "resourceName": "changelog_release_20_1"
+    },
+    {
+      "version": "20.0",
+      "versioncode": 39039,
+      "date": "2026-06-22",
+      "resourceName": "changelog_release_20_0"
+    },
+    {
+      "version": "19.2",
+      "versioncode": 39038,
+      "date": "2026-06-04",
+      "resourceName": "changelog_release_19_2"
+    },
+    {
+      "version": "19.1",
+      "versioncode": 39037,
+      "date": "2026-06-03",
+      "resourceName": "changelog_release_19_1"
+    },
+    {
+      "version": "19.0",
+      "versioncode": 39036,
+      "date": "2026-05-26",
+      "resourceName": "changelog_release_19_0"
+    },
+    {
+      "version": "18.0",
+      "versioncode": 39035,
+      "date": "2026-04-14",
+      "resourceName": "changelog_release_18_0"
+    },
+    {
+      "version": "17.0",
+      "versioncode": 39034,
+      "date": "2026-03-16",
+      "resourceName": "changelog_release_17_0"
+    },
+    {
+      "version": "16.1",
+      "versioncode": 39033,
+      "date": "2026-02-09",
+      "resourceName": "changelog_release_16_1"
+    },
+    {
+      "version": "16.0",
+      "versioncode": 39032,
+      "date": "2026-02-02",
+      "resourceName": "changelog_release_16_0"
+    },
+    {
+      "version": "15.0",
+      "versioncode": 39031,
+      "date": "2026-01-05",
+      "resourceName": "changelog_release_15_0"
+    },
+    {
+      "version": "14.0",
+      "versioncode": 39030,
+      "date": "2025-11-17",
+      "resourceName": "changelog_release_14_0"
+    },
+    {
+      "version": "13.0",
+      "versioncode": 39029,
+      "date": "2025-10-20",
+      "resourceName": "changelog_release_13_0"
+    },
+    {
+      "version": "12.1",
+      "versioncode": 39028,
+      "date": "2025-09-03",
+      "resourceName": "changelog_release_12_1"
+    },
+    {
+      "version": "12.0",
+      "versioncode": 39027,
+      "date": "2025-09-02",
+      "resourceName": "changelog_release_12_0"
+    },
+    {
+      "version": "11.1",
+      "versioncode": 39026,
+      "date": "2025-08-18",
+      "resourceName": "changelog_release_11_1"
+    },
+    {
+      "version": "11.0",
+      "versioncode": 39025,
+      "date": "2025-07-14",
+      "resourceName": "changelog_release_11_0"
+    },
+    {
+      "version": "10.1",
+      "versioncode": 39024,
+      "date": "2025-06-24",
+      "resourceName": "changelog_release_10_1"
+    },
+    {
+      "version": "10.0",
+      "versioncode": 39023,
+      "date": "2025-05-05",
+      "resourceName": "changelog_release_10_0"
+    },
+    {
+      "version": "9.0",
+      "versioncode": 39022,
+      "date": "2025-03-03",
+      "resourceName": "changelog_release_9_0"
+    },
+    {
+      "version": "8.2",
+      "versioncode": 39019,
+      "date": "2024-12-09",
+      "resourceName": "changelog_release_8_2"
+    },
+    {
+      "version": "8.1",
+      "versioncode": 39012,
+      "date": "2024-11-06",
+      "resourceName": "changelog_release_8_1"
+    },
+    {
       "version": "6.904",
       "versioncode": 39004,
       "date": "2024-06-27",
