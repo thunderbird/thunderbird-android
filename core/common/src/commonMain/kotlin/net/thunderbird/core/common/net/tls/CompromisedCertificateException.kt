@@ -1,4 +1,4 @@
-package com.fsck.k9.mail.ssl.tls
+package net.thunderbird.core.common.net.tls
 
 import java.security.cert.CertificateException
 

@@ -1,13 +1,13 @@
-package com.fsck.k9.mail.ssl
+package net.thunderbird.core.common.net
 
 import assertk.assertAll
-import com.fsck.k9.mail.ssl.tls.CertificateBlocklist
-import com.fsck.k9.mail.ssl.tls.CompromisedCertificateException
 import java.security.cert.CertificateFactory
 import java.security.cert.X509Certificate
 import kotlin.jvm.java
 import kotlin.test.assertFailsWith
 import kotlinx.coroutines.test.runTest
+import net.thunderbird.core.common.net.tls.CertificateBlocklist
+import net.thunderbird.core.common.net.tls.CompromisedCertificateException
 import org.junit.Test
 
 class CertificateBlocklistTest {

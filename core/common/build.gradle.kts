@@ -20,6 +20,9 @@ kotlin {
         }
     }
     sourceSets {
+        commonMain.dependencies {
+            implementation(libs.okio)
+        }
         commonTest.dependencies {
             implementation(projects.core.testing)
         }

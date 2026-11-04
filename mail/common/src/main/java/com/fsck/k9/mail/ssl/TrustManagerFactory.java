@@ -11,11 +11,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.fsck.k9.mail.CertificateChainException;
-import com.fsck.k9.mail.ssl.tls.CertificateBlocklist;
+import net.thunderbird.core.common.net.tls.CertificateBlocklist;
 import javax.net.ssl.SSLException;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
-import com.fsck.k9.mail.ssl.tls.CompromisedCertificateException;
+import net.thunderbird.core.common.net.tls.CompromisedCertificateException;
 import net.thunderbird.legacy.logging.Log;
 import org.apache.hc.client5.http.ssl.DefaultHostnameVerifier;
 
