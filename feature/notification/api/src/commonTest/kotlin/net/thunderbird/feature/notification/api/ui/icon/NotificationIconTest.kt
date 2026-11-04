@@ -1,11 +1,10 @@
 package net.thunderbird.feature.notification.api.ui.icon
 
 import androidx.compose.ui.graphics.vector.ImageVector
-import assertk.assertThat
+import assertk.assertFailure
 import assertk.assertions.hasMessage
 import assertk.assertions.isInstanceOf
 import kotlin.test.Test
-import kotlin.test.assertFails
 
 class NotificationIconTest {
     @Test
@@ -15,12 +14,12 @@ class NotificationIconTest {
         val inAppNotificationIcon: ImageVector? = null
 
         // Act
-        val exception = assertFails {
+        val exception = assertFailure {
             NotificationIcon(systemNotificationIcon, inAppNotificationIcon)
         }
 
         // Assert
-        assertThat(exception)
+        exception
             .isInstanceOf<IllegalStateException>()
             .hasMessage(
                 "Both systemNotificationIcon and inAppNotificationIcon are null. " +

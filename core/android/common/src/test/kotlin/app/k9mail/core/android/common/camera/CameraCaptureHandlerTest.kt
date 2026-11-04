@@ -4,8 +4,9 @@ import android.net.Uri
 import android.os.Bundle
 import app.k9mail.core.android.common.camera.CameraCaptureHandler.Companion.STATE_KEY_CAPTURED_IMAGE_URI
 import app.k9mail.core.android.common.camera.io.CaptureImageFileWriter
-import kotlin.test.assertEquals
-import kotlin.test.assertNull
+import assertk.assertThat
+import assertk.assertions.isEqualTo
+import assertk.assertions.isNull
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.kotlin.mock
@@ -25,7 +26,7 @@ internal class CameraCaptureHandlerTest {
     fun `getCapturedImageUri returns null before openCamera has been called`() {
         val handler = CameraCaptureHandler(fileWriter)
 
-        assertNull(handler.getCapturedImageUri())
+        assertThat(handler.getCapturedImageUri()).isNull()
     }
 
     @Test
@@ -34,7 +35,7 @@ internal class CameraCaptureHandlerTest {
 
         handler.restoreInstanceState(savedInstanceState = null)
 
-        assertNull(handler.getCapturedImageUri())
+        assertThat(handler.getCapturedImageUri()).isNull()
     }
 
     @Test
@@ -47,7 +48,7 @@ internal class CameraCaptureHandlerTest {
 
         handler.restoreInstanceState(bundle)
 
-        assertEquals(savedUri, handler.getCapturedImageUri())
+        assertThat(handler.getCapturedImageUri()).isEqualTo(savedUri)
     }
 
     @Test
@@ -57,6 +58,6 @@ internal class CameraCaptureHandlerTest {
 
         handler.saveInstanceState(outState)
 
-        assertNull(outState.getParcelable<Uri>(STATE_KEY_CAPTURED_IMAGE_URI))
+        assertThat(outState.getParcelable<Uri>(STATE_KEY_CAPTURED_IMAGE_URI)).isNull()
     }
 }
