@@ -6,12 +6,12 @@
   "notes": [
     {
       "type": "fixed",
-      "text": "Fixed: Attachment filenames with non-ASCII characters were incorrectly decoded and saved",
+      "text": "Attachment filenames with non-ASCII characters were incorrectly decoded and saved",
       "source": "ckchangelog-xml"
     },
     {
       "type": "fixed",
-      "text": "Fixed: HTML signature text could disappear after rotating the screen",
+      "text": "HTML signature text could disappear after rotating the screen",
       "source": "ckchangelog-xml"
     }
   ]

@@ -6,52 +6,52 @@
   "notes": [
     {
       "type": "changed",
-      "text": "Changed: Only show message notification configuration actions above the cutoff",
+      "text": "Only show message notification configuration actions above the cutoff",
       "source": "ckchangelog-xml"
     },
     {
       "type": "fixed",
-      "text": "Fixed: Account drawer stayed open after account switch despite auto-select Inbox setting",
+      "text": "Account drawer stayed open after account switch despite auto-select Inbox setting",
       "source": "ckchangelog-xml"
     },
     {
       "type": "fixed",
-      "text": "Fixed: Imported settings could incorrectly show 'XX' avatar monogram",
+      "text": "Imported settings could incorrectly show 'XX' avatar monogram",
       "source": "ckchangelog-xml"
     },
     {
       "type": "fixed",
-      "text": "Fixed: Printed emails omitted message headers and used minimal margins",
+      "text": "Printed emails omitted message headers and used minimal margins",
       "source": "ckchangelog-xml"
     },
     {
       "type": "fixed",
-      "text": "Fixed: Compose button did not work in tablet split-screen message view",
+      "text": "Compose button did not work in tablet split-screen message view",
       "source": "ckchangelog-xml"
     },
     {
       "type": "fixed",
-      "text": "Fixed: Accented subfolder names sorted to bottom instead of locale order",
+      "text": "Accented subfolder names sorted to bottom instead of locale order",
       "source": "ckchangelog-xml"
     },
     {
       "type": "fixed",
-      "text": "Fixed: Disabled font size setting appeared in General Settings search",
+      "text": "Disabled font size setting appeared in General Settings search",
       "source": "ckchangelog-xml"
     },
     {
       "type": "fixed",
-      "text": "Fixed: New mail notifications showed avatars when contact pictures were disabled",
+      "text": "New mail notifications showed avatars when contact pictures were disabled",
       "source": "ckchangelog-xml"
     },
     {
       "type": "fixed",
-      "text": "Fixed: Mail opening still used fade-in after animations were disabled",
+      "text": "Mail opening still used fade-in after animations were disabled",
       "source": "ckchangelog-xml"
     },
     {
       "type": "fixed",
-      "text": "Fixed: Sidebar account-switching animations were too fast",
+      "text": "Sidebar account-switching animations were too fast",
       "source": "ckchangelog-xml"
     }
   ]

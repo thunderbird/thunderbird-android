@@ -6,7 +6,7 @@
   "notes": [
     {
       "type": "fixed",
-      "text": "Fixed: Crash occurred when attaching attachment",
+      "text": "Crash occurred when attaching attachment",
       "source": "ckchangelog-xml"
     }
   ]
