@@ -2,9 +2,9 @@ package net.thunderbird.core.file
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import assertk.fail
 import com.eygraber.uri.Uri
 import java.io.File
-import kotlin.test.fail
 import kotlinx.io.Buffer
 import org.junit.Rule
 import org.junit.Test

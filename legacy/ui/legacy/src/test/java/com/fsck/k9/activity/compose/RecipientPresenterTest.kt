@@ -4,6 +4,7 @@ import androidx.test.core.app.ApplicationProvider
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isFalse
+import assertk.assertions.isNotNull
 import assertk.assertions.isNull
 import assertk.assertions.isTrue
 import com.fsck.k9.K9RobolectricTest
@@ -22,7 +23,6 @@ import com.fsck.k9.message.AutocryptStatusInteractor.RecipientAutocryptStatusTyp
 import com.fsck.k9.message.ComposePgpEnableByDefaultDecider
 import com.fsck.k9.message.ComposePgpInlineDecider
 import com.fsck.k9.view.RecipientSelectView.Recipient
-import kotlin.test.assertNotNull
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.testing.RobolectricPendingWorkRule
 import org.junit.Before
@@ -137,7 +137,7 @@ class RecipientPresenterTest : K9RobolectricTest() {
 
         recipientPresenter.asyncUpdateCryptoStatus()
 
-        assertNotNull(recipientPresenter.currentCachedCryptoStatus) { status ->
+        assertThat(recipientPresenter.currentCachedCryptoStatus).isNotNull().given { status ->
             assertThat(status.displayType).isEqualTo(CryptoStatusDisplayType.UNCONFIGURED)
             assertThat(status.specialModeDisplayType).isEqualTo(CryptoSpecialModeDisplayType.NONE)
             assertThat(status.attachErrorStateOrNull).isNull()
@@ -150,7 +150,7 @@ class RecipientPresenterTest : K9RobolectricTest() {
     fun getCurrentCryptoStatus_withCryptoProvider() {
         setupCryptoProvider(noRecipientsAutocryptResult)
 
-        assertNotNull(recipientPresenter.currentCachedCryptoStatus) { status ->
+        assertThat(recipientPresenter.currentCachedCryptoStatus).isNotNull().given { status ->
             assertThat(status.displayType).isEqualTo(CryptoStatusDisplayType.UNAVAILABLE)
             assertThat(status.isProviderStateOk()).isTrue()
             assertThat(status.isOpenPgpConfigured).isTrue()
@@ -166,7 +166,7 @@ class RecipientPresenterTest : K9RobolectricTest() {
 
         setupCryptoProvider(recipientAutocryptStatus)
 
-        assertNotNull(recipientPresenter.currentCachedCryptoStatus) { status ->
+        assertThat(recipientPresenter.currentCachedCryptoStatus).isNotNull().given { status ->
             assertThat(status.displayType).isEqualTo(CryptoStatusDisplayType.AVAILABLE)
             assertThat(status.isProviderStateOk()).isTrue()
             assertThat(status.isOpenPgpConfigured).isTrue()
@@ -182,7 +182,7 @@ class RecipientPresenterTest : K9RobolectricTest() {
 
         setupCryptoProvider(recipientAutocryptStatus)
 
-        assertNotNull(recipientPresenter.currentCachedCryptoStatus) { status ->
+        assertThat(recipientPresenter.currentCachedCryptoStatus).isNotNull().given { status ->
             assertThat(status.displayType).isEqualTo(CryptoStatusDisplayType.AVAILABLE)
             assertThat(status.isProviderStateOk()).isTrue()
             assertThat(status.isOpenPgpConfigured).isTrue()
@@ -198,7 +198,7 @@ class RecipientPresenterTest : K9RobolectricTest() {
 
         setupCryptoProvider(recipientAutocryptStatus)
 
-        assertNotNull(recipientPresenter.currentCachedCryptoStatus) { status ->
+        assertThat(recipientPresenter.currentCachedCryptoStatus).isNotNull().given { status ->
             assertThat(status.displayType).isEqualTo(CryptoStatusDisplayType.UNAVAILABLE)
             assertThat(status.isProviderStateOk()).isTrue()
             assertThat(status.isOpenPgpConfigured).isTrue()
@@ -216,7 +216,7 @@ class RecipientPresenterTest : K9RobolectricTest() {
         recipientPresenter.onCryptoModeChanged(CryptoMode.CHOICE_ENABLED)
         pendingWork.runNextTask()
 
-        assertNotNull(recipientPresenter.currentCachedCryptoStatus) { status ->
+        assertThat(recipientPresenter.currentCachedCryptoStatus).isNotNull().given { status ->
             assertThat(status.displayType).isEqualTo(CryptoStatusDisplayType.ENABLED_ERROR)
             assertThat(status.isProviderStateOk()).isTrue()
             assertThat(status.isOpenPgpConfigured).isTrue()
@@ -234,7 +234,7 @@ class RecipientPresenterTest : K9RobolectricTest() {
         recipientPresenter.onCryptoModeChanged(CryptoMode.CHOICE_DISABLED)
         pendingWork.runNextTask()
 
-        assertNotNull(recipientPresenter.currentCachedCryptoStatus) { status ->
+        assertThat(recipientPresenter.currentCachedCryptoStatus).isNotNull().given { status ->
             assertThat(status.displayType).isEqualTo(CryptoStatusDisplayType.AVAILABLE)
             assertThat(status.isProviderStateOk()).isTrue()
             assertThat(status.isOpenPgpConfigured).isTrue()
@@ -252,7 +252,7 @@ class RecipientPresenterTest : K9RobolectricTest() {
         recipientPresenter.onCryptoModeChanged(CryptoMode.CHOICE_ENABLED)
         pendingWork.runNextTask()
 
-        assertNotNull(recipientPresenter.currentCachedCryptoStatus) { status ->
+        assertThat(recipientPresenter.currentCachedCryptoStatus).isNotNull().given { status ->
             assertThat(status.displayType).isEqualTo(CryptoStatusDisplayType.ENABLED)
             assertThat(status.isProviderStateOk()).isTrue()
             assertThat(status.isOpenPgpConfigured).isTrue()
@@ -266,7 +266,7 @@ class RecipientPresenterTest : K9RobolectricTest() {
         recipientPresenter.onMenuSetSignOnly(true)
         pendingWork.runNextTask()
 
-        assertNotNull(recipientPresenter.currentCachedCryptoStatus) { status ->
+        assertThat(recipientPresenter.currentCachedCryptoStatus).isNotNull().given { status ->
             assertThat(status.displayType).isEqualTo(CryptoStatusDisplayType.SIGN_ONLY)
             assertThat(status.isProviderStateOk()).isTrue()
             assertThat(status.isOpenPgpConfigured).isTrue()
@@ -281,7 +281,7 @@ class RecipientPresenterTest : K9RobolectricTest() {
         recipientPresenter.onMenuSetPgpInline(true)
         pendingWork.runNextTask()
 
-        assertNotNull(recipientPresenter.currentCachedCryptoStatus) { status ->
+        assertThat(recipientPresenter.currentCachedCryptoStatus).isNotNull().given { status ->
             assertThat(status.displayType).isEqualTo(CryptoStatusDisplayType.UNAVAILABLE)
             assertThat(status.isProviderStateOk()).isTrue()
             assertThat(status.isPgpInlineModeEnabled).isTrue()

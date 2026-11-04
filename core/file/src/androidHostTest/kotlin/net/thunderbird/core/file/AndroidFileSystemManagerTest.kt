@@ -7,7 +7,6 @@ import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.fail
 import com.eygraber.uri.toKmpUri
-import kotlin.test.fail
 import kotlinx.io.Buffer
 import org.junit.Rule
 import org.junit.Test

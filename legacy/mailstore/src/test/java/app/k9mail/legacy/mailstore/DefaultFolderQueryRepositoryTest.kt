@@ -1,5 +1,6 @@
 package app.k9mail.legacy.mailstore
 
+import assertk.assertFailure
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isFalse
@@ -10,7 +11,6 @@ import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ConnectionSecurity
 import com.fsck.k9.mail.ServerSettings
 import kotlin.test.Test
-import kotlin.test.assertFails
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.runTest
 import net.thunderbird.account.fake.FakeAccountData.ACCOUNT_ID_OTHER_RAW
@@ -60,10 +60,10 @@ class DefaultFolderQueryRepositoryTest {
         val unknownAccountId = AccountIdFactory.of(ACCOUNT_ID_OTHER_RAW)
 
         // Act
-        val exception = assertFails { testSubject.findById(unknownAccountId, REGULAR_FOLDER_ID) }
+        val exception = assertFailure { testSubject.findById(unknownAccountId, REGULAR_FOLDER_ID) }
 
         // Assert
-        assertThat(exception)
+        exception
             .isInstanceOf<IllegalStateException>()
             .prop(IllegalStateException::message)
             .isEqualTo("Account not found: $unknownAccountId")
@@ -81,10 +81,10 @@ class DefaultFolderQueryRepositoryTest {
         )
 
         // Act
-        val exception = assertFails { subject.findById(accountId, REGULAR_FOLDER_ID) }
+        val exception = assertFailure { subject.findById(accountId, REGULAR_FOLDER_ID) }
 
         // Assert
-        assertThat(exception)
+        exception
             .isInstanceOf<IllegalStateException>()
             .prop(IllegalStateException::message)
             .isEqualTo("Account not found: $accountId")
@@ -162,10 +162,10 @@ class DefaultFolderQueryRepositoryTest {
             )
 
             // Act
-            val exception = assertFails { subject.findFolderServerIdById(accountId, REGULAR_FOLDER_ID) }
+            val exception = assertFailure { subject.findFolderServerIdById(accountId, REGULAR_FOLDER_ID) }
 
             // Assert
-            assertThat(exception)
+            exception
                 .isInstanceOf<IllegalStateException>()
                 .prop(IllegalStateException::message)
                 .isEqualTo("Account not found: $accountId")
@@ -213,10 +213,10 @@ class DefaultFolderQueryRepositoryTest {
         )
 
         // Act
-        val exception = assertFails { subject.findIdByServerId(accountId, FolderServerId("serverId")) }
+        val exception = assertFailure { subject.findIdByServerId(accountId, FolderServerId("serverId")) }
 
         // Assert
-        assertThat(exception)
+        exception
             .isInstanceOf<IllegalStateException>()
             .prop(IllegalStateException::message)
             .isEqualTo("Account not found: $accountId")
@@ -282,10 +282,10 @@ class DefaultFolderQueryRepositoryTest {
         )
 
         // Act
-        val exception = assertFails { subject.isPresent(accountId, REGULAR_FOLDER_ID) }
+        val exception = assertFailure { subject.isPresent(accountId, REGULAR_FOLDER_ID) }
 
         // Assert
-        assertThat(exception)
+        exception
             .isInstanceOf<IllegalStateException>()
             .prop(IllegalStateException::message)
             .isEqualTo("Account not found: $accountId")
