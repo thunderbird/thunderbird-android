@@ -1,3 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    </resources>
+    <string name="sent_folder_not_found_dialog_cancel_action">کینسل</string>
+    <string name="sent_folder_not_found_dialog_supporting_text">دا ای میل اے رائ کننگ ان گڈ خوندی کے، اکاؤنٹ سیٹنگاتےٹی رائ کروکاتا فولڈر اس جوڑ کبو۔</string>
+    <string name="sent_folder_not_found_dialog_assign_folder_action">رائ کروکاتا ڤولڈر تئے کبو</string>
+    <string name="sent_folder_not_found_dialog_send_and_delete_action">رائ کبو و مٹائفبو</string>
+</resources>
