@@ -8,6 +8,7 @@ import kotlinx.collections.immutable.toPersistentList
 import net.thunderbird.account.fake.FakeAccountData.ACCOUNT_ID
 import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.account.avatar.Avatar
+import net.thunderbird.feature.mail.folder.FolderRole
 import net.thunderbird.feature.mail.folder.FolderType
 import net.thunderbird.feature.mail.folder.api.Folder
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayFolder
@@ -16,7 +17,6 @@ import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.MailDisp
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.MailDisplayFolder
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.UnifiedDisplayAccount
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.UnifiedDisplayFolder
-import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.UnifiedDisplayFolderType
 
 internal object FakeData {
 
@@ -85,8 +85,7 @@ internal object FakeData {
     )
 
     val UNIFIED_FOLDER = UnifiedDisplayFolder(
-        folderId = UnifiedDisplayFolderType.INBOX.id,
-        unifiedType = UnifiedDisplayFolderType.INBOX,
+        role = FolderRole.INBOX,
         unreadMessageCount = 123,
         starredMessageCount = 567,
     )

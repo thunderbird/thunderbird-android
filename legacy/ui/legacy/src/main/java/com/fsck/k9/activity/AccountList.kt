@@ -80,8 +80,8 @@ abstract class AccountList : BaseListActivity(), OnItemClickListener {
 
         if (generalSettingsManager.getConfig().display.inboxSettings.isShowUnifiedInbox) {
             val unifiedInboxAccount = SearchAccount.createUnifiedInboxSearch(
-                title = coreResourceProvider.searchUnifiedFoldersTitle(),
-                detail = coreResourceProvider.searchUnifiedFoldersDetail(),
+                title = coreResourceProvider.unifiedInboxTitle(),
+                detail = coreResourceProvider.unifiedInboxDetail(),
             )
             accounts.add(unifiedInboxAccount)
         }

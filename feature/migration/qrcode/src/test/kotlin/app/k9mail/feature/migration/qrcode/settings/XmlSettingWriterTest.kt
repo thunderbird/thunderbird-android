@@ -152,7 +152,6 @@ class XmlSettingWriterTest {
                   </identities>
                   <folders>
                     <folder name="INBOX">
-                      <value key="integrate">false</value>
                       <value key="inTopGroup">false</value>
                       <value key="syncEnabled">true</value>
                       <value key="visible">true</value>

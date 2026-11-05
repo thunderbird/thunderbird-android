@@ -105,7 +105,6 @@ class DefaultFolderDetailsRepositoryTest {
             id = REGULAR_FOLDER_ID,
             name = "Regular",
             isInTopGroup = true,
-            isIntegrate = true,
             isSyncEnabled = true,
             isVisible = true,
             isNotificationsEnabled = false,
@@ -123,7 +122,6 @@ class DefaultFolderDetailsRepositoryTest {
         assertThat(folderDetails?.folder?.name).isEqualTo("Regular")
         assertThat(folderDetails?.folder?.type).isEqualTo(FolderType.REGULAR)
         assertThat(folderDetails?.isInTopGroup).isEqualTo(true)
-        assertThat(folderDetails?.isIntegrate).isEqualTo(true)
         assertThat(folderDetails?.isSyncEnabled).isEqualTo(true)
         assertThat(folderDetails?.isVisible).isEqualTo(true)
         assertThat(folderDetails?.isNotificationsEnabled).isEqualTo(false)
@@ -208,24 +206,9 @@ class DefaultFolderDetailsRepositoryTest {
 
         // Assert
         verify(messageStore).setSyncEnabled(REGULAR_FOLDER_ID, true)
-        verify(messageStore, never()).setIncludeInUnifiedInbox(any(), any())
         verify(messageStore, never()).setVisible(any(), any())
         verify(messageStore, never()).setNotificationsEnabled(any(), any())
         verify(messageStore, never()).setPushEnabled(any(), any())
-        assertThat(result).isEqualTo(Outcome.success(Unit))
-    }
-
-    @Test
-    fun `partial update should update unified inbox inclusion when provided`() = runTest {
-        // Arrange
-        val partialUpdate = PartialUpdatableFolderDetails(
-            folderId = REGULAR_FOLDER_ID,
-            includeInUnifiedInbox = true,
-        )
-        // Act
-        val result = testSubject.update(accountId, partialUpdate)
-        // Assert
-        verify(messageStore).setIncludeInUnifiedInbox(REGULAR_FOLDER_ID, true)
         assertThat(result).isEqualTo(Outcome.success(Unit))
     }
 
@@ -234,7 +217,6 @@ class DefaultFolderDetailsRepositoryTest {
         // Arrange
         val partialUpdate = PartialUpdatableFolderDetails(
             folderId = REGULAR_FOLDER_ID,
-            includeInUnifiedInbox = true,
             syncEnabled = false,
             visible = true,
             notificationsEnabled = false,
@@ -245,7 +227,6 @@ class DefaultFolderDetailsRepositoryTest {
         val result = testSubject.update(accountId, partialUpdate)
 
         // Assert
-        verify(messageStore).setIncludeInUnifiedInbox(REGULAR_FOLDER_ID, true)
         verify(messageStore).setSyncEnabled(REGULAR_FOLDER_ID, false)
         verify(messageStore).setVisible(REGULAR_FOLDER_ID, true)
         verify(messageStore).setNotificationsEnabled(REGULAR_FOLDER_ID, false)
@@ -337,7 +318,6 @@ class DefaultFolderDetailsRepositoryTest {
             name = "Regular",
             type = K9FolderType.REGULAR,
             isInTopGroup = true,
-            isIntegrate = true,
             isSyncEnabled = true,
             isVisible = true,
             isNotificationsEnabled = false,
@@ -363,7 +343,6 @@ class DefaultFolderDetailsRepositoryTest {
             name = "Inbox",
             type = K9FolderType.INBOX,
             isInTopGroup = true,
-            isIntegrate = true,
             isSyncEnabled = true,
             isVisible = true,
             isNotificationsEnabled = false,
@@ -404,7 +383,6 @@ private fun createFolderDetails(id: Long): FolderDetails {
             isLocalOnly = false,
         ),
         isInTopGroup = false,
-        isIntegrate = false,
         isSyncEnabled = true,
         isVisible = true,
         isNotificationsEnabled = true,
@@ -461,7 +439,6 @@ private class FakeFolderDetailsAccessor(
     override val type: K9FolderType = K9FolderType.REGULAR,
     override val isLocalOnly: Boolean = false,
     override val isInTopGroup: Boolean = false,
-    override val isIntegrate: Boolean = false,
     override val isSyncEnabled: Boolean = true,
     override val isVisible: Boolean = true,
     override val isNotificationsEnabled: Boolean = true,

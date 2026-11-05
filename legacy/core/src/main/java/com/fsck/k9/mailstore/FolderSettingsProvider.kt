@@ -25,7 +25,6 @@ class FolderSettingsProvider(
             isNotificationsEnabled = storage.getBoolean("$prefix.notificationsEnabled", false),
             isPushEnabled = storage.getBoolean("$prefix.pushEnabled", false),
             inTopGroup = storage.getBoolean("$prefix.inTopGroup", false),
-            integrate = storage.getBoolean("$prefix.integrate", false),
         ).also {
             removeImportedFolderSettings(prefix)
         }

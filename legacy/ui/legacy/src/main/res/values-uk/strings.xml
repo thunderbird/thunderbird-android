@@ -524,8 +524,6 @@
     <string name="show_unified_inbox_title">Показувати Об\'єднану Вхідну Скриньку</string>
     <string name="show_starred_count_title">Показати кількість помічених зірочкою</string>
     <string name="integrated_inbox_title">Об\'єднана Вхідна Скринька</string>
-    <string name="integrated_inbox_detail">Всі повідомлення в об\'єднаних папках</string>
-    <string name="folder_settings_include_in_integrated_inbox_label">Об’єднати</string>
     <string name="account_settings_no_folder_selected">Нічого</string>
     <string name="account_settings_automatic_special_folder">Автоматично (%s)</string>
     <string name="font_size_settings_title">Розмір шрифту</string>

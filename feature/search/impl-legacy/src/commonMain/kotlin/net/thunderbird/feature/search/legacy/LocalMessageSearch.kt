@@ -3,6 +3,8 @@ package net.thunderbird.feature.search.legacy
 import kotlinx.serialization.Serializable
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.AccountIdFactory
+import net.thunderbird.feature.account.UnifiedAccountId
+import net.thunderbird.feature.mail.folder.FolderRole
 import net.thunderbird.feature.search.legacy.api.MessageSearchField
 import net.thunderbird.feature.search.legacy.api.MessageSearchSpecification
 import net.thunderbird.feature.search.legacy.api.SearchAttribute
@@ -198,6 +200,27 @@ class LocalMessageSearch : MessageSearchSpecification {
     fun searchAllAccounts(): Boolean = accountIdSet.isEmpty()
 
     /**
+     * Returns the conditions to run this search against one account's messages, or `null` if the account doesn't take
+     * part in the search.
+     *
+     * Folder IDs differ between accounts, so a [LocalMessageSearchType.Unified] search names its folder per account:
+     * [folderIdOf] returns the account's folder ID for a folder role, or `null` if the account doesn't have
+     * that folder. Conditions on the legacy integrate flag are ignored. Other searches return [conditions].
+     */
+    fun conditionsForAccount(folderIdOf: (FolderRole) -> Long?): SearchConditionTreeNode? {
+        val unifiedType = type as? LocalMessageSearchType.Unified ?: return conditions
+        val role = when (val folder = unifiedType.folder) {
+            is UnifiedFolderSelection.Special -> folder.role
+        }
+        val folderId = folderIdOf(role) ?: return null
+
+        val folderCondition = SearchCondition(MessageSearchField.FOLDER, SearchAttribute.EQUALS, folderId.toString())
+        val otherConditions = conditionsRoot?.withoutField(MessageSearchField.INTEGRATE)
+        return otherConditions?.let { SearchConditionTreeNode.Builder(it).and(folderCondition).build() }
+            ?: SearchConditionTreeNode.Builder(folderCondition).build()
+    }
+
+    /**
      * Get the condition tree.
      *
      * @return The root node of the related conditions tree.
@@ -216,5 +239,15 @@ class LocalMessageSearch : MessageSearchSpecification {
         append("conditionsRoot=").append(conditionsRoot).append(", ")
         append("leafSet=").append(leafSet)
         append(")")
+    }
+
+    companion object {
+        /**
+         * Creates a search for the folder with the given [role] in every account.
+         */
+        fun createUnifiedSearch(role: FolderRole): LocalMessageSearch = LocalMessageSearch().apply {
+            id = UnifiedAccountId
+            type = LocalMessageSearchType.Unified(UnifiedFolderSelection.Special(role))
+        }
     }
 }

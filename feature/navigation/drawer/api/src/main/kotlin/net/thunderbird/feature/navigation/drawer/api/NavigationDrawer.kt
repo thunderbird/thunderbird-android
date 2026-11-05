@@ -2,6 +2,7 @@ package net.thunderbird.feature.navigation.drawer.api
 
 import androidx.appcompat.app.AppCompatActivity
 import net.thunderbird.feature.account.AccountId
+import net.thunderbird.feature.mail.folder.FolderRole
 
 interface NavigationDrawer {
     val parent: AppCompatActivity
@@ -11,7 +12,7 @@ interface NavigationDrawer {
 
     fun selectFolder(accountId: AccountId, folderId: Long)
 
-    fun selectUnifiedInbox()
+    fun selectUnifiedFolder(role: FolderRole)
 
     fun deselect()
 

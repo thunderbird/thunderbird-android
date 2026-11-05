@@ -21,6 +21,7 @@ import net.thunderbird.feature.mail.message.list.LocalDeleteOperationDecider
 import net.thunderbird.feature.mail.message.list.LocalMessageUidPrefixProvider
 import net.thunderbird.feature.notification.api.NotificationManager
 import org.koin.core.qualifier.named
+import org.koin.dsl.bind
 import org.koin.dsl.binds
 import org.koin.dsl.module
 
@@ -49,6 +50,14 @@ val controllerModule = module {
     single {
         MessagingControllerWrapper(
             messagingController = get(),
+        )
+    } bind FolderSynchronizer::class
+
+    single {
+        UnifiedFolderSynchronizer(
+            accountManager = get(),
+            outboxFolderManager = get(),
+            folderSynchronizer = get(),
         )
     }
 

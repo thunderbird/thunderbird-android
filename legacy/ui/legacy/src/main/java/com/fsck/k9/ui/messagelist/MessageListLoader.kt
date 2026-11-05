@@ -3,18 +3,24 @@ package com.fsck.k9.ui.messagelist
 import app.k9mail.legacy.mailstore.MessageListRepository
 import com.fsck.k9.contacts.ContactLetterBitmapCreator
 import com.fsck.k9.helper.MessageHelper
+import com.fsck.k9.mailstore.LocalFolder
 import com.fsck.k9.mailstore.LocalStoreProvider
 import com.fsck.k9.mailstore.MessageColumns
+import com.fsck.k9.search.conditionsFor
+import com.fsck.k9.search.folderIdFor
 import com.fsck.k9.search.getLegacyAccounts
+import com.fsck.k9.search.unifiedFolderRole
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.core.android.account.SortType
+import net.thunderbird.core.common.exception.MessagingException
 import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.featureflag.keys.GeneratedFeatureFlagKey
 import net.thunderbird.core.preference.display.visualSettings.message.list.MessageListPreferencesManager
 import net.thunderbird.feature.mail.folder.api.OutboxFolderManager
 import net.thunderbird.feature.search.legacy.LocalMessageSearch
 import net.thunderbird.feature.search.legacy.api.MessageSearchField
+import net.thunderbird.feature.search.legacy.SearchConditionTreeNode
 import net.thunderbird.feature.search.legacy.sql.SqlWhereClause
 import net.thunderbird.legacy.logging.Log
 
@@ -39,7 +45,12 @@ class MessageListLoader(
             Log.e(TAG, e, "Error while fetching message list")
 
             // TODO: Return an error object instead of an empty list
-            MessageListInfo(messageListItems = emptyList(), hasMoreMessages = false)
+            MessageListInfo(
+                messageListItems = emptyList(),
+                hasMoreMessages = false,
+                hasUnsyncedFolders = false,
+                hasRemoteFolders = true,
+            )
         }
     }
 
@@ -51,13 +62,47 @@ class MessageListLoader(
             }
             .sortedWith(config)
 
-        val hasMoreMessages = loadHasMoreMessages(accounts, config.search.folderIds)
+        val folders = loadFolders(accounts, config.search)
+        // Local folders like the outbox have nothing more to download from the server.
+        val singleFolder = folders?.singleOrNull()?.takeIf { config.search.folderIds.size == 1 }
+        val hasMoreMessages = singleFolder != null && !singleFolder.isLocalOnly && singleFolder.hasMoreMessages()
+        val hasUnsyncedFolders = messageListItems.isEmpty() &&
+            folders.orEmpty().any { folder -> !folder.isLocalOnly && folder.lastChecked == 0L }
+        val hasRemoteFolders = folders?.any { folder -> !folder.isLocalOnly } ?: true
 
-        return MessageListInfo(messageListItems, hasMoreMessages)
+        return MessageListInfo(messageListItems, hasMoreMessages, hasUnsyncedFolders, hasRemoteFolders)
+    }
+
+    /**
+     * Loads the folders the message list shows, or returns `null` if it shows neither a single folder nor a unified
+     * folder.
+     */
+    private fun loadFolders(accounts: List<LegacyAccount>, search: LocalMessageSearch): List<LocalFolder>? {
+        val unifiedFolderRole = search.unifiedFolderRole
+        val folderIds = when {
+            unifiedFolderRole != null -> accounts.mapNotNull { account ->
+                account.folderIdFor(unifiedFolderRole, outboxFolderManager)?.let { folderId -> account to folderId }
+            }
+
+            accounts.size == 1 && search.folderIds.size == 1 -> listOf(accounts[0] to search.folderIds[0])
+            else -> return null
+        }
+
+        return folderIds.mapNotNull { (account, folderId) -> loadFolder(account, folderId) }
+    }
+
+    private fun loadFolder(account: LegacyAccount, folderId: Long): LocalFolder? {
+        return try {
+            localStoreProvider.getInstance(account.id).getFolder(folderId).apply { open() }
+        } catch (e: MessagingException) {
+            Log.w(TAG, e, "Couldn't load folder %d", folderId)
+            null
+        }
     }
 
     private fun loadMessageListForAccount(account: LegacyAccount, config: MessageListConfig): List<MessageListItem> {
         val accountId = account.id
+        val conditions = config.search.conditionsFor(account, outboxFolderManager) ?: return emptyList()
         val threadId = getThreadId(config.search)
         val sortOrder = buildSortOrder(config)
         val mapper = MessageListItemMapper(
@@ -77,18 +122,22 @@ class MessageListLoader(
             }
 
             config.showingThreadedList -> {
-                val (selection, selectionArgs) = buildSelection(account, config)
+                val (selection, selectionArgs) = buildSelection(account, config, conditions)
                 messageListRepository.getThreadedMessages(accountId, selection, selectionArgs, sortOrder, mapper)
             }
 
             else -> {
-                val (selection, selectionArgs) = buildSelection(account, config)
+                val (selection, selectionArgs) = buildSelection(account, config, conditions)
                 messageListRepository.getMessages(accountId, selection, selectionArgs, sortOrder, mapper)
             }
         }
     }
 
-    private fun buildSelection(account: LegacyAccount, config: MessageListConfig): Pair<String, Array<String>> {
+    private fun buildSelection(
+        account: LegacyAccount,
+        config: MessageListConfig,
+        conditions: SearchConditionTreeNode,
+    ): Pair<String, Array<String>> {
         val query = StringBuilder()
         val queryArgs = mutableListOf<String>()
 
@@ -101,7 +150,7 @@ class MessageListLoader(
         }
 
         val whereClause = SqlWhereClause.Builder()
-            .withConditions(config.search.conditions)
+            .withConditions(conditions)
             .build()
 
         query.append(whereClause.selection)
@@ -188,19 +237,6 @@ class MessageListLoader(
 
         return this.sortedWith(comparator)
     }
-
-    private fun loadHasMoreMessages(accounts: List<LegacyAccount>, folderIds: List<Long>): Boolean {
-        return if (accounts.size == 1 && folderIds.size == 1) {
-            val account = accounts[0]
-            val folderId = folderIds[0]
-            val localStore = localStoreProvider.getInstance(account.id)
-            val localFolder = localStore.getFolder(folderId)
-            localFolder.open()
-            localFolder.hasMoreMessages()
-        } else {
-            false
-        }
-    }
 }
 
 private inline fun <T> compareBy(sortAscending: Boolean, crossinline selector: (T) -> Comparable<*>?): Comparator<T> {
@@ -227,4 +263,20 @@ private fun Comparator<MessageListItem>.thenByDate(config: MessageListConfig): C
     }
 }
 
-data class MessageListInfo(val messageListItems: List<MessageListItem>, val hasMoreMessages: Boolean)
+/**
+ * The result of loading a message list.
+ *
+ * @property messageListItems The messages to show, sorted.
+ * @property hasMoreMessages `true` if the folder has more messages on the server that can be loaded. Only set for a
+ *   single folder that isn't local-only.
+ * @property hasUnsyncedFolders `true` if the message list is empty and at least one of the folders it shows has never
+ *   been synchronized with the server.
+ * @property hasRemoteFolders `false` if all folders the message list shows are local-only, like the outbox, so there's
+ *   nothing to synchronize.
+ */
+data class MessageListInfo(
+    val messageListItems: List<MessageListItem>,
+    val hasMoreMessages: Boolean,
+    val hasUnsyncedFolders: Boolean,
+    val hasRemoteFolders: Boolean,
+)
