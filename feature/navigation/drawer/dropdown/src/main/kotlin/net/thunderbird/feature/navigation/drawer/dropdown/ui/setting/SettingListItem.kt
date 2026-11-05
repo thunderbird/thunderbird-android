@@ -44,7 +44,7 @@ internal fun SettingListItem(
         val infinite = rememberInfiniteTransition(label = "SyncIconRotation")
         val angle by infinite.animateFloat(
             initialValue = 0f,
-            targetValue = 360f,
+            targetValue = -360f,
             animationSpec = infiniteRepeatable(
                 animation = tween(durationMillis = 1000, easing = LinearEasing),
                 repeatMode = RepeatMode.Restart,
