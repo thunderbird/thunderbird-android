@@ -130,7 +130,7 @@ class MessageViewFragment :
     private val appNameProvider: AppNameProvider by inject()
     private val messageReaderViewModel: MessageReaderViewContract.ViewModel<Part> by viewModel()
     private val logger: Logger by inject()
-    private val replayAllStrategy: ReplyActionStrategy<LegacyAccount, Message> by inject()
+    private val replyAllStrategy: ReplyActionStrategy<LegacyAccount, Message> by inject()
 
     private val createDocumentLauncher: ActivityResultLauncher<CreateDocumentResultContract.Input> =
         registerForActivityResult(CreateDocumentResultContract()) { documentUri ->
@@ -706,7 +706,7 @@ class MessageViewFragment :
     fun onReply(forceReplyAction: Boolean = false) {
         val message = this.message ?: return
 
-        val additionalActions = replayAllStrategy.getReplyActions(account, message).additionalActions
+        val additionalActions = replyAllStrategy.getReplyActions(account, message).additionalActions
         if (!forceReplyAction && ReplyAction.REPLY_ALL in additionalActions) {
             messageReaderViewModel.event(Event.OpenMessageReaderBottomSheet())
         } else {
