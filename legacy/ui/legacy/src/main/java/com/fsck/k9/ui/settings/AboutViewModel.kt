@@ -50,7 +50,6 @@ private val USED_LIBRARIES = persistentListOf(
     Library("jsoup", "https://jsoup.org/", "MIT License"),
     Library("jutf7", "http://jutf7.sourceforge.net/", "MIT License"),
     Library("JZlib", "http://www.jcraft.com/jzlib/", "BSD-style License"),
-    Library("jcip-annotations", "https://jcip.net/", "Public License"),
     Library(
         "Jetbrains Annotations for JVM-based languages",
         "https://github.com/JetBrains/java-annotations",
