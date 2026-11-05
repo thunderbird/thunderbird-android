@@ -1,10 +1,9 @@
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 
-plugins {
-    id("io.github.ben-manes.versions")
-}
-
+// The versions plugin is applied in settings.gradle.kts so every project contributes to the report.
 tasks.withType<DependencyUpdatesTask> {
+    // Compose Hot Reload's tooling configurations fail to resolve and only hold the plugin's own runtime.
+    filterConfigurations = Spec { !it.name.startsWith("composeHotReload") }
     rejectVersionIf {
         isNonStable(candidate.version) && !isNonStable(currentVersion)
     }
