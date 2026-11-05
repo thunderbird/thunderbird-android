@@ -13,6 +13,9 @@ android {
     }
 }
 
+// Unit tests depend on code from the debug source set
+disableReleaseUnitTests()
+
 dependencies {
     api(projects.feature.navigation.drawer.api)
 

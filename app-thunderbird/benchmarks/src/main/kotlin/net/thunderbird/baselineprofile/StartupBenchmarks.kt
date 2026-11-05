@@ -11,7 +11,7 @@ import org.junit.runner.RunWith
  * Without an account in `local.properties`, the demo account is used. It's only available in the `daily` build type,
  * so run the `benchmarkDaily` variant:
  * ```
- * ./gradlew :app-thunderbird:benchmarks:connectedFossBenchmarkDailyAndroidTest
+ * ./gradlew :app-thunderbird:benchmarks:connectedFossBenchmarkDailyAndroidTest -Pbenchmark=true
  * ```
  *
  * With a real account configured, the `benchmarkRelease` variant works too.

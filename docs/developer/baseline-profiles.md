@@ -50,8 +50,8 @@ tfa.benchmark.account.outgoing_server=smtp.example.com
 Run the task for the app you want to update:
 
 ```shell
-./gradlew :app-thunderbird:generateBaselineProfile
-./gradlew :app-k9mail:generateBaselineProfile
+./gradlew :app-thunderbird:generateBaselineProfile -Pbenchmark=true
+./gradlew :app-k9mail:generateBaselineProfile -Pbenchmark=true
 ```
 
 The task builds the app, installs it on the device, and sets up the account through the onboarding screens if needed.
@@ -69,16 +69,18 @@ Use the startup benchmarks to check that a profile helps, or to compare startup 
 
 ```shell
 # Thunderbird daily build, uses the demo account if no account is set in local.properties
-./gradlew :app-thunderbird:benchmarks:connectedFossBenchmarkDailyAndroidTest
+./gradlew :app-thunderbird:benchmarks:connectedFossBenchmarkDailyAndroidTest -Pbenchmark=true
 
 # Thunderbird release build, needs an account in local.properties
-./gradlew :app-thunderbird:benchmarks:connectedFullBenchmarkReleaseAndroidTest
+./gradlew :app-thunderbird:benchmarks:connectedFullBenchmarkReleaseAndroidTest -Pbenchmark=true
 
 # K-9 Mail, needs an account in local.properties
-./gradlew :app-k9mail:benchmarks:connectedFullBenchmarkReleaseAndroidTest
+./gradlew :app-k9mail:benchmarks:connectedFullBenchmarkReleaseAndroidTest -Pbenchmark=true
 ```
 
-To see all benchmark tasks, run `./gradlew :app-thunderbird:benchmarks:tasks --all | grep connected`.
+The benchmark and profile tasks only exist with `-Pbenchmark=true`. They add a `benchmark` and `nonMinified` build of
+every release-like app variant, which would otherwise make every full build much heavier. To see all benchmark
+tasks, run `./gradlew :app-thunderbird:benchmarks:tasks --all -Pbenchmark=true | grep connected`.
 
 The `release`, `beta`, and `daily` builds use R8 by default, so benchmarks run against an optimized build like the
 one users get. `-Pminify=false` turns R8 off; don't use it for benchmarks.
@@ -106,7 +108,7 @@ an emulator doesn't give reliable numbers.
 To run a single test, pass its name:
 
 ```shell
-./gradlew :app-thunderbird:benchmarks:connectedFossBenchmarkDailyAndroidTest \
+./gradlew :app-thunderbird:benchmarks:connectedFossBenchmarkDailyAndroidTest -Pbenchmark=true \
     -Pandroid.testInstrumentationRunnerArguments.class=net.thunderbird.baselineprofile.StartupBenchmarks#startupCompilationBaselineProfiles
 ```
 

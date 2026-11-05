@@ -12,7 +12,7 @@ import org.junit.runner.RunWith
  * `app-thunderbird/src/main/generated/baselineProfiles/`. It needs an account in `local.properties`, otherwise the
  * daily build uses the demo account and the release and beta builds fail:
  * ```
- * ./gradlew :app-thunderbird:generateBaselineProfile
+ * ./gradlew :app-thunderbird:generateBaselineProfile -Pbenchmark=true
  * ```
  */
 @RunWith(AndroidJUnit4::class)
