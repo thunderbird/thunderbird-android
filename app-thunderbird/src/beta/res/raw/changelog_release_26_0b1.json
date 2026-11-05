@@ -1,0 +1,56 @@
+{
+  "schemaVersion": 1,
+  "version": "26.0b1",
+  "versioncode": 63,
+  "date": "2026-11-04",
+  "notes": [
+    {
+      "type": "new",
+      "text": "Remote feature flags can be viewed and managed in General Settings",
+      "source": "thunderbird-notes",
+      "issues": [
+        11457
+      ]
+    },
+    {
+      "type": "changed",
+      "text": "Modernized 'Sending Mail' settings screen",
+      "source": "thunderbird-notes",
+      "issues": [
+        11041
+      ]
+    },
+    {
+      "type": "changed",
+      "text": "Manage Folders settings moved from account drawer to Account settings under Folders",
+      "source": "thunderbird-notes",
+      "issues": [
+        11679
+      ]
+    },
+    {
+      "type": "changed",
+      "text": "Folder display, sync, and notification settings are split into separate menus",
+      "source": "thunderbird-notes",
+      "issues": [
+        11763
+      ]
+    },
+    {
+      "type": "fixed",
+      "text": "Donation appeal dialog could display multiple times",
+      "source": "thunderbird-notes",
+      "issues": [
+        11677
+      ]
+    },
+    {
+      "type": "fixed",
+      "text": "Account profile avatars were not imported from K-9 Mail",
+      "source": "thunderbird-notes",
+      "issues": [
+        10864
+      ]
+    }
+  ]
+}

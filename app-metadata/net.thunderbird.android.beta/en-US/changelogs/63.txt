@@ -1,0 +1,13 @@
+Thunderbird version 26.0b1
+
+New:
+- Remote feature flags can be viewed and managed in General Settings
+
+Changed:
+- Modernized 'Sending Mail' settings screen
+- Manage Folders settings moved from account drawer to Account settings under Folders
+- Folder display, sync, and notification settings are split into separate menus
+
+Fixed:
+- Donation appeal dialog could display multiple times
+- Account profile avatars were not imported from K-9 Mail
