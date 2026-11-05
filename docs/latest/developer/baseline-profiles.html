@@ -37,7 +37,7 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-32de36c3.js";
+            window.path_to_searchindex_js = "../searchindex-2d320395.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../toc-9cde7e7f.js"></script>
@@ -220,8 +220,8 @@ tfa.benchmark.account.outgoing_server=smtp.example.com
 </blockquote>
 <h2 id="generate-the-profile"><a class="header" href="#generate-the-profile">Generate the profile</a></h2>
 <p>Run the task for the app you want to update:</p>
-<pre><code class="language-shell">./gradlew :app-thunderbird:generateBaselineProfile
-./gradlew :app-k9mail:generateBaselineProfile
+<pre><code class="language-shell">./gradlew :app-thunderbird:generateBaselineProfile -Pbenchmark=true
+./gradlew :app-k9mail:generateBaselineProfile -Pbenchmark=true
 </code></pre>
 <p>The task builds the app, installs it on the device, and sets up the account through the onboarding screens if needed.
 Then it starts the app a few times and records which code runs. The result is written to the folder listed above.</p>
@@ -232,15 +232,17 @@ the app most likely did not reach the message list.</p>
 <h2 id="measure-startup"><a class="header" href="#measure-startup">Measure startup</a></h2>
 <p>Use the startup benchmarks to check that a profile helps, or to compare startup time before and after a change.</p>
 <pre><code class="language-shell"># Thunderbird daily build, uses the demo account if no account is set in local.properties
-./gradlew :app-thunderbird:benchmarks:connectedFossBenchmarkDailyAndroidTest
+./gradlew :app-thunderbird:benchmarks:connectedFossBenchmarkDailyAndroidTest -Pbenchmark=true
 
 # Thunderbird release build, needs an account in local.properties
-./gradlew :app-thunderbird:benchmarks:connectedFullBenchmarkReleaseAndroidTest
+./gradlew :app-thunderbird:benchmarks:connectedFullBenchmarkReleaseAndroidTest -Pbenchmark=true
 
 # K-9 Mail, needs an account in local.properties
-./gradlew :app-k9mail:benchmarks:connectedFullBenchmarkReleaseAndroidTest
+./gradlew :app-k9mail:benchmarks:connectedFullBenchmarkReleaseAndroidTest -Pbenchmark=true
 </code></pre>
-<p>To see all benchmark tasks, run <code>./gradlew :app-thunderbird:benchmarks:tasks --all | grep connected</code>.</p>
+<p>The benchmark and profile tasks only exist with <code>-Pbenchmark=true</code>. They add a <code>benchmark</code> and <code>nonMinified</code> build of
+every release-like app variant, which would otherwise make every full build much heavier. To see all benchmark
+tasks, run <code>./gradlew :app-thunderbird:benchmarks:tasks --all -Pbenchmark=true | grep connected</code>.</p>
 <p>The <code>release</code>, <code>beta</code>, and <code>daily</code> builds use R8 by default, so benchmarks run against an optimized build like the
 one users get. <code>-Pminify=false</code> turns R8 off; don’t use it for benchmarks.</p>
 <p>Each test starts the app from a cold state and waits for the message list:</p>
@@ -267,7 +269,7 @@ one users get. <code>-Pminify=false</code> turns R8 off; don’t use it for benc
 <p>To compare two changes, run the same test before and after the change, on the same device. Use a physical device,
 an emulator doesn’t give reliable numbers.</p>
 <p>To run a single test, pass its name:</p>
-<pre><code class="language-shell">./gradlew :app-thunderbird:benchmarks:connectedFossBenchmarkDailyAndroidTest \
+<pre><code class="language-shell">./gradlew :app-thunderbird:benchmarks:connectedFossBenchmarkDailyAndroidTest -Pbenchmark=true \
     -Pandroid.testInstrumentationRunnerArguments.class=net.thunderbird.baselineprofile.StartupBenchmarks#startupCompilationBaselineProfiles
 </code></pre>
 <h2 id="where-the-code-lives"><a class="header" href="#where-the-code-lives">Where the code lives</a></h2>
@@ -280,7 +282,7 @@ set up the account.</li>
 </ul>
 <p>If you change the onboarding or the message list screens, the account setup can break. The setup steps are in
 <code>benchmarks/src/main/kotlin/net/thunderbird/benchmarks/common/account/setup/step/</code>.</p>
-<footer id="last-change">Last change: <time datetime="2026-11-04">2026-11-04</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/13d0d51">13d0d51</a></footer>
+<footer id="last-change">Last change: <time datetime="2026-11-05">2026-11-05</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/f281348">f281348</a></footer>
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
