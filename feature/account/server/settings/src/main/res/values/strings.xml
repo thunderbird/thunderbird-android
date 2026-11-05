@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="account_server_settings_protocol_type_label">Protocol</string>
+    <string name="account_server_settings_pop3_hint_title">IMAP is recommended</string>
+    <string name="account_server_settings_pop3_hint_text">IMAP keeps your email in sync across all your devices. Choose IMAP if your email provider supports it.</string>
     <string name="account_server_settings_server_label">Server</string>
     <string name="account_server_settings_security_label">Security</string>
     <string name="account_server_settings_port_label">Port</string>
