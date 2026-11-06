@@ -69,6 +69,7 @@ import androidx.lifecycle.setViewTreeLifecycleOwner
 import androidx.savedstate.SavedStateRegistryOwner
 import androidx.savedstate.setViewTreeSavedStateRegistryOwner
 import app.k9mail.core.android.common.contact.ContactRepository
+import com.fsck.k9.controller.UnifiedFolderReadMarker
 import com.fsck.k9.controller.UnifiedFolderSynchronizer
 import net.thunderbird.components.ui.bolt.atom.DividerHorizontal
 import net.thunderbird.components.ui.bolt.atom.Surface
@@ -150,6 +151,7 @@ import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.UnifiedAccountId
 import net.thunderbird.feature.account.avatar.AvatarMonogramCreator
 import net.thunderbird.feature.changelog.internal.RecentChangesViewModel
+import net.thunderbird.feature.mail.folder.FolderRole
 import net.thunderbird.feature.mail.folder.api.OutboxFolderManager
 import net.thunderbird.feature.mail.message.list.domain.model.SortCriteria
 import net.thunderbird.feature.mail.message.list.domain.model.SortType
@@ -216,6 +218,7 @@ class MessageListFragment :
     private val folderNameFormatter: FolderNameFormatter by inject { parametersOf(requireContext()) }
     private val messagingController: MessagingControllerWrapper by inject()
     private val unifiedFolderSynchronizer: UnifiedFolderSynchronizer by inject()
+    private val unifiedFolderReadMarker: UnifiedFolderReadMarker by inject()
     private val messagingControllerRegistry: MessagingControllerRegistry by inject()
     private val accountManager: LegacyAccountManager by inject()
     private val lastSelectedFolderStore: LastSelectedFolderStore by inject()
@@ -1919,7 +1922,14 @@ class MessageListFragment :
     }
 
     private val isMarkAllAsReadSupported: Boolean
-        get() = (isSingleAccountMode && isSingleFolderMode && !isOutbox) || isUnifiedFolders
+        get() {
+            val role = localSearch.unifiedFolderRole
+            return if (role != null) {
+                role != FolderRole.OUTBOX
+            } else {
+                isSingleAccountMode && isSingleFolderMode && !isOutbox
+            }
+        }
 
     private fun confirmMarkAllAsRead() {
         if (interactionSettings.isConfirmMarkAllRead) {
@@ -1930,12 +1940,15 @@ class MessageListFragment :
     }
 
     private fun markAllAsRead() {
-        if (isMarkAllAsReadSupported) {
-            if (isUnifiedFolders) {
-                messagingController.markAllInUnifiedInboxAsRead()
-            } else {
-                account?.id?.let { messagingController.markAllMessagesRead(it, currentFolder!!.databaseId) }
-            }
+        if (!isMarkAllAsReadSupported) {
+            return
+        }
+
+        val role = localSearch.unifiedFolderRole
+        if (role != null) {
+            unifiedFolderReadMarker.markAllAsRead(role)
+        } else {
+            account?.id?.let { messagingController.markAllMessagesRead(it, currentFolder!!.databaseId) }
         }
     }
 
