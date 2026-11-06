@@ -29,7 +29,6 @@ class MessagingControllerRemovedAccountTest : K9RobolectricTest() {
         BackendManager(backendFactories = emptyMap(), accountManager = accountManager),
         mock(),
         mock(),
-        mock(),
         StubLocalDeleteOperationDecider(),
         FakeLocalMessageUidPrefixProvider(),
         emptyList(),

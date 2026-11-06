@@ -277,7 +277,7 @@ public class MessageLoaderHelper {
                 throw new IllegalStateException("loader id must be message loader id");
             }
 
-            MessagingController messagingController = MessagingController.getInstance(context);
+            MessagingController messagingController = MessagingController.getInstance();
             return new LocalMessageLoader(context, messagingController, account.getId(), messageReference, onlyLoadMetadata);
         }
 
@@ -470,10 +470,10 @@ public class MessageLoaderHelper {
 
     private void startDownloadingMessageBody(boolean downloadComplete) {
         if (downloadComplete) {
-            MessagingController.getInstance(context).loadMessageRemote(
+            MessagingController.getInstance().loadMessageRemote(
                 account.getId(), messageReference.getFolderId(), messageReference.getUid(), downloadMessageListener);
         } else {
-            MessagingController.getInstance(context).loadMessageRemotePartial(
+            MessagingController.getInstance().loadMessageRemotePartial(
                 account.getId(), messageReference.getFolderId(), messageReference.getUid(), downloadMessageListener);
         }
     }

@@ -9,7 +9,6 @@ import app.k9mail.legacy.message.controller.MessagingControllerRegistry
 import com.fsck.k9.backend.BackendManager
 import com.fsck.k9.mailstore.LocalStoreProvider
 import com.fsck.k9.mailstore.SaveMessageDataCreator
-import com.fsck.k9.mailstore.SpecialLocalFoldersCreator
 import com.fsck.k9.notification.NotificationController
 import com.fsck.k9.notification.NotificationStrategy
 import net.thunderbird.core.android.account.LegacyAccountManager
@@ -35,7 +34,6 @@ val controllerModule = module {
             get<BackendManager>(),
             get<MessageStoreManager>(),
             get<SaveMessageDataCreator>(),
-            get<SpecialLocalFoldersCreator>(),
             get<LocalDeleteOperationDecider>(),
             get<LocalMessageUidPrefixProvider>(),
             get(named("controllerExtensions")),

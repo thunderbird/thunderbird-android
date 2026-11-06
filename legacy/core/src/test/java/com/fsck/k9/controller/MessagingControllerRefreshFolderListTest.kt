@@ -51,7 +51,6 @@ class MessagingControllerRefreshFolderListTest : K9RobolectricTest() {
         backendManager,
         mock(),
         mock(),
-        mock(),
         StubLocalDeleteOperationDecider(),
         FakeLocalMessageUidPrefixProvider(),
         emptyList(),
