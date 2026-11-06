@@ -21,4 +21,5 @@
     <item type="id" name="settings_list_intent_item" />
 
     <item type="id" name="message_list_swipe_tag" />
+    <item type="id" name="dialog_confirm_forward_download" />
 </resources>
