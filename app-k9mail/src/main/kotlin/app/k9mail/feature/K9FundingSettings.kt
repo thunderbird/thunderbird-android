@@ -15,17 +15,9 @@ internal class K9FundingSettings : FundingSettings {
 
     override fun setReminderShownTimestamp(timestamp: Long) {}
 
-    override fun getLastReminderShownActivityAmount(): Long = 0L
-
-    override suspend fun setLastReminderShownActivityAmount(activityInMillis: Long) {}
-
     override fun getReminderShownCount(): Int = 100
 
     override suspend fun setReminderShownCount(count: Int) {}
 
     override suspend fun incrementReminderShownCount() {}
-
-    override fun getActivityCounterInMillis(): Long = 0L
-
-    override fun setActivityCounterInMillis(activeTime: Long) {}
 }
