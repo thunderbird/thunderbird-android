@@ -62,7 +62,11 @@ import java.util.concurrent.Future
 import java.util.concurrent.PriorityBlockingQueue
 import java.util.concurrent.atomic.AtomicInteger
 import kotlin.concurrent.Volatile
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.runBlocking
 import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.core.android.account.AccountDefaultsProvider
@@ -81,8 +85,6 @@ import net.thunderbird.feature.mail.message.list.LocalDeleteOperationDecider
 import net.thunderbird.feature.mail.message.list.LocalMessageUidPrefixProvider
 import net.thunderbird.feature.notification.api.NotificationManager
 import net.thunderbird.feature.notification.api.content.AuthenticationErrorNotification
-import net.thunderbird.feature.notification.api.dismisser.compat.NotificationDismisserCompat
-import net.thunderbird.feature.notification.api.sender.compat.NotificationSenderCompat
 import net.thunderbird.feature.search.legacy.LocalMessageSearch
 
 /**
@@ -108,7 +110,7 @@ class MessagingController internal constructor(
     private val featureFlagProvider: FeatureFlagProvider,
     private val syncDebugLogger: Logger,
     private val logger: Logger,
-    notificationManager: NotificationManager,
+    private val notificationManager: NotificationManager,
     outboxFolderManager: OutboxFolderManager,
     accountManager: LegacyAccountManager,
 ) : MessagingControllerRegistry, MessagingControllerMailChecker {
@@ -122,8 +124,7 @@ class MessagingController internal constructor(
     private val notificationOperations: NotificationOperations
     private val archiveOperations: ArchiveOperations
     private val outboxFolderManager: OutboxFolderManager
-    private val notificationSender: NotificationSenderCompat
-    private val notificationDismisser: NotificationDismisserCompat
+    private val notificationScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
     private val accountManager: LegacyAccountManager
 
     @Volatile
@@ -647,11 +648,9 @@ class MessagingController internal constructor(
                 createAuthenticationErrorNotification(accountId, incoming)
 
             if (notification != null) {
-                notificationSender.send(
-                    notification,
-                ) { outcome ->
-                    logger.verbose(TAG) { "notificationSender outcome = $outcome" }
-                }
+                notificationManager.send(notification)
+                    .onEach { outcome -> logger.verbose(TAG) { "notificationSender outcome = $outcome" } }
+                    .launchIn(notificationScope)
             }
         }
 
@@ -2609,8 +2608,6 @@ class MessagingController internal constructor(
     }
 
     init {
-        this.notificationSender = NotificationSenderCompat(notificationManager)
-        this.notificationDismisser = NotificationDismisserCompat(notificationManager)
         this.outboxFolderManager = outboxFolderManager
         this.accountManager = accountManager
 
@@ -2727,11 +2724,9 @@ class MessagingController internal constructor(
                 val notification = createAuthenticationErrorNotification(
                     accountId, incoming,
                 )
-                notificationDismisser.dismiss(
-                    notification!!,
-                ) { outcome ->
-                    logger.verbose(TAG) { "notificationDismisser outcome = $outcome" }
-                }
+                notificationManager.dismiss(notification!!)
+                    .onEach { outcome -> logger.verbose(TAG) { "notificationDismisser outcome = $outcome" } }
+                    .launchIn(notificationScope)
             }
         }
     }
