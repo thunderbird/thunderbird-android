@@ -1,9 +1,9 @@
 package net.thunderbird.app.common.feature.funding.configstore
 
+import assertk.assertThat
+import assertk.assertions.isEqualTo
 import kotlin.apply
-import kotlin.test.DefaultAsserter.assertEquals
 import kotlin.test.Test
-import kotlin.test.assertEquals
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.TestScope
@@ -32,7 +32,7 @@ class DefaultFundingConfigStoreTest {
 
         // Get and test initial value
         val initialTestValue = configTestSubject.config.first()
-        assertEquals("Backend should set initial values.", defaultConfig, initialTestValue)
+        assertThat(initialTestValue).isEqualTo(defaultConfig)
     }
 
     @Test
@@ -57,14 +57,9 @@ class DefaultFundingConfigStoreTest {
 
             // Ensure test subject has new values
             val testConfig = configTestSubject.config.first()
-            assertEquals(
-                newConfig.lastFundingReminderShownActivityAmount,
-                testConfig.lastFundingReminderShownActivityAmount,
-            )
-            assertEquals(
-                newConfig.fundingReminderCount,
-                testConfig.fundingReminderCount,
-            )
+            assertThat(testConfig.lastFundingReminderShownActivityAmount)
+                .isEqualTo(newConfig.lastFundingReminderShownActivityAmount)
+            assertThat(testConfig.fundingReminderCount).isEqualTo(newConfig.fundingReminderCount)
         }
     }
 

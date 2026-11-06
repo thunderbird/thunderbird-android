@@ -4,6 +4,8 @@ import android.net.Uri
 import assertk.Assert
 import assertk.all
 import assertk.assertThat
+import assertk.assertions.bytes
+import assertk.assertions.hasParent
 import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
 import assertk.assertions.isFalse
@@ -12,6 +14,7 @@ import assertk.assertions.isNotNull
 import assertk.assertions.isNull
 import assertk.assertions.isTrue
 import assertk.assertions.matches
+import assertk.assertions.name
 import assertk.assertions.prop
 import assertk.assertions.single
 import assertk.assertions.startsWith
@@ -28,7 +31,6 @@ import com.fsck.k9.mailstore.LocalBodyPart
 import java.io.File
 import kotlin.test.BeforeTest
 import kotlin.test.Test
-import kotlin.test.assertNotNull
 import net.thunderbird.components.core.logging.LogLevel
 import net.thunderbird.components.core.logging.testing.TestLogger
 import net.thunderbird.core.android.testing.RobolectricTest
@@ -110,9 +112,10 @@ class AttachmentResolverTest : RobolectricTest() {
         val result = testSubject.resolveAttachmentFile(part, ACCOUNT_ID)
 
         // Assert
-        assertNotNull(result)
-        assertThat(result.parentFile).isEqualTo(context.cacheDir)
-        assertThat(result.readBytes()).isEqualTo("ABC".toByteArray(Charsets.US_ASCII))
+        assertThat(result).isNotNull().all {
+            hasParent(context.cacheDir.path)
+            bytes().isEqualTo("ABC".toByteArray(Charsets.US_ASCII))
+        }
         assertThat(testLogger.events).isEmpty()
     }
 
@@ -128,8 +131,7 @@ class AttachmentResolverTest : RobolectricTest() {
         val result = testSubject.resolveAttachmentFile(part, ACCOUNT_ID)
 
         // Assert
-        assertNotNull(result)
-        assertThat(result.readBytes()).isEqualTo(CONTENT)
+        assertThat(result).isNotNull().bytes().isEqualTo(CONTENT)
         val input = body.inputStream
         try {
             assertThat(input.readBytes()).isEqualTo(CONTENT)
@@ -177,11 +179,11 @@ class AttachmentResolverTest : RobolectricTest() {
         val secondFile = testSubject.resolveAttachmentFile(second, ACCOUNT_ID)
 
         // Assert
-        assertNotNull(firstFile)
-        assertNotNull(secondFile)
-        assertThat(secondFile).isNotEqualTo(firstFile)
-        assertThat(firstFile.readBytes()).isEqualTo(CONTENT)
-        assertThat(secondFile.readBytes()).isEqualTo(OTHER_CONTENT)
+        assertThat(secondFile).isNotNull().all {
+            isNotEqualTo(firstFile)
+            bytes().isEqualTo(OTHER_CONTENT)
+        }
+        assertThat(firstFile).isNotNull().bytes().isEqualTo(CONTENT)
         assertThat(cachedAttachmentFiles().size).isEqualTo(2)
     }
 
@@ -210,11 +212,11 @@ class AttachmentResolverTest : RobolectricTest() {
         val secondFile = testSubject.resolveAttachmentFile(second, ACCOUNT_ID)
 
         // Assert
-        assertNotNull(firstFile)
-        assertNotNull(secondFile)
-        assertThat(secondFile).isNotEqualTo(firstFile)
-        assertThat(firstFile.exists()).isFalse()
-        assertThat(secondFile.readBytes()).isEqualTo(OTHER_CONTENT)
+        assertThat(secondFile).isNotNull().all {
+            isNotEqualTo(firstFile)
+            bytes().isEqualTo(OTHER_CONTENT)
+        }
+        assertThat(firstFile?.exists()).isEqualTo(false)
         assertThat(cachedAttachmentFiles()).single().isEqualTo(secondFile)
     }
 
@@ -234,10 +236,11 @@ class AttachmentResolverTest : RobolectricTest() {
         val secondFile = testSubject.resolveAttachmentFile(part, ACCOUNT_ID)
 
         // Assert
-        assertNotNull(secondFile)
-        assertThat(secondFile).isNotEqualTo(firstFile)
+        assertThat(secondFile).isNotNull().all {
+            isNotEqualTo(firstFile)
+            bytes().isEqualTo(OTHER_CONTENT)
+        }
         assertThat(firstFile.exists()).isFalse()
-        assertThat(secondFile.readBytes()).isEqualTo(OTHER_CONTENT)
         assertThat(cachedAttachmentFiles()).single().isEqualTo(secondFile)
     }
 
@@ -253,9 +256,10 @@ class AttachmentResolverTest : RobolectricTest() {
         val result = testSubject.resolveAttachmentFile(part, ACCOUNT_ID)
 
         // Assert
-        assertNotNull(result)
-        assertThat(result).isEqualTo(cachedFile)
-        assertThat(result.readBytes()).isEqualTo(OTHER_CONTENT)
+        assertThat(result).isNotNull().all {
+            isEqualTo(cachedFile)
+            bytes().isEqualTo(OTHER_CONTENT)
+        }
         assertThat(cachedAttachmentFiles()).single().isEqualTo(result)
     }
 
@@ -270,9 +274,10 @@ class AttachmentResolverTest : RobolectricTest() {
         val result = testSubject.resolveAttachmentFile(part, ACCOUNT_ID)
 
         // Assert
-        assertNotNull(result)
-        assertThat(result).isEqualTo(cachedFile)
-        assertThat(result.readBytes()).isEqualTo(OTHER_CONTENT)
+        assertThat(result).isNotNull().all {
+            isEqualTo(cachedFile)
+            bytes().isEqualTo(OTHER_CONTENT)
+        }
         assertThat(cachedAttachmentFiles()).single().isEqualTo(result)
     }
 
@@ -288,10 +293,11 @@ class AttachmentResolverTest : RobolectricTest() {
         val secondFile = testSubject.resolveAttachmentFile(part, ACCOUNT_ID)
 
         // Assert
-        assertNotNull(secondFile)
-        assertThat(secondFile).isNotEqualTo(firstFile)
+        assertThat(secondFile).isNotNull().all {
+            isNotEqualTo(firstFile)
+            bytes().isEqualTo(OTHER_CONTENT)
+        }
         assertThat(firstFile.readBytes()).isEqualTo(CONTENT)
-        assertThat(secondFile.readBytes()).isEqualTo(OTHER_CONTENT)
     }
 
     @Test
@@ -324,8 +330,7 @@ class AttachmentResolverTest : RobolectricTest() {
         val result = testSubject.resolveAttachmentFile(part, ACCOUNT_ID)
 
         // Assert
-        assertNotNull(result)
-        assertThat(result.readBytes()).isEqualTo(CONTENT)
+        assertThat(result).isNotNull().bytes().isEqualTo(CONTENT)
         assertThat(hashingSourcesCreated).isEqualTo(0)
     }
 
@@ -343,8 +348,7 @@ class AttachmentResolverTest : RobolectricTest() {
         val result = testSubject.resolveAttachmentFile(part, ACCOUNT_ID)
 
         // Assert
-        assertNotNull(result)
-        assertThat(result.readBytes()).isEqualTo(CONTENT)
+        assertThat(result).isNotNull().bytes().isEqualTo(CONTENT)
         assertThat(hashingSourcesCreated).isEqualTo(1)
     }
 
@@ -362,8 +366,7 @@ class AttachmentResolverTest : RobolectricTest() {
         val result = testSubject.resolveAttachmentFile(part, ACCOUNT_ID)
 
         // Assert
-        assertNotNull(result)
-        assertThat(result.readBytes()).isEqualTo(CONTENT)
+        assertThat(result).isNotNull().bytes().isEqualTo(CONTENT)
         assertThat(hashingSourcesCreated).isEqualTo(1)
     }
 
@@ -379,9 +382,10 @@ class AttachmentResolverTest : RobolectricTest() {
         val result = testSubject.resolveAttachmentFile(part, ACCOUNT_ID)
 
         // Assert
-        assertNotNull(result)
-        assertThat(result.parentFile).isEqualTo(context.cacheDir)
-        assertThat(result.name).matches(Regex("attachment_[0-9a-f]{64}_[0-9a-f]{64}"))
+        assertThat(result).isNotNull().all {
+            hasParent(context.cacheDir.path)
+            name().matches(Regex("attachment_[0-9a-f]{64}_[0-9a-f]{64}"))
+        }
     }
 
     @Test

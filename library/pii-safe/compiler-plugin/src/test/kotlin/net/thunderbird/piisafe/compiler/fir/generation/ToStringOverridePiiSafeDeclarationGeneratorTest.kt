@@ -1,15 +1,15 @@
 package net.thunderbird.piisafe.compiler.fir.generation
 
 import assertk.all
+import assertk.assertFailure
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import assertk.assertions.isInstanceOf
 import assertk.assertions.isNotNull
 import assertk.assertions.isTrue
 import com.tschuchort.compiletesting.KotlinCompilation
 import java.lang.reflect.Modifier
 import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertFailsWith
 import net.thunderbird.piisafe.compiler.fir.TestFirExtensionRegistrar
 import net.thunderbird.piisafe.compiler.fir.generation.ToStringOverridePiiSafeDeclarationGenerator.Companion.TO_STRING_METHOD_NAME
 import net.thunderbird.piisafe.compiler.testing.compileWithPiiSafePlugin
@@ -76,9 +76,9 @@ class ToStringOverridePiiSafeDeclarationGeneratorTest {
         // Assert
         assertThat(result.exitCode).isEqualTo(KotlinCompilation.ExitCode.OK)
         val plainUserClass = result.classLoader.loadClass("PlainUser")
-        assertFailsWith<NoSuchMethodException> {
+        assertFailure {
             plainUserClass.getDeclaredMethod(TO_STRING_METHOD_NAME)
-        }
+        }.isInstanceOf<NoSuchMethodException>()
     }
 
     @Test
@@ -103,9 +103,9 @@ class ToStringOverridePiiSafeDeclarationGeneratorTest {
         assertThat(result.exitCode).isEqualTo(KotlinCompilation.ExitCode.OK)
         assertThat(result.classLoader.loadClass("Contact").getDeclaredMethod(TO_STRING_METHOD_NAME))
             .isNotNull()
-        assertFailsWith<NoSuchMethodException> {
+        assertFailure {
             result.classLoader.loadClass("Avatar").getDeclaredMethod(TO_STRING_METHOD_NAME)
-        }
+        }.isInstanceOf<NoSuchMethodException>()
     }
 
     @Test
@@ -128,9 +128,9 @@ class ToStringOverridePiiSafeDeclarationGeneratorTest {
         // Assert
         assertThat(result.exitCode).isEqualTo(KotlinCompilation.ExitCode.OK)
         val nonDataUserClass = result.classLoader.loadClass("NonDataUser")
-        assertFailsWith<NoSuchMethodException> {
+        assertFailure {
             nonDataUserClass.getDeclaredMethod(TO_STRING_METHOD_NAME)
-        }
+        }.isInstanceOf<NoSuchMethodException>()
     }
 
     @Test

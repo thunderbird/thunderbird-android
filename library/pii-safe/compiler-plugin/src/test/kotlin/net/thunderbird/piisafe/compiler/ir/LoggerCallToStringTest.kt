@@ -1,9 +1,10 @@
 package net.thunderbird.piisafe.compiler.ir
 
+import assertk.assertThat
+import assertk.assertions.isEqualTo
 import com.tschuchort.compiletesting.JvmCompilationResult
 import com.tschuchort.compiletesting.KotlinCompilation
 import kotlin.test.Test
-import kotlin.test.assertEquals
 import net.thunderbird.piisafe.compiler.testing.call
 import net.thunderbird.piisafe.compiler.testing.callStatic
 import net.thunderbird.piisafe.compiler.testing.captured
@@ -25,46 +26,46 @@ class LoggerCallToStringTest {
     fun `ensure string-template interpolation of a HasPii value masks pii data`() {
         // Arrange
         val result = compile("Interpolation.fixture.kt")
-        assertEquals(expected = KotlinCompilation.ExitCode.OK, actual = result.exitCode)
+        assertThat(result.exitCode).isEqualTo(KotlinCompilation.ExitCode.OK)
 
         // Act
         val actual = result.invokeLogUser()
 
         // Assert
-        assertEquals(expected = "User: User(name = Alice, email = <sensitive>)", actual = actual)
+        assertThat(actual).isEqualTo("User: User(name = Alice, email = <sensitive>)")
     }
 
     @Test
     fun `ensure an explicit toString call on a HasPii value masks pii data`() {
         // Arrange
         val result = compile("ExplicitToString.fixture.kt")
-        assertEquals(expected = KotlinCompilation.ExitCode.OK, actual = result.exitCode)
+        assertThat(result.exitCode).isEqualTo(KotlinCompilation.ExitCode.OK)
 
         // Act
         val actual = result.invokeLogUser()
 
         // Assert
-        assertEquals(expected = "User: User(name = Alice, email = <sensitive>)", actual = actual)
+        assertThat(actual).isEqualTo("User: User(name = Alice, email = <sensitive>)")
     }
 
     @Test
     fun `ensure string concatenation of a HasPii value masks pii data`() {
         // Arrange
         val result = compile("Concatenation.fixture.kt")
-        assertEquals(expected = KotlinCompilation.ExitCode.OK, actual = result.exitCode)
+        assertThat(result.exitCode).isEqualTo(KotlinCompilation.ExitCode.OK)
 
         // Act
         val actual = result.invokeLogUser()
 
         // Assert
-        assertEquals(expected = "User: User(name = Alice, email = <sensitive>)", actual = actual)
+        assertThat(actual).isEqualTo("User: User(name = Alice, email = <sensitive>)")
     }
 
     @Test
     fun `ensure that values not annotated with HasPii are unchanged`() {
         // Arrange
         val result = compile("NotPii.fixture.kt")
-        assertEquals(expected = KotlinCompilation.ExitCode.OK, actual = result.exitCode)
+        assertThat(result.exitCode).isEqualTo(KotlinCompilation.ExitCode.OK)
 
         // Act
         val plain = result.loadClass("Plain").construct("hello")
@@ -73,14 +74,14 @@ class LoggerCallToStringTest {
         val actual = logger.captured()
 
         // Assert
-        assertEquals(expected = "Plain: Plain(value=hello)", actual = actual)
+        assertThat(actual).isEqualTo("Plain: Plain(value=hello)")
     }
 
     @Test
     fun `mask multiple HasPii values interpolated in the same message`() {
         // Arrange
         val result = compile("MultiplePii.fixture.kt")
-        assertEquals(expected = KotlinCompilation.ExitCode.OK, actual = result.exitCode)
+        assertThat(result.exitCode).isEqualTo(KotlinCompilation.ExitCode.OK)
 
         // Act
         val user = result.loadClass("User").construct("Alice", "alice@example.com")
@@ -90,10 +91,9 @@ class LoggerCallToStringTest {
         val actual = logger.captured()
 
         // Assert
-        assertEquals(
-            expected = "User: User(name = Alice, email = <sensitive>), " +
+        assertThat(actual).isEqualTo(
+            "User: User(name = Alice, email = <sensitive>), " +
                 "Account: Account(id = acc-1, ssn = <sensitive>)",
-            actual = actual,
         )
     }
 
@@ -101,7 +101,7 @@ class LoggerCallToStringTest {
     fun `mask only the HasPii value in a message mixing HasPii and plain values`() {
         // Arrange
         val result = compile("MixedPii.fixture.kt")
-        assertEquals(expected = KotlinCompilation.ExitCode.OK, actual = result.exitCode)
+        assertThat(result.exitCode).isEqualTo(KotlinCompilation.ExitCode.OK)
 
         // Act
         val user = result.loadClass("User").construct("Alice", "alice@example.com")
@@ -111,17 +111,14 @@ class LoggerCallToStringTest {
         val actual = logger.captured()
 
         // Assert
-        assertEquals(
-            expected = "User: User(name = Alice, email = <sensitive>), Plain: Plain(value=hello)",
-            actual = actual,
-        )
+        assertThat(actual).isEqualTo("User: User(name = Alice, email = <sensitive>), Plain: Plain(value=hello)")
     }
 
     @Test
     fun `mask a HasPii value nested inside a collection`() {
         // Arrange
         val result = compile("PiiInsideCollection.fixture.kt")
-        assertEquals(expected = KotlinCompilation.ExitCode.OK, actual = result.exitCode)
+        assertThat(result.exitCode).isEqualTo(KotlinCompilation.ExitCode.OK)
 
         // Act
         val userClass = result.loadClass("User")
@@ -133,9 +130,8 @@ class LoggerCallToStringTest {
         val actual = logger.captured()
 
         // Assert
-        assertEquals(
-            expected = "Users: [User(name = Alice, email = <sensitive>), User(name = Jorge, email = <sensitive>)]",
-            actual = actual,
+        assertThat(actual).isEqualTo(
+            "Users: [User(name = Alice, email = <sensitive>), User(name = Jorge, email = <sensitive>)]",
         )
     }
 
@@ -143,7 +139,7 @@ class LoggerCallToStringTest {
     fun `mask a HasPii value nested inside an empty collection`() {
         // Arrange
         val result = compile("PiiInsideCollection.fixture.kt")
-        assertEquals(expected = KotlinCompilation.ExitCode.OK, actual = result.exitCode)
+        assertThat(result.exitCode).isEqualTo(KotlinCompilation.ExitCode.OK)
 
         // Act
         val logger = result.loadClass("FakeLogger").construct()
@@ -151,14 +147,14 @@ class LoggerCallToStringTest {
         val actual = logger.captured()
 
         // Assert
-        assertEquals(expected = "Users: []", actual = actual)
+        assertThat(actual).isEqualTo("Users: []")
     }
 
     @Test
     fun `mask a HasPii value nested inside a Set`() {
         // Arrange
         val result = compile("PiiInsideSet.fixture.kt")
-        assertEquals(expected = KotlinCompilation.ExitCode.OK, actual = result.exitCode)
+        assertThat(result.exitCode).isEqualTo(KotlinCompilation.ExitCode.OK)
 
         // Act
         val userClass = result.loadClass("User")
@@ -170,9 +166,8 @@ class LoggerCallToStringTest {
         val actual = logger.captured()
 
         // Assert
-        assertEquals(
-            expected = "Users: [User(name = Alice, email = <sensitive>), User(name = Jorge, email = <sensitive>)]",
-            actual = actual,
+        assertThat(actual).isEqualTo(
+            "Users: [User(name = Alice, email = <sensitive>), User(name = Jorge, email = <sensitive>)]",
         )
     }
 
@@ -180,7 +175,7 @@ class LoggerCallToStringTest {
     fun `ensure a collection of non-HasPii values are untouched`() {
         // Arrange
         val result = compile("NonPiiCollection.fixture.kt")
-        assertEquals(expected = KotlinCompilation.ExitCode.OK, actual = result.exitCode)
+        assertThat(result.exitCode).isEqualTo(KotlinCompilation.ExitCode.OK)
 
         // Act
         val logger = result.loadClass("FakeLogger").construct()
@@ -188,14 +183,14 @@ class LoggerCallToStringTest {
         val actual = logger.captured()
 
         // Assert
-        assertEquals(expected = "Items: [a, b]", actual = actual)
+        assertThat(actual).isEqualTo("Items: [a, b]")
     }
 
     @Test
     fun `mask a HasPii value nested inside a Map`() {
         // Arrange
         val result = compile("PiiInsideMap.fixture.kt")
-        assertEquals(expected = KotlinCompilation.ExitCode.OK, actual = result.exitCode)
+        assertThat(result.exitCode).isEqualTo(KotlinCompilation.ExitCode.OK)
 
         // Act
         val userClass = result.loadClass("User")
@@ -207,10 +202,9 @@ class LoggerCallToStringTest {
         val actual = logger.captured()
 
         // Assert
-        assertEquals(
-            expected = "Users: {alice=User(name = Alice, email = <sensitive>), " +
+        assertThat(actual).isEqualTo(
+            "Users: {alice=User(name = Alice, email = <sensitive>), " +
                 "jorge=User(name = Jorge, email = <sensitive>)}",
-            actual = actual,
         )
     }
 
@@ -218,7 +212,7 @@ class LoggerCallToStringTest {
     fun `ensure a Map of non-HasPii values is untouched`() {
         // Arrange
         val result = compile("NonPiiMap.fixture.kt")
-        assertEquals(expected = KotlinCompilation.ExitCode.OK, actual = result.exitCode)
+        assertThat(result.exitCode).isEqualTo(KotlinCompilation.ExitCode.OK)
 
         // Act
         val logger = result.loadClass("FakeLogger").construct()
@@ -226,7 +220,7 @@ class LoggerCallToStringTest {
         val actual = logger.captured()
 
         // Assert
-        assertEquals(expected = "Items: {a=1, b=2}", actual = actual)
+        assertThat(actual).isEqualTo("Items: {a=1, b=2}")
     }
 
     private fun JvmCompilationResult.invokeLogUser(): String? {

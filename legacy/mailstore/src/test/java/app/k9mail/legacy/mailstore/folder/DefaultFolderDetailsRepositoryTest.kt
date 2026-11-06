@@ -10,15 +10,15 @@ import app.k9mail.legacy.mailstore.domain.GetFolderIdsForTypeUseCase
 import app.k9mail.legacy.mailstore.domain.SetPushForFolderUseCase
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import assertk.assertions.isFalse
 import assertk.assertions.isInstanceOf
 import assertk.assertions.isNotEmpty
 import assertk.assertions.isNull
+import assertk.assertions.isTrue
 import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ConnectionSecurity
 import com.fsck.k9.mail.FolderType as K9FolderType
 import com.fsck.k9.mail.ServerSettings
-import junit.framework.TestCase.assertFalse
-import junit.framework.TestCase.assertTrue
 import kotlin.test.Test
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.runTest
@@ -283,11 +283,8 @@ class DefaultFolderDetailsRepositoryTest {
         var inboxFolderDetails = (testSubject.findById(accountId, INBOX_FOLDER_ID) as Outcome.Success).data
 
         // Check that push has not been enabled yet
-        assertFalse(
-            "Is push enabled: ${inboxFolderDetails?.isPushEnabled} was supposed to be false " +
-                "before calling SetPushForFolderUseCase.",
-            inboxFolderDetails?.isPushEnabled == true,
-        )
+        assertThat(inboxFolderDetails?.isPushEnabled == true, name = "isPushEnabled before SetPushForFolderUseCase")
+            .isFalse()
 
         // Call the same use case used in the account creation function to enable push
         SetPushForFolderUseCase(
@@ -303,11 +300,8 @@ class DefaultFolderDetailsRepositoryTest {
         inboxFolderDetails = (testSubject.findById(accountId, INBOX_FOLDER_ID) as Outcome.Success).data
 
         // Check folder's push settings changed
-        assertTrue(
-            "Is push enabled: ${inboxFolderDetails?.isPushEnabled} was supposed to be true " +
-                "after calling SetPushForFolderUseCase.",
-            inboxFolderDetails?.isPushEnabled == true,
-        )
+        assertThat(inboxFolderDetails?.isPushEnabled == true, name = "isPushEnabled after SetPushForFolderUseCase")
+            .isTrue()
     }
 
     @Test

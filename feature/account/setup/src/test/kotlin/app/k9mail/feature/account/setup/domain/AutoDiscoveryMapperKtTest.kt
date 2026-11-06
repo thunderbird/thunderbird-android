@@ -7,12 +7,13 @@ import app.k9mail.autodiscovery.api.IncomingServerSettings
 import app.k9mail.autodiscovery.api.OutgoingServerSettings
 import app.k9mail.autodiscovery.api.SmtpServerSettings
 import app.k9mail.feature.account.common.domain.entity.MailConnectionSecurity
+import assertk.assertFailure
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import assertk.assertions.isInstanceOf
 import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ServerSettings
 import com.fsck.k9.mail.store.imap.ImapStoreSettings
-import kotlin.test.assertFailsWith
 import net.thunderbird.core.common.net.Hostname
 import net.thunderbird.core.common.net.Port
 import org.junit.Test
@@ -56,9 +57,9 @@ class AutoDiscoveryMapperKtTest {
     fun `should throw error when IncomingServerSettings not known`() {
         val incomingServerSettings = object : IncomingServerSettings {}
 
-        assertFailsWith<IllegalArgumentException> {
+        assertFailure {
             incomingServerSettings.toServerSettings("password")
-        }
+        }.isInstanceOf<IllegalArgumentException>()
     }
 
     @Test
@@ -93,8 +94,8 @@ class AutoDiscoveryMapperKtTest {
     fun `should throw error when OutgoingServerSettings not known`() {
         val outgoingServerSettings = object : OutgoingServerSettings {}
 
-        assertFailsWith<IllegalArgumentException> {
+        assertFailure {
             outgoingServerSettings.toServerSettings("password")
-        }
+        }.isInstanceOf<IllegalArgumentException>()
     }
 }
