@@ -160,6 +160,7 @@ public class MessagingControllerTest extends K9RobolectricTest {
             Collections.<ControllerExtension>emptyList(),
             featureFlagProvider,
             syncLogger,
+            syncLogger,
             notificationManager,
             fakeOutboxFolderManager,
             accountManager

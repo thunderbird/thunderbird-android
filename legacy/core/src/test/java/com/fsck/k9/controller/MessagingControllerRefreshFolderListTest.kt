@@ -56,6 +56,7 @@ class MessagingControllerRefreshFolderListTest : K9RobolectricTest() {
         emptyList(),
         { FeatureFlagResult.Disabled },
         TestLogger(),
+        TestLogger(),
         FakeNotificationManager(
             emitOnSend = { error("Unexpected notification") },
             emitOnDismissNotification = { error("Unexpected notification dismissal") },

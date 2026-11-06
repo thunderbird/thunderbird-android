@@ -39,6 +39,7 @@ val controllerModule = module {
             get(named("controllerExtensions")),
             get<FeatureFlagProvider>(),
             get<Logger>(named("syncDebug")),
+            get<Logger>(),
             get<NotificationManager>(),
             get<OutboxFolderManager>(),
             get<LegacyAccountManager>(),
