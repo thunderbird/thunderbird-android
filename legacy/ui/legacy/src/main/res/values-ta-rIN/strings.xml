@@ -534,7 +534,6 @@
     <string name="edit_identity_reply_to_hint">(விரும்பினால்)</string>
     <string name="no_removable_identity">உங்கள் ஒரே அடையாளத்தை அகற்ற முடியாது</string>
     <string name="sort_sender_re_alpha">அனுப்புநர் தலைகீழ் அகர வரிசைப்படி</string>
-    <string name="background_ops_auto_sync_only">\'ஆட்டோ-ஒத்திசைவு\' சரிபார்க்கப்படும் போது</string>
     <string name="batch_select_all">அனைத்தையும் தெரிவுசெய்</string>
     <string name="account_setup_push_limit_label">புச் மூலம் சரிபார்க்க அதிகபட்ச கோப்புறைகள்</string>
     <string name="account_setup_push_limit_100">100 கோப்புறைகள்</string>

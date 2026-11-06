@@ -446,7 +446,6 @@
     <string name="background_ops_label">Bakgrunnssynkronisering</string>
     <string name="background_ops_never">Aldri</string>
     <string name="background_ops_always">Alltid</string>
-    <string name="background_ops_auto_sync_only">Når «Autosynkronisering» er merket</string>
     <string name="batch_select_all">Velg alle</string>
     <string name="account_setup_push_limit_label">Maks mapper for å sjekke ved push</string>
     <string name="account_setup_push_limit_5">5 mapper</string>

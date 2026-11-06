@@ -510,7 +510,6 @@
     <string name="background_ops_label">Synchronizacja w tle</string>
     <string name="background_ops_never">Nigdy</string>
     <string name="background_ops_always">Zawsze</string>
-    <string name="background_ops_auto_sync_only">Gdy „Autosynchronizacja” jest włączona</string>
     <string name="batch_select_all">Wybierz wszystkie</string>
     <string name="account_setup_push_limit_label">Sprawdzanie przez push</string>
     <string name="account_setup_push_limit_5">Do 5 folderów</string>

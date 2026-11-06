@@ -499,7 +499,6 @@
     <string name="background_ops_label">Cydweddu yn y cefndir</string>
     <string name="background_ops_never">Byth</string>
     <string name="background_ops_always">Bob tro</string>
-    <string name="background_ops_auto_sync_only">Pan mae \'Awto-cydweddu\' wedi ei ddewis</string>
     <string name="batch_select_all">Dewis y cyfan</string>
     <string name="account_setup_push_limit_label">Nifer mwyaf o ffolderi i\'w gwirio wrth wthio</string>
     <string name="account_setup_push_limit_5">5 ffolder</string>

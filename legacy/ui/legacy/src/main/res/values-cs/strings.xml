@@ -509,7 +509,6 @@
     <string name="background_ops_label">Synchronizace na pozadí</string>
     <string name="background_ops_never">Nikdy</string>
     <string name="background_ops_always">Vždy</string>
-    <string name="background_ops_auto_sync_only">Když je zaškrtnutá „Aut. synchronizace“</string>
     <string name="batch_select_all">Vybrat vše</string>
     <string name="account_setup_push_limit_label">Max. počet složek řízených Push</string>
     <string name="account_setup_push_limit_5">5 složek</string>

@@ -450,7 +450,6 @@
     <string name="background_ops_label">Синхронизиране на заден план</string>
     <string name="background_ops_never">Никога</string>
     <string name="background_ops_always">Винаги</string>
-    <string name="background_ops_auto_sync_only">Когато \'Авто-синхр\' е маркирано</string>
     <string name="batch_select_all">Маркирай всички</string>
     <string name="account_setup_push_limit_label">Максимален брой папки да бъдат проверяване чрез Push</string>
     <string name="account_setup_push_limit_5">5 папки</string>

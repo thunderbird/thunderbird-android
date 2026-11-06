@@ -422,7 +422,6 @@
     <string name="background_ops_label">Goubredañ an drekleur</string>
     <string name="background_ops_never">Morse</string>
     <string name="background_ops_always">Atav</string>
-    <string name="background_ops_auto_sync_only">P’eo gweredekaet ar goubredañ emgefreek</string>
     <string name="batch_select_all">Diuzañ an holl</string>
     <string name="account_setup_push_limit_label">Niver a deuliadoù uhelañ da gerc’hat dre Push</string>
     <string name="account_setup_push_limit_5">5 teuliad</string>

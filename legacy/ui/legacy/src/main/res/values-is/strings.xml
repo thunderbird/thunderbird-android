@@ -505,7 +505,6 @@
     <string name="background_ops_label">Samstilling í bakgrunni</string>
     <string name="background_ops_never">Aldrei</string>
     <string name="background_ops_always">Alltaf</string>
-    <string name="background_ops_auto_sync_only">Þegar merkt er við sjálfvirka samstillingu</string>
     <string name="batch_select_all">Velja allt</string>
     <string name="account_setup_push_limit_label">Hámarksfjöldi mappa sem á að athuga með ýtingu</string>
     <string name="account_setup_push_limit_5">5 möppur</string>
