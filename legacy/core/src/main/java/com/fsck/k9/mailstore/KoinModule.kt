@@ -77,6 +77,7 @@ val legacyMailStoreModule = module {
             messageStoreManager = get(),
             specialFolderUpdaterFactory = get(),
             saveMessageDataCreator = get(),
+            messageListRepository = get(),
         )
     }
     factory {

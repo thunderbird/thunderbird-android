@@ -28,8 +28,15 @@ val messageListUiModule = module {
         )
     }
     factory {
+        DeletedFolderDetector(
+            accountManager = get(),
+            folderQueryRepository = get(),
+        )
+    }
+    factory {
         MessageListLiveDataFactory(
             messageListLoader = get(),
+            deletedFolderDetector = get(),
             accountManager = get(),
             messageListRepository = get(),
         )
