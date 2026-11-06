@@ -155,6 +155,7 @@
 
     <string-array name="messageview_visible_refile_actions_entries">
         <item>@string/delete_action</item>
+        <item>@string/toggle_unread_action</item>
         <item>@string/archive_action</item>
         <item>@string/move_action</item>
         <item>@string/copy_action</item>
