@@ -61,6 +61,14 @@ val controllerModule = module {
         )
     }
 
+    single {
+        UnifiedFolderReadMarker(
+            accountManager = get(),
+            outboxFolderManager = get(),
+            markAllMessagesRead = get<MessagingControllerWrapper>()::markAllMessagesRead,
+        )
+    }
+
     single<AccountCapabilities> {
         RealAccountCapabilities(
             messagingController = get(),
