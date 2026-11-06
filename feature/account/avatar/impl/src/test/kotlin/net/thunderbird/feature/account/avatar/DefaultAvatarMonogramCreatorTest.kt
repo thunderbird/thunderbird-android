@@ -29,6 +29,26 @@ class DefaultAvatarMonogramCreatorTest {
     }
 
     @Test
+    fun `create keeps a ZWJ emoji sequence intact instead of splitting it`() {
+        val name = "🐦‍🔥 Phoenix"
+        val expectedMonogram = "🐦‍🔥P"
+
+        val result = testSubject.create(name, null)
+
+        assertThat(result).isEqualTo(expectedMonogram)
+    }
+
+    @Test
+    fun `create keeps a single surrogate-pair emoji intact`() {
+        val name = "🔥"
+        val expectedMonogram = "🔥"
+
+        val result = testSubject.create(name, null)
+
+        assertThat(result).isEqualTo(expectedMonogram)
+    }
+
+    @Test
     fun `create returns default monogram for null or empty inputs`() {
         val expectedMonogram = "XX"
 
