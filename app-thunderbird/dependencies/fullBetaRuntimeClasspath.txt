@@ -319,7 +319,6 @@ it.krzeminski:snakeyaml-engine-kmp-jvm:3.1.1
 it.krzeminski:snakeyaml-engine-kmp:3.1.1
 jakarta.inject:jakarta.inject-api:2.0.1
 javax.inject:javax.inject:1
-net.jcip:jcip-annotations:1.0
 net.openid:appauth:0.11.1
 net.thauvin.erik.urlencoder:urlencoder-lib-jvm:1.6.0
 net.thauvin.erik.urlencoder:urlencoder-lib:1.6.0
