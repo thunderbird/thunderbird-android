@@ -26,19 +26,6 @@ internal class TbFundingSettings(
         K9.saveSettingsAsync()
     }
 
-    override fun getLastReminderShownActivityAmount(): Long {
-        return fundingConfigStore.configStateFlow.value.lastFundingReminderShownActivityAmount ?: 0L
-    }
-
-    override suspend fun setLastReminderShownActivityAmount(activityInMillis: Long) {
-        fundingConfigStore.update {
-            val oldConfig = it ?: FundingConfig.DEFAULT
-            oldConfig.copy(
-                lastFundingReminderShownActivityAmount = activityInMillis,
-            )
-        }
-    }
-
     override fun getReminderShownCount(): Int {
         return fundingConfigStore.configStateFlow.value.fundingReminderCount ?: 0
     }
@@ -54,12 +41,5 @@ internal class TbFundingSettings(
 
     override suspend fun incrementReminderShownCount() {
         setReminderShownCount(getReminderShownCount() + 1)
-    }
-
-    override fun getActivityCounterInMillis(): Long = K9.fundingActivityCounterInMillis
-
-    override fun setActivityCounterInMillis(activeTime: Long) {
-        K9.fundingActivityCounterInMillis = activeTime
-        K9.saveSettingsAsync()
     }
 }
