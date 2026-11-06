@@ -1,114 +1,100 @@
-package com.fsck.k9.controller;
+package com.fsck.k9.controller
 
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.CopyOnWriteArraySet;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.PriorityBlockingQueue;
-import java.util.concurrent.atomic.AtomicInteger;
-
-import android.content.Context;
-import android.os.Process;
-import android.os.SystemClock;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.VisibleForTesting;
-import app.k9mail.legacy.di.DI;
-import app.k9mail.legacy.mailstore.FolderDetailsAccessor;
-import app.k9mail.legacy.mailstore.MessageStore;
-import app.k9mail.legacy.mailstore.MessageStoreManager;
-import app.k9mail.legacy.mailstore.SaveMessageData;
-import app.k9mail.legacy.message.controller.MessageReference;
-import app.k9mail.legacy.message.controller.MessagingControllerMailChecker;
-import app.k9mail.legacy.message.controller.MessagingControllerRegistry;
-import app.k9mail.legacy.message.controller.MessagingListener;
-import app.k9mail.legacy.message.controller.SimpleMessagingListener;
-import com.fsck.k9.K9;
-import com.fsck.k9.backend.BackendManager;
-import com.fsck.k9.backend.api.Backend;
-import com.fsck.k9.backend.api.SyncConfig;
-import com.fsck.k9.backend.api.SyncListener;
-import com.fsck.k9.controller.ControllerExtension.ControllerInternals;
-import com.fsck.k9.controller.MessagingControllerCommands.PendingAppend;
-import com.fsck.k9.controller.MessagingControllerCommands.PendingCommand;
-import com.fsck.k9.controller.MessagingControllerCommands.PendingDelete;
-import com.fsck.k9.controller.MessagingControllerCommands.PendingEmptySpam;
-import com.fsck.k9.controller.MessagingControllerCommands.PendingEmptyTrash;
-import com.fsck.k9.controller.MessagingControllerCommands.PendingExpunge;
-import com.fsck.k9.controller.MessagingControllerCommands.PendingMarkAllAsRead;
-import com.fsck.k9.controller.MessagingControllerCommands.PendingMoveAndMarkAsRead;
-import com.fsck.k9.controller.MessagingControllerCommands.PendingMoveOrCopy;
-import com.fsck.k9.controller.MessagingControllerCommands.PendingReplace;
-import com.fsck.k9.controller.MessagingControllerCommands.PendingSetFlag;
-import com.fsck.k9.controller.ProgressBodyFactory.ProgressListener;
-import com.fsck.k9.core.BuildConfig;
-import com.fsck.k9.helper.MutableBoolean;
-import com.fsck.k9.mail.AuthType;
-import com.fsck.k9.mail.AuthenticationFailedException;
-import com.fsck.k9.mail.CertificateValidationException;
-import com.fsck.k9.mail.FetchProfile;
-import com.fsck.k9.mail.Message;
-import com.fsck.k9.mail.MessageDownloadState;
-import com.fsck.k9.mail.Part;
-import com.fsck.k9.mail.ServerSettings;
-import com.fsck.k9.mail.power.PowerManager;
-import com.fsck.k9.mail.power.WakeLock;
-import com.fsck.k9.mailstore.LocalFolder;
-import com.fsck.k9.mailstore.LocalMessage;
-import com.fsck.k9.mailstore.LocalStore;
-import com.fsck.k9.mailstore.LocalStoreProvider;
-import com.fsck.k9.mailstore.MessageListCache;
-import com.fsck.k9.mailstore.OutboxState;
-import com.fsck.k9.mailstore.OutboxStateRepository;
-import com.fsck.k9.mailstore.SaveMessageDataCreator;
-import com.fsck.k9.mailstore.SendState;
-import com.fsck.k9.mailstore.SpecialLocalFoldersCreator;
-import com.fsck.k9.notification.NotificationController;
-import com.fsck.k9.notification.NotificationStrategy;
-import kotlinx.coroutines.Dispatchers;
-import net.thunderbird.core.android.account.DeletePolicy;
-import net.thunderbird.core.android.account.LegacyAccount;
-import net.thunderbird.core.android.account.LegacyAccountManager;
-import net.thunderbird.core.common.exception.MessagingException;
-import net.thunderbird.core.common.exception.ThrowableExtensions;
-import net.thunderbird.core.common.mail.Flag;
-import net.thunderbird.core.featureflag.FeatureFlagProvider;
-import net.thunderbird.core.featureflag.keys.GeneratedFeatureFlagKey;
-import net.thunderbird.components.core.logging.Logger;
-import net.thunderbird.feature.account.AccountId;
-import net.thunderbird.feature.mail.folder.api.FolderDetails;
-import net.thunderbird.feature.mail.folder.api.OutboxFolderManager;
-import net.thunderbird.feature.mail.folder.api.OutboxFolderManagerKt;
-import net.thunderbird.feature.mail.message.list.LocalDeleteOperationDecider;
-import net.thunderbird.feature.mail.message.list.LocalMessageUidPrefixProvider;
-import net.thunderbird.feature.notification.api.NotificationManager;
-import net.thunderbird.feature.notification.api.content.AuthenticationErrorNotification;
-import net.thunderbird.feature.notification.api.content.NotificationFactoryCoroutineCompat;
-import net.thunderbird.feature.notification.api.dismisser.compat.NotificationDismisserCompat;
-import net.thunderbird.feature.notification.api.sender.compat.NotificationSenderCompat;
-import net.thunderbird.feature.search.legacy.LocalMessageSearch;
-import net.thunderbird.legacy.logging.Log;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import static com.fsck.k9.K9.MAX_SEND_ATTEMPTS;
-import static com.fsck.k9.controller.Preconditions.requireNotNull;
-import static net.thunderbird.core.android.account.AccountDefaultsProvider.DEFAULT_VISIBLE_LIMIT;
-
+import android.content.Context
+import android.os.Process
+import android.os.SystemClock
+import androidx.annotation.VisibleForTesting
+import app.k9mail.legacy.di.DI.get
+import app.k9mail.legacy.mailstore.FolderDetailsAccessor
+import app.k9mail.legacy.mailstore.MessageStore
+import app.k9mail.legacy.mailstore.MessageStoreManager
+import app.k9mail.legacy.message.controller.MessageReference
+import app.k9mail.legacy.message.controller.MessagingControllerMailChecker
+import app.k9mail.legacy.message.controller.MessagingControllerRegistry
+import app.k9mail.legacy.message.controller.MessagingListener
+import app.k9mail.legacy.message.controller.SimpleMessagingListener
+import com.fsck.k9.K9
+import com.fsck.k9.backend.BackendManager
+import com.fsck.k9.backend.api.Backend
+import com.fsck.k9.backend.api.SyncConfig
+import com.fsck.k9.backend.api.SyncListener
+import com.fsck.k9.controller.ControllerExtension.ControllerInternals
+import com.fsck.k9.controller.MessagingControllerCommands.PendingAppend
+import com.fsck.k9.controller.MessagingControllerCommands.PendingCommand
+import com.fsck.k9.controller.MessagingControllerCommands.PendingDelete
+import com.fsck.k9.controller.MessagingControllerCommands.PendingEmptySpam
+import com.fsck.k9.controller.MessagingControllerCommands.PendingEmptyTrash
+import com.fsck.k9.controller.MessagingControllerCommands.PendingExpunge
+import com.fsck.k9.controller.MessagingControllerCommands.PendingMarkAllAsRead
+import com.fsck.k9.controller.MessagingControllerCommands.PendingMoveAndMarkAsRead
+import com.fsck.k9.controller.MessagingControllerCommands.PendingMoveOrCopy
+import com.fsck.k9.controller.MessagingControllerCommands.PendingReplace
+import com.fsck.k9.controller.MessagingControllerCommands.PendingSetFlag
+import com.fsck.k9.core.BuildConfig
+import com.fsck.k9.helper.MutableBoolean
+import com.fsck.k9.mail.AuthType
+import com.fsck.k9.mail.AuthenticationFailedException
+import com.fsck.k9.mail.CertificateValidationException
+import com.fsck.k9.mail.FetchProfile
+import com.fsck.k9.mail.Message
+import com.fsck.k9.mail.MessageDownloadState
+import com.fsck.k9.mail.Part
+import com.fsck.k9.mail.ServerSettings
+import com.fsck.k9.mail.power.PowerManager
+import com.fsck.k9.mail.power.WakeLock
+import com.fsck.k9.mailstore.LocalFolder
+import com.fsck.k9.mailstore.LocalMessage
+import com.fsck.k9.mailstore.LocalStore
+import com.fsck.k9.mailstore.LocalStoreProvider
+import com.fsck.k9.mailstore.MessageListCache.Companion.getCache
+import com.fsck.k9.mailstore.SaveMessageDataCreator
+import com.fsck.k9.mailstore.SendState
+import com.fsck.k9.mailstore.SpecialLocalFoldersCreator
+import com.fsck.k9.notification.NotificationController
+import com.fsck.k9.notification.NotificationStrategy
+import java.util.EnumSet
+import java.util.LinkedList
+import java.util.concurrent.BlockingQueue
+import java.util.concurrent.CopyOnWriteArraySet
+import java.util.concurrent.CountDownLatch
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
+import java.util.concurrent.Future
+import java.util.concurrent.PriorityBlockingQueue
+import java.util.concurrent.atomic.AtomicInteger
+import kotlin.concurrent.Volatile
+import kotlin.coroutines.Continuation
+import kotlinx.coroutines.Dispatchers.IO
+import net.thunderbird.components.core.logging.Logger
+import net.thunderbird.components.core.outcome.Outcome
+import net.thunderbird.core.android.account.AccountDefaultsProvider
+import net.thunderbird.core.android.account.DeletePolicy
+import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountManager
+import net.thunderbird.core.common.exception.MessagingException
+import net.thunderbird.core.common.exception.rootCauseMessage
+import net.thunderbird.core.common.mail.Flag
+import net.thunderbird.core.featureflag.FeatureFlagProvider
+import net.thunderbird.core.featureflag.keys.GeneratedFeatureFlagKey
+import net.thunderbird.feature.account.AccountId
+import net.thunderbird.feature.mail.folder.api.OutboxFolderManager
+import net.thunderbird.feature.mail.folder.api.hasPendingMessagesSync
+import net.thunderbird.feature.mail.message.list.LocalDeleteOperationDecider
+import net.thunderbird.feature.mail.message.list.LocalMessageUidPrefixProvider
+import net.thunderbird.feature.notification.api.NotificationManager
+import net.thunderbird.feature.notification.api.command.outcome.Failure
+import net.thunderbird.feature.notification.api.command.outcome.Success
+import net.thunderbird.feature.notification.api.content.AuthenticationErrorNotification
+import net.thunderbird.feature.notification.api.content.Notification
+import net.thunderbird.feature.notification.api.content.NotificationFactoryCoroutineCompat
+import net.thunderbird.feature.notification.api.dismisser.compat.NotificationDismisserCompat
+import net.thunderbird.feature.notification.api.sender.compat.NotificationSenderCompat
+import net.thunderbird.feature.search.legacy.LocalMessageSearch
+import net.thunderbird.legacy.logging.Log.d
+import net.thunderbird.legacy.logging.Log.e
+import net.thunderbird.legacy.logging.Log.i
+import net.thunderbird.legacy.logging.Log.v
+import net.thunderbird.legacy.logging.Log.w
 
 /**
  * Starts a long running (application) Thread that will run through commands that require remote mailbox access. This
@@ -119,743 +105,714 @@ import static net.thunderbird.core.android.account.AccountDefaultsProvider.DEFAU
  * registers as a listener. When it is paused it removes itself. Thus, any commands that that activity submitted are
  * removed from the queue once the activity is no longer active.
  */
-public class MessagingController implements MessagingControllerRegistry, MessagingControllerMailChecker {
+class MessagingController internal constructor(
+    private val context: Context?,
+    private val notificationController: NotificationController,
+    private val notificationStrategy: NotificationStrategy,
+    private val localStoreProvider: LocalStoreProvider,
+    private val backendManager: BackendManager,
+    private val messageStoreManager: MessageStoreManager,
+    private val saveMessageDataCreator: SaveMessageDataCreator,
+    private val specialLocalFoldersCreator: SpecialLocalFoldersCreator?,
+    private val localDeleteOperationDecider: LocalDeleteOperationDecider,
+    private val localMessageUidPrefixProvider: LocalMessageUidPrefixProvider,
+    controllerExtensions: MutableList<ControllerExtension>,
+    private val featureFlagProvider: FeatureFlagProvider,
+    private val syncDebugLogger: Logger,
+    notificationManager: NotificationManager,
+    outboxFolderManager: OutboxFolderManager,
+    accountManager: LegacyAccountManager
+) : MessagingControllerRegistry, MessagingControllerMailChecker {
+    private val controllerThread: Thread
 
-    public static final Set<Flag> SYNC_FLAGS = EnumSet.of(Flag.SEEN, Flag.FLAGGED, Flag.ANSWERED, Flag.FORWARDED);
+    private val queuedCommands: BlockingQueue<Command?> = PriorityBlockingQueue<Command?>()
+    val listeners: MutableSet<MessagingListener> = CopyOnWriteArraySet<MessagingListener>()
+    private val threadPool: ExecutorService = Executors.newCachedThreadPool()
+    private val memorizingMessagingListener = MemorizingMessagingListener()
+    private val draftOperations: DraftOperations
+    private val notificationOperations: NotificationOperations
+    private val archiveOperations: ArchiveOperations
+    private val outboxFolderManager: OutboxFolderManager
+    private val notificationSender: NotificationSenderCompat
+    private val notificationDismisser: NotificationDismisserCompat
+    private val accountManager: LegacyAccountManager
 
-    private static final long FOLDER_LIST_STALENESS_THRESHOLD = 30 * 60 * 1000L;
+    @Volatile
+    private var stopped = false
 
-    private static final String TAG = "MessagingController";
-
-    private final Context context;
-    private final NotificationController notificationController;
-    private final NotificationStrategy notificationStrategy;
-    private final LocalStoreProvider localStoreProvider;
-    private final BackendManager backendManager;
-    private final MessageStoreManager messageStoreManager;
-    private final SaveMessageDataCreator saveMessageDataCreator;
-    private final SpecialLocalFoldersCreator specialLocalFoldersCreator;
-    private final LocalDeleteOperationDecider localDeleteOperationDecider;
-
-    private final Thread controllerThread;
-
-    private final LocalMessageUidPrefixProvider localMessageUidPrefixProvider;
-    private final BlockingQueue<Command> queuedCommands = new PriorityBlockingQueue<>();
-    private final Set<MessagingListener> listeners = new CopyOnWriteArraySet<>();
-    private final ExecutorService threadPool = Executors.newCachedThreadPool();
-    private final MemorizingMessagingListener memorizingMessagingListener = new MemorizingMessagingListener();
-    private final DraftOperations draftOperations;
-    private final NotificationOperations notificationOperations;
-    private final ArchiveOperations archiveOperations;
-    private final FeatureFlagProvider featureFlagProvider;
-    private final Logger syncDebugLogger;
-    private final OutboxFolderManager outboxFolderManager;
-    private final NotificationSenderCompat notificationSender;
-    private final NotificationDismisserCompat notificationDismisser;
-    private final LegacyAccountManager accountManager;
-
-    private volatile boolean stopped = false;
-
-
-    public static MessagingController getInstance(Context context) {
-        return DI.get(MessagingController.class);
-    }
-
-
-    MessagingController(
-        Context context,
-        NotificationController notificationController,
-        NotificationStrategy notificationStrategy,
-        LocalStoreProvider localStoreProvider,
-        BackendManager backendManager,
-        MessageStoreManager messageStoreManager,
-        SaveMessageDataCreator saveMessageDataCreator,
-        SpecialLocalFoldersCreator specialLocalFoldersCreator,
-        LocalDeleteOperationDecider localDeleteOperationDecider,
-        LocalMessageUidPrefixProvider localMessageUidPrefixProvider,
-        List<ControllerExtension> controllerExtensions,
-        FeatureFlagProvider featureFlagProvider,
-        Logger syncDebugLogger,
-        NotificationManager notificationManager,
-        OutboxFolderManager outboxFolderManager,
-        LegacyAccountManager accountManager
-    ) {
-        this.context = context;
-        this.notificationController = notificationController;
-        this.notificationStrategy = notificationStrategy;
-        this.localStoreProvider = localStoreProvider;
-        this.backendManager = backendManager;
-        this.messageStoreManager = messageStoreManager;
-        this.saveMessageDataCreator = saveMessageDataCreator;
-        this.specialLocalFoldersCreator = specialLocalFoldersCreator;
-        this.localDeleteOperationDecider = localDeleteOperationDecider;
-        this.localMessageUidPrefixProvider = localMessageUidPrefixProvider;
-        this.featureFlagProvider = featureFlagProvider;
-        this.syncDebugLogger = syncDebugLogger;
-        this.notificationSender = new NotificationSenderCompat(notificationManager);
-        this.notificationDismisser = new NotificationDismisserCompat(notificationManager);
-        this.outboxFolderManager = outboxFolderManager;
-        this.accountManager = accountManager;
-
-        controllerThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                runInBackground();
-            }
-        });
-        controllerThread.setName("MessagingController");
-        controllerThread.start();
-        addListener(memorizingMessagingListener);
-
-        initializeControllerExtensions(controllerExtensions);
-
-        draftOperations = new DraftOperations(
-                this, messageStoreManager, saveMessageDataCreator, localMessageUidPrefixProvider,
-                accountManager
-        );
-        notificationOperations =
-            new NotificationOperations(notificationController, accountManager, outboxFolderManager);
-        archiveOperations = new ArchiveOperations(this, accountManager, featureFlagProvider);
-    }
-
-    private void initializeControllerExtensions(List<ControllerExtension> controllerExtensions) {
+    private fun initializeControllerExtensions(controllerExtensions: MutableList<ControllerExtension>) {
         if (controllerExtensions.isEmpty()) {
-            return;
+            return
         }
 
-        ControllerInternals internals = new ControllerInternals() {
-            @Override
-            public void put(@NotNull String description, @Nullable MessagingListener listener,
-                @NotNull Runnable runnable) {
-                MessagingController.this.put(description, listener, runnable);
+        val internals: ControllerInternals = object : ControllerInternals {
+            override fun put(
+                description: String, listener: MessagingListener?,
+                runnable: Runnable
+            ) {
+                this@MessagingController.put(description, listener, runnable)
             }
 
-            @Override
-            public void putBackground(@NotNull String description, @Nullable MessagingListener listener,
-                @NotNull Runnable runnable) {
-                MessagingController.this.putBackground(description, listener, runnable);
+            override fun putBackground(
+                description: String, listener: MessagingListener?,
+                runnable: Runnable
+            ) {
+                this@MessagingController.putBackground(description, listener, runnable)
             }
-        };
+        }
 
-        for (ControllerExtension extension : controllerExtensions) {
-            extension.init(this, backendManager, internals);
+        for (extension in controllerExtensions) {
+            extension.init(this, backendManager, internals)
         }
     }
 
     @VisibleForTesting
-    void stop() throws InterruptedException {
-        stopped = true;
-        controllerThread.interrupt();
-        controllerThread.join(1000L);
+    @Throws(InterruptedException::class)
+    fun stop() {
+        stopped = true
+        controllerThread.interrupt()
+        controllerThread.join(1000L)
     }
 
-    private void runInBackground() {
-        Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
+    private fun runInBackground() {
+        Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND)
         while (!stopped) {
-            String commandDescription = null;
+            var commandDescription: String? = null
             try {
-                final Command command = queuedCommands.take();
+                val command = queuedCommands.take()
 
                 if (command != null) {
-                    commandDescription = command.description;
+                    commandDescription = command.description
 
-                    Log.i(TAG, "Running command '%s', seq = %s (%s priority)",
+                    i(
+                        TAG, "Running command '%s', seq = %s (%s priority)",
                         command.description,
                         command.sequence,
-                        command.isForegroundPriority ? "foreground" : "background");
+                        if (command.isForegroundPriority) "foreground" else "background"
+                    )
 
-                    command.runnable.run();
+                    command.runnable!!.run()
 
-                    Log.i(TAG, " Command '%s' completed", command.description);
+                    i(TAG, " Command '%s' completed", command.description)
                 }
-            } catch (Exception e) {
-                Log.e(TAG, e, "Error running command '%s'", commandDescription);
+            } catch (e: Exception) {
+                e(TAG, e, "Error running command '%s'", commandDescription)
             }
         }
     }
 
-    private void put(String description, MessagingListener listener, Runnable runnable) {
-        putCommand(queuedCommands, description, listener, runnable, true);
+    private fun put(description: String?, listener: MessagingListener?, runnable: Runnable) {
+        putCommand(queuedCommands, description, listener, runnable, true)
     }
 
-    void putBackground(String description, MessagingListener listener, Runnable runnable) {
-        putCommand(queuedCommands, description, listener, runnable, false);
+    fun putBackground(description: String?, listener: MessagingListener?, runnable: Runnable) {
+        putCommand(queuedCommands, description, listener, runnable, false)
     }
 
-    private void putCommand(BlockingQueue<Command> queue, String description, MessagingListener listener,
-        Runnable runnable, boolean isForeground) {
-        int retries = 10;
-        Exception e = null;
+    private fun putCommand(
+        queue: BlockingQueue<Command?>, description: String?, listener: MessagingListener?,
+        runnable: Runnable, isForeground: Boolean
+    ) {
+        var retries = 10
+        var e: Exception? = null
         while (retries-- > 0) {
             try {
-                Command command = new Command();
-                command.listener = listener;
-                command.runnable = runnable;
-                command.description = description;
-                command.isForegroundPriority = isForeground;
-                queue.put(command);
-                return;
-            } catch (InterruptedException ie) {
-                SystemClock.sleep(200);
-                e = ie;
+                val command = Command()
+                command.listener = listener
+                command.runnable = runnable
+                command.description = description
+                command.isForegroundPriority = isForeground
+                queue.put(command)
+                return
+            } catch (ie: InterruptedException) {
+                SystemClock.sleep(200)
+                e = ie
             }
         }
-        throw new Error(e);
+        throw Error(e)
     }
 
-    Backend getBackend(AccountId accountId) {
-        return backendManager.getBackend(accountId);
+    fun getBackend(accountId: AccountId): Backend {
+        return backendManager.getBackend(accountId)
     }
 
     /**
-     * Returns {@code null} when the account no longer exists, e.g. when it was removed while the UI or background work
+     * Returns `null` when the account no longer exists, e.g. when it was removed while the UI or background work
      * still referred to it.
      */
-    @Nullable
-    private Backend getBackendOrNull(AccountId accountId) {
+    private fun getBackendOrNull(accountId: AccountId): Backend? {
         if (accountManager.findById(accountId) == null) {
-            return null;
+            return null
         }
-        return getBackend(accountId);
+        return getBackend(accountId)
     }
 
-    LocalStore getLocalStoreOrThrow(AccountId accountId) {
+    fun getLocalStoreOrThrow(accountId: AccountId): LocalStore {
         try {
-            return localStoreProvider.getInstance(accountId);
-        } catch (MessagingException e) {
-            throw new IllegalStateException("Couldn't get LocalStore for account " + accountId);
+            return localStoreProvider.getInstance(accountId)
+        } catch (e: MessagingException) {
+            throw IllegalStateException("Couldn't get LocalStore for account " + accountId)
         }
     }
 
-    private String getFolderServerId(AccountId accountId, long folderId) {
-        MessageStore messageStore = messageStoreManager.getMessageStore(accountId);
-        String folderServerId = messageStore.getFolderServerId(folderId);
-        if (folderServerId == null) {
-            throw new IllegalStateException("Folder not found (ID: " + folderId + ")");
-        }
-        return folderServerId;
+    private fun getFolderServerId(accountId: AccountId, folderId: Long): String {
+        val messageStore: MessageStore = messageStoreManager.getMessageStore(accountId)
+        val folderServerId: String = messageStore.getFolderServerId(folderId)!!
+        checkNotNull(folderServerId) { "Folder not found (ID: " + folderId + ")" }
+        return folderServerId
     }
 
-    private long getFolderId(AccountId accountId, String folderServerId) {
-        MessageStore messageStore = messageStoreManager.getMessageStore(accountId);
-        Long folderId = messageStore.getFolderId(folderServerId);
-        if (folderId == null) {
-            throw new IllegalStateException("Folder not found (server ID: " + folderServerId + ")");
-        }
-        return folderId;
+    private fun getFolderId(accountId: AccountId, folderServerId: String): Long {
+        val messageStore: MessageStore = messageStoreManager.getMessageStore(accountId)
+        val folderId = messageStore.getFolderId(folderServerId)
+        checkNotNull(folderId) { "Folder not found (server ID: " + folderServerId + ")" }
+        return folderId
     }
 
-    public void addListener(@NonNull MessagingListener listener) {
-        listeners.add(listener);
-        refreshListener(listener);
+    override fun addListener(listener: MessagingListener) {
+        listeners.add(listener)
+        refreshListener(listener)
     }
 
-    public void refreshListener(MessagingListener listener) {
+    fun refreshListener(listener: MessagingListener?) {
         if (listener != null) {
-            memorizingMessagingListener.refreshOther(listener);
+            memorizingMessagingListener.refreshOther(listener)
         }
     }
 
-    public void removeListener(@NonNull MessagingListener listener) {
-        listeners.remove(listener);
+    override fun removeListener(listener: MessagingListener) {
+        listeners.remove(listener)
     }
 
-    public Set<MessagingListener> getListeners() {
-        return listeners;
-    }
-
-
-    public Set<MessagingListener> getListeners(MessagingListener listener) {
+    fun getListeners(listener: MessagingListener?): MutableSet<MessagingListener> {
         if (listener == null) {
-            return listeners;
+            return listeners
         }
 
-        Set<MessagingListener> listeners = new HashSet<>(this.listeners);
-        listeners.add(listener);
-        return listeners;
-
+        val listeners: MutableSet<MessagingListener> = HashSet<MessagingListener>(this.listeners)
+        listeners.add(listener)
+        return listeners
     }
 
-
-    void suppressMessages(AccountId accountId, List<LocalMessage> messages) {
-        MessageListCache cache = MessageListCache.getCache(accountId);
-        cache.hideMessages(messages);
+    fun suppressMessages(accountId: AccountId, messages: MutableList<LocalMessage>) {
+        val cache = getCache(accountId)
+        cache.hideMessages(messages)
     }
 
-    private void unsuppressMessages(AccountId accountId, List<LocalMessage> messages) {
-        MessageListCache cache = MessageListCache.getCache(accountId);
-        cache.unhideMessages(messages);
+    private fun unsuppressMessages(accountId: AccountId, messages: MutableList<LocalMessage>) {
+        val cache = getCache(accountId)
+        cache.unhideMessages(messages)
     }
 
-    public boolean isMessageSuppressed(LocalMessage message) {
-        long messageId = message.getDatabaseId();
-        long folderId = message.getFolder().getDatabaseId();
+    fun isMessageSuppressed(message: LocalMessage): Boolean {
+        val messageId = message.getDatabaseId()
+        val folderId = message.getFolder().getDatabaseId()
 
-        MessageListCache cache = MessageListCache.getCache(message.getFolder().getAccountId());
-        return cache.isMessageHidden(messageId, folderId);
+        val cache = getCache(message.getFolder().getAccountId())
+        return cache.isMessageHidden(messageId, folderId)
     }
 
-    private void setFlagInCache(final AccountId accountId, final List<Long> messageIds,
-        final Flag flag, final boolean newState) {
-
-        MessageListCache cache = MessageListCache.getCache(accountId);
-        cache.setFlagForMessages(messageIds, flag, newState);
+    private fun setFlagInCache(
+        accountId: AccountId, messageIds: MutableList<Long?>,
+        flag: Flag, newState: Boolean
+    ) {
+        val cache = getCache(accountId)
+        cache.setFlagForMessages(messageIds, flag, newState)
     }
 
-    private void removeFlagFromCache(final AccountId accountId, final List<Long> messageIds,
-        final Flag flag) {
-
-        MessageListCache cache = MessageListCache.getCache(accountId);
-        cache.removeFlagForMessages(messageIds, flag);
+    private fun removeFlagFromCache(
+        accountId: AccountId, messageIds: MutableList<Long?>,
+        flag: Flag
+    ) {
+        val cache = getCache(accountId)
+        cache.removeFlagForMessages(messageIds, flag)
     }
 
-    private void setFlagForThreadsInCache(final AccountId accountId, final List<Long> threadRootIds,
-        final Flag flag, final boolean newState) {
-
-        MessageListCache cache = MessageListCache.getCache(accountId);
-        cache.setValueForThreads(threadRootIds, flag, newState);
+    private fun setFlagForThreadsInCache(
+        accountId: AccountId, threadRootIds: MutableList<Long?>,
+        flag: Flag, newState: Boolean
+    ) {
+        val cache = getCache(accountId)
+        cache.setValueForThreads(threadRootIds, flag, newState)
     }
 
-    private void removeFlagForThreadsFromCache(final AccountId accountId, final List<Long> messageIds,
-        final Flag flag) {
-
-        MessageListCache cache = MessageListCache.getCache(accountId);
-        cache.removeFlagForThreads(messageIds, flag);
+    private fun removeFlagForThreadsFromCache(
+        accountId: AccountId, messageIds: MutableList<Long?>,
+        flag: Flag
+    ) {
+        val cache = getCache(accountId)
+        cache.removeFlagForThreads(messageIds, flag)
     }
 
-    public void refreshFolderList(final AccountId accountId) {
-        put("refreshFolderList", null, () -> refreshFolderListSynchronous(accountId));
+    fun refreshFolderList(accountId: AccountId) {
+        put("refreshFolderList", null, Runnable { refreshFolderListSynchronous(accountId) })
     }
 
-    public void refreshFolderListBlocking(AccountId accountId) {
-        final CountDownLatch latch = new CountDownLatch(1);
-        putBackground("refreshFolderListBlocking", null, () -> {
-            try {
-                refreshFolderListSynchronous(accountId);
-            } finally {
-                latch.countDown();
+    fun refreshFolderListBlocking(accountId: AccountId) {
+        val latch = CountDownLatch(1)
+        putBackground(
+            "refreshFolderListBlocking", null,
+            Runnable {
+                try {
+                    refreshFolderListSynchronous(accountId)
+                } finally {
+                    latch.countDown()
+                }
             }
-        });
+        )
 
         try {
-            latch.await();
-        } catch (Exception e) {
-            Log.e(TAG, e, "Interrupted while awaiting latch release");
+            latch.await()
+        } catch (e: Exception) {
+            e(TAG, e, "Interrupted while awaiting latch release")
         }
     }
 
-    void refreshFolderListSynchronous(AccountId accountId) {
-        LegacyAccount account = accountManager.findById(accountId);
+    fun refreshFolderListSynchronous(accountId: AccountId) {
+        val account = accountManager.findById(accountId)
         if (account == null) {
-            return;
+            return
         }
 
         try {
             if (isAuthenticationProblem(accountId, true)) {
-                Log.d(TAG, "Authentication will fail. Skip refreshing the folder list.");
-                handleAuthenticationFailure(accountId, true);
-                return;
+                d(TAG, "Authentication will fail. Skip refreshing the folder list.")
+                handleAuthenticationFailure(accountId, true)
+                return
             }
 
-            final Backend backend = getBackend(accountId);
-            final String folderPathDelimiter = backend.refreshFolderList();
+            val backend = getBackend(accountId)
+            val folderPathDelimiter = backend.refreshFolderList()
 
-            long now = System.currentTimeMillis();
-            Log.d(TAG, "Folder list successfully refreshed @ %tc", now);
+            val now = System.currentTimeMillis()
+            d(TAG, "Folder list successfully refreshed @ %tc", now)
 
             // Refreshing the folder list may update the account (e.g. special folders), so only change what is ours
-            accountManager.updateSync(accountId, currentAccount -> {
-                LegacyAccount updatedAccount = currentAccount;
-                if (folderPathDelimiter != null &&
-                    !folderPathDelimiter.isEmpty() &&
-                    !folderPathDelimiter.equals(currentAccount.getFolderPathDelimiter())) {
-                    updatedAccount = updatedAccount.updateFolderDelimiter(folderPathDelimiter);
+            accountManager.updateSync(accountId) { currentAccount: LegacyAccount ->
+                var updatedAccount = currentAccount
+                if (folderPathDelimiter != null && !folderPathDelimiter.isEmpty() && (folderPathDelimiter != currentAccount.folderPathDelimiter)) {
+                    updatedAccount = updatedAccount.updateFolderDelimiter(folderPathDelimiter)
                 }
-                return updatedAccount.updateLastFolderListRefreshTime(now);
-            });
-        } catch (Exception e) {
-            Log.e(TAG, e, "Could not refresh folder list for account %s", accountId);
-            handleException(accountId, e);
+                updatedAccount.updateLastFolderListRefreshTime(now)
+            }
+        } catch (e: Exception) {
+            e(TAG, e, "Could not refresh folder list for account %s", accountId)
+            handleException(accountId, e)
         }
     }
 
-    public Future<?> searchRemoteMessages(AccountId accountId, long folderId, String query, Set<Flag> requiredFlags,
-        Set<Flag> forbiddenFlags, MessagingListener listener) {
-        Log.i(TAG, "searchRemoteMessages (acct = %s, folderId = %d, query = %s)", accountId, folderId, query);
+    fun searchRemoteMessages(
+        accountId: AccountId, folderId: Long, query: String?, requiredFlags: MutableSet<Flag?>?,
+        forbiddenFlags: MutableSet<Flag?>?, listener: MessagingListener?
+    ): Future<*>? {
+        i(TAG, "searchRemoteMessages (acct = %s, folderId = %d, query = %s)", accountId, folderId, query)
 
-        return threadPool.submit(() ->
-            searchRemoteMessagesSynchronous(accountId, folderId, query, requiredFlags, forbiddenFlags, listener)
-        );
+        return threadPool.submit(
+            Runnable {
+                searchRemoteMessagesSynchronous(
+                    accountId,
+                    folderId,
+                    query,
+                    requiredFlags,
+                    forbiddenFlags,
+                    listener
+                )
+            }
+        )
     }
 
     @VisibleForTesting
-    void searchRemoteMessagesSynchronous(AccountId accountId, long folderId, String query, Set<Flag> requiredFlags,
-        Set<Flag> forbiddenFlags, MessagingListener listener) {
-
-        LegacyAccount account = accountManager.findById(accountId);
+    fun searchRemoteMessagesSynchronous(
+        accountId: AccountId, folderId: Long, query: String?, requiredFlags: MutableSet<Flag?>?,
+        forbiddenFlags: MutableSet<Flag?>?, listener: MessagingListener?
+    ) {
+        val account = accountManager.findById(accountId)
 
         if (listener != null) {
-            listener.remoteSearchStarted(folderId);
+            listener.remoteSearchStarted(folderId)
         }
 
-        List<String> extraResults = new ArrayList<>();
+        var extraResults: MutableList<String?> = ArrayList<String?>()
         try {
-            LocalStore localStore = localStoreProvider.getInstance(accountId);
+            val localStore = localStoreProvider.getInstance(accountId)
 
-            LocalFolder localFolder = localStore.getFolder(folderId);
+            val localFolder = localStore.getFolder(folderId)
             if (!localFolder.exists()) {
-                throw new MessagingException("Folder not found");
+                throw MessagingException("Folder not found")
             }
 
-            localFolder.open();
-            String folderServerId = localFolder.getServerId();
+            localFolder.open()
+            val folderServerId = localFolder.getServerId()
 
-            Backend backend = getBackend(accountId);
+            val backend = getBackend(accountId)
 
-            boolean performFullTextSearch = account.isRemoteSearchFullText();
-            List<String> messageServerIds = backend.search(folderServerId, query, requiredFlags, forbiddenFlags,
-                performFullTextSearch);
+            val performFullTextSearch = account!!.isRemoteSearchFullText
+            var messageServerIds: MutableList<String> = backend.search(
+                folderServerId, query, requiredFlags, forbiddenFlags,
+                performFullTextSearch
+            )
 
-            Log.i(TAG, "Remote search got %d results", messageServerIds.size());
+            i(TAG, "Remote search got %d results", messageServerIds.size)
 
             // There's no need to fetch messages already completely downloaded
-            messageServerIds = localFolder.extractNewMessages(messageServerIds);
+            messageServerIds = localFolder.extractNewMessages(messageServerIds)
 
             if (listener != null) {
-                listener.remoteSearchServerQueryComplete(folderId, messageServerIds.size(),
-                    account.getRemoteSearchNumResults());
+                listener.remoteSearchServerQueryComplete(
+                    folderId, messageServerIds.size,
+                    account.remoteSearchNumResults
+                )
             }
 
-            int resultLimit = account.getRemoteSearchNumResults();
-            if (resultLimit > 0 && messageServerIds.size() > resultLimit) {
-                extraResults = messageServerIds.subList(resultLimit, messageServerIds.size());
-                messageServerIds = messageServerIds.subList(0, resultLimit);
+            val resultLimit = account.remoteSearchNumResults
+            if (resultLimit > 0 && messageServerIds.size > resultLimit) {
+                extraResults = messageServerIds.subList(resultLimit, messageServerIds.size)
+                messageServerIds = messageServerIds.subList(0, resultLimit)
             }
 
-            loadSearchResultsSynchronous(accountId, messageServerIds, localFolder);
-        } catch (Exception e) {
+            loadSearchResultsSynchronous(accountId, messageServerIds, localFolder)
+        } catch (e: Exception) {
             if (Thread.currentThread().isInterrupted()) {
-                Log.i(TAG, e, "Caught exception on aborted remote search; safe to ignore.");
+                i(TAG, e, "Caught exception on aborted remote search; safe to ignore.")
             } else {
-                Log.e(TAG, e, "Could not complete remote search");
+                e(TAG, e, "Could not complete remote search")
                 if (listener != null) {
-                    listener.remoteSearchFailed(null, e.getMessage());
+                    listener.remoteSearchFailed(null, e.message)
                 }
-                Log.e(TAG, e, "Remote search failed for account %s, folder %d", accountId, folderId);
+                e(TAG, e, "Remote search failed for account %s, folder %d", accountId, folderId)
             }
         } finally {
             if (listener != null) {
-                listener.remoteSearchFinished(folderId, 0, account.getRemoteSearchNumResults(), extraResults);
+                listener.remoteSearchFinished(folderId, 0, account!!.remoteSearchNumResults, extraResults)
             }
         }
-
     }
 
-    public void loadSearchResults(AccountId accountId, long folderId, List<String> messageServerIds,
-        MessagingListener listener) {
-        threadPool.execute(() -> {
-            if (listener != null) {
-                listener.enableProgressIndicator(true);
-            }
-
-            try {
-                LocalStore localStore = localStoreProvider.getInstance(accountId);
-                LocalFolder localFolder = localStore.getFolder(folderId);
-                if (!localFolder.exists()) {
-                    throw new MessagingException("Folder not found");
-                }
-
-                localFolder.open();
-
-                loadSearchResultsSynchronous(accountId, messageServerIds, localFolder);
-            } catch (MessagingException e) {
-                Log.e(TAG, e, "Exception in loadSearchResults");
-            } finally {
+    fun loadSearchResults(
+        accountId: AccountId, folderId: Long, messageServerIds: MutableList<String>,
+        listener: MessagingListener?
+    ) {
+        threadPool.execute(
+            Runnable {
                 if (listener != null) {
-                    listener.enableProgressIndicator(false);
+                    listener.enableProgressIndicator(true)
+                }
+                try {
+                    val localStore = localStoreProvider.getInstance(accountId)
+                    val localFolder = localStore.getFolder(folderId)
+                    if (!localFolder.exists()) {
+                        throw MessagingException("Folder not found")
+                    }
+
+                    localFolder.open()
+
+                    loadSearchResultsSynchronous(accountId, messageServerIds, localFolder)
+                } catch (e: MessagingException) {
+                    e(TAG, e, "Exception in loadSearchResults")
+                } finally {
+                    if (listener != null) {
+                        listener.enableProgressIndicator(false)
+                    }
                 }
             }
-        });
+        )
     }
 
-    private void loadSearchResultsSynchronous(AccountId accountId, List<String> messageServerIds,
-        LocalFolder localFolder)
-        throws MessagingException {
+    @Throws(MessagingException::class)
+    private fun loadSearchResultsSynchronous(
+        accountId: AccountId, messageServerIds: MutableList<String>,
+        localFolder: LocalFolder
+    ) {
+        val backend = getBackend(accountId)
+        val folderServerId = localFolder.getServerId()
 
-        Backend backend = getBackend(accountId);
-        String folderServerId = localFolder.getServerId();
-
-        for (String messageServerId : messageServerIds) {
-            LocalMessage localMessage = localFolder.getMessage(messageServerId);
+        for (messageServerId in messageServerIds) {
+            val localMessage = localFolder.getMessage(messageServerId)
 
             if (localMessage == null) {
-                backend.downloadMessageStructure(folderServerId, messageServerId);
+                backend.downloadMessageStructure(folderServerId, messageServerId)
             }
         }
     }
 
-    public void loadMoreMessages(AccountId accountId, long folderId) {
-        putBackground("loadMoreMessages", null, () -> loadMoreMessagesSynchronous(accountId, folderId));
+    fun loadMoreMessages(accountId: AccountId, folderId: Long) {
+        putBackground("loadMoreMessages", null, Runnable { loadMoreMessagesSynchronous(accountId, folderId) })
     }
 
-    public void loadMoreMessagesSynchronous(AccountId accountId, long folderId) {
-        LegacyAccount account = accountManager.findById(accountId);
+    fun loadMoreMessagesSynchronous(accountId: AccountId, folderId: Long) {
+        val account = accountManager.findById(accountId)
         if (account == null) {
-            return;
+            return
         }
 
-        MessageStore messageStore = messageStoreManager.getMessageStore(accountId);
-        Integer visibleLimit = messageStore.getFolder(folderId, FolderDetailsAccessor::getVisibleLimit);
+        val messageStore: MessageStore = messageStoreManager.getMessageStore(accountId)
+        val visibleLimit = messageStore.getFolder<Int?>(folderId, FolderDetailsAccessor::visibleLimit)
         if (visibleLimit == null) {
-            Log.v(TAG, "loadMoreMessages(%s, %d): Folder not found", accountId, folderId);
-            return;
+            v(TAG, "loadMoreMessages(%s, %d): Folder not found", accountId, folderId)
+            return
         }
 
         if (visibleLimit > 0) {
-            int newVisibleLimit = visibleLimit + account.getDisplayCount();
-            messageStore.setVisibleLimit(folderId, newVisibleLimit);
+            val newVisibleLimit = visibleLimit + account.displayCount
+            messageStore.setVisibleLimit(folderId, newVisibleLimit)
         }
 
-        synchronizeMailboxSynchronous(accountId, folderId, false, null, new NotificationState());
+        synchronizeMailboxSynchronous(accountId, folderId, false, null, NotificationState())
     }
 
     /**
      * Start background synchronization of the specified folder.
      */
-    public void synchronizeMailbox(AccountId accountId, long folderId, boolean notify,
-        MessagingListener listener) {
-        putBackground("synchronizeMailbox", listener, () ->
-            synchronizeMailboxSynchronous(accountId, folderId, notify, listener, new NotificationState())
-        );
+    fun synchronizeMailbox(
+        accountId: AccountId, folderId: Long, notify: Boolean,
+        listener: MessagingListener
+    ) {
+        putBackground(
+            "synchronizeMailbox",
+            listener,
+            Runnable { synchronizeMailboxSynchronous(accountId, folderId, notify, listener, NotificationState()) }
+        )
     }
 
-    public void synchronizeMailboxBlocking(AccountId accountId, String folderServerId) {
-        long folderId = getFolderId(accountId, folderServerId);
+    fun synchronizeMailboxBlocking(accountId: AccountId, folderServerId: String) {
+        val folderId = getFolderId(accountId, folderServerId)
 
-        final CountDownLatch latch = new CountDownLatch(1);
-        putBackground("synchronizeMailbox", null, () -> {
-            try {
-                synchronizeMailboxSynchronous(accountId, folderId, true, null, new NotificationState());
-            } finally {
-                latch.countDown();
+        val latch = CountDownLatch(1)
+        putBackground(
+            "synchronizeMailbox", null,
+            Runnable {
+                try {
+                    synchronizeMailboxSynchronous(accountId, folderId, true, null, NotificationState())
+                } finally {
+                    latch.countDown()
+                }
             }
-        });
+        )
 
         try {
-            latch.await();
-        } catch (Exception e) {
-            Log.e(TAG, e, "Interrupted while awaiting latch release");
+            latch.await()
+        } catch (e: Exception) {
+            e(TAG, e, "Interrupted while awaiting latch release")
         }
     }
 
-    private void synchronizeMailboxSynchronous(AccountId accountId, long folderId, boolean notify,
-        MessagingListener listener, NotificationState notificationState) {
-        refreshFolderListIfStale(accountId);
+    private fun synchronizeMailboxSynchronous(
+        accountId: AccountId, folderId: Long, notify: Boolean,
+        listener: MessagingListener, notificationState: NotificationState
+    ) {
+        refreshFolderListIfStale(accountId)
 
-        Backend backend = getBackend(accountId);
-        syncFolder(accountId, folderId, notify, listener, backend, notificationState);
+        val backend = getBackend(accountId)
+        syncFolder(accountId, folderId, notify, listener, backend, notificationState)
     }
 
-    private void refreshFolderListIfStale(AccountId accountId) {
-        LegacyAccount account = accountManager.findById(accountId);
+    private fun refreshFolderListIfStale(accountId: AccountId) {
+        val account = accountManager.findById(accountId)
         if (account == null) {
-            return;
+            return
         }
 
-        long lastFolderListRefresh = account.getLastFolderListRefreshTime();
-        long now = System.currentTimeMillis();
+        val lastFolderListRefresh = account.lastFolderListRefreshTime
+        val now = System.currentTimeMillis()
 
         if (lastFolderListRefresh > now || lastFolderListRefresh + FOLDER_LIST_STALENESS_THRESHOLD <= now) {
-            Log.d(TAG, "Last folder list refresh @ %tc. Refreshing now…", lastFolderListRefresh);
-            refreshFolderListSynchronous(accountId);
+            d(TAG, "Last folder list refresh @ %tc. Refreshing now…", lastFolderListRefresh)
+            refreshFolderListSynchronous(accountId)
         } else {
-            Log.d(TAG, "Last folder list refresh @ %tc. Not refreshing now.", lastFolderListRefresh);
+            d(TAG, "Last folder list refresh @ %tc. Not refreshing now.", lastFolderListRefresh)
         }
     }
 
-    private void syncFolder(AccountId accountId, long folderId, boolean notify, MessagingListener listener,
-        Backend backend,
-        NotificationState notificationState) {
+    private fun syncFolder(
+        accountId: AccountId, folderId: Long, notify: Boolean, listener: MessagingListener,
+        backend: Backend,
+        notificationState: NotificationState
+    ) {
         if (isAuthenticationProblem(accountId, true)) {
-            Log.d(TAG, "Authentication will fail. Skip synchronizing folder %d.", folderId);
-            handleAuthenticationFailure(accountId, true);
-            return;
+            d(TAG, "Authentication will fail. Skip synchronizing folder %d.", folderId)
+            handleAuthenticationFailure(accountId, true)
+            return
         }
 
-        Exception commandException = null;
+        var commandException: Exception? = null
         try {
-            processPendingCommandsSynchronous(accountId);
-        } catch (Exception e) {
-            Log.e(TAG, e, "Failure processing command, but allow message sync attempt");
-            commandException = e;
+            processPendingCommandsSynchronous(accountId)
+        } catch (e: Exception) {
+            e(TAG, e, "Failure processing command, but allow message sync attempt")
+            commandException = e
         }
 
-        LocalFolder localFolder;
+        val localFolder: LocalFolder
         try {
-            LocalStore localStore = localStoreProvider.getInstance(accountId);
-            localFolder = localStore.getFolder(folderId);
-            localFolder.open();
-        } catch (MessagingException e) {
-
-            syncDebugLogger.error("MessagingException", null, e::getMessage);
-            Log.e(TAG, e, "syncFolder: Couldn't load local folder %d", folderId);
-            return;
+            val localStore = localStoreProvider.getInstance(accountId)
+            localFolder = localStore.getFolder(folderId)
+            localFolder.open()
+        } catch (e: MessagingException) {
+            syncDebugLogger.error("MessagingException", null, e::message)
+            e(TAG, e, "syncFolder: Couldn't load local folder %d", folderId)
+            return
         }
 
         // We can't sync local folders
         if (localFolder.isLocalOnly()) {
-            return;
+            return
         }
 
-        final boolean suppressNotifications;
+        val suppressNotifications: Boolean
         if (notify) {
-            MessageStore messageStore = messageStoreManager.getMessageStore(accountId);
-            Long lastChecked = messageStore.getFolder(folderId, FolderDetailsAccessor::getLastChecked);
-            suppressNotifications = lastChecked == null;
+            val messageStore: MessageStore = messageStoreManager.getMessageStore(accountId)
+            val lastChecked = messageStore.getFolder<Long?>(folderId, FolderDetailsAccessor::lastChecked)
+            suppressNotifications = lastChecked == null
         } else {
-            suppressNotifications = true;
+            suppressNotifications = true
         }
 
-        String folderServerId = localFolder.getServerId();
-        SyncConfig syncConfig = createSyncConfig(accountId);
-        ControllerSyncListener syncListener =
-            new ControllerSyncListener(accountId, listener, suppressNotifications, notificationState);
+        val folderServerId = localFolder.getServerId()
+        val syncConfig = createSyncConfig(accountId)
+        val syncListener =
+            ControllerSyncListener(accountId, listener, suppressNotifications, notificationState)
 
-        backend.sync(folderServerId, syncConfig, syncListener);
+        backend.sync(folderServerId, syncConfig, syncListener)
 
         if (commandException != null && !syncListener.syncFailed) {
-            String rootMessage = ThrowableExtensions.getRootCauseMessage(commandException);
-            syncDebugLogger.error("MessagingException", null, () -> rootMessage);
-            Log.e(TAG, "Root cause failure in %s:%s was '%s'", accountId, folderServerId, rootMessage);
-            updateFolderStatus(accountId, folderId, rootMessage);
-            listener.synchronizeMailboxFailed(accountId, folderId, rootMessage);
+            val rootMessage = commandException.rootCauseMessage
+            syncDebugLogger.error("MessagingException", null) { rootMessage!! }
+            e(TAG, "Root cause failure in %s:%s was '%s'", accountId, folderServerId, rootMessage)
+            updateFolderStatus(accountId, folderId, rootMessage)
+            listener.synchronizeMailboxFailed(accountId, folderId, rootMessage)
         }
     }
 
-    private SyncConfig createSyncConfig(AccountId accountId) {
-        LegacyAccount account = accountManager.findById(accountId);
-        if (account == null) {
-            throw new IllegalArgumentException("Account not found for " + accountId);
-        }
-        return new SyncConfig(
-            account.getExpungePolicy().toBackendExpungePolicy(),
+    private fun createSyncConfig(accountId: AccountId): SyncConfig {
+        val account = accountManager.findById(accountId)
+        requireNotNull(account) { "Account not found for " + accountId }
+        return SyncConfig(
+            account.expungePolicy.toBackendExpungePolicy(),
             account.getEarliestPollDate(),
-            account.isSyncRemoteDeletions(),
-            account.getMaximumAutoDownloadMessageSize(),
-            DEFAULT_VISIBLE_LIMIT,
-            SYNC_FLAGS);
+            account.isSyncRemoteDeletions,
+            account.maximumAutoDownloadMessageSize,
+            AccountDefaultsProvider.DEFAULT_VISIBLE_LIMIT,
+            SYNC_FLAGS
+        )
     }
 
-    private void updateFolderStatus(AccountId accountId, long folderId, String status) {
-        MessageStore messageStore = messageStoreManager.getMessageStore(accountId);
-        messageStore.setStatus(folderId, status);
+    private fun updateFolderStatus(accountId: AccountId, folderId: Long, status: String?) {
+        val messageStore: MessageStore = messageStoreManager.getMessageStore(accountId)
+        messageStore.setStatus(folderId, status)
     }
 
-    public void handleAuthenticationFailure(AccountId accountId, boolean incoming) {
-        LegacyAccount account = accountManager.findById(accountId);
-        if (account != null && account.getShouldMigrateToOAuth()) {
-            migrateAccountToOAuth(accountId);
+    fun handleAuthenticationFailure(accountId: AccountId, incoming: Boolean) {
+        val account = accountManager.findById(accountId)
+        if (account != null && account.shouldMigrateToOAuth) {
+            migrateAccountToOAuth(accountId)
         }
 
         if (featureFlagProvider.provide(GeneratedFeatureFlagKey.DISPLAY_IN_APP_NOTIFICATIONS).isEnabled()) {
-            Log.d(TAG, "handleAuthenticationFailure: sending in-app notification");
-            final AuthenticationErrorNotification notification =
-                createAuthenticationErrorNotification(accountId, incoming);
+            d(TAG, "handleAuthenticationFailure: sending in-app notification")
+            val notification =
+                createAuthenticationErrorNotification(accountId, incoming)
 
             if (notification != null) {
-                notificationSender.send(notification, outcome -> {
-                    Log.v(TAG, "notificationSender outcome = " + outcome);
-                });
+                notificationSender.send(
+                    notification,
+                    NotificationSenderCompat.OnResultListener { outcome: Outcome<out Success<out Notification?>?, out Failure<out Notification?>?>? ->
+                        v(
+                            TAG, "notificationSender outcome = " + outcome
+                        )
+                    }
+                )
             }
         }
 
         if (featureFlagProvider
-            .provide(GeneratedFeatureFlagKey.USE_NOTIFICATION_SENDER_FOR_SYSTEM_NOTIFICATIONS)
-            .isDisabled()) {
-            Log.d(TAG, "handleAuthenticationFailure: sending system notification via old notification controller");
-            notificationController.showAuthenticationErrorNotification(accountId, incoming);
+                .provide(GeneratedFeatureFlagKey.USE_NOTIFICATION_SENDER_FOR_SYSTEM_NOTIFICATIONS)
+                .isDisabled()
+        ) {
+            d(TAG, "handleAuthenticationFailure: sending system notification via old notification controller")
+            notificationController.showAuthenticationErrorNotification(accountId, incoming)
         }
     }
 
-    private AuthenticationErrorNotification createAuthenticationErrorNotification(
-        AccountId accountId,
-        boolean incoming
-    ) {
-        LegacyAccount account = accountManager.findById(accountId);
+    private fun createAuthenticationErrorNotification(
+        accountId: AccountId,
+        incoming: Boolean
+    ): AuthenticationErrorNotification? {
+        val account = accountManager.findById(accountId)
         if (account == null) {
-            return null;
+            return null
         }
 
-        return NotificationFactoryCoroutineCompat.create(
-            continuation ->
-                AuthenticationErrorNotification.Companion.invoke(
-                    account.getId(),
-                    account.getProfile().getName(),
-                    account.getAccountNumber(),
-                    incoming,
-                    continuation
-                )
-        );
+        return NotificationFactoryCoroutineCompat.create<AuthenticationErrorNotification?> { continuation: Continuation<in AuthenticationErrorNotification?>? ->
+            AuthenticationErrorNotification.Companion.invoke(
+                account.id,
+                account.profile.name,
+                account.accountNumber,
+                incoming,
+                continuation
+            )
+        }
     }
 
-    private void migrateAccountToOAuth(AccountId accountId) {
-        accountManager.updateSync(accountId, account -> {
-            ServerSettings incomingServerSettings = account.getIncomingServerSettings()
-                .newAuthenticationType(AuthType.XOAUTH2);
-            ServerSettings outgoingServerSettings = account.getOutgoingServerSettings()
-                .newAuthenticationType(AuthType.XOAUTH2);
-
-            return account.updateIncomingServerSettings(incomingServerSettings)
+    private fun migrateAccountToOAuth(accountId: AccountId) {
+        accountManager.updateSync(accountId) { account: LegacyAccount ->
+            val incomingServerSettings = account.incomingServerSettings
+                .newAuthenticationType(AuthType.XOAUTH2)
+            val outgoingServerSettings = account.outgoingServerSettings
+                .newAuthenticationType(AuthType.XOAUTH2)
+            account.updateIncomingServerSettings(incomingServerSettings)
                 .updateOutgoingServerSettings(outgoingServerSettings)
-                .updateShouldMigrateToOAuth(false);
-        });
+                .updateShouldMigrateToOAuth(false)
+        }
     }
 
-    public void handleException(AccountId accountId, Exception exception) {
-        if (exception instanceof AuthenticationFailedException) {
-            handleAuthenticationFailure(accountId, true);
+    fun handleException(accountId: AccountId, exception: Exception?) {
+        if (exception is AuthenticationFailedException) {
+            handleAuthenticationFailure(accountId, true)
         } else {
-            notifyUserIfCertificateProblem(accountId, exception, true);
+            notifyUserIfCertificateProblem(accountId, exception, true)
         }
     }
 
-    void queuePendingCommand(AccountId accountId, PendingCommand command) {
+    fun queuePendingCommand(accountId: AccountId, command: PendingCommand) {
         try {
-            LocalStore localStore = localStoreProvider.getInstance(accountId);
-            localStore.addPendingCommand(command);
-        } catch (Exception e) {
-            throw new RuntimeException("Unable to enqueue pending command", e);
+            val localStore = localStoreProvider.getInstance(accountId)
+            localStore.addPendingCommand(command)
+        } catch (e: Exception) {
+            throw RuntimeException("Unable to enqueue pending command", e)
         }
     }
 
-    void processPendingCommands(final AccountId accountId) {
-        putBackground("processPendingCommands", null, new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    processPendingCommandsSynchronous(accountId);
-                } catch (MessagingException me) {
-                    Log.e(TAG, me, "processPendingCommands");
+    fun processPendingCommands(accountId: AccountId) {
+        putBackground(
+            "processPendingCommands", null,
+            object : Runnable {
+                override fun run() {
+                    try {
+                        processPendingCommandsSynchronous(accountId)
+                    } catch (me: MessagingException) {
+                        e(TAG, me, "processPendingCommands")
 
-                    /*
+                        /*
                      * Ignore any exceptions from the commands. Commands will be processed
                      * on the next round.
                      */
+                    }
                 }
             }
-        });
+        )
     }
 
-    public void processPendingCommandsSynchronous(AccountId accountId) throws MessagingException {
-        LocalStore localStore = localStoreProvider.getInstance(accountId);
-        List<PendingCommand> commands = localStore.getPendingCommands();
+    @Throws(MessagingException::class)
+    fun processPendingCommandsSynchronous(accountId: AccountId) {
+        val localStore = localStoreProvider.getInstance(accountId)
+        val commands = localStore.getPendingCommands()
 
-        PendingCommand processingCommand = null;
+        var processingCommand: PendingCommand? = null
         try {
-            for (PendingCommand command : commands) {
-                processingCommand = command;
-                String commandName = command.getCommandName();
-                Log.d(TAG, "Processing pending command '%s'", commandName);
+            for (command in commands) {
+                processingCommand = command
+                val commandName = command.getCommandName()
+                d(TAG, "Processing pending command '%s'", commandName)
 
                 /*
                  * We specifically do not catch any exceptions here. If a command fails it is
@@ -863,24 +820,24 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
                  * other command processes. This maintains the order of the commands.
                  */
                 try {
-                    command.execute(this, accountId);
+                    command.execute(this, accountId)
 
-                    localStore.removePendingCommand(command);
+                    localStore.removePendingCommand(command)
 
-                    Log.d(TAG, "Done processing pending command '%s'", commandName);
-                } catch (MessagingException me) {
-                    if (me.isPermanentFailure()) {
-                        Log.e(TAG, me, "Failure of command '%s' was permanent, removing command from queue", commandName);
-                        localStore.removePendingCommand(processingCommand);
+                    d(TAG, "Done processing pending command '%s'", commandName)
+                } catch (me: MessagingException) {
+                    if (me.isPermanentFailure) {
+                        e(TAG, me, "Failure of command '%s' was permanent, removing command from queue", commandName)
+                        localStore.removePendingCommand(processingCommand)
                     } else {
-                        throw me;
+                        throw me
                     }
-                } catch (Exception e) {
-                    Log.e(TAG, e, "Unexpected exception with command '%s', removing command from queue", commandName);
-                    localStore.removePendingCommand(processingCommand);
+                } catch (e: Exception) {
+                    e(TAG, e, "Unexpected exception with command '%s', removing command from queue", commandName)
+                    localStore.removePendingCommand(processingCommand)
 
                     if (BuildConfig.DEBUG) {
-                        throw new AssertionError("Unexpected exception while processing pending command", e);
+                        throw AssertionError("Unexpected exception while processing pending command", e)
                     }
                 }
 
@@ -888,10 +845,10 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
                 //  commands that depend on this command should be canceled and local changes be reverted. In most cases
                 //  the user should be notified about the failure as well.
             }
-        } catch (MessagingException me) {
-            notifyUserIfCertificateProblem(accountId, me, true);
-            Log.e(TAG, me, "Could not process command '%s'", processingCommand);
-            throw me;
+        } catch (me: MessagingException) {
+            notifyUserIfCertificateProblem(accountId, me, true)
+            e(TAG, me, "Could not process command '%s'", processingCommand)
+            throw me
         }
     }
 
@@ -901,48 +858,56 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
      * processed it is deleted so that the server message will be synchronized down without an additional copy being
      * created.
      */
-    void processPendingAppend(PendingAppend command, AccountId accountId) throws MessagingException {
-        LocalStore localStore = localStoreProvider.getInstance(accountId);
-        long folderId = command.folderId;
-        LocalFolder localFolder = localStore.getFolder(folderId);
-        localFolder.open();
+    @Throws(MessagingException::class)
+    fun processPendingAppend(command: PendingAppend, accountId: AccountId) {
+        val localStore = localStoreProvider.getInstance(accountId)
+        val folderId = command.folderId
+        val localFolder = localStore.getFolder(folderId)
+        localFolder.open()
 
-        String folderServerId = localFolder.getServerId();
-        String uid = command.uid;
+        val folderServerId = localFolder.getServerId()
+        val uid = command.uid
 
-        LocalMessage localMessage = localFolder.getMessage(uid);
+        val localMessage = localFolder.getMessage(uid)
         if (localMessage == null) {
-            return;
+            return
         }
 
         if (!localMessage.getUid().startsWith(localMessageUidPrefixProvider.get())) {
             //FIXME: This should never happen. Throw in debug builds.
-            return;
+            return
         }
 
-        Backend backend = getBackend(accountId);
+        val backend = getBackend(accountId)
 
         if (localMessage.isSet(Flag.X_REMOTE_COPY_STARTED)) {
-            Log.w(TAG, "Local message with uid %s has flag %s  already set, checking for remote message with " +
-                "same message id", localMessage.getUid(), Flag.X_REMOTE_COPY_STARTED);
+            w(
+                TAG,
+                "Local message with uid %s has flag %s  already set, checking for remote message with " +
+                    "same message id",
+                localMessage.getUid(), Flag.X_REMOTE_COPY_STARTED
+            )
 
-            String messageServerId = backend.findByMessageId(folderServerId, localMessage.getMessageId());
+            val messageServerId = backend.findByMessageId(folderServerId, localMessage.getMessageId())
             if (messageServerId != null) {
-                Log.w(TAG, "Local message has flag %s already set, and there is a remote message with uid %s, " +
+                w(
+                    TAG,
+                    "Local message has flag %s already set, and there is a remote message with uid %s, " +
                         "assuming message was already copied and aborting this copy",
-                    Flag.X_REMOTE_COPY_STARTED, messageServerId);
+                    Flag.X_REMOTE_COPY_STARTED, messageServerId
+                )
 
-                String oldUid = localMessage.getUid();
-                localMessage.setUid(messageServerId);
-                localFolder.changeUid(localMessage);
+                val oldUid = localMessage.getUid()
+                localMessage.setUid(messageServerId)
+                localFolder.changeUid(localMessage)
 
-                for (MessagingListener l : getListeners()) {
-                    l.messageUidChanged(accountId, folderId, oldUid, localMessage.getUid());
+                for (l in this.listeners) {
+                    l.messageUidChanged(accountId, folderId, oldUid, localMessage.getUid())
                 }
 
-                return;
+                return
             } else {
-                Log.w(TAG, "No remote message with message-id found, proceeding with append");
+                w(TAG, "No remote message with message-id found, proceeding with append")
             }
         }
 
@@ -950,2085 +915,2289 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
          * If the message does not exist remotely we just upload it and then
          * update our local copy with the new uid.
          */
-        FetchProfile fp = new FetchProfile();
-        fp.add(FetchProfile.Item.BODY);
-        localFolder.fetch(Collections.singletonList(localMessage), fp, null);
-        String oldUid = localMessage.getUid();
-        localMessage.setFlag(Flag.X_REMOTE_COPY_STARTED, true);
+        val fp = FetchProfile()
+        fp.add(FetchProfile.Item.BODY)
+        localFolder.fetch(mutableListOf<LocalMessage?>(localMessage), fp, null)
+        val oldUid = localMessage.getUid()
+        localMessage.setFlag(Flag.X_REMOTE_COPY_STARTED, true)
 
-        String messageServerId = backend.uploadMessage(folderServerId, localMessage);
+        val messageServerId = backend.uploadMessage(folderServerId, localMessage)
 
         if (messageServerId == null) {
             // We didn't get the server UID of the uploaded message. Remove the local message now. The uploaded
             // version will be downloaded during the next sync.
-            localFolder.destroyMessages(Collections.singletonList(localMessage));
+            localFolder.destroyMessages(mutableListOf<LocalMessage?>(localMessage))
         } else {
-            localMessage.setUid(messageServerId);
-            localFolder.changeUid(localMessage);
+            localMessage.setUid(messageServerId)
+            localFolder.changeUid(localMessage)
 
-            for (MessagingListener l : getListeners()) {
-                l.messageUidChanged(accountId, folderId, oldUid, localMessage.getUid());
+            for (l in this.listeners) {
+                l.messageUidChanged(accountId, folderId, oldUid, localMessage.getUid())
             }
         }
     }
 
-    void processPendingReplace(PendingReplace pendingReplace, AccountId accountId) {
-        draftOperations.processPendingReplace(pendingReplace, accountId);
+    fun processPendingReplace(pendingReplace: PendingReplace, accountId: AccountId) {
+        draftOperations.processPendingReplace(pendingReplace, accountId)
     }
 
-    private void queueMoveOrCopy(AccountId accountId, long srcFolderId, long destFolderId,
-        MoveOrCopyFlavor operation,
-        Map<String, String> uidMap) {
-        PendingCommand command;
-        switch (operation) {
-            case MOVE:
-                command = PendingMoveOrCopy.create(srcFolderId, destFolderId, false, uidMap);
-                break;
-            case COPY:
-                command = PendingMoveOrCopy.create(srcFolderId, destFolderId, true, uidMap);
-                break;
-            case MOVE_AND_MARK_AS_READ:
-                command = PendingMoveAndMarkAsRead.create(srcFolderId, destFolderId, uidMap);
-                break;
-            default:
-                return;
+    private fun queueMoveOrCopy(
+        accountId: AccountId, srcFolderId: Long, destFolderId: Long,
+        operation: MoveOrCopyFlavor,
+        uidMap: MutableMap<String?, String?>?
+    ) {
+        val command: PendingCommand?
+        when (operation) {
+            MoveOrCopyFlavor.MOVE -> command = PendingMoveOrCopy.create(srcFolderId, destFolderId, false, uidMap)
+            MoveOrCopyFlavor.COPY -> command = PendingMoveOrCopy.create(srcFolderId, destFolderId, true, uidMap)
+            MoveOrCopyFlavor.MOVE_AND_MARK_AS_READ -> command =
+                PendingMoveAndMarkAsRead.create(srcFolderId, destFolderId, uidMap)
+
+            else -> return
         }
-        queuePendingCommand(accountId, command);
+        queuePendingCommand(accountId, command)
     }
 
-    void processPendingMoveOrCopy(PendingMoveOrCopy command, AccountId accountId) throws MessagingException {
-        long srcFolder = command.srcFolderId;
-        long destFolder = command.destFolderId;
-        MoveOrCopyFlavor operation = command.isCopy ? MoveOrCopyFlavor.COPY : MoveOrCopyFlavor.MOVE;
+    @Throws(MessagingException::class)
+    fun processPendingMoveOrCopy(command: PendingMoveOrCopy, accountId: AccountId) {
+        val srcFolder = command.srcFolderId
+        val destFolder = command.destFolderId
+        val operation = if (command.isCopy) MoveOrCopyFlavor.COPY else MoveOrCopyFlavor.MOVE
 
-        Map<String, String> newUidMap = command.newUidMap;
-        List<String> uids = newUidMap != null ? new ArrayList<>(newUidMap.keySet()) : command.uids;
+        val newUidMap = command.newUidMap
+        val uids = if (newUidMap != null) ArrayList<String?>(newUidMap.keys) else command.uids
 
-        processPendingMoveOrCopy(accountId, srcFolder, destFolder, uids, operation, newUidMap);
+        processPendingMoveOrCopy(accountId, srcFolder, destFolder, uids, operation, newUidMap!!)
     }
 
-    void processPendingMoveAndRead(PendingMoveAndMarkAsRead command, AccountId accountId)
-        throws MessagingException {
-        long srcFolder = command.srcFolderId;
-        long destFolder = command.destFolderId;
-        Map<String, String> newUidMap = command.newUidMap;
-        List<String> uids = new ArrayList<>(newUidMap.keySet());
+    @Throws(MessagingException::class)
+    fun processPendingMoveAndRead(command: PendingMoveAndMarkAsRead, accountId: AccountId) {
+        val srcFolder = command.srcFolderId
+        val destFolder = command.destFolderId
+        val newUidMap = command.newUidMap
+        val uids: MutableList<String?> = ArrayList<String?>(newUidMap.keys)
 
-        processPendingMoveOrCopy(accountId, srcFolder, destFolder, uids,
-            MoveOrCopyFlavor.MOVE_AND_MARK_AS_READ, newUidMap);
+        processPendingMoveOrCopy(
+            accountId, srcFolder, destFolder, uids,
+            MoveOrCopyFlavor.MOVE_AND_MARK_AS_READ, newUidMap
+        )
     }
 
     @VisibleForTesting
-    void processPendingMoveOrCopy(AccountId accountId, long srcFolderId, long destFolderId, List<String> uids,
-        MoveOrCopyFlavor operation, Map<String, String> newUidMap) throws MessagingException {
-        requireNotNull(newUidMap);
+    @Throws(MessagingException::class)
+    fun processPendingMoveOrCopy(
+        accountId: AccountId, srcFolderId: Long, destFolderId: Long, uids: MutableList<String?>,
+        operation: MoveOrCopyFlavor, newUidMap: MutableMap<String?, String?>
+    ) {
+        requireNotNull<MutableMap<String?, String?>>(newUidMap)
 
-        LocalStore localStore = localStoreProvider.getInstance(accountId);
+        val localStore = localStoreProvider.getInstance(accountId)
 
-        LocalFolder localSourceFolder = localStore.getFolder(srcFolderId);
-        localSourceFolder.open();
-        String srcFolderServerId = localSourceFolder.getServerId();
+        val localSourceFolder = localStore.getFolder(srcFolderId)
+        localSourceFolder.open()
+        val srcFolderServerId = localSourceFolder.getServerId()
 
-        LocalFolder localDestFolder = localStore.getFolder(destFolderId);
-        localDestFolder.open();
-        String destFolderServerId = localDestFolder.getServerId();
+        val localDestFolder = localStore.getFolder(destFolderId)
+        localDestFolder.open()
+        val destFolderServerId = localDestFolder.getServerId()
 
-        Backend backend = getBackend(accountId);
+        val backend = getBackend(accountId)
 
-        Map<String, String> remoteUidMap;
-        switch (operation) {
-            case COPY:
-                remoteUidMap = backend.copyMessages(srcFolderServerId, destFolderServerId, uids);
-                break;
-            case MOVE:
-                remoteUidMap = backend.moveMessages(srcFolderServerId, destFolderServerId, uids);
-                break;
-            case MOVE_AND_MARK_AS_READ:
-                remoteUidMap = backend.moveMessagesAndMarkAsRead(srcFolderServerId, destFolderServerId, uids);
-                break;
-            default:
-                throw new RuntimeException("Unsupported messaging operation");
+        var remoteUidMap: MutableMap<String?, String?>?
+        when (operation) {
+            MoveOrCopyFlavor.COPY -> remoteUidMap = backend.copyMessages(srcFolderServerId, destFolderServerId, uids)
+            MoveOrCopyFlavor.MOVE -> remoteUidMap = backend.moveMessages(srcFolderServerId, destFolderServerId, uids)
+            MoveOrCopyFlavor.MOVE_AND_MARK_AS_READ -> remoteUidMap =
+                backend.moveMessagesAndMarkAsRead(srcFolderServerId, destFolderServerId, uids)
+
+            else -> throw RuntimeException("Unsupported messaging operation")
         }
 
         if (operation != MoveOrCopyFlavor.COPY) {
-            destroyPlaceholderMessages(localSourceFolder, uids);
+            destroyPlaceholderMessages(localSourceFolder, uids)
         }
 
         // TODO: Change Backend interface to ensure we never receive null for remoteUidMap
         if (remoteUidMap == null) {
-            remoteUidMap = Collections.emptyMap();
+            remoteUidMap = mutableMapOf<String?, String?>()
         }
 
         // Update local messages (that currently have local UIDs) with new server IDs
-        for (String uid : uids) {
-            String localUid = newUidMap.get(uid);
-            String newUid = remoteUidMap.get(uid);
+        for (uid in uids) {
+            val localUid = newUidMap.get(uid)
+            val newUid = remoteUidMap.get(uid)
 
-            LocalMessage localMessage = localDestFolder.getMessage(localUid);
+            val localMessage = localDestFolder.getMessage(localUid)
             if (localMessage == null) {
                 // Local message no longer exists
-                continue;
+                continue
             }
 
             if (newUid != null) {
                 // Update local message with new server ID
-                localMessage.setUid(newUid);
-                localDestFolder.changeUid(localMessage);
-                for (MessagingListener l : getListeners()) {
-                    l.messageUidChanged(accountId, destFolderId, localUid, newUid);
+                localMessage.setUid(newUid)
+                localDestFolder.changeUid(localMessage)
+                for (l in this.listeners) {
+                    l.messageUidChanged(accountId, destFolderId, localUid, newUid)
                 }
             } else {
                 // New server ID wasn't provided. Remove local message.
-                localMessage.destroy();
+                localMessage.destroy()
             }
         }
     }
 
-    void destroyPlaceholderMessages(LocalFolder localFolder, List<String> uids) throws MessagingException {
-        for (String uid : uids) {
-            LocalMessage placeholderMessage = localFolder.getMessage(uid);
+    @Throws(MessagingException::class)
+    fun destroyPlaceholderMessages(localFolder: LocalFolder, uids: MutableList<String?>) {
+        for (uid in uids) {
+            val placeholderMessage = localFolder.getMessage(uid)
             if (placeholderMessage == null) {
-                continue;
+                continue
             }
 
             if (placeholderMessage.isSet(Flag.DELETED)) {
-                placeholderMessage.destroy();
+                placeholderMessage.destroy()
             } else {
-                Log.w(TAG, "Expected local message %s in folder %s to be a placeholder, but DELETE flag wasn't set",
-                    uid, localFolder.getServerId());
+                w(
+                    TAG, "Expected local message %s in folder %s to be a placeholder, but DELETE flag wasn't set",
+                    uid, localFolder.getServerId()
+                )
 
                 if (BuildConfig.DEBUG) {
-                    throw new AssertionError("Placeholder message must have the DELETED flag set");
+                    throw AssertionError("Placeholder message must have the DELETED flag set")
                 }
             }
         }
     }
 
-    private void queueSetFlag(AccountId accountId, long folderId, boolean newState, Flag flag, List<String> uids) {
-        PendingCommand command = PendingSetFlag.create(folderId, newState, flag, uids);
-        queuePendingCommand(accountId, command);
+    private fun queueSetFlag(
+        accountId: AccountId,
+        folderId: Long,
+        newState: Boolean,
+        flag: Flag?,
+        uids: MutableList<String>?
+    ) {
+        val command: PendingCommand = PendingSetFlag.create(folderId, newState, flag, uids)
+        queuePendingCommand(accountId, command)
     }
 
     /**
      * Processes a pending mark read or unread command.
      */
-    void processPendingSetFlag(PendingSetFlag command, AccountId accountId) throws MessagingException {
-        Backend backend = getBackend(accountId);
-        String folderServerId = getFolderServerId(accountId, command.folderId);
-        backend.setFlag(folderServerId, command.uids, command.flag, command.newState);
+    @Throws(MessagingException::class)
+    fun processPendingSetFlag(command: PendingSetFlag, accountId: AccountId) {
+        val backend = getBackend(accountId)
+        val folderServerId = getFolderServerId(accountId, command.folderId)
+        backend.setFlag(folderServerId, command.uids, command.flag, command.newState)
     }
 
-    private void queueDelete(AccountId accountId, long folderId, List<String> uids) {
-        PendingCommand command = PendingDelete.create(folderId, uids);
-        queuePendingCommand(accountId, command);
+    private fun queueDelete(accountId: AccountId, folderId: Long, uids: MutableList<String>?) {
+        val command: PendingCommand = PendingDelete.create(folderId, uids)
+        queuePendingCommand(accountId, command)
     }
 
-    void processPendingDelete(PendingDelete command, AccountId accountId) throws MessagingException {
-        long folderId = command.folderId;
-        List<String> uids = command.uids;
+    @Throws(MessagingException::class)
+    fun processPendingDelete(command: PendingDelete, accountId: AccountId) {
+        val folderId = command.folderId
+        val uids = command.uids
 
-        Backend backend = getBackend(accountId);
-        String folderServerId = getFolderServerId(accountId, folderId);
-        backend.deleteMessages(folderServerId, uids);
+        val backend = getBackend(accountId)
+        val folderServerId = getFolderServerId(accountId, folderId)
+        backend.deleteMessages(folderServerId, uids)
 
-        LocalStore localStore = localStoreProvider.getInstance(accountId);
-        LocalFolder localFolder = localStore.getFolder(folderId);
-        localFolder.open();
-        destroyPlaceholderMessages(localFolder, uids);
+        val localStore = localStoreProvider.getInstance(accountId)
+        val localFolder = localStore.getFolder(folderId)
+        localFolder.open()
+        destroyPlaceholderMessages(localFolder, uids)
     }
 
-    private void queueExpunge(AccountId accountId, long folderId) {
-        PendingCommand command = PendingExpunge.create(folderId);
-        queuePendingCommand(accountId, command);
+    private fun queueExpunge(accountId: AccountId, folderId: Long) {
+        val command: PendingCommand = PendingExpunge.create(folderId)
+        queuePendingCommand(accountId, command)
     }
 
-    void processPendingExpunge(PendingExpunge command, AccountId accountId) throws MessagingException {
-        Backend backend = getBackend(accountId);
-        String folderServerId = getFolderServerId(accountId, command.folderId);
-        backend.expunge(folderServerId);
+    @Throws(MessagingException::class)
+    fun processPendingExpunge(command: PendingExpunge, accountId: AccountId) {
+        val backend = getBackend(accountId)
+        val folderServerId = getFolderServerId(accountId, command.folderId)
+        backend.expunge(folderServerId)
     }
 
-    void processPendingMarkAllAsRead(PendingMarkAllAsRead command, AccountId accountId) throws MessagingException {
-        long folderId = command.folderId;
-        LocalStore localStore = localStoreProvider.getInstance(accountId);
-        LocalFolder localFolder = localStore.getFolder(folderId);
+    @Throws(MessagingException::class)
+    fun processPendingMarkAllAsRead(command: PendingMarkAllAsRead, accountId: AccountId) {
+        val folderId = command.folderId
+        val localStore = localStoreProvider.getInstance(accountId)
+        val localFolder = localStore.getFolder(folderId)
 
-        localFolder.open();
-        String folderServerId = localFolder.getServerId();
+        localFolder.open()
+        val folderServerId = localFolder.getServerId()
 
-        Log.i(TAG, "Marking all messages in %s:%s as read", accountId, folderServerId);
+        i(TAG, "Marking all messages in %s:%s as read", accountId, folderServerId)
 
         // TODO: Make this one database UPDATE operation
-        List<LocalMessage> messages = localFolder.getMessages(false);
-        for (Message message : messages) {
+        val messages = localFolder.getMessages(false)
+        for (message in messages) {
             if (!message.isSet(Flag.SEEN)) {
-                message.setFlag(Flag.SEEN, true);
+                message.setFlag(Flag.SEEN, true)
             }
         }
 
-        for (MessagingListener l : getListeners()) {
-            l.folderStatusChanged(accountId, folderId);
+        for (l in this.listeners) {
+            l.folderStatusChanged(accountId, folderId)
         }
 
-        Backend backend = getBackend(accountId);
-        if (backend.getSupportsFlags()) {
-            backend.markAllAsRead(folderServerId);
+        val backend = getBackend(accountId)
+        if (backend.supportsFlags) {
+            backend.markAllAsRead(folderServerId)
         }
     }
 
-    public void markAllMessagesRead(AccountId accountId, long folderId) {
-        PendingCommand command = PendingMarkAllAsRead.create(folderId);
-        queuePendingCommand(accountId, command);
-        processPendingCommands(accountId);
+    fun markAllMessagesRead(accountId: AccountId, folderId: Long) {
+        val command: PendingCommand = PendingMarkAllAsRead.create(folderId)
+        queuePendingCommand(accountId, command)
+        processPendingCommands(accountId)
     }
 
-    public void setFlag(final AccountId accountId, final List<Long> messageIds, final Flag flag,
-        final boolean newState) {
+    fun setFlag(
+        accountId: AccountId, messageIds: MutableList<Long?>, flag: Flag,
+        newState: Boolean
+    ) {
+        setFlagInCache(accountId, messageIds, flag, newState)
 
-        setFlagInCache(accountId, messageIds, flag, newState);
-
-        putBackground("setFlag", null, () ->
-            setFlagSynchronous(accountId, messageIds, flag, newState, false)
-        );
+        putBackground(
+            "setFlag", null, Runnable { setFlagSynchronous(accountId, messageIds, flag, newState, false) }
+        )
     }
 
-    public void setFlagForThreads(final AccountId accountId, final List<Long> threadRootIds,
-        final Flag flag, final boolean newState) {
+    fun setFlagForThreads(
+        accountId: AccountId, threadRootIds: MutableList<Long?>,
+        flag: Flag, newState: Boolean
+    ) {
+        setFlagForThreadsInCache(accountId, threadRootIds, flag, newState)
 
-        setFlagForThreadsInCache(accountId, threadRootIds, flag, newState);
-
-        putBackground("setFlagForThreads", null, () ->
-            setFlagSynchronous(accountId, threadRootIds, flag, newState, true)
-        );
+        putBackground(
+            "setFlagForThreads", null, Runnable { setFlagSynchronous(accountId, threadRootIds, flag, newState, true) }
+        )
     }
 
-    private void setFlagSynchronous(final AccountId accountId, final List<Long> ids,
-        final Flag flag, final boolean newState, final boolean threadedList) {
-
-        LocalStore localStore;
+    private fun setFlagSynchronous(
+        accountId: AccountId, ids: MutableList<Long?>,
+        flag: Flag, newState: Boolean, threadedList: Boolean
+    ) {
+        val localStore: LocalStore?
         try {
-            localStore = localStoreProvider.getInstance(accountId);
-        } catch (MessagingException e) {
-            Log.e(TAG, e, "Couldn't get LocalStore instance");
-            return;
+            localStore = localStoreProvider.getInstance(accountId)
+        } catch (e: MessagingException) {
+            e(TAG, e, "Couldn't get LocalStore instance")
+            return
         }
 
         // Update affected messages in the database. This should be as fast as possible so the UI
         // can be updated with the new state.
         try {
             if (threadedList) {
-                localStore.setFlagForThreads(ids, flag, newState);
-                removeFlagForThreadsFromCache(accountId, ids, flag);
+                localStore.setFlagForThreads(ids, flag, newState)
+                removeFlagForThreadsFromCache(accountId, ids, flag)
             } else {
-                localStore.setFlag(ids, flag, newState);
-                removeFlagFromCache(accountId, ids, flag);
+                localStore.setFlag(ids, flag, newState)
+                removeFlagFromCache(accountId, ids, flag)
             }
-        } catch (MessagingException e) {
-            Log.e(TAG, e, "Couldn't set flags in local database");
+        } catch (e: MessagingException) {
+            e(TAG, e, "Couldn't set flags in local database")
         }
 
         // Read folder ID and UID of messages from the database
-        Map<Long, List<String>> folderMap;
+        val folderMap: MutableMap<Long?, MutableList<String?>?>
         try {
-            folderMap = localStore.getFolderIdsAndUids(ids, threadedList);
-        } catch (MessagingException e) {
-            Log.e(TAG, e, "Couldn't get folder name and UID of messages");
-            return;
+            folderMap = localStore.getFolderIdsAndUids(ids, threadedList)
+        } catch (e: MessagingException) {
+            e(TAG, e, "Couldn't get folder name and UID of messages")
+            return
         }
 
-        boolean accountSupportsFlags = supportsFlags(accountId);
+        val accountSupportsFlags = supportsFlags(accountId)
 
         // Loop over all folders
-        for (Entry<Long, List<String>> entry : folderMap.entrySet()) {
-            long folderId = entry.getKey();
-            List<String> uids = entry.getValue();
+        for (entry in folderMap.entries) {
+            val folderId: Long = entry.key!!
+            val uids: MutableList<String> = entry.value
 
             // Notify listeners of changed folder status
-            for (MessagingListener l : getListeners()) {
-                l.folderStatusChanged(accountId, folderId);
+            for (l in this.listeners) {
+                l.folderStatusChanged(accountId, folderId)
             }
 
             if (flag == Flag.SEEN && newState) {
-                cancelNotificationsForMessages(accountId, folderId, uids);
+                cancelNotificationsForMessages(accountId, folderId, uids)
             }
 
             if (accountSupportsFlags) {
-                LocalFolder localFolder = localStore.getFolder(folderId);
+                val localFolder = localStore.getFolder(folderId)
                 try {
-                    localFolder.open();
+                    localFolder.open()
                     if (!localFolder.isLocalOnly()) {
                         // Send flag change to server
-                        queueSetFlag(accountId, folderId, newState, flag, uids);
-                        processPendingCommands(accountId);
+                        queueSetFlag(accountId, folderId, newState, flag, uids)
+                        processPendingCommands(accountId)
                     }
-                } catch (MessagingException e) {
-                    Log.e(TAG, e, "Couldn't open folder. Account: %s, folder ID: %d", accountId, folderId);
+                } catch (e: MessagingException) {
+                    e(TAG, e, "Couldn't open folder. Account: %s, folder ID: %d", accountId, folderId)
                 }
             }
         }
     }
 
-    private void cancelNotificationsForMessages(AccountId accountId, long folderId, List<String> uids) {
-        for (String uid : uids) {
-            MessageReference messageReference = new MessageReference(accountId, folderId, uid);
-            notificationController.removeNewMailNotification(accountId, messageReference);
+    private fun cancelNotificationsForMessages(accountId: AccountId, folderId: Long, uids: MutableList<String>) {
+        for (uid in uids) {
+            val messageReference = MessageReference(accountId, folderId, uid)
+            notificationController.removeNewMailNotification(accountId, messageReference)
         }
     }
 
     /**
      * Set or remove a flag for a set of messages in a specific folder.
-     * <p>
-     * The {@link Message} objects passed in are updated to reflect the new flag state.
-     * </p>
+     *
+     *
+     * The [Message] objects passed in are updated to reflect the new flag state.
+     *
      */
-    public void setFlag(AccountId accountId, long folderId, List<LocalMessage> messages, Flag flag,
-        boolean newState) {
+    fun setFlag(
+        accountId: AccountId, folderId: Long, messages: MutableList<LocalMessage?>, flag: Flag?,
+        newState: Boolean
+    ) {
         // TODO: Put this into the background, but right now some callers depend on the message
         //       objects being modified right after this method returns.
         try {
-            LocalStore localStore = localStoreProvider.getInstance(accountId);
-            LocalFolder localFolder = localStore.getFolder(folderId);
-            localFolder.open();
+            val localStore = localStoreProvider.getInstance(accountId)
+            val localFolder = localStore.getFolder(folderId)
+            localFolder.open()
 
             // Update the messages in the local store
-            localFolder.setFlags(messages, Collections.singleton(flag), newState);
+            localFolder.setFlags(messages, mutableSetOf<Flag?>(flag), newState)
 
-            for (MessagingListener l : getListeners()) {
-                l.folderStatusChanged(accountId, folderId);
+            for (l in this.listeners) {
+                l.folderStatusChanged(accountId, folderId)
             }
 
             // Handle the remote side
             if (supportsFlags(accountId) && !localFolder.isLocalOnly()) {
-                List<String> uids = getUidsFromMessages(messages);
-                queueSetFlag(accountId, folderId, newState, flag, uids);
-                processPendingCommands(accountId);
+                val uids: MutableList<String> = getUidsFromMessages(messages)
+                queueSetFlag(accountId, folderId, newState, flag, uids)
+                processPendingCommands(accountId)
             }
-        } catch (MessagingException me) {
-            throw new RuntimeException(me);
+        } catch (me: MessagingException) {
+            throw RuntimeException(me)
         }
     }
 
     /**
      * Set or remove a flag for a message referenced by message UID.
      */
-    public void setFlag(AccountId accountId, long folderId, String uid, Flag flag, boolean newState) {
+    fun setFlag(accountId: AccountId, folderId: Long, uid: String?, flag: Flag?, newState: Boolean) {
         try {
-            LocalStore localStore = localStoreProvider.getInstance(accountId);
-            LocalFolder localFolder = localStore.getFolder(folderId);
-            localFolder.open();
+            val localStore = localStoreProvider.getInstance(accountId)
+            val localFolder = localStore.getFolder(folderId)
+            localFolder.open()
 
-            LocalMessage message = localFolder.getMessage(uid);
+            val message = localFolder.getMessage(uid)
             if (message != null) {
-                setFlag(accountId, folderId, Collections.singletonList(message), flag, newState);
+                setFlag(accountId, folderId, mutableListOf<LocalMessage?>(message), flag, newState)
             }
-        } catch (MessagingException me) {
-            throw new RuntimeException(me);
+        } catch (me: MessagingException) {
+            throw RuntimeException(me)
         }
     }
 
-    public void loadMessageRemotePartial(AccountId accountId, long folderId, String uid,
-        MessagingListener listener) {
-        put("loadMessageRemotePartial", listener, () ->
-            loadMessageRemoteSynchronous(accountId, folderId, uid, listener, true)
-        );
+    fun loadMessageRemotePartial(
+        accountId: AccountId, folderId: Long, uid: String,
+        listener: MessagingListener?
+    ) {
+        put(
+            "loadMessageRemotePartial",
+            listener,
+            Runnable { loadMessageRemoteSynchronous(accountId, folderId, uid, listener, true) }
+        )
     }
 
     //TODO: Fix the callback mess. See GH-782
-    public void loadMessageRemote(AccountId accountId, long folderId, String uid, MessagingListener listener) {
-        put("loadMessageRemote", listener, () ->
-            loadMessageRemoteSynchronous(accountId, folderId, uid, listener, false)
-        );
+    fun loadMessageRemote(accountId: AccountId, folderId: Long, uid: String, listener: MessagingListener?) {
+        put(
+            "loadMessageRemote",
+            listener,
+            Runnable { loadMessageRemoteSynchronous(accountId, folderId, uid, listener, false) }
+        )
     }
 
-    private void loadMessageRemoteSynchronous(AccountId accountId, long folderId, String messageServerId,
-        MessagingListener listener, boolean loadPartialFromSearch) {
+    private fun loadMessageRemoteSynchronous(
+        accountId: AccountId, folderId: Long, messageServerId: String,
+        listener: MessagingListener?, loadPartialFromSearch: Boolean
+    ) {
         try {
-            if (messageServerId.startsWith(localMessageUidPrefixProvider.get())) {
-                throw new IllegalArgumentException("Must not be called with a local UID");
-            }
+            require(!messageServerId.startsWith(localMessageUidPrefixProvider.get())) { "Must not be called with a local UID" }
 
-            MessageStore messageStore = messageStoreManager.getMessageStore(accountId);
+            val messageStore: MessageStore = messageStoreManager.getMessageStore(accountId)
 
-            String folderServerId = messageStore.getFolderServerId(folderId);
-            if (folderServerId == null) {
-                throw new IllegalStateException("Folder not found (ID: " + folderId + ")");
-            }
+            val folderServerId: String = messageStore.getFolderServerId(folderId)!!
+            checkNotNull(folderServerId) { "Folder not found (ID: " + folderId + ")" }
 
-            Backend backend = getBackend(accountId);
+            val backend = getBackend(accountId)
 
             if (loadPartialFromSearch) {
-                SyncConfig syncConfig = createSyncConfig(accountId);
-                backend.downloadMessage(syncConfig, folderServerId, messageServerId);
+                val syncConfig = createSyncConfig(accountId)
+                backend.downloadMessage(syncConfig, folderServerId, messageServerId)
             } else {
-                MessagingControllerWrapperKt.downloadCompleteMessageBlocking(
-                    backend, Dispatchers.getIO(), folderServerId, messageServerId);
+                backend.downloadCompleteMessageBlocking(IO, folderServerId, messageServerId)
             }
 
-            for (MessagingListener l : getListeners(listener)) {
-                l.loadMessageRemoteFinished(accountId, folderId, messageServerId);
+            for (l in getListeners(listener)) {
+                l.loadMessageRemoteFinished(accountId, folderId, messageServerId)
             }
-        } catch (Exception e) {
-            for (MessagingListener l : getListeners(listener)) {
-                l.loadMessageRemoteFailed(accountId, folderId, messageServerId, e);
+        } catch (e: Exception) {
+            for (l in getListeners(listener)) {
+                l.loadMessageRemoteFailed(accountId, folderId, messageServerId, e)
             }
 
-            notifyUserIfCertificateProblem(accountId, e, true);
-            Log.e(TAG, e, "Error while loading remote message");
-            syncDebugLogger.error("MessagingException", null, () -> "Error while loading remote message");
+            notifyUserIfCertificateProblem(accountId, e, true)
+            e(TAG, e, "Error while loading remote message")
+            syncDebugLogger.error("MessagingException", null) { "Error while loading remote message" }
         }
     }
 
-    public LocalMessage loadMessage(AccountId accountId, long folderId, String uid) throws MessagingException {
-        LocalStore localStore = localStoreProvider.getInstance(accountId);
-        LocalFolder localFolder = localStore.getFolder(folderId);
-        localFolder.open();
+    @Throws(MessagingException::class)
+    fun loadMessage(accountId: AccountId, folderId: Long, uid: String?): LocalMessage {
+        val localStore = localStoreProvider.getInstance(accountId)
+        val localFolder = localStore.getFolder(folderId)
+        localFolder.open()
 
-        LocalMessage message = localFolder.getMessage(uid);
-        if (message == null || message.getDatabaseId() == 0) {
-            String folderName = localFolder.getName();
-            throw new IllegalArgumentException("Message not found: folder=" + folderName + ", uid=" + uid);
+        val message = localFolder.getMessage(uid)
+        if (message == null || message.getDatabaseId() == 0L) {
+            val folderName = localFolder.getName()
+            throw IllegalArgumentException("Message not found: folder=" + folderName + ", uid=" + uid)
         }
 
-        FetchProfile fp = new FetchProfile();
-        fp.add(FetchProfile.Item.BODY);
-        localFolder.fetch(Collections.singletonList(message), fp, null);
+        val fp = FetchProfile()
+        fp.add(FetchProfile.Item.BODY)
+        localFolder.fetch(mutableListOf<LocalMessage?>(message), fp, null)
 
-        return message;
+        return message
     }
 
-    public LocalMessage loadMessageMetadata(AccountId accountId, long folderId, String uid)
-        throws MessagingException {
-        LocalStore localStore = localStoreProvider.getInstance(accountId);
-        LocalFolder localFolder = localStore.getFolder(folderId);
-        localFolder.open();
+    @Throws(MessagingException::class)
+    fun loadMessageMetadata(accountId: AccountId, folderId: Long, uid: String?): LocalMessage {
+        val localStore = localStoreProvider.getInstance(accountId)
+        val localFolder = localStore.getFolder(folderId)
+        localFolder.open()
 
-        LocalMessage message = localFolder.getMessage(uid);
-        if (message == null || message.getDatabaseId() == 0) {
-            String folderName = localFolder.getName();
-            throw new IllegalArgumentException("Message not found: folder=" + folderName + ", uid=" + uid);
+        val message = localFolder.getMessage(uid)
+        if (message == null || message.getDatabaseId() == 0L) {
+            val folderName = localFolder.getName()
+            throw IllegalArgumentException("Message not found: folder=" + folderName + ", uid=" + uid)
         }
 
-        FetchProfile fp = new FetchProfile();
-        fp.add(FetchProfile.Item.ENVELOPE);
-        localFolder.fetch(Collections.singletonList(message), fp, null);
+        val fp = FetchProfile()
+        fp.add(FetchProfile.Item.ENVELOPE)
+        localFolder.fetch(mutableListOf<LocalMessage?>(message), fp, null)
 
-        return message;
+        return message
     }
 
-    public void markMessageAsOpened(AccountId accountId, LocalMessage message) {
-        threadPool.execute(() ->
-            notificationController.removeNewMailNotification(accountId, message.makeMessageReference())
-        );
+    fun markMessageAsOpened(accountId: AccountId, message: LocalMessage) {
+        threadPool.execute(
+            Runnable { notificationController.removeNewMailNotification(accountId, message.makeMessageReference()) }
+        )
 
         if (message.isSet(Flag.SEEN)) {
             // Nothing to do if the message is already marked as read
-            return;
+            return
         }
 
-        LegacyAccount account = accountManager.findById(accountId);
+        val account = accountManager.findById(accountId)
         if (account == null) {
-            return;
+            return
         }
 
-        boolean markMessageAsRead = account.isMarkMessageAsReadOnView();
+        val markMessageAsRead = account.isMarkMessageAsReadOnView
         if (markMessageAsRead) {
             // Mark the message itself as read right away
             try {
-                message.setFlagInternal(Flag.SEEN, true);
-            } catch (MessagingException e) {
-                Log.e(TAG, e, "Error while marking message as read");
+                message.setFlagInternal(Flag.SEEN, true)
+            } catch (e: MessagingException) {
+                e(TAG, e, "Error while marking message as read")
             }
 
             // Also mark the message as read in the cache
-            List<Long> messageIds = Collections.singletonList(message.getDatabaseId());
-            setFlagInCache(accountId, messageIds, Flag.SEEN, true);
+            val messageIds = mutableListOf<Long?>(message.getDatabaseId())
+            setFlagInCache(accountId, messageIds, Flag.SEEN, true)
         }
 
-        putBackground("markMessageAsOpened", null, () -> {
-            markMessageAsOpenedBlocking(accountId, message, markMessageAsRead);
-        });
+        putBackground(
+            "markMessageAsOpened", null,
+            Runnable {
+                markMessageAsOpenedBlocking(accountId, message, markMessageAsRead)
+            }
+        )
     }
 
-    private void markMessageAsOpenedBlocking(AccountId accountId, LocalMessage message,
-        boolean markMessageAsRead) {
+    private fun markMessageAsOpenedBlocking(
+        accountId: AccountId, message: LocalMessage,
+        markMessageAsRead: Boolean
+    ) {
         if (markMessageAsRead) {
-            markMessageAsRead(accountId, message);
+            markMessageAsRead(accountId, message)
         } else {
             // Marking a message as read will automatically mark it as "not new". But if we don't mark the message
             // as read on opening, we have to manually mark it as "not new".
-            markMessageAsNotNew(accountId, message);
+            markMessageAsNotNew(accountId, message)
         }
     }
 
-    private void markMessageAsRead(AccountId accountId, LocalMessage message) {
-        List<Long> messageIds = Collections.singletonList(message.getDatabaseId());
-        setFlagSynchronous(accountId, messageIds, Flag.SEEN, true, false);
+    private fun markMessageAsRead(accountId: AccountId, message: LocalMessage) {
+        val messageIds = mutableListOf<Long?>(message.getDatabaseId())
+        setFlagSynchronous(accountId, messageIds, Flag.SEEN, true, false)
     }
 
-    private void markMessageAsNotNew(AccountId accountId, LocalMessage message) {
-        MessageStore messageStore = messageStoreManager.getMessageStore(accountId);
-        long folderId = message.getFolder().getDatabaseId();
-        String messageServerId = message.getUid();
-        messageStore.setNewMessageState(folderId, messageServerId, false);
+    private fun markMessageAsNotNew(accountId: AccountId, message: LocalMessage) {
+        val messageStore: MessageStore = messageStoreManager.getMessageStore(accountId)
+        val folderId = message.getFolder().getDatabaseId()
+        val messageServerId = message.getUid()
+        messageStore.setNewMessageState(folderId, messageServerId, false)
     }
 
-    public void clearNewMessages(AccountId accountId) {
-        put("clearNewMessages", null, () -> clearNewMessagesBlocking(accountId));
+    fun clearNewMessages(accountId: AccountId) {
+        put("clearNewMessages", null, Runnable { clearNewMessagesBlocking(accountId) })
     }
 
-    private void clearNewMessagesBlocking(AccountId accountId) {
-        MessageStore messageStore = messageStoreManager.getMessageStore(accountId);
-        messageStore.clearNewMessageState();
+    private fun clearNewMessagesBlocking(accountId: AccountId) {
+        val messageStore: MessageStore = messageStoreManager.getMessageStore(accountId)
+        messageStore.clearNewMessageState()
     }
 
-    public void loadAttachment(final AccountId accountId, final LocalMessage message, final Part part,
-        final MessagingListener listener) {
+    fun loadAttachment(
+        accountId: AccountId, message: LocalMessage, part: Part,
+        listener: MessagingListener?
+    ) {
+        put(
+            "loadAttachment", listener,
+            object : Runnable {
+                override fun run() {
+                    try {
+                        val folderServerId = message.getFolder().getServerId()
 
-        put("loadAttachment", listener, new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    String folderServerId = message.getFolder().getServerId();
+                        val localStore = localStoreProvider.getInstance(accountId)
+                        val localFolder = localStore.getFolder(folderServerId)
 
-                    LocalStore localStore = localStoreProvider.getInstance(accountId);
-                    LocalFolder localFolder = localStore.getFolder(folderServerId);
-
-                    ProgressBodyFactory bodyFactory = new ProgressBodyFactory(new ProgressListener() {
-                        @Override
-                        public void updateProgress(int progress) {
-                            for (MessagingListener listener : getListeners()) {
-                                listener.updateProgress(progress);
+                        val bodyFactory = ProgressBodyFactory(
+                            object : ProgressBodyFactory.ProgressListener {
+                                override fun updateProgress(progress: Int) {
+                                    for (listener in this.listeners) {
+                                        listener.updateProgress(progress)
+                                    }
+                                }
                             }
+                        )
+
+                        val backend = getBackend(accountId)
+                        backend.fetchPart(folderServerId, message.getUid(), part, bodyFactory)
+
+                        localFolder.addPartToMessage(message, part)
+
+                        for (l in getListeners(listener)) {
+                            l.loadAttachmentFinished(accountId, message, part)
                         }
-                    });
+                    } catch (me: MessagingException) {
+                        v(TAG, me, "Exception loading attachment")
 
-                    Backend backend = getBackend(accountId);
-                    backend.fetchPart(folderServerId, message.getUid(), part, bodyFactory);
-
-                    localFolder.addPartToMessage(message, part);
-
-                    for (MessagingListener l : getListeners(listener)) {
-                        l.loadAttachmentFinished(accountId, message, part);
+                        for (l in getListeners(listener)) {
+                            l.loadAttachmentFailed(accountId, message, part, me.message)
+                        }
+                        notifyUserIfCertificateProblem(accountId, me, true)
                     }
-                } catch (MessagingException me) {
-                    Log.v(TAG, me, "Exception loading attachment");
-
-                    for (MessagingListener l : getListeners(listener)) {
-                        l.loadAttachmentFailed(accountId, message, part, me.getMessage());
-                    }
-                    notifyUserIfCertificateProblem(accountId, me, true);
                 }
             }
-        });
+        )
     }
 
     /**
      * Stores the given message in the Outbox and starts a sendPendingMessages command to attempt to send the message.
      */
-    public void sendMessage(AccountId accountId, Message message, String plaintextSubject,
-        MessagingListener listener) {
+    fun sendMessage(
+        accountId: AccountId, message: Message, plaintextSubject: String?,
+        listener: MessagingListener?
+    ) {
         try {
-            final long outboxFolderId = OutboxFolderManagerKt.getOutboxFolderIdSync(
-                outboxFolderManager,
-                accountId,
-                true
-            );
+            val outboxFolderId = outboxFolderManager
+                .getOutboxFolderIdSync(
+                    accountId,
+                    true
+                )
 
-            message.setFlag(Flag.SEEN, true);
+            message.setFlag(Flag.SEEN, true)
 
-            MessageStore messageStore = messageStoreManager.getMessageStore(accountId);
-            SaveMessageData messageData = saveMessageDataCreator.createSaveMessageData(
-                message, MessageDownloadState.FULL, plaintextSubject);
-            long messageId = messageStore.saveLocalMessage(outboxFolderId, messageData, null);
+            val messageStore: MessageStore = messageStoreManager.getMessageStore(accountId)
+            val messageData = saveMessageDataCreator.createSaveMessageData(
+                message, MessageDownloadState.FULL, plaintextSubject
+            )
+            val messageId = messageStore.saveLocalMessage(outboxFolderId, messageData, null)
 
-            LocalStore localStore = localStoreProvider.getInstance(accountId);
-            OutboxStateRepository outboxStateRepository = localStore.getOutboxStateRepository();
-            outboxStateRepository.initializeOutboxState(messageId);
+            val localStore = localStoreProvider.getInstance(accountId)
+            val outboxStateRepository = localStore.getOutboxStateRepository()
+            outboxStateRepository.initializeOutboxState(messageId)
 
-            sendPendingMessages(accountId, listener);
-        } catch (Exception e) {
-            Log.e(TAG, e, "Error sending message");
+            sendPendingMessages(accountId, listener)
+        } catch (e: Exception) {
+            e(TAG, e, "Error sending message")
         }
     }
 
-    public void sendMessageBlocking(AccountId accountId, Message message) throws MessagingException {
-        Backend backend = getBackend(accountId);
-        backend.sendMessage(message);
+    @Throws(MessagingException::class)
+    fun sendMessageBlocking(accountId: AccountId, message: Message) {
+        val backend = getBackend(accountId)
+        backend.sendMessage(message)
     }
 
     /**
      * Attempt to send any messages that are sitting in the Outbox.
      */
-    public void sendPendingMessages(
-        final AccountId accountId,
-        MessagingListener listener
+    fun sendPendingMessages(
+        accountId: AccountId,
+        listener: MessagingListener?
     ) {
-        putBackground("sendPendingMessages", listener, new Runnable() {
-            @Override
-            public void run() {
-                if (OutboxFolderManagerKt.hasPendingMessagesSync(outboxFolderManager, accountId)) {
+        putBackground(
+            "sendPendingMessages", listener,
+            object : Runnable {
+                override fun run() {
+                    if (outboxFolderManager.hasPendingMessagesSync(accountId)) {
+                        showSendingNotificationIfNecessary(accountId)
 
-                    showSendingNotificationIfNecessary(accountId);
-
-                    try {
-                        sendPendingMessagesSynchronous(accountId);
-                    } finally {
-                        clearSendingNotificationIfNecessary(accountId);
+                        try {
+                            sendPendingMessagesSynchronous(accountId)
+                        } finally {
+                            clearSendingNotificationIfNecessary(accountId)
+                        }
                     }
                 }
             }
-        });
+        )
     }
 
-    private void showSendingNotificationIfNecessary(AccountId accountId) {
-        LegacyAccount account = accountManager.findById(accountId);
-        if (account != null && account.isNotifySync()) {
-            notificationController.showSendingNotification(accountId);
+    private fun showSendingNotificationIfNecessary(accountId: AccountId) {
+        val account = accountManager.findById(accountId)
+        if (account != null && account.isNotifySync) {
+            notificationController.showSendingNotification(accountId)
         }
     }
 
-    private void clearSendingNotificationIfNecessary(AccountId accountId) {
-        LegacyAccount account = accountManager.findById(accountId);
-        if (account != null && account.isNotifySync()) {
-            notificationController.clearSendingNotification(accountId);
+    private fun clearSendingNotificationIfNecessary(accountId: AccountId) {
+        val account = accountManager.findById(accountId)
+        if (account != null && account.isNotifySync) {
+            notificationController.clearSendingNotification(accountId)
         }
     }
 
-    private boolean messagesPendingSend(final AccountId accountId) {
-        final long outboxFolderId = OutboxFolderManagerKt.getOutboxFolderIdSync(
-            outboxFolderManager,
-            accountId,
-            true
-        );
+    private fun messagesPendingSend(accountId: AccountId): Boolean {
+        val outboxFolderId = outboxFolderManager
+            .getOutboxFolderIdSync(
+                accountId,
+                true
+            )
         if (outboxFolderId == -1L) {
-            Log.w(TAG, "Could not get Outbox folder ID from Account");
-            return false;
+            w(TAG, "Could not get Outbox folder ID from Account")
+            return false
         }
 
-        MessageStore messageStore = messageStoreManager.getMessageStore(accountId);
-        return messageStore.getMessageCount(outboxFolderId) > 0;
+        val messageStore: MessageStore = messageStoreManager.getMessageStore(accountId)
+        return messageStore.getMessageCount(outboxFolderId) > 0
     }
 
     /**
      * Attempt to send any messages that are sitting in the Outbox.
      */
     @VisibleForTesting
-    protected void sendPendingMessagesSynchronous(final AccountId accountId) {
-        Exception lastFailure = null;
+    protected fun sendPendingMessagesSynchronous(accountId: AccountId) {
+        var lastFailure: Exception? = null
         try {
             if (isAuthenticationProblem(accountId, false)) {
-                Log.d(TAG, "Authentication will fail. Skip sending messages.");
-                handleAuthenticationFailure(accountId, false);
-                return;
+                d(TAG, "Authentication will fail. Skip sending messages.")
+                handleAuthenticationFailure(accountId, false)
+                return
             }
 
-            final LocalStore localStore = localStoreProvider.getInstance(accountId);
-            final OutboxStateRepository outboxStateRepository = localStore.getOutboxStateRepository();
-            final long outboxFolderId = OutboxFolderManagerKt.getOutboxFolderIdSync(
-                outboxFolderManager,
-                accountId,
-                true
-            );
-            final LocalFolder localFolder = localStore.getFolder(outboxFolderId);
+            val localStore = localStoreProvider.getInstance(accountId)
+            val outboxStateRepository = localStore.getOutboxStateRepository()
+            val outboxFolderId = outboxFolderManager
+                .getOutboxFolderIdSync(
+                    accountId,
+                    true
+                )
+            val localFolder = localStore.getFolder(outboxFolderId)
             if (!localFolder.exists()) {
-                Log.w(TAG, "Outbox does not exist");
-                return;
+                w(TAG, "Outbox does not exist")
+                return
             }
 
-            localFolder.open();
+            localFolder.open()
 
-            final List<LocalMessage> localMessages = localFolder.getMessages();
-            int progress = 0;
-            int todo = localMessages.size();
-            for (MessagingListener l : getListeners()) {
-                l.synchronizeMailboxProgress(accountId, outboxFolderId, progress, todo);
+            val localMessages = localFolder.getMessages()
+            var progress = 0
+            val todo = localMessages.size
+            for (l in this.listeners) {
+                l.synchronizeMailboxProgress(accountId, outboxFolderId, progress, todo)
             }
             /*
              * The profile we will use to pull all of the content
              * for a given local message into memory for sending.
              */
-            FetchProfile fp = new FetchProfile();
-            fp.add(FetchProfile.Item.ENVELOPE);
-            fp.add(FetchProfile.Item.BODY);
+            val fp = FetchProfile()
+            fp.add(FetchProfile.Item.ENVELOPE)
+            fp.add(FetchProfile.Item.BODY)
 
-            Log.i(TAG, "Scanning Outbox folder for messages to send");
+            i(TAG, "Scanning Outbox folder for messages to send")
 
-            Backend backend = getBackend(accountId);
+            val backend = getBackend(accountId)
 
-            for (LocalMessage message : localMessages) {
+            for (message in localMessages) {
                 if (message.isSet(Flag.DELETED)) {
                     //FIXME: When uploading a message to the remote Sent folder the move code creates a placeholder
                     // message in the Outbox. This code gets rid of these messages. It'd be preferable if the
                     // placeholder message was never created, though.
-                    message.destroy();
-                    continue;
+                    message.destroy()
+                    continue
                 }
                 try {
-                    long messageId = message.getDatabaseId();
-                    OutboxState outboxState = outboxStateRepository.getOutboxState(messageId);
+                    val messageId = message.getDatabaseId()
+                    val outboxState = outboxStateRepository.getOutboxState(messageId)
 
-                    SendState sendState = outboxState.getSendState();
+                    val sendState = outboxState.sendState
                     if (sendState != SendState.READY) {
-                        Log.v(TAG, "Skipping sending message %s (reason: %s - %s)", message.getUid(),
-                            sendState.getDatabaseName(), outboxState.getSendError());
+                        v(
+                            TAG, "Skipping sending message %s (reason: %s - %s)", message.getUid(),
+                            sendState.databaseName, outboxState.sendError
+                        )
 
                         if (sendState == SendState.RETRIES_EXCEEDED) {
-                            lastFailure = new MessagingException("Retries exceeded", true);
+                            lastFailure = MessagingException("Retries exceeded", true)
                         } else {
-                            lastFailure = new MessagingException(outboxState.getSendError(), true);
+                            lastFailure = MessagingException(outboxState.sendError, true)
                         }
-                        continue;
+                        continue
                     }
 
-                    Log.i(TAG, "Send count for message %s is %d", message.getUid(),
-                        outboxState.getNumberOfSendAttempts());
+                    i(
+                        TAG, "Send count for message %s is %d", message.getUid(),
+                        outboxState.numberOfSendAttempts
+                    )
 
-                    localFolder.fetch(Collections.singletonList(message), fp, null);
+                    localFolder.fetch(mutableListOf<LocalMessage?>(message), fp, null)
                     try {
-                        if (message.getHeader(K9.IDENTITY_HEADER).length > 0 || message.isSet(Flag.DRAFT)) {
-                            Log.v(TAG, "The user has set the Outbox and Drafts folder to the same thing. " +
-                                "This message appears to be a draft, so K-9 will not send it");
-                            continue;
+                        if (message.getHeader(K9.IDENTITY_HEADER).size > 0 || message.isSet(Flag.DRAFT)) {
+                            v(
+                                TAG,
+                                "The user has set the Outbox and Drafts folder to the same thing. " +
+                                    "This message appears to be a draft, so K-9 will not send it"
+                            )
+                            continue
                         }
 
-                        outboxStateRepository.incrementSendAttempts(messageId);
-                        message.setFlag(Flag.X_SEND_IN_PROGRESS, true);
+                        outboxStateRepository.incrementSendAttempts(messageId)
+                        message.setFlag(Flag.X_SEND_IN_PROGRESS, true)
 
-                        Log.i(TAG, "Sending message with UID %s", message.getUid());
-                        backend.sendMessage(message);
+                        i(TAG, "Sending message with UID %s", message.getUid())
+                        backend.sendMessage(message)
 
-                        message.setFlag(Flag.X_SEND_IN_PROGRESS, false);
-                        message.setFlag(Flag.SEEN, true);
-                        progress++;
-                        for (MessagingListener l : getListeners()) {
-                            l.synchronizeMailboxProgress(accountId, outboxFolderId, progress, todo);
+                        message.setFlag(Flag.X_SEND_IN_PROGRESS, false)
+                        message.setFlag(Flag.SEEN, true)
+                        progress++
+                        for (l in this.listeners) {
+                            l.synchronizeMailboxProgress(accountId, outboxFolderId, progress, todo)
                         }
-                        moveOrDeleteSentMessage(accountId, localStore, message);
+                        moveOrDeleteSentMessage(accountId, localStore, message)
 
-                        outboxStateRepository.removeOutboxState(messageId);
-                    } catch (AuthenticationFailedException e) {
-                        outboxStateRepository.decrementSendAttempts(messageId);
-                        lastFailure = e;
+                        outboxStateRepository.removeOutboxState(messageId)
+                    } catch (e: AuthenticationFailedException) {
+                        outboxStateRepository.decrementSendAttempts(messageId)
+                        lastFailure = e
 
-                        handleAuthenticationFailure(accountId, false);
-                        handleSendFailure(accountId, localFolder, message, e);
-                    } catch (CertificateValidationException e) {
-                        outboxStateRepository.decrementSendAttempts(messageId);
-                        lastFailure = e;
+                        handleAuthenticationFailure(accountId, false)
+                        handleSendFailure(accountId, localFolder, message, e)
+                    } catch (e: CertificateValidationException) {
+                        outboxStateRepository.decrementSendAttempts(messageId)
+                        lastFailure = e
 
-                        notifyUserIfCertificateProblem(accountId, e, false);
-                        handleSendFailure(accountId, localFolder, message, e);
-                    } catch (MessagingException e) {
-                        lastFailure = e;
+                        notifyUserIfCertificateProblem(accountId, e, false)
+                        handleSendFailure(accountId, localFolder, message, e)
+                    } catch (e: MessagingException) {
+                        lastFailure = e
 
-                        if (e.isPermanentFailure()) {
-                            String errorMessage = e.getMessage();
-                            outboxStateRepository.setSendAttemptError(messageId, errorMessage);
-                        } else if (outboxState.getNumberOfSendAttempts() + 1 >= MAX_SEND_ATTEMPTS) {
-                            outboxStateRepository.setSendAttemptsExceeded(messageId);
+                        if (e.isPermanentFailure) {
+                            val errorMessage = e.message
+                            outboxStateRepository.setSendAttemptError(messageId, errorMessage!!)
+                        } else if (outboxState.numberOfSendAttempts + 1 >= MAX_SEND_ATTEMPTS) {
+                            outboxStateRepository.setSendAttemptsExceeded(messageId)
                         }
 
-                        handleSendFailure(accountId, localFolder, message, e);
-                    } catch (Exception e) {
-                        lastFailure = e;
+                        handleSendFailure(accountId, localFolder, message, e)
+                    } catch (e: Exception) {
+                        lastFailure = e
 
-                        handleSendFailure(accountId, localFolder, message, e);
+                        handleSendFailure(accountId, localFolder, message, e)
                     }
-                } catch (Exception e) {
-                    lastFailure = e;
+                } catch (e: Exception) {
+                    lastFailure = e
 
-                    Log.e(TAG, e, "Failed to fetch message for sending");
-                    notifySynchronizeMailboxFailed(accountId, localFolder, e);
+                    e(TAG, e, "Failed to fetch message for sending")
+                    notifySynchronizeMailboxFailed(accountId, localFolder, e)
                 }
             }
 
             if (lastFailure != null) {
-                notificationController.showSendFailedNotification(accountId, lastFailure);
+                notificationController.showSendFailedNotification(accountId, lastFailure)
             }
-        } catch (Exception e) {
-            Log.v(TAG, e, "Failed to send pending messages");
+        } catch (e: Exception) {
+            v(TAG, e, "Failed to send pending messages")
         } finally {
             if (lastFailure == null) {
-                notificationController.clearSendFailedNotification(accountId);
+                notificationController.clearSendFailedNotification(accountId)
             }
         }
     }
 
-    private void moveOrDeleteSentMessage(
-        AccountId accountId, LocalStore localStore, LocalMessage message
-    ) throws MessagingException {
-        LegacyAccount account = accountManager.findById(accountId);
-        if (!account.hasSentFolder() || !account.isUploadSentMessages()) {
-            Log.i(TAG, "Not uploading sent message; deleting local message");
-            message.destroy();
+    @Throws(MessagingException::class)
+    private fun moveOrDeleteSentMessage(
+        accountId: AccountId, localStore: LocalStore, message: LocalMessage
+    ) {
+        val account = accountManager.findById(accountId)
+        if (!account!!.hasSentFolder() || !account.isUploadSentMessages) {
+            i(TAG, "Not uploading sent message; deleting local message")
+            message.destroy()
         } else {
-            long sentFolderId = account.getSentFolderId();
-            LocalFolder sentFolder = localStore.getFolder(sentFolderId);
-            sentFolder.open();
-            String sentFolderServerId = sentFolder.getServerId();
-            Log.i(TAG, "Moving sent message to folder '%s' (%d)", sentFolderServerId, sentFolderId);
+            val sentFolderId: Long = account.sentFolderId!!
+            val sentFolder = localStore.getFolder(sentFolderId)
+            sentFolder.open()
+            val sentFolderServerId = sentFolder.getServerId()
+            i(TAG, "Moving sent message to folder '%s' (%d)", sentFolderServerId, sentFolderId)
 
-            MessageStore messageStore = messageStoreManager.getMessageStore(accountId);
-            long destinationMessageId = messageStore.moveMessage(message.getDatabaseId(), sentFolderId);
+            val messageStore: MessageStore = messageStoreManager.getMessageStore(accountId)
+            val destinationMessageId = messageStore.moveMessage(message.getDatabaseId(), sentFolderId)
 
-            Log.i(TAG, "Moved sent message to folder '%s' (%d)", sentFolderServerId, sentFolderId);
+            i(TAG, "Moved sent message to folder '%s' (%d)", sentFolderServerId, sentFolderId)
 
             if (!sentFolder.isLocalOnly()) {
-                String destinationUid = messageStore.getMessageServerId(destinationMessageId);
+                val destinationUid = messageStore.getMessageServerId(destinationMessageId)
                 if (destinationUid != null) {
-                    PendingCommand command = PendingAppend.create(sentFolderId, destinationUid);
-                    queuePendingCommand(accountId, command);
-                    processPendingCommands(accountId);
+                    val command: PendingCommand = PendingAppend.create(sentFolderId, destinationUid)
+                    queuePendingCommand(accountId, command)
+                    processPendingCommands(accountId)
                 }
             }
         }
 
-        final long outboxFolderId = OutboxFolderManagerKt.getOutboxFolderIdSync(
-            outboxFolderManager,
-            accountId,
-            true
-        );
-        for (MessagingListener listener : getListeners()) {
-            listener.folderStatusChanged(accountId, outboxFolderId);
+        val outboxFolderId = outboxFolderManager
+            .getOutboxFolderIdSync(
+                accountId,
+                true
+            )
+        for (listener in this.listeners) {
+            listener.folderStatusChanged(accountId, outboxFolderId)
         }
     }
 
-    private void handleSendFailure(AccountId accountId, LocalFolder localFolder, Message message,
-        Exception exception)
-        throws MessagingException {
+    @Throws(MessagingException::class)
+    private fun handleSendFailure(
+        accountId: AccountId?, localFolder: LocalFolder, message: Message,
+        exception: Exception
+    ) {
+        e(TAG, exception, "Failed to send message")
+        message.setFlag(Flag.X_SEND_FAILED, true)
 
-        Log.e(TAG, exception, "Failed to send message");
-        message.setFlag(Flag.X_SEND_FAILED, true);
-
-        notifySynchronizeMailboxFailed(accountId, localFolder, exception);
+        notifySynchronizeMailboxFailed(accountId, localFolder, exception)
     }
 
-    private void notifySynchronizeMailboxFailed(AccountId accountId, LocalFolder localFolder,
-        Exception exception) {
-        long folderId = localFolder.getDatabaseId();
-        String errorMessage = ThrowableExtensions.getRootCauseMessage(exception);
-        for (MessagingListener listener : getListeners()) {
-            listener.synchronizeMailboxFailed(accountId, folderId, errorMessage);
+    private fun notifySynchronizeMailboxFailed(
+        accountId: AccountId?, localFolder: LocalFolder,
+        exception: Exception
+    ) {
+        val folderId = localFolder.getDatabaseId()
+        val errorMessage = exception.rootCauseMessage
+        for (listener in this.listeners) {
+            listener.synchronizeMailboxFailed(accountId, folderId, errorMessage)
         }
     }
 
-    public boolean isMoveCapable(MessageReference messageReference) {
-        return !messageReference.getUid().startsWith(localMessageUidPrefixProvider.get());
+    fun isMoveCapable(messageReference: MessageReference): Boolean {
+        return !messageReference.uid.startsWith(localMessageUidPrefixProvider.get())
     }
 
-    public boolean isCopyCapable(MessageReference message) {
-        return isMoveCapable(message);
+    fun isCopyCapable(message: MessageReference): Boolean {
+        return isMoveCapable(message)
     }
 
-    public boolean isMoveCapable(final AccountId accountId) {
-        Backend backend = getBackendOrNull(accountId);
-        return backend != null && backend.getSupportsMove();
+    fun isMoveCapable(accountId: AccountId): Boolean {
+        val backend = getBackendOrNull(accountId)
+        return backend != null && backend.supportsMove
     }
 
-    public boolean isCopyCapable(final AccountId accountId) {
-        Backend backend = getBackendOrNull(accountId);
-        return backend != null && backend.getSupportsCopy();
+    fun isCopyCapable(accountId: AccountId): Boolean {
+        val backend = getBackendOrNull(accountId)
+        return backend != null && backend.supportsCopy
     }
 
-    public boolean isPushCapable(AccountId accountId) {
-        Backend backend = getBackendOrNull(accountId);
-        return backend != null && backend.isPushCapable();
+    fun isPushCapable(accountId: AccountId): Boolean {
+        val backend = getBackendOrNull(accountId)
+        return backend != null && backend.isPushCapable
     }
 
-    public boolean supportsFlags(AccountId accountId) {
-        return getBackend(accountId).getSupportsFlags();
+    fun supportsFlags(accountId: AccountId): Boolean {
+        return getBackend(accountId).supportsFlags
     }
 
-    public boolean supportsExpunge(AccountId accountId) {
-        Backend backend = getBackendOrNull(accountId);
-        return backend != null && backend.getSupportsExpunge();
+    fun supportsExpunge(accountId: AccountId): Boolean {
+        val backend = getBackendOrNull(accountId)
+        return backend != null && backend.supportsExpunge
     }
 
-    public boolean supportsSearchByDate(AccountId accountId) {
-        return getBackend(accountId).getSupportsSearchByDate();
+    fun supportsSearchByDate(accountId: AccountId): Boolean {
+        return getBackend(accountId).supportsSearchByDate
     }
 
-    public boolean supportsUpload(AccountId accountId) {
-        return getBackend(accountId).getSupportsUpload();
+    fun supportsUpload(accountId: AccountId): Boolean {
+        return getBackend(accountId).supportsUpload
     }
 
-    public boolean supportsFolderSubscriptions(final AccountId accountId) {
-        return getBackend(accountId).getSupportsMove();
+    fun supportsFolderSubscriptions(accountId: AccountId): Boolean {
+        return getBackend(accountId).supportsMove
     }
 
-    public void moveMessages(AccountId srcAccountId, long srcFolderId,
-        List<MessageReference> messageReferences, long destFolderId) {
-        actOnMessageGroup(srcAccountId, srcFolderId, messageReferences, (accountId, messageFolder, messages) -> {
-            suppressMessages(accountId, messages);
-
-            putBackground("moveMessages", null, () ->
-                moveOrCopyMessageSynchronous(accountId, srcFolderId, messages, destFolderId, MoveOrCopyFlavor.MOVE)
-            );
-        });
-    }
-
-    public void moveMessagesInThread(AccountId srcAccountId, long srcFolderId,
-        List<MessageReference> messageReferences, long destFolderId) {
-        actOnMessageGroup(srcAccountId, srcFolderId, messageReferences, (accountId, messageFolder, messages) -> {
-            suppressMessages(accountId, messages);
-
-            putBackground("moveMessagesInThread", null, () -> {
-                try {
-                    List<LocalMessage> messagesInThreads = collectMessagesInThreads(accountId, messages);
-                    moveOrCopyMessageSynchronous(accountId, srcFolderId, messagesInThreads, destFolderId,
-                        MoveOrCopyFlavor.MOVE);
-                } catch (MessagingException e) {
-                    Log.e(TAG, e, "Exception while moving messages");
-                }
-            });
-        });
-    }
-
-    public void moveMessage(AccountId accountId, long srcFolderId, MessageReference message, long destFolderId) {
-        moveMessages(accountId, srcFolderId, Collections.singletonList(message), destFolderId);
-    }
-
-    public void copyMessages(
-        AccountId srcAccountId,
-        long srcFolderId,
-        List<MessageReference> messageReferences,
-        long destFolderId
+    fun moveMessages(
+        srcAccountId: AccountId, srcFolderId: Long,
+        messageReferences: MutableList<MessageReference?>, destFolderId: Long
     ) {
-        actOnMessageGroup(srcAccountId, srcFolderId, messageReferences, (accountId, messageFolder, messages) -> {
-            putBackground("copyMessages", null, () ->
-                moveOrCopyMessageSynchronous(srcAccountId, srcFolderId, messages, destFolderId, MoveOrCopyFlavor.COPY)
-            );
-        });
+        actOnMessageGroup(
+            srcAccountId, srcFolderId, messageReferences,
+            MessageActor { accountId: AccountId?, messageFolder: LocalFolder?, messages: MutableList<LocalMessage>? ->
+                suppressMessages(accountId!!, messages!!)
+                putBackground(
+                    "moveMessages",
+                    null,
+                    Runnable {
+                        moveOrCopyMessageSynchronous(
+                            accountId,
+                            srcFolderId,
+                            messages,
+                            destFolderId,
+                            MoveOrCopyFlavor.MOVE
+                        )
+                    }
+                )
+            }
+        )
     }
 
-    public void copyMessagesInThread(
-        AccountId srcAccountId,
-        long srcFolderId,
-        final List<MessageReference> messageReferences,
-        long destFolderId
+    fun moveMessagesInThread(
+        srcAccountId: AccountId, srcFolderId: Long,
+        messageReferences: MutableList<MessageReference?>, destFolderId: Long
     ) {
-        actOnMessageGroup(srcAccountId, srcFolderId, messageReferences, (accountId, messageFolder, messages) -> {
-            putBackground("copyMessagesInThread", null, () -> {
-                try {
-                    List<LocalMessage> messagesInThreads = collectMessagesInThreads(accountId, messages);
-                    moveOrCopyMessageSynchronous(accountId, srcFolderId, messagesInThreads, destFolderId,
-                        MoveOrCopyFlavor.COPY);
-                } catch (MessagingException e) {
-                    Log.e(TAG, e, "Exception while copying messages");
-                }
-            });
-        });
+        actOnMessageGroup(
+            srcAccountId, srcFolderId, messageReferences,
+            MessageActor { accountId: AccountId?, messageFolder: LocalFolder?, messages: MutableList<LocalMessage>? ->
+                suppressMessages(accountId!!, messages!!)
+                putBackground(
+                    "moveMessagesInThread", null,
+                    Runnable {
+                        try {
+                            val messagesInThreads = collectMessagesInThreads(accountId, messages)
+                            moveOrCopyMessageSynchronous(
+                                accountId, srcFolderId, messagesInThreads, destFolderId,
+                                MoveOrCopyFlavor.MOVE
+                            )
+                        } catch (e: MessagingException) {
+                            e(TAG, e, "Exception while moving messages")
+                        }
+                    }
+                )
+            }
+        )
     }
 
-    public void copyMessage(AccountId accountId, long srcFolderId, MessageReference message, long destFolderId) {
-        copyMessages(accountId, srcFolderId, Collections.singletonList(message), destFolderId);
+    fun moveMessage(accountId: AccountId, srcFolderId: Long, message: MessageReference?, destFolderId: Long) {
+        moveMessages(accountId, srcFolderId, mutableListOf<MessageReference?>(message), destFolderId)
     }
 
-    void moveOrCopyMessageSynchronous(AccountId accountId, long srcFolderId, List<LocalMessage> inMessages,
-        long destFolderId, MoveOrCopyFlavor operation) {
+    fun copyMessages(
+        srcAccountId: AccountId,
+        srcFolderId: Long,
+        messageReferences: MutableList<MessageReference?>,
+        destFolderId: Long
+    ) {
+        actOnMessageGroup(
+            srcAccountId, srcFolderId, messageReferences,
+            MessageActor { accountId: AccountId?, messageFolder: LocalFolder?, messages: MutableList<LocalMessage>? ->
+                putBackground(
+                    "copyMessages",
+                    null,
+                    Runnable {
+                        moveOrCopyMessageSynchronous(
+                            srcAccountId,
+                            srcFolderId,
+                            messages!!,
+                            destFolderId,
+                            MoveOrCopyFlavor.COPY
+                        )
+                    }
+                )
+            }
+        )
+    }
 
+    fun copyMessagesInThread(
+        srcAccountId: AccountId,
+        srcFolderId: Long,
+        messageReferences: MutableList<MessageReference?>,
+        destFolderId: Long
+    ) {
+        actOnMessageGroup(
+            srcAccountId, srcFolderId, messageReferences,
+            MessageActor { accountId: AccountId?, messageFolder: LocalFolder?, messages: MutableList<LocalMessage>? ->
+                putBackground(
+                    "copyMessagesInThread", null,
+                    Runnable {
+                        try {
+                            val messagesInThreads = collectMessagesInThreads(accountId!!, messages!!)
+                            moveOrCopyMessageSynchronous(
+                                accountId, srcFolderId, messagesInThreads, destFolderId,
+                                MoveOrCopyFlavor.COPY
+                            )
+                        } catch (e: MessagingException) {
+                            e(TAG, e, "Exception while copying messages")
+                        }
+                    }
+                )
+            }
+        )
+    }
+
+    fun copyMessage(accountId: AccountId, srcFolderId: Long, message: MessageReference?, destFolderId: Long) {
+        copyMessages(accountId, srcFolderId, mutableListOf<MessageReference?>(message), destFolderId)
+    }
+
+    fun moveOrCopyMessageSynchronous(
+        accountId: AccountId, srcFolderId: Long, inMessages: MutableList<LocalMessage>,
+        destFolderId: Long, operation: MoveOrCopyFlavor
+    ) {
         try {
-            LocalStore localStore = localStoreProvider.getInstance(accountId);
+            val localStore = localStoreProvider.getInstance(accountId)
             if (operation == MoveOrCopyFlavor.MOVE && !isMoveCapable(accountId)) {
-                return;
+                return
             }
             if (operation == MoveOrCopyFlavor.COPY && !isCopyCapable(accountId)) {
-                return;
+                return
             }
 
-            LocalFolder localSrcFolder = localStore.getFolder(srcFolderId);
-            localSrcFolder.open();
+            val localSrcFolder = localStore.getFolder(srcFolderId)
+            localSrcFolder.open()
 
-            LocalFolder localDestFolder = localStore.getFolder(destFolderId);
-            localDestFolder.open();
+            val localDestFolder = localStore.getFolder(destFolderId)
+            localDestFolder.open()
 
-            boolean unreadCountAffected = false;
-            List<String> uids = new LinkedList<>();
-            for (Message message : inMessages) {
-                String uid = message.getUid();
+            var unreadCountAffected = false
+            val uids: MutableList<String?> = LinkedList<String?>()
+            for (message in inMessages) {
+                val uid = message.getUid()
                 if (!uid.startsWith(localMessageUidPrefixProvider.get())) {
-                    uids.add(uid);
+                    uids.add(uid)
                 }
 
                 if (operation == MoveOrCopyFlavor.MOVE_AND_MARK_AS_READ) {
                     if (!message.isSet(Flag.SEEN)) {
-                        unreadCountAffected = true;
-                        message.setFlag(Flag.SEEN, true);
+                        unreadCountAffected = true
+                        message.setFlag(Flag.SEEN, true)
                     }
                 } else {
                     if (!unreadCountAffected && !message.isSet(Flag.SEEN)) {
-                        unreadCountAffected = true;
+                        unreadCountAffected = true
                     }
                 }
             }
 
-            List<LocalMessage> messages = localSrcFolder.getMessagesByUids(uids);
-            if (messages.size() > 0) {
-                Log.i(TAG, "moveOrCopyMessageSynchronous: source folder = %s, %d messages, destination folder = %s, " +
-                    "operation = %s", srcFolderId, messages.size(), destFolderId, operation.name());
+            val messages = localSrcFolder.getMessagesByUids(uids)
+            if (messages.size > 0) {
+                i(
+                    TAG,
+                    "moveOrCopyMessageSynchronous: source folder = %s, %d messages, destination folder = %s, " +
+                        "operation = %s",
+                    srcFolderId, messages.size, destFolderId, operation.name
+                )
 
-                MessageStore messageStore = messageStoreManager.getMessageStore(accountId);
+                val messageStore: MessageStore = messageStoreManager.getMessageStore(accountId)
 
-                List<Long> messageIds = new ArrayList<>();
-                Map<Long, String> messageIdToUidMapping = new HashMap<>();
-                for (LocalMessage message : messages) {
-                    long messageId = message.getDatabaseId();
-                    messageIds.add(messageId);
-                    messageIdToUidMapping.put(messageId, message.getUid());
+                val messageIds: MutableList<Long?> = ArrayList<Long?>()
+                val messageIdToUidMapping: MutableMap<Long?, String?> = HashMap<Long?, String?>()
+                for (message in messages) {
+                    val messageId = message.getDatabaseId()
+                    messageIds.add(messageId)
+                    messageIdToUidMapping.put(messageId, message.getUid())
                 }
 
-                Map<Long, Long> resultIdMapping;
+                val resultIdMapping: MutableMap<Long?, Long?>?
                 if (operation == MoveOrCopyFlavor.COPY) {
-                    resultIdMapping = messageStore.copyMessages(messageIds, destFolderId);
+                    resultIdMapping = messageStore.copyMessages(messageIds, destFolderId)
 
                     if (unreadCountAffected) {
                         // If this copy operation changes the unread count in the destination
                         // folder, notify the listeners.
-                        for (MessagingListener l : getListeners()) {
-                            l.folderStatusChanged(accountId, destFolderId);
+                        for (l in this.listeners) {
+                            l.folderStatusChanged(accountId, destFolderId)
                         }
                     }
                 } else {
-                    resultIdMapping = messageStore.moveMessages(messageIds, destFolderId);
+                    resultIdMapping = messageStore.moveMessages(messageIds, destFolderId)
 
-                    unsuppressMessages(accountId, messages);
+                    unsuppressMessages(accountId, messages)
 
                     if (unreadCountAffected) {
                         // If this move operation changes the unread count, notify the listeners
                         // that the unread count changed in both the source and destination folder.
-                        for (MessagingListener l : getListeners()) {
-                            l.folderStatusChanged(accountId, srcFolderId);
-                            l.folderStatusChanged(accountId, destFolderId);
+                        for (l in this.listeners) {
+                            l.folderStatusChanged(accountId, srcFolderId)
+                            l.folderStatusChanged(accountId, destFolderId)
                         }
                     }
                 }
 
-                Map<Long, String> destinationMapping = messageStore.getMessageServerIds(resultIdMapping.values());
+                val destinationMapping: MutableMap<Long?, String?> =
+                    messageStore.getMessageServerIds(resultIdMapping.values)
 
-                Map<String, String> uidMap = new HashMap<>();
-                for (Entry<Long, Long> entry : resultIdMapping.entrySet()) {
-                    long sourceMessageId = entry.getKey();
-                    long destinationMessageId = entry.getValue();
+                val uidMap: MutableMap<String?, String?> = HashMap<String?, String?>()
+                for (entry in resultIdMapping.entries) {
+                    val sourceMessageId = entry.key
+                    val destinationMessageId = entry.value
 
-                    String sourceUid = messageIdToUidMapping.get(sourceMessageId);
-                    String destinationUid = destinationMapping.get(destinationMessageId);
-                    uidMap.put(sourceUid, destinationUid);
+                    val sourceUid = messageIdToUidMapping.get(sourceMessageId)
+                    val destinationUid = destinationMapping.get(destinationMessageId)
+                    uidMap.put(sourceUid, destinationUid)
                 }
 
-                queueMoveOrCopy(accountId, localSrcFolder.getDatabaseId(), localDestFolder.getDatabaseId(),
-                    operation, uidMap);
+                queueMoveOrCopy(
+                    accountId, localSrcFolder.getDatabaseId(), localDestFolder.getDatabaseId(),
+                    operation, uidMap
+                )
             }
 
-            processPendingCommands(accountId);
-        } catch (MessagingException me) {
-            throw new RuntimeException("Error moving message", me);
+            processPendingCommands(accountId)
+        } catch (me: MessagingException) {
+            throw RuntimeException("Error moving message", me)
         }
     }
 
-    public void moveToDraftsFolder(AccountId accountId, long folderId, List<MessageReference> messages) {
-        putBackground("moveToDrafts", null, () -> moveToDraftsFolderInBackground(accountId, folderId, messages));
+    fun moveToDraftsFolder(accountId: AccountId, folderId: Long, messages: MutableList<MessageReference>) {
+        putBackground("moveToDrafts", null, Runnable { moveToDraftsFolderInBackground(accountId, folderId, messages) })
     }
 
-    private void moveToDraftsFolderInBackground(AccountId accountId, long folderId,
-        List<MessageReference> messages) {
-        for (MessageReference messageReference : messages) {
+    private fun moveToDraftsFolderInBackground(
+        accountId: AccountId, folderId: Long,
+        messages: MutableList<MessageReference>
+    ) {
+        for (messageReference in messages) {
             try {
-                Message message = loadMessage(accountId, folderId, messageReference.getUid());
-                Long draftMessageId = saveDraft(accountId, message, null, message.getSubject());
+                val message: Message = loadMessage(accountId, folderId, messageReference.uid)
+                val draftMessageId = saveDraft(accountId, message, null, message.getSubject())
 
-                boolean draftSavedSuccessfully = draftMessageId != null;
+                val draftSavedSuccessfully = draftMessageId != null
                 if (draftSavedSuccessfully) {
-                    message.destroy();
+                    message.destroy()
                 }
 
-                for (MessagingListener listener : getListeners()) {
-                    listener.folderStatusChanged(accountId, folderId);
+                for (listener in this.listeners) {
+                    listener.folderStatusChanged(accountId, folderId)
                 }
-            } catch (MessagingException e) {
-                Log.e(TAG, e, "Error loading message. Draft was not saved.");
+            } catch (e: MessagingException) {
+                e(TAG, e, "Error loading message. Draft was not saved.")
             }
         }
     }
 
-    public void archiveThreads(List<MessageReference> messages) {
-        archiveOperations.archiveThreads(messages);
+    fun archiveThreads(messages: MutableList<MessageReference?>) {
+        archiveOperations.archiveThreads(messages)
     }
 
-    public void archiveMessages(List<MessageReference> messages) {
-        archiveOperations.archiveMessages(messages);
+    fun archiveMessages(messages: MutableList<MessageReference?>) {
+        archiveOperations.archiveMessages(messages)
     }
 
-    public void archiveMessage(MessageReference message) {
-        archiveOperations.archiveMessage(message);
+    fun archiveMessage(message: MessageReference) {
+        archiveOperations.archiveMessage(message)
     }
 
-    public void expunge(AccountId accountId, long folderId) {
-        putBackground("expunge", null, () -> {
-            queueExpunge(accountId, folderId);
-            processPendingCommands(accountId);
-        });
+    fun expunge(accountId: AccountId, folderId: Long) {
+        putBackground(
+            "expunge", null,
+            Runnable {
+                queueExpunge(accountId, folderId)
+                processPendingCommands(accountId)
+            }
+        )
     }
 
-    public void deleteDraftSkippingTrashFolder(AccountId accountId, long messageId) {
-        deleteDraft(accountId, messageId, true);
+    fun deleteDraftSkippingTrashFolder(accountId: AccountId, messageId: Long) {
+        deleteDraft(accountId, messageId, true)
     }
 
-    public void deleteDraft(AccountId accountId, long messageId) {
-        deleteDraft(accountId, messageId, false);
+    fun deleteDraft(accountId: AccountId, messageId: Long) {
+        deleteDraft(accountId, messageId, false)
     }
 
-    private void deleteDraft(AccountId accountId, long messageId, boolean skipTrashFolder) {
-        LegacyAccount account = accountManager.findById(accountId);
+    private fun deleteDraft(accountId: AccountId, messageId: Long, skipTrashFolder: Boolean) {
+        val account = accountManager.findById(accountId)
         if (account == null) {
-            Log.w(TAG, "Account not found %s", accountId);
-            return;
+            w(TAG, "Account not found %s", accountId)
+            return
         }
-        Long folderId = account.getDraftsFolderId();
+        val folderId = account.draftsFolderId
         if (folderId == null) {
-            Log.w(TAG, "No Drafts folder configured. Can't delete draft.");
-            return;
+            w(TAG, "No Drafts folder configured. Can't delete draft.")
+            return
         }
 
-        MessageStore messageStore = messageStoreManager.getMessageStore(accountId);
-        String messageServerId = messageStore.getMessageServerId(messageId);
+        val messageStore: MessageStore = messageStoreManager.getMessageStore(accountId)
+        val messageServerId = messageStore.getMessageServerId(messageId)
         if (messageServerId != null) {
-            MessageReference messageReference = new MessageReference(accountId, folderId, messageServerId);
-            deleteMessages(Collections.singletonList(messageReference), skipTrashFolder);
+            val messageReference = MessageReference(accountId, folderId, messageServerId)
+            deleteMessages(mutableListOf<MessageReference?>(messageReference), skipTrashFolder)
         }
     }
 
-    public void deleteThreads(final List<MessageReference> messages) {
-        actOnMessagesGroupedByAccountAndFolder(messages, (accountId, messageFolder, accountMessages) -> {
-            suppressMessages(accountId, accountMessages);
-            putBackground("deleteThreads", null, () ->
-                deleteThreadsSynchronous(accountId, messageFolder.getDatabaseId(), accountMessages, false)
-            );
-        });
+    fun deleteThreads(messages: MutableList<MessageReference?>) {
+        actOnMessagesGroupedByAccountAndFolder(
+            messages,
+            MessageActor { accountId: AccountId?, messageFolder: LocalFolder?, accountMessages: MutableList<LocalMessage>? ->
+                suppressMessages(accountId!!, accountMessages!!)
+                putBackground(
+                    "deleteThreads",
+                    null,
+                    Runnable {
+                        deleteThreadsSynchronous(
+                            accountId,
+                            messageFolder!!.getDatabaseId(),
+                            accountMessages,
+                            false
+                        )
+                    }
+                )
+            }
+        )
     }
 
-    private void deleteThreadsSynchronous(AccountId accountId, long folderId, List<LocalMessage> messages,
-        boolean skipTrashFolder) {
+    private fun deleteThreadsSynchronous(
+        accountId: AccountId, folderId: Long, messages: MutableList<LocalMessage>,
+        skipTrashFolder: Boolean
+    ) {
         try {
-            List<LocalMessage> messagesToDelete = collectMessagesInThreads(accountId, messages);
-            deleteMessagesSynchronous(accountId, folderId, messagesToDelete, skipTrashFolder);
-        } catch (MessagingException e) {
-            Log.e(TAG, e, "Something went wrong while deleting threads");
+            val messagesToDelete = collectMessagesInThreads(accountId, messages)
+            deleteMessagesSynchronous(accountId, folderId, messagesToDelete, skipTrashFolder)
+        } catch (e: MessagingException) {
+            e(TAG, e, "Something went wrong while deleting threads")
         }
     }
 
-    List<LocalMessage> collectMessagesInThreads(AccountId accountId, List<LocalMessage> messages)
-        throws MessagingException {
+    @Throws(MessagingException::class)
+    fun collectMessagesInThreads(accountId: AccountId, messages: MutableList<LocalMessage>): MutableList<LocalMessage> {
+        val localStore = localStoreProvider.getInstance(accountId)
 
-        LocalStore localStore = localStoreProvider.getInstance(accountId);
+        val messagesInThreads: MutableList<LocalMessage> = ArrayList<LocalMessage>()
+        for (localMessage in messages) {
+            val rootId = localMessage.getRootId()
+            val threadId = if (rootId == -1L) localMessage.getThreadId() else rootId
 
-        List<LocalMessage> messagesInThreads = new ArrayList<>();
-        for (LocalMessage localMessage : messages) {
-            long rootId = localMessage.getRootId();
-            long threadId = (rootId == -1) ? localMessage.getThreadId() : rootId;
+            val messagesInThread = localStore.getMessagesInThread(threadId)
 
-            List<LocalMessage> messagesInThread = localStore.getMessagesInThread(threadId);
-
-            messagesInThreads.addAll(messagesInThread);
+            messagesInThreads.addAll(messagesInThread)
         }
 
-        return messagesInThreads;
+        return messagesInThreads
     }
 
-    public void deleteMessage(MessageReference message) {
-        deleteMessages(Collections.singletonList(message), false);
+    fun deleteMessage(message: MessageReference?) {
+        deleteMessages(mutableListOf<MessageReference?>(message), false)
     }
 
-    public void deleteMessages(List<MessageReference> messages) {
-        deleteMessages(messages, false);
+    fun deleteMessages(messages: MutableList<MessageReference?>) {
+        deleteMessages(messages, false)
     }
 
-    private void deleteMessages(List<MessageReference> messages, boolean skipTrashFolder) {
-        actOnMessagesGroupedByAccountAndFolder(messages, (accountId, messageFolder, accountMessages) -> {
-            suppressMessages(accountId, accountMessages);
-            putBackground("deleteMessages", null, () ->
-                deleteMessagesSynchronous(accountId, messageFolder.getDatabaseId(), accountMessages, skipTrashFolder)
-            );
-        });
+    private fun deleteMessages(messages: MutableList<MessageReference?>, skipTrashFolder: Boolean) {
+        actOnMessagesGroupedByAccountAndFolder(
+            messages,
+            MessageActor { accountId: AccountId?, messageFolder: LocalFolder?, accountMessages: MutableList<LocalMessage>? ->
+                suppressMessages(accountId!!, accountMessages!!)
+                putBackground(
+                    "deleteMessages",
+                    null,
+                    Runnable {
+                        deleteMessagesSynchronous(
+                            accountId,
+                            messageFolder!!.getDatabaseId(),
+                            accountMessages,
+                            skipTrashFolder
+                        )
+                    }
+                )
+            }
+        )
     }
 
-    private void deleteMessagesSynchronous(AccountId accountId, long folderId, List<LocalMessage> messages,
-        boolean skipTrashFolder) {
+    private fun deleteMessagesSynchronous(
+        accountId: AccountId, folderId: Long, messages: MutableList<LocalMessage>,
+        skipTrashFolder: Boolean
+    ) {
         try {
-            List<LocalMessage> localOnlyMessages = new ArrayList<>();
-            List<LocalMessage> syncedMessages = new ArrayList<>();
-            List<String> syncedMessageUids = new ArrayList<>();
-            for (LocalMessage message : messages) {
-                notificationController.removeNewMailNotification(accountId, message.makeMessageReference());
+            val localOnlyMessages: MutableList<LocalMessage?> = ArrayList<LocalMessage?>()
+            val syncedMessages: MutableList<LocalMessage?> = ArrayList<LocalMessage?>()
+            val syncedMessageUids: MutableList<String> = ArrayList<String>()
+            for (message in messages) {
+                notificationController.removeNewMailNotification(accountId, message.makeMessageReference())
 
-                String uid = message.getUid();
+                val uid = message.getUid()
                 if (uid.startsWith(localMessageUidPrefixProvider.get())) {
-                    localOnlyMessages.add(message);
+                    localOnlyMessages.add(message)
                 } else {
-                    syncedMessages.add(message);
-                    syncedMessageUids.add(uid);
+                    syncedMessages.add(message)
+                    syncedMessageUids.add(uid)
                 }
             }
 
-            Backend backend = getBackend(accountId);
+            val backend = getBackend(accountId)
 
-            LocalStore localStore = localStoreProvider.getInstance(accountId);
-            LocalFolder localFolder = localStore.getFolder(folderId);
-            localFolder.open();
+            val localStore = localStoreProvider.getInstance(accountId)
+            val localFolder = localStore.getFolder(folderId)
+            localFolder.open()
 
-            Map<String, String> uidMap = null;
-            LegacyAccount account = accountManager.findById(accountId);
+            var uidMap: MutableMap<String?, String?>? = null
+            val account = accountManager.findById(accountId)
             if (account == null) {
-                Log.w(TAG, "Account not found %s", accountId);
-                return;
+                w(TAG, "Account not found %s", accountId)
+                return
             }
-            Long trashFolderId = account.getTrashFolderId();
-            boolean doNotMoveToTrashFolder = skipTrashFolder ||
-                localDeleteOperationDecider.isDeleteImmediately(accountId, folderId);
+            val trashFolderId = account.trashFolderId
+            val doNotMoveToTrashFolder = skipTrashFolder ||
+                localDeleteOperationDecider.isDeleteImmediately(accountId, folderId)
 
-            LocalFolder localTrashFolder = null;
+            var localTrashFolder: LocalFolder? = null
             if (doNotMoveToTrashFolder) {
-                Log.d(TAG, "Not moving deleted messages to local Trash folder. Removing local copies.");
+                d(TAG, "Not moving deleted messages to local Trash folder. Removing local copies.")
 
                 if (!localOnlyMessages.isEmpty()) {
-                    localFolder.destroyMessages(localOnlyMessages);
+                    localFolder.destroyMessages(localOnlyMessages)
                 }
                 if (!syncedMessages.isEmpty()) {
-                    localFolder.setFlags(syncedMessages, Collections.singleton(Flag.DELETED), true);
+                    localFolder.setFlags(syncedMessages, mutableSetOf<Flag?>(Flag.DELETED), true)
                 }
             } else {
-                Log.d(TAG, "Deleting messages in normal folder, moving");
-                localTrashFolder = localStore.getFolder(trashFolderId);
+                d(TAG, "Deleting messages in normal folder, moving")
+                localTrashFolder = localStore.getFolder(trashFolderId!!)
 
-                MessageStore messageStore = messageStoreManager.getMessageStore(accountId);
+                val messageStore: MessageStore = messageStoreManager.getMessageStore(accountId)
 
-                List<Long> messageIds = new ArrayList<>();
-                Map<Long, String> messageIdToUidMapping = new HashMap<>();
-                for (LocalMessage message : messages) {
-                    long messageId = message.getDatabaseId();
-                    messageIds.add(messageId);
-                    messageIdToUidMapping.put(messageId, message.getUid());
+                val messageIds: MutableList<Long?> = ArrayList<Long?>()
+                val messageIdToUidMapping: MutableMap<Long?, String?> = HashMap<Long?, String?>()
+                for (message in messages) {
+                    val messageId = message.getDatabaseId()
+                    messageIds.add(messageId)
+                    messageIdToUidMapping.put(messageId, message.getUid())
                 }
 
-                Map<Long, Long> moveMessageIdMapping = messageStore.moveMessages(messageIds, trashFolderId);
+                val moveMessageIdMapping: MutableMap<Long?, Long?> =
+                    messageStore.moveMessages(messageIds, trashFolderId)
 
-                Map<Long, String> destinationMapping = messageStore.getMessageServerIds(moveMessageIdMapping.values());
-                uidMap = new HashMap<>();
-                for (Entry<Long, Long> entry : moveMessageIdMapping.entrySet()) {
-                    long sourceMessageId = entry.getKey();
-                    long destinationMessageId = entry.getValue();
+                val destinationMapping: MutableMap<Long?, String?> =
+                    messageStore.getMessageServerIds(moveMessageIdMapping.values)
+                uidMap = HashMap<String?, String?>()
+                for (entry in moveMessageIdMapping.entries) {
+                    val sourceMessageId: Long = entry.key!!
+                    val destinationMessageId: Long = entry.value!!
 
-                    String sourceUid = messageIdToUidMapping.get(sourceMessageId);
-                    String destinationUid = destinationMapping.get(destinationMessageId);
-                    uidMap.put(sourceUid, destinationUid);
+                    val sourceUid = messageIdToUidMapping.get(sourceMessageId)
+                    val destinationUid = destinationMapping.get(destinationMessageId)
+                    uidMap.put(sourceUid, destinationUid)
                 }
 
-                if (account.isMarkMessageAsReadOnDelete()) {
-                    Collection<Long> destinationMessageIds = moveMessageIdMapping.values();
-                    messageStore.setFlag(destinationMessageIds, Flag.SEEN, true);
+                if (account.isMarkMessageAsReadOnDelete) {
+                    val destinationMessageIds = moveMessageIdMapping.values
+                    messageStore.setFlag(destinationMessageIds, Flag.SEEN, true)
                 }
             }
 
-            for (MessagingListener l : getListeners()) {
-                l.folderStatusChanged(accountId, folderId);
+            for (l in this.listeners) {
+                l.folderStatusChanged(accountId, folderId)
                 if (localTrashFolder != null) {
-                    l.folderStatusChanged(accountId, trashFolderId);
+                    l.folderStatusChanged(accountId, trashFolderId!!)
                 }
             }
 
-            Log.d(TAG, "Delete policy for account %s is %s", accountId, account.getDeletePolicy());
+            d(TAG, "Delete policy for account %s is %s", accountId, account.deletePolicy)
 
-            final long outboxFolderId = OutboxFolderManagerKt.getOutboxFolderIdSync(
-                outboxFolderManager,
-                accountId,
-                true
-            );
+            val outboxFolderId = outboxFolderManager
+                .getOutboxFolderIdSync(
+                    accountId,
+                    true
+                )
 
             if (outboxFolderId != -1L && folderId == outboxFolderId && supportsUpload(accountId)) {
-                for (String destinationUid : uidMap.values()) {
+                for (destinationUid in uidMap!!.values) {
                     // If the message was in the Outbox, then it has been copied to local Trash, and has
                     // to be copied to remote trash
-                    PendingCommand command = PendingAppend.create(trashFolderId, destinationUid);
-                    queuePendingCommand(accountId, command);
+                    val command: PendingCommand = PendingAppend.create(trashFolderId!!, destinationUid)
+                    queuePendingCommand(accountId, command)
                 }
-                processPendingCommands(accountId);
+                processPendingCommands(accountId)
             } else if (localFolder.isLocalOnly()) {
                 // Nothing to do on the remote side
             } else if (!syncedMessageUids.isEmpty()) {
-                if (account.getDeletePolicy() == DeletePolicy.ON_DELETE) {
-                    if (doNotMoveToTrashFolder || !backend.getSupportsTrashFolder()) {
-                        queueDelete(accountId, folderId, syncedMessageUids);
-                    } else if (account.isMarkMessageAsReadOnDelete()) {
-                        queueMoveOrCopy(accountId, folderId, trashFolderId,
-                            MoveOrCopyFlavor.MOVE_AND_MARK_AS_READ, uidMap);
+                if (account.deletePolicy == DeletePolicy.ON_DELETE) {
+                    if (doNotMoveToTrashFolder || !backend.supportsTrashFolder) {
+                        queueDelete(accountId, folderId, syncedMessageUids)
+                    } else if (account.isMarkMessageAsReadOnDelete) {
+                        queueMoveOrCopy(
+                            accountId, folderId, trashFolderId!!,
+                            MoveOrCopyFlavor.MOVE_AND_MARK_AS_READ, uidMap
+                        )
                     } else {
-                        queueMoveOrCopy(accountId, folderId, trashFolderId,
-                            MoveOrCopyFlavor.MOVE, uidMap);
+                        queueMoveOrCopy(
+                            accountId, folderId, trashFolderId!!,
+                            MoveOrCopyFlavor.MOVE, uidMap
+                        )
                     }
-                    processPendingCommands(accountId);
-                } else if (account.getDeletePolicy() == DeletePolicy.MARK_AS_READ) {
-                    queueSetFlag(accountId, localFolder.getDatabaseId(), true, Flag.SEEN, syncedMessageUids);
-                    processPendingCommands(accountId);
+                    processPendingCommands(accountId)
+                } else if (account.deletePolicy == DeletePolicy.MARK_AS_READ) {
+                    queueSetFlag(accountId, localFolder.getDatabaseId(), true, Flag.SEEN, syncedMessageUids)
+                    processPendingCommands(accountId)
                 } else {
-                    Log.d(TAG, "Delete policy %s prevents delete from server", account.getDeletePolicy());
+                    d(TAG, "Delete policy %s prevents delete from server", account.deletePolicy)
                 }
             }
 
-            unsuppressMessages(accountId, messages);
-        } catch (MessagingException me) {
-            throw new RuntimeException("Error deleting message from local store.", me);
+            unsuppressMessages(accountId, messages)
+        } catch (me: MessagingException) {
+            throw RuntimeException("Error deleting message from local store.", me)
         }
     }
 
-    private static List<String> getUidsFromMessages(List<LocalMessage> messages) {
-        List<String> uids = new ArrayList<>(messages.size());
-        for (int i = 0; i < messages.size(); i++) {
-            uids.add(messages.get(i).getUid());
-        }
-        return uids;
-    }
-
-    void processPendingEmptySpam(AccountId accountId) throws MessagingException {
-        LegacyAccount account = accountManager.findById(accountId);
+    @Throws(MessagingException::class)
+    fun processPendingEmptySpam(accountId: AccountId) {
+        val account = accountManager.findById(accountId)
         if (account == null || !account.hasSpamFolder()) {
-            return;
+            return
         }
 
-        Long spamFolderId = account.getSpamFolderId();
+        val spamFolderId = account.spamFolderId
         if (spamFolderId == null) {
-            return;
+            return
         }
 
-        LocalStore localStore = localStoreProvider.getInstance(accountId);
-        LocalFolder folder = localStore.getFolder(spamFolderId);
-        folder.open();
-        String spamFolderServerId = folder.getServerId();
+        val localStore = localStoreProvider.getInstance(accountId)
+        val folder = localStore.getFolder(spamFolderId)
+        folder.open()
+        val spamFolderServerId = folder.getServerId()
 
-        Backend backend = getBackend(accountId);
-        backend.deleteAllMessages(spamFolderServerId);
+        val backend = getBackend(accountId)
+        backend.deleteAllMessages(spamFolderServerId)
 
         // Remove all messages marked as deleted
-        folder.destroyDeletedMessages();
+        folder.destroyDeletedMessages()
 
-        compact(accountId);
+        compact(accountId)
     }
 
-    public void emptySpam(final AccountId accountId, MessagingListener listener) {
-        putBackground("emptySpam", listener, new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    LegacyAccount account = accountManager.findById(accountId);
-                    if (account == null) {
-                        return;
+    fun emptySpam(accountId: AccountId, listener: MessagingListener?) {
+        putBackground(
+            "emptySpam", listener,
+            object : Runnable {
+                override fun run() {
+                    try {
+                        val account = accountManager.findById(accountId)
+                        if (account == null) {
+                            return
+                        }
+                        val spamFolderId = account.spamFolderId
+                        if (spamFolderId == null) {
+                            w(TAG, "No Spam folder configured. Can't empty spam.")
+                            return
+                        }
+
+                        val localStore = localStoreProvider.getInstance(accountId)
+                        val localFolder = localStore.getFolder(spamFolderId)
+                        localFolder.open()
+
+                        localFolder.destroyLocalOnlyMessages()
+                        localFolder.setFlags(mutableSetOf<Flag?>(Flag.DELETED), true)
+
+                        for (l in this.listeners) {
+                            l.folderStatusChanged(accountId, spamFolderId)
+                        }
+
+                        val command: PendingCommand = PendingEmptySpam.create()
+                        queuePendingCommand(accountId, command)
+                        processPendingCommands(accountId)
+                    } catch (e: Exception) {
+                        e(TAG, e, "emptySpam failed")
                     }
-                    Long spamFolderId = account.getSpamFolderId();
-                    if (spamFolderId == null) {
-                        Log.w(TAG, "No Spam folder configured. Can't empty spam.");
-                        return;
-                    }
-
-                    LocalStore localStore = localStoreProvider.getInstance(accountId);
-                    LocalFolder localFolder = localStore.getFolder(spamFolderId);
-                    localFolder.open();
-
-                    localFolder.destroyLocalOnlyMessages();
-                    localFolder.setFlags(Collections.singleton(Flag.DELETED), true);
-
-                    for (MessagingListener l : getListeners()) {
-                        l.folderStatusChanged(accountId, spamFolderId);
-                    }
-
-                    PendingCommand command = PendingEmptySpam.create();
-                    queuePendingCommand(accountId, command);
-                    processPendingCommands(accountId);
-                } catch (Exception e) {
-                    Log.e(TAG, e, "emptySpam failed");
                 }
             }
-        });
+        )
     }
 
-    void processPendingEmptyTrash(AccountId accountId) throws MessagingException {
-        LegacyAccount account = accountManager.findById(accountId);
+    @Throws(MessagingException::class)
+    fun processPendingEmptyTrash(accountId: AccountId) {
+        val account = accountManager.findById(accountId)
         if (account == null || !account.hasTrashFolder()) {
-            return;
+            return
         }
 
-        Long trashFolderId = account.getTrashFolderId();
+        val trashFolderId = account.trashFolderId
         if (trashFolderId == null) {
-            return;
+            return
         }
 
-        LocalStore localStore = localStoreProvider.getInstance(accountId);
-        LocalFolder folder = localStore.getFolder(trashFolderId);
-        folder.open();
-        String trashFolderServerId = folder.getServerId();
+        val localStore = localStoreProvider.getInstance(accountId)
+        val folder = localStore.getFolder(trashFolderId)
+        folder.open()
+        val trashFolderServerId = folder.getServerId()
 
-        Backend backend = getBackend(accountId);
-        backend.deleteAllMessages(trashFolderServerId);
+        val backend = getBackend(accountId)
+        backend.deleteAllMessages(trashFolderServerId)
 
         // Remove all messages marked as deleted
-        folder.destroyDeletedMessages();
+        folder.destroyDeletedMessages()
 
-        compact(accountId);
+        compact(accountId)
     }
 
-    public void emptyTrash(final AccountId accountId, MessagingListener listener) {
-        putBackground("emptyTrash", listener, new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    LegacyAccount account = accountManager.findById(accountId);
-                    if (account == null) {
-                        return;
-                    }
-                    Long trashFolderId = account.getTrashFolderId();
-                    if (trashFolderId == null) {
-                        Log.w(TAG, "No Trash folder configured. Can't empty trash.");
-                        return;
-                    }
+    fun emptyTrash(accountId: AccountId, listener: MessagingListener?) {
+        putBackground(
+            "emptyTrash", listener,
+            object : Runnable {
+                override fun run() {
+                    try {
+                        val account = accountManager.findById(accountId)
+                        if (account == null) {
+                            return
+                        }
+                        val trashFolderId = account.trashFolderId
+                        if (trashFolderId == null) {
+                            w(TAG, "No Trash folder configured. Can't empty trash.")
+                            return
+                        }
 
-                    LocalStore localStore = localStoreProvider.getInstance(accountId);
-                    LocalFolder localFolder = localStore.getFolder(trashFolderId);
-                    localFolder.open();
+                        val localStore = localStoreProvider.getInstance(accountId)
+                        val localFolder = localStore.getFolder(trashFolderId)
+                        localFolder.open()
 
-                    boolean isTrashLocalOnly = isTrashLocalOnly(accountId);
-                    if (isTrashLocalOnly) {
-                        localFolder.clearAllMessages();
-                    } else {
-                        localFolder.destroyLocalOnlyMessages();
-                        localFolder.setFlags(Collections.singleton(Flag.DELETED), true);
-                    }
+                        val isTrashLocalOnly = isTrashLocalOnly(accountId)
+                        if (isTrashLocalOnly) {
+                            localFolder.clearAllMessages()
+                        } else {
+                            localFolder.destroyLocalOnlyMessages()
+                            localFolder.setFlags(mutableSetOf<Flag?>(Flag.DELETED), true)
+                        }
 
-                    for (MessagingListener l : getListeners()) {
-                        l.folderStatusChanged(accountId, trashFolderId);
-                    }
+                        for (l in this.listeners) {
+                            l.folderStatusChanged(accountId, trashFolderId)
+                        }
 
-                    if (!isTrashLocalOnly) {
-                        PendingCommand command = PendingEmptyTrash.create();
-                        queuePendingCommand(accountId, command);
-                        processPendingCommands(accountId);
+                        if (!isTrashLocalOnly) {
+                            val command: PendingCommand = PendingEmptyTrash.create()
+                            queuePendingCommand(accountId, command)
+                            processPendingCommands(accountId)
+                        }
+                    } catch (e: Exception) {
+                        e(TAG, e, "emptyTrash failed")
                     }
-                } catch (Exception e) {
-                    Log.e(TAG, e, "emptyTrash failed");
                 }
             }
-        });
+        )
     }
 
-    public void clearFolder(AccountId accountId, long folderId) {
-        putBackground("clearFolder", null, () ->
-            clearFolderSynchronous(accountId, folderId)
-        );
+    fun clearFolder(accountId: AccountId, folderId: Long) {
+        putBackground(
+            "clearFolder", null, Runnable { clearFolderSynchronous(accountId, folderId) }
+        )
     }
 
     @VisibleForTesting
-    protected void clearFolderSynchronous(AccountId accountId, long folderId) {
+    protected fun clearFolderSynchronous(accountId: AccountId, folderId: Long) {
         try {
-            LocalFolder localFolder = localStoreProvider.getInstance(accountId).getFolder(folderId);
-            localFolder.open();
-            localFolder.clearAllMessages();
-        } catch (Exception e) {
-            Log.e(TAG, e, "clearFolder failed");
+            val localFolder = localStoreProvider.getInstance(accountId).getFolder(folderId)
+            localFolder.open()
+            localFolder.clearAllMessages()
+        } catch (e: Exception) {
+            e(TAG, e, "clearFolder failed")
         }
     }
-
 
     /**
      * Find out whether the account type only supports a local Trash folder.
-     * <p>
-     * <p>Note: Currently this is only the case for POP3 accounts.</p>
+     *
+     *
+     *
+     * Note: Currently this is only the case for POP3 accounts.
      *
      * @param accountId The AccountId to check.
-     * @return {@code true} if the account only has a local Trash folder that is not synchronized with a folder on the
-     * server. {@code false} otherwise.
+     * @return `true` if the account only has a local Trash folder that is not synchronized with a folder on the
+     * server. `false` otherwise.
      */
-    private boolean isTrashLocalOnly(AccountId accountId) {
-        Backend backend = getBackend(accountId);
-        return !backend.getSupportsTrashFolder();
+    private fun isTrashLocalOnly(accountId: AccountId): Boolean {
+        val backend = getBackend(accountId)
+        return !backend.supportsTrashFolder
     }
 
-    public boolean performPeriodicMailSync(AccountId accountId) {
-        final CountDownLatch latch = new CountDownLatch(1);
-        MutableBoolean syncError = new MutableBoolean(false);
-        checkMail(accountId, false, false, true, new SimpleMessagingListener() {
-            @Override
-            public void checkMailFinished(Context context, AccountId accountId) {
-                latch.countDown();
-            }
+    fun performPeriodicMailSync(accountId: AccountId): Boolean {
+        val latch = CountDownLatch(1)
+        val syncError = MutableBoolean(false)
+        checkMail(
+            accountId, false, false, true,
+            object : SimpleMessagingListener() {
+                override fun checkMailFinished(context: Context?, accountId: AccountId?) {
+                    latch.countDown()
+                }
 
-            @Override
-            public void synchronizeMailboxFailed(AccountId accountId, long folderId, String message) {
-                syncError.setValue(true);
+                override fun synchronizeMailboxFailed(accountId: AccountId?, folderId: Long, message: String?) {
+                    syncError.value = true
+                }
             }
-        });
+        )
 
-        Log.v(TAG, "performPeriodicMailSync(%s) about to await latch release", accountId);
+        v(TAG, "performPeriodicMailSync(%s) about to await latch release", accountId)
 
         try {
-            latch.await();
-            Log.v(TAG, "performPeriodicMailSync(%s) got latch release", accountId);
-        } catch (Exception e) {
-            Log.e(TAG, e, "Interrupted while awaiting latch release");
+            latch.await()
+            v(TAG, "performPeriodicMailSync(%s) got latch release", accountId)
+        } catch (e: Exception) {
+            e(TAG, e, "Interrupted while awaiting latch release")
         }
 
-        boolean success = !syncError.getValue();
+        val success = !syncError.value
         if (success) {
-            long now = System.currentTimeMillis();
-            LegacyAccount updatedAccount = accountManager.updateSync(
-                accountId,
-                account -> account.updateLastSyncTime(now)
-            );
+            val now = System.currentTimeMillis()
+            val updatedAccount = accountManager.updateSync(
+                accountId
+            ) { account: LegacyAccount -> account.updateLastSyncTime(now) }
             if (updatedAccount == null) {
-                Log.w(TAG, "Account not found %s", accountId);
+                w(TAG, "Account not found %s", accountId)
             } else {
-                Log.v(TAG, "Account %s successfully synced @ %tc", accountId, now);
+                v(TAG, "Account %s successfully synced @ %tc", accountId, now)
             }
         }
 
-        return success;
+        return success
     }
 
     /**
      * Checks mail for one or multiple accounts. If account is null all accounts are checked.
      */
-    public void checkMail(AccountId accountId, boolean ignoreLastCheckedTime, boolean useManualWakeLock,
-        boolean notify,
-        MessagingListener listener) {
-
-        final WakeLock wakeLock;
+    override fun checkMail(
+        accountId: AccountId?, ignoreLastCheckedTime: Boolean, useManualWakeLock: Boolean,
+        notify: Boolean,
+        listener: MessagingListener
+    ) {
+        val wakeLock: WakeLock?
         if (useManualWakeLock) {
-            PowerManager pm = DI.get(PowerManager.class);
+            val pm = get<PowerManager>(PowerManager::class.java)
 
-            wakeLock = pm.newWakeLock("K9 MessagingController.checkMail");
-            wakeLock.setReferenceCounted(false);
-            wakeLock.acquire(K9.MANUAL_WAKE_LOCK_TIMEOUT);
+            wakeLock = pm.newWakeLock("K9 MessagingController.checkMail")
+            wakeLock.setReferenceCounted(false)
+            wakeLock.acquire(K9.MANUAL_WAKE_LOCK_TIMEOUT.toLong())
         } else {
-            wakeLock = null;
+            wakeLock = null
         }
 
-        for (MessagingListener l : getListeners(listener)) {
-            l.checkMailStarted(context, accountId);
+        for (l in getListeners(listener)) {
+            l.checkMailStarted(context, accountId)
         }
-        putBackground("checkMail", listener, new Runnable() {
-            @Override
-            public void run() {
+        putBackground(
+            "checkMail", listener,
+            object : Runnable {
+                override fun run() {
+                    try {
+                        i(TAG, "Starting mail check")
 
-                try {
-                    Log.i(TAG, "Starting mail check");
-
-                    Collection<AccountId> accountIds;
-                    if (accountId != null) {
-                        accountIds = new ArrayList<>(1);
-                        accountIds.add(accountId);
-                    } else {
-                        List<LegacyAccount> accounts = accountManager.findAll();
-                        accountIds = new ArrayList<>(accounts.size());
-                        for (LegacyAccount account: accountManager.findAll()) {
-                            accountIds.add(account.getId());
+                        val accountIds: MutableCollection<AccountId>?
+                        if (accountId != null) {
+                            accountIds = ArrayList<AccountId>(1)
+                            accountIds.add(accountId)
+                        } else {
+                            val accounts: MutableList<LegacyAccount> = accountManager.findAll()
+                            accountIds = ArrayList<AccountId>(accounts.size)
+                            for (account in accountManager.findAll()) {
+                                accountIds.add(account.id)
+                            }
                         }
-                    }
 
-                    for (final AccountId synAccountId : accountIds) {
-                        checkMailForAccount(synAccountId, ignoreLastCheckedTime, notify, listener);
+                        for (synAccountId in accountIds) {
+                            checkMailForAccount(synAccountId, ignoreLastCheckedTime, notify, listener)
+                        }
+                    } catch (e: Exception) {
+                        e(TAG, e, "Unable to synchronize mail")
                     }
+                    putBackground(
+                        "finalize sync", null,
+                        object : Runnable {
+                            override fun run() {
+                                i(TAG, "Finished mail sync")
 
-                } catch (Exception e) {
-                    Log.e(TAG, e, "Unable to synchronize mail");
+                                if (wakeLock != null) {
+                                    wakeLock.release()
+                                }
+                                for (l in getListeners(listener)) {
+                                    l.checkMailFinished(context, accountId)
+                                }
+                            }
+                        }
+                    )
                 }
-                putBackground("finalize sync", null, new Runnable() {
-                        @Override
-                        public void run() {
-
-                            Log.i(TAG, "Finished mail sync");
-
-                            if (wakeLock != null) {
-                                wakeLock.release();
-                            }
-                            for (MessagingListener l : getListeners(listener)) {
-                                l.checkMailFinished(context, accountId);
-                            }
-
-                        }
-                    }
-                );
             }
-        });
+        )
     }
 
+    private fun checkMailForAccount(
+        accountId: AccountId, ignoreLastCheckedTime: Boolean, notify: Boolean,
+        listener: MessagingListener
+    ) {
+        i(TAG, "Synchronizing account %s", accountId)
 
-    private void checkMailForAccount(AccountId accountId, boolean ignoreLastCheckedTime, boolean notify,
-        MessagingListener listener) {
-        Log.i(TAG, "Synchronizing account %s", accountId);
+        val notificationState = NotificationState()
 
-        NotificationState notificationState = new NotificationState();
+        sendPendingMessages(accountId, listener)
 
-        sendPendingMessages(accountId, listener);
-
-        refreshFolderListIfStale(accountId);
+        refreshFolderListIfStale(accountId)
 
         try {
-            LocalStore localStore = localStoreProvider.getInstance(accountId);
-            for (final LocalFolder folder : localStore.getPersonalNamespaces(false)) {
-                folder.open();
+            val localStore = localStoreProvider.getInstance(accountId)
+            for (folder in localStore.getPersonalNamespaces(false)) {
+                folder.open()
 
                 if (!folder.isVisible()) {
                     // Never sync a folder that isn't displayed
-                    continue;
+                    continue
                 }
 
                 if (!folder.isSyncEnabled()) {
                     // Do not sync folders that are not enabled for sync.
-                    continue;
+                    continue
                 }
-                synchronizeFolder(accountId, folder, ignoreLastCheckedTime, notify, listener, notificationState);
+                synchronizeFolder(accountId, folder, ignoreLastCheckedTime, notify, listener, notificationState)
             }
-        } catch (MessagingException e) {
-            Log.e(TAG, e, "Unable to synchronize account %s", accountId);
+        } catch (e: MessagingException) {
+            e(TAG, e, "Unable to synchronize account %s", accountId)
         } finally {
-            putBackground("clear notification flag for " + accountId, null, new Runnable() {
-                    @Override
-                    public void run() {
-                        Log.v(TAG, "Clearing notification flag for %s", accountId);
+            putBackground(
+                "clear notification flag for " + accountId, null,
+                object : Runnable {
+                    override fun run() {
+                        v(TAG, "Clearing notification flag for %s", accountId)
 
-                        clearFetchingMailNotification(accountId);
+                        clearFetchingMailNotification(accountId)
                     }
                 }
-            );
+            )
         }
-
-
     }
 
-    private void synchronizeFolder(AccountId accountId, LocalFolder folder, boolean ignoreLastCheckedTime,
-        boolean notify, MessagingListener listener, NotificationState notificationState) {
-        putBackground("sync" + folder.getServerId(), null, () -> {
-            synchronizeFolderInBackground(accountId, folder, ignoreLastCheckedTime, notify, listener, notificationState);
-        });
+    private fun synchronizeFolder(
+        accountId: AccountId, folder: LocalFolder, ignoreLastCheckedTime: Boolean,
+        notify: Boolean, listener: MessagingListener, notificationState: NotificationState
+    ) {
+        putBackground(
+            "sync" + folder.getServerId(), null,
+            Runnable {
+                synchronizeFolderInBackground(
+                    accountId,
+                    folder,
+                    ignoreLastCheckedTime,
+                    notify,
+                    listener,
+                    notificationState
+                )
+            }
+        )
     }
 
-    private void synchronizeFolderInBackground(AccountId accountId, LocalFolder folder,
-        boolean ignoreLastCheckedTime,
-        boolean notify, MessagingListener listener, NotificationState notificationState) {
-        Log.v(TAG, "Folder %s was last synced @ %tc", folder.getServerId(), folder.getLastChecked());
+    private fun synchronizeFolderInBackground(
+        accountId: AccountId, folder: LocalFolder,
+        ignoreLastCheckedTime: Boolean,
+        notify: Boolean, listener: MessagingListener, notificationState: NotificationState
+    ) {
+        v(TAG, "Folder %s was last synced @ %tc", folder.getServerId(), folder.getLastChecked())
 
         if (!ignoreLastCheckedTime) {
-            long lastCheckedTime = folder.getLastChecked();
-            long now = System.currentTimeMillis();
+            val lastCheckedTime = folder.getLastChecked()
+            val now = System.currentTimeMillis()
 
             if (lastCheckedTime > now) {
                 // The time this folder was last checked lies in the future. We better ignore this and sync now.
             } else {
-                LegacyAccount account = accountManager.findById(accountId);
+                val account = accountManager.findById(accountId)
                 if (account == null) {
-                    return;
+                    return
                 }
-                long syncInterval = account.getAutomaticCheckIntervalMinutes() * 60L * 1000L;
-                long nextSyncTime = lastCheckedTime + syncInterval;
+                val syncInterval = account.automaticCheckIntervalMinutes * 60L * 1000L
+                val nextSyncTime = lastCheckedTime + syncInterval
                 if (nextSyncTime > now) {
-                    Log.v(TAG, "Not syncing folder %s, previously synced @ %tc which would be too recent for the " +
-                        "account sync interval", folder.getServerId(), lastCheckedTime);
-                    return;
+                    v(
+                        TAG,
+                        "Not syncing folder %s, previously synced @ %tc which would be too recent for the " +
+                            "account sync interval",
+                        folder.getServerId(), lastCheckedTime
+                    )
+                    return
                 }
             }
         }
 
         try {
-            showFetchingMailNotificationIfNecessary(accountId, folder);
+            showFetchingMailNotificationIfNecessary(accountId, folder)
             try {
-                synchronizeMailboxSynchronous(accountId, folder.getDatabaseId(), notify, listener, notificationState);
+                synchronizeMailboxSynchronous(accountId, folder.getDatabaseId(), notify, listener, notificationState)
             } finally {
-                showEmptyFetchingMailNotificationIfNecessary(accountId);
+                showEmptyFetchingMailNotificationIfNecessary(accountId)
             }
-        } catch (Exception e) {
-            Log.e(TAG, e, "Exception while processing folder %s:%s", accountId, folder.getServerId());
+        } catch (e: Exception) {
+            e(TAG, e, "Exception while processing folder %s:%s", accountId, folder.getServerId())
         }
     }
 
-    private void showFetchingMailNotificationIfNecessary(AccountId accountId, LocalFolder folder) {
-        LegacyAccount account = accountManager.findById(accountId);
+    private fun showFetchingMailNotificationIfNecessary(accountId: AccountId, folder: LocalFolder) {
+        val account = accountManager.findById(accountId)
         if (account == null) {
-            return;
+            return
         }
-        if (account.isNotifySync()) {
-            notificationController.showFetchingMailNotification(accountId, folder);
+        if (account.isNotifySync) {
+            notificationController.showFetchingMailNotification(accountId, folder)
         }
     }
 
-    private void showEmptyFetchingMailNotificationIfNecessary(AccountId accountId) {
-        LegacyAccount account = accountManager.findById(accountId);
+    private fun showEmptyFetchingMailNotificationIfNecessary(accountId: AccountId) {
+        val account = accountManager.findById(accountId)
         if (account == null) {
-            return;
+            return
         }
-        if (account.isNotifySync()) {
-            notificationController.showEmptyFetchingMailNotification(accountId);
+        if (account.isNotifySync) {
+            notificationController.showEmptyFetchingMailNotification(accountId)
         }
     }
 
-    private void clearFetchingMailNotification(AccountId accountId) {
-        notificationController.clearFetchingMailNotification(accountId);
+    private fun clearFetchingMailNotification(accountId: AccountId) {
+        notificationController.clearFetchingMailNotification(accountId)
     }
 
-    public void compact(AccountId accountId) {
-        putBackground("compact:" + accountId, null, () -> {
-            try {
-                MessageStore messageStore = messageStoreManager.getMessageStore(accountId);
-                messageStore.compact();
-            } catch (Exception e) {
-                Log.e(TAG, e, "Failed to compact account %s", accountId);
+    fun compact(accountId: AccountId) {
+        putBackground(
+            "compact:" + accountId, null,
+            Runnable {
+                try {
+                    val messageStore: MessageStore = messageStoreManager.getMessageStore(accountId)
+                    messageStore.compact()
+                } catch (e: Exception) {
+                    e(TAG, e, "Failed to compact account %s", accountId)
+                }
             }
-        });
+        )
     }
 
-    public void deleteAccount(AccountId accountId) {
-        notificationController.clearNewMailNotifications(accountId, false);
-        memorizingMessagingListener.removeAccount(accountId);
+    fun deleteAccount(accountId: AccountId) {
+        notificationController.clearNewMailNotifications(accountId, false)
+        memorizingMessagingListener.removeAccount(accountId)
     }
 
     /**
      * Save a draft message.
      */
-    public Long saveDraft(AccountId accountId, Message message, Long existingDraftId, String plaintextSubject) {
-        return draftOperations.saveDraft(accountId, message, existingDraftId, plaintextSubject);
+    fun saveDraft(accountId: AccountId, message: Message, existingDraftId: Long?, plaintextSubject: String?): Long? {
+        return draftOperations.saveDraft(accountId, message, existingDraftId, plaintextSubject)
     }
 
-    public Long getId(Message message) {
-        if (message instanceof LocalMessage) {
-            return ((LocalMessage) message).getDatabaseId();
+    fun getId(message: Message?): Long? {
+        if (message is LocalMessage) {
+            return message.getDatabaseId()
         } else {
-            Log.w(TAG, "MessagingController.getId() called without a LocalMessage");
-            return null;
+            w(TAG, "MessagingController.getId() called without a LocalMessage")
+            return null
         }
     }
 
-    private static AtomicInteger sequencing = new AtomicInteger(0);
+    init {
+        this.notificationSender = NotificationSenderCompat(notificationManager)
+        this.notificationDismisser = NotificationDismisserCompat(notificationManager)
+        this.outboxFolderManager = outboxFolderManager
+        this.accountManager = accountManager
 
-    private static class Command implements Comparable<Command> {
-        public Runnable runnable;
-        public MessagingListener listener;
-        public String description;
-        boolean isForegroundPriority;
+        controllerThread = Thread(
+            object : Runnable {
+                override fun run() {
+                    runInBackground()
+                }
+            }
+        )
+        controllerThread.setName("MessagingController")
+        controllerThread.start()
+        addListener(memorizingMessagingListener)
 
-        int sequence = sequencing.getAndIncrement();
+        initializeControllerExtensions(controllerExtensions)
 
-        @Override
-        public int compareTo(@NonNull Command other) {
+        draftOperations = DraftOperations(
+            this, messageStoreManager, saveMessageDataCreator, localMessageUidPrefixProvider,
+            accountManager
+        )
+        notificationOperations =
+            NotificationOperations(notificationController, accountManager, outboxFolderManager)
+        archiveOperations = ArchiveOperations(this, accountManager, featureFlagProvider)
+    }
+
+    private class Command : Comparable<Command?> {
+        var runnable: Runnable? = null
+        var listener: MessagingListener? = null
+        var description: String? = null
+        var isForegroundPriority: Boolean = false
+
+        var sequence: Int = sequencing.getAndIncrement()
+
+        override fun compareTo(other: Command): Int {
             if (other.isForegroundPriority && !isForegroundPriority) {
-                return 1;
+                return 1
             } else if (!other.isForegroundPriority && isForegroundPriority) {
-                return -1;
+                return -1
             } else {
-                return (sequence - other.sequence);
+                return (sequence - other.sequence)
             }
         }
     }
 
-    public void clearNotifications(LocalMessageSearch search) {
-        put("clearNotifications", null, () -> {
-            notificationOperations.clearNotifications(search);
-        });
+    fun clearNotifications(search: LocalMessageSearch) {
+        put(
+            "clearNotifications", null,
+            Runnable {
+                notificationOperations.clearNotifications(search)
+            }
+        )
     }
 
-    public void cancelNotificationsForAccount(AccountId accountId) {
-        notificationController.clearNewMailNotifications(accountId, true);
+    fun cancelNotificationsForAccount(accountId: AccountId) {
+        notificationController.clearNewMailNotifications(accountId, true)
     }
 
-    public void cancelNotificationForMessage(AccountId accountId, MessageReference messageReference) {
-        notificationController.removeNewMailNotification(accountId, messageReference);
+    fun cancelNotificationForMessage(accountId: AccountId, messageReference: MessageReference) {
+        notificationController.removeNewMailNotification(accountId, messageReference)
     }
 
-    @Deprecated
-    public void clearCertificateErrorNotifications(AccountId accountId, boolean incoming) {
-        notificationController.clearCertificateErrorNotifications(accountId, incoming);
+    @Deprecated("")
+    fun clearCertificateErrorNotifications(accountId: AccountId, incoming: Boolean) {
+        notificationController.clearCertificateErrorNotifications(accountId, incoming)
     }
 
-    public void notifyUserIfCertificateProblem(AccountId accountId, Exception exception, boolean incoming) {
-        if (exception instanceof CertificateValidationException) {
-            notificationController.showCertificateErrorNotification(accountId, incoming);
+    fun notifyUserIfCertificateProblem(accountId: AccountId, exception: Exception?, incoming: Boolean) {
+        if (exception is CertificateValidationException) {
+            notificationController.showCertificateErrorNotification(accountId, incoming)
         }
     }
 
-    public void checkAuthenticationProblem(AccountId accountId) {
+    fun checkAuthenticationProblem(accountId: AccountId) {
         // checking incoming server configuration
         if (isAuthenticationProblem(accountId, true)) {
-            handleAuthenticationFailure(accountId, true);
-            return;
+            handleAuthenticationFailure(accountId, true)
+            return
         } else {
-            clearAuthenticationErrorNotification(accountId, true, true);
+            clearAuthenticationErrorNotification(accountId, true, true)
         }
 
         // checking outgoing server configuration
         if (isAuthenticationProblem(accountId, false)) {
-            handleAuthenticationFailure(accountId, false);
+            handleAuthenticationFailure(accountId, false)
         } else {
-            clearAuthenticationErrorNotification(accountId, false, true);
+            clearAuthenticationErrorNotification(accountId, false, true)
         }
     }
 
-    private boolean isAuthenticationProblem(AccountId accountId, boolean incoming) {
-        LegacyAccount account = accountManager.findById(accountId);
+    private fun isAuthenticationProblem(accountId: AccountId, incoming: Boolean): Boolean {
+        val account = accountManager.findById(accountId)
         if (account == null) {
-            return false;
+            return false
         }
 
-        final ServerSettings serverSettings = getServerSettings(account, incoming);
+        val serverSettings = getServerSettings(account, incoming)
 
-        return serverSettings.isMissingCredentials() ||
-            serverSettings.authenticationType == AuthType.XOAUTH2 && account.getOAuthState() == null;
+        return serverSettings.isMissingCredentials ||
+            serverSettings.authenticationType == AuthType.XOAUTH2 && account.oAuthState == null
     }
 
-    private ServerSettings getServerSettings(AccountId accountId, boolean incoming) {
-        LegacyAccount account = accountManager.findById(accountId);
+    private fun getServerSettings(accountId: AccountId, incoming: Boolean): ServerSettings? {
+        val account = accountManager.findById(accountId)
         if (account == null) {
-            return null;
+            return null
         } else {
-            return getServerSettings(account, incoming);
+            return getServerSettings(account, incoming)
         }
     }
 
-    private ServerSettings getServerSettings(LegacyAccount account, boolean incoming) {
-        return incoming ? account.getIncomingServerSettings() : account.getOutgoingServerSettings();
+    private fun getServerSettings(account: LegacyAccount, incoming: Boolean): ServerSettings {
+        return if (incoming) account.incomingServerSettings else account.outgoingServerSettings
     }
 
-    private void clearAuthenticationErrorNotification(
-        AccountId accountId, boolean incoming, boolean clearOnlyForOAuthAccounts
+    private fun clearAuthenticationErrorNotification(
+        accountId: AccountId, incoming: Boolean, clearOnlyForOAuthAccounts: Boolean
     ) {
         if (featureFlagProvider.provide(GeneratedFeatureFlagKey.DISPLAY_IN_APP_NOTIFICATIONS).isEnabled()) {
-            boolean shouldClear = true;
-            final ServerSettings serverSettings = getServerSettings(accountId, incoming);
-            if (clearOnlyForOAuthAccounts && serverSettings.authenticationType != AuthType.XOAUTH2) {
-                shouldClear = false;
+            var shouldClear = true
+            val serverSettings = getServerSettings(accountId, incoming)
+            if (clearOnlyForOAuthAccounts && serverSettings!!.authenticationType != AuthType.XOAUTH2) {
+                shouldClear = false
             }
 
             if (shouldClear) {
-                final AuthenticationErrorNotification notification = createAuthenticationErrorNotification(
-                    accountId, incoming);
-                notificationDismisser.dismiss(notification, outcome -> {
-                    Log.v(TAG, "notificationDismisser outcome = " + outcome);
-                });
+                val notification = createAuthenticationErrorNotification(
+                    accountId, incoming
+                )
+                notificationDismisser.dismiss(
+                    notification!!,
+                    NotificationDismisserCompat.OnResultListener { outcome: Outcome<out Success<out Notification?>?, out Failure<out Notification?>?>? ->
+                        v(
+                            TAG, "notificationDismisser outcome = " + outcome
+                        )
+                    }
+                )
             }
         }
     }
 
-    void actOnMessagesGroupedByAccountAndFolder(List<MessageReference> messages, MessageActor actor) {
-        Map<AccountId, Map<Long, List<MessageReference>>> accountMap = groupMessagesByAccountAndFolder(messages);
+    fun actOnMessagesGroupedByAccountAndFolder(messages: MutableList<MessageReference?>, actor: MessageActor) {
+        val accountMap = groupMessagesByAccountAndFolder(messages)
 
-        for (Entry<AccountId, Map<Long, List<MessageReference>>> entry : accountMap.entrySet()) {
-            AccountId accountId = entry.getKey();
+        for (entry in accountMap.entries) {
+            val accountId: AccountId = entry.key!!
 
-            Map<Long, List<MessageReference>> folderMap = entry.getValue();
-            for (Entry<Long, List<MessageReference>> folderEntry : folderMap.entrySet()) {
-                long folderId = folderEntry.getKey();
-                List<MessageReference> messageList = folderEntry.getValue();
-                actOnMessageGroup(accountId, folderId, messageList, actor);
+            val folderMap: MutableMap<Long?, MutableList<MessageReference?>?> = entry.value!!
+            for (folderEntry in folderMap.entries) {
+                val folderId: Long = folderEntry.key!!
+                val messageList: MutableList<MessageReference?> = folderEntry.value!!
+                actOnMessageGroup(accountId, folderId, messageList, actor)
             }
         }
     }
 
-    @NonNull
-    private Map<AccountId, Map<Long, List<MessageReference>>> groupMessagesByAccountAndFolder(
-        List<MessageReference> messages) {
-        Map<AccountId, Map<Long, List<MessageReference>>> accountMap = new HashMap<>();
+    private fun groupMessagesByAccountAndFolder(
+        messages: MutableList<MessageReference?>
+    ): MutableMap<AccountId?, MutableMap<Long?, MutableList<MessageReference?>?>?> {
+        val accountMap: MutableMap<AccountId?, MutableMap<Long?, MutableList<MessageReference?>?>?> =
+            HashMap<AccountId?, MutableMap<Long?, MutableList<MessageReference?>?>?>()
 
-        for (MessageReference message : messages) {
+        for (message in messages) {
             if (message == null) {
-                continue;
+                continue
             }
-            AccountId accountId = message.getAccountId();
-            long folderId = message.getFolderId();
+            val accountId = message.accountId
+            val folderId = message.folderId
 
-            Map<Long, List<MessageReference>> folderMap = accountMap.get(accountId);
+            var folderMap = accountMap.get(accountId)
             if (folderMap == null) {
-                folderMap = new HashMap<>();
-                accountMap.put(accountId, folderMap);
+                folderMap = HashMap<Long?, MutableList<MessageReference?>?>()
+                accountMap.put(accountId, folderMap)
             }
-            List<MessageReference> messageList = folderMap.get(folderId);
+            var messageList = folderMap.get(folderId)
             if (messageList == null) {
-                messageList = new LinkedList<>();
-                folderMap.put(folderId, messageList);
+                messageList = LinkedList<MessageReference?>()
+                folderMap.put(folderId, messageList)
             }
 
-            messageList.add(message);
+            messageList.add(message)
         }
-        return accountMap;
+        return accountMap
     }
 
-    private void actOnMessageGroup(
-        AccountId accountId, long folderId, List<MessageReference> messageReferences, MessageActor actor) {
+    private fun actOnMessageGroup(
+        accountId: AccountId, folderId: Long, messageReferences: MutableList<MessageReference?>, actor: MessageActor
+    ) {
         try {
-            LocalFolder messageFolder = localStoreProvider.getInstance(accountId).getFolder(folderId);
-            List<LocalMessage> localMessages = messageFolder.getMessagesByReference(messageReferences);
-            actor.act(accountId, messageFolder, localMessages);
-        } catch (MessagingException e) {
-            Log.e(TAG, e, "Error loading account?!");
+            val messageFolder = localStoreProvider.getInstance(accountId).getFolder(folderId)
+            val localMessages = messageFolder.getMessagesByReference(messageReferences)
+            actor.act(accountId, messageFolder, localMessages)
+        } catch (e: MessagingException) {
+            e(TAG, e, "Error loading account?!")
         }
-
     }
 
-    interface MessageActor {
-        void act(AccountId accountId, LocalFolder messageFolder, List<LocalMessage> messages);
+    internal interface MessageActor {
+        fun act(accountId: AccountId?, messageFolder: LocalFolder?, messages: MutableList<LocalMessage>?)
     }
 
-    class ControllerSyncListener implements SyncListener {
-        private final AccountId accountId;
-        private final MessagingListener listener;
-        private final LocalStore localStore;
-        private final boolean suppressNotifications;
-        private final NotificationState notificationState;
-        boolean syncFailed = false;
+    internal inner class ControllerSyncListener(
+        private val accountId: AccountId,
+        private val listener: MessagingListener?,
+        private val suppressNotifications: Boolean,
+        private val notificationState: NotificationState
+    ) : SyncListener {
+        private val localStore: LocalStore
+        var syncFailed: Boolean = false
 
-
-        ControllerSyncListener(AccountId accountId, MessagingListener listener, boolean suppressNotifications,
-            NotificationState notificationState) {
-            this.accountId = accountId;
-            this.listener = listener;
-            this.suppressNotifications = suppressNotifications;
-            this.notificationState = notificationState;
-            this.localStore = getLocalStoreOrThrow(accountId);
+        init {
+            this.localStore = getLocalStoreOrThrow(accountId)
         }
 
-        @Override
-        public void syncStarted(@NotNull String folderServerId) {
-            long folderId = getFolderId(accountId, folderServerId);
-            for (MessagingListener messagingListener : getListeners(listener)) {
-                messagingListener.synchronizeMailboxStarted(accountId, folderId);
+        override fun syncStarted(folderServerId: String) {
+            val folderId = getFolderId(accountId, folderServerId)
+            for (messagingListener in getListeners(listener)) {
+                messagingListener.synchronizeMailboxStarted(accountId, folderId)
             }
         }
 
-        @Override
-        public void syncAuthenticationSuccess() {
-            clearAuthenticationErrorNotification(accountId, true, false);
-            notificationController.clearAuthenticationErrorNotification(accountId, true);
+        override fun syncAuthenticationSuccess() {
+            clearAuthenticationErrorNotification(accountId, true, false)
+            notificationController.clearAuthenticationErrorNotification(accountId, true)
         }
 
-        @Override
-        public void syncHeadersStarted(@NotNull String folderServerId) {
-            for (MessagingListener messagingListener : getListeners(listener)) {
-                messagingListener.synchronizeMailboxHeadersStarted(accountId, folderServerId);
+        override fun syncHeadersStarted(folderServerId: String) {
+            for (messagingListener in getListeners(listener)) {
+                messagingListener.synchronizeMailboxHeadersStarted(accountId, folderServerId)
             }
         }
 
-        @Override
-        public void syncHeadersProgress(@NotNull String folderServerId, int completed, int total) {
-            for (MessagingListener messagingListener : getListeners(listener)) {
-                messagingListener.synchronizeMailboxHeadersProgress(accountId, folderServerId, completed, total);
+        override fun syncHeadersProgress(folderServerId: String, completed: Int, total: Int) {
+            for (messagingListener in getListeners(listener)) {
+                messagingListener.synchronizeMailboxHeadersProgress(accountId, folderServerId, completed, total)
             }
         }
 
-        @Override
-        public void syncHeadersFinished(@NotNull String folderServerId, int totalMessagesInMailbox,
-            int numNewMessages) {
-            for (MessagingListener messagingListener : getListeners(listener)) {
-                messagingListener.synchronizeMailboxHeadersFinished(accountId, folderServerId, totalMessagesInMailbox,
-                    numNewMessages);
+        override fun syncHeadersFinished(
+            folderServerId: String, totalMessagesInMailbox: Int,
+            numNewMessages: Int
+        ) {
+            for (messagingListener in getListeners(listener)) {
+                messagingListener.synchronizeMailboxHeadersFinished(
+                    accountId, folderServerId, totalMessagesInMailbox,
+                    numNewMessages
+                )
             }
         }
 
-        @Override
-        public void syncProgress(@NotNull String folderServerId, int completed, int total) {
-            long folderId = getFolderId(accountId, folderServerId);
-            for (MessagingListener messagingListener : getListeners(listener)) {
-                messagingListener.synchronizeMailboxProgress(accountId, folderId, completed, total);
+        override fun syncProgress(folderServerId: String, completed: Int, total: Int) {
+            val folderId = getFolderId(accountId, folderServerId)
+            for (messagingListener in getListeners(listener)) {
+                messagingListener.synchronizeMailboxProgress(accountId, folderId, completed, total)
             }
         }
 
-        @Override
-        public void syncNewMessage(@NotNull String folderServerId, @NotNull String messageServerId,
-            boolean isOldMessage) {
-
+        override fun syncNewMessage(
+            folderServerId: String, messageServerId: String,
+            isOldMessage: Boolean
+        ) {
             // Send a notification of this message
-            LocalMessage message = loadMessage(folderServerId, messageServerId);
-            LocalFolder localFolder = message.getFolder();
+
+            val message = loadMessage(folderServerId, messageServerId)
+            val localFolder = message.getFolder()
             if (!suppressNotifications &&
-                notificationStrategy.shouldNotifyForMessage(accountId, localFolder, message, isOldMessage)) {
+                notificationStrategy.shouldNotifyForMessage(accountId, localFolder, message, isOldMessage)
+            ) {
                 // Notify with the localMessage so that we don't have to recalculate the content preview.
-                boolean silent = notificationState.wasNotified();
-                notificationController.addNewMailNotification(accountId, message, silent);
-                notificationState.setWasNotified(true);
+                val silent = notificationState.wasNotified
+                notificationController.addNewMailNotification(accountId, message, silent)
+                notificationState.wasNotified = true
             }
 
             if (!message.isSet(Flag.SEEN)) {
-                for (MessagingListener messagingListener : getListeners(listener)) {
-                    messagingListener.synchronizeMailboxNewMessage(accountId, folderServerId, message);
+                for (messagingListener in getListeners(listener)) {
+                    messagingListener.synchronizeMailboxNewMessage(accountId, folderServerId, message)
                 }
             }
         }
 
-        @Override
-        public void syncRemovedMessage(@NotNull String folderServerId, @NotNull String messageServerId) {
-            for (MessagingListener messagingListener : getListeners(listener)) {
-                messagingListener.synchronizeMailboxRemovedMessage(accountId, folderServerId, messageServerId);
+        override fun syncRemovedMessage(folderServerId: String, messageServerId: String) {
+            for (messagingListener in getListeners(listener)) {
+                messagingListener.synchronizeMailboxRemovedMessage(accountId, folderServerId, messageServerId)
             }
 
-            long folderId = getFolderId(accountId, folderServerId);
-            MessageReference messageReference = new MessageReference(accountId, folderId, messageServerId);
-            notificationController.removeNewMailNotification(accountId, messageReference);
+            val folderId = getFolderId(accountId, folderServerId)
+            val messageReference = MessageReference(accountId, folderId, messageServerId)
+            notificationController.removeNewMailNotification(accountId, messageReference)
         }
 
-        @Override
-        public void syncFlagChanged(@NotNull String folderServerId, @NotNull String messageServerId) {
-            boolean shouldBeNotifiedOf = false;
-            LocalMessage message = loadMessage(folderServerId, messageServerId);
+        override fun syncFlagChanged(folderServerId: String, messageServerId: String) {
+            var shouldBeNotifiedOf = false
+            val message = loadMessage(folderServerId, messageServerId)
             if (message.isSet(Flag.DELETED) || isMessageSuppressed(message)) {
-                syncRemovedMessage(folderServerId, message.getUid());
+                syncRemovedMessage(folderServerId, message.getUid())
             } else {
-                LocalFolder localFolder = message.getFolder();
+                val localFolder = message.getFolder()
                 if (notificationStrategy.shouldNotifyForMessage(accountId, localFolder, message, false)) {
-                    shouldBeNotifiedOf = true;
+                    shouldBeNotifiedOf = true
                 }
             }
 
             // we're only interested in messages that need removing
             if (!shouldBeNotifiedOf) {
-                MessageReference messageReference = message.makeMessageReference();
-                notificationController.removeNewMailNotification(accountId, messageReference);
+                val messageReference = message.makeMessageReference()
+                notificationController.removeNewMailNotification(accountId, messageReference)
             }
         }
 
-        @Override
-        public void syncFinished(@NotNull String folderServerId) {
-            long folderId = getFolderId(accountId, folderServerId);
-            for (MessagingListener messagingListener : getListeners(listener)) {
-                messagingListener.synchronizeMailboxFinished(accountId, folderId);
+        override fun syncFinished(folderServerId: String) {
+            val folderId = getFolderId(accountId, folderServerId)
+            for (messagingListener in getListeners(listener)) {
+                messagingListener.synchronizeMailboxFinished(accountId, folderId)
             }
         }
 
-        @Override
-        public void syncFailed(@NotNull String folderServerId, @NotNull String message, Exception exception) {
-            syncFailed = true;
+        override fun syncFailed(folderServerId: String, message: String, exception: Exception?) {
+            syncFailed = true
 
-            if (exception instanceof AuthenticationFailedException) {
-                handleAuthenticationFailure(accountId, true);
+            if (exception is AuthenticationFailedException) {
+                handleAuthenticationFailure(accountId, true)
             } else {
-                notifyUserIfCertificateProblem(accountId, exception, true);
+                notifyUserIfCertificateProblem(accountId, exception, true)
             }
 
-            long folderId = getFolderId(accountId, folderServerId);
-            for (MessagingListener messagingListener : getListeners(listener)) {
-                messagingListener.synchronizeMailboxFailed(accountId, folderId, message);
-            }
-        }
-
-        @Override
-        public void folderStatusChanged(@NotNull String folderServerId) {
-            long folderId = getFolderId(accountId, folderServerId);
-            for (MessagingListener messagingListener : getListeners(listener)) {
-                messagingListener.folderStatusChanged(accountId, folderId);
+            val folderId = getFolderId(accountId, folderServerId)
+            for (messagingListener in getListeners(listener)) {
+                messagingListener.synchronizeMailboxFailed(accountId, folderId, message)
             }
         }
 
-        private LocalMessage loadMessage(String folderServerId, String messageServerId) {
+        override fun folderStatusChanged(folderServerId: String) {
+            val folderId = getFolderId(accountId, folderServerId)
+            for (messagingListener in getListeners(listener)) {
+                messagingListener.folderStatusChanged(accountId, folderId)
+            }
+        }
+
+        private fun loadMessage(folderServerId: String?, messageServerId: String?): LocalMessage {
             try {
-                LocalFolder localFolder = localStore.getFolder(folderServerId);
-                localFolder.open();
-                return localFolder.getMessage(messageServerId);
-            } catch (MessagingException e) {
-                throw new RuntimeException("Couldn't load message (" + folderServerId + ":" + messageServerId + ")", e);
+                val localFolder = localStore.getFolder(folderServerId)
+                localFolder.open()
+                return localFolder.getMessage(messageServerId)
+            } catch (e: MessagingException) {
+                throw RuntimeException("Couldn't load message (" + folderServerId + ":" + messageServerId + ")", e)
             }
         }
     }
 
-    enum MoveOrCopyFlavor {
+    internal enum class MoveOrCopyFlavor {
         MOVE, COPY, MOVE_AND_MARK_AS_READ
+    }
+
+    companion object {
+        val SYNC_FLAGS: MutableSet<Flag?> = EnumSet.of<Flag?>(Flag.SEEN, Flag.FLAGGED, Flag.ANSWERED, Flag.FORWARDED)
+
+        private val FOLDER_LIST_STALENESS_THRESHOLD = 30 * 60 * 1000L
+
+        private const val TAG = "MessagingController"
+
+        @JvmStatic
+        fun getInstance(context: Context?): MessagingController {
+            return get<MessagingController>(MessagingController::class.java)
+        }
+
+        private fun getUidsFromMessages(messages: MutableList<LocalMessage?>): MutableList<String> {
+            val uids: MutableList<String> = ArrayList<String>(messages.size)
+            for (i in messages.indices) {
+                uids.add(messages.get(i)!!.getUid())
+            }
+            return uids
+        }
+
+        private val sequencing = AtomicInteger(0)
     }
 }
