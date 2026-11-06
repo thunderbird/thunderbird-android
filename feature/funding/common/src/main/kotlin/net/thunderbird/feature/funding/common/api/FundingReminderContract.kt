@@ -1,7 +1,6 @@
 package net.thunderbird.feature.funding.common.api
 
 import androidx.fragment.app.FragmentManager
-import androidx.lifecycle.Lifecycle
 
 // 3 days in milliseconds
 const val FUNDING_REMINDER_DELAY_MILLIS = 3 * 24 * 60 * 60 * 1000L
@@ -24,10 +23,5 @@ interface FundingReminderContract {
     interface FragmentLifecycleObserver {
         fun register(fragmentManager: FragmentManager, onShow: () -> Unit)
         fun unregister(fragmentManager: FragmentManager)
-    }
-
-    interface ActivityLifecycleObserver {
-        fun register(lifecycle: Lifecycle, onDestroy: () -> Unit)
-        fun unregister(lifecycle: Lifecycle)
     }
 }
