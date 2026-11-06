@@ -1,0 +1,4 @@
+Thunderbird version 26.0b2
+
+Fixed:
+- Thunderbird for Android could crash when opening the message view

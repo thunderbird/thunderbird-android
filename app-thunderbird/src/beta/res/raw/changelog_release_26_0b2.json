@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "version": "26.0b2",
+  "versioncode": 64,
+  "date": "2026-11-05",
+  "notes": [
+    {
+      "type": "fixed",
+      "text": "Thunderbird for Android could crash when opening the message view",
+      "source": "thunderbird-notes",
+      "issues": [
+        11869
+      ]
+    }
+  ]
+}
