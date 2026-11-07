@@ -10,6 +10,7 @@ import com.fsck.k9.K9.setDatabasesUpToDate
 import com.fsck.k9.mail.K9MailLib
 import com.fsck.k9.mailstore.LocalStore
 import com.fsck.k9.preferences.DefaultGeneralSettingsManager
+import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.core.android.account.AccountDefaultsProvider
 import net.thunderbird.core.android.account.SortType
 import net.thunderbird.core.preference.storage.Storage
@@ -17,11 +18,13 @@ import net.thunderbird.core.preference.storage.StorageEditor
 import net.thunderbird.core.preference.storage.getEnumOrDefault
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import timber.log.Timber
+
+private const val TAG = "K9"
 
 // TODO "Use GeneralSettingsManager and GeneralSettings instead"
 object K9 : KoinComponent {
     private val generalSettingsManager: DefaultGeneralSettingsManager by inject()
+    private val logger: Logger by inject()
     private val telemetryManager: TelemetryManager by inject()
 
     /**
@@ -211,7 +214,7 @@ object K9 : KoinComponent {
         return try {
             getEnumOrDefault(key, defaultValue)
         } catch (e: Exception) {
-            Timber.e(e, "Couldn't read setting '%s'. Using default value instead.", key)
+            logger.error(tag = TAG, throwable = e) { "Couldn't read setting '$key'. Using default value instead." }
             defaultValue
         }
     }

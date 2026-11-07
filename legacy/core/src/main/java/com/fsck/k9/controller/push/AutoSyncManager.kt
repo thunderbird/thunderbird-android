@@ -10,6 +10,8 @@ import net.thunderbird.legacy.logging.Log
 import net.thunderbird.core.preference.BackgroundOps
 import net.thunderbird.core.preference.GeneralSettingsManager
 
+private const val TAG = "AutoSyncManager"
+
 /**
  * Listen for changes to the system's auto sync setting.
  */
@@ -40,7 +42,7 @@ internal class AutoSyncManager(
     @Synchronized
     fun registerListener(listener: AutoSyncListener) {
         if (!isRegistered) {
-            Log.v("Registering auto sync listener")
+            Log.v(TAG, "Registering auto sync listener")
             isRegistered = true
             this.listener = listener
             ContextCompat.registerReceiver(context, receiver, intentFilter, ContextCompat.RECEIVER_NOT_EXPORTED)
@@ -50,7 +52,7 @@ internal class AutoSyncManager(
     @Synchronized
     fun unregisterListener() {
         if (isRegistered) {
-            Log.v("Unregistering auto sync listener")
+            Log.v(TAG, "Unregistering auto sync listener")
             isRegistered = false
             context.unregisterReceiver(receiver)
         }

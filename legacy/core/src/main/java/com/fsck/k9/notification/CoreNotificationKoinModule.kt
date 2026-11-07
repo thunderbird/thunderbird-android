@@ -6,6 +6,7 @@ import androidx.core.app.NotificationManagerCompat
 import java.util.concurrent.Executors
 import kotlin.time.ExperimentalTime
 import org.koin.android.ext.koin.androidApplication
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 val coreNotificationModule = module {
@@ -16,6 +17,7 @@ val coreNotificationModule = module {
             syncNotificationController = get(),
             sendFailedNotificationController = get(),
             newMailNotificationController = get(),
+            logger = get(),
         )
     }
     single { NotificationManagerCompat.from(get()) }
@@ -26,6 +28,8 @@ val coreNotificationModule = module {
             notificationChannelManager = get(),
             resourceProvider = get(),
             generalSettingsManager = get(),
+            notificationIdRegistry = get(),
+            accountManager = get(),
             logger = get(),
         )
     }
@@ -36,6 +40,7 @@ val coreNotificationModule = module {
             notificationManager = get<Context>().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager,
             resourceProvider = get(),
             notificationLightDecoder = get(),
+            coroutineScope = get(named("AppCoroutineScope")),
         )
     }
     single {
@@ -44,6 +49,8 @@ val coreNotificationModule = module {
             actionCreator = get(),
             resourceProvider = get(),
             generalSettingsManager = get(),
+            accountManager = get(),
+            notificationIdRegistry = get(),
         )
     }
     single {
@@ -52,6 +59,8 @@ val coreNotificationModule = module {
             actionCreator = get(),
             resourceProvider = get(),
             generalSettingsManager = get(),
+            accountManager = get(),
+            notificationIdRegistry = get(),
         )
     }
     single {
@@ -61,6 +70,8 @@ val coreNotificationModule = module {
             resourceProvider = get(),
             outboxFolderManager = get(),
             iconResourceProvider = get(),
+            accountManager = get(),
+            notificationIdRegistry = get(),
         )
     }
     single {
@@ -70,6 +81,8 @@ val coreNotificationModule = module {
             resourceProvider = get(),
             generalSettingsManager = get(),
             outboxFolderManager = get(),
+            accountManager = get(),
+            notificationIdRegistry = get(),
         )
     }
     single {
@@ -88,6 +101,8 @@ val coreNotificationModule = module {
             baseNotificationDataCreator = get(),
             singleMessageNotificationDataCreator = get(),
             summaryNotificationDataCreator = get(),
+            accountManager = get(),
+            notificationIdRegistry = get(),
             clock = get(),
         )
     }
@@ -99,7 +114,14 @@ val coreNotificationModule = module {
         )
     }
     factory { BaseNotificationDataCreator() }
-    factory { SingleMessageNotificationDataCreator(interactionPreferences = get(), notificationPreference = get()) }
+    factory {
+        SingleMessageNotificationDataCreator(
+            interactionPreferences = get(),
+            notificationPreference = get(),
+            accountManager = get(),
+            notificationIdRegistry = get(),
+        )
+    }
     factory {
         SummaryNotificationDataCreator(
             singleMessageNotificationDataCreator = get(),
@@ -137,12 +159,30 @@ val coreNotificationModule = module {
         )
     }
     single {
+        NotificationDataStore(
+            accountManager = get(),
+            notificationIdRegistry = get(),
+        )
+    }
+    factory<NotificationMessageProvider> {
+        LocalStoreNotificationMessageProvider(
+            localStoreProvider = get(),
+        )
+    }
+    factory<NewMessageStateStore> {
+        MessageStoreNewMessageStateStore(
+            messageStoreManager = get(),
+        )
+    }
+    single {
         NotificationRepository(
             notificationStoreProvider = get(),
-            localStoreProvider = get(),
-            messageStoreManager = get(),
+            notificationMessageProvider = get(),
+            newMessageStateStore = get(),
             notificationContentCreator = get(),
             generalSettingsManager = get(),
+            notificationDataStore = get(),
+            accountManager = get(),
         )
     }
     factory { NotificationLightDecoder() }
@@ -152,9 +192,9 @@ val coreNotificationModule = module {
     }
     factory {
         NotificationSettingsUpdater(
-            preferences = get(),
             notificationChannelManager = get(),
             notificationConfigurationConverter = get(),
+            accountManager = get(),
         )
     }
     factory<BackgroundWorkNotificationController> {
@@ -162,6 +202,12 @@ val coreNotificationModule = module {
             context = get(),
             resourceProvider = get(),
             notificationChannelManager = get(),
+        )
+    }
+
+    single<AccountNotificationIdRegistry> {
+        DefaultAccountNotificationIdRegistry(
+            accountManager = get(),
         )
     }
 }

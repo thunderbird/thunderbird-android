@@ -67,9 +67,9 @@ class MessageHeadersFragment : Fragment() {
         private const val ARG_REFERENCE = "reference"
 
         fun newInstance(reference: MessageReference): MessageHeadersFragment {
-            return MessageHeadersFragment().withArguments(
-                ARG_REFERENCE to reference.toIdentityString(),
-            )
+            return MessageHeadersFragment().withArguments {
+                putString(ARG_REFERENCE, reference.toIdentityString())
+            }
         }
     }
 }

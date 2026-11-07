@@ -39,6 +39,8 @@ import static com.fsck.k9.mail.internet.Viewable.Text;
 import static com.fsck.k9.mail.internet.Viewable.Textual;
 
 public class MessageViewInfoExtractor {
+    private static final String TAG = "MessageViewInfoExtractor";
+
     private static final String TEXT_DIVIDER =
             "------------------------------------------------------------------------";
     private static final int TEXT_DIVIDER_LENGTH = TEXT_DIVIDER.length();
@@ -68,7 +70,7 @@ public class MessageViewInfoExtractor {
 
         if (cryptoContentPart == null) {
             if (cryptoAnnotations != null && !cryptoAnnotations.isEmpty()) {
-                Log.e("Got crypto message cryptoContentAnnotations but no crypto root part!");
+                Log.e(TAG, "Got crypto message cryptoContentAnnotations but no crypto root part!");
             }
             MessageViewInfo messageViewInfo = extractSimpleMessageForView(message, message);
             return messageViewInfo.withSubject(message.getSubject(), false);

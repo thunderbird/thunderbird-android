@@ -11,6 +11,8 @@ import net.thunderbird.legacy.logging.Log;
 
 
 public class MessagePreviewCreator {
+    private static final String TAG = "MessagePreviewCreator";
+
     private final TextPartFinder textPartFinder;
     private final PreviewTextExtractor previewTextExtractor;
 
@@ -36,10 +38,10 @@ public class MessagePreviewCreator {
             String previewText = previewTextExtractor.extractPreview(textPart);
             return PreviewResult.text(previewText);
         } catch (PreviewExtractionException e) {
-            Log.w(e, "Failed to extract preview text");
+            Log.w(TAG, e, "Failed to extract preview text");
             return PreviewResult.error();
         } catch (Exception e) {
-            Log.e(e, "Unexpected error while trying to extract preview text");
+            Log.e(TAG, e, "Unexpected error while trying to extract preview text");
             return PreviewResult.error();
         }
     }

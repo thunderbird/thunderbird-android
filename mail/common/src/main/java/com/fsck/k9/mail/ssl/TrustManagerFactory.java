@@ -11,19 +11,23 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.fsck.k9.mail.CertificateChainException;
+import net.thunderbird.core.common.net.tls.CertificateBlocklist;
 import javax.net.ssl.SSLException;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
+import net.thunderbird.core.common.net.tls.CompromisedCertificateException;
 import net.thunderbird.legacy.logging.Log;
 import org.apache.hc.client5.http.ssl.DefaultHostnameVerifier;
 
 public class TrustManagerFactory {
+    private static final String TAG = "TrustManagerFactory";
+
     public static TrustManagerFactory createInstance(LocalKeyStore localKeyStore) {
         TrustManagerFactory trustManagerFactory = new TrustManagerFactory(localKeyStore);
         try {
             trustManagerFactory.initialize();
         } catch (NoSuchAlgorithmException | KeyStoreException e) {
-            Log.e(e, "Failed to initialize X509 Trust Manager!");
+            Log.e(TAG, e, "Failed to initialize X509 Trust Manager!");
             throw new IllegalStateException(e);
         }
         return trustManagerFactory;
@@ -83,17 +87,20 @@ public class TrustManagerFactory {
             defaultTrustManager.checkClientTrusted(chain, authType);
         }
 
-        public void checkServerTrusted(X509Certificate[] chain, String authType)
-                throws CertificateException {
+        public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
             String message;
-            X509Certificate certificate = chain[0];
-
             Throwable cause;
-
+            X509Certificate certificate = chain[0];
+            CertificateBlocklist certificateBlocklist = CertificateBlocklist.INSTANCE;
             try {
+                certificateBlocklist.checkCertificateBlockList(chain);
                 defaultTrustManager.checkServerTrusted(chain, authType);
                 hostnameVerifier.verify(mHost, certificate);
                 return;
+            } catch (CompromisedCertificateException e) {
+                // part of cert. chain is on blocked list
+                message = e.getMessage();
+                cause = e;
             } catch (CertificateException e) {
                 // cert. chain can't be validated
                 message = e.getMessage();

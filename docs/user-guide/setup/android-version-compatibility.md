@@ -6,12 +6,14 @@ Compatibility requirements for each app release are listed below.
 
 ## Thunderbird for Android
 
-- Thunderbird for Android 17.0 and above: Android 6.0 (Marshmallow, API 23)
+- Thunderbird for Android 26.0 and above: Android 7.0 (Nougat, API 24)
+- Thunderbird for Android 17.0-25.x: Android 6.0 (Marshmallow, API 23)
 - Thunderbird for Android 8.0-16.x: Android 5.0 (Lollipop, API 21)
 
 ## K-9 Mail
 
-- K-9 Mail 17.0 and above: Android 6.0 (Marshmallow, API 23)
+- K-9 Mail 26.0 and above: Android 7.0 (Nougat, API 24)
+- K-9 Mail 17.0-25.x: Android 6.0 (Marshmallow, API 23)
 - K-9 Mail 8.0-16.x: Android 5.0 (Lollipop, API 21)
 - K-9 Mail 5.700-6.904: Android 5.0 (Lollipop, API 21)
 - K-9 Mail 4.9xx-5.600: Android 4.0.3+ (Ice Cream Sandwich MR1, API 15)

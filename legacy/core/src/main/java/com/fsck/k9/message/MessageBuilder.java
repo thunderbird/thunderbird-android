@@ -40,6 +40,8 @@ import org.apache.james.mime4j.util.MimeUtil;
 
 
 public abstract class MessageBuilder {
+    private static final String TAG = "MessageBuilder";
+
     private final MessageIdGenerator messageIdGenerator;
     private final BoundaryGenerator boundaryGenerator;
     protected final CoreResourceProvider resourceProvider;
@@ -626,7 +628,7 @@ public abstract class MessageBuilder {
     final protected void deliverResult() {
         synchronized (callbackLock) {
             if (asyncCallback == null) {
-                Log.d("Keeping message builder result in queue for later delivery");
+                Log.d(TAG, "Keeping message builder result in queue for later delivery");
                 return;
             }
             if (queuedMimeMessage != null) {

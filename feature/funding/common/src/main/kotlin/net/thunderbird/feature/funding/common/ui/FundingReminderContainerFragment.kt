@@ -8,7 +8,6 @@ import android.view.Window
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.compose.ui.res.stringResource
-import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.setFragmentResult
 import kotlin.getValue
@@ -47,7 +46,9 @@ class FundingReminderContainerFragment : DialogFragment() {
     private fun handlePositiveButton() {
         setFragmentResult(
             FundingReminderContract.Dialog.FRAGMENT_REQUEST_KEY,
-            bundleOf(FundingReminderContract.Dialog.FRAGMENT_RESULT_SHOW_FUNDING to true),
+            Bundle().apply {
+                putBoolean(FundingReminderContract.Dialog.FRAGMENT_RESULT_SHOW_FUNDING, true)
+            },
         )
     }
 }

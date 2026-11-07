@@ -1,32 +1,18 @@
 package app.k9mail.legacy.mailstore
 
 import java.util.concurrent.ConcurrentHashMap
-import net.thunderbird.core.android.account.LegacyAccountDto
-import net.thunderbird.core.android.account.LegacyAccountDtoManager
 import net.thunderbird.feature.account.AccountId
 
 class MessageStoreManager(
-    private val accountManager: LegacyAccountDtoManager,
     private val messageStoreFactory: MessageStoreFactory,
 ) {
     private val messageStores = ConcurrentHashMap<AccountId, ListenableMessageStore>()
 
-    init {
-        accountManager.addAccountRemovedListener { accountId ->
-            removeMessageStore(accountId)
-        }
-    }
-
     fun getMessageStore(accountId: AccountId): ListenableMessageStore {
-        val account = accountManager.getById(accountId) ?: error("Account not found: $accountId")
-        return getMessageStore(account)
+        return messageStores.getOrPut(accountId) { messageStoreFactory.create(accountId) }
     }
 
-    fun getMessageStore(account: LegacyAccountDto): ListenableMessageStore {
-        return messageStores.getOrPut(account.id) { messageStoreFactory.create(account) }
-    }
-
-    private fun removeMessageStore(id: AccountId) {
+    fun removeMessageStore(id: AccountId) {
         messageStores.remove(id)
     }
 }

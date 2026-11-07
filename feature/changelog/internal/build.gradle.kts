@@ -9,7 +9,6 @@ android {
 
 dependencies {
     implementation(projects.core.ui.contract)
-    implementation(projects.core.logging.api)
     implementation(projects.core.ui.navigation)
     implementation(projects.core.ui.compose.common)
     implementation(projects.core.preference.api)

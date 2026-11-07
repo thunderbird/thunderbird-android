@@ -44,6 +44,39 @@
                 tools:listitem="@layout/message_list_item"
                 />
 
+            <LinearLayout
+                android:id="@+id/message_list_empty"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:padding="16dp"
+                android:visibility="gone"
+                tools:visibility="visible"
+                >
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/message_list_empty_message"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textAppearance="?attr/textAppearanceBodyLarge"
+                    tools:text="@string/message_list_not_synced"
+                    />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/message_list_empty_hint"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center"
+                    android:textAppearance="?attr/textAppearanceBodyMedium"
+                    tools:text="@string/message_list_not_synced_hint"
+                    />
+
+            </LinearLayout>
+
             <androidx.compose.ui.platform.ComposeView
                 android:id="@+id/banner_global_compose_view"
                 android:layout_width="match_parent"

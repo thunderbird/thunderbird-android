@@ -21,13 +21,7 @@ kotlin {
     }
     sourceSets {
         commonMain.dependencies {
-            implementation(projects.core.logging.api)
-            implementation(projects.core.logging.implFile)
-        }
-        getByName("commonJvmTest") {
-            dependencies {
-                implementation(projects.core.logging.testing)
-            }
+            implementation(libs.okio)
         }
         commonTest.dependencies {
             implementation(projects.core.testing)

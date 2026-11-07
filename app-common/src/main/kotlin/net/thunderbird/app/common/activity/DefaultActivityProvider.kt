@@ -7,8 +7,8 @@ import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
 import java.lang.ref.WeakReference
+import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.core.android.common.activity.ActivityProvider
-import net.thunderbird.core.logging.Logger
 
 private const val TAG = "DefaultActivityProvider"
 

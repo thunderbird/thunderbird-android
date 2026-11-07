@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.k9mail.legacy.message.controller.MessageReference
 import java.util.LinkedList
-import net.thunderbird.core.logging.Logger
+import net.thunderbird.components.core.logging.Logger
 
 private const val TAG = "LegacyMessageListViewModel"
 

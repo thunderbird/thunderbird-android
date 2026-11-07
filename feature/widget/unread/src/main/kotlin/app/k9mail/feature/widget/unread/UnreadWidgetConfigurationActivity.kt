@@ -4,7 +4,7 @@ import android.appwidget.AppWidgetManager
 import android.os.Bundle
 import com.fsck.k9.ui.base.BaseActivity
 import com.fsck.k9.ui.base.extensions.fragmentTransaction
-import net.thunderbird.core.logging.Logger
+import net.thunderbird.components.core.logging.Logger
 import org.koin.android.ext.android.inject
 
 private const val TAG = "UnreadWidgetConfigurationActivity"

@@ -6,4 +6,6 @@
     <string name="funding_reminder_donate">Donate</string>
     <string name="funding_reminder_roc_banner_content_description">Illustration of the Thunderbird mascot, Roc, carrying a letter in an envelope in the sky, surrounded by illustrations of hearts.</string>
     <string name="funding_reminder_thunderbird_for_android">Thunderbird for Android</string>
+    <string name="funding_reminder_eoy_title">Support Thunderbird</string>
+    <string name="funding_reminder_eoy_content">Thunderbird\'s mission is to give you a private, customizable, and robust email experience, while keeping it free and accessible for users around the world. Your contributions make a huge difference. We truly can\'t do this without you.</string>
 </resources>

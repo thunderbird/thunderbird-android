@@ -6,7 +6,7 @@ import assertk.assertThat
 import assertk.assertions.containsExactly
 import assertk.assertions.isEmpty
 import java.io.ByteArrayInputStream
-import net.thunderbird.core.logging.Logger
+import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.feature.navigation.changelog.api.ChangelogConfigProvider
 import org.junit.Before
 import org.junit.Test

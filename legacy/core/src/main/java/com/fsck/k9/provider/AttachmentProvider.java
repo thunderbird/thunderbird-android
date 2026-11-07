@@ -17,11 +17,9 @@ import androidx.annotation.Nullable;
 import app.k9mail.legacy.di.DI;
 import com.fsck.k9.helper.MimeTypeUtil;
 import com.fsck.k9.mailstore.LocalStoreProvider;
-import net.thunderbird.core.android.account.LegacyAccountDto;
 import net.thunderbird.feature.account.AccountId;
 import net.thunderbird.feature.account.AccountIdFactory;
 import net.thunderbird.legacy.logging.Log;
-import com.fsck.k9.Preferences;
 import net.thunderbird.core.common.exception.MessagingException;
 import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.mailstore.LocalStore.AttachmentInfo;
@@ -32,6 +30,8 @@ import org.openintents.openpgp.util.OpenPgpApi.OpenPgpDataSource;
  * A simple ContentProvider that allows file access to attachments.
  */
 public class AttachmentProvider extends ContentProvider {
+    private static final String TAG = "AttachmentProvider";
+
     public static Uri CONTENT_URI;
 
     private static final String[] DEFAULT_PROJECTION = new String[] {
@@ -47,9 +47,9 @@ public class AttachmentProvider extends ContentProvider {
     }
 
 
-    public static Uri getAttachmentUri(String accountUuid, long id) {
+    public static Uri getAttachmentUri(AccountId accountId, long id) {
         return CONTENT_URI.buildUpon()
-                .appendPath(accountUuid)
+                .appendPath(accountId.toString())
                 .appendPath(Long.toString(id))
                 .build();
     }
@@ -106,15 +106,14 @@ public class AttachmentProvider extends ContentProvider {
 
         final AttachmentInfo attachmentInfo;
         try {
-            final LegacyAccountDto account = Preferences.getPreferences().getById(accountId);
-            attachmentInfo = DI.get(LocalStoreProvider.class).getInstance(account).getAttachmentInfo(id);
+            attachmentInfo = DI.get(LocalStoreProvider.class).getInstance(accountId).getAttachmentInfo(id);
         } catch (MessagingException e) {
-            Log.e(e, "Unable to retrieve attachment info from local store for ID: %s", id);
+            Log.e(TAG, e, "Unable to retrieve attachment info from local store for ID: %s", id);
             return null;
         }
 
         if (attachmentInfo == null) {
-            Log.d("No attachment info for ID: %s", id);
+            Log.d(TAG, "No attachment info for ID: %s", id);
             return null;
         }
 
@@ -166,10 +165,9 @@ public class AttachmentProvider extends ContentProvider {
 
     private String getType(AccountId accountId, String id, String mimeType) {
         String type;
-        final LegacyAccountDto account = Preferences.getPreferences().getById(accountId);
 
         try {
-            final LocalStore localStore = DI.get(LocalStoreProvider.class).getInstance(account);
+            final LocalStore localStore = DI.get(LocalStoreProvider.class).getInstance(accountId);
 
             AttachmentInfo attachmentInfo = localStore.getAttachmentInfo(id);
             if (mimeType != null) {
@@ -178,7 +176,7 @@ public class AttachmentProvider extends ContentProvider {
                 type = attachmentInfo.type;
             }
         } catch (MessagingException e) {
-            Log.e(e, "Unable to retrieve LocalStore for %s", account);
+            Log.e(TAG, e, "Unable to retrieve LocalStore for %s", accountId);
             type = MimeTypeUtil.DEFAULT_ATTACHMENT_MIME_TYPE;
         }
 
@@ -190,23 +188,22 @@ public class AttachmentProvider extends ContentProvider {
         try {
             OpenPgpDataSource openPgpDataSource = getAttachmentDataSource(accountId, attachmentId);
             if (openPgpDataSource == null) {
-                Log.e("Error getting data source for attachment (part doesn't exist?)");
+                Log.e(TAG, "Error getting data source for attachment (part doesn't exist?)");
                 return null;
             }
             return openPgpDataSource.startPumpThread();
         } catch (MessagingException e) {
-            Log.e(e, "Error getting InputStream for attachment");
+            Log.e(TAG, e, "Error getting InputStream for attachment");
             return null;
         } catch (IOException e) {
-            Log.e(e, "Error creating ParcelFileDescriptor");
+            Log.e(TAG, e, "Error creating ParcelFileDescriptor");
             return null;
         }
     }
 
     @Nullable
     private OpenPgpDataSource getAttachmentDataSource(AccountId accountId, String attachmentId) throws MessagingException {
-        final LegacyAccountDto account = Preferences.getPreferences().getById(accountId);
-        LocalStore localStore = DI.get(LocalStoreProvider.class).getInstance(account);
+        LocalStore localStore = DI.get(LocalStoreProvider.class).getInstance(accountId);
         return localStore.getAttachmentDataSource(attachmentId);
     }
 }

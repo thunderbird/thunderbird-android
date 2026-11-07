@@ -20,7 +20,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import net.thunderbird.core.android.account.SortType
 import net.thunderbird.core.preference.GeneralSettingsManager
-import net.thunderbird.feature.search.legacy.SearchAccount.Companion.createUnifiedFoldersSearch
+import net.thunderbird.feature.search.legacy.SearchAccount.Companion.createUnifiedInboxSearch
 import net.thunderbird.feature.widget.message.list.ui.MessageListWidgetContent
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -42,9 +42,9 @@ internal class MessageListWidget : GlanceAppWidget(), KoinComponent {
 
             LaunchedEffect(Unit) {
                 CoroutineScope(Dispatchers.IO).launch {
-                    val unifiedInboxSearch = createUnifiedFoldersSearch(
-                        title = coreResourceProvider.searchUnifiedFoldersTitle(),
-                        detail = coreResourceProvider.searchUnifiedFoldersDetail(),
+                    val unifiedInboxSearch = createUnifiedInboxSearch(
+                        title = coreResourceProvider.unifiedInboxTitle(),
+                        detail = coreResourceProvider.unifiedInboxDetail(),
                     ).relatedSearch
                     val messageListConfig = MessageListConfig(
                         search = unifiedInboxSearch,
@@ -68,9 +68,9 @@ internal class MessageListWidget : GlanceAppWidget(), KoinComponent {
     }
 
     private fun openApp(context: Context) {
-        val unifiedFoldersSearch = createUnifiedFoldersSearch(
-            title = coreResourceProvider.searchUnifiedFoldersTitle(),
-            detail = coreResourceProvider.searchUnifiedFoldersDetail(),
+        val unifiedFoldersSearch = createUnifiedInboxSearch(
+            title = coreResourceProvider.unifiedInboxTitle(),
+            detail = coreResourceProvider.unifiedInboxDetail(),
         )
         val intent = intentDisplaySearch(
             context = context,
@@ -81,12 +81,18 @@ internal class MessageListWidget : GlanceAppWidget(), KoinComponent {
         ).apply {
             action = nextInt().toString()
         }
-        PendingIntentCompat.getActivity(
-            context,
-            nextInt(),
-            intent,
-            PendingIntent.FLAG_UPDATE_CURRENT,
-            false,
-        )!!.send()
+        // Only returns null when using FLAG_NO_CREATE
+        val pendingIntent = checkNotNull(
+            PendingIntentCompat.getActivity(
+                context,
+                nextInt(),
+                intent,
+                PendingIntent.FLAG_UPDATE_CURRENT,
+                false,
+            ),
+        ) {
+            "Failed to create activity PendingIntent"
+        }
+        pendingIntent.send()
     }
 }

@@ -19,6 +19,7 @@ dependencies {
     implementation(projects.feature.account.core)
     implementation(projects.feature.account.avatar.api)
     implementation(projects.feature.account.avatar.impl)
+    implementation(projects.legacy.ui.legacy)
 
     implementation(projects.core.featureflag)
     implementation(projects.core.android.account)
@@ -40,7 +41,6 @@ dependencies {
 
     debugImplementation(projects.core.ui.setting.implDialog)
 
-    testImplementation(projects.core.logging.testing)
     testImplementation(projects.core.ui.compose.testing)
 }
 

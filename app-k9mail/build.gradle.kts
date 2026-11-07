@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.dependency.guard)
     alias(libs.plugins.tb.app.badging)
     alias(libs.plugins.tb.app.versioning)
+    alias(libs.plugins.tb.baselineprofile.consumer.app)
 }
 
 val testCoverageEnabled = providers
@@ -17,7 +18,7 @@ android {
         testApplicationId = "com.fsck.k9.tests"
 
         versionCode = 39004
-        versionName = "26.0"
+        versionName = "27.0"
         versionNameSuffix = "a1"
 
         buildConfigField("String", "CLIENT_INFO_APP_NAME", "\"K-9 Mail\"")
@@ -87,14 +88,14 @@ android {
     }
 
     buildTypes {
-        val isCI = providers.gradleProperty("ci")
+        val minify = providers.gradleProperty("minify")
             .map(String::toBoolean)
-            .orElse(false)
+            .orElse(true)
         release {
             signingConfig = signingConfigs.getByType(SigningType.K9_RELEASE)
 
-            isMinifyEnabled = !isCI.get()
-            isShrinkResources = !isCI.get()
+            isMinifyEnabled = minify.get()
+            isShrinkResources = minify.get()
 
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -185,6 +186,8 @@ dependencies {
     testImplementation(projects.feature.changelog.internal)
 
     testImplementation(libs.appauth)
+
+    baselineProfile(projects.appK9mail.benchmarks)
 }
 
 dependencyGuard {

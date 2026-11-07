@@ -2,8 +2,8 @@ package net.thunderbird.feature.mail.message.list.internal
 
 import kotlin.test.Test
 import kotlin.time.Clock
+import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.core.common.resources.StringsResourceManager
-import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.debugging.DebuggingSettingsPreferenceManager
 import net.thunderbird.feature.mail.message.list.ui.dialog.SetupArchiveFolderDialogContract

@@ -1,9 +1,12 @@
 package net.thunderbird.feature.account.storage.legacy
 
 import androidx.annotation.Discouraged
-import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.preference.storage.Storage
 import net.thunderbird.core.preference.storage.StorageEditor
+import net.thunderbird.feature.account.AccountId
+import net.thunderbird.feature.account.storage.profile.AvatarDto
+import net.thunderbird.feature.account.storage.profile.ProfileDto
 
 /**
  * Represents a storage handler for a specific data type.
@@ -18,10 +21,11 @@ interface StorageHandler<T> {
     /**
      * Loads the data from the storage into the provided object.
      *
-     * @param data The object to load the data into.
+     * @param accountId The object to load for the given accountId.
      * @param storage The storage to load the data from.
+     * @return The loaded data.
      */
-    fun load(data: T, storage: Storage)
+    fun load(accountId: AccountId, storage: Storage): T
 
     /**
      * Saves the data from the provided object to the storage.
@@ -35,15 +39,15 @@ interface StorageHandler<T> {
     /**
      * Deletes the data from the storage.
      *
-     * @param data The data to delete.
+     * @param accountId The data to delete for the given accountId.
      * @param storage The storage to delete the data from.
      * @param editor The storage editor to use for deleting the data.
      */
-    fun delete(data: T, storage: Storage, editor: StorageEditor)
+    fun delete(accountId: AccountId, storage: Storage, editor: StorageEditor)
 }
 
-interface AccountDtoStorageHandler : StorageHandler<LegacyAccountDto>
+interface AccountStorageHandler : StorageHandler<LegacyAccount>
 
-interface ProfileDtoStorageHandler : StorageHandler<LegacyAccountDto>
+interface ProfileDtoStorageHandler : StorageHandler<ProfileDto>
 
-interface AvatarDtoStorageHandler : StorageHandler<LegacyAccountDto>
+interface AvatarDtoStorageHandler : StorageHandler<AvatarDto>

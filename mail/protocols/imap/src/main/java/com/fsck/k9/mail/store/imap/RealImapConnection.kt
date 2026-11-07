@@ -38,6 +38,8 @@ import net.thunderbird.core.common.exception.MessagingException
 import net.thunderbird.legacy.logging.Log
 import org.apache.commons.io.IOUtils
 
+private const val TAG = "RealImapConnection"
+
 /**
  * A cacheable class that stores the details for a single IMAP connection.
  */
@@ -110,7 +112,7 @@ internal class RealImapConnection(
             throw MessagingException("Unable to open connection to IMAP server due to security error.", e)
         } finally {
             if (!authSuccess) {
-                Log.e("Failed to login, closing connection for %s", logId)
+                Log.e(TAG, "Failed to login, closing connection for %s", logId)
                 close()
             }
         }
@@ -139,13 +141,13 @@ internal class RealImapConnection(
         try {
             Security.setProperty("networkaddress.cache.ttl", "0")
         } catch (e: Exception) {
-            Log.w(e, "Could not set DNS ttl to 0 for %s", logId)
+            Log.w(TAG, e, "Could not set DNS ttl to 0 for %s", logId)
         }
 
         try {
             Security.setProperty("networkaddress.cache.negative.ttl", "0")
         } catch (e: Exception) {
-            Log.w(e, "Could not set DNS negative ttl to 0 for %s", logId)
+            Log.w(TAG, e, "Could not set DNS negative ttl to 0 for %s", logId)
         }
     }
 
@@ -157,7 +159,7 @@ internal class RealImapConnection(
             connectException = try {
                 return connectToAddress(address)
             } catch (e: IOException) {
-                Log.w(e, "Could not connect to %s", address)
+                Log.w(TAG, e, "Could not connect to %s", address)
                 e
             }
         }
@@ -171,7 +173,7 @@ internal class RealImapConnection(
         val clientCertificateAlias = settings.clientCertificateAlias
 
         if (K9MailLib.isDebug() && K9MailLib.DEBUG_PROTOCOL_IMAP) {
-            Log.d("Connecting to %s as %s", host, address)
+            Log.d(TAG, "Connecting to %s as %s", host, address)
         }
 
         val socketAddress: SocketAddress = InetSocketAddress(address, port)
@@ -217,7 +219,7 @@ internal class RealImapConnection(
         val initialResponse = responseParser.readResponse()
 
         if (K9MailLib.isDebug() && K9MailLib.DEBUG_PROTOCOL_IMAP) {
-            Log.v("%s <<< %s", logId, initialResponse)
+            Log.v(TAG, "%s <<< %s", logId, initialResponse)
         }
 
         extractCapabilities(listOf(initialResponse))
@@ -227,7 +229,7 @@ internal class RealImapConnection(
         val capabilityResponse = CapabilityResponse.parse(responses) ?: return false
         val receivedCapabilities = capabilityResponse.capabilities
 
-        Log.d("Saving %s capabilities for %s", receivedCapabilities, logId)
+        Log.d(TAG, "Saving %s capabilities for %s", receivedCapabilities, logId)
         capabilities = receivedCapabilities
 
         return true
@@ -235,7 +237,7 @@ internal class RealImapConnection(
 
     private fun extractOrRequestCapabilities(responses: List<ImapResponse>) {
         if (!extractCapabilities(responses)) {
-            Log.i("Did not get capabilities in post-auth banner, requesting CAPABILITY for %s", logId)
+            Log.i(TAG, "Did not get capabilities in post-auth banner, requesting CAPABILITY for %s", logId)
             requestCapabilities()
         }
     }
@@ -244,7 +246,7 @@ internal class RealImapConnection(
         if (capabilities.isNotEmpty()) return
 
         if (K9MailLib.isDebug()) {
-            Log.i("Did not get capabilities in banner, requesting CAPABILITY for %s", logId)
+            Log.i(TAG, "Did not get capabilities in banner, requesting CAPABILITY for %s", logId)
         }
 
         requestCapabilities()
@@ -269,7 +271,7 @@ internal class RealImapConnection(
             enabled = enabledResponse.capabilities
             responseParser?.setUtf8Accepted(isUtf8AcceptCapable)
         } catch (e: NegativeImapResponseException) {
-            Log.d(e, "Ignoring negative response to ENABLE command")
+            Log.d(TAG, e, "Ignoring negative response to ENABLE command")
         }
     }
 
@@ -300,7 +302,7 @@ internal class RealImapConnection(
 
         // Per RFC 2595 (3.1):  Once TLS has been started, reissue CAPABILITY command
         if (K9MailLib.isDebug()) {
-            Log.i("Updating capabilities after STARTTLS for %s", logId)
+            Log.i(TAG, "Updating capabilities after STARTTLS for %s", logId)
         }
 
         requestCapabilities()
@@ -373,7 +375,7 @@ internal class RealImapConnection(
     }
 
     private fun handlePermanentOAuthFailure(e: NegativeImapResponseException): AuthenticationFailedException {
-        Log.v(e, "Permanent failure during authentication using OAuth token")
+        Log.v(TAG, e, "Permanent failure during authentication using OAuth token")
 
         return AuthenticationFailedException(
             message = "Authentication failed",
@@ -389,14 +391,14 @@ internal class RealImapConnection(
         // We could avoid this if we had a reasonable chance of knowing
         // if a token was invalid before use (e.g. due to expiry). But we don't
         // This is the intended behaviour per AccountManager
-        Log.v(e, "Temporary failure - retrying with new token")
+        Log.v(TAG, e, "Temporary failure - retrying with new token")
 
         return try {
             attemptOAuth(method)
         } catch (e2: NegativeImapResponseException) {
             // Okay, we failed on a new token.
             // Invalidate the token anyway but assume it's permanent.
-            Log.v(e, "Authentication exception for new token, permanent error assumed")
+            Log.v(TAG, e, "Authentication exception for new token, permanent error assumed")
 
             oauthTokenProvider.invalidateToken()
 
@@ -480,10 +482,10 @@ internal class RealImapConnection(
         } catch (e: AuthenticationFailedException) {
             throw e
         } catch (e: IOException) {
-            Log.d(e, "LOGIN fallback failed")
+            Log.d(TAG, e, "LOGIN fallback failed")
             throw originalException
         } catch (e: MessagingException) {
-            Log.d(e, "LOGIN fallback failed")
+            Log.d(TAG, e, "LOGIN fallback failed")
             throw originalException
         }
     }
@@ -584,7 +586,7 @@ internal class RealImapConnection(
             try {
                 executeSimpleCommand("""ID ("name" $encodedAppName "version" $encodedAppVersion)""")
             } catch (e: NegativeImapResponseException) {
-                Log.d(e, "Ignoring negative response to ID command")
+                Log.d(TAG, e, "Ignoring negative response to ID command")
             }
         }
     }
@@ -593,7 +595,7 @@ internal class RealImapConnection(
         try {
             executeSimpleCommand(Commands.COMPRESS_DEFLATE)
         } catch (e: NegativeImapResponseException) {
-            Log.d(e, "Unable to negotiate compression: ")
+            Log.d(TAG, e, "Unable to negotiate compression: ")
             return
         }
 
@@ -606,11 +608,11 @@ internal class RealImapConnection(
             setUpStreamsAndParser(input, output)
 
             if (K9MailLib.isDebug()) {
-                Log.i("Compression enabled for %s", logId)
+                Log.i(TAG, "Compression enabled for %s", logId)
             }
         } catch (e: IOException) {
             close()
-            Log.e(e, "Error enabling compression")
+            Log.e(TAG, e, "Error enabling compression")
         }
     }
 
@@ -619,13 +621,13 @@ internal class RealImapConnection(
 
         if (hasCapability(Capabilities.NAMESPACE)) {
             if (K9MailLib.isDebug()) {
-                Log.i("pathPrefix is unset and server has NAMESPACE capability")
+                Log.i(TAG, "pathPrefix is unset and server has NAMESPACE capability")
             }
 
             handleNamespace()
         } else {
             if (K9MailLib.isDebug()) {
-                Log.i("pathPrefix is unset but server does not have NAMESPACE capability")
+                Log.i(TAG, "pathPrefix is unset but server does not have NAMESPACE capability")
             }
 
             settings.pathPrefix = ""
@@ -642,7 +644,12 @@ internal class RealImapConnection(
         settings.setCombinedPrefix(null)
 
         if (K9MailLib.isDebug()) {
-            Log.d("Got path '%s' and separator '%s'", namespaceResponse.prefix, namespaceResponse.hierarchyDelimiter)
+            Log.d(
+                TAG,
+                "Got path '%s' and separator '%s'",
+                namespaceResponse.prefix,
+                namespaceResponse.hierarchyDelimiter,
+            )
         }
     }
 
@@ -656,7 +663,7 @@ internal class RealImapConnection(
         val listResponses = try {
             executeSimpleCommand(Commands.LIST + " \"\" \"\"")
         } catch (e: NegativeImapResponseException) {
-            Log.d(e, "Error getting path delimiter using LIST command")
+            Log.d(TAG, e, "Error getting path delimiter using LIST command")
             return
         }
 
@@ -668,7 +675,7 @@ internal class RealImapConnection(
                 settings.setCombinedPrefix(null)
 
                 if (K9MailLib.isDebug()) {
-                    Log.d("Got path delimiter '%s' for %s", hierarchyDelimiter, logId)
+                    Log.d(TAG, "Got path delimiter '%s' for %s", hierarchyDelimiter, logId)
                 }
 
                 break
@@ -703,7 +710,7 @@ internal class RealImapConnection(
     override val isIdleCapable: Boolean
         get() {
             if (K9MailLib.isDebug()) {
-                Log.v("Connection %s has %d capabilities", logId, capabilities.size)
+                Log.v(TAG, "Connection %s has %d capabilities", logId, capabilities.size)
             }
 
             return capabilities.contains(Capabilities.IDLE)
@@ -794,9 +801,9 @@ internal class RealImapConnection(
 
             if (K9MailLib.isDebug() && K9MailLib.DEBUG_PROTOCOL_IMAP) {
                 if (sensitive && !K9MailLib.isDebugSensitive()) {
-                    Log.v("%s>>> [Command Hidden, Enable Sensitive Debug Logging To Show]", logId)
+                    Log.v(TAG, "%s>>> [Command Hidden, Enable Sensitive Debug Logging To Show]", logId)
                 } else {
-                    Log.v("%s>>> %s %s %s", logId, tag, command, initialClientResponse)
+                    Log.v(TAG, "%s>>> %s %s %s", logId, tag, command, initialClientResponse)
                 }
             }
 
@@ -826,9 +833,9 @@ internal class RealImapConnection(
 
             if (K9MailLib.isDebug() && K9MailLib.DEBUG_PROTOCOL_IMAP) {
                 if (sensitive && !K9MailLib.isDebugSensitive()) {
-                    Log.v("%s>>> [Command Hidden, Enable Sensitive Debug Logging To Show]", logId)
+                    Log.v(TAG, "%s>>> [Command Hidden, Enable Sensitive Debug Logging To Show]", logId)
                 } else {
-                    Log.v("%s>>> %s %s", logId, tag, command)
+                    Log.v(TAG, "%s>>> %s %s", logId, tag, command)
                 }
             }
 
@@ -854,7 +861,7 @@ internal class RealImapConnection(
             outputStream.flush()
 
             if (K9MailLib.isDebug() && K9MailLib.DEBUG_PROTOCOL_IMAP) {
-                Log.v("%s>>> %s", logId, continuation)
+                Log.v(TAG, "%s>>> %s", logId, continuation)
             }
         } catch (e: IOException) {
             close()
@@ -875,7 +882,7 @@ internal class RealImapConnection(
             val response = responseParser.readResponse(callback)
 
             if (K9MailLib.isDebug() && K9MailLib.DEBUG_PROTOCOL_IMAP) {
-                Log.v("%s<<<%s", logId, response)
+                Log.v(TAG, "%s<<<%s", logId, response)
             }
 
             return response
@@ -896,6 +903,7 @@ internal class RealImapConnection(
                     throw MessagingException("Command continuation aborted: $response")
                 } else {
                     Log.w(
+                        TAG,
                         "After sending tag %s, got tag response from previous command %s for %s",
                         tag,
                         response,

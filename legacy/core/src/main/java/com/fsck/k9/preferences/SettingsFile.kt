@@ -17,6 +17,7 @@ internal interface SettingsFile {
         val settings: SettingsMap?,
         val identities: List<Identity>?,
         val folders: List<Folder>?,
+        val avatarImage: String?
     )
 
     data class Server(

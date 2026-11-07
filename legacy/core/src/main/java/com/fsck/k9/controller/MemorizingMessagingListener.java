@@ -7,21 +7,24 @@ import java.util.Map;
 import java.util.Map.Entry;
 import app.k9mail.legacy.message.controller.MessagingListener;
 import app.k9mail.legacy.message.controller.SimpleMessagingListener;
-import net.thunderbird.core.android.account.LegacyAccountDto;
+import net.thunderbird.feature.account.AccountId;
 
 
+/**
+ * TODO: Move this sync-state tracking into the sync feature and remove this legacy listener.
+ */
 class MemorizingMessagingListener extends SimpleMessagingListener {
     Map<String, Memory> memories = new HashMap<>(31);
 
-    synchronized void removeAccount(LegacyAccountDto account) {
+    synchronized void removeAccount(AccountId accountId) {
         Iterator<Entry<String, Memory>> memIt = memories.entrySet().iterator();
 
         while (memIt.hasNext()) {
             Entry<String, Memory> memoryEntry = memIt.next();
 
-            String uuidForMemory = memoryEntry.getValue().account.getId().toString();
+            String uuidForMemory = memoryEntry.getValue().accountId.toString();
 
-            if (uuidForMemory.equals(account.getId())) {
+            if (uuidForMemory.equals(accountId.toString())) {
                 memIt.remove();
             }
         }
@@ -40,10 +43,10 @@ class MemorizingMessagingListener extends SimpleMessagingListener {
                             syncStarted = memory;
                             break;
                         case FINISHED:
-                            other.synchronizeMailboxFinished(memory.account, memory.folderId);
+                            other.synchronizeMailboxFinished(memory.accountId, memory.folderId);
                             break;
                         case FAILED:
-                            other.synchronizeMailboxFailed(memory.account, memory.folderId,
+                            other.synchronizeMailboxFailed(memory.accountId, memory.folderId,
                                     memory.failureMessage);
                             break;
                     }
@@ -51,11 +54,11 @@ class MemorizingMessagingListener extends SimpleMessagingListener {
             }
             Memory somethingStarted = null;
             if (syncStarted != null) {
-                other.synchronizeMailboxStarted(syncStarted.account, syncStarted.folderId);
+                other.synchronizeMailboxStarted(syncStarted.accountId, syncStarted.folderId);
                 somethingStarted = syncStarted;
             }
             if (somethingStarted != null && somethingStarted.folderTotal > 0) {
-                other.synchronizeMailboxProgress(somethingStarted.account, somethingStarted.folderId,
+                other.synchronizeMailboxProgress(somethingStarted.accountId, somethingStarted.folderId,
                         somethingStarted.folderCompleted, somethingStarted.folderTotal);
             }
 
@@ -63,53 +66,53 @@ class MemorizingMessagingListener extends SimpleMessagingListener {
     }
 
     @Override
-    public synchronized void synchronizeMailboxStarted(LegacyAccountDto account, long folderId) {
-        Memory memory = getMemory(account, folderId);
+    public synchronized void synchronizeMailboxStarted(AccountId accountId, long folderId) {
+        Memory memory = getMemory(accountId, folderId);
         memory.syncingState = MemorizingState.STARTED;
         memory.folderCompleted = 0;
         memory.folderTotal = 0;
     }
 
     @Override
-    public synchronized void synchronizeMailboxFinished(LegacyAccountDto account, long folderId) {
-        Memory memory = getMemory(account, folderId);
+    public synchronized void synchronizeMailboxFinished(AccountId accountId, long folderId) {
+        Memory memory = getMemory(accountId, folderId);
         memory.syncingState = MemorizingState.FINISHED;
     }
 
     @Override
-    public synchronized void synchronizeMailboxFailed(LegacyAccountDto account, long folderId,
+    public synchronized void synchronizeMailboxFailed(AccountId accountId, long folderId,
             String message) {
 
-        Memory memory = getMemory(account, folderId);
+        Memory memory = getMemory(accountId, folderId);
         memory.syncingState = MemorizingState.FAILED;
         memory.failureMessage = message;
     }
 
     @Override
-    public synchronized void synchronizeMailboxProgress(LegacyAccountDto account, long folderId, int completed,
+    public synchronized void synchronizeMailboxProgress(AccountId accountId, long folderId, int completed,
             int total) {
-        Memory memory = getMemory(account, folderId);
+        Memory memory = getMemory(accountId, folderId);
         memory.folderCompleted = completed;
         memory.folderTotal = total;
     }
 
-    private Memory getMemory(LegacyAccountDto account, long folderId) {
-        Memory memory = memories.get(getMemoryKey(account, folderId));
+    private Memory getMemory(AccountId accountId, long folderId) {
+        Memory memory = memories.get(getMemoryKey(accountId, folderId));
         if (memory == null) {
-            memory = new Memory(account, folderId);
-            memories.put(getMemoryKey(memory.account, memory.folderId), memory);
+            memory = new Memory(accountId, folderId);
+            memories.put(getMemoryKey(memory.accountId, memory.folderId), memory);
         }
         return memory;
     }
 
-    private static String getMemoryKey(LegacyAccountDto account, long folderId) {
-        return account.getId() + ":" + folderId;
+    private static String getMemoryKey(AccountId accountId, long folderId) {
+        return accountId + ":" + folderId;
     }
 
     private enum MemorizingState { STARTED, FINISHED, FAILED }
 
     private static class Memory {
-        LegacyAccountDto account;
+        AccountId accountId;
         long folderId;
         MemorizingState syncingState = null;
         String failureMessage = null;
@@ -117,8 +120,8 @@ class MemorizingMessagingListener extends SimpleMessagingListener {
         int folderCompleted = 0;
         int folderTotal = 0;
 
-        Memory(LegacyAccountDto account, long folderId) {
-            this.account = account;
+        Memory(AccountId accountId, long folderId) {
+            this.accountId = accountId;
             this.folderId = folderId;
         }
     }

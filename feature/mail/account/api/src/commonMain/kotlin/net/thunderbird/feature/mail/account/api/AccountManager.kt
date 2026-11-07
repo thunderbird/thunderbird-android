@@ -1,18 +1,20 @@
 package net.thunderbird.feature.mail.account.api
 
 import kotlinx.coroutines.flow.Flow
+import net.thunderbird.feature.account.Account
 import net.thunderbird.feature.account.AccountId
 
-interface AccountManager<TAccount : BaseAccount> {
+interface AccountManager<TAccount : Account> {
+
     /**
      * Returns a list of all accounts.
      */
-    fun getAccounts(): List<TAccount>
+    fun findAll(): List<TAccount>
 
     /**
      * Returns a flow of all accounts.
      */
-    fun getAccountsFlow(): Flow<List<TAccount>>
+    fun observeAll(): Flow<List<TAccount>>
 
     /**
      * Returns the account with the specified [AccountId].
@@ -20,7 +22,7 @@ interface AccountManager<TAccount : BaseAccount> {
      * @param accountId The [AccountId] of the account.
      * @return The account with the specified [AccountId].
      */
-    fun getById(accountId: AccountId): TAccount?
+    fun findById(accountId: AccountId): TAccount?
 
     /**
      * Observe the account with the specified [AccountId].
@@ -31,17 +33,47 @@ interface AccountManager<TAccount : BaseAccount> {
     fun observeById(accountId: AccountId): Flow<TAccount?>
 
     /**
-     * Moves the specified [account] to the [newPosition].
+     * Moves the specified [AccountId] to the [newPosition].
      *
-     * @param account The account to move.
+     * @param accountId The [AccountId] of the account to move.
      * @param newPosition The new position of the account.
      */
-    fun moveAccount(account: TAccount, newPosition: Int)
+    fun moveAccount(accountId: AccountId, newPosition: Int)
 
     /**
-     * Saves the specified [account].
+     * Saves the specified new [account].
      *
-     * @param account The account to save.
+     * Use [update] to change an existing account.
+     *
+     * @param account The account to save. No account with the same ID may exist.
      */
-    fun saveAccount(account: TAccount)
+    suspend fun create(account: TAccount)
+
+    /**
+     * Synchronous version of [create].
+     *
+     * @see create
+     */
+    fun createSync(account: TAccount)
+
+    /**
+     * Atomically updates the account with the specified [accountId].
+     *
+     * [transform] receives the latest version of the account, and its result is saved, so no change made elsewhere in
+     * the meantime is lost.
+     *
+     * [transform] may run while other account operations wait, so it must be quick and must not call this manager.
+     *
+     * @param accountId The [AccountId] of the account to update.
+     * @param transform Returns the updated account for the latest version of the account.
+     * @return The saved account, or `null` if no account with the specified [accountId] exists.
+     */
+    suspend fun update(accountId: AccountId, transform: (TAccount) -> TAccount): TAccount?
+
+    /**
+     * Synchronous version of [update].
+     *
+     * @see update
+     */
+    fun updateSync(accountId: AccountId, transform: (TAccount) -> TAccount): TAccount?
 }

@@ -6,10 +6,9 @@ import net.thunderbird.backend.imap.ImapRemoteFolderCreatorFactory
 import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.core.common.mail.Protocols
 import net.thunderbird.feature.account.AccountId
-import net.thunderbird.feature.mail.account.api.BaseAccount
 
 /**
- * Resolves the correct [RemoteFolderCreator] implementation based on the [BaseAccount] type.
+ * Resolves the correct [RemoteFolderCreator] implementation based on the account's incoming server type.
  */
 class RemoteFolderCreatorResolver(
     private val accountManager: LegacyAccountManager,

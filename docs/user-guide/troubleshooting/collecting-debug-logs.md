@@ -7,8 +7,9 @@ logging, reproduce the issue, collect logs, and share them with the team.
 
 - If the app is **crashing on startup**, jump directly
   to [Method B: Using a PC with ADB](#method-b-using-a-pc-with-adb).
-- Logs may include sensitive information (e.g., email addresses, server hostnames). You should redact **passwords**.
-- When possible, share the **complete log** to maximize debugging value.
+- Logs may include sensitive information (e.g., email addresses, server hostnames, or tokens). Review and redact them
+  before sharing.
+- Share only the log needed to diagnose the issue after checking it for sensitive information.
 
 ## Step 1: Enable debug logging
 
@@ -41,6 +42,9 @@ Use this if the app is **not** crashing during startup.
 - Go to: **Settings** → **General settings** → **Debugging**.
 - Tap the menu and select: **Export logs**.
 - Choose a location to save the log file.
+
+If you enabled **Enable sync debug logging**, use **Export Sync logs** to export the separate sync-debug file. That file
+contains events captured by the app's sync-debug sink, not the full Android logcat buffer.
 
 ### Method B: Using a PC with ADB
 

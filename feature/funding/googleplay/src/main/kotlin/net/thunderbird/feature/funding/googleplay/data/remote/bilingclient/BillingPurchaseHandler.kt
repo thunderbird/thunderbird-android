@@ -11,11 +11,13 @@ import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import net.thunderbird.core.logging.Logger
+import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.feature.funding.googleplay.data.FundingDataContract
 import net.thunderbird.feature.funding.googleplay.data.FundingDataContract.Remote
 import net.thunderbird.feature.funding.googleplay.domain.entity.ContributionId
 import net.thunderbird.feature.funding.googleplay.domain.entity.PurchasedContribution
+
+private const val TAG = "BillingPurchaseHandler"
 
 // TODO propagate errors via Outcome
 // TODO optimize purchase handling and reduce duplicate code
@@ -88,7 +90,7 @@ internal class BillingPurchaseHandler(
             if (!purchase.isAcknowledged) {
                 acknowledgePurchase(clientProvider.current, purchase)
             } else {
-                logger.debug(message = { "purchase already acknowledged" })
+                logger.debug(tag = TAG, message = { "purchase already acknowledged" })
             }
         }
 
@@ -108,15 +110,17 @@ internal class BillingPurchaseHandler(
                 val acknowledgeResult: BillingResult = billingClient.acknowledgePurchase(acknowledgePurchaseParams)
 
                 if (acknowledgeResult.responseCode == BillingClient.BillingResponseCode.OK) {
-                    logger.info { "acknowledgePurchase success" }
+                    logger.info(TAG) { "acknowledgePurchase success" }
                 } else {
-                    logger.error(message = { "acknowledgePurchase failed: ${acknowledgeResult.debugMessage}" })
+                    logger.error(tag = TAG, message = {
+                        "acknowledgePurchase failed: ${acknowledgeResult.debugMessage}"
+                    })
                 }
             } else {
-                logger.debug(message = { "purchase already acknowledged" })
+                logger.debug(tag = TAG, message = { "purchase already acknowledged" })
             }
         } else {
-            logger.error(message = { "purchase not purchased" })
+            logger.error(tag = TAG, message = { "purchase not purchased" })
         }
     }
 

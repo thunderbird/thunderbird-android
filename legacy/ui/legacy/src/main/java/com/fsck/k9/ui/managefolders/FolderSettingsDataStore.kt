@@ -19,7 +19,6 @@ class FolderSettingsDataStore(
     override fun getBoolean(key: String?, defValue: Boolean): Boolean {
         return when (key) {
             "folder_settings_in_top_group" -> folder.isInTopGroup
-            "folder_settings_include_in_integrated_inbox" -> folder.isIntegrate
             "folder_settings_sync" -> folder.isSyncEnabled
             "folder_settings_notifications" -> folder.isNotificationsEnabled
             "folder_settings_push" -> folder.isPushEnabled
@@ -31,7 +30,6 @@ class FolderSettingsDataStore(
     override fun putBoolean(key: String?, value: Boolean) {
         return when (key) {
             "folder_settings_in_top_group" -> updateFolder(folder.copy(isInTopGroup = value))
-            "folder_settings_include_in_integrated_inbox" -> updateFolder(folder.copy(isIntegrate = value))
             "folder_settings_sync" -> updateFolder(folder.copy(isSyncEnabled = value))
             "folder_settings_notifications" -> updateFolder(folder.copy(isNotificationsEnabled = value))
             "folder_settings_push" -> updateFolder(folder.copy(isPushEnabled = value))

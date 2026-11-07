@@ -11,11 +11,11 @@ import android.os.IBinder;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import app.k9mail.legacy.di.DI;
 import com.fsck.k9.K9;
-import com.fsck.k9.Preferences;
 import com.fsck.k9.mail.power.PowerManager;
 import com.fsck.k9.mail.power.WakeLock;
 import com.fsck.k9.mailstore.LocalStoreProvider;
-import net.thunderbird.core.android.account.LegacyAccountDto;
+import net.thunderbird.core.android.account.LegacyAccount;
+import net.thunderbird.core.android.account.LegacyAccountManager;
 import net.thunderbird.feature.account.AccountId;
 import net.thunderbird.legacy.logging.Log;
 
@@ -27,6 +27,8 @@ import net.thunderbird.legacy.logging.Log;
  * </p>
  */
 public class DatabaseUpgradeService extends Service {
+    private static final String TAG = "DatabaseUpgradeService";
+
     /**
      * Broadcast intent reporting the current progress of the database upgrade.
      *
@@ -120,7 +122,7 @@ public class DatabaseUpgradeService extends Service {
         boolean success = mRunning.compareAndSet(false, true);
         if (success) {
             // The service wasn't running yet.
-            Log.i("DatabaseUpgradeService started");
+            Log.i(TAG, "DatabaseUpgradeService started");
 
             acquireWakelock();
 
@@ -156,7 +158,7 @@ public class DatabaseUpgradeService extends Service {
      */
     private void stopService() {
         stopSelf();
-        Log.i("DatabaseUpgradeService stopped");
+        Log.i(TAG, "DatabaseUpgradeService stopped");
 
         releaseWakelock();
         mRunning.set(false);
@@ -179,22 +181,23 @@ public class DatabaseUpgradeService extends Service {
      * Upgrade the accounts' databases.
      */
     private void upgradeDatabases() {
-        Preferences preferences = Preferences.getPreferences();
+        LegacyAccountManager legacyAccountManager = DI.get(LegacyAccountManager.class);
 
-        List<LegacyAccountDto> accounts = preferences.getAccounts();
+        List<LegacyAccount> accounts = legacyAccountManager.findAll();
+
         mProgressEnd = accounts.size();
         mProgress = 0;
 
-        for (LegacyAccountDto account : accounts) {
+        for (LegacyAccount account : accounts) {
             mAccountId = account.getId();
 
             sendProgressBroadcast(mAccountId, mProgress, mProgressEnd);
 
             try {
                 // Account.getLocalStore() is blocking and will upgrade the database if necessary
-                DI.get(LocalStoreProvider.class).getInstance(account);
+                DI.get(LocalStoreProvider.class).getInstance(account.getId());
             } catch (Exception e) {
-                Log.e(e, "Error while upgrading database");
+                Log.e(TAG, e, "Error while upgrading database");
             }
 
             mProgress++;

@@ -12,7 +12,8 @@ import androidx.core.graphics.drawable.IconCompat
 import com.fsck.k9.activity.AccountList
 import com.fsck.k9.activity.MessageHomeActivity
 import com.fsck.k9.activity.MessageHomeActivity.Companion.shortcutIntent
-import net.thunderbird.feature.mail.account.api.BaseAccount
+import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.feature.mail.folder.FolderType
 import net.thunderbird.feature.search.legacy.SearchAccount
 import app.k9mail.core.ui.legacy.theme2.common.R as CommonR
 
@@ -31,7 +32,7 @@ class LauncherShortcutActivity : AccountList() {
     override fun onAccountSelected(account: Any) {
         val resultIntent = if (account is SearchAccount) {
             createSearchAccountIntent(account)
-        } else if (account is BaseAccount) {
+        } else if (account is LegacyAccount) {
             createResultIntentForAccount(account)
         } else {
             finish()
@@ -43,16 +44,16 @@ class LauncherShortcutActivity : AccountList() {
     }
 
     private fun createSearchAccountIntent(account: SearchAccount): Intent {
-        val shortcutIntent = MessageHomeActivity.shortcutIntent(this, account.id)
+        val shortcutIntent = MessageHomeActivity.shortcutIntent(this, account.id, FolderType.INBOX)
 
         val displayName = account.name
         val iconResId = theme.resolveDrawableResourceId(CommonR.attr.appLogo)
-        val shortcutId = account.uuid
+        val shortcutId = account.id.toString()
 
         return createResultIntent(displayName, iconResId, shortcutIntent, shortcutId)
     }
 
-    private fun createResultIntentForAccount(account: BaseAccount): Intent {
+    private fun createResultIntentForAccount(account: LegacyAccount): Intent {
         val shortcutIntent = MessageHomeActivity.shortcutIntentForAccount(this, account.id.toString())
 
         val displayName = account.name ?: account.email

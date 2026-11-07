@@ -1,3 +1,5 @@
+import com.android.build.api.variant.HostTestBuilder
+
 plugins {
     id("thunderbird.app.android")
     id("org.jetbrains.kotlin.plugin.compose")
@@ -17,6 +19,11 @@ android {
         }
     }
 
+    testOptions {
+        // AGP's Compose Preview task (since AGP 9.5) requires Android resources in unit tests
+        unitTests.isIncludeAndroidResources = true
+    }
+
     packaging {
         jniLibs {
             keepDebugSymbols += listOf(
@@ -29,6 +36,14 @@ android {
     }
 }
 
+androidComponents {
+    beforeVariants { variantBuilder ->
+        // AGP's Compose Preview task (since AGP 9.5) requires unit tests for every variant
+        @Suppress("UnstableApiUsage")
+        variantBuilder.hostTests[HostTestBuilder.UNIT_TEST_TYPE]?.enable = true
+    }
+}
+
 dependencies {
     val isComponentsBuild = rootProject.name == "components"
     val composeBom = platform(libs.androidx.compose.bom)
@@ -37,11 +52,13 @@ dependencies {
 
     implementation(libs.bundles.shared.android.app)
     implementation(libs.bundles.shared.android.app.compose)
+    implementation(libs.bundles.shared.tmc.components)
 
     debugImplementation(libs.bundles.shared.android.app.compose.debug)
 
     testImplementation(libs.bundles.shared.android.app.test)
     testImplementation(libs.bundles.shared.android.app.compose.test)
+    testImplementation(libs.bundles.shared.tmc.components.test)
 
     androidTestImplementation(libs.bundles.shared.android.app.compose.androidTest)
 

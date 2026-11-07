@@ -4,8 +4,8 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.components.core.outcome.handle
-import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.ui.contract.mvi.BaseViewModel
 import net.thunderbird.core.validation.input.IntegerInputField
 import net.thunderbird.feature.account.AccountId
@@ -42,6 +42,7 @@ internal class GeneralSettingsViewModel(
             is Event.OnNameChange -> updateSetting(UpdateGeneralSettingCommand.UpdateName(event.name))
             is Event.OnSelectAvatarImageClick -> emitEffect(Effect.OpenAvatarImagePicker)
             is Event.OnAvatarImagePicked -> onAvatarImagePicked(event)
+            is Event.OnManageFoldersSelected -> emitEffect(Effect.OpenManageFolders)
         }
     }
 
@@ -95,6 +96,8 @@ internal class GeneralSettingsViewModel(
             is AccountSettingError.NotFound -> logger.error(tag = TAG, message = { error.message })
             is AccountSettingError.StorageError -> logger.error(tag = TAG, message = { error.message })
             is AccountSettingError.UnsupportedFormat -> logger.error(tag = TAG, message = { error.message })
+            is AccountSettingError.UnsupportedMessageFormat -> logger.error(tag = TAG, message = { error.message })
+            is AccountSettingError.UnsupportedQuoteStyle -> logger.error(tag = TAG, message = { error.message })
         }
     }
 }

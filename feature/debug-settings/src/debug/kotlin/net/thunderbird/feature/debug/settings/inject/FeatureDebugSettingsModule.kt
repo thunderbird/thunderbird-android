@@ -12,7 +12,7 @@ val featureDebugSettingsModule = module {
     viewModel {
         DebugNotificationSectionViewModel(
             stringsResourceManager = get(),
-            accountManager = get(),
+            accountProfileRepository = get(),
             notificationSender = get(),
             inAppNotificationStream = get(),
             notificationIconResourceProvider = get(),

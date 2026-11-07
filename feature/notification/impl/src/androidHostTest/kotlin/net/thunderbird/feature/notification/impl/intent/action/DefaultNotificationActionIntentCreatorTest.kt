@@ -12,7 +12,7 @@ import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isTrue
 import assertk.assertions.prop
-import net.thunderbird.core.logging.testing.TestLogger
+import net.thunderbird.components.core.logging.testing.TestLogger
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.notification.api.ui.action.NotificationAction

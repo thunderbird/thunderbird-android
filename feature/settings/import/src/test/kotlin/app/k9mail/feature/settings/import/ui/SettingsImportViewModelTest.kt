@@ -22,7 +22,7 @@ import com.fsck.k9.preferences.SettingsImporter
 import kotlin.test.Test
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.TestScope
-import net.thunderbird.core.logging.testing.TestLogger
+import net.thunderbird.components.core.logging.testing.TestLogger
 import org.junit.runner.RunWith
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.doThrow

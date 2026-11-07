@@ -11,9 +11,11 @@ import net.thunderbird.backend.api.BackendFactory
 import net.thunderbird.backend.api.folder.RemoteFolderCreationOutcome
 import net.thunderbird.backend.api.folder.RemoteFolderCreator
 import net.thunderbird.core.common.exception.MessagingException
-import net.thunderbird.core.logging.Logger
+import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.components.core.outcome.Outcome
 import net.thunderbird.feature.account.AccountId
+
+private const val TAG = "ImapRemoteFolderCreator"
 
 class ImapRemoteFolderCreator(
     private val logger: Logger,
@@ -46,7 +48,9 @@ class ImapRemoteFolderCreator(
                 )
             }
         } catch (e: MessagingException) {
-            logger.error(message = { "Failed to create remote folder '${folderServerId.serverId}'" }, throwable = e)
+            logger.error(tag = TAG, throwable = e) {
+                "Failed to create remote folder '${folderServerId.serverId}'"
+            }
             Outcome.failure(
                 RemoteFolderCreationOutcome.Error.FailedToCreateRemoteFolder(
                     reason = e.message ?: "Unhandled exception. Please check the logs.",

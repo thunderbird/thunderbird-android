@@ -25,9 +25,9 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
 import net.thunderbird.app.common.feature.mail.message.domain.model.LegacyMessageSource
+import net.thunderbird.components.core.logging.testing.TestLogger
 import net.thunderbird.core.android.testing.RobolectricTest
 import net.thunderbird.core.common.mail.Flag
-import net.thunderbird.core.logging.testing.TestLogger
 import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.mail.message.Message
 import net.thunderbird.feature.mail.message.MessageAddress

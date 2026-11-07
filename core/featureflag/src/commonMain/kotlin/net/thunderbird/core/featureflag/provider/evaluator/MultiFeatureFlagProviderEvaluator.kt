@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.core.featureflag.FeatureFlagKey
 import net.thunderbird.core.featureflag.FeatureFlagResult
 import net.thunderbird.core.featureflag.keys.GeneratedFeatureFlagKey
@@ -17,7 +18,8 @@ import net.thunderbird.core.featureflag.provider.BaseCatalogFeatureFlagProvider
 import net.thunderbird.core.featureflag.provider.BundledCatalogFeatureFlagProvider
 import net.thunderbird.core.featureflag.provider.CatalogFeatureFlagProvider
 import net.thunderbird.core.featureflag.provider.context.FeatureFlagContext
-import net.thunderbird.core.logging.Logger
+
+private const val TAG = "MultiFeatureFlagProviderEvaluator"
 
 /**
  * Feature flag provider that coordinates multiple catalog providers and supports initialization with context.
@@ -52,7 +54,7 @@ internal class DefaultMultiFeatureFlagProviderEvaluator(
                 .collect { providerStates ->
                     var resolved = 0
                     for ((provider, state) in providerStates) {
-                        logger.verbose { "$logPrefix provider '$provider' state: $state" }
+                        logger.verbose(TAG) { "$logPrefix provider '$provider' state: $state" }
                         if (state == CatalogFeatureFlagProvider.State.Resolved) {
                             resolved++
                         }
@@ -77,7 +79,7 @@ internal class DefaultMultiFeatureFlagProviderEvaluator(
             .fold(emptyMap<String, Boolean>()) { merged, providerFlags -> merged + providerFlags }
             .filterValues { it }
     }
-        .onEach { logger.verbose { "[feature-flag][1] provider: $it" } }
+        .onEach { logger.verbose(TAG) { "[feature-flag][1] provider: $it" } }
         .map { enabledFlagOverrides ->
             enabledFlagOverrides.keys.mapNotNull { key -> GeneratedFeatureFlagKey.entries.find { it.key == key } }
         }
@@ -90,11 +92,13 @@ internal class DefaultMultiFeatureFlagProviderEvaluator(
     override fun provide(key: FeatureFlagKey): FeatureFlagResult {
         for (provider in providers) {
             val result = provider.provide(key)
-            logger.verbose { "[feature-flag][${provider.metadata.name}] providing '${key.key}' -> $result" }
+            logger.verbose(TAG) { "[feature-flag][${provider.metadata.name}] providing '${key.key}' -> $result" }
             if (result != FeatureFlagResult.Unavailable) {
                 return result
             } else {
-                logger.verbose { "[feature-flag][${provider.metadata.name}] fetching '${key.key}' on next provider" }
+                logger.verbose(TAG) {
+                    "[feature-flag][${provider.metadata.name}] fetching '${key.key}' on next provider"
+                }
             }
         }
         return FeatureFlagResult.Unavailable

@@ -11,6 +11,8 @@ import net.thunderbird.feature.account.settings.impl.ui.fetchingMail.advanced.Ad
 import net.thunderbird.feature.account.settings.impl.ui.general.GeneralSettingsScreen
 import net.thunderbird.feature.account.settings.impl.ui.readingMail.ReadingMailSettingsScreen
 import net.thunderbird.feature.account.settings.impl.ui.search.SearchSettingsScreen
+import net.thunderbird.feature.account.settings.impl.ui.sendingMail.SendingMailSettingsScreen
+import net.thunderbird.feature.account.settings.impl.ui.syncAndNotifications.SyncAndNotificationsScreen
 
 internal class DefaultAccountSettingsNavigation : AccountSettingsNavigation {
 
@@ -49,6 +51,17 @@ internal class DefaultAccountSettingsNavigation : AccountSettingsNavigation {
         }
 
         with(navGraphBuilder) {
+            deepLinkComposable<AccountSettingsRoute.SyncAndNotificationSettings>(
+                basePath = AccountSettingsRoute.SyncAndNotificationSettings.BASE_PATH,
+            ) { backStackEntry ->
+                val syncAndNotificationsRoute =
+                    backStackEntry.toRoute<AccountSettingsRoute.SyncAndNotificationSettings>()
+                val accountId = AccountIdFactory.of(syncAndNotificationsRoute.accountId)
+                SyncAndNotificationsScreen(accountId, onBack = onBack)
+            }
+        }
+
+        with(navGraphBuilder) {
             deepLinkComposable<AccountSettingsRoute.FetchingMailSettings>(
                 basePath = AccountSettingsRoute.FetchingMailSettings.BASE_PATH,
             ) { backStackEntry ->
@@ -56,6 +69,20 @@ internal class DefaultAccountSettingsNavigation : AccountSettingsNavigation {
                 val accountId = AccountIdFactory.of(fetchingMailSettingsRoute.accountId)
 
                 FetchingMailSettingsScreen(
+                    accountId = accountId,
+                    onBack = onBack,
+                )
+            }
+        }
+
+        with(navGraphBuilder) {
+            deepLinkComposable<AccountSettingsRoute.SendingMailSettings>(
+                basePath = AccountSettingsRoute.SendingMailSettings.BASE_PATH,
+            ) { backStackEntry ->
+                val sendingMailSettingsRoute = backStackEntry.toRoute<AccountSettingsRoute.SendingMailSettings>()
+                val accountId = AccountIdFactory.of(sendingMailSettingsRoute.accountId)
+
+                SendingMailSettingsScreen(
                     accountId = accountId,
                     onBack = onBack,
                 )
@@ -88,6 +115,28 @@ internal class DefaultAccountSettingsNavigation : AccountSettingsNavigation {
                     accountId = accountId,
                     onBack = onBack,
                 )
+            }
+        }
+
+        with(navGraphBuilder) {
+            deepLinkComposable<AccountSettingsRoute.CompositionSettings>(
+                basePath = AccountSettingsRoute.CompositionSettings.BASE_PATH,
+            ) { backStackEntry ->
+                val compositionSettingsRoute =
+                    backStackEntry.toRoute<AccountSettingsRoute.CompositionSettings>()
+
+                onFinish(compositionSettingsRoute)
+            }
+        }
+
+        with(navGraphBuilder) {
+            deepLinkComposable<AccountSettingsRoute.ManageIdentities>(
+                basePath = AccountSettingsRoute.ManageIdentities.BASE_PATH,
+            ) { backStackEntry ->
+                val manageIdentitiesRoute =
+                    backStackEntry.toRoute<AccountSettingsRoute.ManageIdentities>()
+
+                onFinish(manageIdentitiesRoute)
             }
         }
     }

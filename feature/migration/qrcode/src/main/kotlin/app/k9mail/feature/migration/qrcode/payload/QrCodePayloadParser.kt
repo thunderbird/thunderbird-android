@@ -4,6 +4,8 @@ import com.squareup.moshi.JsonDataException
 import java.io.IOException
 import net.thunderbird.legacy.logging.Log
 
+private const val TAG = "QrCodePayloadParser"
+
 internal class QrCodePayloadParser(
     private val qrCodePayloadAdapter: QrCodePayloadAdapter,
 ) {
@@ -16,10 +18,10 @@ internal class QrCodePayloadParser(
         return try {
             qrCodePayloadAdapter.fromJson(payload)
         } catch (e: JsonDataException) {
-            Log.d(e, "Failed to parse JSON")
+            Log.d(TAG, e, "Failed to parse JSON")
             null
         } catch (e: IOException) {
-            Log.d(e, "Unexpected IOException")
+            Log.d(TAG, e, "Unexpected IOException")
             null
         }
     }

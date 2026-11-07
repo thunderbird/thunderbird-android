@@ -48,6 +48,8 @@ import net.thunderbird.legacy.logging.Log;
 
 
 public class PgpMessageBuilder extends MessageBuilder {
+    private static final String TAG = "PgpMessageBuilder";
+
     private static final int REQUEST_USER_INTERACTION = 1;
     private static final String REPLACEMENT_SUBJECT = "[...]";
 
@@ -254,7 +256,7 @@ public class PgpMessageBuilder extends MessageBuilder {
         for (String address : addresses) {
             byte[] keyMaterial = autocryptOpenPgpApiInteractor.getKeyMaterialForUserId(openPgpApi, address);
             if (keyMaterial == null) {
-                Log.e("Failed fetching gossip key material for address %s", address);
+                Log.e(TAG, "Failed fetching gossip key material for address %s", address);
                 continue;
             }
             autocryptOperations.addAutocryptGossipHeaderToPart(bodyPart, keyMaterial, address);
@@ -342,7 +344,7 @@ public class PgpMessageBuilder extends MessageBuilder {
                         throw new IllegalStateException(
                                 "Got opportunistic error, but encryption wasn't supposed to be opportunistic!");
                     }
-                    Log.d("Skipping encryption due to opportunistic mode");
+                    Log.d(TAG, "Skipping encryption due to opportunistic mode");
                     return null;
                 }
                 */
@@ -420,7 +422,7 @@ public class PgpMessageBuilder extends MessageBuilder {
             String micAlgParameter = result.getStringExtra(OpenPgpApi.RESULT_SIGNATURE_MICALG);
             contentType += String.format("; micalg=\"%s\"", micAlgParameter);
         } else {
-            Log.e("missing micalg parameter for pgp multipart/signed!");
+            Log.e(TAG, "missing micalg parameter for pgp multipart/signed!");
         }
         currentProcessedMimeMessage.setHeader(MimeHeader.HEADER_CONTENT_TYPE, contentType);
     }

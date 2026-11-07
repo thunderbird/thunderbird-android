@@ -15,6 +15,8 @@ import com.fsck.k9.controller.PendingCommandSerializer
 import com.squareup.moshi.Moshi
 import net.thunderbird.legacy.logging.Log
 
+private const val TAG = "MigrationTo73"
+
 internal class MigrationTo73(private val db: SQLiteDatabase) {
     private val serializer = PendingCommandSerializer.getInstance()
     private val moshi = Moshi.Builder().build()
@@ -133,7 +135,7 @@ internal class MigrationTo73(private val db: SQLiteDatabase) {
         }
 
         if (folderIds.any { it == null }) {
-            Log.w("Couldn't find folder ID for pending command with database ID $commandId. Removing entry.")
+            Log.w(TAG, "Couldn't find folder ID for pending command with database ID $commandId. Removing entry.")
             removePendingCommand(commandId)
         } else {
             val pendingCommand = convertPendingCommand(folderIds.filterNotNull())

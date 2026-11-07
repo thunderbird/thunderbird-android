@@ -1,0 +1,49 @@
+package com.fsck.k9.storage.messages
+
+import app.k9mail.legacy.mailstore.ListenableMessageStore
+import app.k9mail.legacy.mailstore.MessageStoreFactory
+import com.fsck.k9.mailstore.LocalStoreProvider
+import com.fsck.k9.mailstore.NotifierMessageStore
+import com.fsck.k9.mailstore.StorageFilesProviderFactory
+import com.fsck.k9.message.extractors.BasicPartInfoExtractor
+import net.thunderbird.core.android.account.LegacyAccountManager
+import net.thunderbird.core.preference.GeneralSettingsManager
+import net.thunderbird.feature.account.AccountId
+import net.thunderbird.feature.mail.message.list.LocalMessageUidPrefixProvider
+
+class DefaultMessageStoreFactory(
+    private val accountManager: LegacyAccountManager,
+    private val localStoreProvider: LocalStoreProvider,
+    private val storageFilesProviderFactory: StorageFilesProviderFactory,
+    private val basicPartInfoExtractor: BasicPartInfoExtractor,
+    private val generalSettingsManager: GeneralSettingsManager,
+    private val localMessageUidPrefixProvider: LocalMessageUidPrefixProvider,
+) : MessageStoreFactory {
+
+    override fun create(accountId: AccountId): ListenableMessageStore {
+        val account = accountManager.findById(accountId) ?: error("Account not found: $accountId")
+        val localStore = localStoreProvider.getInstance(accountId)
+        if (account.incomingServerSettings.host.isGoogle() ||
+            account.outgoingServerSettings.host.isGoogle()
+        ) {
+            val folderNameSanitizer = FolderNameSanitizer(lockableDatabase = localStore.database)
+            folderNameSanitizer.removeGmailPrefixFromFolders()
+        }
+        val storageFilesProvider = storageFilesProviderFactory.createStorageFilesProvider(account.id)
+        val messageStore = K9MessageStore(
+            localStore.database,
+            storageFilesProvider,
+            basicPartInfoExtractor,
+            generalSettingsManager,
+            account.id,
+            localMessageUidPrefixProvider,
+        )
+        val notifierMessageStore = NotifierMessageStore(messageStore, localStore)
+        return ListenableMessageStore(notifierMessageStore)
+    }
+}
+
+private fun String.isGoogle(): Boolean {
+    val domains = listOf(".gmail.com", ".googlemail.com")
+    return domains.any { this.endsWith(it, ignoreCase = true) }
+}

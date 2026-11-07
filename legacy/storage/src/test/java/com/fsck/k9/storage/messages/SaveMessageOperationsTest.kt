@@ -22,7 +22,7 @@ import java.io.ByteArrayOutputStream
 import java.util.Stack
 import net.thunderbird.core.common.mail.Flag
 import net.thunderbird.legacy.logging.Log
-import net.thunderbird.core.logging.testing.TestLogger
+import net.thunderbird.components.core.logging.testing.TestLogger
 import net.thunderbird.feature.account.AccountIdFactory
 import org.junit.After
 import org.junit.Before

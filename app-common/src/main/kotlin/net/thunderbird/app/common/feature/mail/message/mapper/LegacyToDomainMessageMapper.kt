@@ -22,8 +22,8 @@ import kotlinx.datetime.toLocalDateTime
 import net.thunderbird.app.common.feature.mail.message.domain.model.LegacyMessageSource
 import net.thunderbird.app.common.feature.mail.message.mapper.DefaultMessageDataMapper.Companion.LOG_ID
 import net.thunderbird.app.common.feature.mail.message.mapper.DefaultMessageDataMapper.Companion.PREVIEW_FALLBACK_LENGTH
+import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.core.common.mail.Flag
-import net.thunderbird.core.logging.Logger
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.mail.folder.LegacyFolderIdFactory
 import net.thunderbird.feature.mail.message.LegacyMessageIdFactory
@@ -42,6 +42,8 @@ import net.thunderbird.feature.mail.message.MessageHeaders
 import net.thunderbird.feature.mail.message.MessageServerId
 import net.thunderbird.feature.mail.message.MimeType
 import com.fsck.k9.mail.Message as LegacyMessage
+
+private const val TAG = "LegacyToDomainMessageMapper"
 
 /**
  * Maps legacy K-9 Mail [messages][LegacyMessage] to the domain [Message] model.
@@ -64,7 +66,7 @@ internal class LegacyToDomainMessageMapper(
      * @throws IllegalArgumentException if the legacy message has no account UUID.
      */
     suspend fun map(dto: LegacyMessage): Message = withContext(ioDispatcher) {
-        logger.verbose { "$LOG_ID parsing legacy message to domain message." }
+        logger.verbose(TAG) { "$LOG_ID parsing legacy message to domain message." }
 
         val localMessage = dto.asLocalMessageOrNull()
         val body: MessageBody? = dto.toComposedMessageBodyOrNull()
@@ -135,26 +137,26 @@ internal class LegacyToDomainMessageMapper(
      * @return The composed body, or `null` when the message has no viewable text part.
      */
     private fun LegacyMessage.toComposedMessageBodyOrNull(): MessageBody? {
-        logger.verbose { "$LOG_ID extracting legacy message body" }
+        logger.verbose(TAG) { "$LOG_ID extracting legacy message body" }
         val textParts = MessageExtractor.getTextParts(this)
-        logger.verbose { "$LOG_ID extracted ${textParts.size} text parts" }
+        logger.verbose(TAG) { "$LOG_ID extracted ${textParts.size} text parts" }
         val htmlPart = textParts.firstOrNull { MimeUtility.isSameMimeType(it.mimeType, MimeType.TextHtml.value) }
         val plainTextPart = textParts.firstOrNull { MimeUtility.isSameMimeType(it.mimeType, MimeType.TextPlain.value) }
 
         val plainText = plainTextPart?.let(MessageExtractor::getTextFromPart)
-        logger.verbose { "$LOG_ID plain text extracted" }
+        logger.verbose(TAG) { "$LOG_ID plain text extracted" }
         val html = htmlPart?.let(MessageExtractor::getTextFromPart)
             ?: plainText?.let(HtmlConverter::textToHtml)
             ?: return run {
-                logger.warn {
+                logger.warn(TAG) {
                     "$LOG_ID Couldn't find any plain text nor html part in the text parts of given message. " +
                         "Message body is null."
                 }
                 null
             }
-        logger.verbose { "$LOG_ID html extracted" }
+        logger.verbose(TAG) { "$LOG_ID html extracted" }
         val preview = (plainText ?: HtmlConverter.htmlToText(html)).take(PREVIEW_FALLBACK_LENGTH)
-        logger.verbose { "$LOG_ID preview extracted" }
+        logger.verbose(TAG) { "$LOG_ID preview extracted" }
 
         return MessageBody(
             preview = preview,
@@ -169,11 +171,11 @@ internal class LegacyToDomainMessageMapper(
      * @return The mapped attachments, or `null` when the message has no attachment part.
      */
     private fun LegacyMessage.toComposedAttachmentsOrNull(accountId: AccountId): List<MessageAttachment>? {
-        logger.verbose { "$LOG_ID extracting legacy message attachments" }
+        logger.verbose(TAG) { "$LOG_ID extracting legacy message attachments" }
         val attachmentParts = ArrayList<Part>()
-        logger.verbose { "$LOG_ID finding attachments within message" }
+        logger.verbose(TAG) { "$LOG_ID finding attachments within message" }
         MessageExtractor.findViewablesAndAttachments(this, null, attachmentParts)
-        logger.verbose { "$LOG_ID found ${attachmentParts.size} attachment parts" }
+        logger.verbose(TAG) { "$LOG_ID found ${attachmentParts.size} attachment parts" }
         return attachmentParts.takeIf { it.isNotEmpty() }?.map { it.toComposedMessageAttachment(this, accountId) }
     }
 
@@ -192,7 +194,7 @@ internal class LegacyToDomainMessageMapper(
      */
     private fun Part.toComposedMessageAttachment(message: LegacyMessage, accountId: AccountId): MessageAttachment {
         with(attachmentResolver) {
-            logger.verbose { "$LOG_ID parsing an attachment part to message attachment" }
+            logger.verbose(TAG) { "$LOG_ID parsing an attachment part to message attachment" }
             val resolvedName = resolveAttachmentName()
 
             val copiedFile = resolveAttachmentFile(
@@ -204,10 +206,10 @@ internal class LegacyToDomainMessageMapper(
             val uri = copiedFile?.let { Uri.fromFile(it).toKmpUri() }
 
             val resolvedSize = resolveAttachmentSize(copiedFile)
-            logger.verbose { "$LOG_ID attachment size = $resolvedSize" }
+            logger.verbose(TAG) { "$LOG_ID attachment size = $resolvedSize" }
 
             return if (isInline()) {
-                logger.verbose { "$LOG_ID attachment mapped to inline attachment" }
+                logger.verbose(TAG) { "$LOG_ID attachment mapped to inline attachment" }
                 MessageAttachment.Inline(
                     mimeType = mimeType?.let(::MimeType),
                     displayName = resolvedName?.let(::MessageAttachmentDisplayName),
@@ -216,7 +218,7 @@ internal class LegacyToDomainMessageMapper(
                     contentId = contentId?.let(::MessageAttachmentContentId),
                 )
             } else {
-                logger.verbose { "$LOG_ID attachment mapped to regular attachment" }
+                logger.verbose(TAG) { "$LOG_ID attachment mapped to regular attachment" }
                 MessageAttachment.Regular(
                     mimeType = mimeType?.let(::MimeType),
                     displayName = resolvedName?.let(::MessageAttachmentDisplayName),

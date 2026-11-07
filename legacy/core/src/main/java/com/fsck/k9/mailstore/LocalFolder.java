@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import app.k9mail.legacy.di.DI;
 import app.k9mail.legacy.mailstore.MoreMessages;
 import app.k9mail.legacy.message.controller.MessageReference;
 import com.fsck.k9.helper.FileHelper;
@@ -14,6 +15,8 @@ import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyPart;
 import com.fsck.k9.mail.BoundaryGenerator;
 import com.fsck.k9.mail.FetchProfile;
+import net.thunderbird.core.android.account.LegacyAccount;
+import net.thunderbird.core.android.account.LegacyAccountManager;
 import net.thunderbird.core.common.mail.Flag;
 import com.fsck.k9.mail.FolderType;
 import com.fsck.k9.mail.Message;
@@ -31,7 +34,6 @@ import com.fsck.k9.mail.message.MessageHeaderParser;
 import com.fsck.k9.mailstore.LockableDatabase.DbCallback;
 import com.fsck.k9.message.extractors.AttachmentInfoExtractor;
 
-import net.thunderbird.core.android.account.LegacyAccountDto;
 import net.thunderbird.core.preference.GeneralSettingsManager;
 import net.thunderbird.feature.account.AccountId;
 import net.thunderbird.feature.mail.message.list.LocalMessageUidPrefixProvider;
@@ -58,6 +60,8 @@ import net.thunderbird.legacy.logging.Log;
 
 
 public class LocalFolder {
+    private static final String TAG = "LocalFolder";
+
     private static final int MAX_BODY_SIZE_FOR_DATABASE = 16 * 1024;
     private static final long INVALID_MESSAGE_PART_ID = -1;
 
@@ -66,6 +70,8 @@ public class LocalFolder {
     private final AttachmentInfoExtractor attachmentInfoExtractor;
     private final GeneralSettingsManager generalSettingsManager;
     private final LocalMessageUidPrefixProvider localMessageUidPrefixProvider;
+
+    private final LegacyAccountManager accountManager;
 
     private String status = null;
     private long lastChecked = 0;
@@ -80,7 +86,6 @@ public class LocalFolder {
     private boolean notificationsEnabled = false;
 
     private boolean isInTopGroup = false;
-    private boolean isIntegrate = false;
 
     private MoreMessages moreMessages = MoreMessages.UNKNOWN;
     private boolean localOnly = false;
@@ -103,6 +108,7 @@ public class LocalFolder {
         this.name = name;
         this.type = type;
         this.generalSettingsManager = generalSettingsManager;
+        this.accountManager = DI.get(LegacyAccountManager.class);
         attachmentInfoExtractor = localStore.getAttachmentInfoExtractor();
         this.localMessageUidPrefixProvider = localMessageUidPrefixProvider;
     }
@@ -114,6 +120,7 @@ public class LocalFolder {
         this.databaseId = databaseId;
         attachmentInfoExtractor = localStore.getAttachmentInfoExtractor();
         this.generalSettingsManager = generalSettingsManager;
+        this.accountManager = DI.get(LegacyAccountManager.class);
         this.localMessageUidPrefixProvider = localMessageUidPrefixProvider;
     }
 
@@ -129,9 +136,8 @@ public class LocalFolder {
         return databaseId;
     }
 
-    public AccountId getAccountId()
-    {
-        return getAccount().getId();
+    public AccountId getAccountId() {
+        return localStore.getAccountId();
     }
 
     public boolean getSignatureUse() {
@@ -180,7 +186,6 @@ public class LocalFolder {
         // does a DB update on setLastChecked
         lastChecked = cursor.getLong(LocalStore.FOLDER_LAST_CHECKED_INDEX);
         isInTopGroup = cursor.getInt(LocalStore.FOLDER_TOP_GROUP_INDEX) == 1;
-        isIntegrate = cursor.getInt(LocalStore.FOLDER_INTEGRATE_INDEX) == 1;
         visible = cursor.getInt(LocalStore.FOLDER_VISIBLE_INDEX) == 1;
         notificationsEnabled = cursor.getInt(LocalStore.FOLDER_NOTIFICATIONS_ENABLED_INDEX) == 1;
         syncEnabled = cursor.getInt(LocalStore.FOLDER_SYNC_ENABLED_INDEX) == 1;
@@ -313,15 +318,6 @@ public class LocalFolder {
         return notificationsEnabled;
     }
 
-    public boolean isIntegrate() {
-        return isIntegrate;
-    }
-
-    public void setIntegrate(boolean integrate) throws MessagingException {
-        isIntegrate = integrate;
-        updateFolderColumn("integrate", isIntegrate ? 1 : 0);
-    }
-
     public boolean hasMoreMessages() {
         return moreMessages != MoreMessages.FALSE;
     }
@@ -414,11 +410,11 @@ public class LocalFolder {
 
             String parentMimeType = parentPart.getMimeType();
             if (MimeUtility.isMultipart(parentMimeType)) {
-                BodyPart bodyPart = new LocalBodyPart(getAccountId().toString(), message, id, size);
+                BodyPart bodyPart = new LocalBodyPart(getAccountId(), message, id, size);
                 ((Multipart) parentPart.getBody()).addBodyPart(bodyPart);
                 part = bodyPart;
             } else if (MimeUtility.isMessage(parentMimeType)) {
-                Message innerMessage = new LocalMimeMessage(getAccountId().toString(), message, id);
+                Message innerMessage = new LocalMimeMessage(getAccountId(), message, id);
                 parentPart.setBody(innerMessage);
                 part = innerMessage;
             } else {
@@ -813,7 +809,7 @@ public class LocalFolder {
                 try {
                     updateOrInsertMessagePart(db, new ContentValues(), part, messagePartId);
                 } catch (Exception e) {
-                    Log.e(e, "Error writing message part");
+                    Log.e(TAG, e, "Error writing message part");
                 }
 
                 return null;
@@ -857,7 +853,7 @@ public class LocalFolder {
                     try {
                         message.setFlags(flags, value);
                     } catch (MessagingException e) {
-                        Log.e(e, "Something went wrong while setting flag");
+                        Log.e(TAG, e, "Something went wrong while setting flag");
                     }
                 }
 
@@ -1127,7 +1123,7 @@ public class LocalFolder {
                 File file = localStore.getAttachmentFile(messagePartId);
                 if (file.exists()) {
                     if (!file.delete() && generalSettingsManager.getConfig().getDebugging().isDebugLoggingEnabled()) {
-                        Log.d("Couldn't delete message part file: %s", file.getAbsolutePath());
+                        Log.d(TAG, "Couldn't delete message part file: %s", file.getAbsolutePath());
                     }
                 }
             }
@@ -1209,8 +1205,12 @@ public class LocalFolder {
         });
     }
 
-    private LegacyAccountDto getAccount() {
-        return localStore.getAccount();
+    private LegacyAccount getAccount() {
+        LegacyAccount account = accountManager.findById(localStore.getAccountId());
+        if (account == null) {
+            throw new IllegalStateException("Account not found for ID: " + localStore.getAccountId());
+        }
+        return account;
     }
 
     // Note: The contents of the 'message_parts' table depend on these values.

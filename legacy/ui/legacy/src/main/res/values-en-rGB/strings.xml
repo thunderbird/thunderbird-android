@@ -213,7 +213,6 @@
     <string name="notification_action_archive_all">Archive All</string>
     <string name="notification_channel_push_description">Displayed while waiting for new messages</string>
     <string name="account_settings_general_title">General settings</string>
-    <string name="folder_settings_include_in_integrated_inbox_label">Unify</string>
     <string name="dialog_confirm_delete_confirm_button">Yes</string>
     <string name="account_settings_notify_sync_summary">Notify in status bar while mail is checked</string>
     <string name="settings_export_success_generic">Settings successfully exported</string>
@@ -355,7 +354,6 @@
     <string name="settings_export_progress_text">Exporting settings…</string>
     <string name="setting_theme_dark">Dark</string>
     <string name="account_settings_crypto_encrypt_all_drafts_on">All drafts will be stored encrypted</string>
-    <string name="integrated_inbox_detail">All messages in unified folders</string>
     <string name="account_settings_message_read_receipt_summary">Always request a read receipt</string>
     <string name="account_settings_default_quoted_text_shown_label">Quote message when replying</string>
     <string name="account_settings_message_age_14">the last 2 weeks</string>

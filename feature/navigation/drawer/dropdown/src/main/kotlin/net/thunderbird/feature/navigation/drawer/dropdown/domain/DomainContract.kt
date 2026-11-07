@@ -2,12 +2,12 @@ package net.thunderbird.feature.navigation.drawer.dropdown.domain
 
 import kotlinx.coroutines.flow.Flow
 import net.thunderbird.feature.account.AccountId
+import net.thunderbird.feature.mail.folder.FolderRole
 import net.thunderbird.feature.navigation.drawer.api.NavigationDrawerExternalContract.DrawerConfig
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayAccount
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayFolder
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayTreeFolder
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.UnifiedDisplayFolder
-import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.UnifiedDisplayFolderType
 
 internal interface DomainContract {
 
@@ -25,7 +25,7 @@ internal interface DomainContract {
         }
 
         fun interface GetDisplayFoldersForAccount {
-            operator fun invoke(accountId: String): Flow<List<DisplayFolder>>
+            operator fun invoke(accountId: AccountId): Flow<List<DisplayFolder>>
         }
 
         fun interface GetDisplayTreeFolder {
@@ -48,6 +48,6 @@ internal interface DomainContract {
     }
 
     interface UnifiedFolderRepository {
-        fun getUnifiedDisplayFolderFlow(unifiedFolderType: UnifiedDisplayFolderType): Flow<UnifiedDisplayFolder>
+        fun getUnifiedDisplayFolderFlow(role: FolderRole): Flow<UnifiedDisplayFolder>
     }
 }

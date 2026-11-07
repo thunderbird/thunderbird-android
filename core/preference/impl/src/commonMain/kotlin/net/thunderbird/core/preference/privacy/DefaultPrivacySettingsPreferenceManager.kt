@@ -10,20 +10,19 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
-import net.thunderbird.core.logging.Logger
+import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.core.preference.PreferenceChangeBroker
 import net.thunderbird.core.preference.PreferenceChangeSubscriber
 import net.thunderbird.core.preference.PreferenceScope
 import net.thunderbird.core.preference.storage.Storage
 import net.thunderbird.core.preference.storage.StorageEditor
-import net.thunderbird.core.preference.storage.StoragePersister
+import net.thunderbird.core.preference.storage.StorageProvider
 
 private const val TAG = "DefaultPrivacySettingsPreferenceManager"
 
 class DefaultPrivacySettingsPreferenceManager(
     private val logger: Logger,
-    private val storagePersister: StoragePersister,
-    private val storageEditor: StorageEditor,
+    private val storageProvider: StorageProvider,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
     private var scope: CoroutineScope = CoroutineScope(SupervisorJob()),
     preferenceChangeBroker: PreferenceChangeBroker,
@@ -35,7 +34,7 @@ class DefaultPrivacySettingsPreferenceManager(
     private val configState: MutableStateFlow<PrivacySettings> = MutableStateFlow(value = loadConfig())
     private val mutex = Mutex()
     private val storage: Storage
-        get() = storagePersister.loadValues()
+        get() = storageProvider.storage
 
     override fun getConfig(): PrivacySettings = configState.value
     override fun getConfigFlow(): Flow<PrivacySettings> = configState
@@ -65,6 +64,7 @@ class DefaultPrivacySettingsPreferenceManager(
         logger.debug(TAG) { "writeConfig() called with: config = $config" }
         scope.launch(ioDispatcher) {
             mutex.withLock {
+                val storageEditor = storageProvider.createStorageEditor()
                 storageEditor.putBoolean(PrivacySettingKey.HideTimeZone.value, config.isHideTimeZone)
                 storageEditor.putBoolean(PrivacySettingKey.HideUserAgent.value, config.isHideUserAgent)
                 storageEditor.putBoolean(

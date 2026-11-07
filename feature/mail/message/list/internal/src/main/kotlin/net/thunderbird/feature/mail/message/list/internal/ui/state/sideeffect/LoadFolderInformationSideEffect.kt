@@ -3,8 +3,8 @@ package net.thunderbird.feature.mail.message.list.internal.ui.state.sideeffect
 import androidx.compose.ui.graphics.Color
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.first
+import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.components.core.outcome.fold
-import net.thunderbird.core.logging.Logger
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.UnifiedAccountId
 import net.thunderbird.feature.account.profile.AccountProfileRepository

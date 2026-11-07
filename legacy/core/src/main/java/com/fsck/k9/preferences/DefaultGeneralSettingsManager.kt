@@ -1,7 +1,6 @@
 package com.fsck.k9.preferences
 
 import com.fsck.k9.K9
-import com.fsck.k9.Preferences
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -14,8 +13,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import net.thunderbird.core.common.appConfig.PlatformConfigProvider
-import net.thunderbird.core.logging.Logger
-import net.thunderbird.core.logging.config.DebugLogConfigurator
+import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.core.preference.GeneralSettings
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.PreferenceChangePublisher
@@ -31,6 +29,9 @@ import net.thunderbird.core.preference.network.NetworkSettingsPreferenceManager
 import net.thunderbird.core.preference.notification.NotificationPreferenceManager
 import net.thunderbird.core.preference.privacy.PrivacySettingsPreferenceManager
 import net.thunderbird.core.preference.storage.Storage
+import net.thunderbird.core.preference.storage.StorageProvider
+
+private const val TAG = "DefaultGeneralSettingsManager"
 
 /**
  * Retrieve and modify general settings.
@@ -43,7 +44,7 @@ import net.thunderbird.core.preference.storage.Storage
  */
 @Suppress("LongParameterList")
 internal class DefaultGeneralSettingsManager(
-    private val preferences: Preferences,
+    private val storageProvider: StorageProvider,
     private val coroutineScope: CoroutineScope,
     private val changePublisher: PreferenceChangePublisher,
     private val privacySettingsPreferenceManager: PrivacySettingsPreferenceManager,
@@ -57,7 +58,6 @@ internal class DefaultGeneralSettingsManager(
     private val networkSettingsPreferenceManager: NetworkSettingsPreferenceManager,
     private val debuggingSettingsPreferenceManager: DebuggingSettingsPreferenceManager,
     private val interactionSettingsPreferenceManager: InteractionSettingsPreferenceManager,
-    private val debugLogConfigurator: DebugLogConfigurator,
     private val backgroundDispatcher: CoroutineDispatcher = Dispatchers.IO,
     private val platformConfigProvider: PlatformConfigProvider,
     private val logger: Logger,
@@ -98,7 +98,7 @@ internal class DefaultGeneralSettingsManager(
             )
         }
         .combine(messageListPreferencesManager.getConfigFlow()) { generalSettings, messageListSettings ->
-            logger.debug { "messageListSettings: $messageListSettings" }
+            logger.debug(TAG) { "messageListSettings: $messageListSettings" }
             generalSettings.copy(
                 display = generalSettings.display.copy(
                     visualSettings = generalSettings.display.visualSettings.copy(
@@ -120,10 +120,7 @@ internal class DefaultGeneralSettingsManager(
         .combine(debuggingSettingsPreferenceManager.getConfigFlow()) { generalSettings, debuggingSettings ->
             generalSettings.copy(
                 debugging = debuggingSettings,
-            ).also {
-                debugLogConfigurator.updateLoggingStatus(debuggingSettings.isDebugLoggingEnabled)
-                debugLogConfigurator.updateSyncLogging(debuggingSettings.isSyncLoggingEnabled)
-            }
+            )
         }
         .combine(interactionSettingsPreferenceManager.getConfigFlow()) { generalSettings, interactionSettings ->
             generalSettings.copy(interaction = interactionSettings)
@@ -136,7 +133,7 @@ internal class DefaultGeneralSettingsManager(
 
     @Deprecated("This only exists for collaboration with the K9 class")
     val storage: Storage
-        get() = preferences.storage
+        get() = storageProvider.storage
 
     @Deprecated(
         message = "Use PreferenceManager<GeneralSettings>.getConfig() instead",
@@ -157,7 +154,7 @@ internal class DefaultGeneralSettingsManager(
 
     @Synchronized
     fun loadSettings() {
-        K9.loadPrefs(preferences.storage)
+        K9.loadPrefs(storageProvider.storage)
     }
 
     @Deprecated(message = "This only exists for collaboration with the K9 class")
@@ -188,7 +185,7 @@ internal class DefaultGeneralSettingsManager(
 
     @Synchronized
     private fun saveSettings() {
-        val editor = preferences.createStorageEditor()
+        val editor = storageProvider.createStorageEditor()
         K9.save(editor)
         editor.commit()
         changePublisher.publish()

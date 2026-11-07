@@ -26,4 +26,6 @@
     <string name="sort_by_unread_desc">Leídos primero</string>
     <string name="sort_by_attach_asc">Con ficheros adjuntos primero</string>
     <string name="sort_by_attach_desc">Sin ficheros adjuntos primero</string>
+    <string name="sort_by_flag_asc">El primero marcado con un asterisco</string>
+    <string name="sort_by_flag_desc">Primero los que no tienen asterisco</string>
 </resources>

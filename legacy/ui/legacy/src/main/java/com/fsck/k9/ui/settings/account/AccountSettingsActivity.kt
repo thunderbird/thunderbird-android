@@ -19,6 +19,8 @@ import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.legacy.logging.Log
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
+private const val TAG = "AccountSettingsActivity"
+
 class AccountSettingsActivity : BaseActivity(), OnPreferenceStartScreenCallback {
     private val accountViewModel: AccountSettingsViewModel by viewModel()
     private lateinit var accountId: AccountId
@@ -36,7 +38,7 @@ class AccountSettingsActivity : BaseActivity(), OnPreferenceStartScreenCallback 
         initializeActionBar()
 
         if (!decodeArguments()) {
-            Log.d("Invalid arguments")
+            Log.d(TAG, "Invalid arguments")
             finish()
             return
         }
@@ -79,7 +81,7 @@ class AccountSettingsActivity : BaseActivity(), OnPreferenceStartScreenCallback 
     private fun loadAccount() {
         accountViewModel.getAccount(accountId).observe(this) { account ->
             if (account == null) {
-                Log.w("Account with ID %s not found", accountId)
+                Log.w(TAG, "Account with ID %s not found", accountId)
                 finish()
                 return@observe
             }

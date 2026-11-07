@@ -187,15 +187,17 @@ private fun BottomBar(
                     ButtonFilled(
                         text = stringResource(CommonR.string.account_common_button_next),
                         onClick = { onEvent(Event.NextClicked) },
-                        modifier = Modifier.hide(!isNextButtonVisible)
-                            .testTag("onboarding_permissions_next_button"),
+                        modifier = Modifier
+                            .hide(!isNextButtonVisible)
+                            .testTag(OnboardingPermissionsTestTags.TEST_TAG_BTN_PERMISSIONS_NEXT),
                     )
 
                     ButtonText(
                         text = stringResource(R.string.onboarding_permissions_skip_button),
                         onClick = { onEvent(Event.NextClicked) },
-                        modifier = Modifier.hide(isNextButtonVisible)
-                            .testTag("onboarding_permissions_skip_button"),
+                        modifier = Modifier
+                            .hide(isNextButtonVisible)
+                            .testTag(OnboardingPermissionsTestTags.TEST_TAG_BTN_PERMISSIONS_SKIP),
                     )
                 }
             }

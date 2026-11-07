@@ -3,10 +3,12 @@ package net.thunderbird.core.featureflag.provider
 import java.io.IOException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
+import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.core.featureflag.data.FeatureFlagCatalogDataSource
 import net.thunderbird.core.featureflag.model.FeatureFlagCatalog
 import net.thunderbird.core.featureflag.provider.context.FeatureFlagContext
-import net.thunderbird.core.logging.Logger
+
+private const val TAG = "DataSourceCatalogFeatureFlagProvider"
 
 /**
  * Base implementation of a catalog-based feature flag provider that loads flag
@@ -32,9 +34,9 @@ abstract class DataSourceCatalogFeatureFlagProvider internal constructor(
         try {
             val catalog = loadCatalog()
             resolve(context, catalog)
-            logger.verbose { "$logPrefix Resolved feature flags: ${resolvedFlags()}" }
+            logger.verbose(TAG) { "$logPrefix Resolved feature flags: ${resolvedFlags()}" }
         } catch (e: IOException) {
-            logger.error(throwable = e) { "$logPrefix Failed to load feature flag catalog." }
+            logger.error(tag = TAG, throwable = e) { "$logPrefix Failed to load feature flag catalog." }
         }
     }
 

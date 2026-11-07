@@ -3,7 +3,7 @@ package com.fsck.k9.storage.migrations
 import android.content.ContentValues
 import android.database.sqlite.SQLiteDatabase
 import net.thunderbird.core.android.account.DeletePolicy
-import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.android.account.LegacyAccount
 
 /**
  * Remove all placeholder entries in 'messages' table
@@ -23,7 +23,7 @@ import net.thunderbird.core.android.account.LegacyAccountDto
  * deleted messages are re-downloaded. And if they are, the next sync after the remote operation has completed will
  * remove them again.
  */
-internal class MigrationTo74(private val db: SQLiteDatabase, private val account: LegacyAccountDto) {
+internal class MigrationTo74(private val db: SQLiteDatabase, private val account: LegacyAccount) {
 
     fun removeDeletedMessages() {
         if (account.deletePolicy != DeletePolicy.ON_DELETE) return

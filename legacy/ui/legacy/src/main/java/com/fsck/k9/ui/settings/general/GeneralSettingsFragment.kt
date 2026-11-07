@@ -240,6 +240,8 @@ class GeneralSettingsFragment : PreferenceFragmentCompat() {
         private const val PREFERENCE_DATA_COLLECTION = "data_collection"
         const val DEFAULT_SYNC_FILENAME = "thunderbird-sync-logs"
 
-        fun create(rootKey: String? = null) = GeneralSettingsFragment().withArguments(ARG_PREFERENCE_ROOT to rootKey)
+        fun create(rootKey: String? = null) = GeneralSettingsFragment().withArguments {
+            putString(ARG_PREFERENCE_ROOT, rootKey)
+        }
     }
 }

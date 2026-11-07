@@ -70,7 +70,7 @@ jobs:
         uses: ./.github/actions/setup-gradle
 
       - name: Build K9 application
-        run: ./gradlew :app-k9mail:assemble -Pci=true
+        run: ./gradlew :app-k9mail:assemble -Pminify=false
 
   check-badging-k9:
     name: Check - K9 badging
@@ -108,7 +108,7 @@ jobs:
         uses: ./.github/actions/setup-gradle
 
       - name: Build Thunderbird application
-        run: ./gradlew :app-thunderbird:assemble -Pci=true
+        run: ./gradlew :app-thunderbird:assemble -Pminify=false
 
   check-badging-thunderbird:
     name: Check - Thunderbird badging

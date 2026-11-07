@@ -4,10 +4,10 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.components.core.outcome.handle
 import net.thunderbird.core.android.account.ShowPictures
 import net.thunderbird.core.common.resources.StringsResourceManager
-import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.ui.contract.mvi.BaseViewModel
 import net.thunderbird.core.ui.setting.SettingValue.Select.SelectOption
 import net.thunderbird.feature.account.AccountId
@@ -154,6 +154,8 @@ internal class ReadingMailSettingsViewModel(
             is AccountSettingError.NotFound -> logger.error(tag = TAG, message = { error.message })
             is AccountSettingError.StorageError -> logger.error(tag = TAG, message = { error.message })
             is AccountSettingError.UnsupportedFormat -> logger.error(tag = TAG, message = { error.message })
+            is AccountSettingError.UnsupportedMessageFormat -> logger.error(tag = TAG, message = { error.message })
+            is AccountSettingError.UnsupportedQuoteStyle -> logger.error(tag = TAG, message = { error.message })
         }
     }
 }

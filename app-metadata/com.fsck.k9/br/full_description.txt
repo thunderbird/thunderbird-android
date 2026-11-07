@@ -1,0 +1,24 @@
+K-9 Mail a zo un arval posteloù open source, a ya en-dro gant an holl bourchaserien postelerezh.
+
+<b>Arc'hweladurioù</b>
+
+* Skor meur a gont
+* Boest degemer unanet
+* Doujañ d’ho puhez prevez (heuliañ ebet, kennaskañ ouzh ho pourchaser postelerezh hepken)
+* Goubredañ emgefre pe rebuzadurioù bountet
+* Klask lec’hel ha war ar servijer
+* Enrinegañ ar posteloù gant OpenPGP (PGP/MIME)
+
+Staliit an arload <a href="https://f-droid.org/packages/org.sufficientlysecure.keychain">OpenKeychain : Easy PGP</a> evit enrinegañ hag ezrinegañ ho posteloù gant OpenPGP.
+
+
+<b>Skoazell</b>
+
+Ma’z eus kudennoù ganeoc’h gant K-9 Mail, goulennit skoazell war hor <a href="https://forum.k9mail.app">forom skoazell</a>.
+
+
+<b>Reiñ an dorn a fell deoc'h ?</b>
+
+Ur raktres diorroet gant ur gumuniezh eo K-9 Mail. Ma fell deoc’h sikour da wellaat an arload, deuit e darempred ganeomp !
+Kavout a rit hor benveg evit heuliañ ar beugoù, hor c’hod mamm hag hor wiki e <a href="https://github.com/thunderbird/thunderbird-android">https://github.com/thunderbird/thunderbird-android</a>.
+Laouen e vezomp atav o tegemer diorroerien nevez, grafourien, skridaozerien, troerien, tud da zibab ar beugoù ha mignoned nevez.

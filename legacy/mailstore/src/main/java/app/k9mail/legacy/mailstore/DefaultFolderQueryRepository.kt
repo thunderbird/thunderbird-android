@@ -8,13 +8,15 @@ import kotlinx.coroutines.withContext
 import net.thunderbird.components.core.outcome.Outcome
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.LegacyAccountManager
-import net.thunderbird.core.logging.Logger
+import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.mail.folder.api.Folder
 import net.thunderbird.feature.mail.folder.api.FolderServerId
 import net.thunderbird.feature.mail.folder.api.OutboxFolderManager
 import net.thunderbird.feature.mail.folder.api.data.FolderError
 import net.thunderbird.feature.mail.folder.api.data.repository.FolderQueryRepository
+
+private const val TAG = "DefaultFolderQueryRepository"
 
 private const val LOG_ID = "[repository][folder-query]"
 
@@ -32,12 +34,12 @@ class DefaultFolderQueryRepository(
         accountId: AccountId,
         folderId: Long,
     ): Outcome<Folder?, FolderError> = withContext(ioDispatcher) {
-        logger.verbose { "$LOG_ID getting folder by id '$folderId' from account '$accountId'" }
+        logger.verbose(TAG) { "$LOG_ID getting folder by id '$folderId' from account '$accountId'" }
         val account = getAccountById(accountId)
             ?: error("Account not found: $accountId")
         val messageStore = messageStoreManager.getMessageStore(accountId)
         val outboxFolderId = outboxFolderManager.getOutboxFolderId(accountId)
-        logger.verbose { "$LOG_ID found outbox folder id '$outboxFolderId' for account '$accountId'" }
+        logger.verbose(TAG) { "$LOG_ID found outbox folder id '$outboxFolderId' for account '$accountId'" }
         val folder = messageStore.getFolder(folderId) { folder ->
             Folder(
                 id = folder.id,
@@ -46,7 +48,7 @@ class DefaultFolderQueryRepository(
                 isLocalOnly = folder.isLocalOnly,
             )
         }
-        logger.verbose { "$LOG_ID found folder: $folder" }
+        logger.verbose(TAG) { "$LOG_ID found folder: $folder" }
 
         Outcome.success(folder)
     }
@@ -55,12 +57,12 @@ class DefaultFolderQueryRepository(
         accountId: AccountId,
         folderId: Long,
     ): Outcome<FolderServerId?, FolderError> = withContext(ioDispatcher) {
-        logger.verbose { "$LOG_ID getting folder server_id by id '$folderId' from account '$accountId'" }
+        logger.verbose(TAG) { "$LOG_ID getting folder server_id by id '$folderId' from account '$accountId'" }
         val messageStore = messageStoreManager.getMessageStore(accountId)
         val serverId = messageStore.getFolder(folderId) { folder ->
             folder.serverId?.let(::FolderServerId)
         }
-        logger.verbose { "$LOG_ID found folder server_id: '${serverId?.serverId}'" }
+        logger.verbose(TAG) { "$LOG_ID found folder server_id: '${serverId?.serverId}'" }
 
         Outcome.success(serverId)
     }
@@ -69,10 +71,10 @@ class DefaultFolderQueryRepository(
         accountId: AccountId,
         folderServerId: FolderServerId,
     ): Outcome<Long?, FolderError> = withContext(ioDispatcher) {
-        logger.verbose { "$LOG_ID getting folder id by server_id '$folderServerId' from account '$accountId'" }
+        logger.verbose(TAG) { "$LOG_ID getting folder id by server_id '$folderServerId' from account '$accountId'" }
         val messageStore = messageStoreManager.getMessageStore(accountId)
         val folderId = messageStore.getFolderId(folderServerId.serverId)
-        logger.verbose { "$LOG_ID found folder id: '${folderId}'" }
+        logger.verbose(TAG) { "$LOG_ID found folder id: '${folderId}'" }
 
         Outcome.success(folderId)
     }

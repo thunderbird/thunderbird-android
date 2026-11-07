@@ -743,6 +743,16 @@ public abstract class TokenCompleteTextView<T> extends AppCompatAutoCompleteText
     }
 
     @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+
+        // Reflow now, during layout, so the first draw doesn't use a layout that doesn't match the token sizes.
+        if (w != oldw) {
+            redrawTokens();
+        }
+    }
+
+    @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
         lastLayout = getLayout(); //Used for checking text positions

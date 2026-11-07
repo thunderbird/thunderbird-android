@@ -32,6 +32,7 @@ import kotlinx.io.RawSink
 import kotlinx.io.RawSource
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
+import net.thunderbird.components.core.logging.testing.TestLogger
 import net.thunderbird.core.featureflag.data.configstore.FeatureFlagConfigData
 import net.thunderbird.core.featureflag.data.configstore.FeatureFlagConfigStore
 import net.thunderbird.core.featureflag.data.configstore.RemoteCatalogConfig
@@ -42,7 +43,6 @@ import net.thunderbird.core.featureflag.model.FlagRegistryOverride
 import net.thunderbird.core.featureflag.serialization.FlagRegistryOverrideSerializer
 import net.thunderbird.core.file.FileSystemManager
 import net.thunderbird.core.file.WriteMode
-import net.thunderbird.core.logging.testing.TestLogger
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class RemoteFeatureFlagCatalogDataSourceTest {

@@ -1,3 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    </resources>
+    <string name="debug_settings_feature_flag_overridden">"erc\'hlec\'hiañ; "</string>
+    <string name="debug_settings_notifications_status">"Statud : "</string>
+    <string name="debug_settings_feature_flag_modified_indicator">"* "</string>
+    <string name="debug_settings_notifications_title">Kemenadennoù</string>
+    <string name="debug_settings_feature_flag_unsaved_changes_leave_button">Kuitaat</string>
+    <string name="debug_settings_notifications_single_mail_preview">Rakwel</string>
+    <string name="debug_settings_notifications_single_mail_summary">Diverradur</string>
+    <string name="debug_settings_notifications_single_mail_subject">Danvez</string>
+    <string name="debug_settings_feature_flag_unsaved_changes_stay_button">Chom</string>
+    <string name="debug_settings_notifications_single_mail_sender">Kaser</string>
+    <string name="debug_settings_notifications_loading">O kargañ…</string>
+</resources>

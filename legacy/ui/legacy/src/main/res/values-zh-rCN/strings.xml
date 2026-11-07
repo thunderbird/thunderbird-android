@@ -422,7 +422,7 @@
     <string name="account_settings_notification_light_magenta">洋红</string>
     <string name="account_settings_composition_title">邮件撰写选项</string>
     <string name="account_settings_composition_label">撰写默认值</string>
-    <string name="account_settings_composition_summary">设置您的默认发件人、密送和签名</string>
+    <string name="account_settings_composition_summary">设置默认的发件地址、Bcc 密送地址和签名</string>
     <string name="account_settings_identities_label">管理身份</string>
     <string name="account_settings_identities_summary">设置备用“发件人”地址和签名</string>
     <string name="manage_identities_title">管理身份</string>
@@ -518,8 +518,6 @@
     <string name="show_unified_inbox_title">显示统一收件箱</string>
     <string name="show_starred_count_title">显示星标邮件数</string>
     <string name="integrated_inbox_title">统一收件箱</string>
-    <string name="integrated_inbox_detail">统一文件夹中的所有邮件</string>
-    <string name="folder_settings_include_in_integrated_inbox_label">统一</string>
     <string name="account_settings_no_folder_selected">无</string>
     <string name="account_settings_automatic_special_folder">自动（%s）</string>
     <string name="font_size_settings_title">字体大小</string>
@@ -955,4 +953,10 @@
     <string name="message_view_from_me_text">我</string>
     <string name="account_settings_signature_preview_empty">您的签名预览将显示在此处</string>
     <string name="error_no_contact_provider">未找到联系人应用。请安装联系人应用以添加此地址。</string>
+    <string name="account_setup_visibility_and_syncing">文件同步和推送</string>
+    <string name="remote_feature_flag_preferences">远程特性标记</string>
+    <string name="account_settings_sync_and_notifications">同步和通知</string>
+    <string name="account_settings_folder_sync_and_push">文件同步和推送</string>
+    <string name="account_settings_fetching_and_data_limits">获取和数据限制</string>
+    <string name="account_settings_folder_visibility">文件可见性</string>
 </resources>

@@ -317,7 +317,8 @@ class CreateArchiveFolderTest {
 
             assertThat(specialFolderUpdaterFactory.specialFolderUpdater.updateSpecialFoldersCalls).isEqualTo(1)
 
-            assertThat(accountManager.savedAccounts.map { it.id }).containsExactly(AccountIdFactory.of(accountUuid))
+            // Saving the account read before the change would undo the archive folder set by the special folder updater
+            assertThat(accountManager.savedAccounts).isEmpty()
 
             awaitComplete()
         }

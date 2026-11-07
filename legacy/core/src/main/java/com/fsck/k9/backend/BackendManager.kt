@@ -7,7 +7,6 @@ import net.thunderbird.backend.api.BackendFactory
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.feature.account.AccountId
-import net.thunderbird.feature.account.AccountIdFactory
 
 class BackendManager(
     private val backendFactories: Map<String, BackendFactory>,
@@ -15,11 +14,6 @@ class BackendManager(
 ) {
     private val backendCache = mutableMapOf<AccountId, BackendContainer>()
     private val listeners = CopyOnWriteArraySet<BackendChangedListener>()
-
-    // TODO remove this once Java callers have been converted to Kotlin
-    fun getBackend(accountUuid: String): Backend {
-        return getBackend(AccountIdFactory.of(accountUuid))
-    }
 
     fun getBackend(accountId: AccountId): Backend {
         val newBackend = synchronized(backendCache) {
@@ -44,7 +38,7 @@ class BackendManager(
     }
 
     private fun getAccountById(accountId: AccountId): LegacyAccount {
-        return accountManager.getById(accountId)
+        return accountManager.findById(accountId)
             ?: error("Account not found: $accountId")
     }
 

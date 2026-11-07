@@ -1,3 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    </resources>
+    <string name="thundermail_redirecting">Redirigiendo a Thundermail…</string>
+    <string name="thundermail_something_went_wrong">Ha habido un error</string>
+    <string name="thundermail_browser_is_not_available">El navegador no está disponible. Comprueba la configuración de tu dispositivo</string>
+    <string name="thundermail_operation_was_canceled">La operación se ha cancelado</string>
+    <string name="thundermail_unknown_error_please_consider_reporting">Error desconocido. Por favor, considera la posibilidad de notificarlo.</string>
+    <string name="thundermail_add_account">Añadir cuenta</string>
+    <string name="thundermail_add_an_email_account">Añadir una cuenta de correo electrónico</string>
+    <string name="thundermail_what_is_thundermail">¿Qué es Thundermail?</string>
+    <string name="thundermail_or_divider">– o –</string>
+</resources>

@@ -346,7 +346,8 @@ standardized solutions that can be reused across the application:
 
 - **⚠️ Error Handling**: The Thunderbird Mobile Components `outcome` artifact transforms exceptions into domain-specific
   errors and provides user-friendly feedback.
-- **📋 Logging**: Centralized logging system (`core/logging`) ensures consistent log formatting, levels, and storage.
+- **📋 Logging**: [Thunderbird Mobile Components](../developer/thunderbird-mobile-components.md) supplies the logger and
+  sinks. The `core/logging` module provides app-specific configuration and exports.
 - **🔒 Security**: Modules like `core/security` handle encryption, authentication, and secure data storage.
 
 Work in progress:
@@ -513,9 +514,18 @@ When implementing error handling in your code:
 The application uses a structured logging system with a well-defined API:
 
 - 📊 **Logging Architecture**:
-  - Core logging API (`core/logging/api`) defines interfaces like `Logger` and `LogSink`
-  - Multiple implementations (composite, console) allow for flexible logging targets
-  - Composite implementation enables logging to multiple sinks simultaneously
+  - [Thunderbird Mobile Components](../developer/thunderbird-mobile-components.md) logging core
+    (`net.thunderbird.components.core.logging:core`) defines `Logger`, `LogSink`, and the console and composite sinks.
+    Its file artifact provides `FileLogSink`.
+  - `core/logging/api` exposes app-specific debug-log configuration and export contracts. `core/logging/internal` binds
+    the default logger and fixed level provider, and implements the sync-debug and Android logcat exporters.
+  - `app-common` chooses the build's logging default and sync-debug file location, then assembles the logging modules.
+    The main logger is enabled by default in debug builds and disabled in release builds. The saved debug preference
+    updates it independently of the log level, which is verbose in debug builds and debug in release builds. The
+    sync-debug logger remains independent, with its file sink attached only when sync-debug logging is enabled. Android
+    console output writes directly to logcat.
+  - **Export logs** copies the Android logcat buffer to a user-selected file. **Export Sync logs** exports the app's
+    sync-debug file sink. They do not necessarily contain the same entries.
 - 🔄 **Logger vs. Sink**:
   - **Logger**: The front-facing interface that application code interacts with to create log entries
     - Provides methods for different log levels (verbose, debug, info, warn, error)
@@ -548,24 +558,25 @@ When adding logging to your code:
    }
    ```
 2. **Choose the appropriate log level** based on the importance of the information:
-   - Use `verbose` for detailed debugging information (only visible in debug builds)
+   - Use `verbose` for detailed debugging information when the active log level permits it
    - Use `debug` for general debugging information
-   - Use `info` for important events that should be visible in production
+   - Use `info` for operational events (emitted only when logging is enabled)
    - Use `warn` for potential issues that don't affect functionality
    - Use `error` for issues that affect functionality
 3. **Use lambda syntax** to avoid string concatenation when logging isn't needed:
 
    ```kotlin
-   // Good - string is only created if this log level is enabled
-   logger.debug { "Processing message with ID: $messageId" }
+   // The lambda is evaluated only when the logger accepts debug events.
+   logger.debug(tag = "Sync") { "Starting folder sync" }
 
-   // Avoid - string is always created even if debug logging is disabled
-   logger.debug("Processing message with ID: " + messageId)
+   // Avoid eagerly constructing messages, even when they contain no sensitive data.
+   val message = "Starting folder sync"
+   logger.debug(tag = "Sync") { message }
    ```
 4. **Include relevant context** in log messages:
 
    ```kotlin
-   logger.info { "Syncing account: ${account.email}, folders: ${folders.size}" }
+   logger.info(tag = "Sync") { "Starting folder sync" }
    ```
 5. **Log exceptions** with the appropriate level and context:
 
@@ -573,17 +584,17 @@ When adding logging to your code:
    try {
        apiClient.fetchMessages()
    } catch (e: Exception) {
-       logger.error(e) { "Failed to fetch messages for account: ${account.email}" }
+       logger.error(tag = "Sync", throwable = e) { "Failed to fetch messages" }
        throw MessageSyncError.FetchFailed(e)
    }
    ```
 6. **Use tags** for better filtering when needed:
 
    ```kotlin
-   private val logTag = LogTag("AccountSync")
+   private const val LOG_TAG = "AccountSync"
 
    fun syncAccount() {
-       logger.info(logTag) { "Starting account sync for: ${account.email}" }
+       logger.info(tag = LOG_TAG) { "Starting account sync" }
    }
    ```
 

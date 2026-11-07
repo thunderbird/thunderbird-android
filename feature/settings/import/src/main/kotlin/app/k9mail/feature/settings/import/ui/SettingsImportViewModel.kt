@@ -28,7 +28,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.parcelize.Parcelize
-import net.thunderbird.core.logging.Logger
+import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.feature.account.AccountIdFactory
 
 private typealias AccountUuid = String
@@ -517,7 +517,7 @@ internal class SettingsImportViewModel(
 
     private fun startAuthorization(settingsListItem: SettingsListItem.Account) {
         val accountIndex = settingsListItem.accountIndex
-        val accountUuid = accountsMap[accountIndex]!!
+        val accountUuid = accountsMap[accountIndex] ?: error("Unknown account index: $accountIndex")
         currentlyAuthorizingAccountUuid = accountUuid
 
         sendActionEvent(Action.StartAuthorization(accountUuid))
@@ -526,8 +526,8 @@ internal class SettingsImportViewModel(
     private fun showPasswordPromptDialog(settingsListItem: SettingsListItem.Account) {
         val accountIndex = settingsListItem.accountIndex
 
-        val accountUuid = accountsMap[accountIndex]!!
-        val accountState = accountStateMap[accountIndex]!!
+        val accountUuid = accountsMap[accountIndex] ?: error("Unknown account index: $accountIndex")
+        val accountState = accountStateMap[accountIndex] ?: error("Missing account state for index: $accountIndex")
 
         sendActionEvent(
             Action.PasswordPrompt(
@@ -560,7 +560,7 @@ internal class SettingsImportViewModel(
                 SavedAccountState(
                     accountIndex = accountIndex,
                     displayName = accountItem.displayName,
-                    accountUuid = accountsMap[accountIndex]!!,
+                    accountUuid = accountsMap[accountIndex] ?: error("Unknown account index: $accountIndex"),
                     selected = accountItem.selected,
                     importStatus = accountItem.importStatus,
                     incomingServerName = accountState?.incomingServerName,

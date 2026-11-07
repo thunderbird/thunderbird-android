@@ -2,7 +2,7 @@ package net.thunderbird.feature.funding.googleplay.ui.contribution
 
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import net.thunderbird.core.logging.Logger
+import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.core.ui.contract.mvi.BaseViewModel
 import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract
 import net.thunderbird.feature.funding.googleplay.ui.contribution.ContributionContract.Effect
@@ -11,6 +11,8 @@ import net.thunderbird.feature.funding.googleplay.ui.contribution.ContributionCo
 import net.thunderbird.feature.funding.googleplay.ui.contribution.ContributionContract.ViewModel
 import net.thunderbird.feature.funding.googleplay.ui.contribution.list.ContributionListSliceContract
 import net.thunderbird.feature.funding.googleplay.ui.contribution.purchase.PurchaseSliceContract
+
+private const val TAG = "ContributionViewModel"
 
 @Suppress("TooManyFunctions")
 internal class ContributionViewModel(
@@ -46,7 +48,7 @@ internal class ContributionViewModel(
             listSlice.effect.collect { effect ->
                 when (effect) {
                     is ContributionListSliceContract.Effect.SelectionChanged -> {
-                        logger.debug { "Contribution selection changed: ${effect.contributionId}" }
+                        logger.debug(TAG) { "Contribution selection changed: ${effect.contributionId}" }
                         updateState { state ->
                             state.copy(
                                 selectedContributionId = effect.contributionId,
@@ -63,7 +65,7 @@ internal class ContributionViewModel(
             purchaseSlice.effect.collect { effect ->
                 when (effect) {
                     is PurchaseSliceContract.Effect.Purchased -> {
-                        logger.debug { "Contribution purchased: ${effect.contributionId}" }
+                        logger.debug(TAG) { "Contribution purchased: ${effect.contributionId}" }
                         updateState { state ->
                             state.copy(
                                 showContributionList = effect.contributionId == null,
@@ -72,7 +74,7 @@ internal class ContributionViewModel(
                     }
 
                     is PurchaseSliceContract.Effect.ManageSubscription -> {
-                        logger.debug {
+                        logger.debug(TAG) {
                             "Manage subscription effect received for contribution: ${effect.contributionId}"
                         }
                         emitEffect(Effect.ManageSubscription(effect.contributionId))

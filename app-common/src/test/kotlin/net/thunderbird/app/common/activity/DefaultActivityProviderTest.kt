@@ -7,10 +7,10 @@ import assertk.assertThat
 import assertk.assertions.contains
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNull
+import net.thunderbird.components.core.logging.LogEvent
+import net.thunderbird.components.core.logging.LogLevel
+import net.thunderbird.components.core.logging.testing.TestLogger
 import net.thunderbird.core.android.testing.RobolectricTest
-import net.thunderbird.core.logging.LogEvent
-import net.thunderbird.core.logging.LogLevel
-import net.thunderbird.core.logging.testing.TestLogger
 import org.junit.Test
 import org.robolectric.Robolectric
 import org.robolectric.RuntimeEnvironment

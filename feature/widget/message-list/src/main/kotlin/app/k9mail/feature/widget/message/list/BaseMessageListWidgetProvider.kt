@@ -11,7 +11,7 @@ import com.fsck.k9.CoreResourceProvider
 import com.fsck.k9.activity.MessageCompose
 import com.fsck.k9.activity.MessageHomeActivity
 import com.fsck.k9.activity.MessageHomeActivity.Companion.intentDisplaySearch
-import net.thunderbird.feature.search.legacy.SearchAccount.Companion.createUnifiedFoldersSearch
+import net.thunderbird.feature.search.legacy.SearchAccount.Companion.createUnifiedInboxSearch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -59,13 +59,13 @@ abstract class BaseMessageListWidgetProvider : AppWidgetProvider(), KoinComponen
             openInUnifiedInbox = true,
             messageViewOnly = true,
         )
-        return PendingIntentCompat.getActivity(context, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT, true)!!
+        return createActivityPendingIntent(context, requestCode = 1, intent, isMutable = true)
     }
 
     private fun viewUnifiedFoldersPendingIntent(context: Context): PendingIntent {
-        val unifiedFoldersSearch = createUnifiedFoldersSearch(
-            title = coreResourceProvider.searchUnifiedFoldersTitle(),
-            detail = coreResourceProvider.searchUnifiedFoldersDetail(),
+        val unifiedFoldersSearch = createUnifiedInboxSearch(
+            title = coreResourceProvider.unifiedInboxTitle(),
+            detail = coreResourceProvider.unifiedInboxDetail(),
         )
         val intent = intentDisplaySearch(
             context = context,
@@ -74,13 +74,27 @@ abstract class BaseMessageListWidgetProvider : AppWidgetProvider(), KoinComponen
             newTask = true,
             clearTop = true,
         )
-        return PendingIntentCompat.getActivity(context, -1, intent, PendingIntent.FLAG_UPDATE_CURRENT, false)!!
+        return createActivityPendingIntent(context, requestCode = -1, intent, isMutable = false)
     }
 
     private fun composeActionPendingIntent(context: Context): PendingIntent {
         val intent = Intent(context, MessageCompose::class.java).apply {
             action = MessageCompose.ACTION_COMPOSE
         }
-        return PendingIntentCompat.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT, false)!!
+        return createActivityPendingIntent(context, requestCode = 0, intent, isMutable = false)
+    }
+
+    private fun createActivityPendingIntent(
+        context: Context,
+        requestCode: Int,
+        intent: Intent,
+        isMutable: Boolean,
+    ): PendingIntent {
+        // Only returns null when using FLAG_NO_CREATE
+        return checkNotNull(
+            PendingIntentCompat.getActivity(context, requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT, isMutable),
+        ) {
+            "Failed to create activity PendingIntent"
+        }
     }
 }

@@ -24,11 +24,22 @@ plugins {
 dependencyResolutionManagement {
     repositoriesMode = RepositoriesMode.FAIL_ON_PROJECT_REPOS
     repositories {
+        mavenLocal {
+            content {
+                includeGroupAndSubgroups("net.thunderbird.components")
+            }
+        }
         google {
             mavenContent {
                 includeGroupAndSubgroups("androidx")
                 includeGroupAndSubgroups("com.android")
                 includeGroupAndSubgroups("com.google")
+            }
+        }
+        maven(url = "https://central.sonatype.com/repository/maven-snapshots/") {
+            mavenContent {
+                snapshotsOnly()
+                includeGroupAndSubgroups("net.thunderbird.components")
             }
         }
         mavenCentral()

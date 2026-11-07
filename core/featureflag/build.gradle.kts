@@ -36,7 +36,6 @@ kotlin {
             implementation(projects.core.ui.navigation)
             implementation(projects.core.ui.contract)
             implementation(projects.core.file)
-            implementation(projects.core.logging.api)
             implementation(libs.ktor.client.core)
             implementation(libs.ktor.client.content.negotiation)
             implementation(libs.ktor.serialization.json)
@@ -48,7 +47,6 @@ kotlin {
             implementation(libs.ktor.client.mock)
             implementation(libs.tb.mobile.components.ui.testing)
             implementation(projects.core.configstore.testing)
-            implementation(projects.core.logging.testing)
         }
         androidHostTest.dependencies {
             implementation(libs.robolectric)

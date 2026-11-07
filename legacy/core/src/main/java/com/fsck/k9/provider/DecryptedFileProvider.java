@@ -34,6 +34,8 @@ import org.openintents.openpgp.util.ParcelFileDescriptorUtil;
 
 
 public class DecryptedFileProvider extends FileProvider {
+    private static final String TAG = "DecryptedFileProvider";
+
     private static final String DECRYPTED_CACHE_DIRECTORY = "decrypted";
     private static final long FILE_DELETE_THRESHOLD_MILLISECONDS = 3 * 60 * 1000;
     private static final Object cleanupReceiverMonitor = new Object();
@@ -89,7 +91,7 @@ public class DecryptedFileProvider extends FileProvider {
             if (lastModified < deletionThreshold) {
                 boolean fileDeleted = tempFile.delete();
                 if (!fileDeleted) {
-                    Log.e("Failed to delete temporary file");
+                    Log.e(TAG, "Failed to delete temporary file");
                     // TODO really do this? might cause our service to stay up indefinitely if a file can't be deleted
                     allFilesDeleted = false;
                 }
@@ -97,7 +99,7 @@ public class DecryptedFileProvider extends FileProvider {
                 if (generalSettingManager.getConfig().getDebugging().isDebugLoggingEnabled()) {
                     String timeLeftStr = String.format(
                             Locale.ENGLISH, "%.2f", (lastModified - deletionThreshold) / 1000 / 60.0);
-                    Log.e("Not deleting temp file (for another %s minutes)", timeLeftStr);
+                    Log.e(TAG, "Not deleting temp file (for another %s minutes)", timeLeftStr);
                 }
                 allFilesDeleted = false;
             }
@@ -110,7 +112,7 @@ public class DecryptedFileProvider extends FileProvider {
         File directory = new File(context.getCacheDir(), DECRYPTED_CACHE_DIRECTORY);
         if (!directory.exists()) {
             if (!directory.mkdir()) {
-                Log.e("Error creating directory: %s", directory.getAbsolutePath());
+                Log.e(TAG, "Error creating directory: %s", directory.getAbsolutePath());
             }
         }
 
@@ -142,7 +144,7 @@ public class DecryptedFileProvider extends FileProvider {
             decodedInputStream = new QuotedPrintableInputStream(inputStream);
         } else { // no or unknown encoding
             if (!TextUtils.isEmpty(encoding)) {
-                Log.e("unsupported encoding, returning raw stream");
+                Log.e(TAG, "unsupported encoding, returning raw stream");
             }
             return pfd;
         }
@@ -182,7 +184,7 @@ public class DecryptedFileProvider extends FileProvider {
                 return;
             }
 
-            Log.d("Unregistering temp file cleanup receiver");
+            Log.d(TAG, "Unregistering temp file cleanup receiver");
             context.unregisterReceiver(cleanupReceiver);
             cleanupReceiver = null;
         }
@@ -194,7 +196,7 @@ public class DecryptedFileProvider extends FileProvider {
                 return;
             }
 
-            Log.d("Registering temp file cleanup receiver");
+            Log.d(TAG, "Registering temp file cleanup receiver");
             cleanupReceiver = new DecryptedFileProviderCleanupReceiver();
 
             IntentFilter intentFilter = new IntentFilter();
@@ -211,7 +213,7 @@ public class DecryptedFileProvider extends FileProvider {
                 throw new IllegalArgumentException("onReceive called with action that isn't screen off!");
             }
 
-            Log.d("Cleaning up temp files");
+            Log.d(TAG, "Cleaning up temp files");
 
             boolean allFilesDeleted = deleteOldTemporaryFiles(context);
             if (allFilesDeleted) {

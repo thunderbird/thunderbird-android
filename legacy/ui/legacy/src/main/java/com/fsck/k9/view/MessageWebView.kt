@@ -15,6 +15,8 @@ import net.thunderbird.legacy.logging.Log
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
+private const val TAG = "MessageWebView"
+
 class MessageWebView : WebView, KoinComponent, ThunderbirdWebViewSettings {
     constructor(context: Context) : super(context)
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
@@ -33,7 +35,7 @@ class MessageWebView : WebView, KoinComponent, ThunderbirdWebViewSettings {
         try {
             settings.blockNetworkLoads = shouldBlockNetworkData
         } catch (e: SecurityException) {
-            Log.e(e, "Failed to unblock network loads. Missing INTERNET permission?")
+            Log.e(TAG, e, "Failed to unblock network loads. Missing INTERNET permission?")
         }
     }
 

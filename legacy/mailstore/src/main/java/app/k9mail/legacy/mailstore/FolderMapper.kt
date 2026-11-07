@@ -13,7 +13,6 @@ interface FolderDetailsAccessor {
     val type: FolderType
     val isLocalOnly: Boolean
     val isInTopGroup: Boolean
-    val isIntegrate: Boolean
     val isSyncEnabled: Boolean
     val isVisible: Boolean
     val isNotificationsEnabled: Boolean

@@ -5,11 +5,12 @@ import assertk.assertions.containsExactly
 import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNull
+import com.fsck.k9.FakeLegacyAccount
 import com.fsck.k9.helper.ReplyToParser
 import com.fsck.k9.mail.testing.message.buildMessage
 import kotlin.test.Test
 import net.thunderbird.core.android.account.Identity
-import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.feature.account.AccountIdFactory
 
 private const val IDENTITY_EMAIL_ADDRESS = "myself@domain.example"
@@ -110,9 +111,10 @@ class LegacyReplyActionStrategyTest {
         assertThat(replyActions.additionalActions).isEmpty()
     }
 
-    private fun createAccount(): LegacyAccountDto {
-        return LegacyAccountDto(accountId).apply {
-            identities += Identity(name = "Myself", email = IDENTITY_EMAIL_ADDRESS)
-        }
+    private fun createAccount(): LegacyAccount {
+        return FakeLegacyAccount.ACCOUNT.copy(
+            identities = FakeLegacyAccount.ACCOUNT.identities
+                + Identity(email = IDENTITY_EMAIL_ADDRESS),
+        )
     }
 }

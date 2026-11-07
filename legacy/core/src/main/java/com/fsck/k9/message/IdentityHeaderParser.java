@@ -12,6 +12,8 @@ import com.fsck.k9.mail.filter.Base64;
 
 
 public class IdentityHeaderParser {
+    private static final String TAG = "IdentityHeaderParser";
+
     /**
      * Parse an identity string.  Handles both legacy and new (!) style identities.
      *
@@ -23,7 +25,7 @@ public class IdentityHeaderParser {
     public static Map<IdentityField, String> parse(final String identityString) {
         Map<IdentityField, String> identity = new HashMap<>();
 
-        Log.d("Decoding identity: %s", identityString);
+        Log.d(TAG, "Decoding identity: %s", identityString);
 
         if (identityString == null || identityString.length() < 1) {
             return identity;
@@ -43,7 +45,7 @@ public class IdentityHeaderParser {
                 }
             }
 
-            Log.d("Decoded identity: %s", identity);
+            Log.d(TAG, "Decoded identity: %s", identity);
 
             // Sanity check our Integers so that recipients of this result don't have to.
             for (IdentityField key : IdentityField.getIntegerFields()) {
@@ -51,14 +53,14 @@ public class IdentityHeaderParser {
                     try {
                         Integer.parseInt(identity.get(key));
                     } catch (NumberFormatException e) {
-                        Log.e("Invalid %s field in identity: %s", key.name(), identity.get(key));
+                        Log.e(TAG, "Invalid %s field in identity: %s", key.name(), identity.get(key));
                     }
                 }
             }
         } else {
             // Legacy identity
 
-            Log.d("Got a saved legacy identity: %s", encodedString);
+            Log.d(TAG, "Got a saved legacy identity: %s", encodedString);
 
             StringTokenizer tokenizer = new StringTokenizer(encodedString, ":", false);
 
@@ -68,7 +70,7 @@ public class IdentityHeaderParser {
                 try {
                     identity.put(IdentityField.LENGTH, Integer.valueOf(bodyLengthS).toString());
                 } catch (Exception e) {
-                    Log.e("Unable to parse bodyLength '%s'", bodyLengthS);
+                    Log.e(TAG, "Unable to parse bodyLength '%s'", bodyLengthS);
                 }
             }
             if (tokenizer.hasMoreTokens()) {

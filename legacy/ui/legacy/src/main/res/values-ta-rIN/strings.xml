@@ -539,7 +539,6 @@
     <string name="account_setup_push_limit_label">புச் மூலம் சரிபார்க்க அதிகபட்ச கோப்புறைகள்</string>
     <string name="account_setup_push_limit_100">100 கோப்புறைகள்</string>
     <string name="account_setup_push_limit_250">250 கோப்புறைகள்</string>
-    <string name="folder_settings_include_in_integrated_inbox_label">ஒன்றுபடுங்கள்</string>
     <string name="font_size_message_list_sender">அனுப்புநர்</string>
     <string name="font_size_message_view_date">நேரம் மற்றும் தேதி</string>
     <string name="font_size_smaller">சிறிய</string>
@@ -829,7 +828,6 @@
     <string name="account_settings_identities_summary">\'முகவரிகள் மற்றும் கையொப்பங்களிலிருந்து மாற்று\' ஐ அமைக்கவும்</string>
     <string name="accountlist_preferences">கணக்கு பட்டியல்</string>
     <string name="messagelist_preferences">செய்தி பட்டியல்கள்</string>
-    <string name="integrated_inbox_detail">ஒருங்கிணைந்த கோப்புறைகளில் உள்ள அனைத்து செய்திகளும்</string>
     <string name="account_settings_automatic_special_folder">தானியங்கி (%s)</string>
     <string name="switch_off">அணை</string>
     <string name="account_settings_mark_message_as_read_on_delete_summary">ஒரு செய்தியை நீக்கும்போது அதைப் படித்தபடி குறிக்கவும்</string>

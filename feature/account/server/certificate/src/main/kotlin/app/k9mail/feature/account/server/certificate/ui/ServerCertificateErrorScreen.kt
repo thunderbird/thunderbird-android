@@ -16,6 +16,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import app.k9mail.feature.account.server.certificate.R
@@ -111,13 +112,17 @@ private fun ButtonBar(
                         ButtonOutlined(
                             text = stringResource(R.string.account_server_certificate_button_continue),
                             onClick = { dispatch(Event.OnCertificateAcceptedClicked) },
-                            modifier = Modifier.fillMaxWidth(),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .testTag(ServerCertificateTestTags.TEST_TAG_BTN_ACCEPT_RISK_AND_CONTINUE),
                         )
                     } else {
                         ButtonOutlined(
                             text = stringResource(R.string.account_server_certificate_button_advanced),
                             onClick = { dispatch(Event.OnShowAdvancedClicked) },
-                            modifier = Modifier.fillMaxWidth(),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .testTag(ServerCertificateTestTags.TEST_TAG_BTN_ADVANCED),
                         )
                     }
                 }

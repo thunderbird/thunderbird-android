@@ -7,7 +7,7 @@ val manageFoldersUiModule = module {
     viewModel { ManageFoldersViewModel(folderRepository = get()) }
     viewModel {
         FolderSettingsViewModel(
-            preferences = get(),
+            accountManager = get(),
             folderDetailsRepository = get(),
             messagingController = get(),
         )

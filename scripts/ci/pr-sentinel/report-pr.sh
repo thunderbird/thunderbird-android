@@ -77,11 +77,6 @@ fi
 # Non-compliant: post/refresh the consolidated comment first (feedback survives).
 upsert_status_comment "$PR_NUMBER" "$(render_status_body "$missing_markdown" "$topics")"
 
-if [[ "$exempt" == "true" ]]; then
-  echo "PR #${PR_NUMBER}: non-compliant but exempt (${exempt_reason}); not labeling."
-  exit 0
-fi
-
 # Swap to "needs updates" (fails loud if the label is missing) and fail the check.
 mark_needs_updates "$PR_NUMBER"
 echo "::error::PR #${PR_NUMBER} is not ready to merge — see the PR Sentinel comment."

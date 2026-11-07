@@ -40,6 +40,17 @@ test_bot_exempt() { # bot author is exempt even when non-compliant
   assert_eq "$(jq -r .exempt_reason <<<"$out")" "bot" "bot exempt reason"
 }
 
+test_exempt_skips_checks() { # exempt PRs are always mergeable, so no checks run
+  local pr commits out
+  pr=$(jq -n '{title:"bad title", body:"no link", draft:false, user:{type:"Bot"}, author_association:"NONE"}')
+  commits='[{"sha":"abc1234def","parents":[{}],"commit":{"message":"nope\n\nCo-authored-by: X <x@x.com>"}},{"sha":"m111111","parents":[{},{}],"commit":{"message":"Merge branch main"}}]'
+  out="$(run "$pr" "$commits")"
+  assert_eq "$(jq -r .exempt <<<"$out")" "true" "exempt flag set"
+  assert_eq "$(jq -r .compliant <<<"$out")" "true" "exempt PR is compliant"
+  assert_eq "$(jq -r .missing_markdown <<<"$out")" "" "exempt PR has no missing items"
+  assert_eq "$(jq -r .topics <<<"$out")" "" "exempt PR has no topics"
+}
+
 test_merge_commit() { # merge commit present (2 parents) -> non-compliant, asks to rebase
   local pr commits out
   pr=$(jq -n '{title:"feat: x", body:"Closes #1\n\n## AI Disclosure\n- [x] a\n- [ ] b\n- [ ] c", draft:false, user:{type:"User"}, author_association:"NONE"}')
@@ -70,6 +81,7 @@ main() {
   test_noncompliant
   test_topic_filtering
   test_bot_exempt
+  test_exempt_skips_checks
   test_merge_commit
   test_member_not_exempt
   test_draft

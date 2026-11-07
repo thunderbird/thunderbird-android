@@ -1,10 +1,6 @@
 package com.fsck.k9.preferences
 
-import com.fsck.k9.Preferences
 import kotlin.time.ExperimentalTime
-import net.thunderbird.core.android.account.LegacyAccountDtoManager
-import net.thunderbird.core.logging.config.DebugLogConfigurator
-import net.thunderbird.core.logging.config.PlatformInitializer
 import net.thunderbird.core.preference.DefaultPreferenceChangeBroker
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.PreferenceChangeBroker
@@ -40,7 +36,8 @@ val preferencesModule = module {
     factory {
         SettingsExporter(
             contentResolver = get(),
-            preferences = get(),
+            accountManager = get(),
+            storageProvider = get(),
             folderSettingsProvider = get(),
             folderQueryRepository = get(),
             notificationSettingsUpdater = get(),
@@ -48,44 +45,38 @@ val preferencesModule = module {
         )
     }
     factory { FolderSettingsProvider(remoteFolderDetailsRepository = get()) }
-    factory<LegacyAccountDtoManager> { get<Preferences>() }
     single<PrivacySettingsPreferenceManager> {
         DefaultPrivacySettingsPreferenceManager(
             logger = get(),
-            storagePersister = get(),
-            storageEditor = get<Preferences>().createStorageEditor(),
+            storageProvider = get(),
             preferenceChangeBroker = get(),
         )
     }
     single<NotificationPreferenceManager> {
         DefaultNotificationPreferenceManager(
             logger = get(),
-            storagePersister = get(),
-            storageEditor = get<Preferences>().createStorageEditor(),
+            storageProvider = get(),
             preferenceChangeBroker = get(),
         )
     }
     single<DisplayCoreSettingsPreferenceManager> {
         DefaultDisplayCoreSettingsPreferenceManager(
             logger = get(),
-            storagePersister = get(),
-            storageEditor = get<Preferences>().createStorageEditor(),
+            storageProvider = get(),
             preferenceChangeBroker = get(),
         )
     }
     single<DisplayInboxSettingsPreferenceManager> {
         DefaultDisplayInboxSettingsPreferenceManager(
             logger = get(),
-            storagePersister = get(),
-            storageEditor = get<Preferences>().createStorageEditor(),
+            storageProvider = get(),
             preferenceChangeBroker = get(),
         )
     }
     single<DisplayVisualSettingsPreferenceManager> {
         DefaultDisplayVisualSettingsPreferenceManager(
             logger = get(),
-            storagePersister = get(),
-            storageEditor = get<Preferences>().createStorageEditor(),
+            storageProvider = get(),
             messageListPreferences = get(),
             preferenceChangeBroker = get(),
         )
@@ -93,16 +84,14 @@ val preferencesModule = module {
     single<DisplayMiscSettingsPreferenceManager> {
         DefaultDisplayMiscSettingsPreferenceManager(
             logger = get(),
-            storagePersister = get(),
-            storageEditor = get<Preferences>().createStorageEditor(),
+            storageProvider = get(),
             preferenceChangeBroker = get(),
         )
     }
     single<InteractionSettingsPreferenceManager> {
         DefaultInteractionSettingsPreferenceManager(
             logger = get(),
-            storagePersister = get(),
-            storageEditor = get<Preferences>().createStorageEditor(),
+            storageProvider = get(),
             preferenceChangeBroker = get(),
         )
     }
@@ -118,42 +107,30 @@ val preferencesModule = module {
     single<MessageListPreferencesManager> {
         DefaultMessageListPreferencesManager(
             logger = get(),
-            storage = get(),
-            storageEditor = get(),
+            storageProvider = get(),
             preferenceChangeBroker = get(),
         )
     }
     single<NetworkSettingsPreferenceManager> {
         DefaultNetworkSettingsPreferenceManager(
             logger = get(),
-            storagePersister = get(),
-            storageEditor = get<Preferences>().createStorageEditor(),
+            storageProvider = get(),
             preferenceChangeBroker = get(),
         )
     }
     single<DebuggingSettingsPreferenceManager> {
         DefaultDebuggingSettingsPreferenceManager(
             logger = get(),
-            storagePersister = get(),
-            storageEditor = get<Preferences>().createStorageEditor(),
-            logLevelManager = get(),
+            storageProvider = get(),
+            loggingControl = get(),
+            debugLogConfigurator = get(),
             platformConfigProvider = get(),
             preferenceChangeBroker = get(),
         )
     }
-    single<PlatformInitializer> {
-        PlatformInitializer()
-    }
-    single<DebugLogConfigurator> {
-        DebugLogConfigurator(
-            syncDebugCompositeSink = get(named("syncDebug")),
-            syncDebugFileLogSink = get(named("syncDebug")),
-            platformInitializer = get(),
-        )
-    }
     single {
         DefaultGeneralSettingsManager(
-            preferences = get(),
+            storageProvider = get(),
             coroutineScope = get(named("AppCoroutineScope")),
             changePublisher = get(),
             privacySettingsPreferenceManager = get(),
@@ -167,7 +144,6 @@ val preferencesModule = module {
             networkSettingsPreferenceManager = get(),
             debuggingSettingsPreferenceManager = get(),
             interactionSettingsPreferenceManager = get(),
-            debugLogConfigurator = get(),
             platformConfigProvider = get(),
             logger = get(),
         )
@@ -186,7 +162,7 @@ val preferencesModule = module {
     factory { GeneralSettingsUpgrader() }
     factory {
         GeneralSettingsWriter(
-            preferences = get(),
+            storageProvider = get(),
             generalSettingsManager = get(),
             changePublisher = get(),
         )
@@ -210,12 +186,14 @@ val preferencesModule = module {
     factory {
         @OptIn(ExperimentalTime::class)
         AccountSettingsWriter(
-            preferences = get(),
+            accountManager = get(),
+            storageProvider = get(),
             localFoldersCreator = get(),
             clock = get(),
             serverSettingsDtoSerializer = get(),
             context = get(),
             generalSettingsManager = get(),
+            avatarImageRepository = get()
         )
     }
 

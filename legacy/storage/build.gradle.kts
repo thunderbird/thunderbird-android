@@ -5,7 +5,6 @@ plugins {
 dependencies {
     api(libs.koin.core)
 
-    implementation(projects.core.logging.api)
     implementation(projects.feature.mail.message.list.api)
 
     implementation(projects.legacy.core)
@@ -19,7 +18,6 @@ dependencies {
     implementation(libs.commons.io)
     implementation(libs.moshi)
 
-    testImplementation(projects.core.logging.testing)
     testImplementation(projects.mail.testing)
     testImplementation(projects.feature.telemetry.noop)
     testImplementation(projects.core.featureflag)

@@ -21,6 +21,7 @@ internal class AccountSettingsValidator {
             settings = validatedSettings,
             identities = validateIdentities(contentVersion, account.identities),
             folders = validateFolders(contentVersion, account.folders),
+            avatarImage = account.avatarImage
         )
     }
 

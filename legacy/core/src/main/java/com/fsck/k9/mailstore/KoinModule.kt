@@ -71,7 +71,7 @@ val legacyMailStoreModule = module {
     single { SpecialFolderSelectionStrategy() }
     single<BackendStorageFactory> {
         K9BackendStorageFactory(
-            preferences = get(),
+            storageProvider = get(),
             accountManager = get(),
             folderQueryRepository = get(),
             messageStoreManager = get(),
@@ -79,8 +79,14 @@ val legacyMailStoreModule = module {
             saveMessageDataCreator = get(),
         )
     }
-    factory { SpecialLocalFoldersCreator(preferences = get(), localStoreProvider = get(), outboxFolderManager = get()) }
-    single { MessageStoreManager(accountManager = get(), messageStoreFactory = get()) }
+    factory {
+        SpecialLocalFoldersCreator(
+            accountManager = get(),
+            localStoreProvider = get(),
+            outboxFolderManager = get(),
+        )
+    }
+    single { MessageStoreManager(messageStoreFactory = get()) }
     single { MessageRepository(messageStoreManager = get()) }
     factory { MessagePreviewCreator.newInstance() }
     factory { MessageFulltextCreator.newInstance() }
@@ -97,7 +103,6 @@ val legacyMailStoreModule = module {
     single<OutboxFolderManager> {
         DefaultOutboxFolderManager(
             logger = get(),
-            accountManager = get(),
             localStoreProvider = get(),
             outboxFolderIdCache = TimeLimitedCache(),
         )

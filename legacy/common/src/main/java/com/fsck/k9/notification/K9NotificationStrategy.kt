@@ -9,71 +9,77 @@ import com.fsck.k9.mailstore.LocalFolder
 import com.fsck.k9.mailstore.LocalMessage
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
-import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.core.common.mail.Flag
 import net.thunderbird.core.common.mail.toEmailAddressOrNull
 import net.thunderbird.legacy.logging.Log
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.notification.NotificationPreference
+import net.thunderbird.feature.account.AccountId
+
+private const val TAG = "K9NotificationStrategy"
 
 class K9NotificationStrategy(
     private val contactRepository: ContactRepository,
     private val generalSettingsManager: GeneralSettingsManager,
+    private val accountManager: LegacyAccountManager,
 ) : NotificationStrategy {
 
     @Suppress("ReturnCount")
     override fun shouldNotifyForMessage(
-        account: LegacyAccountDto,
+        accountId: AccountId,
         localFolder: LocalFolder,
         message: LocalMessage,
         isOldMessage: Boolean,
     ): Boolean {
+        val account = accountManager.findById(accountId) ?: return false
+
         if (!generalSettingsManager.getConfig().notification.isNotificationDuringQuietTimeEnabled &&
             generalSettingsManager.getConfig().notification.isQuietTime
         ) {
-            Log.v("No notification: Quiet time is active")
+            Log.v(TAG, "No notification: Quiet time is active")
             return false
         }
 
         if (!account.isNotifyNewMail) {
-            Log.v("No notification: Notifications are disabled")
+            Log.v(TAG, "No notification: Notifications are disabled")
             return false
         }
 
         if (!localFolder.isVisible) {
-            Log.v("No notification: Message is in folder not being displayed")
+            Log.v(TAG, "No notification: Message is in folder not being displayed")
             return false
         }
 
         if (!localFolder.isNotificationsEnabled) {
-            Log.v("No notification: Notifications are not enabled for this folder")
+            Log.v(TAG, "No notification: Notifications are not enabled for this folder")
             return false
         }
 
         if (isOldMessage) {
-            Log.v("No notification: Message is old")
+            Log.v(TAG, "No notification: Message is old")
             return false
         }
 
         if (message.isSet(Flag.SEEN)) {
-            Log.v("No notification: Message is marked as read")
+            Log.v(TAG, "No notification: Message is marked as read")
             return false
         }
 
         if (account.isIgnoreChatMessages && message.isChatMessage) {
-            Log.v("No notification: Notifications for chat messages are disabled")
+            Log.v(TAG, "No notification: Notifications for chat messages are disabled")
             return false
         }
 
         if (!account.isNotifySelfNewMail && account.isAnIdentity(message.from)) {
-            Log.v("No notification: Notifications for messages from yourself are disabled")
+            Log.v(TAG, "No notification: Notifications for messages from yourself are disabled")
             return false
         }
 
         if (account.isNotifyContactsMailOnly &&
             !contactRepository.hasAnyContactFor(message.from.asList().mapNotNull { it.address.toEmailAddressOrNull() })
         ) {
-            Log.v("No notification: Message is not from a known contact")
+            Log.v(TAG, "No notification: Message is not from a known contact")
             return false
         }
 

@@ -5,14 +5,14 @@ import assertk.assertions.isEqualTo
 import assertk.assertions.isNotNull
 import assertk.assertions.isNull
 import assertk.assertions.prop
+import com.fsck.k9.FakeLegacyAccount
 import com.fsck.k9.mail.Address
 import com.fsck.k9.mail.Message
 import com.fsck.k9.mail.Message.RecipientType
 import com.fsck.k9.mail.internet.AddressHeaderBuilder
 import com.fsck.k9.mail.internet.MimeMessage
-import java.util.UUID
 import net.thunderbird.core.android.account.Identity
-import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.testing.RobolectricTest
 import net.thunderbird.feature.account.AccountIdFactory
 import org.junit.Test
@@ -146,18 +146,17 @@ class IdentityHelperTest : RobolectricTest() {
         assertThat(identity).isNull()
     }
 
-    private fun createDummyAccount() = LegacyAccountDto(AccountIdFactory.create()).apply {
-        replaceIdentities(
-            listOf(
-                newIdentity("Default", DEFAULT_ADDRESS),
-                newIdentity("Identity 1", IDENTITY_1_ADDRESS),
-                newIdentity("Identity 2", IDENTITY_2_ADDRESS),
-                newIdentity("Identity 3", IDENTITY_3_ADDRESS),
-                newIdentity("Identity 4", IDENTITY_4_ADDRESS),
-                newIdentity("Identity 5", IDENTITY_5_ADDRESS),
-            ),
-        )
-    }
+    private fun createDummyAccount(): LegacyAccount = FakeLegacyAccount.ACCOUNT.copy(
+        id = AccountIdFactory.create(),
+        identities = listOf(
+            newIdentity("Default", DEFAULT_ADDRESS),
+            newIdentity("Identity 1", IDENTITY_1_ADDRESS),
+            newIdentity("Identity 2", IDENTITY_2_ADDRESS),
+            newIdentity("Identity 3", IDENTITY_3_ADDRESS),
+            newIdentity("Identity 4", IDENTITY_4_ADDRESS),
+            newIdentity("Identity 5", IDENTITY_5_ADDRESS),
+        ),
+    )
 
     private fun newIdentity(name: String, email: String) = Identity(
         name = name,

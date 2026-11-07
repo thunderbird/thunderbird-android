@@ -8,7 +8,7 @@ val isMacX64 = os.contains("mac") && arch == "x86_64"
 
 kotlin {
     jvmToolchain {
-        languageVersion = JavaLanguageVersion.of(11)
+        languageVersion = JavaLanguageVersion.of(17)
         // Fix for ADOPTIUM not working on Mac OS x86_64
         vendor.set(if (isMacX64) JvmVendorSpec.AZUL else JvmVendorSpec.ADOPTIUM)
     }

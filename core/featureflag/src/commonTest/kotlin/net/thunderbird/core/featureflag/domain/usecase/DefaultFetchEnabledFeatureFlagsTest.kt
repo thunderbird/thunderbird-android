@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.test.runTest
 import kotlinx.io.IOException
+import net.thunderbird.components.core.logging.testing.TestLogger
 import net.thunderbird.components.core.outcome.Outcome
 import net.thunderbird.core.featureflag.FeatureFlagKey
 import net.thunderbird.core.featureflag.FeatureFlagResult
@@ -30,7 +31,6 @@ import net.thunderbird.core.featureflag.provider.CatalogProviderMetadata
 import net.thunderbird.core.featureflag.provider.ProviderMetadata
 import net.thunderbird.core.featureflag.provider.context.FeatureFlagContext
 import net.thunderbird.core.featureflag.provider.evaluator.MultiFeatureFlagProviderEvaluator
-import net.thunderbird.core.logging.testing.TestLogger
 
 class DefaultFetchEnabledFeatureFlagsTest {
 

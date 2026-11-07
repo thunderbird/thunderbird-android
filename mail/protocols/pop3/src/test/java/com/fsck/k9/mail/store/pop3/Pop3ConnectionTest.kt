@@ -22,7 +22,7 @@ import java.io.IOException
 import java.security.NoSuchAlgorithmException
 import javax.net.ssl.SSLException
 import net.thunderbird.core.common.exception.MessagingException
-import net.thunderbird.core.logging.testing.TestLogger
+import net.thunderbird.components.core.logging.testing.TestLogger
 import net.thunderbird.legacy.logging.Log
 import okio.ByteString.Companion.encodeUtf8
 import org.junit.Before

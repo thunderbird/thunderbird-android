@@ -3,5 +3,5 @@
     <string name="onboarding_welcome_import_button">Uvozi nastavitve</string>
     <string name="onboarding_welcome_start_button">Začni</string>
     <string name="onboarding_welcome_text">E-poštni program za Android, ki se osredotoča na zasebnost, in je odprtokoden in brez oglasov.</string>
-    <string name="onboarding_welcome_developed_by">Program je razvila posebna ekipa pri MZLA Technologies in globalna skupnost prostovoljcev, ki sta del družine Mozilla.</string>
+    <string name="onboarding_welcome_developed_by">Program je razvila ekipa pri Thunderbird Technologies Corporation in globalna skupnost prostovoljcev. Oba sta del družine Mozilla.</string>
 </resources>

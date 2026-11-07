@@ -1,39 +1,18 @@
 package net.thunderbird.feature.mail.message.list.internal.fakes
 
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
 import net.thunderbird.core.android.account.LegacyAccount
-import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.feature.account.AccountId
+import net.thunderbird.core.android.account.fake.FakeLegacyAccountManager as SharedFakeLegacyAccountManager
 
-internal open class FakeLegacyAccountManager(
-    private val accounts: List<LegacyAccount>,
-) : LegacyAccountManager {
+/** Shared [SharedFakeLegacyAccountManager] that also records the accounts observed via [observeById]. */
+internal class FakeLegacyAccountManager(
+    accounts: List<LegacyAccount> = emptyList(),
+) : SharedFakeLegacyAccountManager(accounts) {
     val getByIdFlowCalls = mutableListOf<AccountId>()
-    val savedAccounts = mutableListOf<LegacyAccount>()
-
-    override fun getAccounts(): List<LegacyAccount> = accounts
-
-    override fun getAccountsFlow(): Flow<List<LegacyAccount>> = flowOf(accounts)
-
-    override fun getById(accountId: AccountId): LegacyAccount? = accounts.firstOrNull { it.id == accountId }
 
     override fun observeById(accountId: AccountId): Flow<LegacyAccount?> {
         getByIdFlowCalls += accountId
-        return flowOf(getById(accountId))
+        return super.observeById(accountId)
     }
-
-    override fun moveAccount(
-        account: LegacyAccount,
-        newPosition: Int,
-    ) = error("not implemented.")
-
-    override fun saveAccount(account: LegacyAccount) {
-        savedAccounts += account
-    }
-    override fun getAll(): Flow<List<LegacyAccount>> = flowOf(getAccounts())
-
-    override suspend fun update(account: LegacyAccount) = saveAccount(account)
-
-    override fun updateSync(account: LegacyAccount) = saveAccount(account)
 }

@@ -6,6 +6,7 @@ import app.k9mail.core.ui.compose.testing.mvi.runMviTest
 import app.k9mail.core.ui.compose.testing.mvi.turbinesWithInitialStateCheck
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import kotlin.collections.emptyMap
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -21,6 +22,9 @@ import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import net.thunderbird.components.ui.testing.coroutines.MainDispatcherHelper
+import net.thunderbird.feature.account.AccountId
+import net.thunderbird.feature.account.AccountIdFactory
+import net.thunderbird.feature.mail.folder.FolderRole
 import net.thunderbird.feature.mail.folder.FolderType
 import net.thunderbird.feature.mail.folder.api.Folder
 import net.thunderbird.feature.navigation.drawer.api.NavigationDrawerExternalContract.DrawerConfig
@@ -29,7 +33,6 @@ import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayT
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.MailDisplayAccount
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.MailDisplayFolder
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.UnifiedDisplayFolder
-import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.UnifiedDisplayFolderType
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.DrawerContract.Effect
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.DrawerContract.Event
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.DrawerContract.State
@@ -264,7 +267,7 @@ internal class DrawerViewModelTest {
     @Test
     fun `should emit CloseDrawer effect after emitting OpenAccount if AutoExpandFolder is Set`() = runMviTest {
         val displayAccounts = createDisplayAccountList(1) + createDisplayAccount(
-            id = "uuid-1",
+            id = AccountIdFactory.create(),
             hasAutoExpandFolder = true,
         )
         val getDisplayAccountsFlow = MutableStateFlow(displayAccounts)
@@ -293,7 +296,7 @@ internal class DrawerViewModelTest {
     @Test
     fun `should not emit CloseDrawer effect after emitting OpenAccount if AutoExpandFolder is None`() = runMviTest {
         val displayAccounts = createDisplayAccountList(1) + createDisplayAccount(
-            id = "uuid-1",
+            id = AccountIdFactory.create(),
             hasAutoExpandFolder = false,
         )
         val getDisplayAccountsFlow = MutableStateFlow(displayAccounts)
@@ -380,7 +383,7 @@ internal class DrawerViewModelTest {
             accounts = displayAccounts.toImmutableList(),
             selectedAccountId = displayAccounts[0].id,
             folders = displayFoldersMap[displayAccounts[0].id]!!.toImmutableList(),
-            selectedFolderId = displayFoldersMap[displayAccounts[0].id]!![0].id,
+            selectedFolderId = displayFoldersMap[displayAccounts[0].id]!![0].folderId,
             selectedFolder = displayFoldersMap[displayAccounts[0].id]!![0],
         )
         val testSubject = createTestSubject(
@@ -416,14 +419,16 @@ internal class DrawerViewModelTest {
             val getDisplayAccountsFlow = MutableStateFlow(displayAccounts)
             val displayFoldersMap = mapOf(
                 displayAccounts[0].id to
-                    createDisplayFolderList(1) + listOf(createDisplayUnifiedFolder()),
+                    createDisplayFolderList(1) + listOf(
+                        createDisplayUnifiedFolder(role = FolderRole.SENT),
+                    ),
             )
             val displayFoldersFlow = MutableStateFlow(displayFoldersMap)
             val initialState = State(
                 accounts = displayAccounts.toImmutableList(),
                 selectedAccountId = displayAccounts[0].id,
                 folders = displayFoldersMap[displayAccounts[0].id]!!.toImmutableList(),
-                selectedFolderId = displayFoldersMap[displayAccounts[0].id]!![0].id,
+                selectedFolderId = displayFoldersMap[displayAccounts[0].id]!![0].folderId,
                 selectedFolder = displayFoldersMap[displayAccounts[0].id]!![0],
             )
             val testSubject = createTestSubject(
@@ -440,7 +445,7 @@ internal class DrawerViewModelTest {
             // Consume the state update
             turbines.awaitStateItem()
 
-            assertThat(turbines.awaitEffectItem()).isEqualTo(Effect.OpenUnifiedFolder)
+            assertThat(turbines.awaitEffectItem()).isEqualTo(Effect.OpenUnifiedFolder(FolderRole.SENT))
 
             turbines.assertThatAndEffectTurbineConsumed {
                 isEqualTo(Effect.CloseDrawer)
@@ -463,7 +468,7 @@ internal class DrawerViewModelTest {
         initialState: State = State(),
         drawerConfigFlow: Flow<DrawerConfig> = flow { emit(createDrawerConfig()) },
         displayAccountsFlow: Flow<List<MailDisplayAccount>> = flow { emit(emptyList()) },
-        displayFoldersFlow: Flow<Map<String, List<DisplayFolder>>> = flow { emit(emptyMap()) },
+        displayFoldersFlow: Flow<Map<AccountId, List<DisplayFolder>>> = flow { emit(emptyMap()) },
         displayTreeFolder: DisplayTreeFolder = DisplayTreeFolder(
             displayFolder = null,
             displayName = null,
@@ -502,7 +507,7 @@ internal class DrawerViewModelTest {
     }
 
     private fun createDisplayAccount(
-        id: String = "uuid",
+        id: AccountId = AccountIdFactory.create(),
         name: String = "name",
         email: String = "test@example.com",
         unreadCount: Int = 0,
@@ -522,15 +527,15 @@ internal class DrawerViewModelTest {
     }
 
     private fun createDisplayAccountList(count: Int): List<MailDisplayAccount> {
-        return List(count) { index ->
+        return List(count) {
             createDisplayAccount(
-                id = "uuid-$index",
+                id = AccountIdFactory.create(),
             )
         }
     }
 
     private fun createDisplayFolder(
-        accountId: String = "uuid",
+        accountId: AccountId = AccountIdFactory.create(),
         id: Long = 1234,
         name: String = "name",
         type: FolderType = FolderType.REGULAR,
@@ -563,14 +568,12 @@ internal class DrawerViewModelTest {
     }
 
     private fun createDisplayUnifiedFolder(
-        id: String = "unified_inbox",
-        unifiedType: UnifiedDisplayFolderType = UnifiedDisplayFolderType.INBOX,
+        role: FolderRole = FolderRole.INBOX,
         unreadCount: Int = 0,
         starredCount: Int = 0,
     ): UnifiedDisplayFolder {
         return UnifiedDisplayFolder(
-            id = id,
-            unifiedType = unifiedType,
+            role = role,
             unreadMessageCount = unreadCount,
             starredMessageCount = starredCount,
         )

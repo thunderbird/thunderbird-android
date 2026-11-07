@@ -44,6 +44,8 @@ dependencies {
     implementation(libs.kotlinpoet)
     compileOnly(libs.kotlin.gradle.plugin.api)
 
+    implementation(plugin(libs.plugins.androidx.baselineprofile))
+
     testImplementation(gradleTestKit())
     testImplementation(libs.junit)
     testImplementation(libs.assertk)
@@ -96,6 +98,14 @@ gradlePlugin {
         register("PiiSafe") {
             id = "net.thunderbird.piisafe"
             implementationClass = "net.thunderbird.gradle.plugin.piisafe.PiiSafeGradleSubplugin"
+        }
+        register("BaselineProfileProducerAppPlugin") {
+            id = "net.thunderbird.baselineprofile.producer.app"
+            implementationClass = "net.thunderbird.gradle.plugin.app.baselineprofile.BaselineProfileProducerAppPlugin"
+        }
+        register("BaselineProfileConsumerAppPlugin") {
+            id = "net.thunderbird.baselineprofile.consumer.app"
+            implementationClass = "net.thunderbird.gradle.plugin.app.baselineprofile.BaselineProfileConsumerAppPlugin"
         }
     }
 }

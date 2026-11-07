@@ -6,6 +6,8 @@ import android.content.pm.PackageManager
 import java.util.concurrent.CopyOnWriteArraySet
 import net.thunderbird.legacy.logging.Log
 
+private const val TAG = "SystemLocaleManager"
+
 class SystemLocaleManager(context: Context) {
     private val packageManager = context.packageManager
     private val componentName = ComponentName(context, LocaleBroadcastReceiver::class.java)
@@ -37,7 +39,7 @@ class SystemLocaleManager(context: Context) {
     }
 
     private fun enableReceiver() {
-        Log.v("Enable LocaleBroadcastReceiver")
+        Log.v(TAG, "Enable LocaleBroadcastReceiver")
         try {
             packageManager.setComponentEnabledSetting(
                 componentName,
@@ -45,12 +47,12 @@ class SystemLocaleManager(context: Context) {
                 PackageManager.DONT_KILL_APP,
             )
         } catch (e: Exception) {
-            Log.e(e, "Error enabling LocaleBroadcastReceiver")
+            Log.e(TAG, e, "Error enabling LocaleBroadcastReceiver")
         }
     }
 
     private fun disableReceiver() {
-        Log.v("Disable LocaleBroadcastReceiver")
+        Log.v(TAG, "Disable LocaleBroadcastReceiver")
         try {
             packageManager.setComponentEnabledSetting(
                 componentName,
@@ -58,7 +60,7 @@ class SystemLocaleManager(context: Context) {
                 PackageManager.DONT_KILL_APP,
             )
         } catch (e: Exception) {
-            Log.e(e, "Error disabling LocaleBroadcastReceiver")
+            Log.e(TAG, e, "Error disabling LocaleBroadcastReceiver")
         }
     }
 }

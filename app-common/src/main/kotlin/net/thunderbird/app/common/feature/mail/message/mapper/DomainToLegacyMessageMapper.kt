@@ -18,8 +18,8 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toInstant
 import net.thunderbird.app.common.feature.mail.message.mapper.DefaultMessageDataMapper.Companion.LOG_ID
 import net.thunderbird.app.common.feature.mail.message.mapper.DefaultMessageDataMapper.Companion.RecipientHeadersMap
+import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.core.common.mail.Flag
-import net.thunderbird.core.logging.Logger
 import net.thunderbird.feature.mail.message.Message
 import net.thunderbird.feature.mail.message.MessageAddress
 import net.thunderbird.feature.mail.message.MessageBody
@@ -29,6 +29,8 @@ import net.thunderbird.feature.mail.message.MessageHeaders
 import net.thunderbird.feature.mail.message.MimeType
 import com.fsck.k9.mail.Message as LegacyMessage
 
+private const val TAG = "DomainToLegacyMessageMapper"
+
 internal class DomainToLegacyMessageMapper(
     private val logger: Logger,
     private val context: Context,
@@ -36,7 +38,7 @@ internal class DomainToLegacyMessageMapper(
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) {
     suspend fun map(domain: Message): LegacyMessage = withContext(ioDispatcher) {
-        logger.verbose {
+        logger.verbose(TAG) {
             """$LOG_ID parsing domain message to legacy message.
                 |   domain = $domain
             """.trimMargin()

@@ -5,6 +5,7 @@ import net.thunderbird.app.common.core.configstore.appCommonConfigStoreModule
 import net.thunderbird.app.common.core.file.appCommonFileModule
 import net.thunderbird.app.common.core.ui.appCommonCoreUiModule
 import net.thunderbird.core.common.provider.AppVersionProvider
+import net.thunderbird.core.logging.internal.coreLoggingAndroidModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.Module
 import org.koin.dsl.module
@@ -14,6 +15,7 @@ val appCommonCoreModule: Module = module {
         appCommonConfigStoreModule,
         appCommonFileModule,
         appCommonCoreUiModule,
+        coreLoggingAndroidModule,
     )
 
     single<AppVersionProvider> { DefaultAppVersionProvider(context = androidContext(), logger = get()) }

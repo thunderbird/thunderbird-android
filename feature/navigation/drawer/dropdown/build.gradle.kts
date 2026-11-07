@@ -13,11 +13,13 @@ android {
     }
 }
 
+// Unit tests depend on code from the debug source set
+disableReleaseUnitTests()
+
 dependencies {
     api(projects.feature.navigation.drawer.api)
 
     implementation(projects.core.android.account)
-    implementation(projects.core.logging.api)
     implementation(projects.core.ui.contract)
     implementation(projects.core.ui.theme.api)
 
@@ -32,7 +34,6 @@ dependencies {
     implementation(projects.legacy.ui.folder)
     implementation(projects.core.featureflag)
     testImplementation(projects.core.ui.compose.testing)
-    testImplementation(projects.core.logging.testing)
 
     testImplementation(libs.mockito.kotlin)
 

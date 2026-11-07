@@ -3,7 +3,7 @@ package net.thunderbird.feature.mail.message.list.ui
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.ui.Modifier
-import net.thunderbird.core.logging.Logger
+import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.core.ui.compose.common.mvi.BaseStateMachineViewModel
 import net.thunderbird.core.ui.contract.mvi.BaseViewModel
 import net.thunderbird.core.ui.contract.mvi.observe

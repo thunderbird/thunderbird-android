@@ -2,16 +2,16 @@ package com.fsck.k9.message
 
 import com.fsck.k9.helper.ReplyToParser
 import com.fsck.k9.mail.Message
-import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.feature.mail.message.reader.api.strategy.ReplyActionStrategy
 
 /**
  * Figures out which reply actions are available to the user.
  */
 class LegacyReplyActionStrategy(private val replyRoParser: ReplyToParser) :
-    ReplyActionStrategy<LegacyAccountDto, Message> {
+    ReplyActionStrategy<LegacyAccount, Message> {
     override fun getReplyActions(
-        account: LegacyAccountDto,
+        account: LegacyAccount,
         message: Message,
     ): net.thunderbird.feature.mail.message.reader.api.domain.ReplyActions {
         val recipientsToReplyTo = replyRoParser.getRecipientsToReplyTo(message, account)

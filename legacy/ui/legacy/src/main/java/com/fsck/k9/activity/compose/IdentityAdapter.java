@@ -11,13 +11,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
-import net.thunderbird.core.android.account.LegacyAccountDto;
+import net.thunderbird.core.android.account.LegacyAccount;
+import net.thunderbird.core.android.account.LegacyAccountManager;
 import app.k9mail.legacy.di.DI;
 import net.thunderbird.core.android.account.Identity;
-import com.fsck.k9.Preferences;
 import com.fsck.k9.ui.R;
 import com.fsck.k9.ui.identity.IdentityFormatter;
 import com.google.android.material.textview.MaterialTextView;
+
 
 /**
  * Adapter for the <em>Choose identity</em> list view.
@@ -28,6 +29,7 @@ import com.google.android.material.textview.MaterialTextView;
  */
 public class IdentityAdapter extends BaseAdapter {
     private final IdentityFormatter identityFormatter = DI.get(IdentityFormatter.class);
+    private final LegacyAccountManager accountManager = DI.get(LegacyAccountManager.class);
 
     private LayoutInflater mLayoutInflater;
     private List<Object> mItems;
@@ -37,9 +39,8 @@ public class IdentityAdapter extends BaseAdapter {
                 Context.LAYOUT_INFLATER_SERVICE);
 
         List<Object> items = new ArrayList<>();
-        Preferences prefs = Preferences.getPreferences();
-        Collection<LegacyAccountDto> accounts = prefs.getAccounts();
-        for (LegacyAccountDto account : accounts) {
+        Collection<LegacyAccount> accounts = accountManager.findAll();
+        for (LegacyAccount account : accounts) {
             items.add(account);
             List<Identity> identities = account.getIdentities();
             for (Identity identity : identities) {
@@ -61,7 +62,7 @@ public class IdentityAdapter extends BaseAdapter {
 
     @Override
     public int getItemViewType(int position) {
-        return (mItems.get(position) instanceof LegacyAccountDto) ? 0 : 1;
+        return (mItems.get(position) instanceof LegacyAccount) ? 0 : 1;
     }
 
     @Override
@@ -89,7 +90,7 @@ public class IdentityAdapter extends BaseAdapter {
         Object item = mItems.get(position);
 
         View view = null;
-        if (item instanceof LegacyAccountDto) {
+        if (item instanceof LegacyAccount) {
             if (convertView != null && convertView.getTag() instanceof AccountHolder) {
                 view = convertView;
             } else {
@@ -100,10 +101,10 @@ public class IdentityAdapter extends BaseAdapter {
                 view.setTag(holder);
             }
 
-            LegacyAccountDto account = (LegacyAccountDto) item;
+            LegacyAccount account = (LegacyAccount) item;
             AccountHolder holder = (AccountHolder) view.getTag();
-            holder.name.setText(account.getDisplayName());
-            holder.chip.setBackgroundColor(account.getChipColor());
+            holder.name.setText(account.getProfile().getName());
+            holder.chip.setBackgroundColor(account.getProfile().getColor());
         } else if (item instanceof IdentityContainer) {
             if (convertView != null && convertView.getTag() instanceof IdentityHolder) {
                 view = convertView;
@@ -126,15 +127,15 @@ public class IdentityAdapter extends BaseAdapter {
     }
 
     /**
-     * Used to store an {@link Identity} instance together with the {@link LegacyAccountDto} it belongs to.
+     * Used to store an {@link Identity} instance together with the {@link LegacyAccount} it belongs to.
      *
      * @see IdentityAdapter
      */
     public static class IdentityContainer {
         public final Identity identity;
-        public final LegacyAccountDto account;
+        public final LegacyAccount account;
 
-        IdentityContainer(Identity identity, LegacyAccountDto account) {
+        IdentityContainer(Identity identity, LegacyAccount account) {
             this.identity = identity;
             this.account = account;
         }

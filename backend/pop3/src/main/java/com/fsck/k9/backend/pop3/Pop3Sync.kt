@@ -22,6 +22,8 @@ import net.thunderbird.core.common.exception.rootCauseMessage
 import net.thunderbird.core.common.mail.Flag
 import net.thunderbird.legacy.logging.Log
 
+private const val TAG = "Pop3Sync"
+
 @Suppress("TooManyFunctions")
 internal class Pop3Sync(
     private val accountName: String,
@@ -43,13 +45,13 @@ internal class Pop3Sync(
     fun synchronizeMailboxSynchronous(folder: String, syncConfig: SyncConfig, listener: SyncListener) {
         var remoteFolder: Pop3Folder? = null
 
-        Log.i("Synchronizing folder %s:%s", accountName, folder)
+        Log.i(TAG, "Synchronizing folder %s:%s", accountName, folder)
 
         var backendFolder: BackendFolder? = null
         try {
-            Log.d("SYNC: About to process pending commands for account %s", accountName)
+            Log.d(TAG, "SYNC: About to process pending commands for account %s", accountName)
 
-            Log.v("SYNC: About to get local folder %s", folder)
+            Log.v(TAG, "SYNC: About to get local folder %s", folder)
             backendFolder = backendStorage.getFolder(folder)
 
             listener.syncStarted(folder)
@@ -60,7 +62,7 @@ internal class Pop3Sync(
              */
             var localUidMap: Map<String, Long?> = backendFolder.getAllMessagesAndEffectiveDates()
 
-            Log.v("SYNC: About to get remote folder %s", folder)
+            Log.v(TAG, "SYNC: About to get remote folder %s", folder)
             remoteFolder = remoteStore.getFolder(folder)
 
             /*
@@ -84,7 +86,7 @@ internal class Pop3Sync(
             /*
              * Open the remote folder. This pre-loads certain metadata like message count.
              */
-            Log.v("SYNC: About to open remote folder %s", folder)
+            Log.v(TAG, "SYNC: About to open remote folder %s", folder)
 
             remoteFolder.open()
 
@@ -104,7 +106,7 @@ internal class Pop3Sync(
             val remoteMessages: MutableList<Pop3Message?> = ArrayList<Pop3Message?>()
             val remoteUidMap: MutableMap<String?, Pop3Message?> = HashMap<String?, Pop3Message?>()
 
-            Log.v("SYNC: Remote message count for folder %s is %d", folder, remoteMessageCount)
+            Log.v(TAG, "SYNC: Remote message count for folder %s is %d", folder, remoteMessageCount)
 
             val earliestDate = syncConfig.earliestPollDate
             val earliestTimestamp = if (earliestDate != null) earliestDate.time else 0L
@@ -118,6 +120,7 @@ internal class Pop3Sync(
                 }
 
                 Log.v(
+                    TAG,
                     "SYNC: About to get messages %d through %d for folder %s",
                     remoteStart,
                     remoteMessageCount,
@@ -146,7 +149,7 @@ internal class Pop3Sync(
                     }
                 }
 
-                Log.v("SYNC: Got %d messages for folder %s", remoteUidMap.size, folder)
+                Log.v(TAG, "SYNC: Got %d messages for folder %s", remoteUidMap.size, folder)
 
                 listener.syncHeadersFinished(
                     folderServerId = folder,
@@ -201,6 +204,7 @@ internal class Pop3Sync(
             backendFolder.setStatus(null)
 
             Log.d(
+                TAG,
                 "Done synchronizing folder %s:%s @ %tc with %d new messages",
                 accountName,
                 folder,
@@ -210,11 +214,11 @@ internal class Pop3Sync(
 
             listener.syncFinished(folder)
 
-            Log.i("Done synchronizing folder %s:%s", accountName, folder)
+            Log.i(TAG, "Done synchronizing folder %s:%s", accountName, folder)
         } catch (e: AuthenticationFailedException) {
             listener.syncFailed(folderServerId = folder, message = "Authentication failure", exception = e)
         } catch (e: Exception) {
-            Log.e(e, "synchronizeMailbox")
+            Log.e(TAG, e, "synchronizeMailbox")
             // If we don't set the last checked, it can try too often during
             // failure conditions
             val rootMessage = e.rootCauseMessage.orEmpty()
@@ -223,13 +227,14 @@ internal class Pop3Sync(
                     backendFolder.setStatus(rootMessage)
                     backendFolder.setLastChecked(System.currentTimeMillis())
                 } catch (e1: Exception) {
-                    Log.e(e1, "Could not set last checked on folder %s:%s", accountName, folder)
+                    Log.e(TAG, e1, "Could not set last checked on folder %s:%s", accountName, folder)
                 }
             }
 
             listener.syncFailed(folderServerId = folder, message = rootMessage, exception = e)
 
             Log.e(
+                TAG,
                 "Failed synchronizing folder %s:%s @ %tc",
                 accountName,
                 folder,
@@ -269,7 +274,7 @@ internal class Pop3Sync(
         val downloadStarted = Date() // now
 
         if (earliestDate != null) {
-            Log.d("Only syncing messages after %s", earliestDate)
+            Log.d(TAG, "Only syncing messages after %s", earliestDate)
         }
         val folder = remoteFolder.serverId
 
@@ -287,7 +292,7 @@ internal class Pop3Sync(
         val todo = unsyncedMessages.size + syncFlagMessages.size
         listener.syncProgress(folderServerId = folder, completed = progress.get(), total = todo)
 
-        Log.d("SYNC: Have %d unsynced messages", unsyncedMessages.size)
+        Log.d(TAG, "SYNC: Have %d unsynced messages", unsyncedMessages.size)
 
         messages.clear()
         val largeMessages: MutableList<Pop3Message> = ArrayList<Pop3Message>()
@@ -303,7 +308,7 @@ internal class Pop3Sync(
             val fp = FetchProfile()
             fp.add(FetchProfile.Item.ENVELOPE)
 
-            Log.d("SYNC: About to fetch %d unsynced messages for folder %s", unsyncedMessages.size, folder)
+            Log.d(TAG, "SYNC: About to fetch %d unsynced messages for folder %s", unsyncedMessages.size, folder)
 
             fetchUnsyncedMessages(
                 syncConfig = syncConfig,
@@ -317,10 +322,11 @@ internal class Pop3Sync(
                 listener = listener,
             )
 
-            Log.d("SYNC: Synced unsynced messages for folder %s", folder)
+            Log.d(TAG, "SYNC: Synced unsynced messages for folder %s", folder)
         }
 
         Log.d(
+            TAG,
             "SYNC: Have %d large messages and %d small messages out of %d unsynced messages",
             largeMessages.size,
             smallMessages.size,
@@ -367,7 +373,7 @@ internal class Pop3Sync(
         )
         largeMessages.clear()
 
-        Log.d("SYNC: Synced remote messages for folder %s, %d new messages", folder, newMessages.get())
+        Log.d(TAG, "SYNC: Synced remote messages for folder %s, %d new messages", folder, newMessages.get())
 
         // If the oldest message seen on this sync is newer than the oldest message seen on the previous sync, then
         // we want to move our high-water mark forward.
@@ -403,7 +409,7 @@ internal class Pop3Sync(
     ) {
         val messageServerId = message.uid
         if (message.isSet(Flag.DELETED)) {
-            Log.v("Message with uid %s is marked as deleted", messageServerId)
+            Log.v(TAG, "Message with uid %s is marked as deleted", messageServerId)
 
             syncFlagMessages.add(message)
             return
@@ -413,11 +419,11 @@ internal class Pop3Sync(
 
         if (!messagePresentLocally) {
             if (!message.isSet(Flag.X_DOWNLOADED_FULL) && !message.isSet(Flag.X_DOWNLOADED_PARTIAL)) {
-                Log.v("Message with uid %s has not yet been downloaded", messageServerId)
+                Log.v(TAG, "Message with uid %s has not yet been downloaded", messageServerId)
 
                 unsyncedMessages.add(message)
             } else {
-                Log.v("Message with uid %s is partially or fully downloaded", messageServerId)
+                Log.v(TAG, "Message with uid %s is partially or fully downloaded", messageServerId)
 
                 // Store the updated message locally
                 val completeMessage = message.isSet(Flag.X_DOWNLOADED_FULL)
@@ -440,17 +446,17 @@ internal class Pop3Sync(
 
         val messageFlags: Set<Flag> = backendFolder.getMessageFlags(messageServerId)
         if (!messageFlags.contains(Flag.DELETED)) {
-            Log.v("Message with uid %s is present in the local store", messageServerId)
+            Log.v(TAG, "Message with uid %s is present in the local store", messageServerId)
 
             if (!messageFlags.contains(Flag.X_DOWNLOADED_FULL) && !messageFlags.contains(Flag.X_DOWNLOADED_PARTIAL)) {
-                Log.v("Message with uid %s is not downloaded, even partially; trying again", messageServerId)
+                Log.v(TAG, "Message with uid %s is not downloaded, even partially; trying again", messageServerId)
 
                 unsyncedMessages.add(message)
             } else {
                 syncFlagMessages.add(message)
             }
         } else {
-            Log.v("Local copy of message with uid %s is marked as deleted", messageServerId)
+            Log.v(TAG, "Local copy of message with uid %s is marked as deleted", messageServerId)
         }
     }
 
@@ -479,6 +485,7 @@ internal class Pop3Sync(
                     if (message.isSet(Flag.DELETED) || message.olderThan(earliestDate)) {
                         if (message.isSet(Flag.DELETED)) {
                             Log.v(
+                                TAG,
                                 "Newly downloaded message %s:%s:%s was marked deleted on server, " +
                                     "skipping",
                                 accountName,
@@ -487,6 +494,7 @@ internal class Pop3Sync(
                             )
                         } else {
                             Log.d(
+                                TAG,
                                 "Newly downloaded message %s is older than %s, skipping",
                                 message.uid,
                                 earliestDate,
@@ -509,7 +517,7 @@ internal class Pop3Sync(
                         smallMessages.add(message)
                     }
                 } catch (e: Exception) {
-                    Log.e(e, "Error while storing downloaded message.")
+                    Log.e(TAG, e, "Error while storing downloaded message.")
                 }
             },
             syncConfig.maximumAutoDownloadMessageSize,
@@ -530,7 +538,7 @@ internal class Pop3Sync(
     ) {
         val folder = remoteFolder.serverId
 
-        Log.d("SYNC: Fetching %d small messages for folder %s", smallMessages.size, folder)
+        Log.d(TAG, "SYNC: Fetching %d small messages for folder %s", smallMessages.size, folder)
 
         @Suppress("TooGenericExceptionCaught")
         remoteFolder.fetch(
@@ -553,6 +561,7 @@ internal class Pop3Sync(
 
                     val messageServerId = message.uid
                     Log.v(
+                        TAG,
                         "About to notify listeners that we got a new small message %s:%s:%s",
                         accountName,
                         folder,
@@ -569,13 +578,13 @@ internal class Pop3Sync(
                         isOldMessage = isOldMessage,
                     )
                 } catch (e: Exception) {
-                    Log.e(e, "SYNC: fetch small messages")
+                    Log.e(TAG, e, "SYNC: fetch small messages")
                 }
             },
             -1,
         )
 
-        Log.d("SYNC: Done fetching small messages for folder %s", folder)
+        Log.d(TAG, "SYNC: Done fetching small messages for folder %s", folder)
     }
 
     private fun isOldMessage(backendFolder: BackendFolder, message: Pop3Message): Boolean {
@@ -597,7 +606,7 @@ internal class Pop3Sync(
     ) {
         val folder = remoteFolder.serverId
 
-        Log.d("SYNC: Fetching large messages for folder %s", folder)
+        Log.d(TAG, "SYNC: Fetching large messages for folder %s", folder)
 
         val maxDownloadSize = syncConfig.maximumAutoDownloadMessageSize
         remoteFolder.fetch(largeMessages, fp, null, maxDownloadSize)
@@ -606,6 +615,7 @@ internal class Pop3Sync(
 
             val messageServerId = message.uid
             Log.v(
+                TAG,
                 "About to notify listeners that we got a new large message %s:%s:%s",
                 accountName,
                 folder,
@@ -633,7 +643,7 @@ internal class Pop3Sync(
             )
         }
 
-        Log.d("SYNC: Done fetching large messages for folder %s", folder)
+        Log.d(TAG, "SYNC: Done fetching large messages for folder %s", folder)
     }
 
     @Throws(MessagingException::class)

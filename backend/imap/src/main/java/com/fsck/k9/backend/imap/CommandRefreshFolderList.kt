@@ -6,7 +6,7 @@ import com.fsck.k9.backend.api.updateFolders
 import com.fsck.k9.mail.FolderType
 import com.fsck.k9.mail.store.imap.FolderListItem
 import com.fsck.k9.mail.store.imap.ImapStore
-import net.thunderbird.core.logging.Logger
+import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.legacy.logging.Log
 import net.thunderbird.feature.mail.folder.api.FolderPathDelimiter
 

@@ -11,6 +11,8 @@ import net.thunderbird.legacy.logging.Log
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.mail.message.list.LocalMessageUidPrefixProvider
 
+private const val TAG = "MoveMessageOperations"
+
 internal class MoveMessageOperations(
     private val database: LockableDatabase,
     private val threadMessageOperations: ThreadMessageOperations,
@@ -18,7 +20,7 @@ internal class MoveMessageOperations(
     private val localMessageUidPrefixProvider: LocalMessageUidPrefixProvider,
 ) {
     fun moveMessage(messageId: Long, destinationFolderId: Long): Long {
-        Log.d("Moving message [ID: $messageId] to folder [ID: $destinationFolderId]")
+        Log.d(TAG, "Moving message [ID: $messageId] to folder [ID: $destinationFolderId]")
 
         return database.execute(true) { database ->
             val threadInfo =

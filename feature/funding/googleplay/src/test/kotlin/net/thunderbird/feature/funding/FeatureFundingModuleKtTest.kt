@@ -2,8 +2,8 @@ package net.thunderbird.feature.funding
 
 import android.content.Context
 import kotlin.test.Test
+import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.core.android.common.activity.ActivityProvider
-import net.thunderbird.core.logging.Logger
 import net.thunderbird.feature.funding.api.FundingSettings
 import org.koin.core.annotation.KoinExperimentalAPI
 import org.koin.test.KoinTest

@@ -3,7 +3,7 @@ package app.k9mail.feature.widget.unread
 import android.content.Intent
 import android.os.Bundle
 import com.fsck.k9.activity.AccountList
-import net.thunderbird.feature.mail.account.api.BaseAccount
+import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.feature.search.legacy.SearchAccount
 
 class UnreadWidgetChooseAccountActivity : AccountList() {
@@ -14,8 +14,8 @@ class UnreadWidgetChooseAccountActivity : AccountList() {
 
     override fun onAccountSelected(account: Any) {
         val accountUuid = when (account) {
-            is SearchAccount -> account.id
-            is BaseAccount -> account.id.toString()
+            is SearchAccount -> account.id.toString()
+            is LegacyAccount -> account.id.toString()
             else -> error("Unknown account type: $account")
         }
 

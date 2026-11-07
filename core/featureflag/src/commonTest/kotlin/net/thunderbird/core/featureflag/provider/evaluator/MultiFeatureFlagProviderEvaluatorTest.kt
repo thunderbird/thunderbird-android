@@ -16,6 +16,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
+import net.thunderbird.components.core.logging.testing.TestLogger
 import net.thunderbird.core.featureflag.FeatureFlagKey
 import net.thunderbird.core.featureflag.FeatureFlagResult
 import net.thunderbird.core.featureflag.keys.GeneratedFeatureFlagKey.ARCHIVE_MARKS_AS_READ
@@ -30,7 +31,6 @@ import net.thunderbird.core.featureflag.provider.BaseCatalogFeatureFlagProvider
 import net.thunderbird.core.featureflag.provider.CatalogFeatureFlagProvider
 import net.thunderbird.core.featureflag.provider.CatalogFeatureFlagProvider.State
 import net.thunderbird.core.featureflag.provider.ProviderMetadata
-import net.thunderbird.core.logging.testing.TestLogger
 
 class MultiFeatureFlagProviderEvaluatorTest {
 
@@ -208,6 +208,7 @@ class MultiFeatureFlagProviderEvaluatorTest {
             }
         }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun `enabledFlags should fall back to the lower priority provider when the higher one is cleared`() =
         runTest(UnconfinedTestDispatcher()) {
@@ -234,6 +235,7 @@ class MultiFeatureFlagProviderEvaluatorTest {
             }
         }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun `enabledFlags should ignore keys unknown to the app`() = runTest(UnconfinedTestDispatcher()) {
         // Arrange
@@ -249,6 +251,7 @@ class MultiFeatureFlagProviderEvaluatorTest {
         }
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun `enabledFlags should be empty when no provider enables a flag`() = runTest(UnconfinedTestDispatcher()) {
         // Arrange

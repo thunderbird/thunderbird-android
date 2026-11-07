@@ -19,15 +19,15 @@ class GetSortCriteriaPerAccount(
 ) : DomainContract.UseCase.GetSortCriteriaPerAccount {
 
     private val LegacyAccount.primarySortType: SortType
-        get() = sortType.toSortType(isAscending = sortAscending[sortType] ?: false)
+        get() = sortType.toSortType(isAscending = isSortAscending(sortType))
 
     private val LegacyAccount.secondarySortType: SortType?
-        get() = sortAscending[LegacySortType.SORT_DATE]
-            ?.takeIf { primarySortType !in SortCriteria.SecondaryNotRequiredForSortTypes }
+        get() = isSortAscending(LegacySortType.SORT_DATE)
+            .takeIf { primarySortType !in SortCriteria.SecondaryNotRequiredForSortTypes }
             ?.let(LegacySortType.SORT_DATE::toSortType)
 
     override suspend operator fun invoke(accountIds: Set<AccountId>): Map<AccountId?, SortCriteria> {
-        val accounts = withContext(ioDispatcher) { accountManager.getAccounts() }
+        val accounts = withContext(ioDispatcher) { accountManager.findAll() }
         val sortCriteria = buildMap {
             put(null, getDefaultSortCriteria())
             putAll(
