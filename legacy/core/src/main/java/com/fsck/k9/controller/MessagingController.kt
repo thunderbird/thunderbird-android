@@ -1525,7 +1525,6 @@ class MessagingController internal constructor(
             }
 
             val localStore = localStoreProvider.getInstance(accountId)
-            val outboxStateRepository = localStore.outboxStateRepository
             val outboxFolderId = outboxFolderManager
                 .getOutboxFolderIdSync(
                     accountId,
@@ -1565,44 +1564,14 @@ class MessagingController internal constructor(
                     message.destroy()
                     continue
                 }
-                try {
-                    val messageId = message.databaseId
-                    val outboxState = outboxStateRepository.getOutboxState(messageId)
-
-                    val sendState = outboxState.sendState
-                    if (sendState != SendState.READY) {
-                        logger.verbose(TAG) {
-                            "Skipping sending message ${message.uid} (reason: ${sendState.databaseName} - " +
-                                "${outboxState.sendError})"
-                        }
-
-                        if (sendState == SendState.RETRIES_EXCEEDED) {
-                            lastFailure = MessagingException("Retries exceeded", true)
-                        } else {
-                            lastFailure = MessagingException(outboxState.sendError, true)
-                        }
-                        continue
+                val failure = sendPendingMessage(accountId, localStore, localFolder, message, fp, backend) {
+                    progress++
+                    for (l in listeners) {
+                        l.synchronizeMailboxProgress(accountId, outboxFolderId, progress, todo)
                     }
-
-                    logger.info(TAG) { "Send count for message ${message.uid} is ${outboxState.numberOfSendAttempts}" }
-
-                    localFolder.fetch(listOf(message), fp, null)
-                    val failure = sendFetchedMessage(
-                        accountId, localStore, localFolder, message, outboxState, backend,
-                    ) {
-                        progress++
-                        for (l in listeners) {
-                            l.synchronizeMailboxProgress(accountId, outboxFolderId, progress, todo)
-                        }
-                    }
-                    if (failure != null) {
-                        lastFailure = failure
-                    }
-                } catch (e: Exception) {
-                    lastFailure = e
-
-                    logger.error(TAG, e) { "Failed to fetch message for sending" }
-                    notifySynchronizeMailboxFailed(accountId, localFolder, e)
+                }
+                if (failure != null) {
+                    lastFailure = failure
                 }
             }
 
@@ -1616,6 +1585,53 @@ class MessagingController internal constructor(
                 notificationController.clearSendFailedNotification(accountId)
             }
         }
+    }
+
+    /**
+     * Returns the failure, or `null` when the message was sent or skipped because it is a draft.
+     */
+    private fun sendPendingMessage(
+        accountId: AccountId, localStore: LocalStore, localFolder: LocalFolder, message: LocalMessage,
+        fetchProfile: FetchProfile, backend: Backend, onSent: () -> Unit,
+    ): Exception? {
+        val outboxStateRepository = localStore.outboxStateRepository
+        var lastFailure: Exception? = null
+        try {
+            val messageId = message.databaseId
+            val outboxState = outboxStateRepository.getOutboxState(messageId)
+
+            val sendState = outboxState.sendState
+            if (sendState != SendState.READY) {
+                logger.verbose(TAG) {
+                    "Skipping sending message ${message.uid} (reason: ${sendState.databaseName} - " +
+                        "${outboxState.sendError})"
+                }
+
+                if (sendState == SendState.RETRIES_EXCEEDED) {
+                    lastFailure = MessagingException("Retries exceeded", true)
+                } else {
+                    lastFailure = MessagingException(outboxState.sendError, true)
+                }
+                return lastFailure
+            }
+
+            logger.info(TAG) { "Send count for message ${message.uid} is ${outboxState.numberOfSendAttempts}" }
+
+            localFolder.fetch(listOf(message), fetchProfile, null)
+            val failure = sendFetchedMessage(
+                accountId, localStore, localFolder, message, outboxState, backend, onSent,
+            )
+            if (failure != null) {
+                lastFailure = failure
+            }
+        } catch (e: Exception) {
+            lastFailure = e
+
+            logger.error(TAG, e) { "Failed to fetch message for sending" }
+            notifySynchronizeMailboxFailed(accountId, localFolder, e)
+        }
+
+        return lastFailure
     }
 
     /**
