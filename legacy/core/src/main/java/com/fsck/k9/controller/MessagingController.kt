@@ -1,3 +1,5 @@
+@file:Suppress("TooGenericExceptionCaught")
+
 package com.fsck.k9.controller
 
 import android.content.Context
@@ -97,6 +99,9 @@ import net.thunderbird.feature.search.legacy.LocalMessageSearch
  * registers as a listener. When it is paused it removes itself. Thus, any commands that that activity submitted are
  * removed from the queue once the activity is no longer active.
  */
+// TODO: Break MessagingController into smaller, focused classes (e.g. sending, move/copy, delete, sync) and remove
+//  these suppressions.
+@Suppress("LargeClass", "TooManyFunctions")
 class MessagingController internal constructor(
     private val context: Context?,
     private val notificationController: NotificationController,
@@ -2835,6 +2840,7 @@ class MessagingController internal constructor(
         fun act(accountId: AccountId, messageFolder: LocalFolder, messages: List<LocalMessage>)
     }
 
+    @Suppress("TooManyFunctions")
     internal inner class ControllerSyncListener(
         private val accountId: AccountId,
         private val listener: MessagingListener?,
