@@ -1,10 +1,11 @@
 package net.thunderbird.core.common.net
 
 import assertk.assertAll
+import assertk.assertFailure
+import assertk.assertions.isInstanceOf
 import java.security.cert.CertificateFactory
 import java.security.cert.X509Certificate
 import kotlin.jvm.java
-import kotlin.test.assertFailsWith
 import kotlinx.coroutines.test.runTest
 import net.thunderbird.core.common.net.tls.CertificateBlocklist
 import net.thunderbird.core.common.net.tls.CompromisedCertificateException
@@ -23,9 +24,9 @@ class CertificateBlocklistTest {
     fun `known unsafe certificate hash is blocked`() = runTest {
         val certificateBlockList = CertificateBlocklist
         val badCert = getBadHostCertificate()
-        assertFailsWith(CompromisedCertificateException::class) {
+        assertFailure {
             certificateBlockList.checkCertificateBlockList(arrayOf(badCert))
-        }
+        }.isInstanceOf<CompromisedCertificateException>()
     }
 
     @Test
@@ -33,9 +34,9 @@ class CertificateBlocklistTest {
         val certificateBlockList = CertificateBlocklist
         val goodCert = getGoodHostCertificate()
         val badCert = getBadHostCertificate()
-        assertFailsWith(CompromisedCertificateException::class) {
+        assertFailure {
             certificateBlockList.checkCertificateBlockList(arrayOf(goodCert, badCert, goodCert))
-        }
+        }.isInstanceOf<CompromisedCertificateException>()
     }
 
     private fun getGoodHostCertificate(): X509Certificate {

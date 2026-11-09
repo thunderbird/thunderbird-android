@@ -1,9 +1,10 @@
 package app.k9mail.feature.account.common.domain.entity
 
+import assertk.assertFailure
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import assertk.assertions.isInstanceOf
 import assertk.assertions.isNull
-import kotlin.test.assertFailsWith
 import org.junit.Test
 
 class IncomingProtocolTypeTest {
@@ -26,7 +27,7 @@ class IncomingProtocolTypeTest {
 
     @Test
     fun `fromName should throw IllegalArgumentException`() {
-        assertFailsWith<IllegalArgumentException> { IncomingProtocolType.fromName("unknown") }
+        assertFailure { IncomingProtocolType.fromName("unknown") }.isInstanceOf<IllegalArgumentException>()
     }
 
     @Test

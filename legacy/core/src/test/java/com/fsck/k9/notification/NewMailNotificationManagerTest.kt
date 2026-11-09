@@ -16,7 +16,6 @@ import com.fsck.k9.FakeLegacyAccount
 import com.fsck.k9.mail.Address
 import com.fsck.k9.mailstore.LocalMessage
 import com.fsck.k9.mailstore.NotificationMessage
-import kotlin.test.assertNotNull
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
@@ -133,19 +132,20 @@ class NewMailNotificationManagerTest {
 
         val result = manager.addNewMailNotification(accountId, message, silent = false)
 
-        assertNotNull(result)
-        assertThat(result.singleNotificationData.first().content).isEqualTo(
-            NotificationContent(
-                messageReference = createMessageReference("msg-1"),
-                sender = Address("irrelevant", "sender"),
-                subject = "subject",
-                preview = "preview",
-                summary = "summary",
-            ),
-        )
-        assertThat(result.summaryNotificationData).isNotNull().isInstanceOf<SummarySingleNotificationData>()
-        val summaryNotificationData = result.summaryNotificationData as SummarySingleNotificationData
-        assertThat(summaryNotificationData.singleNotificationData.isSilent).isFalse()
+        assertThat(result).isNotNull().given { data ->
+            assertThat(data.singleNotificationData.first().content).isEqualTo(
+                NotificationContent(
+                    messageReference = createMessageReference("msg-1"),
+                    sender = Address("irrelevant", "sender"),
+                    subject = "subject",
+                    preview = "preview",
+                    summary = "summary",
+                ),
+            )
+            assertThat(data.summaryNotificationData).isNotNull().isInstanceOf<SummarySingleNotificationData>()
+            val summaryNotificationData = data.summaryNotificationData as SummarySingleNotificationData
+            assertThat(summaryNotificationData.singleNotificationData.isSilent).isFalse()
+        }
     }
 
     @Test
@@ -170,28 +170,29 @@ class NewMailNotificationManagerTest {
 
         val result = manager.addNewMailNotification(accountId, messageTwo, silent = false)
 
-        assertNotNull(result)
-        assertThat(result.singleNotificationData.first().content).isEqualTo(
-            NotificationContent(
-                messageReference = createMessageReference("msg-2"),
-                sender = Address("irrelevant", "Zoe"),
-                subject = "Meeting",
-                preview = "We need to talk",
-                summary = "Zoe Meeting",
-            ),
-        )
-        assertThat(result.baseNotificationData.newMessagesCount).isEqualTo(2)
-        assertThat(result.summaryNotificationData).isNotNull().isInstanceOf<SummaryInboxNotificationData>()
-        val summaryNotificationData = result.summaryNotificationData as SummaryInboxNotificationData
-        assertThat(summaryNotificationData.content).isEqualTo(listOf("Zoe Meeting", "Alice Hi Bob"))
-        assertThat(summaryNotificationData.messageReferences).isEqualTo(
-            listOf(
-                createMessageReference("msg-2"),
-                createMessageReference("msg-1"),
-            ),
-        )
-        assertThat(summaryNotificationData.additionalMessagesCount).isEqualTo(0)
-        assertThat(summaryNotificationData.isSilent).isFalse()
+        assertThat(result).isNotNull().given { data ->
+            assertThat(data.singleNotificationData.first().content).isEqualTo(
+                NotificationContent(
+                    messageReference = createMessageReference("msg-2"),
+                    sender = Address("irrelevant", "Zoe"),
+                    subject = "Meeting",
+                    preview = "We need to talk",
+                    summary = "Zoe Meeting",
+                ),
+            )
+            assertThat(data.baseNotificationData.newMessagesCount).isEqualTo(2)
+            assertThat(data.summaryNotificationData).isNotNull().isInstanceOf<SummaryInboxNotificationData>()
+            val summaryNotificationData = data.summaryNotificationData as SummaryInboxNotificationData
+            assertThat(summaryNotificationData.content).isEqualTo(listOf("Zoe Meeting", "Alice Hi Bob"))
+            assertThat(summaryNotificationData.messageReferences).isEqualTo(
+                listOf(
+                    createMessageReference("msg-2"),
+                    createMessageReference("msg-1"),
+                ),
+            )
+            assertThat(summaryNotificationData.additionalMessagesCount).isEqualTo(0)
+            assertThat(summaryNotificationData.isSilent).isFalse()
+        }
     }
 
     @Test
@@ -207,10 +208,11 @@ class NewMailNotificationManagerTest {
 
         val result = manager.addNewMailNotification(accountId, message, silent = false)
 
-        assertNotNull(result)
-        val notificationId = NotificationIds.getSingleMessageNotificationId(account.accountNumber, index = 0)
-        assertThat(result.cancelNotificationIds).isEqualTo(listOf(notificationId))
-        assertThat(result.singleNotificationData.first().notificationId).isEqualTo(notificationId)
+        assertThat(result).isNotNull().given { data ->
+            val notificationId = NotificationIds.getSingleMessageNotificationId(account.accountNumber, index = 0)
+            assertThat(data.cancelNotificationIds).isEqualTo(listOf(notificationId))
+            assertThat(data.singleNotificationData.first().notificationId).isEqualTo(notificationId)
+        }
     }
 
     @Test
@@ -255,7 +257,7 @@ class NewMailNotificationManagerTest {
             listOf(createMessageReference("msg-1"))
         }
 
-        assertNotNull(result) { data ->
+        assertThat(result).isNotNull().given { data ->
             assertThat(data.cancelNotificationIds).containsExactlyInAnyOrder(
                 NotificationIds.getNewMailSummaryNotificationId(account.accountNumber),
                 NotificationIds.getSingleMessageNotificationId(account.accountNumber, 0),
@@ -283,8 +285,7 @@ class NewMailNotificationManagerTest {
             messageUid = "msg-2",
         )
         val dataTwo = manager.addNewMailNotification(accountId, messageTwo, silent = true)
-        assertNotNull(dataTwo)
-        val notificationIdTwo = dataTwo.singleNotificationData.first().notificationId
+        val notificationIdTwo = checkNotNull(dataTwo).singleNotificationData.first().notificationId
         val messageThree = addMessageToNotificationContentCreator(
             sender = "Alice",
             subject = "Three",
@@ -298,7 +299,7 @@ class NewMailNotificationManagerTest {
             listOf(createMessageReference("msg-2"))
         }
 
-        assertNotNull(result) { data ->
+        assertThat(result).isNotNull().given { data ->
             assertThat(data.cancelNotificationIds).isEqualTo(listOf(notificationIdTwo))
             assertThat(data.singleNotificationData).isEmpty()
             assertThat(data.baseNotificationData.newMessagesCount).isEqualTo(2)
@@ -330,7 +331,7 @@ class NewMailNotificationManagerTest {
             listOf(createMessageReference("msg-1"))
         }
 
-        assertNotNull(result) { data ->
+        assertThat(result).isNotNull().given { data ->
             assertThat(data.cancelNotificationIds).hasSize(1)
             assertThat(data.baseNotificationData.newMessagesCount)
                 .isEqualTo(MAX_NUMBER_OF_NEW_MESSAGE_NOTIFICATIONS)
@@ -371,7 +372,7 @@ class NewMailNotificationManagerTest {
 
         val result = manager.restoreNewMailNotifications(accountId)
 
-        assertNotNull(result) { data ->
+        assertThat(result).isNotNull().given { data ->
             assertThat(data.cancelNotificationIds).isEmpty()
             assertThat(data.baseNotificationData.newMessagesCount).isEqualTo(1)
             assertThat(data.singleNotificationData).hasSize(1)
@@ -420,7 +421,7 @@ class NewMailNotificationManagerTest {
 
         val result = manager.restoreNewMailNotifications(accountId)
 
-        assertNotNull(result) { data ->
+        assertThat(result).isNotNull().given { data ->
             assertThat(data.cancelNotificationIds).isEmpty()
             assertThat(data.baseNotificationData.newMessagesCount)
                 .isEqualTo(MAX_NUMBER_OF_NEW_MESSAGE_NOTIFICATIONS + 1)
