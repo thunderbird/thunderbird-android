@@ -2200,32 +2200,7 @@ class MessagingController internal constructor(
                 logger.debug(TAG) { "Deleting messages in normal folder, moving" }
                 localTrashFolder = localStore.getFolder(trashFolderId!!)
 
-                val messageStore = messageStoreManager.getMessageStore(accountId)
-
-                val messageIds = ArrayList<Long>()
-                val messageIdToUidMapping = HashMap<Long, String>()
-                for (message in messages) {
-                    val messageId = message.databaseId
-                    messageIds.add(messageId)
-                    messageIdToUidMapping[messageId] = message.uid
-                }
-
-                val moveMessageIdMapping: Map<Long, Long> =
-                    messageStore.moveMessages(messageIds, trashFolderId)
-
-                val destinationMapping: Map<Long, String> =
-                    messageStore.getMessageServerIds(moveMessageIdMapping.values)
-                uidMap = HashMap()
-                for ((sourceMessageId, destinationMessageId) in moveMessageIdMapping) {
-                    val sourceUid = messageIdToUidMapping[sourceMessageId]
-                    val destinationUid = destinationMapping[destinationMessageId]
-                    uidMap[sourceUid] = destinationUid
-                }
-
-                if (account.isMarkMessageAsReadOnDelete) {
-                    val destinationMessageIds = moveMessageIdMapping.values
-                    messageStore.setFlag(destinationMessageIds, Flag.SEEN, true)
-                }
+                uidMap = moveMessagesToTrash(accountId, account, messages, trashFolderId)
             }
 
             for (l in listeners) {
@@ -2237,49 +2212,96 @@ class MessagingController internal constructor(
 
             logger.debug(TAG) { "Delete policy for account $accountId is ${account.deletePolicy}" }
 
-            val outboxFolderId = outboxFolderManager
-                .getOutboxFolderIdSync(
-                    accountId,
-                    true,
-                )
-
-            if (outboxFolderId != -1L && folderId == outboxFolderId && supportsUpload(accountId)) {
-                for (destinationUid in uidMap!!.values) {
-                    // If the message was in the Outbox, then it has been copied to local Trash, and has
-                    // to be copied to remote trash
-                    val command = PendingAppend.create(trashFolderId!!, destinationUid)
-                    queuePendingCommand(accountId, command)
-                }
-                processPendingCommands(accountId)
-            } else if (localFolder.isLocalOnly) {
-                // Nothing to do on the remote side
-            } else if (syncedMessageUids.isNotEmpty()) {
-                if (account.deletePolicy == DeletePolicy.ON_DELETE) {
-                    if (doNotMoveToTrashFolder || !backend.supportsTrashFolder) {
-                        queueDelete(accountId, folderId, syncedMessageUids)
-                    } else if (account.isMarkMessageAsReadOnDelete) {
-                        queueMoveOrCopy(
-                            accountId, folderId, trashFolderId!!,
-                            MoveOrCopyFlavor.MOVE_AND_MARK_AS_READ, uidMap,
-                        )
-                    } else {
-                        queueMoveOrCopy(
-                            accountId, folderId, trashFolderId!!,
-                            MoveOrCopyFlavor.MOVE, uidMap,
-                        )
-                    }
-                    processPendingCommands(accountId)
-                } else if (account.deletePolicy == DeletePolicy.MARK_AS_READ) {
-                    queueSetFlag(accountId, localFolder.databaseId, true, Flag.SEEN, syncedMessageUids)
-                    processPendingCommands(accountId)
-                } else {
-                    logger.debug(TAG) { "Delete policy ${account.deletePolicy} prevents delete from server" }
-                }
-            }
+            queueRemoteDelete(
+                accountId, account, backend, localFolder, trashFolderId, syncedMessageUids, uidMap,
+                doNotMoveToTrashFolder,
+            )
 
             unsuppressMessages(accountId, messages)
         } catch (me: MessagingException) {
             throw IllegalStateException("Error deleting message from local store.", me)
+        }
+    }
+
+    @Throws(MessagingException::class)
+    private fun moveMessagesToTrash(
+        accountId: AccountId, account: LegacyAccount, messages: List<LocalMessage>, trashFolderId: Long,
+    ): HashMap<String?, String?> {
+        val messageStore = messageStoreManager.getMessageStore(accountId)
+
+        val messageIds = ArrayList<Long>()
+        val messageIdToUidMapping = HashMap<Long, String>()
+        for (message in messages) {
+            val messageId = message.databaseId
+            messageIds.add(messageId)
+            messageIdToUidMapping[messageId] = message.uid
+        }
+
+        val moveMessageIdMapping: Map<Long, Long> =
+            messageStore.moveMessages(messageIds, trashFolderId)
+
+        val destinationMapping: Map<Long, String> =
+            messageStore.getMessageServerIds(moveMessageIdMapping.values)
+        val uidMap = HashMap<String?, String?>()
+        for ((sourceMessageId, destinationMessageId) in moveMessageIdMapping) {
+            val sourceUid = messageIdToUidMapping[sourceMessageId]
+            val destinationUid = destinationMapping[destinationMessageId]
+            uidMap[sourceUid] = destinationUid
+        }
+
+        if (account.isMarkMessageAsReadOnDelete) {
+            val destinationMessageIds = moveMessageIdMapping.values
+            messageStore.setFlag(destinationMessageIds, Flag.SEEN, true)
+        }
+
+        return uidMap
+    }
+
+    @Throws(MessagingException::class)
+    private fun queueRemoteDelete(
+        accountId: AccountId, account: LegacyAccount, backend: Backend, localFolder: LocalFolder,
+        trashFolderId: Long?, syncedMessageUids: List<String>, uidMap: HashMap<String?, String?>?,
+        doNotMoveToTrashFolder: Boolean,
+    ) {
+        val folderId = localFolder.databaseId
+        val outboxFolderId = outboxFolderManager
+            .getOutboxFolderIdSync(
+                accountId,
+                true,
+            )
+
+        if (outboxFolderId != -1L && folderId == outboxFolderId && supportsUpload(accountId)) {
+            for (destinationUid in uidMap!!.values) {
+                // If the message was in the Outbox, then it has been copied to local Trash, and has
+                // to be copied to remote trash
+                val command = PendingAppend.create(trashFolderId!!, destinationUid)
+                queuePendingCommand(accountId, command)
+            }
+            processPendingCommands(accountId)
+        } else if (localFolder.isLocalOnly) {
+            // Nothing to do on the remote side
+        } else if (syncedMessageUids.isNotEmpty()) {
+            if (account.deletePolicy == DeletePolicy.ON_DELETE) {
+                if (doNotMoveToTrashFolder || !backend.supportsTrashFolder) {
+                    queueDelete(accountId, folderId, syncedMessageUids)
+                } else if (account.isMarkMessageAsReadOnDelete) {
+                    queueMoveOrCopy(
+                        accountId, folderId, trashFolderId!!,
+                        MoveOrCopyFlavor.MOVE_AND_MARK_AS_READ, uidMap,
+                    )
+                } else {
+                    queueMoveOrCopy(
+                        accountId, folderId, trashFolderId!!,
+                        MoveOrCopyFlavor.MOVE, uidMap,
+                    )
+                }
+                processPendingCommands(accountId)
+            } else if (account.deletePolicy == DeletePolicy.MARK_AS_READ) {
+                queueSetFlag(accountId, localFolder.databaseId, true, Flag.SEEN, syncedMessageUids)
+                processPendingCommands(accountId)
+            } else {
+                logger.debug(TAG) { "Delete policy ${account.deletePolicy} prevents delete from server" }
+            }
         }
     }
 
