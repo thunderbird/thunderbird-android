@@ -129,7 +129,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import net.jcip.annotations.GuardedBy
+import androidx.annotation.GuardedBy
 import net.thunderbird.core.android.account.Expunge
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.LegacyAccountManager
