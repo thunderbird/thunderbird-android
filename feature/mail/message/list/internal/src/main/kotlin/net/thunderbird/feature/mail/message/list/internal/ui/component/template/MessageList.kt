@@ -50,7 +50,9 @@ internal fun MessageListScope.MessageList(
 
     ScrollEventEffect(state.messages, listState)
 
-    if (state.messages.isEmpty() && (state is MessageListState.LoadedMessages || state is MessageListState.SearchingMessages)) {
+    if (state.messages.isEmpty() &&
+        (state is MessageListState.LoadedMessages || state is MessageListState.SearchingMessages)
+    ) {
         MessageListEmptyState(
             isSearch = state is MessageListState.SearchingMessages,
             modifier = modifier,
