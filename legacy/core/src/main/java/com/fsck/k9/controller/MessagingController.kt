@@ -46,6 +46,7 @@ import com.fsck.k9.mailstore.LocalMessage
 import com.fsck.k9.mailstore.LocalStore
 import com.fsck.k9.mailstore.LocalStoreProvider
 import com.fsck.k9.mailstore.MessageListCache
+import com.fsck.k9.mailstore.OutboxState
 import com.fsck.k9.mailstore.SaveMessageDataCreator
 import com.fsck.k9.mailstore.SendState
 import com.fsck.k9.notification.NotificationController
@@ -161,7 +162,7 @@ class MessagingController internal constructor(
     fun stop() {
         stopped = true
         controllerThread.interrupt()
-        controllerThread.join(1000L)
+        controllerThread.join(STOP_TIMEOUT_MILLIS)
     }
 
     private fun runInBackground() {
@@ -213,11 +214,11 @@ class MessagingController internal constructor(
                 queue.put(command)
                 return
             } catch (ie: InterruptedException) {
-                SystemClock.sleep(200)
+                SystemClock.sleep(PUT_COMMAND_RETRY_DELAY_MILLIS)
                 e = ie
             }
         }
-        throw Error(e)
+        throw IllegalStateException("Couldn't enqueue command", e)
     }
 
     fun getBackend(accountId: AccountId): Backend {
@@ -239,7 +240,7 @@ class MessagingController internal constructor(
         try {
             return localStoreProvider.getInstance(accountId)
         } catch (e: MessagingException) {
-            throw IllegalStateException("Couldn't get LocalStore for account $accountId")
+            throw IllegalStateException("Couldn't get LocalStore for account $accountId", e)
         }
     }
 
@@ -351,7 +352,9 @@ class MessagingController internal constructor(
             // Refreshing the folder list may update the account (e.g. special folders), so only change what is ours
             accountManager.updateSync(accountId) { currentAccount: LegacyAccount ->
                 var updatedAccount = currentAccount
-                if (!folderPathDelimiter.isNullOrEmpty() && (folderPathDelimiter != currentAccount.folderPathDelimiter)) {
+                if (!folderPathDelimiter.isNullOrEmpty() &&
+                    folderPathDelimiter != currentAccount.folderPathDelimiter
+                ) {
                     updatedAccount = updatedAccount.updateFolderDelimiter(folderPathDelimiter)
                 }
                 updatedAccount.updateLastFolderListRefreshTime(now)
@@ -577,21 +580,7 @@ class MessagingController internal constructor(
             commandException = e
         }
 
-        val localFolder: LocalFolder
-        try {
-            val localStore = localStoreProvider.getInstance(accountId)
-            localFolder = localStore.getFolder(folderId)
-            localFolder.open()
-        } catch (e: MessagingException) {
-            syncDebugLogger.error("MessagingException", null) { e.message.orEmpty() }
-            logger.error(TAG, e) { "syncFolder: Couldn't load local folder $folderId" }
-            return
-        }
-
-        // We can't sync local folders
-        if (localFolder.isLocalOnly) {
-            return
-        }
+        val localFolder = loadSyncableLocalFolder(accountId, folderId) ?: return
 
         val suppressNotifications: Boolean
         if (notify) {
@@ -616,6 +605,25 @@ class MessagingController internal constructor(
             updateFolderStatus(accountId, folderId, rootMessage)
             listener?.synchronizeMailboxFailed(accountId, folderId, rootMessage)
         }
+    }
+
+    /**
+     * Returns `null` when the local folder couldn't be loaded or is a local-only folder, which can't be synced.
+     */
+    private fun loadSyncableLocalFolder(accountId: AccountId, folderId: Long): LocalFolder? {
+        val localFolder: LocalFolder
+        try {
+            val localStore = localStoreProvider.getInstance(accountId)
+            localFolder = localStore.getFolder(folderId)
+            localFolder.open()
+        } catch (e: MessagingException) {
+            syncDebugLogger.error("MessagingException", null) { e.message.orEmpty() }
+            logger.error(TAG, e) { "syncFolder: Couldn't load local folder $folderId" }
+            return null
+        }
+
+        // We can't sync local folders
+        return localFolder.takeUnless { it.isLocalOnly }
     }
 
     private fun createSyncConfig(accountId: AccountId): SyncConfig {
@@ -706,7 +714,7 @@ class MessagingController internal constructor(
             val localStore = localStoreProvider.getInstance(accountId)
             localStore.addPendingCommand(command)
         } catch (e: Exception) {
-            throw RuntimeException("Unable to enqueue pending command", e)
+            throw IllegalStateException("Unable to enqueue pending command", e)
         }
     }
 
@@ -733,39 +741,7 @@ class MessagingController internal constructor(
         try {
             for (command in commands) {
                 processingCommand = command
-                val commandName = command.commandName
-                logger.debug(TAG) { "Processing pending command '$commandName'" }
-
-                /*
-                 * We specifically do not catch any exceptions here. If a command fails it is
-                 * most likely due to a server or IO error, and it must be retried before any
-                 * other command processes. This maintains the order of the commands.
-                 */
-                try {
-                    command.execute(this, accountId)
-
-                    localStore.removePendingCommand(command)
-
-                    logger.debug(TAG) { "Done processing pending command '$commandName'" }
-                } catch (me: MessagingException) {
-                    if (me.isPermanentFailure) {
-                        logger.error(TAG, me) {
-                            "Failure of command '$commandName' was permanent, removing command from queue"
-                        }
-                        localStore.removePendingCommand(processingCommand)
-                    } else {
-                        throw me
-                    }
-                } catch (e: Exception) {
-                    logger.error(TAG, e) {
-                        "Unexpected exception with command '$commandName', removing command from queue"
-                    }
-                    localStore.removePendingCommand(processingCommand)
-
-                    if (BuildConfig.DEBUG) {
-                        throw AssertionError("Unexpected exception while processing pending command", e)
-                    }
-                }
+                processPendingCommand(localStore, command, accountId)
 
                 // TODO: When removing a pending command due to an error the local changes should be reverted. Pending
                 //  commands that depend on this command should be canceled and local changes be reverted. In most cases
@@ -775,6 +751,43 @@ class MessagingController internal constructor(
             notifyUserIfCertificateProblem(accountId, me, true)
             logger.error(TAG, me) { "Could not process command '$processingCommand'" }
             throw me
+        }
+    }
+
+    @Throws(MessagingException::class)
+    private fun processPendingCommand(localStore: LocalStore, command: PendingCommand, accountId: AccountId) {
+        val commandName = command.commandName
+        logger.debug(TAG) { "Processing pending command '$commandName'" }
+
+        /*
+         * We specifically do not catch any exceptions here. If a command fails it is
+         * most likely due to a server or IO error, and it must be retried before any
+         * other command processes. This maintains the order of the commands.
+         */
+        try {
+            command.execute(this, accountId)
+
+            localStore.removePendingCommand(command)
+
+            logger.debug(TAG) { "Done processing pending command '$commandName'" }
+        } catch (me: MessagingException) {
+            if (me.isPermanentFailure) {
+                logger.error(TAG, me) {
+                    "Failure of command '$commandName' was permanent, removing command from queue"
+                }
+                localStore.removePendingCommand(command)
+            } else {
+                throw me
+            }
+        } catch (e: Exception) {
+            logger.error(TAG, e) {
+                "Unexpected exception with command '$commandName', removing command from queue"
+            }
+            localStore.removePendingCommand(command)
+
+            if (BuildConfig.DEBUG) {
+                throw AssertionError("Unexpected exception while processing pending command", e)
+            }
         }
     }
 
@@ -794,10 +807,9 @@ class MessagingController internal constructor(
         val folderServerId = localFolder.serverId
         val uid = command.uid
 
-        val localMessage = localFolder.getMessage(uid) ?: return
-
-        if (!localMessage.uid.startsWith(localMessageUidPrefixProvider.get())) {
-            //FIXME: This should never happen. Throw in debug builds.
+        val localMessage = localFolder.getMessage(uid)
+        if (localMessage == null || !localMessage.uid.startsWith(localMessageUidPrefixProvider.get())) {
+            // TODO: A message without a local UID should never happen. Throw in debug builds.
             return
         }
 
@@ -1190,7 +1202,7 @@ class MessagingController internal constructor(
                 processPendingCommands(accountId)
             }
         } catch (me: MessagingException) {
-            throw RuntimeException(me)
+            throw IllegalStateException("Error setting flag", me)
         }
     }
 
@@ -1208,7 +1220,7 @@ class MessagingController internal constructor(
                 setFlag(accountId, folderId, listOf(message), flag, newState)
             }
         } catch (me: MessagingException) {
-            throw RuntimeException(me)
+            throw IllegalStateException("Error setting flag", me)
         }
     }
 
@@ -1235,7 +1247,9 @@ class MessagingController internal constructor(
         listener: MessagingListener?, loadPartialFromSearch: Boolean,
     ) {
         try {
-            require(!messageServerId.startsWith(localMessageUidPrefixProvider.get())) { "Must not be called with a local UID" }
+            require(!messageServerId.startsWith(localMessageUidPrefixProvider.get())) {
+                "Must not be called with a local UID"
+            }
 
             val folderServerId = getFolderServerId(accountId, folderId)
 
@@ -1545,7 +1559,7 @@ class MessagingController internal constructor(
 
             for (message in localMessages) {
                 if (message.isSet(Flag.DELETED)) {
-                    //FIXME: When uploading a message to the remote Sent folder the move code creates a placeholder
+                    // TODO: When uploading a message to the remote Sent folder the move code creates a placeholder
                     // message in the Outbox. This code gets rid of these messages. It'd be preferable if the
                     // placeholder message was never created, though.
                     message.destroy()
@@ -1573,57 +1587,16 @@ class MessagingController internal constructor(
                     logger.info(TAG) { "Send count for message ${message.uid} is ${outboxState.numberOfSendAttempts}" }
 
                     localFolder.fetch(listOf(message), fp, null)
-                    try {
-                        if (message.getHeader(K9.IDENTITY_HEADER).size > 0 || message.isSet(Flag.DRAFT)) {
-                            logger.verbose(TAG) {
-                                "The user has set the Outbox and Drafts folder to the same thing. This message " +
-                                    "appears to be a draft, so K-9 will not send it"
-                            }
-                            continue
-                        }
-
-                        outboxStateRepository.incrementSendAttempts(messageId)
-                        message.setFlag(Flag.X_SEND_IN_PROGRESS, true)
-
-                        logger.info(TAG) { "Sending message with UID ${message.uid}" }
-                        backend.sendMessage(message)
-
-                        message.setFlag(Flag.X_SEND_IN_PROGRESS, false)
-                        message.setFlag(Flag.SEEN, true)
+                    val failure = sendFetchedMessage(
+                        accountId, localStore, localFolder, message, outboxState, backend,
+                    ) {
                         progress++
                         for (l in listeners) {
                             l.synchronizeMailboxProgress(accountId, outboxFolderId, progress, todo)
                         }
-                        moveOrDeleteSentMessage(accountId, localStore, message)
-
-                        outboxStateRepository.removeOutboxState(messageId)
-                    } catch (e: AuthenticationFailedException) {
-                        outboxStateRepository.decrementSendAttempts(messageId)
-                        lastFailure = e
-
-                        handleAuthenticationFailure(accountId, false)
-                        handleSendFailure(accountId, localFolder, message, e)
-                    } catch (e: CertificateValidationException) {
-                        outboxStateRepository.decrementSendAttempts(messageId)
-                        lastFailure = e
-
-                        notifyUserIfCertificateProblem(accountId, e, false)
-                        handleSendFailure(accountId, localFolder, message, e)
-                    } catch (e: MessagingException) {
-                        lastFailure = e
-
-                        if (e.isPermanentFailure) {
-                            val errorMessage = e.message
-                            outboxStateRepository.setSendAttemptError(messageId, errorMessage!!)
-                        } else if (outboxState.numberOfSendAttempts + 1 >= K9.MAX_SEND_ATTEMPTS) {
-                            outboxStateRepository.setSendAttemptsExceeded(messageId)
-                        }
-
-                        handleSendFailure(accountId, localFolder, message, e)
-                    } catch (e: Exception) {
-                        lastFailure = e
-
-                        handleSendFailure(accountId, localFolder, message, e)
+                    }
+                    if (failure != null) {
+                        lastFailure = failure
                     }
                 } catch (e: Exception) {
                     lastFailure = e
@@ -1643,6 +1616,70 @@ class MessagingController internal constructor(
                 notificationController.clearSendFailedNotification(accountId)
             }
         }
+    }
+
+    /**
+     * Returns the failure, or `null` when the message was sent or skipped because it is a draft.
+     */
+    @Throws(MessagingException::class)
+    private fun sendFetchedMessage(
+        accountId: AccountId, localStore: LocalStore, localFolder: LocalFolder, message: LocalMessage,
+        outboxState: OutboxState, backend: Backend, onSent: () -> Unit,
+    ): Exception? {
+        val outboxStateRepository = localStore.outboxStateRepository
+        val messageId = message.databaseId
+        var lastFailure: Exception? = null
+        try {
+            if (message.getHeader(K9.IDENTITY_HEADER).size > 0 || message.isSet(Flag.DRAFT)) {
+                logger.verbose(TAG) {
+                    "The user has set the Outbox and Drafts folder to the same thing. This message " +
+                        "appears to be a draft, so K-9 will not send it"
+                }
+                return null
+            }
+
+            outboxStateRepository.incrementSendAttempts(messageId)
+            message.setFlag(Flag.X_SEND_IN_PROGRESS, true)
+
+            logger.info(TAG) { "Sending message with UID ${message.uid}" }
+            backend.sendMessage(message)
+
+            message.setFlag(Flag.X_SEND_IN_PROGRESS, false)
+            message.setFlag(Flag.SEEN, true)
+            onSent()
+            moveOrDeleteSentMessage(accountId, localStore, message)
+
+            outboxStateRepository.removeOutboxState(messageId)
+        } catch (e: AuthenticationFailedException) {
+            outboxStateRepository.decrementSendAttempts(messageId)
+            lastFailure = e
+
+            handleAuthenticationFailure(accountId, false)
+            handleSendFailure(accountId, localFolder, message, e)
+        } catch (e: CertificateValidationException) {
+            outboxStateRepository.decrementSendAttempts(messageId)
+            lastFailure = e
+
+            notifyUserIfCertificateProblem(accountId, e, false)
+            handleSendFailure(accountId, localFolder, message, e)
+        } catch (e: MessagingException) {
+            lastFailure = e
+
+            if (e.isPermanentFailure) {
+                val errorMessage = e.message
+                outboxStateRepository.setSendAttemptError(messageId, errorMessage!!)
+            } else if (outboxState.numberOfSendAttempts + 1 >= K9.MAX_SEND_ATTEMPTS) {
+                outboxStateRepository.setSendAttemptsExceeded(messageId)
+            }
+
+            handleSendFailure(accountId, localFolder, message, e)
+        } catch (e: Exception) {
+            lastFailure = e
+
+            handleSendFailure(accountId, localFolder, message, e)
+        }
+
+        return lastFailure
     }
 
     @Throws(MessagingException::class)
@@ -1945,7 +1982,7 @@ class MessagingController internal constructor(
 
             processPendingCommands(accountId)
         } catch (me: MessagingException) {
-            throw RuntimeException("Error moving message", me)
+            throw IllegalStateException("Error moving message", me)
         }
     }
 
@@ -2221,7 +2258,7 @@ class MessagingController internal constructor(
 
             unsuppressMessages(accountId, messages)
         } catch (me: MessagingException) {
-            throw RuntimeException("Error deleting message from local store.", me)
+            throw IllegalStateException("Error deleting message from local store.", me)
         }
     }
 
@@ -2480,15 +2517,11 @@ class MessagingController internal constructor(
             for (folder in localStore.getPersonalNamespaces(false)) {
                 folder.open()
 
-                if (!folder.isVisible) {
-                    // Never sync a folder that isn't displayed
+                // Never sync a folder that isn't displayed or not enabled for sync
+                if (!folder.isVisible || !folder.isSyncEnabled) {
                     continue
                 }
 
-                if (!folder.isSyncEnabled) {
-                    // Do not sync folders that are not enabled for sync.
-                    continue
-                }
                 synchronizeFolder(accountId, folder, ignoreLastCheckedTime, notify, listener, notificationState)
             }
         } catch (e: MessagingException) {
@@ -2698,12 +2731,7 @@ class MessagingController internal constructor(
     }
 
     private fun getServerSettings(accountId: AccountId, incoming: Boolean): ServerSettings? {
-        val account = accountManager.findById(accountId)
-        return if (account == null) {
-            null
-        } else {
-            getServerSettings(account, incoming)
-        }
+        return accountManager.findById(accountId)?.let { account -> getServerSettings(account, incoming) }
     }
 
     private fun getServerSettings(account: LegacyAccount, incoming: Boolean): ServerSettings {
@@ -2904,7 +2932,7 @@ class MessagingController internal constructor(
                 localFolder.open()
                 return localFolder.getMessage(messageServerId)
             } catch (e: MessagingException) {
-                throw RuntimeException("Could not load message ($folderServerId:$messageServerId)", e)
+                throw IllegalStateException("Could not load message ($folderServerId:$messageServerId)", e)
             }
         }
     }
@@ -2919,6 +2947,8 @@ class MessagingController internal constructor(
         private const val FOLDER_LIST_STALENESS_THRESHOLD = 30 * 60 * 1000L
 
         private const val TAG = "MessagingController"
+        private const val STOP_TIMEOUT_MILLIS = 1000L
+        private const val PUT_COMMAND_RETRY_DELAY_MILLIS = 200L
 
         @JvmStatic
         fun getInstance(): MessagingController {
