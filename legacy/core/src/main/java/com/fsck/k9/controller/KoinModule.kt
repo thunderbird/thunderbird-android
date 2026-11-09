@@ -51,7 +51,7 @@ val controllerModule = module {
         MessagingControllerWrapper(
             messagingController = get(),
         )
-    } bind FolderSynchronizer::class
+    } binds arrayOf(MessagingControllerWrapper::class, FolderSynchronizer::class)
 
     single {
         UnifiedFolderSynchronizer(
