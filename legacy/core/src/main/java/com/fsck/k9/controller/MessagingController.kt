@@ -1939,67 +1939,72 @@ class MessagingController internal constructor(
 
             val messages = localSrcFolder.getMessagesByUids(uids)
             if (messages.size > 0) {
-                logger.info(TAG) {
-                    "moveOrCopyMessageSynchronous: source folder = $srcFolderId, ${messages.size} messages, " +
-                        "destination folder = $destFolderId, operation = ${operation.name}"
-                }
-
-                val messageStore = messageStoreManager.getMessageStore(accountId)
-
-                val messageIds = ArrayList<Long>()
-                val messageIdToUidMapping = HashMap<Long, String>()
-                for (message in messages) {
-                    val messageId = message.databaseId
-                    messageIds.add(messageId)
-                    messageIdToUidMapping[messageId] = message.uid
-                }
-
-                val resultIdMapping: Map<Long, Long>?
-                if (operation == MoveOrCopyFlavor.COPY) {
-                    resultIdMapping = messageStore.copyMessages(messageIds, destFolderId)
-
-                    if (unreadCountAffected) {
-                        // If this copy operation changes the unread count in the destination
-                        // folder, notify the listeners.
-                        for (l in listeners) {
-                            l.folderStatusChanged(accountId, destFolderId)
-                        }
-                    }
-                } else {
-                    resultIdMapping = messageStore.moveMessages(messageIds, destFolderId)
-
-                    unsuppressMessages(accountId, messages)
-
-                    if (unreadCountAffected) {
-                        // If this move operation changes the unread count, notify the listeners
-                        // that the unread count changed in both the source and destination folder.
-                        for (l in listeners) {
-                            l.folderStatusChanged(accountId, srcFolderId)
-                            l.folderStatusChanged(accountId, destFolderId)
-                        }
-                    }
-                }
-
-                val destinationMapping: Map<Long, String> =
-                    messageStore.getMessageServerIds(resultIdMapping.values)
-
-                val uidMap = HashMap<String?, String?>()
-                for ((sourceMessageId, destinationMessageId) in resultIdMapping) {
-                    val sourceUid = messageIdToUidMapping[sourceMessageId]
-                    val destinationUid = destinationMapping[destinationMessageId]
-                    uidMap[sourceUid] = destinationUid
-                }
-
-                queueMoveOrCopy(
-                    accountId, localSrcFolder.databaseId, localDestFolder.databaseId,
-                    operation, uidMap,
-                )
+                moveOrCopyLocalMessages(accountId, srcFolderId, destFolderId, messages, operation, unreadCountAffected)
             }
 
             processPendingCommands(accountId)
         } catch (me: MessagingException) {
             throw IllegalStateException("Error moving message", me)
         }
+    }
+
+    @Throws(MessagingException::class)
+    private fun moveOrCopyLocalMessages(
+        accountId: AccountId, srcFolderId: Long, destFolderId: Long, messages: List<LocalMessage>,
+        operation: MoveOrCopyFlavor, unreadCountAffected: Boolean,
+    ) {
+        logger.info(TAG) {
+            "moveOrCopyMessageSynchronous: source folder = $srcFolderId, ${messages.size} messages, " +
+                "destination folder = $destFolderId, operation = ${operation.name}"
+        }
+
+        val messageStore = messageStoreManager.getMessageStore(accountId)
+
+        val messageIds = ArrayList<Long>()
+        val messageIdToUidMapping = HashMap<Long, String>()
+        for (message in messages) {
+            val messageId = message.databaseId
+            messageIds.add(messageId)
+            messageIdToUidMapping[messageId] = message.uid
+        }
+
+        val resultIdMapping: Map<Long, Long>?
+        if (operation == MoveOrCopyFlavor.COPY) {
+            resultIdMapping = messageStore.copyMessages(messageIds, destFolderId)
+
+            if (unreadCountAffected) {
+                // If this copy operation changes the unread count in the destination
+                // folder, notify the listeners.
+                for (l in listeners) {
+                    l.folderStatusChanged(accountId, destFolderId)
+                }
+            }
+        } else {
+            resultIdMapping = messageStore.moveMessages(messageIds, destFolderId)
+
+            unsuppressMessages(accountId, messages)
+
+            if (unreadCountAffected) {
+                // If this move operation changes the unread count, notify the listeners
+                // that the unread count changed in both the source and destination folder.
+                for (l in listeners) {
+                    l.folderStatusChanged(accountId, srcFolderId)
+                    l.folderStatusChanged(accountId, destFolderId)
+                }
+            }
+        }
+
+        val destinationMapping: Map<Long, String> =
+            messageStore.getMessageServerIds(resultIdMapping.values)
+
+        val uidMap = HashMap<String?, String?>()
+        for ((sourceMessageId, destinationMessageId) in resultIdMapping) {
+            val sourceUid = messageIdToUidMapping[sourceMessageId]
+            val destinationUid = destinationMapping[destinationMessageId]
+            uidMap[sourceUid] = destinationUid
+        }
+
+        queueMoveOrCopy(accountId, srcFolderId, destFolderId, operation, uidMap)
     }
 
     fun moveToDraftsFolder(accountId: AccountId, folderId: Long, messages: List<MessageReference>) {
