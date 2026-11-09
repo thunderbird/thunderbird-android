@@ -12,9 +12,9 @@ import net.thunderbird.core.common.text.GraphemeClusters
  */
 class DefaultAvatarMonogramCreator : AvatarMonogramCreator {
     override fun create(name: String?, email: String?): String {
-        return if (name != null && name.isNotEmpty()) {
+        return if (!name.isNullOrBlank()) {
             composeAvatarMonogram(name)
-        } else if (email != null && email.isNotEmpty()) {
+        } else if (!email.isNullOrBlank()) {
             composeAvatarMonogram(email)
         } else {
             AVATAR_MONOGRAM_DEFAULT
