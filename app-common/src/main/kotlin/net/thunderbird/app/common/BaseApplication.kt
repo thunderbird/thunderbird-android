@@ -6,7 +6,6 @@ import android.content.res.Configuration
 import android.content.res.Resources
 import androidx.lifecycle.ProcessLifecycleOwner
 import app.k9mail.feature.widget.message.list.MessageListWidgetManager
-import app.k9mail.legacy.di.DI
 import com.fsck.k9.Core
 import com.fsck.k9.K9
 import com.fsck.k9.MessagingListenerProvider
@@ -28,7 +27,6 @@ import net.thunderbird.components.core.logging.file.FileLogSink
 import net.thunderbird.core.ui.theme.manager.ThemeManager
 import net.thunderbird.legacy.logging.Log
 import org.koin.android.ext.android.inject
-import org.koin.core.module.Module
 import org.koin.core.qualifier.named
 import androidx.work.Configuration as WorkManagerConfiguration
 
@@ -53,7 +51,7 @@ abstract class BaseApplication : Application(), WorkManagerConfiguration.Provide
         Core.earlyInit()
 
         // Start Koin early so it is ready by the time content providers are initialized.
-        DI.start(this, listOf(provideAppModule()))
+        initializeKoin()
         Log.logger = logger
 
         super.attachBaseContext(base)
@@ -78,7 +76,7 @@ abstract class BaseApplication : Application(), WorkManagerConfiguration.Provide
         ProcessLifecycleOwner.get().lifecycle.addObserver(LoggerLifecycleObserver(syncDebugFileLogSink))
     }
 
-    abstract fun provideAppModule(): Module
+    abstract fun initializeKoin()
 
     private fun initializeAppLanguage() {
         appLanguageManager.init()
