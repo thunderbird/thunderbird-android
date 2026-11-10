@@ -1,0 +1,13 @@
+Thunderbird version 25.0
+
+New:
+- New funding appeal helps keep Thunderbird alive!
+
+Fixed:
+- Message composer could crash when rotating screen or editing message as new
+- HTML signature text disappeared after rotation
+- Deleted email notifications could reappear
+- HTML drafts could hide or lose attachments
+- Add to contacts crashed without a Contacts app
+- Large PGP attachments showed no encryption progress
+- Account drawer could behave inconsistently
