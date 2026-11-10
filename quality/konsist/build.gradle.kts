@@ -11,12 +11,15 @@ dependencies {
 }
 
 // Konsist reads the project's sources directly, so declare them as inputs: the tests rerun only when Kotlin
-// sources change.
+// sources change. The matched files are declared instead of the tree, because a tree rooted at the project
+// directory overlaps the outputs of other tasks (e.g. dependencyGuard) and Gradle reports implicit dependencies.
 tasks.withType<Test>().configureEach {
     inputs.files(
-        fileTree(isolated.rootProject.projectDirectory) {
-            include("**/*.kt", "**/*.kts")
-            exclude("**/build/**", ".gradle/**", ".kotlin/**")
+        provider {
+            fileTree(isolated.rootProject.projectDirectory) {
+                include("**/*.kt", "**/*.kts")
+                exclude("**/build/**", ".gradle/**", ".kotlin/**")
+            }.files
         },
     ).withPathSensitivity(PathSensitivity.RELATIVE)
         .withPropertyName("konsistSources")
