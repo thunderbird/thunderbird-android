@@ -20,7 +20,8 @@ import net.thunderbird.feature.funding.api.FundingConfigStore
 class DefaultFundingConfigStoreTest {
 
     val defaultConfig = FundingConfig(
-        lastFundingReminderShownActivityAmount = 0L,
+        reminderReferenceTimestamp = 0L,
+        lastFundingReminderShownTimestamp = 0L,
         fundingReminderCount = 0,
     )
 
@@ -41,7 +42,8 @@ class DefaultFundingConfigStoreTest {
         val backend = getDefaultTestConfigBackend()
         val configTestSubject = createTestSubject(backend)
         val newConfig = FundingConfig(
-            lastFundingReminderShownActivityAmount = 10000L,
+            reminderReferenceTimestamp = 0L,
+            lastFundingReminderShownTimestamp = 10000L,
             fundingReminderCount = 1,
         )
 
@@ -50,15 +52,15 @@ class DefaultFundingConfigStoreTest {
             configTestSubject.update {
                 val oldConfig = it ?: FundingConfig.DEFAULT
                 oldConfig.copy(
-                    lastFundingReminderShownActivityAmount = newConfig.lastFundingReminderShownActivityAmount,
+                    lastFundingReminderShownTimestamp = newConfig.lastFundingReminderShownTimestamp,
                     fundingReminderCount = newConfig.fundingReminderCount,
                 )
             }
 
             // Ensure test subject has new values
             val testConfig = configTestSubject.config.first()
-            assertThat(testConfig.lastFundingReminderShownActivityAmount)
-                .isEqualTo(newConfig.lastFundingReminderShownActivityAmount)
+            assertThat(testConfig.lastFundingReminderShownTimestamp)
+                .isEqualTo(newConfig.lastFundingReminderShownTimestamp)
             assertThat(testConfig.fundingReminderCount).isEqualTo(newConfig.fundingReminderCount)
         }
     }
@@ -71,7 +73,8 @@ class DefaultFundingConfigStoreTest {
 
     private fun getDefaultTestConfigBackend() = TestConfigBackend(
         initialConfig = Config().apply {
-            this[FundingConfigKeys.LAST_FUNDING_REMINDER_SHOWN_ACTIVITY_AMOUNT] = 0L
+            this[FundingConfigKeys.REMINDER_REFERENCE_TIMESTAMP] = 0L
+            this[FundingConfigKeys.LAST_FUNDING_REMINDER_SHOWN] = 0L
             this[FundingConfigKeys.FUNDING_REMINDER_COUNT] = 0
         },
     )

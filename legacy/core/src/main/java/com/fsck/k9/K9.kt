@@ -4,9 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import app.k9mail.feature.telemetry.api.TelemetryManager
 import com.fsck.k9.K9.DATABASE_VERSION_CACHE
-import com.fsck.k9.K9.areDatabasesUpToDate
 import com.fsck.k9.K9.checkCachedDatabaseVersion
-import com.fsck.k9.K9.setDatabasesUpToDate
 import com.fsck.k9.mail.K9MailLib
 import com.fsck.k9.mailstore.LocalStore
 import com.fsck.k9.preferences.DefaultGeneralSettingsManager
@@ -130,12 +128,6 @@ object K9 : KoinComponent {
     //  their own settings.
     var isTelemetryEnabled = false
 
-    // TODO: These are feature-specific settings that don't need to be available to apps that don't include the
-    //  feature.
-    var fundingReminderReferenceTimestamp: Long = 0
-    var fundingReminderShownTimestamp: Long = 0
-    var fundingActivityCounterInMillis: Long = 0
-
     @Synchronized
     @JvmStatic
     fun isSortAscending(sortType: SortType): Boolean {
@@ -180,10 +172,6 @@ object K9 : KoinComponent {
         if (telemetryManager.isTelemetryFeatureIncluded()) {
             isTelemetryEnabled = storage.getBoolean("enableTelemetry", true)
         }
-
-        fundingReminderReferenceTimestamp = storage.getLong("fundingReminderReferenceTimestamp", 0)
-        fundingReminderShownTimestamp = storage.getLong("fundingReminderShownTimestamp", 0)
-        fundingActivityCounterInMillis = storage.getLong("fundingActivityCounterInMillis", 0)
     }
 
     @Suppress("LongMethod")
@@ -197,10 +185,6 @@ object K9 : KoinComponent {
         if (telemetryManager.isTelemetryFeatureIncluded()) {
             editor.putBoolean("enableTelemetry", isTelemetryEnabled)
         }
-
-        editor.putLong("fundingReminderReferenceTimestamp", fundingReminderReferenceTimestamp)
-        editor.putLong("fundingReminderShownTimestamp", fundingReminderShownTimestamp)
-        editor.putLong("fundingActivityCounterInMillis", fundingActivityCounterInMillis)
 
         fontSizes.save(editor)
     }

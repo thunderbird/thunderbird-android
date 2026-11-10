@@ -70,7 +70,6 @@ class FundingReminder(
                 }
 
                 shouldShowSecondReminder() -> fragmentObserver.register(observedFragmentManager) {
-                    // TODO make this point to the new dialog: #11526
                     showSecondFundingReminderDialog(dialogFragmentManager)
                 }
             }
@@ -107,11 +106,13 @@ class FundingReminder(
 
     @Suppress("SwallowedException")
     private fun resetReminderReferenceTimestamp(context: Context) {
-        try {
-            val installTime = context.packageManager.getPackageInfo(context.packageName, 0).firstInstallTime
-            settings.setReminderReferenceTimestamp(installTime)
-        } catch (exception: NameNotFoundException) {
-            settings.setReminderReferenceTimestamp(clock.now().toEpochMilliseconds())
+        scope.launch {
+            try {
+                val installTime = context.packageManager.getPackageInfo(context.packageName, 0).firstInstallTime
+                settings.setReminderReferenceTimestamp(installTime)
+            } catch (exception: NameNotFoundException) {
+                settings.setReminderReferenceTimestamp(clock.now().toEpochMilliseconds())
+            }
         }
     }
 
