@@ -8,6 +8,7 @@ import android.content.Intent
 import android.view.View
 import android.widget.RemoteViews
 import androidx.core.app.PendingIntentCompat
+import kotlin.coroutines.cancellation.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -57,17 +58,58 @@ abstract class BaseUnreadWidgetProvider : AppWidgetProvider(), KoinComponent {
         val pendingResult = goAsync()
 
         widgetScope.launch {
-            updateWidgets(context, appWidgetManager, appWidgetIds)
-            pendingResult.finish()
+            try {
+                updateWidgets(context, appWidgetManager, appWidgetIds)
+            } finally {
+                pendingResult.finish()
+            }
         }
     }
 
+    @Suppress("TooGenericExceptionCaught")
     private suspend fun updateWidgets(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray) {
         for (widgetId in appWidgetIds) {
-            val widgetData = repository.getWidgetData(widgetId) ?: continue
-            updateWidget(context, appWidgetManager, widgetData)
+            try {
+                val widgetData = repository.getWidgetData(widgetId)
+                if (widgetData != null) {
+                    updateWidget(context, appWidgetManager, widgetData)
+                } else {
+                    logger.warn(TAG) { "No valid configuration for widget ID $widgetId" }
+                    showUnconfiguredWidget(context, appWidgetManager, widgetId)
+                }
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                logger.error(TAG, e) { "Error updating widget ID $widgetId" }
+                showUnconfiguredWidget(context, appWidgetManager, widgetId)
+            }
         }
     }
+
+    /**
+     * Shows a placeholder that opens the widget configuration when tapped, so the user can recover from a missing or
+     * invalid configuration (e.g. the account was removed).
+     */
+    private fun showUnconfiguredWidget(context: Context, appWidgetManager: AppWidgetManager, appWidgetId: Int) {
+        val remoteViews = RemoteViews(context.packageName, R.layout.unread_widget_layout)
+        remoteViews.setViewVisibility(R.id.unread_count, View.GONE)
+        remoteViews.setTextViewText(R.id.title, context.getString(R.string.unread_widget_account_not_selected))
+        remoteViews.setOnClickPendingIntent(
+            R.id.unread_widget_layout,
+            createPendingIntent(context, appWidgetId, createConfigurationIntent(context, appWidgetId)),
+        )
+
+        appWidgetManager.updateAppWidget(appWidgetId, remoteViews)
+    }
+
+    private fun createPendingIntent(context: Context, appWidgetId: Int, intent: Intent) =
+        PendingIntentCompat.getActivity(context, appWidgetId, intent, FLAG_UPDATE_CURRENT, true)
+
+    private fun createConfigurationIntent(context: Context, appWidgetId: Int) =
+        Intent(context, UnreadWidgetConfigurationActivity::class.java).apply {
+            putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        }
 
     override fun onDeleted(context: Context, appWidgetIds: IntArray) {
         for (appWidgetId in appWidgetIds) {
@@ -104,19 +146,12 @@ abstract class BaseUnreadWidgetProvider : AppWidgetProvider(), KoinComponent {
         } catch (e: Exception) {
             logger.error(TAG, e) { "Error getting widget configuration for widget ID $appWidgetId" }
             null
-        } ?: Intent(context, UnreadWidgetConfigurationActivity::class.java).apply {
-            putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
-            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        }
+        } ?: createConfigurationIntent(context, appWidgetId)
 
-        val pendingIntent = PendingIntentCompat.getActivity(
-            context,
-            appWidgetId,
-            clickIntent,
-            FLAG_UPDATE_CURRENT,
-            true,
+        remoteViews.setOnClickPendingIntent(
+            R.id.unread_widget_layout,
+            createPendingIntent(context, appWidgetId, clickIntent),
         )
-        remoteViews.setOnClickPendingIntent(R.id.unread_widget_layout, pendingIntent)
 
         appWidgetManager.updateAppWidget(appWidgetId, remoteViews)
     }
