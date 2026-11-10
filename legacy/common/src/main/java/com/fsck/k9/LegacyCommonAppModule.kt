@@ -34,13 +34,15 @@ val legacyCommonAppModule = module {
     single<FeatureFlagProvider> { get<MultiFeatureFlagProviderEvaluator>() }
 }
 
-val legacyCommonAppModules = listOf(
-    legacyCommonAppModule,
-    messageListWidgetModule,
-    unreadWidgetModule,
-    notificationModule,
-    resourcesModule,
-    backendsModule,
-    storageModule,
-    newAccountModule,
-)
+val legacyCommonAppModules = module {
+    includes(
+        legacyCommonAppModule,
+        messageListWidgetModule,
+        unreadWidgetModule,
+        notificationModule,
+        resourcesModule,
+        backendsModule,
+        storageModule,
+        newAccountModule,
+    )
+}

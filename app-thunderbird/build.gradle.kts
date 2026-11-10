@@ -226,9 +226,11 @@ dependencies {
     implementation(projects.appCommon)
     implementation(projects.core.ui.compose.common)
     implementation(projects.core.ui.legacy.theme2.thunderbird)
+    implementation(projects.feature.changelog.internal)
     implementation(projects.feature.launcher)
 
     implementation(projects.legacy.core)
+    implementation(projects.legacy.storage)
     implementation(projects.legacy.ui.legacy)
 
     implementation(projects.core.featureflag)

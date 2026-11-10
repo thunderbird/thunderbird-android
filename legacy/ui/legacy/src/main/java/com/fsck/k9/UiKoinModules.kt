@@ -22,28 +22,31 @@ import com.fsck.k9.ui.settings.settingsUiModule
 import com.fsck.k9.ui.uiModule
 import com.fsck.k9.view.viewModule
 import net.thunderbird.feature.changelog.internal.changelogUiModule
+import org.koin.dsl.module
 
-val legacyUiModules = listOf(
-    featureAccountOAuthModule,
-    uiBaseModule,
-    activityModule,
-    uiModule,
-    uiFolderModule,
-    settingsUiModule,
-    endToEndUiModule,
-    foldersUiModule,
-    messageListUiModule,
-    manageFoldersUiModule,
-    chooseFolderUiModule,
-    contactsModule,
-    composeModule,
-    viewModule,
-    changelogUiModule,
-    messageSourceModule,
-    accountUiModule,
-    messageDetailsUiModule,
-    messageViewUiModule,
-    identityUiModule,
-    featureLauncherModule,
-    setUpModule,
-)
+val legacyUiModules = module {
+    includes(
+        featureAccountOAuthModule,
+        uiBaseModule,
+        activityModule,
+        uiModule,
+        uiFolderModule,
+        settingsUiModule,
+        endToEndUiModule,
+        foldersUiModule,
+        messageListUiModule,
+        manageFoldersUiModule,
+        chooseFolderUiModule,
+        contactsModule,
+        composeModule,
+        viewModule,
+        changelogUiModule,
+        messageSourceModule,
+        accountUiModule,
+        messageDetailsUiModule,
+        messageViewUiModule,
+        identityUiModule,
+        featureLauncherModule,
+        setUpModule,
+    )
+}

@@ -36,7 +36,7 @@ val controllerModule = module {
             get<SaveMessageDataCreator>(),
             get<LocalDeleteOperationDecider>(),
             get<LocalMessageUidPrefixProvider>(),
-            get(named("controllerExtensions")),
+            get<List<ControllerExtension>>(named("controllerExtensions")),
             get<FeatureFlagProvider>(),
             get<Logger>(named("syncDebug")),
             get<Logger>(),
