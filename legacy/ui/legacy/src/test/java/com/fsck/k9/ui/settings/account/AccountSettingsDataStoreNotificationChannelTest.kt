@@ -14,7 +14,10 @@ import com.fsck.k9.FakeLegacyAccount
 import com.fsck.k9.K9RobolectricTest
 import com.fsck.k9.notification.K9NotificationResourceProvider
 import com.fsck.k9.notification.NotificationChannelManager
+import com.fsck.k9.notification.NotificationConfigurationConverter
 import com.fsck.k9.notification.NotificationLightDecoder
+import com.fsck.k9.notification.NotificationSettingsUpdater
+import com.fsck.k9.notification.NotificationVibrationDecoder
 import kotlinx.coroutines.test.TestScope
 import net.thunderbird.components.core.logging.testing.TestLogger
 import net.thunderbird.core.android.account.LegacyAccount
@@ -53,6 +56,48 @@ class AccountSettingsDataStoreNotificationChannelTest : K9RobolectricTest() {
         messagingController = mock(),
         logger = TestLogger(),
     )
+
+    @Test
+    fun `missing messages channel should not update notification settings`() {
+        // Arrange
+        val notificationSettingsUpdater = NotificationSettingsUpdater(
+            notificationChannelManager = notificationChannelManager,
+            notificationConfigurationConverter = NotificationConfigurationConverter(
+                notificationLightDecoder = NotificationLightDecoder(),
+                notificationVibrationDecoder = NotificationVibrationDecoder(),
+            ),
+            accountManager = accountManager,
+        )
+
+        // Act
+        val result = notificationSettingsUpdater.updateNotificationSettings(account)
+
+        // Assert
+        assertThat(result).isNull()
+        assertThat(accountManager.findById(account.id)).isNotNull()
+            .prop(LegacyAccount::notificationSettings)
+            .isEqualTo(account.notificationSettings)
+    }
+
+    @Test
+    fun `changing the ringtone with a missing messages channel should create the channel with the new ringtone`() {
+        // Arrange
+        assertThat(notificationManager.getNotificationChannel(messagesChannelId(version = 0))).isNull()
+
+        // Act
+        testSubject.putString("account_ringtone", NEW_RINGTONE)
+
+        // Assert
+        val storedAccount = accountManager.findById(account.id)
+        assertThat(storedAccount).isNotNull().all {
+            prop(LegacyAccount::messagesNotificationChannelVersion).isEqualTo(0)
+            prop("ringtone") { it.notificationSettings.ringtone }.isEqualTo(NEW_RINGTONE)
+        }
+        assertThat(notificationManager.getNotificationChannel(messagesChannelId(version = 0)))
+            .isNotNull()
+            .prop("sound") { it.sound }
+            .isEqualTo(NEW_RINGTONE.toUri())
+    }
 
     @Test
     fun `changing the ringtone should recreate the messages channel with the new ringtone`() {
