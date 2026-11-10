@@ -43,16 +43,16 @@ class FundingReminderTest {
 
     @Test
     fun `should set reference timestamp when not set`() {
-        val activity = createTestActivity()
+        val activity = createTestActivity(
+            installTime = REMINDER_REFERENCE_TIMESTAMP,
+        )
         val activityProvider = FakeActivityProvider(activity)
         val settings = FakeFundingSettings(reminderReferenceTimestamp = REMINDER_REFERENCE_TIMESTAMP_UNSET)
         val fragmentObserver = FakeFragmentLifecycleObserver()
-        val activityObserver = FakeActivityLifecycleObserver()
         val testSubject = createTestSubject(
             activityProvider = activityProvider,
             settings = settings,
             fragmentObserver = fragmentObserver,
-            activityCounterObserver = activityObserver,
             scope = CoroutineScope(mainDispatcher.testDispatcher),
         )
 
@@ -60,7 +60,6 @@ class FundingReminderTest {
 
         assertThat(settings.getReminderReferenceTimestamp()).isEqualTo(REMINDER_REFERENCE_TIMESTAMP)
         assertThat(fragmentObserver.isRegistered).isFalse()
-        assertThat(activityObserver.isRegistered).isTrue()
     }
 
     @Test
@@ -71,12 +70,10 @@ class FundingReminderTest {
         val activityProvider = FakeActivityProvider(activity)
         val settings = FakeFundingSettings(reminderReferenceTimestamp = REMINDER_REFERENCE_TIMESTAMP)
         val fragmentObserver = FakeFragmentLifecycleObserver()
-        val activityObserver = FakeActivityLifecycleObserver()
         val testSubject = createTestSubject(
             activityProvider = activityProvider,
             settings = settings,
             fragmentObserver = fragmentObserver,
-            activityCounterObserver = activityObserver,
             scope = CoroutineScope(mainDispatcher.testDispatcher),
         )
 
@@ -84,7 +81,6 @@ class FundingReminderTest {
 
         assertThat(settings.getReminderReferenceTimestamp()).isEqualTo(REMINDER_REFERENCE_TIMESTAMP)
         assertThat(fragmentObserver.isRegistered).isFalse()
-        assertThat(activityObserver.isRegistered).isTrue()
     }
 
     @Test
@@ -96,24 +92,21 @@ class FundingReminderTest {
             reminderShownTimestamp = REMINDER_SHOWN_TIMESTAMP,
         )
         val fragmentObserver = FakeFragmentLifecycleObserver()
-        val activityObserver = FakeActivityLifecycleObserver()
         val testSubject = createTestSubject(
             activityProvider = activityProvider,
             settings = settings,
             fragmentObserver = fragmentObserver,
-            activityCounterObserver = activityObserver,
             scope = CoroutineScope(mainDispatcher.testDispatcher),
         )
 
         testSubject.registerReminder { }
 
         assertThat(fragmentObserver.isRegistered).isFalse()
-        assertThat(activityObserver.isRegistered).isTrue()
     }
 
     /**
      * An incremented counter should be enough to prevent the reminder from displaying,
-     *  even if it would otherwise display
+     * if the max number of reminders have already been shown
      */
     @Test
     fun `should not register reminder when previously incremented`() {
@@ -122,19 +115,15 @@ class FundingReminderTest {
         val settings = FakeFundingSettings(
             reminderReferenceTimestamp = REMINDER_REFERENCE_TIMESTAMP,
             reminderShownTimestamp = REMINDER_SHOWN_TIMESTAMP_UNSET,
-            activityCounterInMillis = FUNDING_REMINDER_MIN_ACTIVITY_MILLIS,
-            lastReminderShownActivityAmount = LAST_REMINDER_SHOWN_UNSET,
-            fundingReminderCount = REMINDER_COUNTER_FIRST_SHOWN,
+            fundingReminderCount = REMINDER_COUNTER_MAX,
         )
         val currentTime = REMINDER_REFERENCE_TIMESTAMP + FUNDING_REMINDER_DELAY_MILLIS
         val fragmentObserver = FakeFragmentLifecycleObserver()
-        val activityObserver = FakeActivityLifecycleObserver()
         var dialogShown = false
         val testSubject = createTestSubject(
             activityProvider = activityProvider,
             settings = settings,
             fragmentObserver = fragmentObserver,
-            activityCounterObserver = activityObserver,
             dialog = { dialogShown = true },
             clock = TestClock(Instant.fromEpochMilliseconds(currentTime)),
             scope = CoroutineScope(mainDispatcher.testDispatcher),
@@ -145,45 +134,7 @@ class FundingReminderTest {
         assertThat(dialogShown).isFalse()
         assertThat(fragmentObserver.isRegistered).isFalse()
         assertThat(settings.getReminderShownTimestamp()).isEqualTo(LAST_REMINDER_SHOWN_UNSET)
-        assertThat(REMINDER_COUNTER_FIRST_SHOWN).isEqualTo(settings.getReminderShownCount())
-    }
-
-    /**
-     * A value on the lastReminderShown timestamp should be enough to prevent the reminder from displaying,
-     *  even if it would otherwise display
-     */
-    @Test
-    fun `should not register reminder when lastReminderShown timestamp is not zero`() {
-        val activity = createTestActivity()
-        val activityProvider = FakeActivityProvider(activity)
-        val settings = FakeFundingSettings(
-            reminderReferenceTimestamp = REMINDER_REFERENCE_TIMESTAMP,
-            reminderShownTimestamp = REMINDER_SHOWN_TIMESTAMP_UNSET,
-            activityCounterInMillis = FUNDING_REMINDER_MIN_ACTIVITY_MILLIS,
-            lastReminderShownActivityAmount = REMINDER_REFERENCE_TIMESTAMP,
-            fundingReminderCount = 0,
-        )
-        val currentTime = REMINDER_REFERENCE_TIMESTAMP + FUNDING_REMINDER_DELAY_MILLIS
-        val fragmentObserver = FakeFragmentLifecycleObserver()
-        val activityObserver = FakeActivityLifecycleObserver()
-        var dialogShown = false
-        val testSubject = createTestSubject(
-            activityProvider = activityProvider,
-            settings = settings,
-            fragmentObserver = fragmentObserver,
-            activityCounterObserver = activityObserver,
-            dialog = { dialogShown = true },
-            clock = TestClock(Instant.fromEpochMilliseconds(currentTime)),
-            scope = CoroutineScope(mainDispatcher.testDispatcher),
-        )
-
-        testSubject.registerReminder { }
-
-        assertThat(dialogShown).isFalse()
-        assertThat(fragmentObserver.isRegistered).isFalse()
-        assertThat(settings.getReminderShownTimestamp()).isEqualTo(REMINDER_SHOWN_TIMESTAMP_UNSET)
-        assertThat(settings.getLastReminderShownActivityAmount()).isEqualTo(REMINDER_REFERENCE_TIMESTAMP)
-        assertThat(0).isEqualTo(settings.getReminderShownCount())
+        assertThat(REMINDER_COUNTER_MAX).isEqualTo(settings.getReminderShownCount())
     }
 
     @Test
@@ -193,17 +144,14 @@ class FundingReminderTest {
         val settings = FakeFundingSettings(
             reminderReferenceTimestamp = REMINDER_REFERENCE_TIMESTAMP,
             reminderShownTimestamp = REMINDER_SHOWN_TIMESTAMP_UNSET,
-            activityCounterInMillis = FUNDING_REMINDER_MIN_ACTIVITY_MILLIS,
         )
         val currentTime = REMINDER_REFERENCE_TIMESTAMP + FUNDING_REMINDER_DELAY_MILLIS
         val fragmentObserver = FakeFragmentLifecycleObserver()
-        val activityObserver = FakeActivityLifecycleObserver()
         var dialogShown = false
         val testSubject = createTestSubject(
             activityProvider = activityProvider,
             settings = settings,
             fragmentObserver = fragmentObserver,
-            activityCounterObserver = activityObserver,
             dialog = { dialogShown = true },
             clock = TestClock(Instant.fromEpochMilliseconds(currentTime)),
             scope = CoroutineScope(mainDispatcher.testDispatcher),
@@ -211,15 +159,12 @@ class FundingReminderTest {
 
         // Should not be set until after register reminder called
         assertThat(settings.getReminderShownCount()).isEqualTo(REMINDER_COUNTER_UNSET)
-        assertThat(settings.getLastReminderShownActivityAmount()).isEqualTo(REMINDER_SHOWN_TIMESTAMP_UNSET)
 
         // Test the reminder functionality
         testSubject.registerReminder { }
 
         assertThat(dialogShown).isEqualTo(true)
         assertThat(fragmentObserver.isRegistered).isTrue()
-        assertThat(activityObserver.isRegistered).isTrue()
-        assertThat(settings.getLastReminderShownActivityAmount()).isEqualTo(FUNDING_REMINDER_MIN_ACTIVITY_MILLIS)
         assertThat(settings.getReminderShownCount()).isEqualTo(REMINDER_COUNTER_FIRST_SHOWN)
         assertThat(settings.getReminderShownTimestamp()).isEqualTo(currentTime)
     }
@@ -232,17 +177,14 @@ class FundingReminderTest {
             reminderReferenceTimestamp = REMINDER_REFERENCE_TIMESTAMP,
             reminderShownTimestamp = REMINDER_SHOWN_TIMESTAMP_UNSET,
             fundingReminderCount = REMINDER_COUNTER_FIRST_SHOWN, // Prevent first reminder from showing
-            activityCounterInMillis = FUNDING_REMINDER_MIN_ACTIVITY_MILLIS,
         )
         val currentTime = REMINDER_REFERENCE_TIMESTAMP + FUNDING_REMINDER_DELAY_MILLIS
         val fragmentObserver = FakeFragmentLifecycleObserver()
-        val activityObserver = FakeActivityLifecycleObserver()
         var dialogShown = false
         val testSubject = createTestSubject(
             activityProvider = activityProvider,
             settings = settings,
             fragmentObserver = fragmentObserver,
-            activityCounterObserver = activityObserver,
             dialog = { dialogShown = true },
             clock = TestClock(Instant.fromEpochMilliseconds(currentTime)),
             scope = CoroutineScope(mainDispatcher.testDispatcher),
@@ -253,7 +195,6 @@ class FundingReminderTest {
 
         assertThat(dialogShown).isEqualTo(false)
         assertThat(fragmentObserver.isRegistered).isFalse()
-        assertThat(settings.getLastReminderShownActivityAmount()).isEqualTo(REMINDER_SHOWN_TIMESTAMP_UNSET)
         assertThat(settings.getReminderShownCount()).isEqualTo(REMINDER_COUNTER_FIRST_SHOWN)
         assertThat(settings.getReminderShownTimestamp()).isEqualTo(REMINDER_SHOWN_TIMESTAMP_UNSET)
     }
@@ -267,17 +208,14 @@ class FundingReminderTest {
             reminderReferenceTimestamp = REMINDER_REFERENCE_TIMESTAMP,
             reminderShownTimestamp = REMINDER_SHOWN_TIMESTAMP_UNSET,
             fundingReminderCount = REMINDER_COUNTER_UNSET,
-            activityCounterInMillis = FUNDING_REMINDER_MIN_ACTIVITY_MILLIS,
         )
         val currentTime = REMINDER_REFERENCE_TIMESTAMP + FUNDING_REMINDER_DELAY_MILLIS
         val fragmentObserver = FakeFragmentLifecycleObserver()
-        val activityObserver = FakeActivityLifecycleObserver()
         var dialogShown = false
         val testSubject = createTestSubject(
             activityProvider = activityProvider,
             settings = settings,
             fragmentObserver = fragmentObserver,
-            activityCounterObserver = activityObserver,
             dialog = { dialogShown = true },
             clock = TestClock(Instant.fromEpochMilliseconds(currentTime)),
             scope = CoroutineScope(mainDispatcher.testDispatcher),
@@ -289,9 +227,7 @@ class FundingReminderTest {
         // Assert that only one donation reminder has displayed, the first one
         assertThat(dialogShown).isEqualTo(true)
         assertThat(fragmentObserver.isRegistered).isTrue()
-        assertThat(activityObserver.isRegistered).isTrue()
         assertThat(settings.getReminderShownCount()).isEqualTo(REMINDER_COUNTER_FIRST_SHOWN)
-        assertThat(settings.getLastReminderShownActivityAmount()).isEqualTo(FUNDING_REMINDER_MIN_ACTIVITY_MILLIS)
         assertThat(settings.getReminderShownTimestamp()).isEqualTo(currentTime)
     }
 
@@ -302,19 +238,15 @@ class FundingReminderTest {
         val settings = FakeFundingSettings(
             reminderReferenceTimestamp = REMINDER_REFERENCE_TIMESTAMP,
             reminderShownTimestamp = REMINDER_SHOWN_TIMESTAMP,
-            lastReminderShownActivityAmount = REMINDER_SHOWN_TIMESTAMP,
             fundingReminderCount = REMINDER_COUNTER_FIRST_SHOWN,
-            activityCounterInMillis = SECOND_FUNDING_REMINDER_MIN_ACTIVITY_MILLIS,
         )
-        val currentTime = REMINDER_REFERENCE_TIMESTAMP + SECOND_FUNDING_REMINDER_MIN_ACTIVITY_MILLIS
+        val currentTime = REMINDER_REFERENCE_TIMESTAMP + (FUNDING_REMINDER_DELAY_MILLIS * 2)
         val fragmentObserver = FakeFragmentLifecycleObserver()
-        val activityObserver = FakeActivityLifecycleObserver()
         var dialogShown = false
         val testSubject = createTestSubject(
             activityProvider = activityProvider,
             settings = settings,
             fragmentObserver = fragmentObserver,
-            activityCounterObserver = activityObserver,
             dialog = { dialogShown = true },
             clock = TestClock(Instant.fromEpochMilliseconds(currentTime)),
             scope = CoroutineScope(mainDispatcher.testDispatcher),
@@ -325,17 +257,14 @@ class FundingReminderTest {
 
         assertThat(dialogShown).isEqualTo(true)
         assertThat(fragmentObserver.isRegistered).isTrue()
-        assertThat(activityObserver.isRegistered).isTrue()
         assertThat(settings.getReminderShownCount()).isEqualTo(REMINDER_COUNTER_SECOND_SHOWN)
         assertThat(settings.getReminderShownTimestamp()).isEqualTo(currentTime)
-        assertThat(settings.getLastReminderShownActivityAmount()).isEqualTo(SECOND_FUNDING_REMINDER_MIN_ACTIVITY_MILLIS)
     }
 
     private fun createTestSubject(
         activityProvider: ActivityProvider,
         settings: FundingSettings,
         fragmentObserver: FundingReminderContract.FragmentLifecycleObserver,
-        activityCounterObserver: FundingReminderContract.ActivityLifecycleObserver,
         dialog: Dialog = Dialog { },
         clock: TestClock = TestClock(Instant.fromEpochMilliseconds(0)),
         scope: CoroutineScope,
@@ -344,7 +273,6 @@ class FundingReminderTest {
             activityProvider = activityProvider,
             settings = settings,
             fragmentObserver = fragmentObserver,
-            activityCounterObserver = activityCounterObserver,
             dialog = dialog,
             clock = clock,
             scope = scope,
@@ -393,9 +321,8 @@ class FundingReminderTest {
         const val REMINDER_COUNTER_UNSET = 0
         const val REMINDER_COUNTER_FIRST_SHOWN = 1
         const val REMINDER_COUNTER_SECOND_SHOWN = 2
+        const val REMINDER_COUNTER_MAX = REMINDER_COUNTER_SECOND_SHOWN
 
-        const val FUNDING_REMINDER_DELAY_MILLIS = 7 * 24 * 60 * 60 * 1000L
-        const val FUNDING_REMINDER_MIN_ACTIVITY_MILLIS = 30 * 60 * 1000L
-        const val SECOND_FUNDING_REMINDER_MIN_ACTIVITY_MILLIS = FUNDING_REMINDER_MIN_ACTIVITY_MILLIS * 2
+        const val FUNDING_REMINDER_DELAY_MILLIS = 3 * 24 * 60 * 60 * 1000L
     }
 }

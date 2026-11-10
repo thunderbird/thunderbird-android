@@ -12,29 +12,17 @@ import kotlinx.coroutines.launch
 import net.thunderbird.core.android.common.activity.ActivityProvider
 import net.thunderbird.feature.funding.api.FundingSettings
 import net.thunderbird.feature.funding.common.api.FUNDING_REMINDER_DELAY_MILLIS
-import net.thunderbird.feature.funding.common.api.FUNDING_REMINDER_MIN_ACTIVITY_MILLIS
 import net.thunderbird.feature.funding.common.api.FundingReminderContract
-import net.thunderbird.feature.funding.common.api.FundingReminderContract.ActivityLifecycleObserver
 import net.thunderbird.feature.funding.common.api.FundingReminderContract.FragmentLifecycleObserver
 
 class FundingReminder(
     private val activityProvider: ActivityProvider,
     private val settings: FundingSettings,
     private val fragmentObserver: FragmentLifecycleObserver,
-    private val activityCounterObserver: ActivityLifecycleObserver,
     private val dialog: FundingReminderContract.Dialog,
     private val clock: Clock = Clock.System,
     private val scope: CoroutineScope,
 ) : FundingReminderContract.Reminder {
-
-    init {
-        val activity = activityProvider.getCurrent() as AppCompatActivity
-        val observedFragmentManager = activity.supportFragmentManager
-        activityCounterObserver.register(activity.lifecycle) {
-            fragmentObserver.unregister(observedFragmentManager)
-            activityCounterObserver.unregister(activity.lifecycle)
-        }
-    }
 
     /**
      * Decide to display the reminder and do so if necessary
@@ -95,7 +83,6 @@ class FundingReminder(
 
     private fun wasSecondReminderShown(): Boolean {
         return settings.getReminderShownTimestamp() != 0L &&
-            settings.getLastReminderShownActivityAmount() > settings.getReminderShownTimestamp() &&
             settings.getReminderShownCount() >= 2
     }
 
@@ -104,22 +91,18 @@ class FundingReminder(
 
         return settings.getReminderShownTimestamp() == 0L &&
             settings.getReminderReferenceTimestamp() + FUNDING_REMINDER_DELAY_MILLIS <= currentTime &&
-            settings.getActivityCounterInMillis() >= FUNDING_REMINDER_MIN_ACTIVITY_MILLIS &&
-            settings.getLastReminderShownActivityAmount() == 0L &&
             settings.getReminderShownCount() == 0
     }
 
     /**
-     * The second reminder should display after 30 minutes of activity since the first reminder was shown
+     * The second reminder should display after 3 days since the first reminder was shown
      * It should only display if the current reminder has already displayed and has not been displayed already
      */
     private fun shouldShowSecondReminder(): Boolean {
-        val activityAtLastReminder = settings.getLastReminderShownActivityAmount()
-        val shouldShowTime = activityAtLastReminder + FUNDING_REMINDER_MIN_ACTIVITY_MILLIS
-        return settings.getReminderShownTimestamp() > 0L &&
-            settings.getActivityCounterInMillis() >= shouldShowTime &&
-            settings.getReminderShownCount() > 0 &&
-            settings.getReminderShownCount() < 2
+        return settings.getReminderShownCount() in 1..<2 &&
+            settings.getReminderShownTimestamp() != 0L &&
+            settings.getReminderShownTimestamp() + FUNDING_REMINDER_DELAY_MILLIS < clock.now().toEpochMilliseconds() &&
+            settings.getReminderReferenceTimestamp() != 0L
     }
 
     @Suppress("SwallowedException")
@@ -138,7 +121,6 @@ class FundingReminder(
         scope.launch {
             val now = clock.now().toEpochMilliseconds()
             settings.setReminderShownTimestamp(now)
-            settings.setLastReminderShownActivityAmount(settings.getActivityCounterInMillis())
             settings.incrementReminderShownCount()
         }
 
@@ -152,7 +134,6 @@ class FundingReminder(
                 settings.getReminderShownTimestamp() != 0L
 
             settings.setReminderShownTimestamp(now)
-            settings.setLastReminderShownActivityAmount(settings.getActivityCounterInMillis())
 
             // Users who saw the first popup before the counter was added will need to increment this
             // twice as to not potentially see a third one until we release another.
