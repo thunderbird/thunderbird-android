@@ -9,4 +9,10 @@
     <string name="navigation_drawer_dropdown_unified_account_title">Koondkasutajakonto</string>
     <string name="navigation_drawer_dropdown_action_add_account">Lisa kasutajakonto</string>
     <string name="navigation_drawer_dropdown_action_sync_account">Sünkroniseeri kasutajakonto</string>
+    <string name="navigation_drawer_dropdown_unified_drafts_title">Kavandid</string>
+    <string name="navigation_drawer_dropdown_unified_outbox_title">Väljundkaust</string>
+    <string name="navigation_drawer_dropdown_unified_sent_title">Saadetud</string>
+    <string name="navigation_drawer_dropdown_unified_archive_title">Arhuuv</string>
+    <string name="navigation_drawer_dropdown_unified_spam_title">Rämpspost</string>
+    <string name="navigation_drawer_dropdown_unified_trash_title">Prügikast</string>
 </resources>

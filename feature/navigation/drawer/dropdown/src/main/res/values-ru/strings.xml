@@ -9,4 +9,10 @@
     <string name="navigation_drawer_dropdown_action_add_account">Добавить учётную запись</string>
     <string name="navigation_drawer_dropdown_unified_account_title">Общая учётная запись</string>
     <string name="navigation_drawer_dropdown_action_sync_account">Синхронизировать учётную запись</string>
+    <string name="navigation_drawer_dropdown_unified_outbox_title">Исходящие</string>
+    <string name="navigation_drawer_dropdown_unified_drafts_title">Черновики</string>
+    <string name="navigation_drawer_dropdown_unified_sent_title">Отправленные</string>
+    <string name="navigation_drawer_dropdown_unified_archive_title">Архив</string>
+    <string name="navigation_drawer_dropdown_unified_spam_title">Спам</string>
+    <string name="navigation_drawer_dropdown_unified_trash_title">Корзина</string>
 </resources>

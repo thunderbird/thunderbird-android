@@ -1,3 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    </resources>
+    <string name="debug_settings_notifications_loading">Betöltés…</string>
+    <string name="debug_settings_notifications_single_mail_sender">Feladó</string>
+    <string name="debug_settings_notifications_single_mail_subject">Tárgy</string>
+    <string name="debug_settings_notifications_single_mail_preview">Előnézet</string>
+    <string name="debug_settings_notifications_title">Értesítések</string>
+    <string name="debug_settings_screen_title">Titkos hibakeresési beállítások képernyő</string>
+    <string name="debug_settings_notifications_trigger_notification">Értesítés kiváltása</string>
+    <string name="debug_settings_notifications_single_mail_summary">Összegzés</string>
+    <string name="debug_settings_notifications_common_notification_information">Általános értesítési információk</string>
+    <string name="debug_settings_notifications_in_app_notification">Alkalmazáson belüli értesítés</string>
+    <string name="debug_settings_notifications_system_notification">Rendszerértesítés</string>
+    <string name="debug_settings_notifications_preparing_notification">Értesítés előkészítése: %1$s</string>
+    <string name="debug_settings_notification_status_log">Értesítési állapotnapló</string>
+    <string name="debug_settings_notifications_status">"Állapot: "</string>
+    <string name="debug_settings_notifications_clear_status_log">Állapotnapló törlése</string>
+    <string name="debug_settings_feature_flag_title">Funkciókapcsolók</string>
+    <string name="debug_settings_feature_flag_unsaved_changes">Nem mentett módosítások</string>
+    <string name="debug_settings_feature_flag_unsaved_changes_content_text">Nem mentett módosításai vannak. Biztosan kilép?</string>
+    <string name="debug_settings_feature_flag_unsaved_changes_stay_button">Maradás</string>
+    <string name="debug_settings_feature_flag_unsaved_changes_leave_button">Kilépés</string>
+    <string name="debug_settings_feature_flag_restore_default_values">Alapértelmezett értékek visszaállítása</string>
+    <string name="debug_settings_feature_flag_apply_changes">Módosítások alkalmazása</string>
+    <string name="debug_settings_feature_flag_modified_indicator">"* "</string>
+    <string name="debug_settings_feature_flag_overridden">"felülbírálva; "</string>
+    <string name="debug_settings_feature_flag_default_value">alapértelmezett érték: %1$b</string>
+</resources>

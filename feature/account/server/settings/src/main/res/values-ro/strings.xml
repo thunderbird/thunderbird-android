@@ -35,4 +35,6 @@
     <string name="account_server_settings_password_authentication_failed">Autentificarea a eșuat!</string>
     <string name="account_server_settings_password_authentication_unable_to_start">Nu s-a putut lansa solicitarea biometrică.</string>
     <string name="account_server_settings_password_input_label">Parola</string>
+    <string name="account_server_settings_pop3_hint_title">Se recomandă IMAP</string>
+    <string name="account_server_settings_pop3_hint_text">IMAP asigură sincronizarea mesajelor dvs. pe toate dispozitivele. Alegeți IMAP dacă furnizorul dvs. de poștă electronică acceptă acest protocol.</string>
 </resources>

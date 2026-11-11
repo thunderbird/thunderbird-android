@@ -9,4 +9,10 @@
     <string name="navigation_drawer_dropdown_unified_account_title">Enhetligt konto</string>
     <string name="navigation_drawer_dropdown_action_add_account">Lägg till konto</string>
     <string name="navigation_drawer_dropdown_action_sync_account">Synkronisera konto</string>
+    <string name="navigation_drawer_dropdown_unified_outbox_title">Utkorg</string>
+    <string name="navigation_drawer_dropdown_unified_drafts_title">Utkast</string>
+    <string name="navigation_drawer_dropdown_unified_sent_title">Skickat</string>
+    <string name="navigation_drawer_dropdown_unified_archive_title">Arkiv</string>
+    <string name="navigation_drawer_dropdown_unified_spam_title">Skräppost</string>
+    <string name="navigation_drawer_dropdown_unified_trash_title">Papperskorg</string>
 </resources>

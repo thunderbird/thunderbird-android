@@ -966,4 +966,15 @@
     <string name="account_settings_fetching_and_data_limits">Hämtning och databegränsningar</string>
     <string name="account_settings_sync_and_notifications">Synkronisering och aviseringar</string>
     <string name="account_settings_folder_visibility">Mappsynlighet</string>
+    <string name="unified_inbox_detail">Meddelanden i inkorgen för varje konto</string>
+    <string name="unified_outbox_title">Samlad utkorg</string>
+    <string name="unified_drafts_title">Samlad utkast</string>
+    <string name="unified_sent_title">Samlad skickat</string>
+    <string name="unified_archive_title">Samlat arkiv</string>
+    <string name="unified_spam_title">Samlad skräppost</string>
+    <string name="unified_trash_title">Samlad papperskorg</string>
+    <string name="message_list_empty">Inga meddelanden</string>
+    <string name="message_list_empty_search">Inga resultat</string>
+    <string name="message_list_not_synced">Inte synkroniserad ännu</string>
+    <string name="message_list_not_synced_hint">Dra nedåt för att synkronisera</string>
 </resources>

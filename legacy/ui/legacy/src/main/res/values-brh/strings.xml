@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="sort_by">ترتیب…</string>
+    <string name="open_camera">کیمرہ اے ملبو</string>
+    <string name="changelog_recent_changes_title">انت اس پوسکن اے</string>
+    <string name="changelog_show_recent_changes">ایپ نا اپڈیٹ تون زو نا تبدیلی تے نشان ایت</string>
+    <string name="changelog_type_new_text">پوسکن</string>
+    <string name="changelog_type_changed_text">بدل مروکاک</string>
+    <string name="account_delete_dlg_instructions_fmt">اکاونٹ \"<xliff:g id="account">%1$s</xliff:g>\" کشنگک <xliff:g id="app_name">%2$s</xliff:g> ان.</string>
+    <string name="authors">لکھوکاک</string>
 </resources>

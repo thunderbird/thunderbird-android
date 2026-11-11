@@ -35,4 +35,6 @@
     <string name="account_server_settings_password_authentication_failed">Autentiseringen mislyktes!</string>
     <string name="account_server_settings_password_authentication_unable_to_start">Kunne ikke starte den biometriske sjekken.</string>
     <string name="account_server_settings_password_input_label">Passord</string>
+    <string name="account_server_settings_pop3_hint_title">IMAP anbefales</string>
+    <string name="account_server_settings_pop3_hint_text">IMAP synkroniserer e-postene dine på tvers av alle enhetene dine. Velg IMAP hvis e-postleverandøren din støtter det.</string>
 </resources>

@@ -1,3 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    </resources>
+    <string name="account_setup_error_network">نیٹورک ردی۔ بشخنداری تینا کنیکشن اے ہربو و پدا واراس خلبو۔</string>
+    <string name="account_setup_error_unknown">ناچاہوک ردی</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_required">ای میل ڈس نا خواست اے۔</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_not_allowed">دا ای میل ڈس اے اجازت اف۔</string>
+    <string name="account_setup_special_folders_sent_folder_label">رای کروکاتا فولڈر</string>
+    <string name="account_setup_special_folders_loading_message">فولڈراتا فہرست اے اتسہ ان…</string>
+    <string name="account_setup_special_folders_error_message">سرور ان فولڈراتا فہرست اے اتنگ کتون</string>
+    <string name="account_setup_special_folders_archive_folder_label">آرکایو فولڈر</string>
+    <string name="account_setup_special_folders_drafts_folder_label">خامہ نوشت اتا فولڈر</string>
+    <string name="account_setup_special_folders_trash_folder_label">کچرہ تا فولڈر</string>
+    <string name="account_setup_special_folders_folder_none">ہچ</string>
+    <string name="account_setup_special_folders_folder_automatic">تینٹ(%s)</string>
+    <string name="account_setup_create_account_creating">اکاونٹ جوڑ مرسہ اے…</string>
+    <string name="account_setup_create_account_error">اکاونٹ جوڑ کرسہ اسہ ردی اس مس</string>
+    <string name="account_setup_create_account_created">اکاونٹ کامیابی ٹی جوڑ مس</string>
+</resources>

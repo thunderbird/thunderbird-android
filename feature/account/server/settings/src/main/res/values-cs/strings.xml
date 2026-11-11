@@ -35,4 +35,6 @@
     <string name="account_server_settings_password_authentication_failed">Ověření se nezdařilo!</string>
     <string name="account_server_settings_password_authentication_unable_to_start">Nebylo možné spustit výzvu ohledně biometriky.</string>
     <string name="account_server_settings_password_input_label">Heslo</string>
+    <string name="account_server_settings_pop3_hint_title">Doporučuje se používat protokol IMAP</string>
+    <string name="account_server_settings_pop3_hint_text">Díky protokolu IMAP budou vaše e-maily synchronizovány na všech vašich zařízeních. Zvolte protokol IMAP, pokud jej váš poskytovatel e-mailových služeb podporuje.</string>
 </resources>

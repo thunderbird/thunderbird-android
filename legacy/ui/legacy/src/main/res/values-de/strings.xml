@@ -965,4 +965,14 @@
     <string name="account_settings_sync_and_notifications">Synchronisation und Benachrichtigungen</string>
     <string name="account_settings_folder_visibility">Ordnersichtbarkeit</string>
     <string name="account_settings_fetching_and_data_limits">Abruf- und Datenlimits</string>
+    <string name="unified_inbox_detail">Nachrichten im Posteingang jedes Kontos</string>
+    <string name="unified_outbox_title">Gemeinsamer Postausgang</string>
+    <string name="unified_drafts_title">Gemeinsame Entwürfe</string>
+    <string name="unified_archive_title">Gemeinsames Archiv</string>
+    <string name="unified_spam_title">Gemeinsamer Spam</string>
+    <string name="unified_trash_title">Gemeinsamer Papierkorb</string>
+    <string name="message_list_empty">Keine Nachrichten</string>
+    <string name="message_list_empty_search">Keine Ergebnisse</string>
+    <string name="message_list_not_synced">Noch nicht synchronisiert</string>
+    <string name="message_list_not_synced_hint">Zum Synchronisieren nach unten ziehen</string>
 </resources>

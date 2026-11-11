@@ -925,4 +925,15 @@
     <string name="account_settings_folder_sync_and_push">Sioncronú agus brú fillteán</string>
     <string name="account_settings_fetching_and_data_limits">A fháil &amp; teorainneacha sonraí</string>
     <string name="account_settings_folder_visibility">Infheictheacht fillteáin</string>
+    <string name="unified_inbox_detail">Teachtaireachtaí i mbosca isteach gach cuntais</string>
+    <string name="unified_outbox_title">Bosca Amach Aontaithe</string>
+    <string name="unified_drafts_title">Dréachtaí Aontaithe</string>
+    <string name="unified_sent_title">Seolta Aontaithe</string>
+    <string name="unified_archive_title">Cartlann Aontaithe</string>
+    <string name="unified_spam_title">Turscar Aontaithe</string>
+    <string name="unified_trash_title">Bruscar Aontaithe</string>
+    <string name="message_list_empty">Gan teachtaireachtaí</string>
+    <string name="message_list_empty_search">Gan torthaí</string>
+    <string name="message_list_not_synced">Gan sioncronú go fóill</string>
+    <string name="message_list_not_synced_hint">Tarraing síos chun sioncronú</string>
 </resources>

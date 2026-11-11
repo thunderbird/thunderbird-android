@@ -35,4 +35,6 @@
     <string name="account_server_settings_password_authentication_failed">Аутентификация не выполнена!</string>
     <string name="account_server_settings_password_authentication_unable_to_start">Невозможно запустить биометрическую проверку.</string>
     <string name="account_server_settings_password_input_label">Пароль</string>
+    <string name="account_server_settings_pop3_hint_title">Рекомендуется IMAP</string>
+    <string name="account_server_settings_pop3_hint_text">Протокол IMAP синхронизирует электронную почту на всех ваших устройствах. Выберите протокол IMAP, если он поддерживается вашим поставщиком услуг электронной почты.</string>
 </resources>
