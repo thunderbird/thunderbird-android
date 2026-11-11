@@ -9,6 +9,6 @@ class AccountStorageLegacyModuleKtTest {
     @OptIn(KoinExperimentalAPI::class)
     @Test
     fun `should have a valid di module`() {
-        featureAccountStorageLegacyModule.verify()
+        featureAccountStorageLegacyDiModule.verify()
     }
 }

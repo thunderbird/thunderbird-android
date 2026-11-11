@@ -9,5 +9,5 @@ class K9App : FeatureFlagApplication() {
     override val appVersion: String = BuildConfig.VERSION_NAME
     override val buildType: String = BuildConfig.BUILD_TYPE
 
-    override fun provideAppModule(): Module = appModule
+    override fun provideAppModule(): Module = k9mailDiModule
 }

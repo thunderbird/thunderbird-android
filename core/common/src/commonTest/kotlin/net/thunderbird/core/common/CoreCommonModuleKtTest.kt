@@ -10,7 +10,7 @@ internal class CoreCommonModuleKtTest {
     @OptIn(KoinExperimentalAPI::class)
     @Test
     fun `should have a valid di module`() {
-        coreCommonModule.verify(
+        coreCommonDiModule.verify(
             extraTypes = listOf(
                 OAuthConfigurationFactory::class,
             ),

@@ -1,0 +1,131 @@
+package net.thunderbird.app.common.account
+
+import androidx.compose.ui.graphics.vector.ImageVector
+import app.k9mail.feature.account.setup.AccountSetupExternalContract
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
+import net.thunderbird.app.common.account.data.AccountDisplayOrderManager
+import net.thunderbird.app.common.account.data.AccountFolderUpdater
+import net.thunderbird.app.common.account.data.AccountLocalDataSource
+import net.thunderbird.app.common.account.data.DefaultAccountDisplayOrderManager
+import net.thunderbird.app.common.account.data.DefaultAccountProfileLocalDataSource
+import net.thunderbird.app.common.account.data.DefaultLegacyAccountManager
+import net.thunderbird.app.common.account.data.DefaultLegacyAccountRepository
+import net.thunderbird.app.common.account.data.LegacyAccountCache
+import net.thunderbird.app.common.account.data.LegacyAccountFolderUpdater
+import net.thunderbird.app.common.account.data.LegacyAccountLocalDataSource
+import net.thunderbird.app.common.account.data.LegacyInMemoryAccountCache
+import net.thunderbird.core.android.account.AccountDefaultsProvider
+import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountManager
+import net.thunderbird.core.android.account.LegacyAccountRepository
+import net.thunderbird.feature.account.avatar.AvatarIcon
+import net.thunderbird.feature.account.avatar.AvatarIconCatalog
+import net.thunderbird.feature.account.avatar.AvatarMonogramCreator
+import net.thunderbird.feature.account.avatar.DefaultAvatarIconCatalog
+import net.thunderbird.feature.account.avatar.DefaultAvatarMonogramCreator
+import net.thunderbird.feature.account.core.AccountCoreExternalContract.AccountProfileLocalDataSource
+import net.thunderbird.feature.account.storage.legacy.featureAccountStorageLegacyDiModule
+import org.koin.android.ext.koin.androidApplication
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.qualifier.named
+import org.koin.dsl.bind
+import org.koin.dsl.module
+import app.k9mail.core.ui.legacy.theme2.common.R as ThemeCommonR
+
+internal val appCommonAccountDiModule = module {
+    includes(featureAccountStorageLegacyDiModule)
+
+    single<AccountLocalDataSource> {
+        LegacyAccountLocalDataSource(
+            storageProvider = get(),
+            accountStorageHandler = get(),
+            accountDefaultsProvider = get(),
+        )
+    }
+
+    single<LegacyAccountCache> {
+        LegacyInMemoryAccountCache()
+    }
+
+    single<AccountDisplayOrderManager> {
+        DefaultAccountDisplayOrderManager(
+            storageProvider = get(),
+        )
+    }
+
+    single<AccountFolderUpdater> {
+        LegacyAccountFolderUpdater(
+            localStoreProvider = get(),
+            logger = get(),
+        )
+    }
+
+    single {
+        DefaultLegacyAccountManager(
+            accountStorage = get(),
+            accountCache = get(),
+            accountDisplayOrderManager = get(),
+            accountFolderUpdater = get(),
+        )
+    } bind LegacyAccountManager::class
+
+    single<AccountProfileLocalDataSource> {
+        DefaultAccountProfileLocalDataSource(
+            accountManager = get(),
+            dataMapper = get(),
+        )
+    }
+
+    single<AccountDefaultsProvider> {
+        DefaultAccountDefaultsProvider(
+            resourceProvider = get(),
+            featureFlagProvider = get(),
+        )
+    }
+
+    factory<ImmutableList<Int>>(named("AccountColors")) {
+        androidContext().resources.getIntArray(
+            ThemeCommonR.array.account_colors,
+        ).toList().toImmutableList()
+    }
+
+    factory {
+        AccountColorPicker(
+            repository = get(),
+            accountColors = get(named("AccountColors")),
+        )
+    }
+
+    single<AvatarIconCatalog<AvatarIcon<ImageVector>>> {
+        DefaultAvatarIconCatalog()
+    }
+
+    factory<AvatarMonogramCreator> {
+        DefaultAvatarMonogramCreator()
+    }
+
+    factory<LegacyAccountRepository> {
+        DefaultLegacyAccountRepository(
+            accountManager = get(),
+        )
+    }
+
+    factory<AccountSetupExternalContract.AccountCreator> {
+        AccountCreator(
+            accountColorPicker = get(),
+            localFoldersCreator = get(),
+            accountManager = get(),
+            context = androidApplication(),
+            messagingController = get(),
+            backendManager = get(),
+            deletePolicyProvider = get(),
+            avatarMonogramCreator = get(),
+            unifiedInboxConfigurator = get(),
+            accountDefaultsProvider = get(),
+            featureFlagProvider = get(),
+            getFolderIdsForTypeUseCase = get(),
+            setPushForFolderUseCase = get(),
+        )
+    }
+}

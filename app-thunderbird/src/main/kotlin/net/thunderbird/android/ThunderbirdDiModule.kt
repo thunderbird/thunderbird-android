@@ -1,0 +1,43 @@
+package net.thunderbird.android
+
+import app.k9mail.feature.widget.shortcut.LauncherShortcutActivity
+import com.fsck.k9.AppConfig
+import com.fsck.k9.DefaultAppConfig
+import com.fsck.k9.activity.MessageCompose
+import net.thunderbird.android.auth.TbOAuthConfigurationFactory
+import net.thunderbird.android.dev.developmentModuleAdditions
+import net.thunderbird.android.feature.featureDiModule
+import net.thunderbird.android.featureflag.featureFlagDiModule
+import net.thunderbird.android.provider.providerDiModule
+import net.thunderbird.android.widget.provider.MessageListWidgetProvider
+import net.thunderbird.android.widget.provider.UnreadWidgetProvider
+import net.thunderbird.android.widget.widgetDiModule
+import net.thunderbird.app.common.appCommonDiModule
+import net.thunderbird.core.common.oauth.OAuthConfigurationFactory
+import org.koin.core.qualifier.named
+import org.koin.dsl.module
+
+val thunderbirdDiModule = module {
+    includes(featureFlagDiModule)
+    includes(appCommonDiModule)
+
+    includes(widgetDiModule)
+    includes(featureDiModule)
+    includes(providerDiModule)
+
+    single(named("ClientInfoAppName")) { BuildConfig.CLIENT_INFO_APP_NAME }
+    single(named("ClientInfoAppVersion")) { BuildConfig.VERSION_NAME }
+    single<AppConfig> { appConfig }
+    single<OAuthConfigurationFactory> { TbOAuthConfigurationFactory() }
+
+    developmentModuleAdditions()
+}
+
+val appConfig = DefaultAppConfig(
+    componentsToDisable = listOf(
+        MessageCompose::class.java,
+        LauncherShortcutActivity::class.java,
+        UnreadWidgetProvider::class.java,
+        MessageListWidgetProvider::class.java,
+    ),
+)
