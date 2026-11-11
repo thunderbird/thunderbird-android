@@ -5,7 +5,7 @@ import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.core.common.resources.StringsResourceManager
 import net.thunderbird.feature.account.AccountCapabilities
 import net.thunderbird.feature.account.AccountId
-import net.thunderbird.feature.account.settings.featureAccountSettingsModule
+import net.thunderbird.feature.account.settings.featureAccountSettingsDiModule
 import net.thunderbird.feature.account.settings.impl.ui.general.GeneralSettingsContract
 import org.koin.core.annotation.KoinExperimentalAPI
 import org.koin.test.verify.verify
@@ -15,7 +15,7 @@ internal class AccountSettingsModuleKtTest {
     @OptIn(KoinExperimentalAPI::class)
     @Test
     fun `should hava a valid di module`() {
-        featureAccountSettingsModule.verify(
+        featureAccountSettingsDiModule.verify(
             extraTypes = listOf(
                 AccountId::class,
                 AccountCapabilities::class,

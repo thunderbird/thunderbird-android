@@ -44,7 +44,7 @@ class DependencyInjectionTest {
     @OptIn(KoinExperimentalAPI::class)
     @Test
     fun testDependencyTree() {
-        appModule.verify(
+        thunderbirdDiModule.verify(
             extraTypes = listOf(
                 AccountId::class,
                 AppAuthConfiguration::class,

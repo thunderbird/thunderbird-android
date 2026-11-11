@@ -1,7 +1,7 @@
 package com.fsck.k9
 
 import android.app.Application
-import app.k9mail.feature.telemetry.telemetryModule
+import app.k9mail.feature.telemetry.featureTelemetryDiModule
 import app.k9mail.legacy.di.DI
 import com.fsck.k9.contacts.ContactPictureLoader
 import net.thunderbird.core.android.account.AccountDefaultsProvider
@@ -33,7 +33,8 @@ class TestApp : Application() {
         Log.logger = logger
         DI.start(
             application = this,
-            modules = legacyCoreModule + legacyCommonAppModules + legacyUiModules + telemetryModule + testModule,
+            modules = legacyCoreDiModule + legacyCommonDiModule +
+                legacyUiDiModule + featureTelemetryDiModule + testModule,
             allowOverride = true,
         )
 

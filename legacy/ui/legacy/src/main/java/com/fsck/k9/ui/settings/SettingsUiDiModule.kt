@@ -1,0 +1,63 @@
+package com.fsck.k9.ui.settings
+
+import com.fsck.k9.helper.NamedThreadFactory
+import com.fsck.k9.ui.settings.account.AccountSettingsDataStoreFactory
+import com.fsck.k9.ui.settings.account.AccountSettingsViewModel
+import com.fsck.k9.ui.settings.account.getSystemVibrator
+import com.fsck.k9.ui.settings.export.AndroidRealtimeMeasurer
+import com.fsck.k9.ui.settings.export.RealtimeMeasurer
+import com.fsck.k9.ui.settings.export.SettingsExportViewModel
+import com.fsck.k9.ui.settings.general.GeneralSettingsDataStore
+import com.fsck.k9.ui.settings.general.GeneralSettingsViewModel
+import java.util.concurrent.Executors
+import org.koin.core.module.dsl.viewModel
+import org.koin.core.qualifier.named
+import org.koin.dsl.module
+
+val settingsUiDiModule = module {
+    viewModel { SettingsViewModel(accountManager = get()) }
+
+    viewModel {
+        GeneralSettingsViewModel(
+            logcatExporter = get(),
+            syncDebugLogExporter = get(),
+        )
+    }
+    factory {
+        GeneralSettingsDataStore(
+            jobManager = get(),
+            appLanguageManager = get(),
+            generalSettingsManager = get(),
+            telemetryManager = get(),
+        )
+    }
+    single(named("SaveSettingsExecutorService")) {
+        Executors.newSingleThreadExecutor(NamedThreadFactory("SaveSettings"))
+    }
+
+    viewModel { AccountSettingsViewModel(get(), get(), get()) }
+    single {
+        AccountSettingsDataStoreFactory(
+            accountManager = get(),
+            jobManager = get(),
+            executorService = get(named("SaveSettingsExecutorService")),
+            notificationChannelManager = get(),
+            notificationController = get(),
+            messagingController = get(),
+            logger = get(),
+        )
+    }
+    factory { getSystemVibrator(context = get()) }
+
+    viewModel {
+        SettingsExportViewModel(
+            accountManager = get(),
+            settingsExporter = get(),
+            logger = get(),
+            realtimeMeasurer = get(),
+        )
+    }
+
+    single<RealtimeMeasurer>{ AndroidRealtimeMeasurer() }
+
+}

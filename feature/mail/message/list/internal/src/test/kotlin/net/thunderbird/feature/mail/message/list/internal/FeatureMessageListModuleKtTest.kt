@@ -17,7 +17,7 @@ class FeatureMessageListModuleKtTest : KoinTest {
     @OptIn(KoinExperimentalAPI::class)
     @Test
     fun `should have a valid di module`() {
-        featureMessageListModule.verify(
+        featureMailMessageListDiModule.verify(
             extraTypes = listOf(
                 Logger::class,
                 Clock::class,

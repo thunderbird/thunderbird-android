@@ -25,7 +25,7 @@ class AccountSetupModuleKtTest : KoinTest {
     @OptIn(KoinExperimentalAPI::class)
     @Test
     fun `should have a valid di module`() {
-        featureAccountSetupModule.verify(
+        featureAccountSetupDiModule.verify(
             extraTypes = listOf(
                 AccountCommonExternalContract.AccountStateLoader::class,
                 AccountAutoDiscoveryContract.State::class,

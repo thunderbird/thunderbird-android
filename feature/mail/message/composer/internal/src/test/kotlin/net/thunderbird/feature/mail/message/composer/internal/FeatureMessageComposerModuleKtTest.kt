@@ -11,7 +11,7 @@ class FeatureMessageComposerModuleKtTest : KoinTest {
     @OptIn(KoinExperimentalAPI::class)
     @Test
     fun `should have a valid di module`() {
-        featureMessageComposerModule.verify(
+        featureMailMessageComposerDiModule.verify(
             extraTypes = listOf(
                 ThemeManager::class,
             ),

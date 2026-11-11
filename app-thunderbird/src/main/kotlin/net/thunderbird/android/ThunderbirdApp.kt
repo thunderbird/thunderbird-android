@@ -18,7 +18,7 @@ class ThunderbirdApp : FeatureFlagApplication() {
         startKoin {
             allowOverride(false)
             androidContext(this@ThunderbirdApp)
-            modules(appModule)
+            modules(thunderbirdDiModule)
         }
     }
 

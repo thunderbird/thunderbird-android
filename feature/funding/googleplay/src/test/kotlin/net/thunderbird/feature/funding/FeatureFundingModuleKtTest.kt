@@ -14,7 +14,7 @@ class FeatureFundingModuleKtTest : KoinTest {
     @OptIn(KoinExperimentalAPI::class)
     @Test
     fun `should have a valid di module`() {
-        featureFundingModule.verify(
+        featureFundingDiModule.verify(
             extraTypes = listOf(
                 Logger::class,
                 ActivityProvider::class,

@@ -17,7 +17,7 @@ class ServerValidationModuleKtTest : KoinTest {
     @OptIn(KoinExperimentalAPI::class)
     @Test
     fun `should have a valid di module`() {
-        featureAccountServerValidationModule.verify(
+        featureAccountServerValidationDiModule.verify(
             extraTypes = listOf(
                 ServerValidationContract.State::class,
                 AccountDomainContract.AccountStateRepository::class,

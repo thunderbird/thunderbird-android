@@ -19,7 +19,7 @@ class AccountEditModuleKtTest : KoinTest {
     @OptIn(KoinExperimentalAPI::class)
     @Test
     fun `should have a valid di module`() {
-        featureAccountEditModule.verify(
+        featureAccountEditDiModule.verify(
             extraTypes = listOf(
                 AccountId::class,
                 Context::class,

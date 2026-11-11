@@ -2,7 +2,7 @@ package com.fsck.k9.storage
 
 import android.app.Application
 import app.k9mail.core.android.common.provider.NotificationIconResourceProvider
-import app.k9mail.feature.telemetry.telemetryModule
+import app.k9mail.feature.telemetry.featureTelemetryDiModule
 import app.k9mail.legacy.di.DI
 import com.fsck.k9.AppConfig
 import com.fsck.k9.Core
@@ -11,7 +11,7 @@ import com.fsck.k9.DefaultAppConfig
 import com.fsck.k9.K9
 import com.fsck.k9.backend.BackendManager
 import com.fsck.k9.crypto.EncryptionExtractor
-import com.fsck.k9.legacyCoreModule
+import com.fsck.k9.legacyCoreDiModule
 import com.fsck.k9.preferences.K9StoragePersister
 import com.fsck.k9.storage.messages.FakeLocalMessageUidPrefixProvider
 import net.thunderbird.core.android.account.AccountDefaultsProvider
@@ -39,7 +39,7 @@ class TestApp : Application() {
         Log.logger = logger
         DI.start(
             application = this,
-            modules = legacyCoreModule + storageModule + telemetryModule + testModule,
+            modules = legacyCoreDiModule + legacyStorageDiModule + featureTelemetryDiModule + testModule,
         )
 
         K9.init(this)

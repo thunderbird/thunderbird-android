@@ -1,0 +1,34 @@
+package net.thunderbird.app.composition.core.logging
+
+import net.thunderbird.components.core.logging.DefaultLogger
+import net.thunderbird.components.core.logging.LogLevel
+import net.thunderbird.components.core.logging.Logger
+import net.thunderbird.components.core.logging.composite.CompositeLogSink
+import net.thunderbird.core.common.appConfig.PlatformConfigProvider
+import net.thunderbird.core.logging.internal.DEFAULT_LOGGING_ENABLED
+import net.thunderbird.core.logging.internal.SYNC_DEBUG_LOG
+import net.thunderbird.core.logging.internal.coreLoggingDiModule
+import org.koin.core.qualifier.named
+import org.koin.dsl.module
+
+internal val loggingCompositionDiModule = module {
+    includes(coreLoggingDiModule)
+
+    single<LogLevel> {
+        if (get<PlatformConfigProvider>().isDebug) LogLevel.VERBOSE else LogLevel.DEBUG
+    }
+    single<Boolean>(named(DEFAULT_LOGGING_ENABLED)) { get<PlatformConfigProvider>().isDebug }
+
+    single<CompositeLogSink>(named(SYNC_DEBUG_LOG)) {
+        CompositeLogSink(
+            logLevelProvider = get(),
+            sinks = emptyList(),
+        )
+    }
+
+    single<Logger>(named(SYNC_DEBUG_LOG)) {
+        DefaultLogger(
+            sink = get<CompositeLogSink>(named(SYNC_DEBUG_LOG)),
+        )
+    }
+}

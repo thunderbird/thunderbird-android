@@ -9,6 +9,6 @@ internal class ContactKoinModuleKtTest {
     @OptIn(KoinExperimentalAPI::class)
     @Test
     fun `should have a valid di module`() {
-        contactModule.verify()
+        contactDiModule.verify()
     }
 }

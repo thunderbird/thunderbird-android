@@ -14,7 +14,7 @@ class K9App : FeatureFlagApplication() {
         startKoin {
             allowOverride(false)
             androidContext(this@K9App)
-            modules(appModule)
+            modules(k9mailDiModule)
         }
     }
 }
