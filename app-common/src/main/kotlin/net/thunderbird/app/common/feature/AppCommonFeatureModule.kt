@@ -7,7 +7,7 @@ import net.thunderbird.app.common.feature.mail.appCommonFeatureMailModule
 import net.thunderbird.feature.account.avatar.di.featureAccountAvatarModule
 import net.thunderbird.feature.mail.message.composer.internal.featureMessageComposerModule
 import net.thunderbird.feature.navigation.drawer.api.NavigationDrawerExternalContract
-import net.thunderbird.feature.thundermail.internal.common.inject.featureThundermailCommonModule
+import net.thunderbird.feature.thundermail.internal.common.featureThundermailCommonDiModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
@@ -17,7 +17,7 @@ internal val appCommonFeatureModule = module {
     includes(featureAccountAvatarModule)
     includes(featureLauncherModule)
     includes(featureMessageComposerModule)
-    includes(featureThundermailCommonModule)
+    includes(featureThundermailCommonDiModule)
 
     factory<FeatureLauncherExternalContract.MessageListLauncher> {
         MessageListLauncher(

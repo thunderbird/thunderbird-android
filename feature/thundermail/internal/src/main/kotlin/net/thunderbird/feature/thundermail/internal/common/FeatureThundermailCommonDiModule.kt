@@ -1,4 +1,4 @@
-package net.thunderbird.feature.thundermail.internal.common.inject
+package net.thunderbird.feature.thundermail.internal.common
 
 import app.k9mail.feature.account.oauth.ui.AccountOAuthViewModel
 import net.thunderbird.feature.thundermail.internal.common.domain.CreateAccountStateUseCase
@@ -9,7 +9,7 @@ import net.thunderbird.feature.thundermail.navigation.ThundermailNavigation
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
-val featureThundermailCommonModule = module {
+val featureThundermailCommonDiModule = module {
     viewModel<AccountOAuthViewModel> {
         AccountOAuthViewModel(
             getOAuthRequestIntent = get(),

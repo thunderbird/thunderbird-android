@@ -76,6 +76,7 @@ class DependencyInjectionTest {
                 definition<SetupArchiveFolderDialogContract.ViewModel>(SetupArchiveFolderDialogContract.State::class),
                 definition<ThundermailContract.ViewModel>(ThundermailContract.State::class),
                 definition<MessageReaderViewContract.ViewModel<Part>>(MessageReaderViewContract.State::class),
+                definition<ThundermailContract.ViewModel>(ThundermailContract.State::class),
             ),
         )
     }
