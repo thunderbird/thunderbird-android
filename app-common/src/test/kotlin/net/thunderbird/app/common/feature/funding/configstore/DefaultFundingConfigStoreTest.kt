@@ -20,9 +20,9 @@ import net.thunderbird.feature.funding.api.FundingConfigStore
 class DefaultFundingConfigStoreTest {
 
     val defaultConfig = FundingConfig(
-        reminderReferenceTimestamp = 0L,
-        lastFundingReminderShownTimestamp = 0L,
-        fundingReminderCount = 0,
+        reminderReferenceTimestamp = null,
+        lastFundingReminderShownTimestamp = null,
+        fundingReminderCount = null,
     )
 
     @Test
