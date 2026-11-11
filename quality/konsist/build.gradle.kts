@@ -27,7 +27,7 @@ tasks.withType<Test>().configureEach {
     // Print Konsist's violation report (rule, message, offending declarations) to the console instead of only the
     // exception class.
     testLogging {
-        events(TestLogEvent.FAILED)
+        events(TestLogEvent.FAILED, TestLogEvent.STANDARD_OUT)
         exceptionFormat = TestExceptionFormat.FULL
         showStackTraces = false
     }
