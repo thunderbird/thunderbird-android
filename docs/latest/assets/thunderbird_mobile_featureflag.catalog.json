@@ -66,7 +66,7 @@
     },
     {
       "key": "push_enabled_on_inbox_by_default",
-      "default": false,
+      "default": true,
       "description": "Enables push syncing on a new account's inbox when creating the account. Not for imports."
     }
   ],
@@ -75,13 +75,11 @@
       "debug": {
         "display_in_app_notifications": true,
         "use_notification_sender_for_system_notifications": true,
-        "message_view_action_export_eml": true,
-        "push_enabled_on_inbox_by_default": true
+        "message_view_action_export_eml": true
       },
       "daily": {
         "display_in_app_notifications": true,
-        "message_view_action_export_eml": true,
-        "push_enabled_on_inbox_by_default": true
+        "message_view_action_export_eml": true
       },
       "beta": {
         "display_in_app_notifications": true
@@ -92,8 +90,7 @@
       "debug": {
         "display_in_app_notifications": true,
         "use_notification_sender_for_system_notifications": true,
-        "message_view_action_export_eml": true,
-        "push_enabled_on_inbox_by_default": true
+        "message_view_action_export_eml": true
       },
       "release": {}
     }
