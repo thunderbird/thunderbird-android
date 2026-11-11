@@ -12,15 +12,15 @@ fun assertNoForbiddenImports(
     isForbidden: (importName: String) -> Boolean,
 ) {
     val violations = projectScope.imports.filter { isForbidden(it.name) }
-    if (violations.isEmpty()) return
-
-    val report = violations.groupBy { it.name }
-        .toSortedMap()
-        .entries
-        .joinToString(separator = "\n") { (importName, imports) ->
-            val locations = imports.map { "  file://${it.location}" }.sorted()
-            (listOf("$importName -> ${replacementFor(importName)}") + locations).joinToString(separator = "\n")
-        }
-
-    throw AssertionError("${violations.size} forbidden imports. $message\n\n$report")
+    assertNoQualityViolations(
+        rule = message,
+        violations = violations.map {
+            QualityViolation(
+                location = it.location,
+                reason = "Forbidden import: ${it.name}",
+                suggestion = replacementFor(it.name),
+                group = it.name,
+            )
+        },
+    )
 }
