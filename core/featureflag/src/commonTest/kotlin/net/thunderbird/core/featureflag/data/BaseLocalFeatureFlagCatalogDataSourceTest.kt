@@ -95,12 +95,10 @@ internal abstract class BaseLocalFeatureFlagCatalogDataSourceTest {
                     "display_in_app_notifications" to true,
                     "use_notification_sender_for_system_notifications" to true,
                     "message_view_action_export_eml" to true,
-                    "push_enabled_on_inbox_by_default" to true,
                 )
                 key("daily").containsOnly(
                     "display_in_app_notifications" to true,
                     "message_view_action_export_eml" to true,
-                    "push_enabled_on_inbox_by_default" to true,
                 )
                 key("beta").containsOnly("display_in_app_notifications" to true)
                 key("release").isEmpty()
@@ -110,7 +108,6 @@ internal abstract class BaseLocalFeatureFlagCatalogDataSourceTest {
                     "display_in_app_notifications" to true,
                     "use_notification_sender_for_system_notifications" to true,
                     "message_view_action_export_eml" to true,
-                    "push_enabled_on_inbox_by_default" to true,
                 )
                 key("release").isEmpty()
             }
