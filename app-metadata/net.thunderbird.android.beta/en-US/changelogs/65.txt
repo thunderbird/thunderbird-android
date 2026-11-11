@@ -1,0 +1,4 @@
+Thunderbird version 26.0b3
+
+Changed:
+- There are no Thunderbird changes requiring release notes in this release
