@@ -12,7 +12,7 @@ class FundingConfigMigration : ConfigMigration {
         current: Config,
     ): ConfigMigrationResult {
         val updated = Config().apply {
-            if (newVersion == 2) {
+            if (currentVersion <= 1 && newVersion == 2) {
                 resetFundingConfig()
             }
         }
