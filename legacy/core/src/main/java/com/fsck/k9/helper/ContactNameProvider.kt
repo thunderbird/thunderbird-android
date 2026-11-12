@@ -1,6 +1,6 @@
 package com.fsck.k9.helper
 
-import app.k9mail.core.android.common.contact.ContactRepository
+import net.thunderbird.core.android.common.contact.ContactRepository
 import net.thunderbird.core.common.mail.toEmailAddressOrNull
 
 interface ContactNameProvider {

@@ -2,7 +2,6 @@ package com.fsck.k9.storage
 
 import android.database.sqlite.SQLiteDatabase
 import androidx.core.content.contentValuesOf
-import app.k9mail.core.android.common.database.map
 import assertk.Assert
 import assertk.assertFailure
 import assertk.assertThat
@@ -23,6 +22,7 @@ import net.thunderbird.components.core.logging.testing.TestLogger
 import net.thunderbird.core.android.account.FolderMode
 import net.thunderbird.core.android.account.Identity
 import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.common.database.map
 import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.account.storage.profile.AvatarDto
 import net.thunderbird.feature.account.storage.profile.AvatarTypeDto

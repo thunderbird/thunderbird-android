@@ -1,7 +1,6 @@
 package com.fsck.k9.storage
 
 import android.app.Application
-import app.k9mail.core.android.common.provider.NotificationIconResourceProvider
 import app.k9mail.feature.telemetry.featureTelemetryDiModule
 import app.k9mail.legacy.di.DI
 import com.fsck.k9.AppConfig
@@ -14,14 +13,15 @@ import com.fsck.k9.crypto.EncryptionExtractor
 import com.fsck.k9.legacyCoreDiModule
 import com.fsck.k9.preferences.K9StoragePersister
 import com.fsck.k9.storage.messages.FakeLocalMessageUidPrefixProvider
-import net.thunderbird.core.android.account.AccountDefaultsProvider
-import net.thunderbird.core.android.account.LegacyAccountManager
-import net.thunderbird.core.common.appConfig.PlatformConfigProvider
 import net.thunderbird.components.core.logging.LogLevel
 import net.thunderbird.components.core.logging.LogLevelProvider
 import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.components.core.logging.LoggingControl
 import net.thunderbird.components.core.logging.testing.TestLogger
+import net.thunderbird.core.android.account.AccountDefaultsProvider
+import net.thunderbird.core.android.account.LegacyAccountManager
+import net.thunderbird.core.android.common.provider.NotificationIconResourceProvider
+import net.thunderbird.core.common.appConfig.PlatformConfigProvider
 import net.thunderbird.core.logging.DebugLogConfigurator
 import net.thunderbird.core.preference.storage.StoragePersister
 import net.thunderbird.feature.mail.message.list.LocalMessageUidPrefixProvider

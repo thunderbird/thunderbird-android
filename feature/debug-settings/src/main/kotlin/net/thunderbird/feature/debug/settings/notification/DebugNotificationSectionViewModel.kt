@@ -1,7 +1,6 @@
 package net.thunderbird.feature.debug.settings.notification
 
 import androidx.lifecycle.viewModelScope
-import app.k9mail.core.android.common.provider.NotificationIconResourceProvider
 import kotlin.reflect.KClass
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
@@ -13,6 +12,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import net.thunderbird.core.android.common.provider.NotificationIconResourceProvider
 import net.thunderbird.core.common.resources.StringsResourceManager
 import net.thunderbird.core.ui.contract.mvi.BaseViewModel
 import net.thunderbird.feature.account.profile.AccountProfile

@@ -1,7 +1,7 @@
 package com.fsck.k9
 
 import android.content.Context
-import app.k9mail.core.android.common.coreAndroidCommonDiModule
+import net.thunderbird.core.android.common.coreAndroidCommonDiModule
 import com.fsck.k9.autocrypt.autocryptDiModule
 import com.fsck.k9.controller.controllerDiModule
 import com.fsck.k9.controller.push.controllerPushDiModule

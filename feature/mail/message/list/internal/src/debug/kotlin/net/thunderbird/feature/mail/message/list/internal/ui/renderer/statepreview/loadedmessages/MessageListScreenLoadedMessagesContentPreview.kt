@@ -4,7 +4,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewScreenSizes
-import app.k9mail.core.android.common.provider.NotificationIconResourceProvider
 import app.k9mail.core.ui.compose.common.koin.koinPreview
 import kotlin.uuid.ExperimentalUuidApi
 import kotlinx.collections.immutable.persistentListOf
@@ -12,6 +11,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import net.thunderbird.components.ui.bolt.PreviewLightDarkLandscape
 import net.thunderbird.components.ui.bolt.theme.thunderbird.ThunderbirdBoltTheme
+import net.thunderbird.core.android.common.provider.NotificationIconResourceProvider
 import net.thunderbird.feature.mail.message.list.internal.ui.MessageListScreenPreviewParams
 import net.thunderbird.feature.mail.message.list.internal.ui.MessageListScreenPreviewParamsProvider
 import net.thunderbird.feature.mail.message.list.internal.ui.MessageListScreenRenderer

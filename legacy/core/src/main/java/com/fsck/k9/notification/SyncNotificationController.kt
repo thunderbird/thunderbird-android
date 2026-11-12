@@ -3,10 +3,10 @@ package com.fsck.k9.notification
 import android.app.Notification
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import app.k9mail.core.android.common.provider.NotificationIconResourceProvider
 import com.fsck.k9.mailstore.LocalFolder
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.LegacyAccountManager
+import net.thunderbird.core.android.common.provider.NotificationIconResourceProvider
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.mail.folder.api.OutboxFolderManager
 

@@ -2,7 +2,6 @@ package com.fsck.k9.storage.migrations
 
 import android.content.ContentValues
 import android.database.sqlite.SQLiteDatabase
-import app.k9mail.core.android.common.database.map
 import com.fsck.k9.controller.MessagingControllerCommands.PendingAppend
 import com.fsck.k9.controller.MessagingControllerCommands.PendingCommand
 import com.fsck.k9.controller.MessagingControllerCommands.PendingDelete
@@ -13,6 +12,7 @@ import com.fsck.k9.controller.MessagingControllerCommands.PendingMoveOrCopy
 import com.fsck.k9.controller.MessagingControllerCommands.PendingSetFlag
 import com.fsck.k9.controller.PendingCommandSerializer
 import com.squareup.moshi.Moshi
+import net.thunderbird.core.android.common.database.map
 import net.thunderbird.legacy.logging.Log
 
 private const val TAG = "MigrationTo73"

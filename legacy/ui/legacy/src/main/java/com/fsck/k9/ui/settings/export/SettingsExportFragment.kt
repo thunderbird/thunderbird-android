@@ -25,7 +25,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.stringResource
 import androidx.fragment.app.Fragment
-import app.k9mail.core.android.common.activity.CreateDocumentResultContract
 import com.fsck.k9.ui.R
 import net.thunderbird.components.ui.bolt.atom.CircularProgressIndicator
 import net.thunderbird.components.ui.bolt.atom.DividerHorizontal
@@ -36,6 +35,7 @@ import net.thunderbird.components.ui.bolt.atom.text.TextBodyMedium
 import net.thunderbird.components.ui.bolt.atom.text.TextLabelLarge
 import net.thunderbird.components.ui.bolt.atom.text.TextTitleMedium
 import net.thunderbird.components.ui.bolt.theme.BoltTheme
+import net.thunderbird.core.android.common.activity.CreateDocumentResultContract
 import net.thunderbird.core.ui.contract.mvi.observe
 import net.thunderbird.core.ui.theme.api.FeatureThemeProvider
 import org.koin.android.ext.android.inject

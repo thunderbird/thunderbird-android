@@ -2,9 +2,9 @@ package com.fsck.k9.storage.migrations
 
 import android.content.ContentValues
 import android.database.sqlite.SQLiteDatabase
-import app.k9mail.core.android.common.database.map
 import com.fsck.k9.mailstore.MigrationsHelper
 import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.common.database.map
 import net.thunderbird.core.common.mail.Protocols
 import net.thunderbird.legacy.logging.Log
 

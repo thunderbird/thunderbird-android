@@ -1,10 +1,10 @@
 package com.fsck.k9.mailstore
 
 import android.content.ContentValues
-import app.k9mail.core.android.common.database.getIntOrThrow
-import app.k9mail.core.android.common.database.getLongOrThrow
-import app.k9mail.core.android.common.database.getStringOrNull
-import app.k9mail.core.android.common.database.getStringOrThrow
+import net.thunderbird.core.android.common.database.getIntOrThrow
+import net.thunderbird.core.android.common.database.getLongOrThrow
+import net.thunderbird.core.android.common.database.getStringOrNull
+import net.thunderbird.core.android.common.database.getStringOrThrow
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 

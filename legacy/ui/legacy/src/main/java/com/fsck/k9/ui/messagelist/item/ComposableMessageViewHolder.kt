@@ -2,9 +2,9 @@ package com.fsck.k9.ui.messagelist.item
 
 import android.content.Context
 import androidx.compose.ui.platform.ComposeView
-import app.k9mail.core.android.common.contact.ContactRepository
 import com.fsck.k9.ui.messagelist.MessageListAppearance
 import com.fsck.k9.ui.messagelist.MessageListItem
+import net.thunderbird.core.android.common.contact.ContactRepository
 import net.thunderbird.core.ui.theme.api.FeatureThemeProvider
 import net.thunderbird.feature.account.avatar.AvatarMonogramCreator
 
