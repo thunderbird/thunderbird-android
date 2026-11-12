@@ -4,7 +4,7 @@ import kotlin.test.Test
 import org.koin.core.annotation.KoinExperimentalAPI
 import org.koin.test.verify.verify
 
-class AccountStorageLegacyModuleKtTest {
+class FeatureAccountStorageLegacyDiModuleTest {
 
     @OptIn(KoinExperimentalAPI::class)
     @Test

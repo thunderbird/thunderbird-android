@@ -6,7 +6,7 @@ import org.koin.core.annotation.KoinExperimentalAPI
 import org.koin.test.KoinTest
 import org.koin.test.verify.verify
 
-class FeatureMessageComposerModuleKtTest : KoinTest {
+class FeatureMailMessageComposerDiModuleTest : KoinTest {
 
     @OptIn(KoinExperimentalAPI::class)
     @Test

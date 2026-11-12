@@ -1,4 +1,4 @@
-package app.k9mail
+package net.thunderbird.android
 
 import android.app.Activity
 import android.app.Application
@@ -39,12 +39,12 @@ import org.koin.test.verify.injectedParameters
 import org.koin.test.verify.verify
 import org.openintents.openpgp.OpenPgpApiManager
 
-class DependencyInjectionTest {
+class ThunderbirdDiModuleTest {
 
     @OptIn(KoinExperimentalAPI::class)
     @Test
     fun testDependencyTree() {
-        k9mailDiModule.verify(
+        thunderbirdDiModule.verify(
             extraTypes = listOf(
                 AccountId::class,
                 AppAuthConfiguration::class,

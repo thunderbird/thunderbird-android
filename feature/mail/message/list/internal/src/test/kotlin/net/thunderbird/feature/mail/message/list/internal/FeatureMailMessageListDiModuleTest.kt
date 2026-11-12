@@ -12,7 +12,7 @@ import org.koin.test.KoinTest
 import org.koin.test.verify.definition
 import org.koin.test.verify.verify
 
-class FeatureMessageListModuleKtTest : KoinTest {
+class FeatureMailMessageListDiModuleTest : KoinTest {
 
     @OptIn(KoinExperimentalAPI::class)
     @Test

@@ -1,4 +1,4 @@
-package net.thunderbird.android
+package app.k9mail
 
 import android.app.Activity
 import android.app.Application
@@ -32,19 +32,18 @@ import net.thunderbird.feature.mail.message.list.ui.dialog.SetupArchiveFolderDia
 import net.thunderbird.feature.mail.message.reader.api.css.CssClassNameProvider
 import net.thunderbird.feature.mail.message.reader.api.ui.MessageReaderViewContract
 import net.thunderbird.feature.navigation.changelog.api.ChangeLogMode
-import net.thunderbird.feature.thundermail.internal.common.ui.ThundermailContract
 import org.koin.core.annotation.KoinExperimentalAPI
 import org.koin.test.verify.definition
 import org.koin.test.verify.injectedParameters
 import org.koin.test.verify.verify
 import org.openintents.openpgp.OpenPgpApiManager
 
-class DependencyInjectionTest {
+class K9mailDiModuleTest {
 
     @OptIn(KoinExperimentalAPI::class)
     @Test
     fun testDependencyTree() {
-        thunderbirdDiModule.verify(
+        k9mailDiModule.verify(
             extraTypes = listOf(
                 AccountId::class,
                 AppAuthConfiguration::class,
@@ -74,7 +73,6 @@ class DependencyInjectionTest {
                 definition<SyncDebugWorker>(WorkerParameters::class),
                 definition<OpenPgpApiManager>(LifecycleOwner::class),
                 definition<SetupArchiveFolderDialogContract.ViewModel>(SetupArchiveFolderDialogContract.State::class),
-                definition<ThundermailContract.ViewModel>(ThundermailContract.State::class),
                 definition<MessageReaderViewContract.ViewModel<Part>>(MessageReaderViewContract.State::class),
             ),
         )
