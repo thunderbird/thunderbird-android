@@ -33,7 +33,7 @@ class NotificationSettingsUpdater(
         val notificationConfiguration = notificationChannelManager.getNotificationConfiguration(
             account.id,
             account.messagesNotificationChannelVersion,
-        )
+        ) ?: return null
         return notificationConfigurationConverter.convert(account, notificationConfiguration)
     }
 }

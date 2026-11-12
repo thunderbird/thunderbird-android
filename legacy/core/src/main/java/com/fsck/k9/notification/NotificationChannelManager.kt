@@ -176,9 +176,9 @@ class NotificationChannelManager(
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun getNotificationConfiguration(accountId: AccountId, channelVersion: Int): NotificationConfiguration {
+    fun getNotificationConfiguration(accountId: AccountId, channelVersion: Int): NotificationConfiguration? {
         val channelId = getChannelIdFor(accountId, ChannelType.MESSAGES, channelVersion)
-        val notificationChannel = notificationManager.getNotificationChannel(channelId)
+        val notificationChannel = notificationManager.getNotificationChannel(channelId) ?: return null
 
         return NotificationConfiguration(
             sound = notificationChannel.sound,
@@ -196,7 +196,11 @@ class NotificationChannelManager(
         val oldChannelId = getChannelIdFor(account.id, ChannelType.MESSAGES, account.messagesNotificationChannelVersion)
         val oldNotificationChannel = notificationManager.getNotificationChannel(oldChannelId)
 
-        if (!oldNotificationChannel.matches(account)) {
+        if (oldNotificationChannel == null) {
+            // Nothing to copy from, so create the channel (and its group) from the account's settings.
+            Log.v(TAG, "NotificationChannel(%s) is missing. Creating it from the app's settings.", oldChannelId)
+            addChannelsForAccounts(notificationManager, listOf(account))
+        } else if (!oldNotificationChannel.matches(account)) {
             val newChannelVersion = account.messagesNotificationChannelVersion + 1
             val newChannelId = getMessagesChannelId(account.id, newChannelVersion)
             val channelName = resourceProvider.messagesChannelName
