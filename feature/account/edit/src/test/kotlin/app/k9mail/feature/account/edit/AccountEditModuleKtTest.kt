@@ -5,10 +5,10 @@ import app.k9mail.feature.account.common.domain.entity.AccountState
 import app.k9mail.feature.account.common.domain.entity.InteractionMode
 import app.k9mail.feature.account.edit.ui.server.settings.save.SaveServerSettingsContract
 import app.k9mail.feature.account.server.certificate.ui.ServerCertificateErrorContract
-import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSettingsContract
-import app.k9mail.feature.account.server.settings.ui.outgoing.OutgoingServerSettingsContract
 import app.k9mail.feature.account.server.validation.ui.ServerValidationContract
 import net.thunderbird.feature.account.AccountId
+import net.thunderbird.feature.account.server.settings.ui.incoming.IncomingServerSettingsContract
+import net.thunderbird.feature.account.server.settings.ui.outgoing.OutgoingServerSettingsContract
 import org.junit.Test
 import org.koin.core.annotation.KoinExperimentalAPI
 import org.koin.test.KoinTest

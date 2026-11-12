@@ -8,8 +8,6 @@ import app.k9mail.feature.account.common.domain.entity.AccountState
 import app.k9mail.feature.account.common.domain.entity.AuthenticationType
 import app.k9mail.feature.account.common.domain.entity.ConnectionSecurity
 import app.k9mail.feature.account.common.domain.entity.MailConnectionSecurity
-import app.k9mail.feature.account.server.settings.ui.outgoing.OutgoingServerSettingsContract.Event
-import app.k9mail.feature.account.server.settings.ui.outgoing.OutgoingServerSettingsContract.State
 import assertk.assertions.isEqualTo
 import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ServerSettings
@@ -23,6 +21,8 @@ import net.thunderbird.components.ui.testing.coroutines.MainDispatcherHelper
 import net.thunderbird.core.validation.input.NumberInputField
 import net.thunderbird.core.validation.input.StringInputField
 import net.thunderbird.feature.account.AccountIdFactory
+import net.thunderbird.feature.account.server.settings.ui.outgoing.OutgoingServerSettingsContract.Event
+import net.thunderbird.feature.account.server.settings.ui.outgoing.OutgoingServerSettingsContract.State
 
 class ModifyOutgoingServerSettingsViewModelTest {
 

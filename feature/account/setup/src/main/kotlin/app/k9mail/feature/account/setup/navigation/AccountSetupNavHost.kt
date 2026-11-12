@@ -9,10 +9,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import app.k9mail.feature.account.common.domain.entity.IncomingProtocolType
-import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSettingsScreen
-import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSettingsViewModel
-import app.k9mail.feature.account.server.settings.ui.outgoing.OutgoingServerSettingsScreen
-import app.k9mail.feature.account.server.settings.ui.outgoing.OutgoingServerSettingsViewModel
 import app.k9mail.feature.account.server.validation.ui.IncomingServerValidationViewModel
 import app.k9mail.feature.account.server.validation.ui.OutgoingServerValidationViewModel
 import app.k9mail.feature.account.server.validation.ui.ServerValidationScreen
@@ -26,6 +22,10 @@ import app.k9mail.feature.account.setup.ui.options.sync.SyncOptionsScreen
 import app.k9mail.feature.account.setup.ui.options.sync.SyncOptionsViewModel
 import app.k9mail.feature.account.setup.ui.specialfolders.SpecialFoldersScreen
 import app.k9mail.feature.account.setup.ui.specialfolders.SpecialFoldersViewModel
+import net.thunderbird.feature.account.server.settings.ui.incoming.IncomingServerSettingsScreen
+import net.thunderbird.feature.account.server.settings.ui.incoming.IncomingServerSettingsViewModel
+import net.thunderbird.feature.account.server.settings.ui.outgoing.OutgoingServerSettingsScreen
+import net.thunderbird.feature.account.server.settings.ui.outgoing.OutgoingServerSettingsViewModel
 import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 
