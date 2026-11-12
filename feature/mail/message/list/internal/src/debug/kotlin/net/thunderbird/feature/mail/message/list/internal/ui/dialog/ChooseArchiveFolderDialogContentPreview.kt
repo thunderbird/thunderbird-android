@@ -1,4 +1,4 @@
-package net.thunderbird.feature.mail.message.list.ui.internal.dialog
+package net.thunderbird.feature.mail.message.list.internal.ui.dialog
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -17,8 +17,6 @@ import net.thunderbird.components.ui.bolt.atom.Surface
 import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.feature.mail.folder.FolderType
 import net.thunderbird.feature.mail.folder.api.RemoteFolder
-import net.thunderbird.feature.mail.message.list.internal.ui.dialog.ChooseArchiveFolderDialogButtons
-import net.thunderbird.feature.mail.message.list.internal.ui.dialog.ChooseArchiveFolderDialogContent
 import net.thunderbird.feature.mail.message.list.ui.dialog.SetupArchiveFolderDialogContract.State
 
 private class ChooseArchiveFolderDialogContentParamsCol :

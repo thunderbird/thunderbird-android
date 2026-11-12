@@ -1,4 +1,4 @@
-package net.thunderbird.feature.mail.message.list.ui.internal.dialog
+package net.thunderbird.feature.mail.message.list.internal.ui.dialog
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -15,8 +15,6 @@ import net.thunderbird.components.ui.bolt.PreviewLightDarkLandscape
 import net.thunderbird.components.ui.bolt.PreviewWithThemesLightDark
 import net.thunderbird.components.ui.bolt.atom.Surface
 import net.thunderbird.components.ui.bolt.theme.BoltTheme
-import net.thunderbird.feature.mail.message.list.internal.ui.dialog.CreateNewArchiveFolderDialogButtons
-import net.thunderbird.feature.mail.message.list.internal.ui.dialog.CreateNewArchiveFolderDialogContent
 
 private data class CreateArchiveFolderPreviewParams(
     val folderName: String,
