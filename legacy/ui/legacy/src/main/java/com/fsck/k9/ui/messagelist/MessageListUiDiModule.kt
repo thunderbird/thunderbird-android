@@ -5,7 +5,7 @@ import net.thunderbird.feature.navigation.drawer.dropdown.featureNavigationDrawe
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
-val messageListUiDiModule = module {
+internal val messageListUiDiModule = module {
     includes(featureNavigationDrawerDropdownDiModule)
 
     viewModel { MessageListViewModel(messageListLiveDataFactory = get(), logger = get()) }

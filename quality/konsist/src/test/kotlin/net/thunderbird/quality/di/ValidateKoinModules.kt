@@ -36,16 +36,24 @@ class ValidateKoinModules {
     }
 
     @Test
-    fun `gradle modules should expose one public di entry point`() {
-        val declarations = moduleFiles.flatMap { (_, modules) -> modules }.filter { it.isTopLevel }
-        val violations = koinModuleVisibilityViolations(
-            declarations.map { it.toKoinModuleVisibility() },
-        )
+    fun `di modules outside the root package should be internal`() {
+        val violations = Konsist.scopeFromProduction().files.groupBy { it.moduleName }.flatMap { (moduleName, files) ->
+            val modules = files.flatMap { it.properties() }.filter { it.isTopLevel && it.name.endsWith("DiModule") }
+            if (modules.isEmpty()) return@flatMap emptyList()
+            val packages = files.mapNotNull { it.packagee?.name }.distinct()
+            val rootPackage = commonProductionPackage(packages)
+            val layoutNote = productionPackageLayoutNote(packages)
+            if (layoutNote != null) {
+                println("Koin package layout [$moduleName]: $layoutNote Visibility was not checked.")
+                return@flatMap emptyList()
+            }
+            modules.mapNotNull { koinModuleVisibilityViolation(it, rootPackage) }
+        }.toSet()
 
         assertNoViolations(
             name = "Visibility",
-            message = "Expose exactly one public DI entry point per Gradle module; mark supporting DI modules internal.",
-            violations = violations.toSet(),
+            message = "DI modules outside the shared production root package must be internal.",
+            violations = violations,
         )
     }
 
@@ -149,7 +157,7 @@ class ValidateKoinModules {
 
         val ruleMethods = linkedMapOf(
             "Naming" to "koin module files should be named after their module",
-            "Visibility" to "gradle modules should expose one public di entry point",
+            "Visibility" to "di modules outside the root package should be internal",
             "One per file" to "koin module files should declare one module",
             "Compiler DSL" to "koin module definitions should use the compiler plugin dsl",
             "Graph-test names" to "koin graph tests should be named after the module they verify",
@@ -234,6 +242,35 @@ internal fun koinModuleNamingViolation(moduleName: String, fileName: String, loc
     )
 }
 
+internal fun commonProductionPackage(packages: List<String>): String? = packages
+    .map { it.split('.') }
+    .reduceOrNull { prefix, next -> prefix.zip(next).takeWhile { (left, right) -> left == right }.map { it.first } }
+    ?.joinToString(".")
+    ?.takeIf { it.isNotEmpty() }
+
+internal fun productionPackageLayoutNote(packages: List<String>): String? {
+    val rootPackage = commonProductionPackage(packages)
+    return when {
+        rootPackage == null -> "No shared production package prefix. Review the package layout."
+        rootPackage !in packages -> "Derived root '$rootPackage' has no production files directly in it. Review the package layout."
+        else -> null
+    }
+}
+
+internal fun koinModuleVisibilityViolation(
+    declaration: KoPropertyDeclaration,
+    rootPackage: String?,
+): QualityViolation? {
+    val packageName = declaration.containingFile.packagee?.name
+    if (rootPackage == null || declaration.hasInternalModifier || packageName == rootPackage) return null
+
+    return QualityViolation(
+        location = declaration.location,
+        reason = "DI module '${declaration.name}' is outside root package '$rootPackage' and must be internal.",
+        suggestion = "Mark this supporting DI module internal.",
+    )
+}
+
 internal data class KoinRuleCount(val name: String, val count: Int? = null, val skipped: Boolean = false)
 
 internal fun renderKoinQualitySummary(rules: List<KoinRuleCount>): String {
@@ -250,68 +287,3 @@ internal fun renderKoinQualitySummary(rules: List<KoinRuleCount>): String {
         }
     }
 }
-
-internal data class KoinModuleVisibility(
-    val gradleModule: String,
-    val qualifiedName: String,
-    val location: String,
-    val isPublic: Boolean,
-    val isInternal: Boolean,
-)
-
-internal fun KoPropertyDeclaration.toKoinModuleVisibility(): KoinModuleVisibility = KoinModuleVisibility(
-    gradleModule = moduleName,
-    qualifiedName = requireNotNull(fullyQualifiedName),
-    location = location,
-    isPublic = hasPublicOrDefaultModifier,
-    isInternal = hasInternalModifier,
-)
-
-internal fun koinModuleVisibilityViolations(declarations: List<KoinModuleVisibility>): List<QualityViolation> =
-    declarations.groupBy { it.gradleModule }.flatMap { (gradleModule, modules) ->
-        // Android variants and KMP actual declarations can repeat one logical entry point.
-        val publicNames = modules.filter { it.isPublic }.map { it.qualifiedName }.distinct().sorted()
-        buildList {
-            if (publicNames.isEmpty()) {
-                add(
-                    QualityViolation(
-                        location = modules.first().location,
-                        reason = "Gradle module '$gradleModule' has no public DI entry point.",
-                        suggestion = "Expose one DI module as public; keep supporting DI modules internal.",
-                        group = gradleModule,
-                    ),
-                )
-            }
-            if (publicNames.size > 1) {
-                modules.filter { it.isPublic }.forEach { declaration ->
-                    add(
-                        QualityViolation(
-                            location = declaration.location,
-                            reason = "Gradle module '$gradleModule' exposes ${publicNames.size} DI entry points: " +
-                                publicNames.joinToString() + ".",
-                            suggestion = "Keep one entry point public and mark supporting DI modules internal.",
-                            group = gradleModule,
-                        ),
-                    )
-                }
-            }
-            modules.filter { !it.isPublic }.forEach { declaration ->
-                val isEntryPoint = declaration.qualifiedName in publicNames
-                if (isEntryPoint || !declaration.isInternal) {
-                    add(
-                        QualityViolation(
-                            location = declaration.location,
-                            reason = "DI module '${declaration.qualifiedName}' in '$gradleModule' " +
-                                if (isEntryPoint) "has inconsistent visibility across source sets." else "must be internal.",
-                            suggestion = if (isEntryPoint) {
-                                "Use public visibility consistently for the entry point across source sets."
-                            } else {
-                                "Mark the supporting DI module internal."
-                            },
-                            group = gradleModule,
-                        ),
-                    )
-                }
-            }
-        }
-    }

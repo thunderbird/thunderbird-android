@@ -32,7 +32,7 @@ import org.koin.dsl.bind
 import org.koin.dsl.binds
 import org.koin.dsl.module
 
-val preferencesDiModule = module {
+internal val preferencesDiModule = module {
     factory {
         SettingsExporter(
             contentResolver = get(),

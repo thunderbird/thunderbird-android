@@ -24,7 +24,7 @@ import org.koin.dsl.bind
 import org.koin.dsl.binds
 import org.koin.dsl.module
 
-val controllerDiModule = module {
+internal val controllerDiModule = module {
     single {
         MessagingController(
             get<Context>(),

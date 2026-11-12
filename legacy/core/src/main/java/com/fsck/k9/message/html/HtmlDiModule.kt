@@ -3,7 +3,7 @@ package com.fsck.k9.message.html
 import net.thunderbird.core.common.inject.getList
 import org.koin.dsl.module
 
-val htmlDiModule = module {
+internal val htmlDiModule = module {
     factory {
         HtmlProcessorFactory(
             featureFlagProvider = get(),

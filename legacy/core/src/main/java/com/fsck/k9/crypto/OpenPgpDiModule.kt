@@ -4,7 +4,7 @@ import androidx.lifecycle.LifecycleOwner
 import org.koin.dsl.module
 import org.openintents.openpgp.OpenPgpApiManager
 
-val openPgpDiModule = module {
+internal val openPgpDiModule = module {
     factory { (lifecycleOwner: LifecycleOwner) ->
         OpenPgpApiManager(get(), lifecycleOwner)
     }

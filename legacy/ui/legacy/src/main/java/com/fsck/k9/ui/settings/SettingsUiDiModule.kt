@@ -14,7 +14,7 @@ import org.koin.core.module.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
-val settingsUiDiModule = module {
+internal val settingsUiDiModule = module {
     viewModel { SettingsViewModel(accountManager = get()) }
 
     viewModel {

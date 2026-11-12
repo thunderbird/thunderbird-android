@@ -9,7 +9,7 @@ import net.thunderbird.backend.api.BackendFactory
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
-val backendsDiModule = module {
+internal val backendsDiModule = module {
     single {
         val developmentBackends = get<Map<String, BackendFactory>>(named("developmentBackends"))
         BackendManager(
