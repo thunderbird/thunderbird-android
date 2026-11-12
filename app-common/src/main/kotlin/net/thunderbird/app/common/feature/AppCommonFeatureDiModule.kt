@@ -3,6 +3,7 @@ package net.thunderbird.app.common.feature
 import app.k9mail.feature.launcher.FeatureLauncherExternalContract
 import app.k9mail.feature.launcher.featureLauncherDiModule
 import net.thunderbird.app.common.feature.account.appCommonFeatureAccountDiModule
+import net.thunderbird.app.common.feature.funding.appCommonFeatureFundingDiModule
 import net.thunderbird.app.common.feature.mail.appCommonFeatureMailDiModule
 import net.thunderbird.feature.account.avatar.featureAccountAvatarDiModule
 import net.thunderbird.feature.mail.message.composer.internal.featureMailMessageComposerDiModule
@@ -14,6 +15,7 @@ import org.koin.dsl.module
 internal val appCommonFeatureDiModule = module {
     includes(appCommonFeatureMailDiModule)
     includes(appCommonFeatureAccountDiModule)
+    includes(appCommonFeatureFundingDiModule)
     includes(featureAccountAvatarDiModule)
     includes(featureLauncherDiModule)
     includes(featureMailMessageComposerDiModule)
