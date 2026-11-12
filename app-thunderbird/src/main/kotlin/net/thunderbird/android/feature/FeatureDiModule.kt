@@ -4,8 +4,8 @@ import app.k9mail.feature.migration.launcher.featureMigrationLauncherDiModule
 import app.k9mail.feature.onboarding.migration.featureOnboardingMigrationDiModule
 import app.k9mail.feature.telemetry.featureTelemetryDiModule
 import net.thunderbird.android.BuildConfig
-import net.thunderbird.android.feature.mail.message.reader.api.css.DefaultCssClassNameProvider
 import net.thunderbird.app.common.feature.funding.fundingDiModule
+import net.thunderbird.app.common.feature.mail.message.reader.DefaultCssClassNameProvider
 import net.thunderbird.feature.account.settings.featureAccountSettingsDiModule
 import net.thunderbird.feature.funding.api.FundingSettings
 import net.thunderbird.feature.funding.featureFundingDiModule

@@ -1,4 +1,4 @@
-package net.thunderbird.android.feature.mail.message.reader.api.css
+package net.thunderbird.app.common.feature.mail.message.reader
 
 import com.fsck.k9.message.html.EmailTextToHtml
 import net.thunderbird.core.featureflag.FeatureFlagProvider
