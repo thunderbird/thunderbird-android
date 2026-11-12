@@ -29,11 +29,11 @@ class MessagingControllerRemovedAccountTest : K9RobolectricTest() {
         BackendManager(backendFactories = emptyMap(), accountManager = accountManager),
         mock(),
         mock(),
-        mock(),
         StubLocalDeleteOperationDecider(),
         FakeLocalMessageUidPrefixProvider(),
         emptyList(),
         { FeatureFlagResult.Disabled },
+        TestLogger(),
         TestLogger(),
         FakeNotificationManager(
             emitOnSend = { error("Unexpected notification") },

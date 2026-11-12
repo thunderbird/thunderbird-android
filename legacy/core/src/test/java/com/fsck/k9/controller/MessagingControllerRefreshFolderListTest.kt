@@ -51,11 +51,11 @@ class MessagingControllerRefreshFolderListTest : K9RobolectricTest() {
         backendManager,
         mock(),
         mock(),
-        mock(),
         StubLocalDeleteOperationDecider(),
         FakeLocalMessageUidPrefixProvider(),
         emptyList(),
         { FeatureFlagResult.Disabled },
+        TestLogger(),
         TestLogger(),
         FakeNotificationManager(
             emitOnSend = { error("Unexpected notification") },

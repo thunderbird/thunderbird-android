@@ -56,7 +56,7 @@ public class AttachmentDownloadDialogFragment extends DialogFragment {
             }
         };
 
-        messagingController = MessagingController.getInstance(getActivity());
+        messagingController = MessagingController.getInstance();
         messagingController.addListener(messagingListener);
 
         return dialog;

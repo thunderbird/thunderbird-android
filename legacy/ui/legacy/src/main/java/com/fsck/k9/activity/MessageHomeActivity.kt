@@ -1432,7 +1432,7 @@ open class MessageHomeActivity :
     }
 
     private fun clearNotifications() {
-        messagingController.clearNotifications(search)
+        search?.let { messagingController.clearNotifications(it) }
     }
 
     private val isAdditionalMessageListDisplayed: Boolean
