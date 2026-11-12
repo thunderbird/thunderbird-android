@@ -13,6 +13,9 @@ data class Identity(
     val signatureIsHtml: Boolean = false,
     val replyTo: String? = null,
 ) : Parcelable {
+
+    val isHtmlSignaturePresent get() = signatureIsHtml && signatureUse && !signature.isNullOrEmpty()
+
     // TODO remove when callers are converted to Kotlin
     fun withName(name: String?) = copy(name = name)
     fun withSignature(signature: String?) = copy(signature = signature)

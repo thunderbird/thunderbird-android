@@ -1842,21 +1842,33 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
             // plain text in those cases.
             messageFormat = SimpleMessageFormat.TEXT;
         } else if (origMessageFormat == MessageFormat.AUTO) {
-            if (action == Action.COMPOSE || quotedMessagePresenter.isQuotedTextText() ||
-                    !quotedMessagePresenter.includeQuotedText()) {
-                // If the message format is set to "AUTO" we use text/plain whenever possible. That
-                // is, when composing new messages and replying to or forwarding text/plain
-                // messages.
-                messageFormat = SimpleMessageFormat.TEXT;
-            } else {
-                messageFormat = SimpleMessageFormat.HTML;
-            }
+            messageFormat = determineAutoMessageFormat();
         } else {
             // In all other cases use HTML
             messageFormat = SimpleMessageFormat.HTML;
         }
 
         setCurrentMessageFormat(messageFormat);
+    }
+
+    /**
+     * If the message format is set to "AUTO" we use text/plain whenever possible. That
+     * is, when composing new messages without an HTML signature and replying to or
+     * forwarding text/plain messages.
+     */
+    @NonNull
+    private SimpleMessageFormat determineAutoMessageFormat() {
+        SimpleMessageFormat messageFormat;
+        if (quotedMessagePresenter.isQuotedTextText()) {
+            messageFormat = SimpleMessageFormat.TEXT;
+        } else if (identity.isHtmlSignaturePresent()) {
+            messageFormat = SimpleMessageFormat.HTML;
+        } else if (action == Action.COMPOSE || !quotedMessagePresenter.includeQuotedText()) {
+            messageFormat = SimpleMessageFormat.TEXT;
+        } else {
+            messageFormat = SimpleMessageFormat.HTML;
+        }
+        return messageFormat;
     }
 
     @Override
