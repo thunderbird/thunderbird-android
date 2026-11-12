@@ -25,7 +25,6 @@ import net.thunderbird.core.featureflag.serialization.FeatureFlagCatalogJsonPars
 import net.thunderbird.core.featureflag.serialization.FlagRegistryOverrideSerializer
 import net.thunderbird.core.featureflag.ui.RemoteFeatureFlagUiContract
 import net.thunderbird.core.featureflag.ui.RemoteFeatureFlagViewModel
-import org.koin.core.module.Module
 import org.koin.core.module.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
@@ -104,5 +103,3 @@ val coreFeatureFlagDiModule = module {
     }
     includes(platformFeatureFlagDiModule)
 }
-
-expect val platformFeatureFlagDiModule: Module

@@ -16,12 +16,9 @@ import net.thunderbird.feature.notification.impl.receiver.DefaultSystemNotificat
 import net.thunderbird.feature.notification.impl.receiver.InAppNotificationNotifier
 import net.thunderbird.feature.notification.impl.receiver.SystemNotificationNotifier
 import net.thunderbird.feature.notification.impl.sender.DefaultNotificationSender
-import org.koin.core.module.Module
 import org.koin.core.qualifier.named
 import org.koin.dsl.binds
 import org.koin.dsl.module
-
-internal expect val platformFeatureNotificationDiModule: Module
 
 val featureNotificationDiModule = module {
     includes(platformFeatureNotificationDiModule)
