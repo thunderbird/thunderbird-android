@@ -273,10 +273,13 @@ private fun Comparator<MessageListItem>.thenByDate(config: MessageListConfig): C
  *   been synchronized with the server.
  * @property hasRemoteFolders `false` if all folders the message list shows are local-only, like the outbox, so there's
  *   nothing to synchronize.
+ * @property deletedFolderId The ID of the folder the message list shows if that folder no longer exists, otherwise
+ *   `null`.
  */
 data class MessageListInfo(
     val messageListItems: List<MessageListItem>,
     val hasMoreMessages: Boolean,
     val hasUnsyncedFolders: Boolean,
     val hasRemoteFolders: Boolean,
+    val deletedFolderId: Long? = null,
 )
