@@ -23,15 +23,8 @@ class ServerSettingsTest {
     @Test
     fun `type that is not all lower case should throw`() {
         assertFailure {
-            ServerSettings(
+            validServerSettings.copy(
                 type = "IMAP",
-                host = "imap.domain.example",
-                port = 993,
-                connectionSecurity = ConnectionSecurity.SSL_TLS_REQUIRED,
-                authenticationType = AuthType.PLAIN,
-                username = "user",
-                password = "123456",
-                clientCertificateAlias = null,
             )
         }.isInstanceOf<IllegalArgumentException>()
             .hasMessage("type must be all lower case")
@@ -40,15 +33,8 @@ class ServerSettingsTest {
     @Test
     fun `username containing LF should throw`() {
         assertFailure {
-            ServerSettings(
-                type = "imap",
-                host = "imap.domain.example",
-                port = 993,
-                connectionSecurity = ConnectionSecurity.SSL_TLS_REQUIRED,
-                authenticationType = AuthType.PLAIN,
+            validServerSettings.copy(
                 username = "user\nname",
-                password = "123456",
-                clientCertificateAlias = null,
             )
         }.isInstanceOf<IllegalArgumentException>()
             .hasMessage("username must not contain line break")
@@ -57,15 +43,8 @@ class ServerSettingsTest {
     @Test
     fun `username containing CR should throw`() {
         assertFailure {
-            ServerSettings(
-                type = "imap",
-                host = "imap.domain.example",
-                port = 993,
-                connectionSecurity = ConnectionSecurity.SSL_TLS_REQUIRED,
-                authenticationType = AuthType.PLAIN,
+            validServerSettings.copy(
                 username = "user\rname",
-                password = "123456",
-                clientCertificateAlias = null,
             )
         }.isInstanceOf<IllegalArgumentException>()
             .hasMessage("username must not contain line break")
@@ -74,15 +53,8 @@ class ServerSettingsTest {
     @Test
     fun `password containing LF should throw`() {
         assertFailure {
-            ServerSettings(
-                type = "imap",
-                host = "imap.domain.example",
-                port = 993,
-                connectionSecurity = ConnectionSecurity.SSL_TLS_REQUIRED,
-                authenticationType = AuthType.PLAIN,
-                username = "user",
+            validServerSettings.copy(
                 password = "123456\n",
-                clientCertificateAlias = null,
             )
         }.isInstanceOf<IllegalArgumentException>()
             .hasMessage("password must not contain line break")
@@ -91,17 +63,22 @@ class ServerSettingsTest {
     @Test
     fun `password containing CR should throw`() {
         assertFailure {
-            ServerSettings(
-                type = "imap",
-                host = "imap.domain.example",
-                port = 993,
-                connectionSecurity = ConnectionSecurity.SSL_TLS_REQUIRED,
-                authenticationType = AuthType.PLAIN,
-                username = "user",
+            validServerSettings.copy(
                 password = "123456\r",
-                clientCertificateAlias = null,
             )
         }.isInstanceOf<IllegalArgumentException>()
             .hasMessage("password must not contain line break")
     }
+
+    private val validServerSettings
+        get() = ServerSettings(
+            type = "imap",
+            host = "imap.domain.example",
+            port = 993,
+            connectionSecurity = ConnectionSecurity.SSL_TLS_REQUIRED,
+            authenticationType = AuthType.PLAIN,
+            username = "user",
+            password = "123456",
+            clientCertificateAlias = null,
+        )
 }
