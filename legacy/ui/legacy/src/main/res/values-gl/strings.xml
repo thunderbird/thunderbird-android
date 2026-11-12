@@ -82,7 +82,7 @@
     <string name="add_attachment_action">Engadir adxunto</string>
     <string name="empty_trash_action">Baleirar o lixo</string>
     <string name="expunge_action">Erradicar</string>
-    <string name="about_action">Acerca de</string>
+    <string name="about_action">En canto a</string>
     <string name="prefs_title">Configuración</string>
     <!--Shown in place of the subject when a message has no subject. Showing this in parentheses is customary.-->
     <string name="general_no_subject">(sen Asunto)</string>
@@ -188,7 +188,7 @@
     <string name="global_settings_messageview_autofit_width_label">Auto axustar mensaxes</string>
     <string name="global_settings_messageview_autofit_width_summary">Recortar mensaxes para axustar na pantalla</string>
     <string name="global_settings_confirm_actions_title">Confirmar acción</string>
-    <string name="global_settings_confirm_actions_summary">Amosar un diálogo cuando se realice una de estas acciones</string>
+    <string name="global_settings_confirm_actions_summary">Amosar un diálogo cada vez que realices as accións escollidas</string>
     <string name="global_settings_confirm_action_delete">Eliminar</string>
     <string name="global_settings_confirm_action_delete_starred">Eliminar con Estrela (na vista de mensaxe)</string>
     <string name="global_settings_confirm_action_spam">Correo lixo</string>
@@ -802,11 +802,11 @@
     <string name="general_settings_post_remove_action_show_next_message">Amosa a seguinte mensaxe</string>
     <string name="general_settings_post_mark_as_unread_action_stay">Manterse na mensaxe actual</string>
     <string name="general_settings_post_mark_as_unread_action_return_to_list">Volver á lista de mensaxes</string>
-    <string name="general_settings_swipe_actions_title">Accións de pasar o dedo</string>
-    <string name="general_settings_right_swipe_title">Pase o dedo cara á dereita</string>
-    <string name="general_settings_left_swipe_title">Pase o dedo cara á esquerda</string>
+    <string name="general_settings_swipe_actions_title">Accións de esvarado</string>
+    <string name="general_settings_right_swipe_title">Esvarar cara á dereita</string>
+    <string name="general_settings_left_swipe_title">Esvarar cara á esquerda</string>
     <string name="general_settings_swipe_action_toggle_star">Engadir/eliminar estrela</string>
-    <string name="general_settings_message_list_density_title">densidade</string>
+    <string name="general_settings_message_list_density_title">Densidade</string>
     <string name="general_settings_ui_density_compact">Compacto</string>
     <string name="account_settings_vibrate_pattern_5">Patrón 5</string>
     <string name="account_settings_notification_light_disabled">Desactivado</string>
@@ -855,7 +855,7 @@
     <string name="about_app_authors_thunderbird">Equipo Thunderbird Mobile</string>
     <string name="folder_settings_notifications_label">Notificacións</string>
     <string name="folder_settings_push_label">Activar Push</string>
-    <string name="about_title">Acerca de <xliff:g id="app_name">%s</xliff:g></string>
+    <string name="about_title">En canto a <xliff:g id="app_name">%s</xliff:g></string>
     <string name="account_delete_dlg_instructions_fmt">A conta \"<xliff:g id="account">%1$s</xliff:g>\" eliminarase de <xliff:g id="app_name">%2$s</xliff:g>.</string>
     <string name="dialog_openkeychain_info_text">Precísase a aplicación OpenKeychain para permitir o cifrado de extremo a extremo.</string>
     <string name="push_info_notification_explanation_text">Ao usar Push, <xliff:g id="app_name">%1$s</xliff:g> mantén a conexión co servidor de correo. Android require que se amose unha notificación en curso mentres a aplicación estea activa en segundo plano. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
@@ -917,7 +917,7 @@
     <string name="general_settings_message_list_date_time_format_iso">ISO</string>
     <string name="global_settings_privacy_incognito_keyboard">Teclado incógnito</string>
     <string name="global_settings_privacy_incognito_keyboard_detail">Pídelle ao teclado que non aprenda do que escribes ao redactar mensaxes</string>
-    <string name="account_setup_visibility_and_syncing">Visibilidade e sincronización</string>
+    <string name="account_setup_visibility_and_syncing">Sincronización de cartafoles e push</string>
     <string name="account_setup_auto_select_folder">Selección automática de cartafol</string>
     <string name="folder_settings_visible_label">Amosar cartafol</string>
     <string name="folder_settings_sync_label">Activar a sincronización</string>
@@ -964,4 +964,17 @@
     <string name="no_network_message_will_be_sent_later_toast">Sen conexión. A mensaxe enviarase cando haxa conexión</string>
     <string name="account_settings_folder_sync_and_push">Sincronización de carpetas e push</string>
     <string name="account_settings_fetching_and_data_limits">Recuperación e límites de datos</string>
+    <string name="account_settings_sync_and_notifications">Sincronización e notificacións</string>
+    <string name="account_settings_folder_visibility">Visibilidade do cartafol</string>
+    <string name="unified_inbox_detail">Mensaxes no caixón de entrada de cada conta</string>
+    <string name="unified_outbox_title">Caixón de saída unificado</string>
+    <string name="unified_drafts_title">Borradores unificados</string>
+    <string name="unified_sent_title">Enviados unificados</string>
+    <string name="unified_archive_title">Arquivo unificado</string>
+    <string name="unified_spam_title">Correo lixo unificado</string>
+    <string name="unified_trash_title">Lixo unificado</string>
+    <string name="message_list_empty">Non hai mensaxes</string>
+    <string name="message_list_empty_search">Non hai resultados</string>
+    <string name="message_list_not_synced">Aínda non sincronizado</string>
+    <string name="message_list_not_synced_hint">Arrastra cara abaixo para sincronizar</string>
 </resources>

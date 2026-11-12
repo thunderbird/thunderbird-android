@@ -980,4 +980,15 @@
     <string name="account_settings_fetching_and_data_limits">Pridobivanje in omejitev podatkov</string>
     <string name="account_settings_sync_and_notifications">Usklajevanje in obvestila</string>
     <string name="account_settings_folder_visibility">Vidnost map</string>
+    <string name="unified_inbox_detail">Sporočila v mapi Prejeto vsakega računa.</string>
+    <string name="unified_outbox_title">Skupna mapa Odhodna pošta</string>
+    <string name="unified_drafts_title">Skupna mapa Osnutki</string>
+    <string name="unified_sent_title">Skupna mapa Poslano</string>
+    <string name="unified_archive_title">Skupna mapa Arhiv</string>
+    <string name="unified_spam_title">Skupna mapa Neželena pošta</string>
+    <string name="unified_trash_title">Skupna mapa Koš</string>
+    <string name="message_list_empty">Ni sporočil.</string>
+    <string name="message_list_empty_search">Iskanega ni bilo mogoče najti.</string>
+    <string name="message_list_not_synced">Mapa še ni bila usklajena.</string>
+    <string name="message_list_not_synced_hint">Povlecite dol, če želite uskladiti mapo.</string>
 </resources>

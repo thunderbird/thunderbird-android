@@ -9,4 +9,10 @@
     <string name="navigation_drawer_dropdown_unified_account_title">Jednotný účet</string>
     <string name="navigation_drawer_dropdown_action_add_account">Přidat účet</string>
     <string name="navigation_drawer_dropdown_action_sync_account">Synchronizovat účet</string>
+    <string name="navigation_drawer_dropdown_unified_outbox_title">Odchozí</string>
+    <string name="navigation_drawer_dropdown_unified_drafts_title">Návrhy</string>
+    <string name="navigation_drawer_dropdown_unified_sent_title">Odesláno</string>
+    <string name="navigation_drawer_dropdown_unified_archive_title">Archiv</string>
+    <string name="navigation_drawer_dropdown_unified_spam_title">Spam</string>
+    <string name="navigation_drawer_dropdown_unified_trash_title">Koš</string>
 </resources>

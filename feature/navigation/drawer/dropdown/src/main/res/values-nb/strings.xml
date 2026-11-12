@@ -9,4 +9,10 @@
     <string name="navigation_drawer_dropdown_unified_account_title">Samlet konto</string>
     <string name="navigation_drawer_dropdown_action_add_account">Legg til konto</string>
     <string name="navigation_drawer_dropdown_action_sync_account">Synkroniser konto</string>
+    <string name="navigation_drawer_dropdown_unified_outbox_title">Utboks</string>
+    <string name="navigation_drawer_dropdown_unified_drafts_title">Kladd</string>
+    <string name="navigation_drawer_dropdown_unified_sent_title">Sendt</string>
+    <string name="navigation_drawer_dropdown_unified_archive_title">Arkiv</string>
+    <string name="navigation_drawer_dropdown_unified_spam_title">Søppelpost</string>
+    <string name="navigation_drawer_dropdown_unified_trash_title">Papirkurv</string>
 </resources>

@@ -37,11 +37,11 @@
     <string name="account_setup_special_folders_loading_message">Získávání seznamu složek…</string>
     <string name="account_setup_special_folders_error_message">Nepodařilo se získat seznam složek ze serveru</string>
     <string name="account_setup_special_folders_success_message">Všechny speciální složky byly nastaveny automaticky na serveru.</string>
-    <string name="account_setup_special_folders_archive_folder_label">Archiv</string>
+    <string name="account_setup_special_folders_archive_folder_label">Složka Archivu</string>
     <string name="account_setup_special_folders_drafts_folder_label">Koncepty</string>
-    <string name="account_setup_special_folders_sent_folder_label">Odeslané</string>
-    <string name="account_setup_special_folders_spam_folder_label">Spam</string>
-    <string name="account_setup_special_folders_trash_folder_label">Koš</string>
+    <string name="account_setup_special_folders_sent_folder_label">Složka Odeslané</string>
+    <string name="account_setup_special_folders_spam_folder_label">Složka Spam</string>
+    <string name="account_setup_special_folders_trash_folder_label">Složka Koš</string>
     <string name="account_setup_special_folders_folder_none">Žádný</string>
     <string name="account_setup_special_folders_folder_automatic">Automaticky (%s)</string>
     <string name="account_setup_auto_discovery_validation_error_password_required">Heslo je vyžadováno.</string>
