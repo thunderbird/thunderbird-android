@@ -37,7 +37,7 @@ data class ServerSettings @JvmOverloads constructor(
 
     override fun toString(): String {
         return "ServerSettings(type=$type, host=$host, port=$port, " +
-            "connectionSecurity=$connectionSecurity, authType=$authenticationType)"
+            "connectionSecurity=$connectionSecurity, authenticationType=$authenticationType)"
     }
 
     companion object {
