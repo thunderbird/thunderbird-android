@@ -1,9 +1,11 @@
 package com.fsck.k9.helper
 
+import android.graphics.Typeface
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
+import android.text.style.StyleSpan
 import app.k9mail.core.android.common.contact.ContactRepository
 import com.fsck.k9.CoreResourceProvider
 import com.fsck.k9.mail.Address
@@ -27,13 +29,43 @@ class MessageHelper(
         } else {
             null
         }
-        return toFriendly(
+        val friendlyName = toFriendly(
             address,
             messageListPreferences.isShowCorrespondentNames,
             messageListPreferences.isChangeContactNameColor,
             messageListPreferences.contactNameColor,
             repository,
         )
+        return withSuspiciousSenderWarning(friendlyName, address)
+    }
+
+    /**
+     * Returns the sender's decoded display name together with the actual email address, e.g.
+     * "Jane Doe <jane@example.com>", rather than just one or the other. Intended for an
+     * explicit "show full details" action, since [getSenderDisplayName] already covers the
+     * default, condensed view.
+     */
+    fun getSenderFullDetails(address: Address?): CharSequence {
+        if (address == null) {
+            return resourceProvider.contactUnknownSender()
+        }
+        val personal = address.personal
+        val fullDetails = if (!personal.isNullOrEmpty()) {
+            "$personal <${address.address}>"
+        } else {
+            address.address
+        }
+        return withSuspiciousSenderWarning(fullDetails, address)
+    }
+
+    private fun withSuspiciousSenderWarning(text: CharSequence, address: Address): CharSequence {
+        if (!SuspiciousAddressDetector.isSuspicious(address.personal, address.address)) {
+            return text
+        }
+        val prefix = resourceProvider.suspiciousSenderPrefix()
+        return SpannableStringBuilder(prefix).append(' ').append(text).apply {
+            setSpan(StyleSpan(Typeface.BOLD), 0, prefix.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        }
     }
 
     fun getRecipientDisplayNames(
