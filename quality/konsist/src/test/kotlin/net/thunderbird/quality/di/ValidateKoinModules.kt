@@ -1,6 +1,5 @@
 package net.thunderbird.quality.di
 
-import com.lemonappdev.konsist.api.Konsist
 import com.lemonappdev.konsist.api.declaration.KoClassDeclaration
 import com.lemonappdev.konsist.api.declaration.KoFileDeclaration
 import com.lemonappdev.konsist.api.declaration.KoPropertyDeclaration
@@ -8,6 +7,7 @@ import kotlin.test.Ignore
 import kotlin.test.Test
 import net.thunderbird.quality.util.QualityViolation
 import net.thunderbird.quality.util.assertNoQualityViolations
+import net.thunderbird.quality.util.productionScope
 import net.thunderbird.quality.util.testScope
 import org.junit.AfterClass
 import org.junit.BeforeClass
@@ -38,7 +38,7 @@ class ValidateKoinModules {
 
     @Test
     fun `di modules outside the root package should be internal`() {
-        val violations = Konsist.scopeFromProduction().files.groupBy { it.moduleName }.flatMap { (moduleName, files) ->
+        val violations = productionScope.files.groupBy { it.moduleName }.flatMap { (moduleName, files) ->
             val modules = files.flatMap { it.properties() }.filter { it.isTopLevel && it.name.endsWith("DiModule") }
             if (modules.isEmpty()) return@flatMap emptyList()
             val packages = files.mapNotNull { it.packagee?.name }.distinct()
@@ -60,7 +60,8 @@ class ValidateKoinModules {
 
     @Test
     fun `koin module files should declare one module`() {
-        val violations = moduleFiles
+        val violations = productionScope.files
+            .map { file -> file to koinModuleDeclarations(file) }
             .filter { (_, modules) -> modules.size > 1 }
             .flatMap { (_, modules) ->
                 modules.map { module ->
@@ -200,12 +201,15 @@ class ValidateKoinModules {
 
         /** Production files with their top-level Koin module declarations (`val fooDiModule = module { }`). */
         val moduleFiles: List<Pair<KoFileDeclaration, List<KoPropertyDeclaration>>> =
-            Konsist.scopeFromProduction().files
+            productionScope.files
                 .map { file -> file to file.properties().filter { MODULE_DECLARATION.containsMatchIn(it.value.orEmpty()) } }
                 .filter { (_, modules) -> modules.isNotEmpty() }
 
     }
 }
+
+internal fun koinModuleDeclarations(file: KoFileDeclaration): List<KoPropertyDeclaration> =
+    file.properties().filter { it.isTopLevel && it.name.endsWith("DiModule") }
 
 private val MODULE_NAME = Regex("""[a-z][A-Za-z0-9]*DiModule""")
 
