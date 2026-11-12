@@ -51,13 +51,21 @@ val controllerModule = module {
         MessagingControllerWrapper(
             messagingController = get(),
         )
-    } bind FolderSynchronizer::class
+    } binds arrayOf(MessagingControllerWrapper::class, FolderSynchronizer::class)
 
     single {
         UnifiedFolderSynchronizer(
             accountManager = get(),
             outboxFolderManager = get(),
             folderSynchronizer = get(),
+        )
+    }
+
+    single {
+        UnifiedFolderReadMarker(
+            accountManager = get(),
+            outboxFolderManager = get(),
+            markAllMessagesRead = get<MessagingControllerWrapper>()::markAllMessagesRead,
         )
     }
 
