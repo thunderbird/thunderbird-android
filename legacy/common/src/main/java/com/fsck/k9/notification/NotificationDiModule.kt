@@ -2,7 +2,7 @@ package com.fsck.k9.notification
 
 import org.koin.dsl.module
 
-val notificationDiModule = module {
+internal val notificationDiModule = module {
     single<NotificationActionCreator> {
         K9NotificationActionCreator(
             context = get(),

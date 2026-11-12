@@ -4,6 +4,6 @@ import net.thunderbird.core.ui.setting.SettingViewProvider
 import net.thunderbird.core.ui.setting.dialog.DialogSettingViewProvider
 import org.koin.dsl.module
 
-val appCommonCoreUiDiModule = module {
+internal val appCommonCoreUiDiModule = module {
     single<SettingViewProvider> { DialogSettingViewProvider() }
 }

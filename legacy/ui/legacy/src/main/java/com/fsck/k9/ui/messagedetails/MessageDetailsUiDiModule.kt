@@ -3,7 +3,7 @@ package com.fsck.k9.ui.messagedetails
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
-val messageDetailsUiDiModule = module {
+internal val messageDetailsUiDiModule = module {
     viewModel {
         MessageDetailsViewModel(
             resources = get(),

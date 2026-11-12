@@ -4,7 +4,7 @@ import com.fsck.k9.CoreResourceProvider
 import com.fsck.k9.autocrypt.AutocryptStringProvider
 import org.koin.dsl.module
 
-val resourcesDiModule = module {
+internal val resourcesDiModule = module {
     single<CoreResourceProvider> {
         K9CoreResourceProvider(
             context = get(),

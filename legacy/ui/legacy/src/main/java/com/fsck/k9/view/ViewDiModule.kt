@@ -11,7 +11,7 @@ import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.feature.mail.message.reader.api.strategy.ReplyActionStrategy
 import org.koin.dsl.module
 
-val viewDiModule = module {
+internal val viewDiModule = module {
     single { WebViewConfigProvider(themeManager = get(), generalSettingsManager = get()) }
     factory {
         @OptIn(ExperimentalTime::class)

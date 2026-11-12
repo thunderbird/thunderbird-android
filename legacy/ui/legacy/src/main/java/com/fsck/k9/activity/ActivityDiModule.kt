@@ -5,7 +5,7 @@ import com.fsck.k9.ui.messageview.AttachmentLoadingController
 import com.fsck.k9.ui.messageview.DefaultAttachmentLoadingController
 import org.koin.dsl.module
 
-val activityDiModule = module {
+internal val activityDiModule = module {
     single {
         MessageLoaderHelperFactory(
             messageViewInfoExtractorFactory = get(),

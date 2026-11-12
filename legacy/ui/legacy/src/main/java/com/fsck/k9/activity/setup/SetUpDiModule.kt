@@ -5,7 +5,7 @@ import com.fsck.k9.activity.account.identity.LegacyIdentitySignatureWebViewConfi
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
-val setUpDiModule = module {
+internal val setUpDiModule = module {
     factory {
         LegacyIdentitySignatureWebViewConfigurator(
             webViewConfigProvider = get(),

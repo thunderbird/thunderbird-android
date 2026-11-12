@@ -7,7 +7,7 @@ import app.k9mail.feature.settings.import.SettingsImportExternalContract
 import net.thunderbird.feature.account.usecase.GetDefaultAccountId
 import org.koin.dsl.module
 
-val newAccountDiModule = module {
+internal val newAccountDiModule = module {
     factory<AccountSetupExternalContract.AccountOwnerNameProvider> {
         AccountOwnerNameProvider(
             accountManager = get(),

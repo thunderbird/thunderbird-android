@@ -9,7 +9,7 @@ import org.koin.android.ext.koin.androidApplication
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
-val coreNotificationDiModule = module {
+internal val coreNotificationDiModule = module {
     single {
         NotificationController(
             certificateErrorNotificationController = get(),

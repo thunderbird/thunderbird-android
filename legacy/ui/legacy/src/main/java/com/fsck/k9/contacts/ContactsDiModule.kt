@@ -2,7 +2,7 @@ package com.fsck.k9.contacts
 
 import org.koin.dsl.module
 
-val contactsDiModule = module {
+internal val contactsDiModule = module {
     single { ContactLetterExtractor() }
     factory { ContactLetterBitmapConfig(context = get(), themeManager = get(), messageListPreferencesManager = get()) }
     factory { ContactLetterBitmapCreator(letterExtractor = get(), config = get()) }

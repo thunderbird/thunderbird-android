@@ -23,7 +23,7 @@ import net.thunderbird.feature.mail.folder.api.data.repository.RemoteFolderDetai
 import net.thunderbird.feature.mail.folder.api.data.repository.RemoteFolderQueryRepository
 import org.koin.dsl.module
 
-val legacyMailStoreDiModule = module {
+internal val legacyMailStoreDiModule = module {
     single<PushFolderTrackingRepository> {
         DefaultPushFolderTrackingRepository(logger = get(), messageStoreManager = get())
     }

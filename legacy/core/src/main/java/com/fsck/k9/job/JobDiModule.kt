@@ -9,7 +9,7 @@ import net.thunderbird.components.core.logging.Logger
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
-val jobDiModule = module {
+internal val jobDiModule = module {
     single { WorkManagerConfigurationProvider(workerFactory = get()) }
     single<WorkerFactory> { K9WorkerFactory() }
     single { WorkManager.getInstance(get<Context>()) }

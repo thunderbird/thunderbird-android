@@ -20,7 +20,7 @@ import org.koin.core.module.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
-val uiDiModule = module {
+internal val uiDiModule = module {
     factory {
         DisplayHtmlUiFactory(
             cssClassNameProvider = get(),
