@@ -57,5 +57,19 @@ class DefaultAvatarMonogramCreatorTest {
 
         val resultWithEmptyStrings = testSubject.create("", "")
         assertThat(resultWithEmptyStrings).isEqualTo(expectedMonogram)
+
+        val resultWithBlankStrings = testSubject.create("   ", "   ")
+        assertThat(resultWithBlankStrings).isEqualTo(expectedMonogram)
+    }
+
+    @Test
+    fun `create returns monogram for email when name is blank`() {
+        val name = "   "
+        val email = "test@example.com"
+        val expectedMonogram = "TE"
+
+        val result = testSubject.create(name, email)
+
+        assertThat(result).isEqualTo(expectedMonogram)
     }
 }

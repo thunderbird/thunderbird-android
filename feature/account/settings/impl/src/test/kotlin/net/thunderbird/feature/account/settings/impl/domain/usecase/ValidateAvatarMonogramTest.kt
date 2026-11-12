@@ -52,4 +52,13 @@ class ValidateAvatarMonogramTest {
             .prop(Outcome.Failure<ValidationError>::error)
             .isInstanceOf<ValidateMonogramError.TooLongMonogram>()
     }
+
+    @Test
+    fun `should fail when monogram is longer than 3 emoji`() {
+        val result = testSubject("🔥🔥🔥🔥")
+
+        assertThat(result).isInstanceOf<Outcome.Failure<ValidationError>>()
+            .prop(Outcome.Failure<ValidationError>::error)
+            .isInstanceOf<ValidateMonogramError.TooLongMonogram>()
+    }
 }
