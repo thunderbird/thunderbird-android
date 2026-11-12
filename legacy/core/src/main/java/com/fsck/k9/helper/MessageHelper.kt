@@ -4,7 +4,7 @@ import android.text.Spannable
 import android.text.SpannableString
 import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
-import app.k9mail.core.android.common.contact.ContactRepository
+import net.thunderbird.core.android.common.contact.ContactRepository
 import com.fsck.k9.CoreResourceProvider
 import com.fsck.k9.mail.Address
 import java.util.regex.Pattern

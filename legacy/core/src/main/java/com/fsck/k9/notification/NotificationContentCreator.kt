@@ -1,12 +1,12 @@
 package com.fsck.k9.notification
 
 import android.text.SpannableStringBuilder
-import app.k9mail.core.android.common.contact.ContactRepository
 import app.k9mail.legacy.message.extractors.PreviewResult.PreviewType
 import com.fsck.k9.helper.MessageHelper
 import com.fsck.k9.mail.Address
 import com.fsck.k9.mail.Message
 import com.fsck.k9.mailstore.LocalMessage
+import net.thunderbird.core.android.common.contact.ContactRepository
 import net.thunderbird.core.preference.display.visualSettings.message.list.MessageListPreferencesManager
 
 internal class NotificationContentCreator(

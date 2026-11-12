@@ -6,7 +6,7 @@ import java.util.Map;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import app.k9mail.core.android.common.compat.BundleCompat;
+import net.thunderbird.core.android.common.compat.BundleCompat;
 import net.thunderbird.core.android.account.LegacyAccount;
 import net.thunderbird.core.android.account.MessageFormat;
 import app.k9mail.legacy.di.DI;

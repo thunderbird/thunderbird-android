@@ -2,8 +2,6 @@ package com.fsck.k9.helper
 
 import android.graphics.Color
 import android.text.SpannableString
-import app.k9mail.core.android.common.contact.Contact
-import app.k9mail.core.android.common.contact.ContactRepository
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
@@ -11,6 +9,8 @@ import com.fsck.k9.CoreResourceProvider
 import com.fsck.k9.TestCoreResourceProvider
 import com.fsck.k9.helper.MessageHelper.Companion.toFriendly
 import com.fsck.k9.mail.Address
+import net.thunderbird.core.android.common.contact.Contact
+import net.thunderbird.core.android.common.contact.ContactRepository
 import net.thunderbird.core.android.testing.RobolectricTest
 import net.thunderbird.core.common.mail.EmailAddress
 import net.thunderbird.core.common.mail.toEmailAddressOrThrow

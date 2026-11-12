@@ -1,7 +1,7 @@
 package app.k9mail.provider
 
-import app.k9mail.core.android.common.provider.NotificationIconResourceProvider
 import com.fsck.k9.preferences.FilePrefixProvider
+import net.thunderbird.core.android.common.provider.NotificationIconResourceProvider
 import net.thunderbird.core.common.provider.AppNameProvider
 import net.thunderbird.core.common.provider.BrandNameProvider
 import net.thunderbird.core.ui.theme.api.FeatureThemeProvider

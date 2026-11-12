@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    namespace = "app.k9mail.core.android.common"
+    namespace = "net.thunderbird.core.android.common"
 }
 
 dependencies {

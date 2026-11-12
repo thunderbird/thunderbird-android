@@ -26,9 +26,6 @@ import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.commit
 import androidx.fragment.app.commitNow
 import androidx.lifecycle.lifecycleScope
-import app.k9mail.core.android.common.compat.BundleCompat
-import app.k9mail.core.android.common.contact.CachingRepository
-import app.k9mail.core.android.common.contact.ContactRepository
 import app.k9mail.core.ui.compose.common.window.FoldableState
 import app.k9mail.core.ui.compose.common.window.FoldableStateObserver
 import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons
@@ -89,6 +86,9 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import org.koin.core.parameter.parametersOf
 import androidx.core.net.toUri
+import net.thunderbird.core.android.common.compat.BundleCompat
+import net.thunderbird.core.android.common.contact.CachingRepository
+import net.thunderbird.core.android.common.contact.ContactRepository
 import net.thunderbird.feature.account.UnifiedAccountId
 
 private const val TAG = "MainActivity"

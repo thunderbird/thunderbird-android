@@ -2,15 +2,15 @@ package com.fsck.k9.storage.messages
 
 import android.content.ContentValues
 import android.database.sqlite.SQLiteDatabase
-import app.k9mail.core.android.common.database.getIntOrNull
-import app.k9mail.core.android.common.database.getLongOrNull
-import app.k9mail.core.android.common.database.getStringOrNull
-import app.k9mail.core.android.common.database.map
 import com.fsck.k9.mailstore.DatabasePreviewType
 import com.fsck.k9.mailstore.LockableDatabase
 import com.fsck.k9.mailstore.MigrationsHelper
 import com.fsck.k9.storage.K9SchemaDefinitionFactory
 import java.io.File
+import net.thunderbird.core.android.common.database.getIntOrNull
+import net.thunderbird.core.android.common.database.getLongOrNull
+import net.thunderbird.core.android.common.database.getStringOrNull
+import net.thunderbird.core.android.common.database.map
 import org.mockito.ArgumentMatchers
 import org.mockito.kotlin.any
 import org.mockito.kotlin.doAnswer

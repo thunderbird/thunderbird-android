@@ -3,7 +3,7 @@ package com.fsck.k9.contacts
 import android.content.ContentResolver
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import app.k9mail.core.android.common.contact.ContactRepository
+import net.thunderbird.core.android.common.contact.ContactRepository
 import net.thunderbird.legacy.logging.Log
 
 private const val TAG = "ContactPhotoLoader"

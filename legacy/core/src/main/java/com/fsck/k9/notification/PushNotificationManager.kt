@@ -10,9 +10,9 @@ import android.provider.Settings
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.app.PendingIntentCompat
-import app.k9mail.core.android.common.provider.NotificationIconResourceProvider
 import com.fsck.k9.CoreResourceProvider
 import net.thunderbird.components.core.logging.Logger
+import net.thunderbird.core.android.common.provider.NotificationIconResourceProvider
 
 private const val PUSH_INFO_ACTION = "app.k9mail.action.PUSH_INFO"
 private const val TAG = "PushNotificationManager"

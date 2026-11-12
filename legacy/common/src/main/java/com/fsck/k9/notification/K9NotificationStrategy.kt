@@ -1,6 +1,6 @@
 package com.fsck.k9.notification
 
-import app.k9mail.core.android.common.contact.ContactRepository
+import net.thunderbird.core.android.common.contact.ContactRepository
 import app.k9mail.legacy.di.DI
 import com.fsck.k9.QuietTimeChecker
 import com.fsck.k9.mail.K9MailLib

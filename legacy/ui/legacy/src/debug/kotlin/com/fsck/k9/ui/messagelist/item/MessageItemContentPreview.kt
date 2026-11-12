@@ -4,8 +4,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.tooling.preview.PreviewLightDark
-import app.k9mail.core.android.common.contact.Contact
-import app.k9mail.core.android.common.contact.ContactRepository
 import com.fsck.k9.FontSizes
 import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ConnectionSecurity
@@ -15,6 +13,8 @@ import com.fsck.k9.ui.messagelist.MessageListItem
 import net.thunderbird.components.ui.bolt.PreviewWithThemesLightDark
 import net.thunderbird.core.android.account.Identity
 import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.common.contact.Contact
+import net.thunderbird.core.android.common.contact.ContactRepository
 import net.thunderbird.core.common.mail.EmailAddress
 import net.thunderbird.core.preference.display.visualSettings.message.list.MessageListDateTimeFormat
 import net.thunderbird.core.preference.display.visualSettings.message.list.UiDensity

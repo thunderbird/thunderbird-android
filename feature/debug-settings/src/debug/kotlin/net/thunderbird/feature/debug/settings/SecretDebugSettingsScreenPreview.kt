@@ -4,13 +4,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.PreviewLightDark
-import app.k9mail.core.android.common.provider.NotificationIconResourceProvider
 import app.k9mail.core.ui.compose.common.koin.koinPreview
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.flowOf
 import net.thunderbird.components.ui.bolt.PreviewWithThemesLightDark
+import net.thunderbird.core.android.common.provider.NotificationIconResourceProvider
 import net.thunderbird.core.common.resources.StringsResourceManager
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.profile.AccountProfile
