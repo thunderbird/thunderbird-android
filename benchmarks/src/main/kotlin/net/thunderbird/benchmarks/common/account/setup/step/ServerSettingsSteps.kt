@@ -4,8 +4,6 @@ import androidx.test.uiautomator.By
 import androidx.test.uiautomator.BySelector
 import androidx.test.uiautomator.UiDevice
 import androidx.test.uiautomator.UiObject2
-import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSettingsTestTags
-import app.k9mail.feature.account.server.settings.ui.outgoing.OutgoingServerSettingsTestTags
 import net.thunderbird.benchmarks.common.account.BenchmarkAccount
 import net.thunderbird.benchmarks.common.account.setup.AccountSetupStep
 import net.thunderbird.benchmarks.common.account.setup.interaction.SERVER_TIMEOUT_MS
@@ -14,6 +12,8 @@ import net.thunderbird.benchmarks.common.account.setup.interaction.clickNext
 import net.thunderbird.benchmarks.common.extension.TIMEOUT_MS
 import net.thunderbird.benchmarks.common.extension.findEditTexts
 import net.thunderbird.benchmarks.common.extension.pollUntil
+import net.thunderbird.feature.account.server.settings.ui.incoming.IncomingServerSettingsTestTags
+import net.thunderbird.feature.account.server.settings.ui.outgoing.OutgoingServerSettingsTestTags
 
 // Positions of the fields on the server settings screens:
 // incoming: protocol, server, security, port, authentication, username, password, ...

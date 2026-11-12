@@ -13,9 +13,9 @@ import app.k9mail.feature.account.edit.ui.server.settings.save.SaveIncomingServe
 import app.k9mail.feature.account.edit.ui.server.settings.save.SaveOutgoingServerSettingsViewModel
 import app.k9mail.feature.account.oauth.featureAccountOAuthDiModule
 import app.k9mail.feature.account.server.certificate.featureAccountServerCertificateDiModule
-import app.k9mail.feature.account.server.settings.featureAccountServerSettingsDiModule
 import app.k9mail.feature.account.server.validation.featureAccountServerValidationDiModule
 import net.thunderbird.feature.account.AccountIdFactory
+import net.thunderbird.feature.account.server.settings.featureAccountServerSettingsDiModule
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 

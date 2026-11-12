@@ -1,0 +1,34 @@
+package net.thunderbird.feature.account.server.settings.domain.usecase
+
+import net.thunderbird.components.core.outcome.Outcome
+import net.thunderbird.core.common.net.HostNameUtils
+import net.thunderbird.core.validation.ValidationError
+import net.thunderbird.core.validation.ValidationOutcome
+import net.thunderbird.core.validation.ValidationSuccess
+import net.thunderbird.feature.account.server.settings.domain.ServerSettingsDomainContract.UseCase
+
+internal class ValidateServer : UseCase.ValidateServer {
+
+    override fun execute(server: String): ValidationOutcome {
+        if (server.isBlank()) {
+            return Outcome.Failure(ValidateServerError.EmptyServer)
+        }
+
+        return validateHostnameOrIpAddress(server)
+    }
+
+    private fun validateHostnameOrIpAddress(server: String): ValidationOutcome {
+        val isLegalHostNameOrIP = HostNameUtils.isLegalHostNameOrIP(server) != null
+
+        return if (isLegalHostNameOrIP) {
+            ValidationSuccess
+        } else {
+            Outcome.Failure(ValidateServerError.InvalidHostnameOrIpAddress)
+        }
+    }
+
+    sealed interface ValidateServerError : ValidationError {
+        data object EmptyServer : ValidateServerError
+        data object InvalidHostnameOrIpAddress : ValidateServerError
+    }
+}
