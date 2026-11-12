@@ -30,6 +30,7 @@ import com.fsck.k9.mail.internet.MessageIdGenerator;
 import com.fsck.k9.mail.internet.MimeHeader;
 import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.internet.MimeMultipart;
+import com.fsck.k9.mailstore.AttachmentViewInfo;
 import com.fsck.k9.message.MessageBuilder.Callback;
 import com.fsck.k9.message.quote.InsertableHtmlContent;
 import net.thunderbird.legacy.logging.Log;
@@ -384,6 +385,22 @@ public class MessageBuilderTest extends RobolectricTest {
     }
 
     @Test
+    public void build_withAttachmentOfUnknownSize_shouldOmitSizeParameter() throws Exception {
+        MessageBuilder messageBuilder = createSimpleMessageBuilder();
+        Attachment attachment = createAttachmentWithContent(
+                "message/rfc822", "attach.eml", TEST_ATTACHMENT_TEXT, AttachmentViewInfo.UNKNOWN_SIZE);
+        messageBuilder.setAttachments(Collections.singletonList(attachment));
+
+        messageBuilder.buildAsync(callback);
+        pendingWork.runAllTasks();
+
+        MimeMessage message = getMessageFromCallback();
+        BodyPart attachmentPart = ((MimeMultipart) message.getBody()).getBodyPart(1);
+        String contentDisposition = attachmentPart.getHeader(MimeHeader.HEADER_CONTENT_DISPOSITION)[0];
+        assertEquals("attachment;\r\n filename=attach.eml", contentDisposition);
+    }
+
+    @Test
     public void build_detachAndReattach_shouldSucceed() throws MessagingException {
         MessageBuilder messageBuilder = createSimpleMessageBuilder();
         Callback anotherCallback = mock(Callback.class);
@@ -451,6 +468,11 @@ public class MessageBuilderTest extends RobolectricTest {
     }
 
     private Attachment createAttachmentWithContent(final String mimeType, final String filename, String content) throws Exception {
+        return createAttachmentWithContent(mimeType, filename, content, (long) content.getBytes().length);
+    }
+
+    private Attachment createAttachmentWithContent(final String mimeType, final String filename, String content,
+            final long size) throws Exception {
         final byte[] bytes = content.getBytes();
         final File tempFile = File.createTempFile("pre", ".tmp");
         tempFile.deleteOnExit();
@@ -461,7 +483,7 @@ public class MessageBuilderTest extends RobolectricTest {
         return new Attachment() {
             @Override
             public Long getSize() {
-                return (long) bytes.length;
+                return size;
             }
 
             @Override
