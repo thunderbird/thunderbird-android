@@ -668,7 +668,6 @@
     <string name="setting_language_system">Mặc định hệ thống</string>
     <string name="background_ops_label">Đồng bộ nền</string>
     <string name="account_setup_push_limit_label">Thư mục tối đa để kiểm tra bằng cách đẩy</string>
-    <string name="background_ops_auto_sync_only">Khi \'Tự động đồng bộ\' được chọn</string>
     <string name="batch_select_all">Chọn tất cả</string>
     <string name="account_setup_push_limit_50">50 thư mục</string>
     <string name="account_setup_push_limit_100">100 thư mục</string>

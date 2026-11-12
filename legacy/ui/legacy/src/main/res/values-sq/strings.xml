@@ -503,7 +503,6 @@
     <string name="background_ops_label">Njëkohësim në prapaskenë</string>
     <string name="background_ops_never">Kurrë</string>
     <string name="background_ops_always">Përherë</string>
-    <string name="background_ops_auto_sync_only">Kur i është vënë shenjë \'Vetënjëkohësohu\'</string>
     <string name="batch_select_all">Përzgjidhi krejt</string>
     <string name="account_setup_push_limit_label">Maksimum dosjesh për kontroll me push</string>
     <string name="account_setup_push_limit_5">5 dosje</string>

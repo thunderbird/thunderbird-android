@@ -532,6 +532,11 @@
             android:title="@string/background_ops_label"
             />
 
+        <Preference
+            android:selectable="false"
+            android:summary="@string/background_ops_android_auto_sync_help"
+            />
+
     </PreferenceScreen>
 
     <PreferenceScreen

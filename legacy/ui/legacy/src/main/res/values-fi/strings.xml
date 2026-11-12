@@ -505,7 +505,6 @@
     <string name="background_ops_label">Synkronointi taustalla</string>
     <string name="background_ops_never">Ei koskaan</string>
     <string name="background_ops_always">Aina</string>
-    <string name="background_ops_auto_sync_only">Kun Automaattinen synkronointi on valittu</string>
     <string name="batch_select_all">Valitse kaikki</string>
     <string name="account_setup_push_limit_label">Push-tilassa tarkistettavien kansioiden enimmäismäärä</string>
     <string name="account_setup_push_limit_5">5 kansiota</string>

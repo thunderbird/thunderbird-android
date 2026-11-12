@@ -452,7 +452,6 @@
     <string name="background_ops_label">Synchronizácia na pozadí</string>
     <string name="background_ops_never">Nikdy</string>
     <string name="background_ops_always">Vždy</string>
-    <string name="background_ops_auto_sync_only">Keď je povolená možnosť \"Automatická synchronizácia\"</string>
     <string name="batch_select_all">Vybrať všetko</string>
     <string name="account_setup_push_limit_label">Maximálny počet priečinkov na kontrolu pomocou push</string>
     <string name="account_setup_push_limit_5">5 priečinkov</string>

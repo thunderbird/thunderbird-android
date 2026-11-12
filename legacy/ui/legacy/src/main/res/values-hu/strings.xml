@@ -505,7 +505,6 @@
     <string name="background_ops_label">Háttér-szinkronizálás</string>
     <string name="background_ops_never">Soha</string>
     <string name="background_ops_always">Mindig</string>
-    <string name="background_ops_auto_sync_only">Amikor az „Automatikus szinkronizálás” be van jelölve</string>
     <string name="batch_select_all">Összes kijelölése</string>
     <string name="account_setup_push_limit_label">Leküldéssel ellenőrzendő mappák legnagyobb száma</string>
     <string name="account_setup_push_limit_5">5 mappa</string>

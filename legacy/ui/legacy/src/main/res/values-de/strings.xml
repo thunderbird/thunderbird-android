@@ -504,7 +504,6 @@
     <string name="background_ops_label">Hintergrundsynchronisation</string>
     <string name="background_ops_never">Nie</string>
     <string name="background_ops_always">Immer</string>
-    <string name="background_ops_auto_sync_only">Wenn „automatische Synchronisation“ aktiviert ist</string>
     <string name="batch_select_all">Alle auswählen</string>
     <string name="account_setup_push_limit_label">Maximale Push-Ordneranzahl</string>
     <string name="account_setup_push_limit_5">5 Ordner</string>

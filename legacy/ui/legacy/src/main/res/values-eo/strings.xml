@@ -463,7 +463,6 @@
     <string name="background_ops_label">Fona samtempigo</string>
     <string name="background_ops_never">Neniam</string>
     <string name="background_ops_always">Ĉiam</string>
-    <string name="background_ops_auto_sync_only">Kiam \'Aŭtomata samtempigo\' estas aktiva</string>
     <string name="batch_select_all">Elekti ĉiujn</string>
     <string name="account_setup_push_limit_label">Kiom da mesaĝujoj por puŝ-kontrolo</string>
     <string name="account_setup_push_limit_5">5 mesaĝujoj</string>

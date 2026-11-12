@@ -507,7 +507,6 @@
     <string name="background_ops_label">Sincronizzazione in background</string>
     <string name="background_ops_never">Mai</string>
     <string name="background_ops_always">Sempre</string>
-    <string name="background_ops_auto_sync_only">Se \'Sincronizzazione automatica\' è abilitata</string>
     <string name="batch_select_all">Seleziona tutto</string>
     <string name="account_setup_push_limit_label">Massimo di cartelle da sincronizzare in push</string>
     <string name="account_setup_push_limit_5">5 cartelle</string>
