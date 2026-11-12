@@ -9,7 +9,7 @@ import net.thunderbird.feature.funding.api.FundingConfigStore
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
-val fundingDiModule = module {
+internal val fundingDiModule = module {
 
     single<CoroutineScope>(named("ConfigStoreScope")) {
         CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
