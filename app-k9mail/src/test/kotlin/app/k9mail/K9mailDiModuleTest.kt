@@ -39,7 +39,7 @@ import org.koin.test.verify.injectedParameters
 import org.koin.test.verify.verify
 import org.openintents.openpgp.OpenPgpApiManager
 
-class DependencyInjectionTest {
+class K9mailDiModuleTest {
 
     @OptIn(KoinExperimentalAPI::class)
     @Test
@@ -76,7 +76,6 @@ class DependencyInjectionTest {
                 definition<SetupArchiveFolderDialogContract.ViewModel>(SetupArchiveFolderDialogContract.State::class),
                 definition<ThundermailContract.ViewModel>(ThundermailContract.State::class),
                 definition<MessageReaderViewContract.ViewModel<Part>>(MessageReaderViewContract.State::class),
-                definition<ThundermailContract.ViewModel>(ThundermailContract.State::class),
             ),
         )
     }

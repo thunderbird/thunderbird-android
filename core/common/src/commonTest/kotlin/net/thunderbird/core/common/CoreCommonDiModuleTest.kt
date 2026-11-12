@@ -1,19 +1,17 @@
-package net.thunderbird.core.android.common
+package net.thunderbird.core.common
 
-import android.content.Context
 import net.thunderbird.core.common.oauth.OAuthConfigurationFactory
 import org.junit.Test
 import org.koin.core.annotation.KoinExperimentalAPI
 import org.koin.test.verify.verify
 
-internal class CoreAndroidCommonDiModuleKtTest {
+internal class CoreCommonDiModuleTest {
 
     @OptIn(KoinExperimentalAPI::class)
     @Test
     fun `should have a valid di module`() {
-        coreAndroidCommonDiModule.verify(
+        coreCommonDiModule.verify(
             extraTypes = listOf(
-                Context::class,
                 OAuthConfigurationFactory::class,
             ),
         )

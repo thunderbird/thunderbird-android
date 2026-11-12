@@ -1,6 +1,7 @@
 package net.thunderbird.quality.di
 
 import com.lemonappdev.konsist.api.Konsist
+import com.lemonappdev.konsist.api.declaration.KoClassDeclaration
 import com.lemonappdev.konsist.api.declaration.KoFileDeclaration
 import com.lemonappdev.konsist.api.declaration.KoPropertyDeclaration
 import kotlin.test.Ignore
@@ -113,36 +114,35 @@ class ValidateKoinModules {
         )
     }
 
-    @Ignore
     @Test
     fun `koin graph tests should be named after the module they verify`() {
+        val declarations = moduleFiles.flatMap { (_, modules) -> modules }
         val violations = testScope.classes()
-            .filter {
-                it.name.endsWith(GRAPH_TEST_SUFFIX) || it.name.endsWith(MODULE_KT_TEST_SUFFIX) ||
-                    it.name.endsWith(MODULE_TEST_SUFFIX)
+            .filter { testClass ->
+                testClass.containingFile.imports.any {
+                    it.name.startsWith("org.koin.test.verify.") ||
+                        it.name in setOf("org.koin.core.context.startKoin", "org.koin.core.context.koinApplication")
+                }
             }
-            .filterNot { testClass ->
-                val moduleName = testClass.name.removeSuffix("Test").replaceFirstChar(Char::lowercase)
-                testClass.name.endsWith(DI_MODULE_TEST_SUFFIX) && MODULE_NAME.matches(moduleName) &&
-                    Regex("""\b${Regex.escape(moduleName)}\b""").containsMatchIn(testClass.containingFile.text)
-            }
-            .map { testClass ->
-                val moduleName = testClass.name.removeSuffix(GRAPH_TEST_SUFFIX)
-                    .removeSuffix("KtTest").removeSuffix("Test")
-                    .replaceFirstChar(Char::lowercase).toDiModuleName()
-                QualityViolation(
-                    location = testClass.location,
-                    reason = "Test '${testClass.name}' does not match the module naming rule.",
-                    suggestion = "Use '${moduleName.replaceFirstChar(Char::uppercase)}Test' and start $moduleName. " +
-                        "Choose the feature name if it cannot be inferred.",
-                )
-            }
-            .toSet()
+            .mapNotNull { testClass ->
+                val names = koinGraphTestModuleNames(testClass.text)
+                if (names.isEmpty()) return@mapNotNull null
+                val modules = declarations.filter { it.moduleName == testClass.moduleName && it.name in names }
+                    .distinctBy { it.fullyQualifiedName }
+                if (names.size != 1 || modules.size != 1) {
+                    QualityViolation(
+                        location = testClass.location,
+                        reason = "Cannot identify a single DI module under test for '${testClass.name}': ${names.sorted()}.",
+                        suggestion = "Review the module references before choosing a test name and path.",
+                    )
+                } else {
+                    koinGraphTestNamingViolation(testClass, modules.single())
+                }
+            }.toSet()
 
         assertNoViolations(
             name = "Graph-test names",
-            message = "Name Koin graph tests <Feature>DiModuleTest after the module they start, e.g. " +
-                "ChangelogUiDiModuleTest for changelogUiDiModule.",
+            message = "Name graph-test classes and files <DiModuleName>Test, and mirror the tested module's package and directory.",
             violations = violations,
         )
     }
@@ -182,11 +182,6 @@ class ValidateKoinModules {
             }
             println(renderKoinQualitySummary(rules))
         }
-
-        const val GRAPH_TEST_SUFFIX = "GraphTest"
-        const val MODULE_KT_TEST_SUFFIX = "ModuleKtTest"
-        const val MODULE_TEST_SUFFIX = "ModuleTest"
-        const val DI_MODULE_TEST_SUFFIX = "DiModuleTest"
 
         val DSL_RESOLUTION_CALL = Regex("""\b(get|getOrNull|getAll|androidContext|androidApplication)\s*(<.*?>)?\s*\(""")
 
@@ -270,6 +265,46 @@ internal fun koinModuleVisibilityViolation(
         suggestion = "Mark this supporting DI module internal.",
     )
 }
+
+internal fun koinGraphTestModuleNames(text: String): Set<String> {
+    val verified = Regex("""\b([a-z]\w*DiModule)\s*\.\s*verify\s*\(""")
+        .findAll(text).map { it.groupValues[1] }
+    val started = Regex("""\bmodules\s*\(([^)]*)\)""", RegexOption.DOT_MATCHES_ALL)
+        .findAll(text).flatMap { call ->
+            Regex("""\b[a-z]\w*DiModule\b""").findAll(call.groupValues[1]).map { it.value }
+        }
+    return (verified + started).toSet()
+}
+
+internal fun koinGraphTestNamingViolation(
+    testClass: KoClassDeclaration,
+    module: KoPropertyDeclaration,
+): QualityViolation? {
+    val file = testClass.containingFile
+    val moduleFile = module.containingFile
+    val expectedClass = module.name.replaceFirstChar(Char::uppercase) + "Test"
+    val fileName = file.path.substringAfterLast('/')
+    val expectedFile = expectedClass + "." + fileName.substringAfter('.')
+    val expectedPackage = moduleFile.packagee?.name
+    val testDirectory = file.sourceRelativePath.substringBeforeLast('/', "")
+    val expectedDirectory = moduleFile.sourceRelativePath.substringBeforeLast('/', "")
+    val expectedPath = listOf(expectedDirectory, expectedFile).filter { it.isNotEmpty() }.joinToString("/")
+    val corrections = buildList {
+        if (testClass.name != expectedClass) add("Class: ${testClass.name} -> $expectedClass")
+        if (fileName != expectedFile) add("File: $fileName -> $expectedFile")
+        if (file.packagee?.name != expectedPackage) add("Package: ${file.packagee?.name} -> $expectedPackage")
+        if (testDirectory != expectedDirectory) add("Path: ${file.sourceRelativePath} -> $expectedPath")
+    }
+    if (corrections.isEmpty()) return null
+    return QualityViolation(
+        location = testClass.location,
+        reason = "Graph test for '${module.name}' does not match its name or placement.",
+        suggestion = corrections.joinToString("; "),
+    )
+}
+
+private val KoFileDeclaration.sourceRelativePath: String
+    get() = path.substringAfter("/src/").split('/').drop(2).joinToString("/")
 
 internal data class KoinRuleCount(val name: String, val count: Int? = null, val skipped: Boolean = false)
 
