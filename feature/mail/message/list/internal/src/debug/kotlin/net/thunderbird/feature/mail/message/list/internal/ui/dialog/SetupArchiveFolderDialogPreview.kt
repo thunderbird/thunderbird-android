@@ -1,4 +1,4 @@
-package net.thunderbird.feature.mail.message.list.ui.internal.dialog
+package net.thunderbird.feature.mail.message.list.internal.ui.dialog
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
@@ -10,7 +10,6 @@ import net.thunderbird.components.ui.bolt.atom.Surface
 import net.thunderbird.components.ui.bolt.theme.thunderbird.ThunderbirdBoltTheme
 import net.thunderbird.feature.mail.folder.FolderType
 import net.thunderbird.feature.mail.folder.api.RemoteFolder
-import net.thunderbird.feature.mail.message.list.internal.ui.dialog.SetupArchiveFolderDialog
 import net.thunderbird.feature.mail.message.list.ui.dialog.SetupArchiveFolderDialogContract.State
 
 private class SetupArchiveFolderDialogParamCol : CollectionPreviewParameterProvider<State>(

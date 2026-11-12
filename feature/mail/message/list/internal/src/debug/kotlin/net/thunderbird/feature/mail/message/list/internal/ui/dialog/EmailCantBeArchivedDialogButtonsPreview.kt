@@ -1,4 +1,4 @@
-package net.thunderbird.feature.mail.message.list.ui.internal.dialog
+package net.thunderbird.feature.mail.message.list.internal.ui.dialog
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -20,7 +20,6 @@ import net.thunderbird.components.ui.bolt.atom.Surface
 import net.thunderbird.components.ui.bolt.atom.text.TextBodyMedium
 import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.feature.mail.message.list.internal.R
-import net.thunderbird.feature.mail.message.list.internal.ui.dialog.EmailCantBeArchivedDialogButtons
 import net.thunderbird.feature.mail.message.list.ui.dialog.SetupArchiveFolderDialogContract
 
 @PreviewLightDarkLandscape
