@@ -33,7 +33,7 @@ internal class TbFundingSettings(
         fundingConfigStore.update {
             val oldConfig = it ?: FundingConfig.DEFAULT
             oldConfig.copy(
-                reminderReferenceTimestamp = timestamp,
+                lastFundingReminderShownTimestamp = timestamp,
             )
         }
     }

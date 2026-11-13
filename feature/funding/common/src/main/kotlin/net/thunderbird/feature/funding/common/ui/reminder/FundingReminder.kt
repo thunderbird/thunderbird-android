@@ -36,11 +36,6 @@ class FundingReminder(
                 delay(250.milliseconds)
             }
 
-            // If the reminder reference timestamp is not set, we set it to the first install time.
-            if (settings.getReminderReferenceTimestamp() == 0L) {
-                resetReminderReferenceTimestamp()
-            }
-
             val activity = activityProvider.getCurrent() as? AppCompatActivity ?: return@launch
             // TODO: Let the caller make the decision on which FragmentManager to use.
             val dialogFragmentManager = activity.supportFragmentManager
@@ -61,6 +56,11 @@ class FundingReminder(
             // If the reminder has already been shown, we don't need to show it again.
             if (wasReminderShown(1) && wasReminderShown(2)) {
                 return@launch
+            }
+
+            // If the reminder reference timestamp is not set, we set it to the first install time.
+            if (settings.getReminderReferenceTimestamp() == 0L) {
+                resetReminderReferenceTimestamp()
             }
 
             if (shouldShowReminder() || shouldShowSecondReminder()) {
