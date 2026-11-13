@@ -891,6 +891,14 @@
     <string name="account_setup_auto_select_folder">自动选择文件夹</string>
     <string name="navigation_drawer_preferences">侧边菜单</string>
     <string name="expand_folders">展开文件夹</string>
+    
+    <string name="unified_outbox_title">统一发件箱</string>
+    <string name="unified_drafts_title">统一草稿箱</string>
+    <string name="unified_sent_title">统一已发送</string>
+    <string name="unified_archive_title">统一归档</string>
+    <string name="unified_spam_title">统一垃圾邮件</string>
+    <string name="unified_trash_title">统一已删除</string>
+
     <string name="set_format_html_action">使用原始格式</string>
     <string name="set_format_html_condensed_action">显示调整过格式的</string>
     <string name="set_format_plain_action">显示未调整格式的消息</string>

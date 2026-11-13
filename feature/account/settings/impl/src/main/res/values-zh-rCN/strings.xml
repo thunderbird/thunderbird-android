@@ -133,4 +133,12 @@
     <string name="account_settings_composition_summary">设置默认的发件地址、Bcc 密送地址和签名</string>
     <string name="account_settings_folder_sync_and_push">文件同步和推送</string>
     <string name="account_settings_fetching_and_data_limits">获取和数据限制</string>
+
+    <string name="account_settings_notificaction_and_sync">通知与同步</string>
+    <string name="account_settings_notification_style">通知样式</string>
+    <string name="account_settings_notification_style_description">自定义声音、振动和角标</string>
+    <string name="account_settings_folder_sync_and_push_description">按文件夹启用轮询/推送</string>
+    <string name="account_settings_manage_folders">管理文件夹</string>
+    <string name="account_settings_folder_visibility_and_sort_description">更改默认文件夹和文件夹可见性</string>
+    <string name="account_settings_fetching_and_data_limits_description">频率和同步限制</string>
 </resources>
