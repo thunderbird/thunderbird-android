@@ -2,6 +2,14 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="navigation_drawer_dropdown_action_settings">设置</string>
     <string name="navigation_drawer_dropdown_unified_inbox_title">收件箱</string>
+
+    <string name="navigation_drawer_dropdown_unified_outbox_title">发件箱</string>
+    <string name="navigation_drawer_dropdown_unified_drafts_title">草稿箱</string>
+    <string name="navigation_drawer_dropdown_unified_sent_title">已发送</string>
+    <string name="navigation_drawer_dropdown_unified_archive_title">归档</string>
+    <string name="navigation_drawer_dropdown_unified_spam_title">垃圾邮件</string>
+    <string name="navigation_drawer_dropdown_unified_trash_title">已删除</string>
+
     <string name="navigation_drawer_dropdown_folder_item_badge_count_greater_than_99">99+</string>
     <string name="navigation_drawer_dropdown_folder_item_badge_count_greater_than_1_000">1000+</string>
     <string name="navigation_drawer_dropdown_action_sync_all_accounts">同步所有账号</string>

@@ -2,4 +2,9 @@
 <resources>
     <string name="openpgp_no_key_selected">尚未选择密钥</string>
     <string name="openpgp_key_selected">已经选中密钥</string>
+    <string name="openpgp_key_title">"设置端到端密钥"</string>
+    <string name="openpgp_key_using">"使用密钥: %s"</string>
+    <string name="openpgp_key_using_no_name">"使用密钥: <![CDATA[<no name>]]>"</string>
+    <string name="openpgp_key_created">"创建于 %s"</string>
+
 </resources>
