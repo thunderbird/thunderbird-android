@@ -2,8 +2,8 @@ package net.thunderbird.app.common.feature.funding.configstore
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import assertk.assertions.isNull
 import kotlin.test.Test
-import kotlin.test.assertNull
 import kotlinx.coroutines.test.runTest
 import net.thunderbird.core.configstore.Config
 import net.thunderbird.core.configstore.ConfigKey
@@ -51,9 +51,9 @@ class FundingConfigMigrationTest {
         assertThat(migrationResult.keysToRemove.contains(
             FundingConfigKeys.DEPRECATED_LAST_FUNDING_REMINDER_SHOWN_ACTIVITY_AMOUNT)
         )
-        assertNull(
+        assertThat(
             migrationResult.updated[FundingConfigKeys.DEPRECATED_LAST_FUNDING_REMINDER_SHOWN_ACTIVITY_AMOUNT]
-        )
+        ).isNull()
     }
 
     companion object {

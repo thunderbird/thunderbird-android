@@ -43,9 +43,7 @@ class FundingReminderTest {
 
     @Test
     fun `should set reference timestamp when not set`() {
-        val activity = createTestActivity(
-            installTime = REMINDER_REFERENCE_TIMESTAMP,
-        )
+        val activity = createTestActivity()
         val activityProvider = FakeActivityProvider(activity)
         val settings = FakeFundingSettings(reminderReferenceTimestamp = REMINDER_REFERENCE_TIMESTAMP_UNSET)
         val fragmentObserver = FakeFragmentLifecycleObserver()
@@ -54,6 +52,7 @@ class FundingReminderTest {
             settings = settings,
             fragmentObserver = fragmentObserver,
             scope = CoroutineScope(mainDispatcher.testDispatcher),
+            clock = TestClock(Instant.fromEpochMilliseconds(REMINDER_REFERENCE_TIMESTAMP))
         )
 
         testSubject.registerReminder { }
@@ -64,9 +63,7 @@ class FundingReminderTest {
 
     @Test
     fun `should not set reference timestamp when already set`() {
-        val activity = createTestActivity(
-            installTime = 2000L,
-        )
+        val activity = createTestActivity()
         val activityProvider = FakeActivityProvider(activity)
         val settings = FakeFundingSettings(reminderReferenceTimestamp = REMINDER_REFERENCE_TIMESTAMP)
         val fragmentObserver = FakeFragmentLifecycleObserver()
@@ -75,6 +72,7 @@ class FundingReminderTest {
             settings = settings,
             fragmentObserver = fragmentObserver,
             scope = CoroutineScope(mainDispatcher.testDispatcher),
+            clock = TestClock(Instant.fromEpochMilliseconds(REMINDER_REFERENCE_TIMESTAMP))
         )
 
         testSubject.registerReminder { }
@@ -280,8 +278,7 @@ class FundingReminderTest {
     }
 
     private fun createTestActivity(
-        installTime: Long = INSTALL_TIME,
-        packageManager: PackageManager = createPackageManager(installTime),
+        packageManager: PackageManager = createPackageManager(),
         testLifecycleOwner: LifecycleOwner = TestLifecycleOwner(),
     ): AppCompatActivity {
         val activity = mock<AppCompatActivity>()
@@ -292,19 +289,10 @@ class FundingReminderTest {
         return activity
     }
 
-    private fun createPackageManager(
-        installTime: Long,
-        packageInfo: PackageInfo = createPackageInfo(installTime),
-    ): PackageManager {
+    private fun createPackageManager(): PackageManager {
         val packageManager = mock<PackageManager>()
-        whenever(packageManager.getPackageInfo(PACKAGE_NAME, 0)).thenReturn(packageInfo)
+        whenever(packageManager.getPackageInfo(PACKAGE_NAME, 0)).thenReturn(PackageInfo())
         return packageManager
-    }
-
-    private fun createPackageInfo(
-        installTime: Long,
-    ): PackageInfo = PackageInfo().apply {
-        firstInstallTime = installTime
     }
 
     private companion object {
