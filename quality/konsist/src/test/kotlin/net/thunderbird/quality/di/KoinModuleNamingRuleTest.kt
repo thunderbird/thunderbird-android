@@ -2,7 +2,7 @@ package net.thunderbird.quality.di
 
 import kotlin.test.Test
 
-class KoinModuleNamingTest {
+class KoinModuleNamingRuleTest {
     @Test
     fun `reports both incorrect property and filename`() {
         val testSubject = koinModuleNamingViolation("viewModule", "KoinModule.kt", LOCATION)

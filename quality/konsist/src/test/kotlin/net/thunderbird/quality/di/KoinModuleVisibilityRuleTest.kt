@@ -5,7 +5,7 @@ import com.lemonappdev.konsist.api.declaration.KoPropertyDeclaration
 import java.nio.file.Files
 import kotlin.test.Test
 
-class KoinModuleVisibilityTest {
+class KoinModuleVisibilityRuleTest {
     @Test
     fun `root package permits normal kotlin visibility without explicit public`() {
         withProperties("example") { testSubject ->

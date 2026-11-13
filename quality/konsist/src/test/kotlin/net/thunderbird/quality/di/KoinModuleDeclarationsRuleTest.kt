@@ -4,7 +4,7 @@ import com.lemonappdev.konsist.api.Konsist
 import java.nio.file.Files
 import kotlin.test.Test
 
-class KoinModuleDeclarationsTest {
+class KoinModuleDeclarationsRuleTest {
     @Test
     fun `counts two direct module declarations`() {
         val source = """

@@ -6,7 +6,7 @@ import com.lemonappdev.konsist.api.declaration.KoPropertyDeclaration
 import java.nio.file.Files
 import kotlin.test.Test
 
-class KoinGraphTestNamingTest {
+class KoinGraphTestNamingRuleTest {
     @Test
     fun `module names come from verify calls rather than the test class name`() {
         val testSubject = "featureMailMessageListDiModule.verify(extraTypes = listOf(Context::class))"
