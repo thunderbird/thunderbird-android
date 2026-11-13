@@ -35,6 +35,11 @@ data class ServerSettings @JvmOverloads constructor(
         return this.copy(authenticationType = authType)
     }
 
+    override fun toString(): String {
+        return "ServerSettings(type=$type, host=$host, port=$port, " +
+            "connectionSecurity=$connectionSecurity, authenticationType=$authenticationType)"
+    }
+
     companion object {
         private val LINE_BREAK = "[\\r\\n]".toRegex()
     }

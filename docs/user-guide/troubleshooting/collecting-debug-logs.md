@@ -122,7 +122,7 @@ you may want to remove before attaching logs:
 - **Personal Identifiable Information (PII)**: Email addresses, phone numbers, or real names. Consider replacing with
   placeholders like `redacted-pii`.
 - **Server Hostnames/IPs**: If you’re concerned about privacy, replace with `redacted-mail-server`.
-- **OAuth Tokens**: Look for lines containing `oauth=` or `token=`. Replace with `redacted-oauth-token`.
+- **OAuth Tokens**: Look for lines containing `oauth=`, `token=`, `refreshToken` or `access_token`. Replace with `redacted-oauth-token`.
 
 ### How to Quickly Search Logs
 
