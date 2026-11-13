@@ -35,8 +35,6 @@ dependencies {
     implementation(projects.core.featureflag)
     testImplementation(projects.core.ui.compose.testing)
 
-    testImplementation(libs.mockito.kotlin)
-
     // Fakes
     debugImplementation(projects.feature.account.fake)
     testImplementation(projects.feature.account.fake)

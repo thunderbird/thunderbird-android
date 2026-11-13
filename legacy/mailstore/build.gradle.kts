@@ -19,7 +19,6 @@ dependencies {
     implementation(projects.mail.common)
 
     testImplementation(projects.core.android.account.fake)
-    testImplementation(libs.mockito.kotlin)
     testImplementation(projects.feature.account.fake)
 }
 

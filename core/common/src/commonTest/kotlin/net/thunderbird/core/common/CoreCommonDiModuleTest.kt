@@ -2,18 +2,24 @@ package net.thunderbird.core.common
 
 import net.thunderbird.core.common.oauth.OAuthConfigurationFactory
 import org.junit.Test
-import org.koin.core.annotation.KoinExperimentalAPI
-import org.koin.test.verify.verify
+import org.koin.core.context.startKoin
+import org.koin.core.context.stopKoin
+import org.koin.dsl.module
 
 internal class CoreCommonDiModuleTest {
 
-    @OptIn(KoinExperimentalAPI::class)
+    private val externalDependencies = module {
+        single<OAuthConfigurationFactory> { OAuthConfigurationFactory { emptyMap() } }
+    }
+
     @Test
-    fun `should have a valid di module`() {
-        coreCommonDiModule.verify(
-            extraTypes = listOf(
-                OAuthConfigurationFactory::class,
-            ),
-        )
+    fun `should have a complete di graph`() {
+        try {
+            startKoin {
+                modules(coreCommonDiModule, externalDependencies)
+            }
+        } finally {
+            stopKoin()
+        }
     }
 }

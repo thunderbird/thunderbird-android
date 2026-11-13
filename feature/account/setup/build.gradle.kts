@@ -48,6 +48,9 @@ dependencies {
     testImplementation(platform(libs.forkhandles.bom))
     testImplementation(libs.forkhandles.fabrikate4k)
     testImplementation(projects.core.featureflag)
+    testImplementation(projects.core.file)
+    testImplementation(projects.core.android.account)
+    testImplementation(projects.feature.migration.launcher.api)
 }
 
 codeCoverage {

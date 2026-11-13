@@ -14,5 +14,4 @@ dependencies {
     testImplementation(projects.mail.testing)
 
     testImplementation(libs.jzlib)
-    testImplementation(libs.mockito.kotlin)
 }

@@ -17,5 +17,4 @@ dependencies {
     testImplementation(projects.mail.testing)
 
     testImplementation(libs.mime4j.core)
-    testImplementation(libs.mockito.kotlin)
 }

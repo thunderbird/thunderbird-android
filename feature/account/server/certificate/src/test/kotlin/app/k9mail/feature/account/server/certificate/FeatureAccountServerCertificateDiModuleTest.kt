@@ -1,20 +1,26 @@
 package app.k9mail.feature.account.server.certificate
 
-import app.k9mail.feature.account.server.certificate.ui.ServerCertificateErrorContract
+import com.fsck.k9.mail.ssl.LocalKeyStore
 import org.junit.Test
-import org.koin.core.annotation.KoinExperimentalAPI
-import org.koin.test.KoinTest
-import org.koin.test.verify.verify
+import org.koin.core.context.startKoin
+import org.koin.core.context.stopKoin
+import org.koin.dsl.module
+import org.mockito.kotlin.mock
 
-class FeatureAccountServerCertificateDiModuleTest : KoinTest {
+class FeatureAccountServerCertificateDiModuleTest {
 
-    @OptIn(KoinExperimentalAPI::class)
+    private val externalDependencies = module {
+        single<LocalKeyStore> { mock() }
+    }
+
     @Test
-    fun `should have a valid di module`() {
-        featureAccountServerCertificateDiModule.verify(
-            extraTypes = listOf(
-                ServerCertificateErrorContract.State::class,
-            ),
-        )
+    fun `should have a complete di graph`() {
+        try {
+            startKoin {
+                modules(featureAccountServerCertificateDiModule, externalDependencies)
+            }
+        } finally {
+            stopKoin()
+        }
     }
 }

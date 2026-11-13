@@ -23,9 +23,6 @@ kotlin {
         androidHostTest.dependencies {
             implementation(projects.core.ui.compose.testing)
         }
-        jvmTest.dependencies {
-            implementation(libs.mockito.kotlin)
-        }
     }
 }
 

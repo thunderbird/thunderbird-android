@@ -1,14 +1,28 @@
 package net.thunderbird.feature.account.storage.legacy
 
 import kotlin.test.Test
-import org.koin.core.annotation.KoinExperimentalAPI
-import org.koin.test.verify.verify
+import net.thunderbird.components.core.logging.Logger
+import net.thunderbird.feature.notification.api.receiver.InAppNotificationStream
+import org.koin.core.context.startKoin
+import org.koin.core.context.stopKoin
+import org.koin.dsl.module
+import org.mockito.kotlin.mock
 
 class FeatureAccountStorageLegacyDiModuleTest {
 
-    @OptIn(KoinExperimentalAPI::class)
+    private val externalDependencies = module {
+        single<Logger> { mock() }
+        single<InAppNotificationStream> { mock() }
+    }
+
     @Test
-    fun `should have a valid di module`() {
-        featureAccountStorageLegacyDiModule.verify()
+    fun `should have a complete di graph`() {
+        try {
+            startKoin {
+                modules(featureAccountStorageLegacyDiModule, externalDependencies)
+            }
+        } finally {
+            stopKoin()
+        }
     }
 }

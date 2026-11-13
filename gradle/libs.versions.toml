@@ -373,8 +373,10 @@ shared-kmp-common-test = [
   "turbine",
 ]
 shared-kmp-android-test = [
+  "mockito-kotlin",
 ]
 shared-kmp-jvm-test = [
+  "mockito-kotlin",
 ]
 
 
@@ -434,6 +436,7 @@ shared-android-test = [
   "kotlin-test",
   "kotlin-test-junit",
   "kotlinx-coroutines-test",
+  "mockito-kotlin",
   "turbine",
 ]
 shared-android-compose-test = [
@@ -464,6 +467,7 @@ shared-android-app-test = [
   "koin-test",
   "kotlin-test",
   "kotlin-test-junit",
+  "mockito-kotlin",
 ]
 shared-android-app-compose-test = [
 ]
@@ -482,4 +486,5 @@ shared-jvm-test = [
   "kotlin-test",
   "kotlin-test-junit",
   "kotlinx-coroutines-test",
+  "mockito-kotlin",
 ]

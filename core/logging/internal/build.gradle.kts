@@ -18,9 +18,6 @@ kotlin {
         androidMain.dependencies {
             implementation(libs.commons.io)
         }
-        androidHostTest.dependencies {
-            implementation(libs.mockito.kotlin)
-        }
     }
 }
 

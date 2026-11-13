@@ -62,7 +62,6 @@ dependencies {
     testImplementation(libs.robolectric)
     testImplementation(libs.androidx.test.core)
     testImplementation(libs.jdom2)
-    testImplementation(libs.mockito.kotlin)
 
     // test fakes
     testImplementation(projects.feature.account.fake)

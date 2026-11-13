@@ -33,10 +33,10 @@ dependencies {
     testImplementation(projects.core.testing)
     testImplementation(projects.core.configstore.testing)
     testImplementation(projects.core.ui.compose.testing)
+    testImplementation(projects.core.ui.theme.api)
 
     testImplementation(libs.androidx.lifecycle.runtime.testing)
     testImplementation(libs.androidx.fragment.testing)
-    testImplementation(libs.mockito.kotlin)
 }
 
 codeCoverage {

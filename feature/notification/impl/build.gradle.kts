@@ -23,7 +23,6 @@ kotlin {
         }
         androidHostTest.dependencies {
             implementation(libs.mockito.core)
-            implementation(libs.mockito.kotlin)
         }
     }
 }

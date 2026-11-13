@@ -32,8 +32,6 @@ dependencies {
     testImplementation(projects.core.android.account.fake)
     testImplementation(projects.core.ui.compose.testing)
     testImplementation(projects.feature.notification.testing)
-
-    testImplementation(libs.mockito.kotlin)
 }
 
 codeCoverage {

@@ -21,7 +21,6 @@ dependencies {
     testImplementation(projects.backend.testing)
 
     testImplementation(libs.mime4j.dom)
-    testImplementation(libs.mockito.kotlin)
 }
 
 codeCoverage {

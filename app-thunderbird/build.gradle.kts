@@ -278,6 +278,7 @@ dependencies {
     testImplementation(projects.feature.changelog.internal)
 
     testImplementation(libs.appauth)
+    testImplementation(libs.robolectric)
 
     baselineProfile(projects.appThunderbird.benchmarks)
 }
