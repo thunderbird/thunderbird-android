@@ -6,11 +6,10 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import com.eygraber.uri.toKmpUri
-import com.fsck.k9.ui.settings.account.AccountSettingsActivity
-import com.fsck.k9.ui.settings.account.AccountSettingsFragment
 import net.thunderbird.core.ui.contract.mvi.observe
 import net.thunderbird.core.ui.setting.SettingViewProvider
 import net.thunderbird.feature.account.AccountId
+import net.thunderbird.feature.account.settings.api.AccountSettingsExternalContract
 import net.thunderbird.feature.account.settings.impl.ui.general.GeneralSettingsContract.Effect
 import net.thunderbird.feature.account.settings.impl.ui.general.GeneralSettingsContract.Event
 import net.thunderbird.feature.account.settings.impl.ui.general.GeneralSettingsContract.SettingsBuilder
@@ -27,6 +26,7 @@ internal fun GeneralSettingsScreen(
     },
     provider: SettingViewProvider = koinInject(),
     builder: SettingsBuilder = koinInject(),
+    launcher: AccountSettingsExternalContract.Launcher = koinInject(),
 ) {
     val context = LocalContext.current
 
@@ -45,11 +45,7 @@ internal fun GeneralSettingsScreen(
             }
 
             is Effect.OpenManageFolders -> {
-                AccountSettingsActivity.start(
-                    context = context,
-                    accountUuid = accountId.value.toString(),
-                    startScreenKey = AccountSettingsFragment.PREFERENCE_FOLDERS,
-                )
+                launcher.launchFolderSettings(context = context, accountId = accountId)
             }
         }
     }

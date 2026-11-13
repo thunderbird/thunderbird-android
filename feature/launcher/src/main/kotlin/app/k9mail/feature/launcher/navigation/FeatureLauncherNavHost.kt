@@ -4,10 +4,12 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.LocalActivity
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import app.k9mail.feature.account.edit.navigation.AccountEditNavigation
+import app.k9mail.feature.account.edit.navigation.AccountEditRoute
 import app.k9mail.feature.account.setup.navigation.AccountSetupNavigation
 import app.k9mail.feature.account.setup.navigation.AccountSetupRoute
 import app.k9mail.feature.launcher.FeatureLauncherExternalContract.AccountManageIdentitiesLauncher
@@ -32,6 +34,7 @@ fun FeatureLauncherNavHost(
     navController: NavHostController,
     onBack: () -> Unit,
     modifier: Modifier = Modifier,
+    onFinish: () -> Unit = onBack,
     messageListLauncher: MessageListLauncher = koinInject(),
     accountSetupCompositionLauncher: AccountSetupCompositionLauncher = koinInject(),
     accountManageIdentitiesLauncher: AccountManageIdentitiesLauncher = koinInject(),
@@ -106,28 +109,18 @@ fun FeatureLauncherNavHost(
 
         accountEditNavigation.registerRoutes(
             navGraphBuilder = this,
-            onBack = onBack,
-            onFinish = { activity.finish() },
+            onBack = { if (!navController.popBackStack()) onBack() },
+            onFinish = { onFinish() },
         )
 
-        accountSettingsNavigation.registerRoutes(
-            navGraphBuilder = this,
+        registerAccountSettingsNavigation(
+            accountSettingsNavigation = accountSettingsNavigation,
+            navController = navController,
             onBack = onBack,
-            onFinish = {
-                when (it) {
-                    is AccountSettingsRoute.CompositionSettings -> {
-                        accountSetupCompositionLauncher.launch(activity, it.accountId)
-                        activity.finish()
-                    }
-
-                    is AccountSettingsRoute.ManageIdentities -> {
-                        accountManageIdentitiesLauncher.launch(activity, it.accountId)
-                        activity.finish()
-                    }
-
-                    else -> onBack()
-                }
-            },
+            onFinish = onFinish,
+            accountSetupCompositionLauncher = accountSetupCompositionLauncher,
+            accountManageIdentitiesLauncher = accountManageIdentitiesLauncher,
+            activity = activity,
         )
 
         fundingNavigation.registerRoutes(
@@ -157,6 +150,56 @@ fun FeatureLauncherNavHost(
             },
         )
     }
+}
+
+private fun NavGraphBuilder.registerAccountSettingsNavigation(
+    accountSettingsNavigation: AccountSettingsNavigation,
+    navController: NavHostController,
+    onBack: () -> Unit,
+    onFinish: () -> Unit,
+    accountSetupCompositionLauncher: AccountSetupCompositionLauncher,
+    accountManageIdentitiesLauncher: AccountManageIdentitiesLauncher,
+    activity: ComponentActivity,
+) {
+    accountSettingsNavigation.registerRoutes(
+        navGraphBuilder = this,
+        onBack = { if (!navController.popBackStack()) onBack() },
+        onFinish = { route ->
+            when (route) {
+                is AccountSettingsRoute.IncomingServerSettings ->
+                    navController.navigate(AccountEditRoute.IncomingServerSettings(route.accountId))
+
+                is AccountSettingsRoute.OutgoingServerSettings ->
+                    navController.navigate(AccountEditRoute.OutgoingServerSettings(route.accountId))
+
+                is AccountSettingsRoute.AdvancedFetchingMailSettings ->
+                    navController.navigate(route)
+
+                is AccountSettingsRoute.FetchingMailSettings ->
+                    navController.navigate(route)
+
+                is AccountSettingsRoute.CompositionSettings -> {
+                    val isStandaloneRedirect = navController
+                        .currentDestination?.hasRoute<AccountSettingsRoute.CompositionSettings>() == true
+                    accountSetupCompositionLauncher.launch(activity, route.accountId)
+                    if (isStandaloneRedirect) {
+                        onFinish()
+                    }
+                }
+
+                is AccountSettingsRoute.ManageIdentities -> {
+                    val isStandaloneRedirect = navController
+                        .currentDestination?.hasRoute<AccountSettingsRoute.ManageIdentities>() == true
+                    accountManageIdentitiesLauncher.launch(activity, route.accountId)
+                    if (isStandaloneRedirect) {
+                        onFinish()
+                    }
+                }
+
+                else -> onBack()
+            }
+        },
+    )
 }
 
 private fun NavGraphBuilder.registerThundermailNavigation(

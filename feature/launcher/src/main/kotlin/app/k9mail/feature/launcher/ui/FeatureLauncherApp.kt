@@ -28,7 +28,8 @@ fun FeatureLauncherApp(
 
             FeatureLauncherNavHost(
                 navController = navController,
-                onBack = { activity.finish() },
+                onBack = { if (!navController.popBackStack()) activity.finish() },
+                onFinish = { if (!navController.popBackStack()) activity.finish() },
             )
         }
     }

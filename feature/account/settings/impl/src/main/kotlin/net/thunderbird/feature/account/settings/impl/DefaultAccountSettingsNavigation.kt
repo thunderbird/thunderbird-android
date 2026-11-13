@@ -57,7 +57,11 @@ internal class DefaultAccountSettingsNavigation : AccountSettingsNavigation {
                 val syncAndNotificationsRoute =
                     backStackEntry.toRoute<AccountSettingsRoute.SyncAndNotificationSettings>()
                 val accountId = AccountIdFactory.of(syncAndNotificationsRoute.accountId)
-                SyncAndNotificationsScreen(accountId, onBack = onBack)
+                SyncAndNotificationsScreen(
+                    accountId = accountId,
+                    onBack = onBack,
+                    onFinish = onFinish,
+                )
             }
         }
 
@@ -71,6 +75,7 @@ internal class DefaultAccountSettingsNavigation : AccountSettingsNavigation {
                 FetchingMailSettingsScreen(
                     accountId = accountId,
                     onBack = onBack,
+                    onFinish = onFinish,
                 )
             }
         }
@@ -85,6 +90,7 @@ internal class DefaultAccountSettingsNavigation : AccountSettingsNavigation {
                 SendingMailSettingsScreen(
                     accountId = accountId,
                     onBack = onBack,
+                    onFinish = onFinish,
                 )
             }
         }
@@ -106,7 +112,7 @@ internal class DefaultAccountSettingsNavigation : AccountSettingsNavigation {
 
         with(navGraphBuilder) {
             deepLinkComposable<AccountSettingsRoute.SearchSettings>(
-                basePath = AccountSettingsRoute.SearchSettings.Companion.BASE_PATH,
+                basePath = AccountSettingsRoute.SearchSettings.BASE_PATH,
             ) { backStackEntry ->
                 val searchSettingsRoute = backStackEntry.toRoute<AccountSettingsRoute.SearchSettings>()
                 val accountId = AccountIdFactory.of(searchSettingsRoute.accountId)

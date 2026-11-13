@@ -16,10 +16,9 @@ android {
 dependencies {
     api(projects.feature.account.api)
     api(projects.feature.account.settings.api)
-    implementation(projects.feature.account.core)
+    implementation(projects.feature.account.profile.api)
     implementation(projects.feature.account.avatar.api)
     implementation(projects.feature.account.avatar.impl)
-    implementation(projects.legacy.ui.legacy)
 
     implementation(projects.core.featureflag)
     implementation(projects.core.android.account)
@@ -36,8 +35,6 @@ dependencies {
     implementation(projects.core.common)
 
     implementation(libs.uri)
-
-    implementation(projects.feature.launcher)
 
     debugImplementation(projects.core.ui.setting.implDialog)
 

@@ -1,6 +1,6 @@
 package com.fsck.k9.ui.managefolders
 
-import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.navigation.NavController
@@ -49,11 +49,11 @@ class ManageFoldersActivity : BaseActivity() {
         private const val EXTRA_ACCOUNT = "account"
 
         @JvmStatic
-        fun launch(activity: Activity, accountId: AccountId) {
-            val intent = Intent(activity, ManageFoldersActivity::class.java).apply {
+        fun launch(context: Context, accountId: AccountId) {
+            val intent = Intent(context, ManageFoldersActivity::class.java).apply {
                 putExtra(EXTRA_ACCOUNT, accountId.toString())
             }
-            activity.startActivity(intent)
+            context.startActivity(intent)
         }
     }
 }

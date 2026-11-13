@@ -5,6 +5,7 @@ import net.thunderbird.app.common.account.data.DefaultLegacyAccountManager
 import net.thunderbird.app.common.feature.account.usecase.DefaultDeleteAccount
 import net.thunderbird.app.common.feature.account.usecase.DefaultGetDefaultAccountId
 import net.thunderbird.feature.account.AccountRepository
+import net.thunderbird.feature.account.settings.api.AccountSettingsExternalContract
 import net.thunderbird.feature.account.settings.api.BackgroundAccountRemover
 import net.thunderbird.feature.account.usecase.DeleteAccount
 import net.thunderbird.feature.account.usecase.GetDefaultAccountId
@@ -12,6 +13,8 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
 internal val appCommonFeatureAccountDiModule = module {
+    factory<AccountSettingsExternalContract.Launcher> { DefaultAccountSettingsLauncher() }
+
     factory<GetDefaultAccountId> {
         DefaultGetDefaultAccountId(
             accountManager = get(),

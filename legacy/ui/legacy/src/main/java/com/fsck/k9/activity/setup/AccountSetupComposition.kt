@@ -1,6 +1,6 @@
 package com.fsck.k9.activity.setup
 
-import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
@@ -75,7 +75,7 @@ class AccountSetupComposition : BaseActivity() {
     companion object {
         private const val EXTRA_ACCOUNT = "account"
 
-        fun actionEditCompositionSettings(context: Activity, accountId: String) {
+        fun actionEditCompositionSettings(context: Context, accountId: String) {
             val intent = Intent(context, AccountSetupComposition::class.java)
             intent.setAction(Intent.ACTION_EDIT)
             intent.putExtra(EXTRA_ACCOUNT, accountId)

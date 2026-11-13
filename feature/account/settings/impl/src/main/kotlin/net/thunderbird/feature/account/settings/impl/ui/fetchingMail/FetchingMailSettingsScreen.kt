@@ -6,25 +6,22 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.LocalActivity
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
-import app.k9mail.feature.launcher.FeatureLauncherActivity
-import app.k9mail.feature.launcher.FeatureLauncherTarget
-import kotlin.uuid.ExperimentalUuidApi
 import net.thunderbird.core.common.provider.AppNameProvider
 import net.thunderbird.core.ui.contract.mvi.observe
 import net.thunderbird.core.ui.setting.SettingViewProvider
 import net.thunderbird.feature.account.AccountId
+import net.thunderbird.feature.account.settings.api.AccountSettingsRoute
 import net.thunderbird.feature.account.settings.impl.ui.fetchingMail.FetchingMailSettingsContract.Effect
 import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
 
-@OptIn(ExperimentalUuidApi::class)
 @SuppressLint("ContextCastToActivity")
 @Composable
 internal fun FetchingMailSettingsScreen(
     accountId: AccountId,
     onBack: () -> Unit,
+    onFinish: (AccountSettingsRoute) -> Unit,
     viewModel: FetchingMailSettingsContract.ViewModel = koinViewModel<FetchingMailSettingsViewModel> {
         parametersOf(accountId)
     },
@@ -32,7 +29,6 @@ internal fun FetchingMailSettingsScreen(
     builder: FetchingMailSettingsContract.SettingsBuilder = koinInject(),
     appNameProvider: AppNameProvider = koinInject(),
 ) {
-    val context = LocalContext.current
     val (state, dispatch) = viewModel.observe { effect ->
         when (effect) {
             is Effect.NavigateBack -> {
@@ -40,19 +36,11 @@ internal fun FetchingMailSettingsScreen(
             }
 
             is Effect.NavigateToIncomingServerSettings -> {
-                FeatureLauncherActivity.launch(
-                    context = context,
-                    target = FeatureLauncherTarget.AccountEditIncomingSettings(accountId = accountId),
-                )
+                onFinish(AccountSettingsRoute.IncomingServerSettings(accountId.value.toString()))
             }
 
             is Effect.NavigateToAdvancedFetchingMailSettings -> {
-                FeatureLauncherActivity.launch(
-                    context = context,
-                    target = FeatureLauncherTarget.AccountAdvancedFetchingMailSettings(
-                        accountId = accountId,
-                    ),
-                )
+                onFinish(AccountSettingsRoute.AdvancedFetchingMailSettings(accountId.value.toString()))
             }
         }
     }

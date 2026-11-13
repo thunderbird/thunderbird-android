@@ -1,6 +1,6 @@
 package com.fsck.k9.activity;
 
-import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.ContextMenu;
@@ -22,10 +22,17 @@ public class ManageIdentities extends ChooseIdentity {
 
     private static final int ACTIVITY_EDIT_IDENTITY = 1;
 
-    public static void start(Activity activity, String accountUuid) {
-        Intent intent = new Intent(activity, ManageIdentities.class);
+    /**
+     * Opens identity management in the caller's task.
+     *
+     * @param context an Activity or activity-backed ContextWrapper; application contexts are unsupported because
+     *                this method does not add FLAG_ACTIVITY_NEW_TASK, preserving the caller's task and Back behavior
+     * @param accountUuid the account whose identities should be managed
+     */
+    public static void start(Context context, String accountUuid) {
+        Intent intent = new Intent(context, ManageIdentities.class);
         intent.putExtra(ChooseIdentity.EXTRA_ACCOUNT, accountUuid);
-        activity.startActivity(intent);
+        context.startActivity(intent);
     }
 
     @Override
