@@ -24,6 +24,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.feature.mail.message.list.internal.ui.component.MessageListItem
+import net.thunderbird.feature.mail.message.list.internal.ui.component.organism.MessageListEmptyState
 import net.thunderbird.feature.mail.message.list.internal.ui.component.organism.MessageListFooter
 import net.thunderbird.feature.mail.message.list.internal.ui.component.organism.MessageListSwipeableItem
 import net.thunderbird.feature.mail.message.list.ui.component.MessageListScope
@@ -49,46 +50,55 @@ internal fun MessageListScope.MessageList(
 
     ScrollEventEffect(state.messages, listState)
 
-    LazyColumn(
-        modifier = modifier.testTag(TEST_TAG_MESSAGE_LIST_ROOT),
-        state = listState,
-        contentPadding = PaddingValues(bottom = BoltTheme.sizes.large),
+    if (state.messages.isEmpty() &&
+        (state is MessageListState.LoadedMessages || state is MessageListState.SearchingMessages)
     ) {
-        items(
-            items = state.messages,
-            key = { message -> message.id },
-        ) { message ->
-            val messageSwipeActions = swipeActions[message.account.id]
-            val preferences = state.preferences ?: return@items
-            MessageListSwipeableItem(message, messageSwipeActions, dispatchEvent) { accessibilityState ->
-                MessageListItem(
-                    message = message,
-                    showAccountIndicator = showAccountIndicator,
-                    preferences = preferences,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .semantics(mergeDescendants = true) {
-                            stateDescription = accessibilityState.stateDescription(message)
-                        }
-                        .focusProperties {
-                            // TODO: Need improvement. Once the `MessageHomeActivity.onCustomKeyDown` is executed
-                            //  the focus go back to the toolbar's navigation button.
-                            //  We may replace the `MessageHomeActivity.onCustomKeyDown` with a modifier such
-                            //  as onPreviewKeyEvent in the future as well.
-                            onEnter = { dispatchEvent(MessageItemEvent.OnFocusEnter(message)) }
-                            onExit = { dispatchEvent(MessageItemEvent.OnFocusExit(message)) }
-                        },
-                    onClick = { dispatchEvent(MessageItemEvent.OnMessageClick(message)) },
-                    onLongClick = { dispatchEvent(MessageItemEvent.ToggleSelectMessages(message)) },
-                    onAvatarClick = { dispatchEvent(MessageItemEvent.ToggleSelectMessages(message)) },
-                    onFavouriteClick = { dispatchEvent(MessageItemEvent.ToggleFavourite(message)) },
-                )
+        MessageListEmptyState(
+            isSearch = state is MessageListState.SearchingMessages,
+            modifier = modifier,
+        )
+    } else {
+        LazyColumn(
+            modifier = modifier.testTag(TEST_TAG_MESSAGE_LIST_ROOT),
+            state = listState,
+            contentPadding = PaddingValues(bottom = BoltTheme.sizes.large),
+        ) {
+            items(
+                items = state.messages,
+                key = { message -> message.id },
+            ) { message ->
+                val messageSwipeActions = swipeActions[message.account.id]
+                val preferences = state.preferences ?: return@items
+                MessageListSwipeableItem(message, messageSwipeActions, dispatchEvent) { accessibilityState ->
+                    MessageListItem(
+                        message = message,
+                        showAccountIndicator = showAccountIndicator,
+                        preferences = preferences,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .semantics(mergeDescendants = true) {
+                                stateDescription = accessibilityState.stateDescription(message)
+                            }
+                            .focusProperties {
+                                // TODO: Need improvement. Once the `MessageHomeActivity.onCustomKeyDown` is executed
+                                //  the focus go back to the toolbar's navigation button.
+                                //  We may replace the `MessageHomeActivity.onCustomKeyDown` with a modifier such
+                                //  as onPreviewKeyEvent in the future as well.
+                                onEnter = { dispatchEvent(MessageItemEvent.OnFocusEnter(message)) }
+                                onExit = { dispatchEvent(MessageItemEvent.OnFocusExit(message)) }
+                            },
+                        onClick = { dispatchEvent(MessageItemEvent.OnMessageClick(message)) },
+                        onLongClick = { dispatchEvent(MessageItemEvent.ToggleSelectMessages(message)) },
+                        onAvatarClick = { dispatchEvent(MessageItemEvent.ToggleSelectMessages(message)) },
+                        onFavouriteClick = { dispatchEvent(MessageItemEvent.ToggleFavourite(message)) },
+                    )
+                }
             }
-        }
 
-        if (state.metadata.footer.text.isNotBlank()) {
-            item {
-                MessageListFooter(state, dispatchEvent, Modifier.animateItem(placementSpec = snap()))
+            if (state.metadata.footer.text.isNotBlank()) {
+                item {
+                    MessageListFooter(state, dispatchEvent, Modifier.animateItem(placementSpec = snap()))
+                }
             }
         }
     }
