@@ -2,15 +2,11 @@ package net.thunderbird.feature.mail.message.list.ui.component.molecule
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.FlowRow
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.movableContentOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
@@ -46,39 +42,36 @@ internal fun AdaptiveMessageItemHeaderRow(
     val windowSizeInfo = calculateWindowSizeInfo()
     val isSmallScreen = windowSizeInfo.sizeClass.widthSizeClass == WindowWidthSizeClass.Small
 
-    val headerRowContent: @Composable ((RowScope) -> Unit) = rememberAdaptiveHeaderRowContent(
-        isSmallScreen = isSmallScreen,
-        accountIndicator = configuration.accountIndicator,
-        receivedAt = receivedAt,
-        firstLine = firstLine,
-    )
     if (isSmallScreen) {
-        HeaderRowSmall(modifier, headerRowContent = headerRowContent)
+        HeaderRowSmall(modifier) {
+            HeaderRowContent(isSmallScreen = true, configuration.accountIndicator, receivedAt, firstLine)
+        }
     } else {
-        HeaderRow(modifier, headerRowContent = headerRowContent)
+        HeaderRow(modifier) {
+            HeaderRowContent(isSmallScreen = false, configuration.accountIndicator, receivedAt, firstLine)
+        }
     }
 }
 
 @Composable
 private fun HeaderRow(
     modifier: Modifier = Modifier,
-    headerRowContent: @Composable ((RowScope) -> Unit),
+    headerRowContent: @Composable RowScope.() -> Unit,
 ) {
+    // fillMaxWidth() already fixes the width, so no intrinsic width pass is needed here.
     Row(
         horizontalArrangement = Arrangement.spacedBy(BoltTheme.spacings.default),
         modifier = modifier
             .defaultMinSize(minHeight = AccountIndicatorIcon.ACCOUNT_INDICATOR_DEFAULT_HEIGHT)
-            .fillMaxWidth()
-            .width(intrinsicSize = IntrinsicSize.Max),
-    ) {
-        headerRowContent(this)
-    }
+            .fillMaxWidth(),
+        content = headerRowContent,
+    )
 }
 
 @Composable
 private fun HeaderRowSmall(
     modifier: Modifier = Modifier,
-    headerRowContent: @Composable ((RowScope) -> Unit),
+    headerRowContent: @Composable RowScope.() -> Unit,
 ) {
     FlowRow(
         verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.quarter),
@@ -86,37 +79,33 @@ private fun HeaderRowSmall(
         maxLines = 2,
         modifier = modifier.defaultMinSize(minHeight = AccountIndicatorIcon.ACCOUNT_INDICATOR_DEFAULT_HEIGHT),
     ) {
-        headerRowContent(this)
+        headerRowContent()
     }
 }
 
 @Composable
-private fun rememberAdaptiveHeaderRowContent(
+private fun RowScope.HeaderRowContent(
     isSmallScreen: Boolean,
     accountIndicator: MessageItemAccountIndicator?,
     receivedAt: String,
     firstLine: @Composable (() -> Unit),
-): @Composable ((RowScope) -> Unit) = remember(isSmallScreen, accountIndicator, receivedAt, firstLine) {
-    movableContentOf { scope ->
-        with(scope) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier
-                    .then(if (isSmallScreen) Modifier.fillMaxWidth() else Modifier.weight(1f))
-                    .defaultMinSize(minHeight = AccountIndicatorIcon.ACCOUNT_INDICATOR_DEFAULT_HEIGHT),
-            ) {
-                val indicatorColor = accountIndicator?.color
-                if (indicatorColor != null) {
-                    AccountIndicatorIcon(indicatorColor)
-                }
-                firstLine()
-            }
-            TextTitleSmall(
-                text = receivedAt,
-                maxLines = 1,
-                overflow = TextOverflow.Visible,
-                modifier = Modifier.align(Alignment.CenterVertically),
-            )
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .then(if (isSmallScreen) Modifier.fillMaxWidth() else Modifier.weight(1f))
+            .defaultMinSize(minHeight = AccountIndicatorIcon.ACCOUNT_INDICATOR_DEFAULT_HEIGHT),
+    ) {
+        val indicatorColor = accountIndicator?.color
+        if (indicatorColor != null) {
+            AccountIndicatorIcon(indicatorColor)
         }
+        firstLine()
     }
+    TextTitleSmall(
+        text = receivedAt,
+        maxLines = 1,
+        overflow = TextOverflow.Visible,
+        modifier = Modifier.align(Alignment.CenterVertically),
+    )
 }
