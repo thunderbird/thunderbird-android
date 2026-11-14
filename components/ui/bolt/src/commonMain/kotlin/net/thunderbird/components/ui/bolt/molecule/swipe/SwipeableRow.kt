@@ -1,8 +1,8 @@
 package net.thunderbird.components.ui.bolt.molecule.swipe
 
-import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.EnterTransition
-import androidx.compose.animation.togetherWith
+import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.absoluteOffset
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.hapticfeedback.HapticFeedback
@@ -58,16 +59,19 @@ fun SwipeableRow(
     modifier: Modifier = Modifier,
     gesturesEnabled: Boolean = true,
     onSwipeEnd: (SwipeDirection) -> Unit = {},
-    onSwipeChange: (SwipeDirection) -> Unit = {},
+    onSwipeChange: ((SwipeDirection) -> Unit)? = null,
     content: @Composable RowScope.() -> Unit,
 ) {
     val hapticFeedback = LocalHapticFeedback.current
 
-    LaunchedEffect(state, onSwipeChange) {
-        snapshotFlow { state.swipeDirection }
-            .drop(1) // Skip the initial `Settled` emission
-            .distinctUntilChanged()
-            .collectLatest { onSwipeChange(it) }
+    // Rows in long lists usually don't observe swipe changes; skip the per-row coroutine then.
+    if (onSwipeChange != null) {
+        LaunchedEffect(state, onSwipeChange) {
+            snapshotFlow { state.swipeDirection }
+                .drop(1) // Skip the initial `Settled` emission
+                .distinctUntilChanged()
+                .collectLatest { onSwipeChange(it) }
+        }
     }
 
     val accessibilityCustomActions = rememberAccessibilityActions(
@@ -80,40 +84,52 @@ fun SwipeableRow(
         },
     )
 
-    AnimatedContent(
-        targetState = state.swipeState == SwipeState.Dismissed,
-        transitionSpec = { EnterTransition.None togetherWith state.activeExitTransition },
-        label = "SwipeableRowContentAnimation",
-        modifier = modifier.testTag(SwipeableRowDefaults.SWIPEABLE_ROW_ANIMATED_CONTENT_TEST_TAG),
-    ) { isDismissed ->
-        if (!isDismissed) {
-            Box(
+    val rowContent: @Composable () -> Unit = {
+        Box(
+            modifier = Modifier
+                .testTag(SwipeableRowDefaults.SWIPEABLE_ROW_CORE_ELEMENT_TEST_TAG)
+                .semantics(mergeDescendants = true) { customActions = accessibilityCustomActions }
+                .onSizeChanged { state.onContainerSizeChanged(it) },
+            propagateMinConstraints = true,
+        ) {
+            SwipeableRowBackground(state, gesturesEnabled, backgroundContent)
+            Row(
                 modifier = Modifier
-                    .testTag(SwipeableRowDefaults.SWIPEABLE_ROW_CORE_ELEMENT_TEST_TAG)
-                    .semantics(mergeDescendants = true) { customActions = accessibilityCustomActions }
-                    .onSizeChanged { state.onContainerSizeChanged(it) },
-                propagateMinConstraints = true,
-            ) {
-                SwipeableRowBackground(state, gesturesEnabled, backgroundContent)
-                Row(
-                    modifier = Modifier
-                        .testTag(SwipeableRowDefaults.SWIPEABLE_ROW_DRAGGABLE_ELEMENT_TEST_TAG)
-                        .draggable(
-                            state = state.draggableState,
-                            orientation = Orientation.Horizontal,
-                            enabled = gesturesEnabled && state.acceptsGestures,
-                            onDragStopped = { velocity ->
-                                if (state.onDragStopped(velocity)) {
-                                    performHapticFeedback(state, hapticFeedback)
-                                    onSwipeEnd(state.swipeDirection)
-                                }
-                            },
-                            onDragStarted = { state.onDragStarted() },
-                        )
-                        .absoluteOffset { IntOffset(x = state.animatedOffset.value.roundToInt(), y = 0) },
-                    content = content,
-                )
-            }
+                    .testTag(SwipeableRowDefaults.SWIPEABLE_ROW_DRAGGABLE_ELEMENT_TEST_TAG)
+                    .draggable(
+                        state = state.draggableState,
+                        orientation = Orientation.Horizontal,
+                        enabled = gesturesEnabled && state.acceptsGestures,
+                        onDragStopped = { velocity ->
+                            if (state.onDragStopped(velocity)) {
+                                performHapticFeedback(state, hapticFeedback)
+                                onSwipeEnd(state.swipeDirection)
+                            }
+                        },
+                        onDragStarted = { state.onDragStarted() },
+                    )
+                    .absoluteOffset { IntOffset(x = state.animatedOffset.value.roundToInt(), y = 0) },
+                content = content,
+            )
+        }
+    }
+
+    val containerModifier = modifier.testTag(SwipeableRowDefaults.SWIPEABLE_ROW_ANIMATED_CONTENT_TEST_TAG)
+    if (state.swipeState == SwipeState.Dismissed) {
+        // Only a dismissed row needs an exit animation. Setting up AnimatedVisibility/AnimatedContent for every
+        // row up front is costly in long lazy lists, so the transition is created when the dismissal happens.
+        val visibleState = remember { MutableTransitionState(true) }.apply { targetState = false }
+        AnimatedVisibility(
+            visibleState = visibleState,
+            enter = EnterTransition.None,
+            exit = state.activeExitTransition,
+            modifier = containerModifier,
+        ) {
+            rowContent()
+        }
+    } else {
+        Box(modifier = containerModifier, propagateMinConstraints = true) {
+            rowContent()
         }
     }
 }
