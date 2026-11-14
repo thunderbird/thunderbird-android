@@ -1,11 +1,13 @@
 package net.thunderbird.feature.mail.message.list.internal.ui.component.template
 
 import androidx.compose.animation.core.snap
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.layout.LazyLayoutCacheWindow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -57,6 +59,8 @@ internal fun MessageListScope.MessageList(
         items(
             items = state.messages,
             key = { message -> message.id },
+            // Read/unread/new rows are different composables; typing them lets the lazy list reuse like with like.
+            contentType = { message -> message.state },
         ) { message ->
             val messageSwipeActions = swipeActions[message.account.id]
             val preferences = state.preferences ?: return@items
@@ -94,12 +98,18 @@ internal fun MessageListScope.MessageList(
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
+private val MessageListCacheWindow = LazyLayoutCacheWindow(aheadFraction = 0.5f, behindFraction = 0.5f)
+
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun rememberMessageListLazyState(
     state: MessageListState,
     dispatchEvent: (MessageListEvent) -> Unit,
 ): LazyListState {
-    val listState = rememberLazyListState()
+    // Prepare rows half a screen ahead in idle frame time and keep half a screen behind composed, so flings and
+    // direction changes don't compose rows on the frame they become visible.
+    val listState = rememberLazyListState(cacheWindow = MessageListCacheWindow)
     val latestPaging by rememberUpdatedState(state.metadata.paging)
 
     LaunchedEffect(listState, state.metadata.folder?.id) {
