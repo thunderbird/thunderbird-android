@@ -2,6 +2,7 @@ package net.thunderbird.feature.mail.message.list.ui.component.molecule
 
 import androidx.compose.foundation.text.InlineTextContent
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
@@ -31,18 +32,19 @@ internal fun MessageItemSenderSubjectFirstLine(
     modifier: Modifier = Modifier,
     forceRegularFontWeight: Boolean = false,
 ) {
-    TextTitleSmall(
-        text = styledSenderOrSubject(
-            useSender = useSender,
-            senders = senders,
-            subject = subject,
-            prefix = null,
-            forceRegularFontWeight = forceRegularFontWeight,
-        ),
-        maxLines = 1,
-        overflow = TextOverflow.Ellipsis,
-        modifier = modifier,
+    val text = styledSenderOrSubject(
+        useSender = useSender,
+        senders = senders,
+        subject = subject,
+        prefix = null,
+        forceRegularFontWeight = forceRegularFontWeight,
     )
+    if (text.isPlain()) {
+        // Plain strings take a cheaper text layout path than annotated ones.
+        TextTitleSmall(text = text.text, maxLines = 1, overflow = TextOverflow.Ellipsis, modifier = modifier)
+    } else {
+        TextTitleSmall(text = text, maxLines = 1, overflow = TextOverflow.Ellipsis, modifier = modifier)
+    }
 }
 
 /**
@@ -66,13 +68,19 @@ internal fun MessageItemSenderSubjectSecondLine(
     prefix: AnnotatedString? = null,
     inlineContent: ImmutableMap<String, InlineTextContent> = persistentMapOf(),
 ) {
-    TextBodySmall(
-        text = styledSenderOrSubject(useSender = useSender, senders = senders, subject = subject, prefix = prefix),
-        maxLines = 1,
-        overflow = TextOverflow.Ellipsis,
-        modifier = modifier,
-        inlineContent = inlineContent,
-    )
+    val text = styledSenderOrSubject(useSender = useSender, senders = senders, subject = subject, prefix = prefix)
+    if (text.isPlain()) {
+        // Plain strings take a cheaper text layout path than annotated ones.
+        TextBodySmall(text = text.text, maxLines = 1, overflow = TextOverflow.Ellipsis, modifier = modifier)
+    } else {
+        TextBodySmall(
+            text = text,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            modifier = modifier,
+            inlineContent = inlineContent,
+        )
+    }
 }
 
 @Composable
@@ -82,6 +90,16 @@ private fun styledSenderOrSubject(
     subject: AnnotatedString,
     prefix: AnnotatedString? = null,
     forceRegularFontWeight: Boolean = false,
+): AnnotatedString = remember(useSender, senders, subject, prefix, forceRegularFontWeight) {
+    buildStyledSenderOrSubject(useSender, senders, subject, prefix, forceRegularFontWeight)
+}
+
+private fun buildStyledSenderOrSubject(
+    useSender: Boolean,
+    senders: ComposedAddressUi,
+    subject: AnnotatedString,
+    prefix: AnnotatedString?,
+    forceRegularFontWeight: Boolean,
 ): AnnotatedString = buildAnnotatedString {
     prefix?.let { append(it) }
     val text = if (useSender) senders.displayName else subject
@@ -116,3 +134,7 @@ private fun styledSenderOrSubject(
         }
     }
 }
+
+private fun AnnotatedString.isPlain(): Boolean =
+    spanStyles.isEmpty() && paragraphStyles.isEmpty() && getStringAnnotations(0, length).isEmpty() &&
+        !hasLinkAnnotations(0, length)
