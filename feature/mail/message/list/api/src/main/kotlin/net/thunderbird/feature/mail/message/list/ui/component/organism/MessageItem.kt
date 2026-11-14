@@ -1,14 +1,14 @@
 package net.thunderbird.feature.mail.message.list.ui.component.organism
 
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.core.MutableTransitionState
+import androidx.compose.animation.core.rememberTransition
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.text.InlineTextContent
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithCache
@@ -117,10 +118,11 @@ internal fun MessageItem(
         color = colors.containerColor,
         contentColor = colors.contentColor,
     ) {
+        // No IntrinsicSize.Min here: an intrinsic pass measures every text in the row a second time.
+        // The content column defines the row height; side elements are centered against it.
         Row(
-            modifier = Modifier
-                .padding(contentPadding)
-                .height(IntrinsicSize.Min),
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.padding(contentPadding),
         ) {
             // Unread/New Indicator and Sender Avatar
             LeadingElements(
@@ -131,7 +133,7 @@ internal fun MessageItem(
             Spacer(Modifier.width(BoltTheme.spacings.default))
             // Message Content and Contents
             Column(
-                modifier = Modifier.weight(1f).fillMaxHeight(),
+                modifier = Modifier.weight(1f),
                 verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.half, Alignment.CenterVertically),
             ) {
                 AdaptiveMessageItemHeaderRow(configuration, receivedAt, firstLine)
@@ -144,10 +146,8 @@ internal fun MessageItem(
             Spacer(Modifier.width(BoltTheme.spacings.half))
             // Message controls and interaction items
             Column(
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .widthIn(min = BoltTheme.sizes.icon),
-                verticalArrangement = Arrangement.SpaceEvenly,
+                modifier = Modifier.widthIn(min = BoltTheme.sizes.icon),
+                verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.half, Alignment.CenterVertically),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 configuration.trailingConfiguration.elements.forEach { element ->
@@ -206,38 +206,55 @@ private fun LeadingElements(
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(BoltTheme.spacings.quarter),
-        modifier = modifier.fillMaxHeight(),
+        modifier = modifier,
     ) {
         when (configuration.badgeStyle) {
             MessageBadgeStyle.New -> NewMessageBadge()
             MessageBadgeStyle.Unread -> UnreadMessageBadge()
             null -> Spacer(Modifier.width(MESSAGE_BADGE_SIZE.dp))
         }
-        AnimatedContent(targetState = selected) { selected ->
-            when {
-                selected -> ButtonIcon(
-                    onClick = onClick,
-                    imageVector = Icons.Outlined.Check,
-                    colors = ButtonIconDefaults.buttonIconFilledColors(
-                        containerColor = BoltTheme.colors.secondaryContainer,
-                        contentColor = contentColorFor(backgroundColor = BoltTheme.colors.secondaryContainer),
-                    ),
-                    modifier = Modifier
-                        .size(BoltTheme.sizes.iconAvatar)
-                        .padding(BoltTheme.spacings.half),
-                )
-
-                configuration.avatar != null ->
-                    MessageItemAvatarCircle(
-                        avatar = configuration.avatar,
-                        colors = MessageItemAvatarCircleDefaults.colorsFrom(
-                            configuration.avatarColor ?: BoltTheme.colors.secondaryContainer,
-                        ),
-                        onClick = onClick,
-                    )
-
-                else -> Unit
+        // Only build the AnimatedContent machinery while the selection is changing. Creating it for every row is costly
+        // when rows scroll in, and the animation only matters for the row that is being (de)selected.
+        val selectionTransitionState = remember { MutableTransitionState(selected) }
+        selectionTransitionState.targetState = selected
+        if (selectionTransitionState.isIdle && selectionTransitionState.currentState == selected) {
+            LeadingAvatarOrCheck(selected, configuration, onClick)
+        } else {
+            rememberTransition(selectionTransitionState).AnimatedContent { targetSelected ->
+                LeadingAvatarOrCheck(targetSelected, configuration, onClick)
             }
         }
+    }
+}
+
+@Composable
+private fun LeadingAvatarOrCheck(
+    selected: Boolean,
+    configuration: MessageItemLeadingConfiguration,
+    onClick: () -> Unit,
+) {
+    when {
+        selected -> ButtonIcon(
+            onClick = onClick,
+            imageVector = Icons.Outlined.Check,
+            colors = ButtonIconDefaults.buttonIconFilledColors(
+                containerColor = BoltTheme.colors.secondaryContainer,
+                contentColor = contentColorFor(backgroundColor = BoltTheme.colors.secondaryContainer),
+            ),
+            modifier = Modifier
+                .size(BoltTheme.sizes.iconAvatar)
+                .padding(BoltTheme.spacings.half),
+        )
+
+        configuration.avatar != null ->
+            MessageItemAvatarCircle(
+                avatar = configuration.avatar,
+                colors = MessageItemAvatarCircleDefaults.colorsFrom(
+                    configuration.avatarColor ?: BoltTheme.colors.secondaryContainer,
+                ),
+                onClick = onClick,
+            )
+
+        else -> Unit
     }
 }
