@@ -54,7 +54,9 @@ internal fun StateMachineBuilder<MessageListState, MessageListEvent>.loadedMessa
         transition<MessageItemEvent.SetMessageActive> { state, event ->
             state
                 .mapMessages { message ->
-                    message.copy(active = message.id == event.message?.id)
+                    // Only a couple of rows change; keep the others as they are instead of copying thousands.
+                    val isActive = message.id == event.message?.id
+                    if (message.active == isActive) message else message.copy(active = isActive)
                 }
                 .withMetadata { copy(activeMessage = event.message) }
         }
@@ -62,13 +64,17 @@ internal fun StateMachineBuilder<MessageListState, MessageListEvent>.loadedMessa
             state
                 .mapMessages { message ->
                     val isCurrent = message.id == event.message.id
-                    message.copy(active = isCurrent).withState(
-                        if (isCurrent && message.state != MessageItemUi.State.Read) {
-                            MessageItemUi.State.Read
-                        } else {
-                            message.state
-                        },
-                    )
+                    val newState = if (isCurrent && message.state != MessageItemUi.State.Read) {
+                        MessageItemUi.State.Read
+                    } else {
+                        message.state
+                    }
+                    // Only a couple of rows change; keep the others as they are instead of copying thousands.
+                    if (message.active == isCurrent && message.state == newState) {
+                        message
+                    } else {
+                        message.copy(active = isCurrent).withState(newState)
+                    }
                 }
                 .withMetadata { copy(activeMessage = event.message) }
         }
