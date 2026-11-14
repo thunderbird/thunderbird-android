@@ -1859,7 +1859,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
     @NonNull
     private SimpleMessageFormat determineAutoMessageFormat() {
         SimpleMessageFormat messageFormat;
-        if (quotedMessagePresenter.isQuotedTextText()) {
+        if (quotedMessagePresenter.includeQuotedText() && quotedMessagePresenter.isQuotedTextText()) {
             messageFormat = SimpleMessageFormat.TEXT;
         } else if (identity.isHtmlSignaturePresent()) {
             messageFormat = SimpleMessageFormat.HTML;
