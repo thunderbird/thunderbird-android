@@ -60,15 +60,26 @@ internal fun MessageBodyContent(
         if (configuration.maxExcerptLines > 0) {
             val inlineContent = rememberInlineContent(configuration.excerptLineConfiguration)
             val prefixAnnotatedString = rememberPrefixAnnotatedString(configuration.excerptLineConfiguration)
-            TextBodySmall(
-                text = buildAnnotatedString {
-                    append(prefixAnnotatedString)
-                    append(excerpt)
-                },
-                maxLines = configuration.maxExcerptLines,
-                overflow = TextOverflow.Ellipsis,
-                inlineContent = inlineContent,
-            )
+            if (prefixAnnotatedString.isEmpty()) {
+                // Plain strings take a cheaper text layout path than annotated ones.
+                TextBodySmall(
+                    text = excerpt,
+                    maxLines = configuration.maxExcerptLines,
+                    overflow = TextOverflow.Ellipsis,
+                )
+            } else {
+                TextBodySmall(
+                    text = remember(prefixAnnotatedString, excerpt) {
+                        buildAnnotatedString {
+                            append(prefixAnnotatedString)
+                            append(excerpt)
+                        }
+                    },
+                    maxLines = configuration.maxExcerptLines,
+                    overflow = TextOverflow.Ellipsis,
+                    inlineContent = inlineContent,
+                )
+            }
         }
     }
 }
