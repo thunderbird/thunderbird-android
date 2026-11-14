@@ -52,7 +52,7 @@ class FundingReminderTest {
             settings = settings,
             fragmentObserver = fragmentObserver,
             scope = CoroutineScope(mainDispatcher.testDispatcher),
-            clock = TestClock(Instant.fromEpochMilliseconds(REMINDER_REFERENCE_TIMESTAMP))
+            clock = TestClock(Instant.fromEpochMilliseconds(REMINDER_REFERENCE_TIMESTAMP)),
         )
 
         testSubject.registerReminder { }
@@ -72,7 +72,7 @@ class FundingReminderTest {
             settings = settings,
             fragmentObserver = fragmentObserver,
             scope = CoroutineScope(mainDispatcher.testDispatcher),
-            clock = TestClock(Instant.fromEpochMilliseconds(REMINDER_REFERENCE_TIMESTAMP))
+            clock = TestClock(Instant.fromEpochMilliseconds(REMINDER_REFERENCE_TIMESTAMP)),
         )
 
         testSubject.registerReminder { }

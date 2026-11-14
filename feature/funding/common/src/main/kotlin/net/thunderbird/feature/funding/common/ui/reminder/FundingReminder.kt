@@ -84,7 +84,6 @@ class FundingReminder(
             settings.getReminderShownTimestamp() == 0L &&
             settings.getReminderReferenceTimestamp() != 0L &&
             settings.getReminderReferenceTimestamp() + FUNDING_REMINDER_DELAY_MILLIS <= currentTime
-
     }
 
     /**

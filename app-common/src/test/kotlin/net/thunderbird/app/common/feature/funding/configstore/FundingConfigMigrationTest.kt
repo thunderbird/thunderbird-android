@@ -48,12 +48,44 @@ class FundingConfigMigrationTest {
 
         assertThat(migrationResult.updated != currentConfig)
         assertThat(migrationResult.updated == resetConfig)
-        assertThat(migrationResult.keysToRemove.contains(
-            FundingConfigKeys.DEPRECATED_LAST_FUNDING_REMINDER_SHOWN_ACTIVITY_AMOUNT)
+        assertThat(
+            migrationResult.keysToRemove.contains(
+                FundingConfigKeys.DEPRECATED_LAST_FUNDING_REMINDER_SHOWN_ACTIVITY_AMOUNT,
+            ),
         )
         assertThat(
-            migrationResult.updated[FundingConfigKeys.DEPRECATED_LAST_FUNDING_REMINDER_SHOWN_ACTIVITY_AMOUNT]
+            migrationResult.updated[FundingConfigKeys.DEPRECATED_LAST_FUNDING_REMINDER_SHOWN_ACTIVITY_AMOUNT],
         ).isNull()
+    }
+
+    @Test
+    fun `migrate should reset data when upgrading from 1 to 2, then set new data`() = runTest {
+        val currentConfig = getVersionOneFundingShownConfig()
+        val resetConfig = getDefaultFundingShownConfig()
+
+        val migrationResult = fundingConfigMigration.migrate(
+            currentVersion = 1,
+            newVersion = 2,
+            current = currentConfig,
+        ) as ConfigMigrationResult.Migrated
+
+        assertThat(migrationResult.updated != currentConfig)
+        assertThat(migrationResult.updated == resetConfig)
+        assertThat(
+            migrationResult.keysToRemove.contains(
+                FundingConfigKeys.DEPRECATED_LAST_FUNDING_REMINDER_SHOWN_ACTIVITY_AMOUNT,
+            ),
+        )
+        assertThat(
+            migrationResult.updated[FundingConfigKeys.DEPRECATED_LAST_FUNDING_REMINDER_SHOWN_ACTIVITY_AMOUNT],
+        ).isNull()
+
+        resetConfig[FundingConfigKeys.FUNDING_REMINDER_COUNT] = 2
+        resetConfig[FundingConfigKeys.LAST_FUNDING_REMINDER_SHOWN] = 1000L
+        resetConfig[FundingConfigKeys.REMINDER_REFERENCE_TIMESTAMP] = 10L
+        assertThat(resetConfig[FundingConfigKeys.FUNDING_REMINDER_COUNT]).isEqualTo(2)
+        assertThat(resetConfig[FundingConfigKeys.LAST_FUNDING_REMINDER_SHOWN]).isEqualTo(1000L)
+        assertThat(resetConfig[FundingConfigKeys.REMINDER_REFERENCE_TIMESTAMP]).isEqualTo(10L)
     }
 
     companion object {

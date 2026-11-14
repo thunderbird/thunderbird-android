@@ -6,7 +6,7 @@ object FundingConfigKeys {
     // reminderReferenceTimestamp
     val REMINDER_REFERENCE_TIMESTAMP = ConfigKey.LongKey("reminder_reference_timestamp")
 
-    // lastFundingReminderShownActivityAmount
+    // lastFundingReminderShownTimestamp
     val LAST_FUNDING_REMINDER_SHOWN =
         ConfigKey.LongKey("last_funding_reminder_shown")
 
