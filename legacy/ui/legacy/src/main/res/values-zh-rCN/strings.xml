@@ -803,6 +803,12 @@
     <string name="message_list_error_title">错误</string>
     <!--Displayed instead of the message list when a folder couldn't be found, e.g. due to an outdated home screen shortcut.-->
     <string name="message_list_error_folder_not_found">未找到文件夹</string>
+    <!-- Displayed instead of the message list when a folder contains no messages. -->
+    <string name="message_list_empty">没有邮件</string>
+     <!-- Displayed instead of the message list when a folder is empty because it hasn't been synchronized with the server yet. -->
+    <string name="message_list_not_synced">未同步</string>
+    <!-- Displayed below "Not synced yet" to explain how to synchronize the folder. -->
+    <string name="message_list_not_synced_hint">下拉以同步邮件</string>
     <!--Title of the toolbar that is displayed when the message details bottom sheet has been expanded-->
     <string name="message_details_toolbar_title">邮件详情</string>
     <!--Displayed when an email is missing the 'Date' header field and no date can be displayed in the message details bottom sheet.-->
