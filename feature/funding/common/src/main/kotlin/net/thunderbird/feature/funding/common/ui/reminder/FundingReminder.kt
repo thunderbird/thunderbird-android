@@ -22,6 +22,10 @@ class FundingReminder(
     private val scope: CoroutineScope,
 ) : FundingReminderContract.Reminder {
 
+    private companion object {
+        const val REMINDERS_TO_SHOW = 2
+    }
+
     /**
      * Decide to display the reminder and do so if necessary
      * We may choose to refactor this in the future to allow for multiple ongoing campaigns:
@@ -53,8 +57,8 @@ class FundingReminder(
                 }
             }
 
-            // If the reminder has already been shown, we don't need to show it again.
-            if (wasReminderShown(1) && wasReminderShown(2)) {
+            // If all reminders have already been shown, we don't need to show any again.
+            if (wasReminderShown(REMINDERS_TO_SHOW)) {
                 return@launch
             }
 
