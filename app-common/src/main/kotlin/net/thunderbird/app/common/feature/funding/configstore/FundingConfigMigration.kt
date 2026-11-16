@@ -15,7 +15,7 @@ class FundingConfigMigration : ConfigMigration {
         // Only update if config version is updating to anything but first launch (version 1)
         return if (currentVersion != newVersion && newVersion != 1) {
             val keysToRemove = mutableSetOf<ConfigKey<*>>()
-            val updated = Config().apply {
+            val updated = current.apply {
                 if (currentVersion <= 1 && newVersion == 2) {
                     resetFundingConfig()
                     keysToRemove.add(FundingConfigKeys.DEPRECATED_LAST_FUNDING_REMINDER_SHOWN_ACTIVITY_AMOUNT)
@@ -30,11 +30,9 @@ class FundingConfigMigration : ConfigMigration {
         }
     }
 
-    private fun resetFundingConfig(): Config {
-        return Config().apply {
-            this[FundingConfigKeys.REMINDER_REFERENCE_TIMESTAMP] = 0L
-            this[FundingConfigKeys.FUNDING_REMINDER_COUNT] = 0
-            this[FundingConfigKeys.LAST_FUNDING_REMINDER_SHOWN] = 0L
-        }
+    private fun Config.resetFundingConfig() {
+        this[FundingConfigKeys.REMINDER_REFERENCE_TIMESTAMP] = 0L
+        this[FundingConfigKeys.FUNDING_REMINDER_COUNT] = 0
+        this[FundingConfigKeys.LAST_FUNDING_REMINDER_SHOWN] = 0L
     }
 }

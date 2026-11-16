@@ -10,11 +10,7 @@ internal class TbFundingSettings(
     private val fundingConfigStore: FundingConfigStore,
 ) : FundingSettings {
 
-    override fun isReady(): Boolean {
-        return fundingConfigStore.configStateFlow.value.fundingReminderCount != null &&
-            fundingConfigStore.configStateFlow.value.reminderReferenceTimestamp != null &&
-            fundingConfigStore.configStateFlow.value.lastFundingReminderShownTimestamp != null
-    }
+    override fun isReady(): Boolean = fundingConfigStore.configStateFlow.value != FundingConfig.DEFAULT
 
     override fun getReminderReferenceTimestamp(): Long {
         return fundingConfigStore.configStateFlow.value.reminderReferenceTimestamp ?: 0
