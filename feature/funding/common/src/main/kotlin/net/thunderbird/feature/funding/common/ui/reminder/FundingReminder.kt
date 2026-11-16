@@ -32,7 +32,7 @@ class FundingReminder(
     ) {
         scope.launch {
             // Wait a bit so settings can be ready to be used.
-            while (wasReminderShown(1) && !settings.isReady()) {
+            while (!settings.isReady()) {
                 delay(250.milliseconds)
             }
 
