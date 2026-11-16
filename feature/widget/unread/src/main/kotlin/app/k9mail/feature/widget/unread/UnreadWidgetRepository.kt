@@ -20,6 +20,7 @@ internal class UnreadWidgetRepository(
         }
     }
 
+    @Suppress("ReturnCount")
     suspend fun getWidgetData(appWidgetId: Int): UnreadWidgetData? {
         val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
 
@@ -29,7 +30,7 @@ internal class UnreadWidgetRepository(
         }
 
         val accountIdRaw = prefs.getString(PREF_PREFIX_KEY + appWidgetId, null) ?: return null
-        val accountId = AccountIdFactory.of(accountIdRaw)
+        val accountId = runCatching { AccountIdFactory.of(accountIdRaw) }.getOrNull() ?: return null
         val folderId = prefs.getString(PREF_PREFIX_KEY + appWidgetId + PREF_FOLDER_ID_SUFFIX_KEY, null)?.toLongOrNull()
 
         val configuration = UnreadWidgetConfiguration(appWidgetId, accountId, folderId)
@@ -53,7 +54,7 @@ internal class UnreadWidgetRepository(
     }
 
     companion object {
-        internal const val PREFS_VERSION = 2
+        internal const val PREFS_VERSION = 3
         internal const val PREF_VERSION_KEY = "version"
 
         private const val PREFS_NAME = "unread_widget_configuration.xml"
