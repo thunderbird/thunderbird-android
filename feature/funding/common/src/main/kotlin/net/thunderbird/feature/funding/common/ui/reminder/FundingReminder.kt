@@ -31,6 +31,7 @@ class FundingReminder(
      * We may choose to refactor this in the future to allow for multiple ongoing campaigns:
      *      https://github.com/thunderbird/thunderbird-android/issues/11557
      */
+    @Suppress("MagicNumber")
     override fun registerReminder(
         onOpenFunding: () -> Unit,
     ) {
@@ -62,7 +63,7 @@ class FundingReminder(
                 }
             }
 
-            // If the reminder reference timestamp is not set, we set it to the first install time.
+            // Set reference to first launch of activity setting up reminder
             if (settings.getReminderReferenceTimestamp() == 0L) {
                 resetReminderReferenceTimestamp()
             }
@@ -91,7 +92,7 @@ class FundingReminder(
 
         return settings.getReminderShownCount() == appealCount - 1 &&
             settings.getReminderReferenceTimestamp() != 0L &&
-            settings.getReminderShownTimestamp() + (FUNDING_REMINDER_DELAY_MILLIS * appealCount) < currentTime
+            settings.getReminderShownTimestamp() + (FUNDING_REMINDER_DELAY_MILLIS * appealCount) <= currentTime
     }
 
     private suspend fun resetReminderReferenceTimestamp() {
