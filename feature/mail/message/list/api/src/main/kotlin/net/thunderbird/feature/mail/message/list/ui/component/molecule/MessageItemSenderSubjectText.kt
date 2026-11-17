@@ -94,7 +94,7 @@ private fun styledSenderOrSubject(
     buildStyledSenderOrSubject(useSender, senders, subject, prefix, forceRegularFontWeight)
 }
 
-private fun buildStyledSenderOrSubject(
+internal fun buildStyledSenderOrSubject(
     useSender: Boolean,
     senders: ComposedAddressUi,
     subject: AnnotatedString,
@@ -102,11 +102,14 @@ private fun buildStyledSenderOrSubject(
     forceRegularFontWeight: Boolean,
 ): AnnotatedString = buildAnnotatedString {
     prefix?.let { append(it) }
+    // Style offsets are relative to the sender or subject, which starts after the prefix.
+    val offset = prefix?.length ?: 0
     val text = if (useSender) senders.displayName else subject
     append(text)
+    val end = offset + text.length
     when {
         forceRegularFontWeight -> {
-            addStyle(style = SpanStyle(fontWeight = FontWeight.Normal), start = 0, end = text.length)
+            addStyle(style = SpanStyle(fontWeight = FontWeight.Normal), start = offset, end = end)
         }
 
         useSender -> {
@@ -114,20 +117,20 @@ private fun buildStyledSenderOrSubject(
                 when (style) {
                     ComposedAddressStyle.AllBold -> addStyle(
                         SpanStyle(fontWeight = FontWeight.Bold),
-                        start = 0,
-                        end = text.length,
+                        start = offset,
+                        end = end,
                     )
 
                     is ComposedAddressStyle.Bold -> addStyle(
                         style = SpanStyle(fontWeight = FontWeight.Bold),
-                        start = style.start,
-                        end = style.end ?: text.length,
+                        start = offset + style.start,
+                        end = style.end?.let { offset + it } ?: end,
                     )
 
                     is ComposedAddressStyle.Regular -> addStyle(
                         style = SpanStyle(fontWeight = FontWeight.Normal),
-                        start = style.start,
-                        end = style.end ?: text.length,
+                        start = offset + style.start,
+                        end = style.end?.let { offset + it } ?: end,
                     )
                 }
             }
