@@ -2393,8 +2393,7 @@ class MessageListFragment :
                     )
                 }
             }
-            // Mapping thousands of items (incl. contact photo lookups) must not block the main thread.
-            .flowOn(Dispatchers.Default)
+            .flowOn(Dispatchers.Default) // otherwise mapping occurs on main
     }
 
     // endregion [ Legacy Message List Bridge methods ]

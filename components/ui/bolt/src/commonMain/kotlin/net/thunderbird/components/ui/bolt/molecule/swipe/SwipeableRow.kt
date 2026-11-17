@@ -2,6 +2,7 @@ package net.thunderbird.components.ui.bolt.molecule.swipe
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.layout.Box
@@ -11,7 +12,9 @@ import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.absoluteOffset
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.hapticfeedback.HapticFeedback
@@ -26,7 +29,7 @@ import androidx.compose.ui.unit.IntOffset
 import kotlin.math.roundToInt
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.drop
+import kotlinx.coroutines.flow.dropWhile
 import net.thunderbird.components.ui.bolt.molecule.swipe.SwipeDirection.EndToStart
 import net.thunderbird.components.ui.bolt.molecule.swipe.SwipeDirection.StartToEnd
 import net.thunderbird.components.ui.bolt.molecule.swipe.SwipeDirectionAccessibilityAction.EndToStartAccessibilityAction
@@ -66,11 +69,13 @@ fun SwipeableRow(
 
     // Rows in long lists usually don't observe swipe changes; skip the per-row coroutine then.
     if (onSwipeChange != null) {
-        LaunchedEffect(state, onSwipeChange) {
+        // Keyed on state only, so a new callback instance doesn't restart the effect and lose the current direction.
+        val currentOnSwipeChange by rememberUpdatedState(onSwipeChange)
+        LaunchedEffect(state) {
             snapshotFlow { state.swipeDirection }
-                .drop(1) // Skip the initial `Settled` emission
+                .dropWhile { it == SwipeDirection.Settled } // Report changes only, not the resting state.
                 .distinctUntilChanged()
-                .collectLatest { onSwipeChange(it) }
+                .collectLatest { currentOnSwipeChange(it) }
         }
     }
 
@@ -84,7 +89,11 @@ fun SwipeableRow(
         },
     )
 
-    val rowContent: @Composable () -> Unit = {
+    AnimatedDismissal(
+        dismissed = state.swipeState == SwipeState.Dismissed,
+        exit = state.activeExitTransition,
+        modifier = modifier.testTag(SwipeableRowDefaults.SWIPEABLE_ROW_ANIMATED_CONTENT_TEST_TAG),
+    ) {
         Box(
             modifier = Modifier
                 .testTag(SwipeableRowDefaults.SWIPEABLE_ROW_CORE_ELEMENT_TEST_TAG)
@@ -113,23 +122,35 @@ fun SwipeableRow(
             )
         }
     }
+}
 
-    val containerModifier = modifier.testTag(SwipeableRowDefaults.SWIPEABLE_ROW_ANIMATED_CONTENT_TEST_TAG)
-    if (state.swipeState == SwipeState.Dismissed) {
-        // Only a dismissed row needs an exit animation. Setting up AnimatedVisibility/AnimatedContent for every
-        // row up front is costly in long lazy lists, so the transition is created when the dismissal happens.
+/**
+ * Shows [content] and plays [exit] once [dismissed] becomes `true`.
+ *
+ * Only a dismissed row needs an exit animation. Setting up AnimatedVisibility for every row up front is costly in
+ * long lazy lists, so the transition is created when the dismissal happens. Because of that, [content] is composed
+ * anew on dismissal and any state remembered inside it is reset; keep such state outside of [content].
+ */
+@Composable
+private fun AnimatedDismissal(
+    dismissed: Boolean,
+    exit: ExitTransition,
+    modifier: Modifier = Modifier,
+    content: @Composable () -> Unit,
+) {
+    if (dismissed) {
         val visibleState = remember { MutableTransitionState(true) }.apply { targetState = false }
         AnimatedVisibility(
             visibleState = visibleState,
             enter = EnterTransition.None,
-            exit = state.activeExitTransition,
-            modifier = containerModifier,
+            exit = exit,
+            modifier = modifier,
         ) {
-            rowContent()
+            content()
         }
     } else {
-        Box(modifier = containerModifier, propagateMinConstraints = true) {
-            rowContent()
+        Box(modifier = modifier, propagateMinConstraints = true) {
+            content()
         }
     }
 }

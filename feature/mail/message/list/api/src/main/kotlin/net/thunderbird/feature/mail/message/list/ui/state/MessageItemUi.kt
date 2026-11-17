@@ -68,13 +68,15 @@ data class MessageItemUi(
 }
 
 /**
- * Create a copy of this message item with the updated [state] and refreshed sender
- * display name styling.
+ * If changed, creates a copy of this message item with the updated [state] and
+ * refreshed sender display name styling.
  *
  * @param state The new state to apply.
- * @return A new [MessageItemUi] instance with the updated state and styling.
+ * @return A [MessageItemUi] instance with the supplied state and associated styling.
  */
 fun MessageItemUi.withState(state: MessageItemUi.State): MessageItemUi {
+    if (this.state == state) return this
+
     val styles = buildList {
         when (val separatorIndex = senders.displayName.indexOf(',')) {
             -1 if state != MessageItemUi.State.Read -> add(ComposedAddressStyle.Bold(start = 0))
@@ -92,4 +94,15 @@ fun MessageItemUi.withState(state: MessageItemUi.State): MessageItemUi {
         senders = senders.copy(displayNameStyles = styles),
         state = state,
     )
+}
+
+/**
+ * If changed, creates a copy of this message item that is active exactly when it is [activeItem].
+ *
+ * @param activeItem The message that should be active, or `null` if no message is active.
+ * @return A [MessageItemUi] instance whose `active` flag reflects whether it is [activeItem].
+ */
+fun MessageItemUi.withActive(activeItem: MessageItemUi?): MessageItemUi {
+    val isActive = id == activeItem?.id
+    return if (active == isActive) this else copy(active = isActive)
 }
