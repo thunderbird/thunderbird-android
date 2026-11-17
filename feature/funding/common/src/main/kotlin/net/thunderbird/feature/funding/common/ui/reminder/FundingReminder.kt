@@ -92,7 +92,7 @@ class FundingReminder(
 
         return settings.getReminderShownCount() == appealCount - 1 &&
             settings.getReminderReferenceTimestamp() != 0L &&
-            settings.getReminderShownTimestamp() + (FUNDING_REMINDER_DELAY_MILLIS * appealCount) <= currentTime
+            settings.getReminderShownTimestamp() + (FUNDING_REMINDER_DELAY_MILLIS * appealCount) < currentTime
     }
 
     private suspend fun resetReminderReferenceTimestamp() {
