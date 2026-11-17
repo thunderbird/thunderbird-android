@@ -157,8 +157,8 @@ internal class DefaultStateMachine<TState : Any, TEvent : Any>(
 
     init {
         scope.launch {
-            // Defer onEnter to the next dispatch so the owning ViewModel has finished constructing
-            // (it creates this state machine from a property initializer) before events flow back into it.
+            // Run onEnter after the owning ViewModel's constructor: on viewModelScope, yield() posts to the main
+            // looper. Dispatchers that don't queue (Unconfined) or run on another thread give no such guarantee.
             yield()
             verbose { "StateMachine initialized with initial state: $initialState" }
             stateRegistrar[initialState::class]?.listeners?.onEnter?.invoke(null, null, currentStateSnapshot)

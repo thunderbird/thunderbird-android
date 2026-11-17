@@ -213,48 +213,55 @@ private fun LeadingElements(
             MessageBadgeStyle.Unread -> UnreadMessageBadge()
             null -> Spacer(Modifier.width(MESSAGE_BADGE_SIZE.dp))
         }
-        // Only build the AnimatedContent machinery while the selection is changing. Creating it for every row is costly
-        // when rows scroll in, and the animation only matters for the row that is being (de)selected.
-        val selectionTransitionState = remember { MutableTransitionState(selected) }
-        selectionTransitionState.targetState = selected
-        if (selectionTransitionState.isIdle && selectionTransitionState.currentState == selected) {
-            LeadingAvatarOrCheck(selected, configuration, onClick)
-        } else {
-            rememberTransition(selectionTransitionState).AnimatedContent { targetSelected ->
-                LeadingAvatarOrCheck(targetSelected, configuration, onClick)
+        AnimatedContentOnChange(targetState = selected) { selected ->
+            when {
+                selected -> ButtonIcon(
+                    onClick = onClick,
+                    imageVector = Icons.Outlined.Check,
+                    colors = ButtonIconDefaults.buttonIconFilledColors(
+                        containerColor = BoltTheme.colors.secondaryContainer,
+                        contentColor = contentColorFor(backgroundColor = BoltTheme.colors.secondaryContainer),
+                    ),
+                    modifier = Modifier
+                        .size(BoltTheme.sizes.iconAvatar)
+                        .padding(BoltTheme.spacings.half),
+                )
+
+                configuration.avatar != null ->
+                    MessageItemAvatarCircle(
+                        avatar = configuration.avatar,
+                        colors = MessageItemAvatarCircleDefaults.colorsFrom(
+                            configuration.avatarColor ?: BoltTheme.colors.secondaryContainer,
+                        ),
+                        onClick = onClick,
+                    )
+
+                else -> Unit
             }
         }
     }
 }
 
+/**
+ * Like [AnimatedContent], but only builds the animation machinery while [targetState] is changing.
+ *
+ * Creating an [AnimatedContent] for every row is costly when rows scroll in, and the animation only matters for the
+ * row whose state changes. Because of that, [content] is composed anew when an animation starts and again when it
+ * ends, and any state remembered inside it is reset; keep such state outside of [content].
+ */
+// Resetting content state when switching branches is intended (see above); movableContentOf would avoid it, but
+// adds per-row cost, which is what this function avoids.
+@Suppress("ContentSlotReused")
 @Composable
-private fun LeadingAvatarOrCheck(
-    selected: Boolean,
-    configuration: MessageItemLeadingConfiguration,
-    onClick: () -> Unit,
+private fun <T> AnimatedContentOnChange(
+    targetState: T,
+    content: @Composable (T) -> Unit,
 ) {
-    when {
-        selected -> ButtonIcon(
-            onClick = onClick,
-            imageVector = Icons.Outlined.Check,
-            colors = ButtonIconDefaults.buttonIconFilledColors(
-                containerColor = BoltTheme.colors.secondaryContainer,
-                contentColor = contentColorFor(backgroundColor = BoltTheme.colors.secondaryContainer),
-            ),
-            modifier = Modifier
-                .size(BoltTheme.sizes.iconAvatar)
-                .padding(BoltTheme.spacings.half),
-        )
-
-        configuration.avatar != null ->
-            MessageItemAvatarCircle(
-                avatar = configuration.avatar,
-                colors = MessageItemAvatarCircleDefaults.colorsFrom(
-                    configuration.avatarColor ?: BoltTheme.colors.secondaryContainer,
-                ),
-                onClick = onClick,
-            )
-
-        else -> Unit
+    val transitionState = remember { MutableTransitionState(targetState) }
+    transitionState.targetState = targetState
+    if (transitionState.isIdle && transitionState.currentState == targetState) {
+        content(targetState)
+    } else {
+        rememberTransition(transitionState).AnimatedContent { state -> content(state) }
     }
 }
