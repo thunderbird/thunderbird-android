@@ -23,8 +23,7 @@ class MDBookSidebarScrollbox extends HTMLElement {
                 link.href = path_to_root + href;
             }
             // The 'index' page is supposed to alias the first chapter in the book.
-            // Check both with and without the '.html' suffix to be robust against pretty URLs
-            if (link.href.replace(/\.html$/, '') === current_page.replace(/\.html$/, '')
+            if (link.href === current_page
                 || i === 0
                 && path_to_root === ''
                 && current_page.endsWith('/index.html')) {
