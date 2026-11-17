@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "version": "26.0b4",
+  "versioncode": 66,
+  "date": "2026-11-16",
+  "notes": [
+    {
+      "type": "fixed",
+      "text": "Thunderbird for Android crashed when the unread widget updated related account data",
+      "source": "thunderbird-notes",
+      "issues": [
+        11900
+      ]
+    }
+  ]
+}

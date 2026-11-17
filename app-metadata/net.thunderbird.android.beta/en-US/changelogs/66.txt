@@ -1,0 +1,4 @@
+Thunderbird version 26.0b4
+
+Fixed:
+- Thunderbird for Android crashed when the unread widget updated related account data
