@@ -19,21 +19,15 @@ import net.thunderbird.feature.funding.api.FundingConfigStore
 
 class DefaultFundingConfigStoreTest {
 
-    val defaultConfig = FundingConfig(
-        reminderReferenceTimestamp = null,
-        lastFundingReminderShownTimestamp = null,
-        fundingReminderCount = null,
-    )
-
     @Test
-    fun `config should start with default values`() = runTest {
+    fun `config should start with default values provided to the backend`() = runTest {
         // Setup test subject and expected values
         val backend = getDefaultTestConfigBackend()
         val configTestSubject = createTestSubject(backend)
 
         // Get and test initial value
         val initialTestValue = configTestSubject.config.first()
-        assertThat(initialTestValue).isEqualTo(defaultConfig)
+        assertThat(initialTestValue).isEqualTo(DEFAULT_CONFIG)
     }
 
     @Test
@@ -73,14 +67,21 @@ class DefaultFundingConfigStoreTest {
 
     private fun getDefaultTestConfigBackend() = TestConfigBackend(
         initialConfig = Config().apply {
-            this[FundingConfigKeys.REMINDER_REFERENCE_TIMESTAMP] = 0L
-            this[FundingConfigKeys.LAST_FUNDING_REMINDER_SHOWN] = 0L
-            this[FundingConfigKeys.FUNDING_REMINDER_COUNT] = 0
+            this[FundingConfigKeys.REMINDER_REFERENCE_TIMESTAMP] = DEFAULT_CONFIG.reminderReferenceTimestamp ?: 0L
+            this[FundingConfigKeys.LAST_FUNDING_REMINDER_SHOWN] = DEFAULT_CONFIG.lastFundingReminderShownTimestamp ?: 0L
+            this[FundingConfigKeys.FUNDING_REMINDER_COUNT] = DEFAULT_CONFIG.fundingReminderCount ?: 0
         },
     )
 
     private companion object {
         val CONFIG_ID = ConfigId(backend = "test", feature = "fundingconfig")
+
+        // The default config uses null values as a placeholder to load data. This is the loaded data
+        val DEFAULT_CONFIG = FundingConfig(
+            reminderReferenceTimestamp = 0L,
+            lastFundingReminderShownTimestamp = 0L,
+            fundingReminderCount = 0,
+        )
     }
 }
 

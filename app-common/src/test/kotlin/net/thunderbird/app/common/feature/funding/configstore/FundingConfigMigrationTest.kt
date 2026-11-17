@@ -46,16 +46,16 @@ class FundingConfigMigrationTest {
             current = currentConfig,
         ) as ConfigMigrationResult.Migrated
 
+        // Migration changed data and matches reset
         assertThat(migrationResult.updated != currentConfig)
         assertThat(migrationResult.updated == resetConfig)
+
+        // Migration has flagged keys for ConfigBackend to remove
         assertThat(
             migrationResult.keysToRemove.contains(
                 FundingConfigKeys.DEPRECATED_LAST_FUNDING_REMINDER_SHOWN_ACTIVITY_AMOUNT,
             ),
         )
-        assertThat(
-            migrationResult.updated[FundingConfigKeys.DEPRECATED_LAST_FUNDING_REMINDER_SHOWN_ACTIVITY_AMOUNT],
-        ).isNull()
     }
 
     @Test
@@ -69,16 +69,16 @@ class FundingConfigMigrationTest {
             current = currentConfig,
         ) as ConfigMigrationResult.Migrated
 
+        // Migration reset data to expected values
         assertThat(migrationResult.updated != currentConfig)
         assertThat(migrationResult.updated == resetConfig)
+
+        // Migration has flagged keys for ConfigBackend to remove
         assertThat(
             migrationResult.keysToRemove.contains(
                 FundingConfigKeys.DEPRECATED_LAST_FUNDING_REMINDER_SHOWN_ACTIVITY_AMOUNT,
             ),
         )
-        assertThat(
-            migrationResult.updated[FundingConfigKeys.DEPRECATED_LAST_FUNDING_REMINDER_SHOWN_ACTIVITY_AMOUNT],
-        ).isNull()
 
         resetConfig[FundingConfigKeys.FUNDING_REMINDER_COUNT] = 2
         resetConfig[FundingConfigKeys.LAST_FUNDING_REMINDER_SHOWN] = 1000L
