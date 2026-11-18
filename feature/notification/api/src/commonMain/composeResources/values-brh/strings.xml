@@ -1,3 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    </resources>
+    <string name="notification_action_reply">ورندی ایتبو</string>
+    <string name="notification_action_mark_as_read">خواننگوک نشانی کبو</string>
+    <string name="notification_action_mark_all_as_read">کل اے خواننگوک نشانی کبو</string>
+    <string name="notification_action_delete">مٹائفبو</string>
+    <string name="notification_action_delete_all">کل اے مٹائفبو</string>
+    <string name="notification_action_archive">آرکایو</string>
+    <string name="notification_action_archive_all">کل اے آرکایو کبو</string>
+    <string name="notification_action_spam">فضول</string>
+    <string name="notification_certificate_error_public">سرٹیفکیٹ نا ردی</string>
+    <string name="notification_certificate_error_text">تینا سرور نا سیٹنگاتے ہربو</string>
+    <string name="notification_authentication_error_title">تصدیق کننگ متو</string>
+    <string name="notification_notify_error_title">اعلان نا ردی</string>
+    <string name="notification_notify_error_text">پوسکنو کلہو سے کن سیسٹم اعلان اس جوڑ کرسہ ردی اس مس. دا نا وجہ اسہ ناموجود او اعلان نا توار اس مننگ کیک.\n\nاعلان تا سیٹنگاتے ملنگ کن دو خلبو.</string>
+    <string name="notification_bg_sync_title">ای میل تیکن ہننگ ان</string>
+    <string name="notification_bg_send_title">ای میل رای مرسہ اے</string>
+    <string name="notification_channel_push_title">ہمگام کننگ (Push)</string>
+    <string name="notification_channel_push_description">پوسکنا کلہو تیکن اڈ کرسہ نشان تننگک</string>
+    <string name="notification_channel_messages_title">کلہو اک</string>
+    <string name="notification_channel_messages_description">کلہو تیتون ملوکا اعلاناک</string>
+    <string name="notification_channel_miscellaneous_title">ایلوفک</string>
+    <string name="notification_channel_miscellaneous_description">ایلو اعلاناک دن کہ ردیک و پین.</string>
+    <string name="send_failure_subject">منہ کلہو رای مننگ متو</string>
+    <string name="push_notification_info">پین ہیل کننگ کن دو خلبو.</string>
+    <string name="push_notification_grant_alarm_permission">اجازت ایتنگ کن دو خلبو.</string>
+    <string name="push_notification_state_listening">خاموشی وخت</string>
+    <string name="notification_bg_send_ticker">ای میل رای مرسہ اے: %1$s</string>
+    <string name="notification_certificate_error_title">%1$s کن سرٹیفکیٹ نا ردی</string>
+    <plurals name="notification_new_messages_title">
+        <item quantity="one">%1$d پوسکنو کلہو اس</item>
+        <item quantity="other">%1$d پوسکنو کلہو</item>
+    </plurals>
+    <string name="notification_additional_messages">+ %1$d پین %2$s اے</string>
+    <string name="push_notification_state_initializing">تیار مرسہ اے…</string>
+    <string name="notification_action_retry">وا کوشست کبو</string>
+    <string name="banner_inline_notification_learn_more">پین ہیل کبو</string>
+    <string name="notification_authentication_incoming_server_error_text">تصدیق کننگ %1$s کن ناکام مس. تینا اتوکا سرور نا سیٹنگاتے اپڈیٹ کبو.</string>
+</resources>

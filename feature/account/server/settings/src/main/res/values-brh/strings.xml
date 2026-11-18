@@ -1,3 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    </resources>
+    <string name="account_server_settings_connection_security_none">ہچ اف</string>
+    <string name="account_server_settings_validation_error_server_required">سرور نا پن ضروری اے.</string>
+    <string name="account_server_settings_validation_error_server_invalid_ip_or_hostname">IP یا hostname غلط اے</string>
+    <string name="account_server_settings_validation_error_port_required">Port ضروری اے.</string>
+    <string name="account_server_settings_validation_error_port_invalid">غلط Port اے (1 ان 65535 نا نیام ٹی مرے).</string>
+    <string name="account_server_settings_validation_error_username_required">باسک پن ضروری اے.</string>
+    <string name="account_server_settings_validation_error_password_required">کلیت لوز ضروری اے.</string>
+    <string name="account_server_settings_password_input_label">کلیت لوز</string>
+    <string name="account_server_settings_password_authentication_title">تینا پجار نا تصدیق کبو</string>
+</resources>

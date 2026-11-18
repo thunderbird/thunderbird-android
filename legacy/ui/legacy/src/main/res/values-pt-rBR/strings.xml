@@ -378,7 +378,7 @@
     <string name="account_settings_autodownload_message_size_any">qualquer tamanho (sem limites)</string>
     <string name="account_settings_message_age_label">Sincronização de mensagens</string>
     <string name="account_settings_message_age_any">de qualquer data (sem limites)</string>
-    <string name="account_settings_message_age_0">de hoje</string>
+    <string name="account_settings_message_age_0">hoje</string>
     <string name="account_settings_message_age_1">dos últimos 2 dias</string>
     <string name="account_settings_message_age_2">dos últimos 3 dias</string>
     <string name="account_settings_message_age_7">da última semana</string>

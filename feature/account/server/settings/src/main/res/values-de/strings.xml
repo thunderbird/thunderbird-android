@@ -35,4 +35,6 @@
     <string name="account_server_settings_password_authentication_failed">Authentifizierung fehlgeschlagen!</string>
     <string name="account_server_settings_password_authentication_unable_to_start">Biometrische Abfrage konnte nicht gestartet werden.</string>
     <string name="account_server_settings_password_input_label">Passwort</string>
+    <string name="account_server_settings_pop3_hint_title">IMAP wird empfohlen</string>
+    <string name="account_server_settings_pop3_hint_text">IMAP sorgt dafür, dass deine E-Mails auf allen deinen Geräten synchronisiert bleiben. Wähle IMAP, wenn dein E-Mail-Anbieter dies unterstützt.</string>
 </resources>

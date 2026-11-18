@@ -9,4 +9,10 @@
     <string name="navigation_drawer_dropdown_unified_account_title">Kombinearre account</string>
     <string name="navigation_drawer_dropdown_action_add_account">Account tafoegje</string>
     <string name="navigation_drawer_dropdown_action_sync_account">Account syngronisearje</string>
+    <string name="navigation_drawer_dropdown_unified_outbox_title">Postfek ÚT</string>
+    <string name="navigation_drawer_dropdown_unified_drafts_title">Konsepten</string>
+    <string name="navigation_drawer_dropdown_unified_sent_title">Ferstjoerd</string>
+    <string name="navigation_drawer_dropdown_unified_archive_title">Argyf</string>
+    <string name="navigation_drawer_dropdown_unified_spam_title">Net-winske</string>
+    <string name="navigation_drawer_dropdown_unified_trash_title">Jiskefet</string>
 </resources>

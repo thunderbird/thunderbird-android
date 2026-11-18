@@ -265,7 +265,7 @@
     <string name="drafts_folder_label">Concepten</string>
     <string name="sent_folder_label">Verzonden</string>
     <string name="trash_folder_label">Prullenbak</string>
-    <string name="archive_folder_label">Archief</string>
+    <string name="archive_folder_label">Archiefmap</string>
     <string name="spam_folder_label">Ongewenst</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">Alleen geabonneerde mappen tonen</string>
     <string name="account_setup_options_mail_check_frequency_never">Nooit</string>
@@ -966,4 +966,15 @@
     <string name="account_settings_fetching_and_data_limits">Ophalen &amp; gegevenslimieten</string>
     <string name="account_settings_sync_and_notifications">Synchronisatie &amp; meldingen</string>
     <string name="account_settings_folder_visibility">Mapzichtbaarheid</string>
+    <string name="unified_inbox_detail">Berichten in Postvak IN van elk account</string>
+    <string name="unified_outbox_title">Samengevoegd Postvak IN</string>
+    <string name="unified_drafts_title">Samengevoegde Concepten</string>
+    <string name="unified_sent_title">Samengevoegde Verzonden</string>
+    <string name="unified_archive_title">Samengevoegde Archief</string>
+    <string name="unified_spam_title">Samengevoegde Ongewenst</string>
+    <string name="unified_trash_title">Samengevoegde Prullenbak</string>
+    <string name="message_list_empty">Geen berichten</string>
+    <string name="message_list_empty_search">Geen resultaten</string>
+    <string name="message_list_not_synced">Nog niet gesynchroniseerd</string>
+    <string name="message_list_not_synced_hint">Trekken om te synchroniseren</string>
 </resources>

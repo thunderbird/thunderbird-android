@@ -9,4 +9,10 @@
     <string name="navigation_drawer_dropdown_unified_account_title">Samengevoegd account</string>
     <string name="navigation_drawer_dropdown_action_add_account">Account toevoegen</string>
     <string name="navigation_drawer_dropdown_action_sync_account">Account synchroniseren</string>
+    <string name="navigation_drawer_dropdown_unified_outbox_title">Postvak UIT</string>
+    <string name="navigation_drawer_dropdown_unified_drafts_title">Concepten</string>
+    <string name="navigation_drawer_dropdown_unified_sent_title">Verzonden</string>
+    <string name="navigation_drawer_dropdown_unified_archive_title">Archief</string>
+    <string name="navigation_drawer_dropdown_unified_spam_title">Ongewenst</string>
+    <string name="navigation_drawer_dropdown_unified_trash_title">Prullenbak</string>
 </resources>

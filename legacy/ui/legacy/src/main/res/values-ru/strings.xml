@@ -683,7 +683,7 @@
     <string name="compose_error_no_key_configured">Для данной учётной записи не настроены ключи! Проверьте настройки.</string>
     <string name="error_crypto_provider_incompatible">Криптопровайдер использует несовместимую версию. Проверьте настройки!</string>
     <string name="error_crypto_provider_connect">Нет доступа к криптопровайдеру. Проверьте настройки или нажмите значок шифрования для повтора!</string>
-    <string name="error_crypto_provider_ui_required">Ошибка инициализации сквозного шифрования. Проверьте настройки</string>
+    <string name="error_crypto_provider_ui_required">Ошибка инициализации сквозного шифрования. Проверьте настройки.</string>
     <string name="error_crypto_inline_attach">Режим PGP/INLINE не поддерживает вложения!</string>
     <string name="enable_inline_pgp">Включить PGP/INLINE</string>
     <string name="disable_inline_pgp">Отключить PGP/INLINE</string>
@@ -980,4 +980,15 @@
     <string name="account_settings_folder_sync_and_push">Синхронизация папки и push</string>
     <string name="account_settings_folder_visibility">Видимость папки</string>
     <string name="account_settings_fetching_and_data_limits">Получение и ограничения объёма данных</string>
+    <string name="unified_inbox_detail">Сообщения в папке \"Входящие\" всех учётных записей</string>
+    <string name="unified_outbox_title">Общие исходящие</string>
+    <string name="unified_drafts_title">Общие черновики</string>
+    <string name="unified_sent_title">Общие отправленные</string>
+    <string name="unified_archive_title">Общие архивированные</string>
+    <string name="unified_spam_title">Общий спам</string>
+    <string name="unified_trash_title">Общие удалённые</string>
+    <string name="message_list_empty">Нет сообщений</string>
+    <string name="message_list_empty_search">Нет результатов</string>
+    <string name="message_list_not_synced">Ещё не синхронизировано</string>
+    <string name="message_list_not_synced_hint">Потяните вниз для синхронизации</string>
 </resources>

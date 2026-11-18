@@ -2,4 +2,17 @@
 <resources>
     <string name="setup_archive_folder_dialog_dont_show_again">دا پیغام اے دوارہ نشان تفہ بو</string>
     <string name="setup_archive_folder_dialog_email_can_not_be_archived">ای میل آرکایو مننگ کمک</string>
+    <string name="setup_archive_folder_dialog_done">مس</string>
+    <string name="setup_archive_folder_dialog_cancel">کینسل</string>
+    <string name="message_list_state_new_message_description">پوسکن</string>
+    <string name="message_list_state_read_message_description">خواننگوک</string>
+    <string name="message_list_state_unread_message_description">بےخواننگوک</string>
+    <string name="message_list_state_selected_new_message_description">گچین مروک، پوسکن</string>
+    <string name="message_list_state_selected_read_message_description">گچین مروک، خواننگوک</string>
+    <string name="message_list_state_selected_unread_message_description">گچین مروک، بےخواننگوک</string>
+    <string name="setup_archive_folder_create_archive_folder_local_folder_created">لوکل فولڈر جوڑ مس. ہمگام کننگ شروع مرسہ اے…</string>
+    <string name="setup_archive_folder_create_archive_folder_remote_folder_created">ریموٹ فولڈر جوڑ مس.</string>
+    <string name="setup_archive_folder_create_archive_folder_account_not_found">اکاونٹ (%1$s) ملےتو</string>
+    <string name="setup_archive_folder_create_archive_folder_failed_create_local_folder">لوکل فولڈر \'%1$s\' جوڑ مننگ متو.</string>
+    <string name="setup_archive_folder_dialog_error_retrieve_folders_detailed_message">ردی نا تفصیلاک: %1$s</string>
 </resources>

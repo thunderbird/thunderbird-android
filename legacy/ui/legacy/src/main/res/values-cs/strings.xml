@@ -980,4 +980,15 @@
     <string name="account_settings_fetching_and_data_limits">Načítání a omezení dat</string>
     <string name="account_settings_sync_and_notifications">Synchronizace a oznámení</string>
     <string name="account_settings_folder_visibility">Viditelnost složek</string>
+    <string name="unified_inbox_detail">Zprávy ve složce Doručená pošta každého účtu</string>
+    <string name="unified_outbox_title">Sjednocená složka Odchozí</string>
+    <string name="unified_drafts_title">Sjednocené návrhy</string>
+    <string name="unified_sent_title">Sjednocené Odeslané</string>
+    <string name="unified_archive_title">Sjednocený Archiv</string>
+    <string name="unified_spam_title">Jednotný spam</string>
+    <string name="unified_trash_title">Sjednocený Koš</string>
+    <string name="message_list_empty">Žádné zprávy</string>
+    <string name="message_list_empty_search">Žádné výsledky</string>
+    <string name="message_list_not_synced">Ještě není synchronizováno</string>
+    <string name="message_list_not_synced_hint">Přejeďte prstem dolů pro synchronizaci</string>
 </resources>

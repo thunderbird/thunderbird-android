@@ -2,4 +2,5 @@
 <resources>
     <string name="message_list_glance_widget_inbox_title">اوار آ انباکس</string>
     <string name="message_list_glance_widget_label">کلہو تا لڑ</string>
+    <string name="message_list_glance_widget_compose_action">لکھبو</string>
 </resources>
