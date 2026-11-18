@@ -12,7 +12,7 @@ interface FundingReminderContract {
     }
 
     fun interface Dialog {
-        fun show(fragmentManager: FragmentManager)
+        fun show(fragmentManager: FragmentManager, headerRes: Int?, bodyRes: Int?)
 
         companion object {
             const val FRAGMENT_REQUEST_KEY = "funding_reminder_dialog"

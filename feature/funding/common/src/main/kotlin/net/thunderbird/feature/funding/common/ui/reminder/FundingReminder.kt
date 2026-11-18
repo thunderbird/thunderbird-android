@@ -9,6 +9,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import net.thunderbird.core.android.common.activity.ActivityProvider
 import net.thunderbird.feature.funding.api.FundingSettings
+import net.thunderbird.feature.funding.common.R
 import net.thunderbird.feature.funding.common.api.FUNDING_REMINDER_DELAY_MILLIS
 import net.thunderbird.feature.funding.common.api.FundingReminderContract
 import net.thunderbird.feature.funding.common.api.FundingReminderContract.FragmentLifecycleObserver
@@ -73,9 +74,12 @@ class FundingReminder(
                     showFundingReminderDialog(dialogFragmentManager)
                 }
             } else if (shouldShowDonationAppeal(3)) {
-                // TODO: The third appeal will be a separate design (11787), re-use the existing one for now
                 fragmentObserver.register(observedFragmentManager) {
-                    showFundingReminderDialog(dialogFragmentManager)
+                    showFundingReminderDialog(
+                        dialogFragmentManager,
+                        R.string.funding_reminder_eoy_title,
+                        R.string.funding_reminder_eoy_content,
+                    )
                 }
             }
         }
@@ -101,7 +105,11 @@ class FundingReminder(
         settings.setReminderReferenceTimestamp(clock.now().toEpochMilliseconds())
     }
 
-    private fun showFundingReminderDialog(fragmentManager: FragmentManager) {
+    private fun showFundingReminderDialog(
+        fragmentManager: FragmentManager,
+        headerRes: Int? = null,
+        bodyRes: Int? = null,
+    ) {
         // We're about to show the funding reminder dialog. So mark it as being shown. This way, if there's an error,
         // we err on the side of the dialog not being shown rather than it being shown more than once.
         scope.launch {
@@ -110,6 +118,6 @@ class FundingReminder(
             settings.incrementReminderShownCount()
         }
 
-        dialog.show(fragmentManager)
+        dialog.show(fragmentManager, headerRes, bodyRes)
     }
 }
