@@ -1,46 +1,41 @@
 package net.thunderbird.components.ui.bolt.template.pager
 
-import androidx.annotation.FloatRange
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import net.thunderbird.components.ui.bolt.atom.text.TextBodyLarge
-import net.thunderbird.components.ui.bolt.atom.text.TextLabelSmall
-import net.thunderbird.components.ui.bolt.atom.text.TextTitleMedium
+import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
-import net.thunderbird.components.ui.bolt.atom.icon.Icon
-import net.thunderbird.components.ui.bolt.atom.tab.TabPrimary
-import net.thunderbird.components.ui.bolt.molecule.tab.TabRowPrimary
+import net.thunderbird.components.ui.bolt.PreviewWithThemeLightDark
+import net.thunderbird.components.ui.bolt.atom.tab.TabSecondary
+import net.thunderbird.components.ui.bolt.atom.text.TextBodyLarge
+import net.thunderbird.components.ui.bolt.atom.text.TextTitleMedium
+import net.thunderbird.components.ui.bolt.molecule.tab.TabRowSecondary
 import net.thunderbird.components.ui.bolt.theme.BoltTheme
 
 /**
  * A Composable that displays a horizontal pager with a tab row.
  *
- * This component combines a [TabRowPrimary] with a [HorizontalPager] to create a
+ * This component combines a [TabRowSecondary] with a [HorizontalPager] to create a
  * swipeable view with corresponding tabs. The content of the pager is defined using
  * a DSL provided by the [HorizontalTabPagerScope].
  *
  * Example usage:
  * ```
- * val pages = listOf(
- *      Icons.Outlined.Inbox to "Inbox",
- *      Icons.Outlined.Outbox to "Outbox",
- *      Icons.Outlined.Spam to "Spam",
- * )
- * HorizontalTabPagerPrimary(initialSelected = pages.first()) {
+ * SecondaryHorizontalTabPagerScope(initialSelected = "Tab 1") {
  *     pages(
- *         items = pages,
- *         tabConfigBuilder = { (icon, title) ->
- *              TabPrimaryConfig(title = title, icon = icon)
- *         },
+ *         items = listOf("Tab 1", "Tab 2", "Tab 3"),
+ *         tabConfigBuilder = { TabConfig(title = it) },
  *     ) { item ->
  *         // Content for each page
  *         Box(
@@ -61,36 +56,28 @@ import net.thunderbird.components.ui.bolt.theme.BoltTheme
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun <T> HorizontalTabPagerPrimary(
+fun <T> SecondaryHorizontalTabPagerScope(
     initialSelected: T,
     modifier: Modifier = Modifier,
-    @FloatRange(from = -0.5, to = 0.5) initialPageOffsetFraction: Float = 0f,
-    onPageChange: (T) -> Unit = {},
-    content: HorizontalTabPagerScope<T, TabPrimaryConfig>.() -> Unit,
+    content: HorizontalTabPagerScope<T, TabSecondaryConfig>.() -> Unit,
 ) {
     val scope = remember(initialSelected, content) {
-        HorizontalTabPagerPrimaryImpl(initialSelected).apply { content() }
+        DefaultSecondaryHorizontalTabPagerScope(initialSelected).apply { content() }
     }
 
     if (scope.pages.isEmpty()) return
     val state = rememberPagerState(
         initialPage = scope.initialPageIndex,
         pageCount = { scope.pages.size },
-        initialPageOffsetFraction = initialPageOffsetFraction,
     )
-
-    LaunchedEffect(state.settledPage, onPageChange) {
-        onPageChange(scope.pages[state.settledPage].value)
-    }
-
     val coroutineScope = rememberCoroutineScope()
     Column(modifier = modifier) {
-        TabRowPrimary(
+        TabRowSecondary(
             selectedTabIndex = state.currentPage,
             modifier = Modifier.fillMaxWidth(),
         ) {
             scope.pages.forEachIndexed { index, page ->
-                TabPrimary(
+                TabSecondary(
                     selected = state.currentPage == index,
                     title = {
                         if (state.currentPage == index) {
@@ -104,10 +91,6 @@ fun <T> HorizontalTabPagerPrimary(
                             state.animateScrollToPage(scope.pages.indexOf(page))
                         }
                     },
-                    icon = page.tabConfig.icon?.let { icon ->
-                        { Icon(imageVector = icon, contentDescription = page.tabConfig.contentDescription) }
-                    },
-                    badge = page.tabConfig.badgeCount?.let { count -> { TextLabelSmall(text = count.toString()) } },
                 )
             }
         }
@@ -122,16 +105,16 @@ fun <T> HorizontalTabPagerPrimary(
     }
 }
 
-private class HorizontalTabPagerPrimaryImpl<T>(
+private class DefaultSecondaryHorizontalTabPagerScope<T>(
     private val initialPage: T,
-) : HorizontalTabPagerScope<T, TabPrimaryConfig> {
+) : HorizontalTabPagerScope<T, TabSecondaryConfig> {
     val initialPageIndex get() = pages.indexOfFirst { it.value == initialPage }.takeIf { it >= 0 } ?: 0
-    val pages = mutableListOf<HorizontalPagerPage<T, TabPrimaryConfig>>()
+    val pages = mutableListOf<HorizontalPagerPage<T, TabSecondaryConfig>>()
 
     override fun pages(
         items: List<T>,
-        tabConfigBuilder: (T) -> TabPrimaryConfig,
-        itemContent: @Composable (HorizontalTabPagerScope<T, TabPrimaryConfig>.(T) -> Unit),
+        tabConfigBuilder: (T) -> TabSecondaryConfig,
+        itemContent: @Composable (HorizontalTabPagerScope<T, TabSecondaryConfig>.(T) -> Unit),
     ) {
         pages.addAll(
             items.map { item ->
@@ -142,5 +125,30 @@ private class HorizontalTabPagerPrimaryImpl<T>(
                 )
             },
         )
+    }
+}
+
+@PreviewLightDark
+@Composable
+private fun SecondaryHorizontalTabPagerScopePreview() {
+    PreviewWithThemeLightDark {
+        val pages by remember {
+            mutableStateOf(
+                List(size = 10) {
+                    object {
+                        val tab = "Tab $it"
+                        val page = "Content $it"
+                    }
+                },
+            )
+        }
+        SecondaryHorizontalTabPagerScope(
+            initialSelected = pages.first(),
+            modifier = Modifier.padding(top = 24.dp),
+        ) {
+            pages(items = pages, tabConfigBuilder = { TabSecondaryConfig(it.tab) }) {
+                TextBodyLarge(it.page)
+            }
+        }
     }
 }

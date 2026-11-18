@@ -15,7 +15,7 @@ import androidx.compose.ui.res.stringResource
 import net.thunderbird.components.ui.bolt.atom.button.ButtonIcon
 import net.thunderbird.components.ui.bolt.atom.icon.Icons
 import net.thunderbird.components.ui.bolt.organism.TopAppBar
-import net.thunderbird.components.ui.bolt.template.pager.HorizontalTabPagerSecondary
+import net.thunderbird.components.ui.bolt.template.pager.SecondaryHorizontalTabPagerScope
 import net.thunderbird.components.ui.bolt.template.pager.TabSecondaryConfig
 import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.feature.debug.settings.featureflag.DebugFeatureFlagSection
@@ -53,7 +53,7 @@ fun SecretDebugSettingsScreen(
         modifier = modifier,
     ) { paddingValues ->
         val resources = LocalResources.current
-        HorizontalTabPagerSecondary(
+        SecondaryHorizontalTabPagerScope(
             initialSelected = starterTab,
             modifier = Modifier.padding(paddingValues),
         ) {
