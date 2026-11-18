@@ -973,4 +973,15 @@
     <string name="account_settings_folder_sync_and_push">Sincronizarea dosarelor și notificarea conținutului acestora</string>
     <string name="account_settings_fetching_and_data_limits">Preluarea datelor și limitele de trafc</string>
     <string name="account_settings_folder_visibility">Vizibilitatea dosarelor</string>
+    <string name="unified_inbox_detail">Mesajele din căsuța de intrare a fiecărui cont</string>
+    <string name="unified_outbox_title">Căsuță de ieșire unificată</string>
+    <string name="unified_drafts_title">Dosar de ciorne unificat</string>
+    <string name="unified_sent_title">Dosar de trimitere unificat</string>
+    <string name="unified_archive_title">Arhivă unificată</string>
+    <string name="unified_spam_title">Dosar de spam unificat</string>
+    <string name="unified_trash_title">Coș de gunoi unificat</string>
+    <string name="message_list_empty">Nu există mesaje</string>
+    <string name="message_list_empty_search">Nu s-au găsit rezultate</string>
+    <string name="message_list_not_synced">Nu este încă sincronizat</string>
+    <string name="message_list_not_synced_hint">Glisați în jos pentru a sincroniza</string>
 </resources>

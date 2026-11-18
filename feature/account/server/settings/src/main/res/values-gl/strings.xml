@@ -35,4 +35,6 @@
     <string name="account_server_settings_password_authentication_failed">A autenticación fallou!</string>
     <string name="account_server_settings_password_authentication_unable_to_start">Non é posible iniciar a solicitude biométrica.</string>
     <string name="account_server_settings_password_input_label">Contrasinal</string>
+    <string name="account_server_settings_pop3_hint_title">Recoméndase IMAP</string>
+    <string name="account_server_settings_pop3_hint_text">IMAP mantén o teu correo electrónico sincronizado en todos os teus dispositivos. Escolle IMAP se o teu provedor de correo electrónico o admite.</string>
 </resources>

@@ -9,4 +9,10 @@
     <string name="navigation_drawer_dropdown_unified_account_title">Enoten račun</string>
     <string name="navigation_drawer_dropdown_action_add_account">Dodaj račun</string>
     <string name="navigation_drawer_dropdown_action_sync_account">Uskladi račun</string>
+    <string name="navigation_drawer_dropdown_unified_outbox_title">Odpremni predal</string>
+    <string name="navigation_drawer_dropdown_unified_drafts_title">Osnutki</string>
+    <string name="navigation_drawer_dropdown_unified_sent_title">Poslano</string>
+    <string name="navigation_drawer_dropdown_unified_archive_title">Arhiviraj</string>
+    <string name="navigation_drawer_dropdown_unified_spam_title">Označi kot neželeno pošto</string>
+    <string name="navigation_drawer_dropdown_unified_trash_title">Koš</string>
 </resources>

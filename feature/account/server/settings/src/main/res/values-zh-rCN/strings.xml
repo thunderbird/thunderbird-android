@@ -35,4 +35,6 @@
     <string name="account_server_settings_password_authentication_failed">身份验证失败！</string>
     <string name="account_server_settings_password_authentication_unable_to_start">无法启动生物识别验证提示。</string>
     <string name="account_server_settings_password_input_label">密码</string>
+    <string name="account_server_settings_pop3_hint_title">推荐使用 IMAP</string>
+    <string name="account_server_settings_pop3_hint_text">IMAP 让您的电子邮件在所有设备上保持同步。如果您的电子邮件服务提供者支持，请选择 IMAP。</string>
 </resources>

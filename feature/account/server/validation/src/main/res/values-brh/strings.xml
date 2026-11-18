@@ -1,3 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    </resources>
+    <string name="account_server_validation_error_authentication">تصدیق کننگ ٹی ردی</string>
+    <string name="account_server_validation_error_network">نیٹورک ردی</string>
+    <string name="account_server_validation_error_server">سرور ٹی ردی</string>
+    <string name="account_server_validation_error_unknown">ناچاہوک ردی</string>
+</resources>

@@ -35,4 +35,6 @@
     <string name="account_server_settings_password_authentication_failed">Autenticação falhou!</string>
     <string name="account_server_settings_password_authentication_unable_to_start">Não é possível iniciar o prompt biométrico.</string>
     <string name="account_server_settings_password_input_label">Senha</string>
+    <string name="account_server_settings_pop3_hint_title">IMAP é recomendado</string>
+    <string name="account_server_settings_pop3_hint_text">O IMAP mantém seu e-mail sincronizado em todos os seus dispositivos. Escolha IMAP se o seu provedor de e-mail oferecer suporte.</string>
 </resources>

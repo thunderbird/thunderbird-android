@@ -9,4 +9,9 @@
     <string name="navigation_drawer_dropdown_action_add_account">Add account</string>
     <string name="navigation_drawer_dropdown_action_sync_all_accounts">Sync all accounts</string>
     <string name="navigation_drawer_dropdown_action_sync_account">Sync account</string>
+    <string name="navigation_drawer_dropdown_unified_outbox_title">Outbox</string>
+    <string name="navigation_drawer_dropdown_unified_drafts_title">Drafts</string>
+    <string name="navigation_drawer_dropdown_unified_sent_title">Sent</string>
+    <string name="navigation_drawer_dropdown_unified_archive_title">Archive</string>
+    <string name="navigation_drawer_dropdown_unified_spam_title">Spam</string>
 </resources>

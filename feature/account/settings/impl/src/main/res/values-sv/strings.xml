@@ -30,10 +30,10 @@
     <string name="account_settings_show_pictures_never">Nej</string>
     <string name="account_settings_show_pictures_only_from_contacts">Från kontakter</string>
     <string name="account_settings_show_pictures_always">Från vem som helst</string>
-    <string name="account_settings_remove_account_action">Radera konto</string>
+    <string name="account_settings_remove_account_action">Ta bort konto</string>
     <string name="account_settings_okay_action">OK</string>
     <string name="account_settings_cancel_action">Avbryt</string>
-    <string name="account_settings_account_delete_dlg_title">Radera konto</string>
+    <string name="account_settings_account_delete_dlg_title">Ta bort konto</string>
     <string name="account_settings_account_delete_dlg_instructions_fmt">Kontot \"<xliff:g id="account">%1$s</xliff:g>\" kommer att raderas från <xliff:g id="app_name">%2$s</xliff:g>.</string>
     <string name="account_settings_search_action">Sök</string>
     <string name="account_settings_remote_search_num_results_entries_all">Alla</string>

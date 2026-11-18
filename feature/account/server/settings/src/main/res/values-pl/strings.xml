@@ -35,4 +35,6 @@
     <string name="account_server_settings_password_authentication_failed">Uwierzytelnianie się nie powiodło!</string>
     <string name="account_server_settings_password_authentication_unable_to_start">Nie można uruchomić monitu biometrycznego.</string>
     <string name="account_server_settings_password_input_label">Hasło</string>
+    <string name="account_server_settings_pop3_hint_text">IMAP zapewnia synchronizację poczty e-mail na wszystkich Twoich urządzeniach. Wybierz IMAP, jeśli Twój dostawca poczty e-mail obsługuje ten protokół.</string>
+    <string name="account_server_settings_pop3_hint_title">Zalecany jest protokół IMAP</string>
 </resources>

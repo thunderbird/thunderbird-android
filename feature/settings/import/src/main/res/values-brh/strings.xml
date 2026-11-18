@@ -1,3 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
-    </resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="settings_import_pick_document_button">فائل خوندی کبو</string>
+    <string name="settings_import_scan_qr_code_button">QR کوڈ اسکین کبو</string>
+    <string name="settings_import_pick_app_button">ایپ ان اتبو</string>
+    <string name="settings_import_password_required">بخشنداری کلیت لوز اس لکھبو</string>
+    <string name="settings_import_authorization_required">بخشندااری سائن ان کبو</string>
+    <string name="settings_import_authorization_and_password_required">بخشنداری سائن ان کبو و کلیت لوز لکھبو</string>
+    <string name="settings_import_failure">سیٹنگاک اتنگ متور</string>
+    <string name="settings_import_read_failure">سیٹنگاتا فائل خواننگ متو</string>
+    <string name="settings_import_partial_failure">منہ سیٹنگاکاک اتنگ متور</string>
+    <string name="settings_import_status_success">اتنگ کامیاب پس</string>
+    <string name="settings_import_status_password_required">کلیت لوز ضروری اے</string>
+    <string name="settings_import_status_log_in_required">سائن ان ضروری اے</string>
+    <plurals name="settings_import_password_prompt">
+        <item quantity="one">اکاونٹ \"<xliff:g id="account">%s</xliff:g>\" اے استعمال کننگ کن نمے سرور کلیت لوز اے ایتوی تمک.</item>
+        <item quantity="other">اکاونٹ \"<xliff:g id="account">%s</xliff:g>\" اے استعمال کننگ کن نمے سرور کلیت لوز اتے ایتوی تمک.</item>
+    </plurals>
+    <string name="settings_import_oauth_sign_in">سائن ان</string>
+    <string name="settings_import_oauth_sign_in_with_google">Google تون سائن ان</string>
+    <string name="settings_import_general_settings_item">عام سیٹنگاک</string>
+    <string name="settings_import_title">سیٹنگاتے اتبو</string>
+    <string name="settings_import_pick_app_dialog_title">ایپ ان اتبو</string>
+    <string name="settings_import_button">اتبو</string>
+    <string name="settings_import_success_generic">سیٹنگاک کامیابی ٹی اتنگار</string>
+    <string name="settings_import_status_not_imported">اتنگ تنو</string>
+    <string name="settings_import_status_error">اتنگ ٹی ناکامی</string>
+    <string name="settings_import_later_button">پدان</string>
+    <string name="settings_importing">سیٹنگاک اتنگ مرسہ او…</string>
+    <string name="settings_import_incoming_server_password_hint">اتوکا سرور نا کلیت لوز</string>
+    <string name="settings_import_outgoing_server_password_hint">دروکا سرور نا کلیت لوز</string>
+    <string name="settings_import_server_name_format">سرور نا پن: <xliff:g id="hostname">%s</xliff:g></string>
+    <string name="settings_import_oauth_error_browser_not_found">ایپ نما اکاونٹ کن اجازت النگ کن ہچو ویبگشت کروک اس پٹنگ کتو.</string>
+</resources>

@@ -1,3 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    </resources>
+    <string name="debug_settings_notifications_loading">لوڈ مرسہ اے…</string>
+    <string name="debug_settings_notifications_single_mail_sender">رای کروک</string>
+    <string name="debug_settings_notifications_single_mail_subject">سرحال</string>
+</resources>

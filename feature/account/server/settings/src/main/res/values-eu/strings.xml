@@ -34,4 +34,7 @@
     <string name="account_server_settings_incoming_imap_send_client_info_label">Bidali bezeroaren informazioa</string>
     <string name="account_server_settings_password_authentication_failed">Ezin izan da egiaztatu!</string>
     <string name="account_server_settings_password_authentication_unable_to_start">Ezin da abiarazi gonbita biometrikoa.</string>
+    <string name="account_server_settings_pop3_hint_title">IMAP gomendatzen da</string>
+    <string name="account_server_settings_pop3_hint_text">IMAPek zure posta elektronikoa sinkronizatuta mantentzen du zure gailu guztietan. Aukeratu IMAP zure posta-hornitzaileak onartzen badu.</string>
+    <string name="account_server_settings_password_input_label">Pasahitza</string>
 </resources>

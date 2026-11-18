@@ -35,4 +35,6 @@
     <string name="account_server_settings_password_input_label">Парола</string>
     <string name="account_server_settings_password_authentication_failed">Удостоверяването се провали!</string>
     <string name="account_server_settings_password_authentication_unable_to_start">Невъзможност за стартиране на биометрията.</string>
+    <string name="account_server_settings_pop3_hint_title">Препоръчителен IMAP</string>
+    <string name="account_server_settings_pop3_hint_text">IMAP синхронизира пощата на всичките ви устройства. Изберете IMAP, ако вашият доставчик на електронна поща го поддържа.</string>
 </resources>

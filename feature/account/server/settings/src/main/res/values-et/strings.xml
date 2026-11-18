@@ -35,4 +35,6 @@
     <string name="account_server_settings_password_authentication_failed">Autentimine ei õnnestunud!</string>
     <string name="account_server_settings_password_authentication_unable_to_start">Ei õnnestu käivitada biomeetrilise tuvastamise päringut.</string>
     <string name="account_server_settings_password_input_label">Salasõna</string>
+    <string name="account_server_settings_pop3_hint_title">IMAP on soovitatud</string>
+    <string name="account_server_settings_pop3_hint_text">IMAP-i protokoll aitab tagada, et sinu e-kirjad on kõikides seadmetes sünkroonis. Kui sinu teenusepakkuja seda toetab, siis vali IMAP.</string>
 </resources>

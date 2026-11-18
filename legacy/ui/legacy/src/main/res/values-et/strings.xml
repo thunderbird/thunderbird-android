@@ -966,4 +966,15 @@
     <string name="account_settings_folder_sync_and_push">Kaustade sünkroonimine ja tõuketeenused</string>
     <string name="account_settings_fetching_and_data_limits">Laadimine ja andmemahu piirangud</string>
     <string name="account_settings_folder_visibility">Kausta nähtavus</string>
+    <string name="unified_inbox_detail">Kõikide kasutajakontode ühine sisendpostkast</string>
+    <string name="unified_outbox_title">Koondväljundkaust</string>
+    <string name="unified_drafts_title">Koondkaust kavanditele</string>
+    <string name="unified_sent_title">Koondkaust saadetud kirjadele</string>
+    <string name="unified_archive_title">Koondkaust arhiivile</string>
+    <string name="unified_spam_title">Koondkaust rämpspostile</string>
+    <string name="unified_trash_title">Koondkaust prügikastile</string>
+    <string name="message_list_empty">Kirju pole</string>
+    <string name="message_list_empty_search">Tulemusi pole</string>
+    <string name="message_list_not_synced">Veel sünkroonimata</string>
+    <string name="message_list_not_synced_hint">Sünkroonimiseks viipa ülalt alla</string>
 </resources>

@@ -3,7 +3,7 @@
     <string name="unread_widget_select_account">Pokaż licznik nieprzeczytanych dla…</string>
     <string name="unread_widget_account_title">Konto</string>
     <string name="unread_widget_account_summary">Konto, dla którego liczba nieprzeczytanych wiadomości powinna być wyświetlana</string>
-    <string name="unread_widget_unified_inbox_account_summary">Zintegrowana skrzynka odbiorcza</string>
+    <string name="unread_widget_unified_inbox_account_summary">Ujednolicone odebrane</string>
     <string name="unread_widget_folder_enabled_title">Liczba folderów</string>
     <string name="unread_widget_folder_enabled_summary">Wyświetl licznik nieprzeczytanych wiadomości tylko dla pojedynczego folderu</string>
     <string name="unread_widget_folder_title">Folder</string>
