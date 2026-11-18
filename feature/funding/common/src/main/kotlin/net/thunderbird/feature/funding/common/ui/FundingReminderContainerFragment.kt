@@ -19,23 +19,45 @@ import org.koin.android.ext.android.inject
 
 class FundingReminderContainerFragment : DialogFragment() {
 
+    internal companion object {
+        const val FUNDING_DIALOG_HEADER = "header"
+        const val FUNDING_DIALOG_BODY = "body"
+    }
+
     private val themeProvider: FeatureThemeProvider by inject<FeatureThemeProvider>()
     private val appNameProvider: AppNameProvider by inject<AppNameProvider>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         dialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
 
+        val providedHeader: Int? = arguments?.getInt(FUNDING_DIALOG_HEADER)
+        val providedBody: Int? = arguments?.getInt(FUNDING_DIALOG_BODY)
+
+        val header: String = if (providedHeader != null) {
+            getString(providedHeader)
+        } else {
+            val appNameForHeader = appNameProvider.appName
+            getString(R.string.funding_reminder_title, appNameForHeader)
+        }
+
+        val body: String = if (providedBody != null) {
+            getString(providedBody)
+        } else {
+            val appNameForBody = if (appNameProvider.appName.lowercase().contains("thunderbird")) {
+                getString(R.string.funding_reminder_thunderbird_for_android)
+            } else {
+                appNameProvider.appName
+            }
+            getString(R.string.funding_reminder_appeal_content, appNameForBody)
+        }
+
         return ComposeView(requireContext()).apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
                 themeProvider.WithTheme(darkTheme = false) {
                     FundingReminderDialog(
-                        appNameHeader = appNameProvider.appName,
-                        appNameBody = if (appNameProvider.appName.lowercase().contains("thunderbird")) {
-                            stringResource(R.string.funding_reminder_thunderbird_for_android)
-                        } else {
-                            appNameProvider.appName
-                        },
+                        header = header,
+                        body = body,
                         onDismissClick = ::dismiss,
                         onOkClick = ::handlePositiveButton,
                     )
