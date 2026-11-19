@@ -41,7 +41,9 @@ class DetektPlugin : Plugin<Project> {
     @Suppress("UnstableApiUsage")
     private fun Project.configureDetekt() {
         extensions.configure<DetektExtension>("detekt") {
-            config.setFrom(isolated.rootProject.projectDirectory.file("config/detekt/detekt.yml").asFile)
+            // CI can pass -Ptfa.detekt.config=<path> to run with a narrower config, see detekt-ci-type-resolution.yml
+            val configPath = providers.gradleProperty(DETEKT_CONFIG_PROPERTY).getOrElse(DEFAULT_DETEKT_CONFIG)
+            config.setFrom(isolated.rootProject.projectDirectory.file(configPath).asFile)
 
             ignoredBuildTypes = listOf("release")
         }
@@ -91,6 +93,9 @@ class DetektPlugin : Plugin<Project> {
         }
     }
 }
+
+private const val DETEKT_CONFIG_PROPERTY = "tfa.detekt.config"
+private const val DEFAULT_DETEKT_CONFIG = "config/detekt/detekt.yml"
 
 private fun buildDirectoryExclusion(buildDirectory: File): (FileTreeElement) -> Boolean {
     val buildDirectoryPath = buildDirectory.normalizedPath()

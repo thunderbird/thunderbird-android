@@ -1,0 +1,37 @@
+# CI-only detekt config for the type-resolved tasks (`./gradlew detektAll -Ptfa.detekt.config=<this file>`).
+#
+# The type-resolved tasks (detekt<Variant>, e.g. detektDebugUnitTest) run rules that plain `./gradlew detekt` can't,
+# but they also report a large backlog of findings for other rules. This config enables only the rules we enforce
+# in CI so far. Rules not listed here are inactive.
+#
+# Keep rule settings in sync with detekt.yml.
+
+config:
+  validation: true
+  warningsAsErrors: false
+
+potential-bugs:
+  active: true
+  IgnoredReturnValue:
+    active: true
+    restrictToConfig: true
+    returnValueAnnotations:
+      - 'CheckResult'
+      - '*.CheckResult'
+      - 'CheckReturnValue'
+      - '*.CheckReturnValue'
+    ignoreReturnValueAnnotations:
+      - 'CanIgnoreReturnValue'
+      - '*.CanIgnoreReturnValue'
+    returnValueTypes:
+      - 'kotlin.Function*'
+      - 'kotlin.sequences.Sequence'
+      - 'kotlinx.coroutines.flow.*Flow'
+      - 'java.util.stream.*Stream'
+      - 'assertk.Assert'
+    ignoreFunctionCall:
+      # assertk assertions that return an Assert for optional chaining but are complete on their own
+      - 'assertk.assertions.isInstanceOf'
+      - 'assertk.assertions.isNotNull'
+      - 'assertk.assertions.isSuccess'
+      - 'assertk.assertions.isFailure'
