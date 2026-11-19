@@ -32,8 +32,8 @@ import androidx.compose.ui.window.Dialog as MaterialDialog
 
 @Composable
 fun FundingReminderDialog(
-    appNameHeader: String,
-    appNameBody: String,
+    header: String,
+    body: String,
     onDismissClick: () -> Unit,
     onOkClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -43,8 +43,8 @@ fun FundingReminderDialog(
         properties = DialogProperties(),
     ) {
         FundingReminderContent(
-            appNameHeader,
-            appNameBody,
+            header,
+            body,
             onDismissClick,
             onOkClick,
             modifier,
@@ -54,8 +54,8 @@ fun FundingReminderDialog(
 
 @Composable
 private fun FundingReminderContent(
-    appNameHeader: String,
-    appNameBody: String,
+    header: String,
+    body: String,
     onDismissClick: () -> Unit,
     onOkClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -77,13 +77,13 @@ private fun FundingReminderContent(
             )
             Spacer(modifier = Modifier.height(BoltTheme.spacings.triple))
             TextHeadlineSmall(
-                text = stringResource(R.string.funding_reminder_title, appNameHeader),
+                text = header,
                 textAlign = TextAlign.Center,
                 color = BoltTheme.colors.secondary,
             )
             Spacer(modifier = Modifier.height(BoltTheme.spacings.double))
             TextBodyMedium(
-                text = stringResource(R.string.funding_reminder_appeal_content, appNameBody),
+                text = body,
             )
             Spacer(modifier = Modifier.height(BoltTheme.spacings.triple))
             Row(
@@ -114,8 +114,8 @@ private fun FundingReminderContent(
 private fun FundingReminderContentPreview() {
     PreviewWithTheme {
         FundingReminderContent(
-            appNameHeader = "Thunderbird",
-            appNameBody = "Thunderbird for Android",
+            header = "Thunderbird",
+            body = "Support Thunderbird! We need your support to make the best email app even better!",
             onDismissClick = {},
             onOkClick = {},
         )
