@@ -108,7 +108,7 @@
     </string-array>
 
     <string-array name="background_ops_entries">
-        <item>@string/background_ops_auto_sync_only</item>
+        <item>@string/background_ops_follow_android_auto_sync</item>
         <item>@string/background_ops_always</item>
         <item>@string/background_ops_never</item>
     </string-array>

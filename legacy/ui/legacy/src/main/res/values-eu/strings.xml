@@ -505,7 +505,6 @@
     <string name="background_ops_label">Atzeko planoko sinkronizazioa</string>
     <string name="background_ops_never">Inoiz ez</string>
     <string name="background_ops_always">Beti</string>
-    <string name="background_ops_auto_sync_only">\'Auto-sinkronizazioa\' hautatuta dagoenean</string>
     <string name="batch_select_all">Hautatu guztia</string>
     <string name="account_setup_push_limit_label">\"Push\"ekin egiaztatuko diren karpeta kopuru maximoa</string>
     <string name="account_setup_push_limit_5">5 karpeta</string>

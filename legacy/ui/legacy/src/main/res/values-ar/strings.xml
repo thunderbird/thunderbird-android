@@ -513,7 +513,6 @@
     <string name="background_ops_label">المزامنة في الخلفية</string>
     <string name="background_ops_never">أبدًا</string>
     <string name="background_ops_always">دائمًا</string>
-    <string name="background_ops_auto_sync_only">عند تحديد \"المزامنة التلقائية\"</string>
     <string name="batch_select_all">حدد الكل</string>
     <string name="account_setup_push_limit_label">أقصى عدد من المجلدات للتحقق مع الدفع</string>
     <string name="account_setup_push_limit_5">5 مجلدات</string>

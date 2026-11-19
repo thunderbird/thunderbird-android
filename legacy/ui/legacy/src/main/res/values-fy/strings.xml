@@ -505,7 +505,6 @@
     <string name="background_ops_label">Eftergrûnsyngronisaasje</string>
     <string name="background_ops_never">Nea</string>
     <string name="background_ops_always">Altyd</string>
-    <string name="background_ops_auto_sync_only">As ‘Auto-sync’ selektearre is</string>
     <string name="batch_select_all">Alle selektearje</string>
     <string name="account_setup_push_limit_label">Maks. tal pushmappen om te kontrolearjen</string>
     <string name="account_setup_push_limit_5">5 mappen</string>
