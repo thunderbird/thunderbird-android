@@ -2,9 +2,9 @@ package net.thunderbird.core.file
 
 import android.content.Context
 import android.net.Uri
-import assertk.assertFailure
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import assertk.assertions.isFalse
 import assertk.fail
 import com.eygraber.uri.toKmpUri
 import kotlinx.io.Buffer
@@ -156,8 +156,9 @@ class AndroidFileSystemManagerTest {
         try {
             testSubject.delete(uri.toKmpUri())
         } catch (e: Exception) {
-            assertFailure { throw e }
+            fail("Deletion of existing file threw an exception: ${e.message}")
         }
+        assertThat(tempFile.exists()).isFalse()
     }
 
     @Test
