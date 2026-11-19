@@ -62,7 +62,7 @@ class FundingReminder(
                 return@launch
             }
 
-            // If the reminder reference timestamp is not set, we set it to the first install time.
+            // Set reference to first launch of activity setting up reminder
             if (settings.getReminderReferenceTimestamp() == 0L) {
                 resetReminderReferenceTimestamp()
             }
