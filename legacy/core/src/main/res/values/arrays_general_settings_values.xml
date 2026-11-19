@@ -212,6 +212,7 @@
 
     <string-array name="messageview_visible_refile_actions_values" translatable="false">
         <item>delete</item>
+        <item>toggle_unread</item>
         <item>archive</item>
         <item>move</item>
         <item>copy</item>
