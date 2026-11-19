@@ -13,7 +13,7 @@ internal class FakeFundingSettings(
         return reminderReferenceTimestamp
     }
 
-    override fun setReminderReferenceTimestamp(timestamp: Long) {
+    override suspend fun setReminderReferenceTimestamp(timestamp: Long) {
         reminderReferenceTimestamp = timestamp
     }
 
@@ -21,7 +21,7 @@ internal class FakeFundingSettings(
         return reminderShownTimestamp
     }
 
-    override fun setReminderShownTimestamp(timestamp: Long) {
+    override suspend fun setReminderShownTimestamp(timestamp: Long) {
         reminderShownTimestamp = timestamp
     }
 

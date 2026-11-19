@@ -38,5 +38,6 @@ internal object StorageMigrations {
         if (oldVersion < 29) StorageMigrationTo29(db, migrationsHelper).renameAutoSelectFolderPreference()
         if (oldVersion < 30) StorageMigrationTo30(db, migrationsHelper).migrateAnimationSetting()
         if (oldVersion < 31) StorageMigrationTo31(db, migrationsHelper).migrateMessageFormatAuto()
+        if (oldVersion < 32) StorageMigrationTo32(db, migrationsHelper).migrateK9FundingRemoval()
     }
 }
