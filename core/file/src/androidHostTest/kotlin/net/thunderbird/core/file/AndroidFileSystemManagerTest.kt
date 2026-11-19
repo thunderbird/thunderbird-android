@@ -162,6 +162,19 @@ class AndroidFileSystemManagerTest {
     }
 
     @Test
+    fun `delete should ignore query parameters on file URIs`() {
+        // Arrange
+        val tempFile = folder.newFile("tb-file-fs-test-android-delete-query.txt")
+        val uri = Uri.fromFile(tempFile).buildUpon().appendQueryParameter("v", "1").build()
+
+        // Act
+        testSubject.delete(uri.toKmpUri())
+
+        // Assert
+        assertThat(tempFile.exists()).isFalse()
+    }
+
+    @Test
     fun `delete non existing file should not throw`() {
         // Arrange
         val tempFile = folder.newFile("tb-file-fs-test-android-delete-missing.txt")
