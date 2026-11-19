@@ -343,6 +343,7 @@ class BannerGlobalNotificationHostTest : ComposeTest() {
             .assertIsDisplayed()
             .onChildren()
             .filterToOne(hasTextExactly(contentText))
+            .assertIsDisplayed()
 
         printSemanticTree()
         onNodeWithText(actionText).performClick()
