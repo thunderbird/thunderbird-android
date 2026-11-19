@@ -2,7 +2,8 @@ package net.thunderbird.app.common.feature.funding.configstore
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
-import assertk.assertions.isNull
+import assertk.assertions.isFalse
+import assertk.assertions.isTrue
 import kotlin.test.Test
 import kotlinx.coroutines.test.runTest
 import net.thunderbird.core.configstore.Config
@@ -38,6 +39,7 @@ class FundingConfigMigrationTest {
     @Test
     fun `migrate should reset data when upgrading from 1 to 2`() = runTest {
         val currentConfig = getVersionOneFundingShownConfig()
+        val originalConfig = currentConfig.copy() // Migration changes given config
         val resetConfig = getDefaultFundingShownConfig()
 
         val migrationResult = fundingConfigMigration.migrate(
@@ -47,8 +49,19 @@ class FundingConfigMigrationTest {
         ) as ConfigMigrationResult.Migrated
 
         // Migration changed data and matches reset
-        assertThat(migrationResult.updated != currentConfig)
-        assertThat(migrationResult.updated == resetConfig)
+        assertThat(migrationResult.updated == originalConfig).isFalse()
+        assertThat(
+            migrationResult.updated[FundingConfigKeys.FUNDING_REMINDER_COUNT] ==
+                resetConfig[FundingConfigKeys.FUNDING_REMINDER_COUNT],
+        ).isTrue()
+        assertThat(
+            migrationResult.updated[FundingConfigKeys.LAST_FUNDING_REMINDER_SHOWN] ==
+                resetConfig[FundingConfigKeys.LAST_FUNDING_REMINDER_SHOWN],
+        ).isTrue()
+        assertThat(
+            migrationResult.updated[FundingConfigKeys.REMINDER_REFERENCE_TIMESTAMP] ==
+                resetConfig[FundingConfigKeys.REMINDER_REFERENCE_TIMESTAMP],
+        ).isTrue()
 
         // Migration has flagged keys for ConfigBackend to remove
         assertThat(
@@ -61,6 +74,7 @@ class FundingConfigMigrationTest {
     @Test
     fun `migrate should reset data when upgrading from 1 to 2, then set new data`() = runTest {
         val currentConfig = getVersionOneFundingShownConfig()
+        val originalConfig = currentConfig.copy() // Migration changes given config
         val resetConfig = getDefaultFundingShownConfig()
 
         val migrationResult = fundingConfigMigration.migrate(
@@ -69,9 +83,20 @@ class FundingConfigMigrationTest {
             current = currentConfig,
         ) as ConfigMigrationResult.Migrated
 
-        // Migration reset data to expected values
-        assertThat(migrationResult.updated != currentConfig)
-        assertThat(migrationResult.updated == resetConfig)
+        // Migration changed data and matches reset
+        assertThat(migrationResult.updated == originalConfig).isFalse()
+        assertThat(
+            migrationResult.updated[FundingConfigKeys.FUNDING_REMINDER_COUNT] ==
+                resetConfig[FundingConfigKeys.FUNDING_REMINDER_COUNT],
+        ).isTrue()
+        assertThat(
+            migrationResult.updated[FundingConfigKeys.LAST_FUNDING_REMINDER_SHOWN] ==
+                resetConfig[FundingConfigKeys.LAST_FUNDING_REMINDER_SHOWN],
+        ).isTrue()
+        assertThat(
+            migrationResult.updated[FundingConfigKeys.REMINDER_REFERENCE_TIMESTAMP] ==
+                resetConfig[FundingConfigKeys.REMINDER_REFERENCE_TIMESTAMP],
+        ).isTrue()
 
         // Migration has flagged keys for ConfigBackend to remove
         assertThat(
