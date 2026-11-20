@@ -62,7 +62,7 @@ fun <T> HorizontalTabPagerSecondary(
     content: HorizontalTabPagerScope<T, TabSecondaryConfig>.() -> Unit,
 ) {
     val scope = remember(initialSelected, content) {
-        HorizontalTabPagerSecondaryImpl(initialSelected).apply { content() }
+        DefaultHorizontalTabPagerSecondary(initialSelected).apply { content() }
     }
 
     if (scope.pages.isEmpty()) return
@@ -105,7 +105,7 @@ fun <T> HorizontalTabPagerSecondary(
     }
 }
 
-private class HorizontalTabPagerSecondaryImpl<T>(
+private class DefaultHorizontalTabPagerSecondary<T>(
     private val initialPage: T,
 ) : HorizontalTabPagerScope<T, TabSecondaryConfig> {
     val initialPageIndex get() = pages.indexOfFirst { it.value == initialPage }.takeIf { it >= 0 } ?: 0

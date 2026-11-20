@@ -69,7 +69,7 @@ fun <T> HorizontalTabPagerPrimary(
     content: HorizontalTabPagerScope<T, TabPrimaryConfig>.() -> Unit,
 ) {
     val scope = remember(initialSelected, content) {
-        HorizontalTabPagerPrimaryImpl(initialSelected).apply { content() }
+        DefaultHorizontalTabPagerPrimary(initialSelected).apply { content() }
     }
 
     if (scope.pages.isEmpty()) return
@@ -122,7 +122,7 @@ fun <T> HorizontalTabPagerPrimary(
     }
 }
 
-private class HorizontalTabPagerPrimaryImpl<T>(
+private class DefaultHorizontalTabPagerPrimary<T>(
     private val initialPage: T,
 ) : HorizontalTabPagerScope<T, TabPrimaryConfig> {
     val initialPageIndex get() = pages.indexOfFirst { it.value == initialPage }.takeIf { it >= 0 } ?: 0
