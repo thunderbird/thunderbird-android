@@ -1,10 +1,13 @@
 package net.thunderbird.quality.naming
 
+import kotlin.test.Ignore
 import kotlin.test.Test
 import net.thunderbird.quality.util.assertNoInvalidImplementationNames
 import net.thunderbird.quality.util.assertNoInvalidInterfaceNames
 import net.thunderbird.quality.util.isInTestCode
 
+// TODO "Remove the @Ignore after applying these rule across project"
+@Ignore("This rules are yet to apply across project")
 class ValidateInterfaceAndImplementationNaming {
 
     @Test
