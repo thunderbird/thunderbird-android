@@ -1,5 +1,6 @@
 package com.fsck.k9.mailstore
 
+import app.k9mail.legacy.mailstore.MessageListRepository
 import app.k9mail.legacy.mailstore.MessageStoreManager
 import net.thunderbird.backend.api.BackendStorageFactory
 import net.thunderbird.core.android.account.LegacyAccountManager
@@ -15,6 +16,7 @@ class K9BackendStorageFactory(
     private val messageStoreManager: MessageStoreManager,
     private val specialFolderUpdaterFactory: SpecialFolderUpdater.Factory,
     private val saveMessageDataCreator: SaveMessageDataCreator,
+    private val messageListRepository: MessageListRepository,
 ) : BackendStorageFactory {
     override fun createBackendStorage(accountId: AccountId): K9BackendStorage {
         val messageStore = messageStoreManager.getMessageStore(accountId)
@@ -26,7 +28,8 @@ class K9BackendStorageFactory(
             accountId = accountId,
             folderQueryRepository = folderQueryRepository,
         )
-        val listeners = listOf(specialFolderListener, autoExpandFolderListener)
+        val messageListListener = MessageListBackendFoldersRefreshListener(messageListRepository, accountId)
+        val listeners = listOf(specialFolderListener, autoExpandFolderListener, messageListListener)
         return K9BackendStorage(
             messageStore = messageStore,
             folderSettingsProvider = folderSettingsProvider,

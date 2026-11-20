@@ -26,6 +26,7 @@ import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.commit
 import androidx.fragment.app.commitNow
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.withResumed
 import app.k9mail.core.android.common.compat.BundleCompat
 import app.k9mail.core.android.common.contact.CachingRepository
 import app.k9mail.core.android.common.contact.ContactRepository
@@ -163,6 +164,8 @@ open class MessageHomeActivity :
 
     private val isShowAccountIndicator: Boolean
         get() = messageListFragment?.isShowAccountIndicator ?: true
+
+    private var handledDeletedFolderId: Long? = null
 
     @Suppress("ReturnCount")
     public override fun onCreate(savedInstanceState: Bundle?) {
@@ -1300,6 +1303,31 @@ open class MessageHomeActivity :
 
     override fun goBack() {
         onBackPressedDispatcher.onBackPressed()
+    }
+
+    override fun onFolderDeleted(accountId: AccountId, folderId: Long) {
+        // Called from a LiveData observer of the message list fragment; wait until it's safe to replace that fragment.
+        lifecycleScope.launch {
+            withResumed { openDefaultFolderAfterDeletion(accountId, folderId) }
+        }
+    }
+
+    private fun openDefaultFolderAfterDeletion(accountId: AccountId, deletedFolderId: Long) {
+        val defaultFolderId = defaultFolderProvider.getDefaultFolder(accountId)
+        if (defaultFolderId == deletedFolderId || handledDeletedFolderId == deletedFolderId) return
+        handledDeletedFolderId = deletedFolderId
+
+        supportFragmentManager.popBackStackImmediate(
+            FIRST_FRAGMENT_TRANSACTION,
+            FragmentManager.POP_BACK_STACK_INCLUSIVE,
+        )
+        if (displayMode == DisplayMode.MESSAGE_VIEW) {
+            removeMessageViewContainerFragment()
+            showMessageList()
+        }
+
+        openFolder(accountId, defaultFolderId)
+        commitOpenFolderTransaction()
     }
 
     override fun closeMessageView() {

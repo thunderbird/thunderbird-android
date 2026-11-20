@@ -1830,6 +1830,13 @@ class MessageListFragment :
     }
 
     private fun setMessageList(messageListInfo: MessageListInfo) {
+        val deletedFolderId = messageListInfo.deletedFolderId
+        val deletedFolderAccountId = account?.id
+        if (deletedFolderId != null && deletedFolderAccountId != null) {
+            fragmentListener.onFolderDeleted(deletedFolderAccountId, deletedFolderId)
+            return
+        }
+
         val messageListItems = messageListInfo.messageListItems
         if (isThreadDisplay && messageListItems.isEmpty()) {
             goBack()
