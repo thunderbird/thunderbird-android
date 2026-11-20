@@ -6,16 +6,17 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 import android.content.Context;
 import android.net.Uri;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
+import androidx.annotation.WorkerThread;
 
 import com.fsck.k9.helper.MimeTypeUtil;
 import net.thunderbird.feature.account.AccountId;
 import net.thunderbird.legacy.logging.Log;
-import androidx.annotation.WorkerThread;
 
 import com.fsck.k9.mail.Body;
 import net.thunderbird.core.common.exception.MessagingException;
@@ -139,8 +140,12 @@ public class AttachmentInfoExtractor {
         }
 
         long attachmentSize = extractAttachmentSize(contentDisposition, size);
+        String attachmentMimeType = Objects.requireNonNull(
+                MimeTypeUtil.getMimeTypeForFilename(name, mimeType),
+                "Failed to determine MIME type for attachment");
 
-        return new AttachmentViewInfo(mimeType, name, attachmentSize, uri, inlineAttachment, part, isContentAvailable);
+        return new AttachmentViewInfo(
+                attachmentMimeType, name, attachmentSize, uri, inlineAttachment, part, isContentAvailable);
     }
 
     @WorkerThread
