@@ -1,3 +1,4 @@
+import dev.detekt.gradle.Detekt
 import java.util.Properties
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
@@ -26,6 +27,11 @@ tasks.named<KotlinCompile>("compileTestKotlin") {
     // Remove fixture source as they are not part of the production code and to avoid class
     // redeclaration at build.
     exclude("*.fixture.kt")
+}
+
+tasks.withType<Detekt>().configureEach {
+    // Fixtures are test input for the compiler plugin, not code to lint.
+    exclude("**/*.fixture.kt")
 }
 
 dependencies {

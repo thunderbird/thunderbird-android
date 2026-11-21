@@ -1,10 +1,14 @@
 package net.thunderbird.feature.account.avatar.data.datasource
 
+import assertk.assertFailure
 import assertk.assertThat
-import assertk.assertions.contains
+import assertk.assertions.containsExactly
+import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
+import assertk.assertions.isInstanceOf
 import com.eygraber.uri.Uri
 import com.eygraber.uri.toKmpUri
+import java.io.IOException
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.time.ExperimentalTime
@@ -69,13 +73,35 @@ class LocalAvatarImageDataSourceTest {
         assertThat(fileManager.lastCopySource).isEqualTo(source)
         assertThat(fileManager.lastCopyDestination).isEqualTo(expectedDest)
 
-        val expectedPngDel = expectedDir.buildUpon()
-            .appendPath("$accountId.png")
-            .appendQueryParameter("v", "1000")
-            .build()
+        val expectedPngDel = expectedDir.buildUpon().appendPath("$accountId.png").build()
 
-        assertThat(fileManager.deletedPaths).contains(expectedPngDel)
-        assertThat(fileManager.deletedPaths).contains(expectedVersioned)
+        assertThat(fileManager.deletedPaths).containsExactly(expectedPngDel)
+    }
+
+    @Test
+    fun `update should throw and keep existing files when copy fails`() = runTest {
+        val accountId = AccountIdFactory.create()
+        val source = "file:///external/picked/image.jpg".toKmpUri()
+        mimeTypeResolver.mimeTypeToReturn = MimeType.JPEG
+        fileManager.copyOutcome = Outcome.Failure(FileOperationError.Unknown("copy failed"))
+
+        assertFailure { testSubject.update(accountId, source) }
+            .isInstanceOf<IOException>()
+
+        assertThat(fileManager.deletedPaths).isEmpty()
+    }
+
+    @Test
+    fun `update should succeed when removing the stale file fails`() = runTest {
+        val accountId = AccountIdFactory.create()
+        val source = "file:///external/picked/image.jpg".toKmpUri()
+        mimeTypeResolver.mimeTypeToReturn = MimeType.JPEG
+        fileManager.deleteOutcome = Outcome.Failure(FileOperationError.Unknown("delete failed"))
+
+        val returned = testSubject.update(accountId, source)
+
+        val expectedDest = getAvatarDir().buildUpon().appendPath("$accountId.jpg").build()
+        assertThat(returned).isEqualTo(expectedDest.buildUpon().appendQueryParameter("v", "1000").build())
     }
 
     @Test
@@ -101,19 +127,21 @@ class LocalAvatarImageDataSourceTest {
     fun `delete should remove both JPG and PNG paths`() = runTest {
         val accountId = AccountIdFactory.create()
         val expectedDir = getAvatarDir()
-        val jpgPath = expectedDir.buildUpon()
-            .appendPath("$accountId.jpg")
-            .appendQueryParameter("v", "1000")
-            .build()
-        val pngPath = expectedDir.buildUpon()
-            .appendPath("$accountId.png")
-            .appendQueryParameter("v", "1000")
-            .build()
+        val jpgPath = expectedDir.buildUpon().appendPath("$accountId.jpg").build()
+        val pngPath = expectedDir.buildUpon().appendPath("$accountId.png").build()
 
         testSubject.delete(accountId)
 
-        assertThat(fileManager.deletedPaths).contains(jpgPath)
-        assertThat(fileManager.deletedPaths).contains(pngPath)
+        assertThat(fileManager.deletedPaths).containsExactly(jpgPath, pngPath)
+    }
+
+    @Test
+    fun `delete should throw when a file can not be deleted`() = runTest {
+        val accountId = AccountIdFactory.create()
+        fileManager.deleteOutcome = Outcome.Failure(FileOperationError.Unknown("delete failed"))
+
+        assertFailure { testSubject.delete(accountId) }
+            .isInstanceOf<IOException>()
     }
 
     private fun getAvatarDir(): Uri {
@@ -131,16 +159,18 @@ class LocalAvatarImageDataSourceTest {
         var lastCopySource: Uri? = null
         var lastCopyDestination: Uri? = null
         val deletedPaths = mutableListOf<Uri>()
+        var copyOutcome: Outcome<Unit, FileOperationError> = Outcome.Success(Unit)
+        var deleteOutcome: Outcome<Unit, FileOperationError> = Outcome.Success(Unit)
 
         override suspend fun copy(sourceUri: Uri, destinationUri: Uri): Outcome<Unit, FileOperationError> {
             lastCopySource = sourceUri
             lastCopyDestination = destinationUri
-            return Outcome.Success(Unit)
+            return copyOutcome
         }
 
         override suspend fun delete(uri: Uri): Outcome<Unit, FileOperationError> {
             deletedPaths.add(uri)
-            return Outcome.Success(Unit)
+            return deleteOutcome
         }
 
         override suspend fun createDirectories(uri: Uri): Outcome<Unit, FileOperationError> {

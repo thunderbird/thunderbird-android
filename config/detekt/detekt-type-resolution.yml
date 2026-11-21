@@ -1,0 +1,37 @@
+# Detekt config for the type-resolved tasks (detekt<Variant>, e.g. detektDebugUnitTest or detektMainJvm).
+#
+# The type-resolved tasks run rules that plain `./gradlew detekt` can't, but with detekt.yml they also report a large
+# backlog of findings for other rules. The build plugin therefore runs them with this config, which enables only the
+# rules we enforce so far. Rules not listed here are inactive.
+#
+# Keep rule settings in sync with detekt.yml.
+
+config:
+  validation: true
+  warningsAsErrors: false
+
+potential-bugs:
+  active: true
+  IgnoredReturnValue:
+    active: true
+    restrictToConfig: true
+    returnValueAnnotations:
+      - 'CheckResult'
+      - '*.CheckResult'
+      - 'CheckReturnValue'
+      - '*.CheckReturnValue'
+    ignoreReturnValueAnnotations:
+      - 'CanIgnoreReturnValue'
+      - '*.CanIgnoreReturnValue'
+    returnValueTypes:
+      - 'kotlin.Function*'
+      - 'kotlin.sequences.Sequence'
+      - 'kotlinx.coroutines.flow.*Flow'
+      - 'java.util.stream.*Stream'
+      - 'assertk.Assert'
+    ignoreFunctionCall:
+      # assertk assertions that return an Assert for optional chaining but are complete on their own
+      - 'assertk.assertions.isInstanceOf'
+      - 'assertk.assertions.isNotNull'
+      - 'assertk.assertions.isSuccess'
+      - 'assertk.assertions.isFailure'

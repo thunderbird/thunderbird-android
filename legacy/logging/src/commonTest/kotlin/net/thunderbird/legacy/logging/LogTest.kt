@@ -38,6 +38,7 @@ class LogTest {
         )
     }
 
+    @Suppress("LongMethod")
     @Test
     fun `log should add all event to the logger`() {
         // Arrange
@@ -127,6 +128,7 @@ class LogTest {
         )
     }
 
+    @Suppress("LongMethod")
     @Test
     fun `legacy methods should log correctly`() {
         // Arrange

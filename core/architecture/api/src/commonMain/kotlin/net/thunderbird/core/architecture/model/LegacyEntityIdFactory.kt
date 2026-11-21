@@ -39,6 +39,7 @@ abstract class LegacyEntityIdFactory<TEntityId : BaseUuidIdentifier>(
      * reserved for the UUID version, the entity type, and the fixed marker. It is therefore split
      * in two parts, this one being written to bytes 4-5 of the UUID.
      */
+    @Suppress("MagicNumber") // Bit masks and shifts of the UUID byte layout
     private val Long.upper16bits: Long
         get() = (this ushr 48) and 0xFFFFL
 
@@ -50,6 +51,7 @@ abstract class LegacyEntityIdFactory<TEntityId : BaseUuidIdentifier>(
      * identifier, as values beyond 48 bits are not expected in practice. It is written to bytes
      * 10-15 of the UUID.
      */
+    @Suppress("MagicNumber") // Bit masks and shifts of the UUID byte layout
     private val Long.lower48bits: Long
         get() = this and 0x0000_FFFF_FFFF_FFFFL
 
@@ -106,6 +108,7 @@ abstract class LegacyEntityIdFactory<TEntityId : BaseUuidIdentifier>(
      * @param legacyId The legacy numeric identifier to encode.
      * @return A UUID encoding the legacy ID and the entity type.
      */
+    @Suppress("MagicNumber") // Bit masks and shifts of the UUID byte layout
     private fun generateUuid(legacyId: Long): Uuid {
         val upper = legacyId.upper16bits
         val lower = legacyId.lower48bits
@@ -140,6 +143,7 @@ abstract class LegacyEntityIdFactory<TEntityId : BaseUuidIdentifier>(
      * @param lower48 The least significant 48 bits of the legacy ID.
      * @return The recombined legacy numeric identifier.
      */
+    @Suppress("MagicNumber") // Bit masks and shifts of the UUID byte layout
     private fun Uuid.Companion.from(upper16: Long, lower48: Long): Long =
         ((upper16 and 0xFFFFL) shl 48) or (lower48 and 0x0000_FFFF_FFFF_FFFFL)
 

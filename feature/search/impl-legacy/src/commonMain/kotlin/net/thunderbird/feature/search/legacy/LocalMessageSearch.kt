@@ -207,6 +207,7 @@ class LocalMessageSearch : MessageSearchSpecification {
      * [folderIdOf] returns the account's folder ID for a folder role, or `null` if the account doesn't have
      * that folder. Conditions on the legacy integrate flag are ignored. Other searches return [conditions].
      */
+    @Suppress("ReturnCount")
     fun conditionsForAccount(folderIdOf: (FolderRole) -> Long?): SearchConditionTreeNode? {
         val unifiedType = type as? LocalMessageSearchType.Unified ?: return conditions
         val role = when (val folder = unifiedType.folder) {

@@ -111,15 +111,19 @@ class ValidateServerTest {
         return testSubject.execute(input)
     }
 
-    private fun Assert<ValidationOutcome>.isSuccess() = isInstanceOf<Outcome.Success<Unit>>()
+    private fun Assert<ValidationOutcome>.isSuccess() {
+        isInstanceOf<Outcome.Success<Unit>>()
+    }
 
-    private fun Assert<ValidationOutcome>.isFailureEmptyServer() =
+    private fun Assert<ValidationOutcome>.isFailureEmptyServer() {
         isInstanceOf<Outcome.Failure<ValidationError>>()
             .prop(Outcome.Failure<ValidationError>::error)
             .isInstanceOf(ValidateServerError.EmptyServer::class)
+    }
 
-    private fun Assert<ValidationOutcome>.isFailureInvalidDomainOrIpAddress() =
+    private fun Assert<ValidationOutcome>.isFailureInvalidDomainOrIpAddress() {
         isInstanceOf<Outcome.Failure<ValidationError>>()
             .prop(Outcome.Failure<ValidationError>::error)
             .isInstanceOf(ValidateServerError.InvalidHostnameOrIpAddress::class)
+    }
 }

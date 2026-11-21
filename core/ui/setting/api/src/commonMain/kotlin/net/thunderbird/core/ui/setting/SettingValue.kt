@@ -25,7 +25,8 @@ sealed interface SettingValue<T> : Setting {
      * @param icon A lambda that returns the icon of the setting as an [ImageVector]. Default is null.
      * @param value The current value of the setting.
      * @param transform A function that transforms the entered string value. Default is the identity function.
-     * @param validate A function that validates the entered string value and returns an error message if invalid. Default is always valid.
+     * @param validate A function that validates the entered string value and returns an error message if invalid.
+     *  Default is always valid.
      */
     data class Text(
         override val id: String,
@@ -140,8 +141,8 @@ sealed interface SettingValue<T> : Setting {
         override val requiresEditView: Boolean = false
 
         init {
-            require(options.size >= 2) { "There must be at least two options." }
-            require(options.size <= 4) { "There can be at most four options." }
+            require(options.size >= MIN_OPTIONS) { "There must be at least two options." }
+            require(options.size <= MAX_OPTIONS) { "There can be at most four options." }
         }
 
         data class SegmentedButtonOption<T>(
@@ -149,6 +150,11 @@ sealed interface SettingValue<T> : Setting {
             val title: () -> String,
             val value: T,
         )
+
+        private companion object {
+            const val MIN_OPTIONS = 2
+            const val MAX_OPTIONS = 4
+        }
     }
 
     /**
