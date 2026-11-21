@@ -24,10 +24,10 @@ permissions:
   contents: read
 
 jobs:
-  quality-spotless:
-    name: Spotless check
+  quality-static-checks:
+    name: Static checks
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 45
 
     steps:
       - name: Checkout the repo
@@ -41,22 +41,17 @@ jobs:
       - name: Quality - Spotless
         run: ./gradlew spotlessCheck
 
-  quality-detekt:
-    name: Detekt check
-    runs-on: ubuntu-latest
-    timeout-minutes: 30
-
-    steps:
-      - name: Checkout the repo
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          fetch-depth: 1
-
-      - name: Setup Gradle environment
-        uses: ./.github/actions/setup-gradle
-
       - name: Quality - Detekt
+        if: ${{ !cancelled() }}
         run: ./gradlew detekt
+
+      - name: Quality - Konsist
+        if: ${{ !cancelled() }}
+        run: ./gradlew :quality:konsist:test
+
+      - name: Quality - Dependency guard
+        if: ${{ !cancelled() }}
+        run: ./gradlew dependencyGuard
 
   quality-detekt-type-resolution:
     name: Detekt check (type resolution)
@@ -75,37 +70,3 @@ jobs:
       - name: Quality - Detekt with type resolution
         # The type-resolved tasks use config/detekt/detekt-type-resolution.yml, see DetektPlugin
         run: ./gradlew detektAll --continue
-
-  quality-dependency-guard:
-    name: Dependency guard check
-    runs-on: ubuntu-latest
-    timeout-minutes: 30
-
-    steps:
-      - name: Checkout the repo
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          fetch-depth: 1
-
-      - name: Setup Gradle environment
-        uses: ./.github/actions/setup-gradle
-
-      - name: Quality - Dependency guard
-        run: ./gradlew dependencyGuard
-
-  quality-konsist:
-    name: Konsist check
-    runs-on: ubuntu-latest
-    timeout-minutes: 30
-
-    steps:
-      - name: Checkout the repo
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          fetch-depth: 1
-
-      - name: Setup Gradle environment
-        uses: ./.github/actions/setup-gradle
-
-      - name: Quality - Konsist
-        run: ./gradlew :quality:konsist:test
