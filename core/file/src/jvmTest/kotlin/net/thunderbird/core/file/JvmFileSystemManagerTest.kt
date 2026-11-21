@@ -1,10 +1,14 @@
 package net.thunderbird.core.file
 
+import assertk.assertFailure
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import assertk.assertions.isInstanceOf
+import assertk.assertions.isTrue
 import assertk.fail
 import com.eygraber.uri.Uri
 import java.io.File
+import java.io.IOException
 import kotlinx.io.Buffer
 import org.junit.Rule
 import org.junit.Test
@@ -159,5 +163,18 @@ class JvmFileSystemManagerTest {
         } catch (e: Exception) {
             fail("Deletion of non-existing file threw an exception: $e")
         }
+    }
+
+    @Test
+    fun `delete should fail on directories`() {
+        // Arrange
+        val tempFolder = folder.newFolder()
+        val uri = Uri.parse(tempFolder.toURI().toString())
+
+        // Act
+        assertFailure { testSubject.delete(uri) }.isInstanceOf<IOException>()
+
+        // Assert
+        assertThat(tempFolder.exists()).isTrue()
     }
 }
