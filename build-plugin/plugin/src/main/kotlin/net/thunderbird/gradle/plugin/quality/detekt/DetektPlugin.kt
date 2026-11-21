@@ -52,7 +52,7 @@ class DetektPlugin : Plugin<Project> {
             withType<Detekt>().configureEach {
                 val isInProjectBuildDirectory = buildDirectoryExclusion(layout.buildDirectory.get().asFile)
 
-                if (name.contains("androidHostTest", ignoreCase = true)) {
+                if (isAndroidHostTest(name)) {
                     enabled = false
                 }
 
@@ -77,7 +77,7 @@ class DetektPlugin : Plugin<Project> {
             withType<DetektCreateBaselineTask>().configureEach {
                 val isInProjectBuildDirectory = buildDirectoryExclusion(layout.buildDirectory.get().asFile)
 
-                if (name.contains("androidHostTest", ignoreCase = true)) {
+                if (isAndroidHostTest(name)) {
                     enabled = false
                 }
 
@@ -119,6 +119,14 @@ private const val SOURCE_SET_TASK_SUFFIX = "SourceSet"
 // Type-resolved rules still report a backlog of existing findings with detekt.yml, so the type-resolved tasks only run
 // the rules enabled in this config.
 private const val TYPE_RESOLUTION_CONFIG = "config/detekt/detekt-type-resolution.yml"
+
+/**
+ * Matches both the source set tasks (`detektAndroidHostTestSourceSet`) and the type-resolved tasks
+ * (`detektHostTestAndroid`) for Android host tests.
+ */
+private fun isAndroidHostTest(taskName: String): Boolean =
+    taskName.contains("androidHostTest", ignoreCase = true) ||
+        taskName.contains("hostTestAndroid", ignoreCase = true)
 
 /**
  * The plain `detekt` task and the `detekt<SourceSet>SourceSet` tasks run without type resolution. All other detekt
