@@ -90,6 +90,14 @@ class DetektPlugin : Plugin<Project> {
                 exclude(isInProjectBuildDirectory)
             }
 
+            // Plain detekt only analyzes src/main and src/test, which KMP modules don't have, so it has to run the
+            // source set tasks instead.
+            pluginManager.withPlugin("org.jetbrains.kotlin.multiplatform") {
+                named(DETEKT_TASK_NAME) {
+                    dependsOn(withType<Detekt>().matching { it.name.endsWith(SOURCE_SET_TASK_SUFFIX) })
+                }
+            }
+
             register("detektAll") {
                 group = "verification"
                 description = "Runs detekt on this project"

@@ -69,6 +69,9 @@ Detekt checks for:
 - Code style issues (naming conventions, formatting, etc.)
 - Performance issues (inefficient collection operations, etc.)
 
+In Kotlin Multiplatform modules, `./gradlew detekt` runs the per source set tasks (`detekt<SourceSet>SourceSet`, e.g.
+`detektCommonMainSourceSet`), because plain detekt only analyzes `src/main` and `src/test`.
+
 #### Type resolution
 
 Some rules, such as `IgnoredReturnValue`, need type resolution. They only run in the type-resolved tasks

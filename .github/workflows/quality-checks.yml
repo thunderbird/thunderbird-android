@@ -58,15 +58,6 @@ jobs:
       - name: Quality - Detekt
         run: ./gradlew detekt
 
-      - name: Running Detekt including KMP
-        # As we were not verifying detekt in KMP sources before,
-        # this step is likely to fail.
-        continue-on-error: true
-        run: |
-          ./gradlew detektMetadataCommonMain
-          ./gradlew detektMetadataMain
-          ./gradlew detektMetadataCommonJvmMain
-
   quality-detekt-type-resolution:
     name: Detekt check (type resolution)
     runs-on: ubuntu-latest
