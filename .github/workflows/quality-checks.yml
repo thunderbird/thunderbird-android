@@ -27,7 +27,7 @@ jobs:
   quality-static-checks:
     name: Static checks
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 30
 
     steps:
       - name: Checkout the repo
@@ -41,10 +41,6 @@ jobs:
       - name: Quality - Spotless
         run: ./gradlew spotlessCheck
 
-      - name: Quality - Detekt
-        if: ${{ !cancelled() }}
-        run: ./gradlew detekt
-
       - name: Quality - Konsist
         if: ${{ !cancelled() }}
         run: ./gradlew :quality:konsist:test
@@ -53,8 +49,8 @@ jobs:
         if: ${{ !cancelled() }}
         run: ./gradlew dependencyGuard
 
-  quality-detekt-type-resolution:
-    name: Detekt check (type resolution)
+  quality-detekt:
+    name: Detekt check
     runs-on: ubuntu-latest
     timeout-minutes: 45
 
@@ -67,6 +63,6 @@ jobs:
       - name: Setup Gradle environment
         uses: ./.github/actions/setup-gradle
 
-      - name: Quality - Detekt with type resolution
-        # The type-resolved tasks use config/detekt/detekt-type-resolution.yml, see DetektPlugin
+      - name: Quality - Detekt
+        # Includes plain detekt. The type-resolved tasks use config/detekt/detekt-type-resolution.yml, see DetektPlugin
         run: ./gradlew detektAll --continue
