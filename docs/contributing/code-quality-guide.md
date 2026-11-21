@@ -72,22 +72,22 @@ Detekt checks for:
 #### Type resolution
 
 Some rules, such as `IgnoredReturnValue`, need type resolution. They only run in the type-resolved tasks
-(`detekt<Variant>`, e.g. `detektDebugUnitTest`, `detektTestJvm` or `detektHostTestAndroid`), not in `./gradlew detekt`.
-`detektAll` runs all detekt tasks of a module, including the type-resolved ones.
-
-With the full configuration, the type-resolved tasks still report many existing findings. CI therefore runs them with
-a narrower configuration that only enables the rules we enforce so far:
+(`detekt<Variant>`, e.g. `detektDebugUnitTest`, `detektTestJvm` or `detektMainJvm`), not in `./gradlew detekt`.
+`detektAll` runs all detekt tasks of a module, including the type-resolved ones:
 
 ```bash
-./gradlew detektAll -Ptfa.detekt.config=config/detekt/detekt-ci-type-resolution.yml --continue
+./gradlew detektAll --continue
 ```
+
+With the full configuration, the type-resolved tasks still report many existing findings, so they run with
+`config/detekt/detekt-type-resolution.yml`, which only enables the rules we enforce so far.
 
 #### Configuration
 
 The project's Detekt configuration is defined in the `config/detekt/detekt.yml` file. This file specifies which rules
-to apply and their severity levels. `config/detekt/detekt-ci-type-resolution.yml` is the narrower configuration used
-by CI for the type-resolved tasks; keep the settings of rules listed there in sync with `detekt.yml`. The detekt plugin
-is configured in
+to apply and their severity levels. `config/detekt/detekt-type-resolution.yml` is the narrower configuration used by
+the type-resolved tasks; keep the settings of rules listed there in sync with `detekt.yml`. The detekt plugin is
+configured in
 `build-plugin/plugin/src/main/kotlin/net/thunderbird/gradle/plugin/quality/detekt/DetektPlugin.kt`.
 
 ### Spotless

@@ -82,9 +82,8 @@ jobs:
         uses: ./.github/actions/setup-gradle
 
       - name: Quality - Detekt with type resolution
-        # Type-resolved rules report a backlog of existing findings with the full config, so CI runs only the
-        # rules listed in this narrower config.
-        run: ./gradlew detektAll -Ptfa.detekt.config=config/detekt/detekt-ci-type-resolution.yml --continue
+        # The type-resolved tasks use config/detekt/detekt-type-resolution.yml, see DetektPlugin
+        run: ./gradlew detektAll --continue
 
   quality-dependency-guard:
     name: Dependency guard check

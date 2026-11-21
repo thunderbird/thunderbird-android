@@ -41,9 +41,7 @@ class DetektPlugin : Plugin<Project> {
     @Suppress("UnstableApiUsage")
     private fun Project.configureDetekt() {
         extensions.configure<DetektExtension>("detekt") {
-            // CI can pass -Ptfa.detekt.config=<path> to run with a narrower config, see detekt-ci-type-resolution.yml
-            val configPath = providers.gradleProperty(DETEKT_CONFIG_PROPERTY).getOrElse(DEFAULT_DETEKT_CONFIG)
-            config.setFrom(isolated.rootProject.projectDirectory.file(configPath).asFile)
+            config.setFrom(isolated.rootProject.projectDirectory.file("config/detekt/detekt.yml").asFile)
 
             ignoredBuildTypes = listOf("release")
         }
@@ -59,6 +57,10 @@ class DetektPlugin : Plugin<Project> {
                 }
 
                 jvmTarget = ProjectConfig.Compiler.jvmTarget.target
+
+                if (isTypeResolved(name)) {
+                    config.setFrom(typeResolutionConfigFile())
+                }
 
                 exclude(isInProjectBuildDirectory)
 
@@ -81,6 +83,10 @@ class DetektPlugin : Plugin<Project> {
 
                 jvmTarget = ProjectConfig.Compiler.jvmTarget.target
 
+                if (isTypeResolved(name)) {
+                    config.setFrom(typeResolutionConfigFile())
+                }
+
                 exclude(isInProjectBuildDirectory)
             }
 
@@ -92,10 +98,28 @@ class DetektPlugin : Plugin<Project> {
             }
         }
     }
+
+    @Suppress("UnstableApiUsage")
+    private fun Project.typeResolutionConfigFile(): File =
+        isolated.rootProject.projectDirectory.file(TYPE_RESOLUTION_CONFIG).asFile
 }
 
-private const val DETEKT_CONFIG_PROPERTY = "tfa.detekt.config"
-private const val DEFAULT_DETEKT_CONFIG = "config/detekt/detekt.yml"
+private const val DETEKT_TASK_NAME = "detekt"
+private const val DETEKT_BASELINE_TASK_NAME = "detektBaseline"
+private const val SOURCE_SET_TASK_SUFFIX = "SourceSet"
+
+// Type-resolved rules still report a backlog of existing findings with detekt.yml, so the type-resolved tasks only run
+// the rules enabled in this config.
+private const val TYPE_RESOLUTION_CONFIG = "config/detekt/detekt-type-resolution.yml"
+
+/**
+ * The plain `detekt` task and the `detekt<SourceSet>SourceSet` tasks run without type resolution. All other detekt
+ * tasks (`detekt<Variant>`, e.g. `detektDebugUnitTest` or `detektMainJvm`) are type-resolved.
+ */
+private fun isTypeResolved(taskName: String): Boolean =
+    taskName != DETEKT_TASK_NAME &&
+        taskName != DETEKT_BASELINE_TASK_NAME &&
+        !taskName.endsWith(SOURCE_SET_TASK_SUFFIX)
 
 private fun buildDirectoryExclusion(buildDirectory: File): (FileTreeElement) -> Boolean {
     val buildDirectoryPath = buildDirectory.normalizedPath()

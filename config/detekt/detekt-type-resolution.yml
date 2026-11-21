@@ -1,8 +1,8 @@
-# CI-only detekt config for the type-resolved tasks (`./gradlew detektAll -Ptfa.detekt.config=<this file>`).
+# Detekt config for the type-resolved tasks (detekt<Variant>, e.g. detektDebugUnitTest or detektMainJvm).
 #
-# The type-resolved tasks (detekt<Variant>, e.g. detektDebugUnitTest) run rules that plain `./gradlew detekt` can't,
-# but they also report a large backlog of findings for other rules. This config enables only the rules we enforce
-# in CI so far. Rules not listed here are inactive.
+# The type-resolved tasks run rules that plain `./gradlew detekt` can't, but with detekt.yml they also report a large
+# backlog of findings for other rules. The build plugin therefore runs them with this config, which enables only the
+# rules we enforce so far. Rules not listed here are inactive.
 #
 # Keep rule settings in sync with detekt.yml.
 
