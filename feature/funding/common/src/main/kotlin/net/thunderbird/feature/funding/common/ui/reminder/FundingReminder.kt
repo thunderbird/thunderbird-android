@@ -109,6 +109,7 @@ class FundingReminder(
         fragmentManager: FragmentManager,
         headerRes: Int? = null,
         bodyRes: Int? = null,
+        imageRes: Int? = null,
     ) {
         // We're about to show the funding reminder dialog. So mark it as being shown. This way, if there's an error,
         // we err on the side of the dialog not being shown rather than it being shown more than once.
@@ -118,6 +119,6 @@ class FundingReminder(
             settings.incrementReminderShownCount()
         }
 
-        dialog.show(fragmentManager, headerRes, bodyRes)
+        dialog.show(fragmentManager, headerRes, bodyRes, imageRes)
     }
 }
