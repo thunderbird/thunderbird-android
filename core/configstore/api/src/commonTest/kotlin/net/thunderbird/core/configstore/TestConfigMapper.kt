@@ -11,6 +11,7 @@ internal class TestConfigMapper : ConfigMapper<TestConfig> {
         }
     }
 
+    @Suppress("ReturnCount")
     override fun fromConfig(config: Config): TestConfig? {
         val stringValue = config[stringKey] ?: return null
         val intValue = config[intKey] ?: return null

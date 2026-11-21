@@ -60,6 +60,7 @@ class AndroidFileSystemManager(
         }
     }
 
+    @Suppress("ThrowsCount")
     override fun createDirectories(uri: Uri) {
         // On Android, directory creation is only supported for file:// URIs via java.io.File
         val androidUri = uri.toAndroidUri()

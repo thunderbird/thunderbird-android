@@ -20,6 +20,7 @@ import net.thunderbird.core.common.state.debug.StatePrettyPrinterVocabulary.STAT
 import net.thunderbird.core.common.state.debug.StatePrettyPrinterVocabulary.STATE_HISTORY_STATE_SEPARATOR
 import org.junit.Test
 
+@Suppress("LargeClass")
 class CommonStatePrettyPrinterTest {
     private val logger = TestLogger()
 
@@ -416,7 +417,8 @@ class CommonStatePrettyPrinterTest {
             transform { transitions -> transitions.map { it.trim().lines().first() } }
                 .containsExactly(
                     "Idle ${StatePrettyPrinterVocabulary.STATE_CHANGE_MARKER} Loading  event=Start",
-                    "Loading ${StatePrettyPrinterVocabulary.STATE_NO_CHANGE_MARKER} Loading  event=UpdateProgress  +200ms",
+                    "Loading ${StatePrettyPrinterVocabulary.STATE_NO_CHANGE_MARKER} Loading  " +
+                        "event=UpdateProgress  +200ms",
                     "Loading ${StatePrettyPrinterVocabulary.STATE_CHANGE_MARKER} Done  event=Finish  +300ms",
                 )
         }

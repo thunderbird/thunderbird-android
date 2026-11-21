@@ -163,7 +163,7 @@ class LocalMessageSearchSerializerTest {
     }
 
     @Test
-    fun `should deserialize a unified inbox search of older versions with an unknown folder selection as unified inbox`() {
+    fun `should deserialize an older unified inbox search with an unknown folder selection as unified inbox`() {
         // Arrange
         val search = LocalMessageSearch().apply {
             and(MessageSearchField.INTEGRATE, "1", SearchAttribute.EQUALS)
