@@ -7,6 +7,7 @@ import net.thunderbird.feature.mail.message.list.ui.event.MessageListEvent
 import net.thunderbird.feature.mail.message.list.ui.event.MessageListSearchEvent
 import net.thunderbird.feature.mail.message.list.ui.state.MessageItemUi
 import net.thunderbird.feature.mail.message.list.ui.state.MessageListState
+import net.thunderbird.feature.mail.message.list.ui.state.withActive
 import net.thunderbird.feature.mail.message.list.ui.state.withState
 
 /**
@@ -53,22 +54,15 @@ internal fun StateMachineBuilder<MessageListState, MessageListEvent>.loadedMessa
         }
         transition<MessageItemEvent.SetMessageActive> { state, event ->
             state
-                .mapMessages { message ->
-                    message.copy(active = message.id == event.message?.id)
-                }
+                .mapMessages { it.withActive(activeItem = event.message) }
                 .withMetadata { copy(activeMessage = event.message) }
         }
         transition<MessageItemEvent.OnMessageClick> { state, event ->
             state
                 .mapMessages { message ->
-                    val isCurrent = message.id == event.message.id
-                    message.copy(active = isCurrent).withState(
-                        if (isCurrent && message.state != MessageItemUi.State.Read) {
-                            MessageItemUi.State.Read
-                        } else {
-                            message.state
-                        },
-                    )
+                    // copy only changes in active and read state
+                    val activated = message.withActive(event.message)
+                    if (activated.active) activated.withState(MessageItemUi.State.Read) else activated
                 }
                 .withMetadata { copy(activeMessage = event.message) }
         }

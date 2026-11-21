@@ -1,11 +1,9 @@
 package net.thunderbird.core.common.state
 
 import kotlin.reflect.KClass
-import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -13,6 +11,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import kotlinx.coroutines.yield
 import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.core.common.state.StateMachine.Transition
 import net.thunderbird.core.common.state.builder.StateMachineBuilderDsl
@@ -158,8 +157,9 @@ internal class DefaultStateMachine<TState : Any, TEvent : Any>(
 
     init {
         scope.launch {
-            // delay onEnter initialization so the viewModels are ready to receive the state
-            delay(500.milliseconds)
+            // Run onEnter after the owning ViewModel's constructor: on viewModelScope, yield() posts to the main
+            // looper. Dispatchers that don't queue (Unconfined) or run on another thread give no such guarantee.
+            yield()
             verbose { "StateMachine initialized with initial state: $initialState" }
             stateRegistrar[initialState::class]?.listeners?.onEnter?.invoke(null, null, currentStateSnapshot)
         }
@@ -217,8 +217,8 @@ internal class DefaultStateMachine<TState : Any, TEvent : Any>(
 
                 else -> {
                     info {
-                        "No transition defined for '${currentState::class.simpleName}' with event '$event', " +
-                            "or guard failed; Ignore event"
+                        "No transition defined for '${currentState::class.simpleName}' " +
+                            "with event '${event::class.simpleName}', or guard failed; Ignore event"
                     }
                     // No transition defined, or guard failed -> Ignore event
                     currentState

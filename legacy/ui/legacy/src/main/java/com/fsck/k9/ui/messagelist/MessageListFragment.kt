@@ -125,6 +125,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.drop
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
@@ -2392,6 +2393,7 @@ class MessageListFragment :
                     )
                 }
             }
+            .flowOn(Dispatchers.Default) // otherwise mapping occurs on main
     }
 
     // endregion [ Legacy Message List Bridge methods ]
