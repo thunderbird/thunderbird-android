@@ -72,29 +72,16 @@ jobs:
       - name: Setup Gradle environment
         uses: ./.github/actions/setup-gradle
 
-      - name: Build K9 application
-        run: ./gradlew :app-k9mail:assemble -Pminify=false
-
-  check-badging-k9:
-    name: Check - K9 badging
-    runs-on: ubuntu-latest
-    timeout-minutes: 90
-    needs: [ build-common ]
-    steps:
-      - name: Checkout the repo
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          fetch-depth: 1
-
-      - name: Setup Gradle environment
-        uses: ./.github/actions/setup-gradle
-
-      - name: Check K9 Badging
+      - name: Build K9 application and check badging
         run: |
-          ./gradlew :app-k9mail:checkFossReleaseBadging \
+          ./gradlew :app-k9mail:assemble \
+                    :app-k9mail:checkFossReleaseBadging \
                     :app-k9mail:checkFullReleaseBadging \
-                    -x assemble \
-                    -x build
+                    -Pminify=false \
+                    --continue
+
+      - name: Check K9 R8 minification
+        run: ./gradlew :app-k9mail:minifyFossReleaseWithR8
 
   build-thunderbird:
     name: Build - Thunderbird application
@@ -110,33 +97,20 @@ jobs:
       - name: Setup Gradle environment
         uses: ./.github/actions/setup-gradle
 
-      - name: Build Thunderbird application
-        run: ./gradlew :app-thunderbird:assemble -Pminify=false
-
-  check-badging-thunderbird:
-    name: Check - Thunderbird badging
-    runs-on: ubuntu-latest
-    timeout-minutes: 90
-    needs: [ build-common ]
-    steps:
-      - name: Checkout the repo
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          fetch-depth: 1
-
-      - name: Setup Gradle environment
-        uses: ./.github/actions/setup-gradle
-
-      - name: Check Thunderbird Badging
+      - name: Build Thunderbird application and check badging
         run: |
-          ./gradlew :app-thunderbird:checkFossBetaBadging \
+          ./gradlew :app-thunderbird:assemble \
+                    :app-thunderbird:checkFossBetaBadging \
                     :app-thunderbird:checkFossDailyBadging \
                     :app-thunderbird:checkFossReleaseBadging \
                     :app-thunderbird:checkFullBetaBadging \
                     :app-thunderbird:checkFullDailyBadging \
                     :app-thunderbird:checkFullReleaseBadging \
-                    -x assemble \
-                    -x build
+                    -Pminify=false \
+                    --continue
+
+      - name: Check Thunderbird R8 minification
+        run: ./gradlew :app-thunderbird:minifyFossReleaseWithR8
 
   build-ui-catalog:
     name: Build - UI-catalog application
