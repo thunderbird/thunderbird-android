@@ -29,6 +29,8 @@ concurrency:
 jobs:
   build-common:
     name: Build - Common code
+    # Only primes the cache for later runs; other jobs don't wait for it.
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
     timeout-minutes: 90
 
@@ -45,9 +47,8 @@ jobs:
         uses: ./.github/actions/disk-cleanup
 
       - name: Setup Gradle environment
+        id: setup-gradle
         uses: ./.github/actions/setup-gradle
-        with:
-          write-cache: ${{ github.ref == 'refs/heads/main' }}
 
       - name: Prime configuration and dependency cache
         run: ./gradlew --no-daemon help
@@ -58,11 +59,24 @@ jobs:
       - name: Show disk usage
         uses: ./.github/actions/disk-usage
 
+      - name: Prepare Gradle cache
+        run: |
+          ./gradlew --stop || true
+          find ~/.gradle/caches -name '*.lock' -type f -delete || true
+
+      - name: Save Gradle cache
+        uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          # Reuse the restore key; hashing again after the build could pick up generated files.
+          key: ${{ steps.setup-gradle.outputs.cache-primary-key }}
+
   build-k9:
     name: Build - K9 application
     runs-on: ubuntu-latest
     timeout-minutes: 90
-    needs: [build-common]
     steps:
       - name: Checkout the repo
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -87,7 +101,6 @@ jobs:
     name: Build - Thunderbird application
     runs-on: ubuntu-latest
     timeout-minutes: 90
-    needs: [build-common]
     steps:
       - name: Checkout the repo
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -116,7 +129,6 @@ jobs:
     name: Build - UI-catalog application
     runs-on: ubuntu-latest
     timeout-minutes: 90
-    needs: [build-common]
     steps:
       - name: Checkout the repo
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -133,7 +145,6 @@ jobs:
     name: Quality - Unit tests
     runs-on: ubuntu-latest
     timeout-minutes: 90
-    needs: [build-common]
     steps:
       - name: Checkout the repo
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -150,7 +161,6 @@ jobs:
     name: Quality - Lint
     runs-on: ubuntu-latest
     timeout-minutes: 90
-    needs: [build-common]
     steps:
       - name: Checkout the repo
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1

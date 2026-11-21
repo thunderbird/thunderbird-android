@@ -1,24 +1,37 @@
 name: Set up Gradle build environment
-description: Prepares environment for building with JDK and Gradle
+description: Prepares environment for building with JDK and Gradle, and restores the Gradle cache
 inputs:
   add-job-summary:
     description: 'Whether to add a job summary (always, never, on-failure).'
     required: false
     default: 'always'
-  write-cache:
-    description: 'Whether to write to the cache (true/false).'
-    required: false
-    default: 'false'
   disable-cache:
     description: 'Whether to disable the cache (true/false).'
     required: false
     default: 'false'
+outputs:
+  cache-primary-key:
+    description: 'Key to save the Gradle cache under. Empty if the cache is disabled.'
+    value: ${{ steps.restore-gradle-cache.outputs.cache-primary-key }}
 runs:
   using: 'composite'
   steps:
     - name: Copy CI gradle.properties
       shell: bash
       run: mkdir -p ~/.gradle ; cp .github/ci-gradle.properties ~/.gradle/gradle.properties
+
+    - name: Restore Gradle cache
+      id: restore-gradle-cache
+      if: ${{ inputs.disable-cache != 'true' }}
+      uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+      with:
+        path: |
+          ~/.gradle/caches
+          ~/.gradle/wrapper
+        key: gradle-v1-${{ runner.os }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties', 'gradle/*.versions.toml') }}-${{ github.run_id }}
+        restore-keys: |
+          gradle-v1-${{ runner.os }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties', 'gradle/*.versions.toml') }}-
+          gradle-v1-${{ runner.os }}-
 
     - name: Set up JDK
       uses: actions/setup-java@b843ebf9b913146b38da2eaa7aeddf76074ae1ad # v6.1.0
@@ -29,7 +42,5 @@ runs:
     - name: Set up Gradle without cache
       uses: gradle/actions/setup-gradle@3f131e8634966bd73d06cc69884922b02e6faf92 # v6.2.0
       with:
-        cache-provider: basic
-        cache-disabled: ${{ inputs.disable-cache }}
+        cache-disabled: true
         add-job-summary: ${{ inputs.add-job-summary }}
-        cache-read-only: ${{ inputs.write-cache == 'false' }}
