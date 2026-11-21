@@ -2,11 +2,15 @@ package net.thunderbird.core.file
 
 import android.content.Context
 import android.net.Uri
+import assertk.assertFailure
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isFalse
+import assertk.assertions.isInstanceOf
+import assertk.assertions.isTrue
 import assertk.fail
 import com.eygraber.uri.toKmpUri
+import java.io.IOException
 import kotlinx.io.Buffer
 import org.junit.Rule
 import org.junit.Test
@@ -172,6 +176,19 @@ class AndroidFileSystemManagerTest {
 
         // Assert
         assertThat(tempFile.exists()).isFalse()
+    }
+
+    @Test
+    fun `delete should fail on directories`() {
+        // Arrange
+        val tempFolder = folder.newFolder()
+        val uri = Uri.fromFile(tempFolder)
+
+        // Act
+        assertFailure { testSubject.delete(uri.toKmpUri()) }.isInstanceOf<IOException>()
+
+        // Assert
+        assertThat(tempFolder.exists()).isTrue()
     }
 
     @Test

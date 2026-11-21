@@ -43,7 +43,7 @@ class JvmFileSystemManager : FileSystemManager {
     override fun delete(uri: Uri) {
         try {
             val file = File(uri.toURI())
-            if (!file.delete() && file.exists()) {
+            if (file.isDirectory || (!file.delete() && file.exists())) {
                 throw IOException("Unable to delete file at: $uri")
             }
         } catch (error: IOException) {

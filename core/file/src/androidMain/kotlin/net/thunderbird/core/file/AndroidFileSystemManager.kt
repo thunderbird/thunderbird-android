@@ -32,17 +32,16 @@ class AndroidFileSystemManager(
     override fun delete(uri: Uri) {
         val androidUri = uri.toAndroidUri()
         if (androidUri.scheme == "file") {
-            deleteFile(androidUri.path ?: throw IOException("Missing path for URI: $uri"), uri)
+            deleteFile(androidUri.path ?: throw IOException("Missing path for URI: $uri"))
         } else {
             deleteContent(uri)
         }
     }
 
-    // ContentResolver only supports content:// URIs, so file:// URIs are deleted via java.io.File
-    private fun deleteFile(path: String, uri: Uri) {
+    private fun deleteFile(path: String) {
         val file = File(path)
-        if (!file.delete() && file.exists()) {
-            throw IOException("Failed to delete file at: $uri")
+        if (file.isDirectory || (!file.delete() && file.exists())) {
+            throw IOException("Failed to delete: $path")
         }
     }
 
