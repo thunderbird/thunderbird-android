@@ -35,22 +35,22 @@ internal class LocalAvatarImageDataSource(
     override suspend fun update(id: AccountId, imageUri: Uri): Uri {
         val mimeType = mimeTypeResolver.getMimeType(imageUri)
         val targetExtension = if (mimeType == MimeType.PNG) EXTENSION_PNG else EXTENSION_JPG
-        val otherExtension = if (targetExtension == EXTENSION_PNG) EXTENSION_JPG else EXTENSION_PNG
+        val oldExtension = if (targetExtension == EXTENSION_PNG) EXTENSION_JPG else EXTENSION_PNG
 
         val avatarImageUri = getAvatarImageUri(id, targetExtension)
 
-        // Copy first so a failed copy leaves the current avatar in place.
-        val copyOutcome = fileManager.copy(sourceUri = imageUri, destinationUri = avatarImageUri)
-        if (copyOutcome is Outcome.Failure) {
-            throw IOException("Failed to copy avatar image", copyOutcome.cause as? Throwable)
+        when (val outcome = fileManager.copy(sourceUri = imageUri, destinationUri = avatarImageUri)) {
+            is Outcome.Failure<*> -> throw IOException("Failed to copy avatar image", outcome.cause as? Throwable)
+
+            is Outcome.Success<*> -> {
+                // remove the old avatar only when the new one is in place
+                fileManager.delete(getAvatarImageUri(id, oldExtension))
+
+                return avatarImageUri.buildUpon()
+                    .appendQueryParameter(PARAMETER_VERSION, clock.now().toEpochMilliseconds().toString())
+                    .build()
+            }
         }
-
-        // The new avatar is in place, so a stale file left behind must not fail the update.
-        fileManager.delete(getAvatarImageUri(id, otherExtension))
-
-        return avatarImageUri.buildUpon()
-            .appendQueryParameter(PARAMETER_VERSION, clock.now().toEpochMilliseconds().toString())
-            .build()
     }
 
     override suspend fun delete(id: AccountId) {
