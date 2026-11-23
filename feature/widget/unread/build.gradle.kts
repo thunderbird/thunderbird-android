@@ -8,6 +8,7 @@ dependencies {
 
     implementation(projects.legacy.ui.legacy)
     implementation(projects.legacy.core)
+    implementation(projects.legacy.logging)
     implementation(projects.core.android.account)
 
     implementation(libs.preferencex)

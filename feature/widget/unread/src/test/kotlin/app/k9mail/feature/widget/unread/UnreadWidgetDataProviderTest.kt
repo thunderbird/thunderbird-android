@@ -28,19 +28,15 @@ import net.thunderbird.feature.mail.folder.api.data.FolderError
 import net.thunderbird.feature.mail.folder.api.data.repository.FolderQueryRepository
 import net.thunderbird.feature.search.legacy.LocalMessageSearch
 import net.thunderbird.feature.search.legacy.SearchAccount
-import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.koin.core.context.startKoin
-import org.koin.dsl.module
-import org.koin.test.AutoCloseKoinTest
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
 
 @RunWith(RobolectricTestRunner::class)
-class UnreadWidgetDataProviderTest : AutoCloseKoinTest() {
+class UnreadWidgetDataProviderTest {
     private val context: Context = RuntimeEnvironment.getApplication()
 
     private val accountId = AccountIdFactory.create()
@@ -61,17 +57,6 @@ class UnreadWidgetDataProviderTest : AutoCloseKoinTest() {
         coreResourceProvider,
         logger = TestLogger(),
     )
-
-    @Before
-    fun setUp() {
-        startKoin {
-            modules(
-                module {
-                    factory<CoreResourceProvider> { FakeCoreResourceProvider() }
-                },
-            )
-        }
-    }
 
     @Test
     fun unifiedFoldersSearch() = runTest {

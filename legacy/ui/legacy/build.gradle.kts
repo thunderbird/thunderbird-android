@@ -90,6 +90,9 @@ dependencies {
     testImplementation(projects.mail.testing)
     testImplementation(projects.legacy.storage)
     testImplementation(projects.feature.telemetry.noop)
+    testImplementation(projects.core.file)
+    testImplementation(projects.feature.migration.launcher.api)
+    testImplementation(projects.feature.thundermail.api)
 
     testImplementation(libs.androidx.test.core)
     testImplementation(libs.robolectric)

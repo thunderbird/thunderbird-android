@@ -119,12 +119,7 @@ class ValidateKoinModules {
     fun `koin graph tests should be named after the module they verify`() {
         val declarations = moduleFiles.flatMap { (_, modules) -> modules }
         val violations = testScope.classes()
-            .filter { testClass ->
-                testClass.containingFile.imports.any {
-                    it.name.startsWith("org.koin.test.verify.") ||
-                        it.name in setOf("org.koin.core.context.startKoin", "org.koin.core.context.koinApplication")
-                }
-            }
+            .filter(::isKoinGraphTestCandidate)
             .mapNotNull { testClass ->
                 val names = koinGraphTestModuleNames(testClass.text)
                 if (names.isEmpty()) return@mapNotNull null
@@ -269,6 +264,12 @@ internal fun koinModuleVisibilityViolation(
         suggestion = "Mark this supporting DI module internal.",
     )
 }
+
+internal fun isKoinGraphTestCandidate(testClass: KoClassDeclaration): Boolean =
+    testClass.name != "TestApp" && testClass.containingFile.imports.any {
+        it.name.startsWith("org.koin.test.verify.") ||
+            it.name in setOf("org.koin.core.context.startKoin", "org.koin.core.context.koinApplication")
+    }
 
 internal fun koinGraphTestModuleNames(text: String): Set<String> {
     val verified = Regex("""\b([a-z]\w*DiModule)\s*\.\s*verify\s*\(""")

@@ -44,6 +44,20 @@ class KoinGraphTestNamingRuleTest {
     }
 
     @Test
+    fun `TestApp fixtures are not graph test candidates`() {
+        withGraphTest(className = "TestApp", filePath = "example/feature/TestApp.kt") { testSubject, _ ->
+            expectEqual(false, isKoinGraphTestCandidate(testSubject))
+        }
+    }
+
+    @Test
+    fun `ordinary graph tests remain candidates`() {
+        withGraphTest { testSubject, _ ->
+            expectEqual(true, isKoinGraphTestCandidate(testSubject))
+        }
+    }
+
+    @Test
     fun `matching class file package and source directory pass`() {
         withGraphTest { testSubject, module ->
             val violation = koinGraphTestNamingViolation(testSubject, module)

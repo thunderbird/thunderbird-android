@@ -51,6 +51,7 @@ dependencies {
     testImplementation(projects.core.testing)
     testImplementation(libs.tb.mobile.components.ui.testing)
     testImplementation(projects.core.android.testing)
+    testImplementation(projects.core.file)
     testImplementation(projects.feature.telemetry.noop)
     testImplementation(projects.mail.testing)
     testImplementation(projects.backend.imap)
