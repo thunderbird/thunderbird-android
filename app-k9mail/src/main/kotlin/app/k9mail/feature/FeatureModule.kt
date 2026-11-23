@@ -25,7 +25,9 @@ val featureModule = module {
     includes(fundingModule)
 
     single<FundingSettings> {
-        K9FundingSettings()
+        K9FundingSettings(
+            fundingConfigStore = get()
+        )
     }
 
     single<CssClassNameProvider> {

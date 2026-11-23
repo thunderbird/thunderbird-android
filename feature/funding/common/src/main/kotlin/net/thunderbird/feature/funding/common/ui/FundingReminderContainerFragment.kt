@@ -28,9 +28,21 @@ class FundingReminderContainerFragment : DialogFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         dialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
 
-        val headerRes: Int = arguments?.getInt(FUNDING_DIALOG_HEADER) ?: R.string.funding_reminder_title
-        val bodyRes: Int = arguments?.getInt(FUNDING_DIALOG_BODY) ?: R.string.funding_reminder_appeal_content
-        val imageRes: Int = arguments?.getInt(FUNDING_DIALOG_IMAGE) ?: R.drawable.funding_roc_banner
+        val headerRes: Int = if (arguments == null || (arguments?.getInt(FUNDING_DIALOG_HEADER) ?: 0) == 0) {
+            R.string.funding_reminder_title
+        } else {
+            arguments?.getInt(FUNDING_DIALOG_HEADER) ?: R.string.funding_reminder_title
+        }
+        val bodyRes: Int = if (arguments == null || (arguments?.getInt(FUNDING_DIALOG_BODY) ?: 0) == 0) {
+            R.string.funding_reminder_appeal_content
+        } else {
+            arguments?.getInt(FUNDING_DIALOG_BODY) ?: R.string.funding_reminder_appeal_content
+        }
+        val imageRes: Int = if (arguments == null || (arguments?.getInt(FUNDING_DIALOG_IMAGE) ?: 0) == 0) {
+            R.drawable.funding_roc_banner
+        } else {
+            arguments?.getInt(FUNDING_DIALOG_IMAGE) ?: R.drawable.funding_roc_banner
+        }
 
         return ComposeView(requireContext()).apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)

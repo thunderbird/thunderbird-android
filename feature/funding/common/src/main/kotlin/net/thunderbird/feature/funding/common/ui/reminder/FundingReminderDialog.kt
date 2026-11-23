@@ -18,13 +18,12 @@ class FundingReminderDialog : FundingReminderContract.Dialog {
         @DrawableRes imageRes: Int?,
     ) {
         val dialogFragment = FundingReminderContainerFragment()
-        if (headerRes != null || bodyRes != null || imageRes != null) {
-            val bundle = Bundle()
-            if (headerRes != null) bundle.putInt(FUNDING_DIALOG_HEADER, headerRes)
-            if (bodyRes != null) bundle.putInt(FUNDING_DIALOG_BODY, bodyRes)
-            if (imageRes != null) bundle.putInt(FUNDING_DIALOG_IMAGE, imageRes)
-            dialogFragment.arguments = bundle
-        }
+        val bundle = Bundle()
+        if (headerRes != null) bundle.putInt(FUNDING_DIALOG_HEADER, headerRes)
+        if (bodyRes != null) bundle.putInt(FUNDING_DIALOG_BODY, bodyRes)
+        if (imageRes != null) bundle.putInt(FUNDING_DIALOG_IMAGE, imageRes)
+        dialogFragment.arguments = bundle
+
         dialogFragment.show(fragmentManager, null)
     }
 }
