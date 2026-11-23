@@ -37,7 +37,7 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-518f2590.js";
+            window.path_to_searchindex_js = "../searchindex-e21c6561.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../toc-57d6db35.js"></script>
@@ -237,10 +237,22 @@ adding a <code>lint</code> block to the module’s <code>build.gradle.kts</code>
 <li>Code style issues (naming conventions, formatting, etc.)</li>
 <li>Performance issues (inefficient collection operations, etc.)</li>
 </ul>
+<p>In Kotlin Multiplatform modules, <code>./gradlew detekt</code> runs the per source set tasks (<code>detekt&lt;SourceSet&gt;SourceSet</code>, e.g.
+<code>detektCommonMainSourceSet</code>), because plain detekt only analyzes <code>src/main</code> and <code>src/test</code>.</p>
+<h4 id="type-resolution"><a class="header" href="#type-resolution">Type resolution</a></h4>
+<p>Some rules, such as <code>IgnoredReturnValue</code>, need type resolution. They only run in the type-resolved tasks
+(<code>detekt&lt;Variant&gt;</code>, e.g. <code>detektDebugUnitTest</code>, <code>detektTestJvm</code> or <code>detektMainJvm</code>), not in <code>./gradlew detekt</code>.
+<code>detektAll</code> runs all detekt tasks of a module, including the type-resolved ones:</p>
+<pre><code class="language-bash">./gradlew detektAll --continue
+</code></pre>
+<p>With the full configuration, the type-resolved tasks still report many existing findings, so they run with
+<code>config/detekt/detekt-type-resolution.yml</code>, which only enables the rules we enforce so far.</p>
 <h4 id="configuration-1"><a class="header" href="#configuration-1">Configuration</a></h4>
 <p>The project’s Detekt configuration is defined in the <code>config/detekt/detekt.yml</code> file. This file specifies which rules
-to apply and their severity levels. The detekt plugin is configured in the
-<code>build-plugin/src/main/kotlin/thunderbird.quality.detekt.gradle.kts</code> file.</p>
+to apply and their severity levels. <code>config/detekt/detekt-type-resolution.yml</code> is the narrower configuration used by
+the type-resolved tasks; keep the settings of rules listed there in sync with <code>detekt.yml</code>. The detekt plugin is
+configured in
+<code>build-plugin/plugin/src/main/kotlin/net/thunderbird/gradle/plugin/quality/detekt/DetektPlugin.kt</code>.</p>
 <h3 id="spotless"><a class="header" href="#spotless">Spotless</a></h3>
 <p><a href="https://github.com/diffplug/spotless">Spotless</a> ensures consistent code formatting across the codebase:</p>
 <pre><code class="language-bash"># Check if code formatting meets standards
@@ -369,7 +381,7 @@ The rules are defined in the <code>.editorconfig</code> file and as editorconfig
 <p>The CI configuration is defined in the <code>.github/workflows</code> directory. The main workflow file is <code>android.yml</code>, which
 defines the CI pipeline for Android builds.</p>
 <p>👉 See <a href="code-review-guide.html">Code Review Guide</a> for PR expectations and etiquette.</p>
-<footer id="last-change">Last change: <time datetime="2026-11-17">2026-11-17</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/0fd47ca">0fd47ca</a></footer>
+<footer id="last-change">Last change: <time datetime="2026-11-23">2026-11-23</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/e9af943">e9af943</a></footer>
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
