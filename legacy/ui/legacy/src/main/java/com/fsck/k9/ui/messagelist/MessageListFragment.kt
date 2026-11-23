@@ -62,7 +62,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.Observer
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.setViewTreeLifecycleOwner
@@ -112,6 +111,7 @@ import com.fsck.k9.ui.messagelist.MessageListFragmentBridgeContract.MessageListF
 import com.fsck.k9.ui.messagelist.debug.AuthDebugActions
 import com.fsck.k9.ui.messagelist.item.toMessageItemUi
 import com.fsck.k9.ui.messageview.LastSelectedFolderStore
+import com.fsck.k9.ui.observe
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.color.MaterialColors
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -122,6 +122,7 @@ import java.util.concurrent.Future
 import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.persistentSetOf
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.drop
@@ -149,6 +150,7 @@ import net.thunderbird.core.ui.theme.api.FeatureThemeProvider
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.UnifiedAccountId
 import net.thunderbird.feature.account.avatar.AvatarMonogramCreator
+import net.thunderbird.feature.changelog.internal.ui.RecentChangesContract
 import net.thunderbird.feature.changelog.internal.ui.RecentChangesViewModel
 import net.thunderbird.feature.mail.folder.api.OutboxFolderManager
 import net.thunderbird.feature.mail.message.list.domain.model.SortCriteria
@@ -554,7 +556,9 @@ class MessageListFragment :
         return coordinatorLayout ?: error("Coordinator layout not initialized")
     }
 
-    private val shouldShowRecentChangesHintObserver = Observer<Boolean> { showRecentChangesHint ->
+    private var recentChangesHintJob: Job? = null
+
+    private fun onShowRecentChangesHint(showRecentChangesHint: Boolean) {
         val recentChangesSnackbarVisible = recentChangesSnackbar.isShown
         if (showRecentChangesHint && !recentChangesSnackbarVisible) {
             recentChangesSnackbar.show()
@@ -573,18 +577,20 @@ class MessageListFragment :
                 object : BaseCallback<Snackbar>() {
                     override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
                         if (event == DISMISS_EVENT_SWIPE || event == DISMISS_EVENT_TIMEOUT) {
-                            recentChangesViewModel.onRecentChangesHintDismissed()
+                            recentChangesViewModel.event(RecentChangesContract.Event.OnRecentChangesHintDismissed)
                         }
                     }
                 },
             )
 
-        recentChangesViewModel.shouldShowRecentChangesHint
-            .observe(viewLifecycleOwner, shouldShowRecentChangesHintObserver)
+        recentChangesHintJob = recentChangesViewModel.state
+            .map { it.showRecentChangesHint }
+            .distinctUntilChanged()
+            .observe(viewLifecycleOwner) { onShowRecentChangesHint(it) }
     }
 
     private fun launchRecentChangesActivity() {
-        recentChangesViewModel.shouldShowRecentChangesHint.removeObserver(shouldShowRecentChangesHintObserver)
+        recentChangesHintJob?.cancel()
         FeatureLauncherActivity.launch(
             context = requireContext(),
             target = FeatureLauncherTarget.Changelog(changeLogMode = ChangeLogMode.RECENT_CHANGES),

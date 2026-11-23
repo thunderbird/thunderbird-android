@@ -10,7 +10,6 @@ internal object MviBaseline {
     val viewModelsWithoutBase = setOf(
         "components/ui/catalog/src/main/kotlin/net/thunderbird/components/ui/catalog/ui/CatalogViewModel.kt::CatalogViewModel",
         "components/ui/catalog/src/main/kotlin/net/thunderbird/components/ui/catalog/ui/page/CatalogPageViewModel.kt::CatalogPageViewModel",
-        "feature/changelog/internal/src/main/kotlin/net/thunderbird/feature/changelog/internal/ui/RecentChangesViewModel.kt::RecentChangesViewModel",
         "feature/settings/import/src/main/kotlin/app/k9mail/feature/settings/import/ui/AuthViewModel.kt::AuthViewModel",
         "feature/settings/import/src/main/kotlin/app/k9mail/feature/settings/import/ui/PickAppViewModel.kt::PickAppViewModel",
         "feature/settings/import/src/main/kotlin/app/k9mail/feature/settings/import/ui/SettingsImportViewModel.kt::SettingsImportViewModel",
