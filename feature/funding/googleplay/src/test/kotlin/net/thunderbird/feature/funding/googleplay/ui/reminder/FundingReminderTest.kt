@@ -123,7 +123,7 @@ class FundingReminderTest {
             activityProvider = activityProvider,
             settings = settings,
             fragmentObserver = fragmentObserver,
-            dialog = { dialogShown = true },
+            dialog = { _, _, _ -> dialogShown = true },
             clock = TestClock(Instant.fromEpochMilliseconds(currentTime)),
             scope = CoroutineScope(mainDispatcher.testDispatcher),
         )
@@ -151,7 +151,7 @@ class FundingReminderTest {
             activityProvider = activityProvider,
             settings = settings,
             fragmentObserver = fragmentObserver,
-            dialog = { dialogShown = true },
+            dialog = { _, _, _ -> dialogShown = true },
             clock = TestClock(Instant.fromEpochMilliseconds(currentTime)),
             scope = CoroutineScope(mainDispatcher.testDispatcher),
         )
@@ -184,7 +184,7 @@ class FundingReminderTest {
             activityProvider = activityProvider,
             settings = settings,
             fragmentObserver = fragmentObserver,
-            dialog = { dialogShown = true },
+            dialog = { _, _, _ -> dialogShown = true },
             clock = TestClock(Instant.fromEpochMilliseconds(currentTime)),
             scope = CoroutineScope(mainDispatcher.testDispatcher),
         )
@@ -215,7 +215,7 @@ class FundingReminderTest {
             activityProvider = activityProvider,
             settings = settings,
             fragmentObserver = fragmentObserver,
-            dialog = { dialogShown = true },
+            dialog = { _, _, _ -> dialogShown = true },
             clock = TestClock(Instant.fromEpochMilliseconds(currentTime)),
             scope = CoroutineScope(mainDispatcher.testDispatcher),
         )
@@ -246,7 +246,7 @@ class FundingReminderTest {
             activityProvider = activityProvider,
             settings = settings,
             fragmentObserver = fragmentObserver,
-            dialog = { dialogShown = true },
+            dialog = { _, _, _ -> dialogShown = true },
             clock = TestClock(Instant.fromEpochMilliseconds(currentTime)),
             scope = CoroutineScope(mainDispatcher.testDispatcher),
         )
@@ -276,7 +276,7 @@ class FundingReminderTest {
             activityProvider = activityProvider,
             settings = settings,
             fragmentObserver = fragmentObserver,
-            dialog = { dialogShown = true },
+            dialog = { _, _, _ -> dialogShown = true },
             clock = TestClock(Instant.fromEpochMilliseconds(currentTime)),
             scope = CoroutineScope(mainDispatcher.testDispatcher),
         )
@@ -306,7 +306,7 @@ class FundingReminderTest {
             activityProvider = activityProvider,
             settings = settings,
             fragmentObserver = fragmentObserver,
-            dialog = { dialogShown = true },
+            dialog = { _, _, _ -> dialogShown = true },
             clock = TestClock(Instant.fromEpochMilliseconds(currentTime)),
             scope = CoroutineScope(mainDispatcher.testDispatcher),
         )
@@ -321,7 +321,7 @@ class FundingReminderTest {
         activityProvider: ActivityProvider,
         settings: FundingSettings,
         fragmentObserver: FundingReminderContract.FragmentLifecycleObserver,
-        dialog: Dialog = Dialog { },
+        dialog: Dialog = Dialog { fragmentManager, headerRes, bodyRes -> },
         clock: TestClock = TestClock(Instant.fromEpochMilliseconds(0)),
         scope: CoroutineScope,
     ): FundingReminder {
