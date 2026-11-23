@@ -32,13 +32,10 @@ internal object MviBaseline {
     )
 
     val viewModelsOutsideUiPackage = setOf(
-        "feature/debug-settings/src/main/kotlin/net/thunderbird/feature/debug/settings/featureflag/DebugFeatureFlagSectionViewModel.kt::DebugFeatureFlagSectionViewModel",
-        "feature/debug-settings/src/main/kotlin/net/thunderbird/feature/debug/settings/notification/DebugNotificationSectionViewModel.kt::DebugNotificationSectionViewModel",
         "legacy/ui/legacy/src/main/java/com/fsck/k9/activity/setup/AccountSetupCompositionViewModel.kt::AccountSetupCompositionViewModel",
     )
 
     val screensOutsideUiPackage = setOf(
-        "feature/debug-settings/src/main/kotlin/net/thunderbird/feature/debug/settings/SecretDebugSettingsScreen.kt::SecretDebugSettingsScreen",
         "feature/onboarding/migration/api/src/main/kotlin/app/k9mail/feature/onboarding/migration/api/OnboardingMigrationManager.kt::OnboardingMigrationScreen",
         "feature/onboarding/migration/noop/src/main/kotlin/app/k9mail/feature/onboarding/migration/noop/NoOpOnboardingMigrationManager.kt::OnboardingMigrationScreen",
         "feature/onboarding/migration/thunderbird/src/main/kotlin/app/k9mail/feature/onboarding/migration/thunderbird/TbOnboardingMigrationManager.kt::OnboardingMigrationScreen",

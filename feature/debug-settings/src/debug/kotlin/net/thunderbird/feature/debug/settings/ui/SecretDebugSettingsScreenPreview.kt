@@ -1,4 +1,4 @@
-package net.thunderbird.feature.debug.settings
+package net.thunderbird.feature.debug.settings.ui
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
@@ -16,7 +16,7 @@ import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.profile.AccountProfile
 import net.thunderbird.feature.account.profile.AccountProfileRepository
 import net.thunderbird.feature.debug.settings.navigation.SecretDebugSettingsRoute
-import net.thunderbird.feature.debug.settings.notification.DebugNotificationSectionViewModel
+import net.thunderbird.feature.debug.settings.ui.notification.DebugNotificationSectionViewModel
 import net.thunderbird.feature.notification.api.content.InAppNotification
 import net.thunderbird.feature.notification.api.content.Notification
 import net.thunderbird.feature.notification.api.receiver.InAppNotificationStream

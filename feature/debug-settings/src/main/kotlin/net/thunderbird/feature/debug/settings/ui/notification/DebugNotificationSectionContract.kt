@@ -1,4 +1,4 @@
-package net.thunderbird.feature.debug.settings.notification
+package net.thunderbird.feature.debug.settings.ui.notification
 
 import kotlin.reflect.KClass
 import kotlinx.collections.immutable.ImmutableList

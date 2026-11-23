@@ -1,4 +1,4 @@
-package net.thunderbird.feature.debug.settings.notification
+package net.thunderbird.feature.debug.settings.ui.notification
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
@@ -25,10 +25,10 @@ import net.thunderbird.components.ui.bolt.molecule.input.TextInput
 import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.core.ui.contract.mvi.observeWithoutEffect
 import net.thunderbird.feature.account.profile.AccountProfile
-import net.thunderbird.feature.debug.settings.DebugSubSection
 import net.thunderbird.feature.debug.settings.R
-import net.thunderbird.feature.debug.settings.notification.DebugNotificationSectionContract.Event
-import net.thunderbird.feature.debug.settings.notification.DebugNotificationSectionContract.ViewModel
+import net.thunderbird.feature.debug.settings.ui.DebugSubSection
+import net.thunderbird.feature.debug.settings.ui.notification.DebugNotificationSectionContract.Event
+import net.thunderbird.feature.debug.settings.ui.notification.DebugNotificationSectionContract.ViewModel
 import net.thunderbird.feature.notification.api.content.MailNotification
 import net.thunderbird.feature.notification.api.content.Notification
 import org.koin.compose.viewmodel.koinViewModel

@@ -1,4 +1,4 @@
-package net.thunderbird.feature.debug.settings
+package net.thunderbird.feature.debug.settings.ui
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding

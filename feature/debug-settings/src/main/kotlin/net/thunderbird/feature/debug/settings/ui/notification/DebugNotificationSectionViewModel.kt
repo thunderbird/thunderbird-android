@@ -1,4 +1,4 @@
-package net.thunderbird.feature.debug.settings.notification
+package net.thunderbird.feature.debug.settings.ui.notification
 
 import androidx.lifecycle.viewModelScope
 import app.k9mail.core.android.common.provider.NotificationIconResourceProvider
@@ -18,9 +18,9 @@ import net.thunderbird.core.ui.contract.mvi.BaseViewModel
 import net.thunderbird.feature.account.profile.AccountProfile
 import net.thunderbird.feature.account.profile.AccountProfileRepository
 import net.thunderbird.feature.debug.settings.R
-import net.thunderbird.feature.debug.settings.notification.DebugNotificationSectionContract.Effect
-import net.thunderbird.feature.debug.settings.notification.DebugNotificationSectionContract.Event
-import net.thunderbird.feature.debug.settings.notification.DebugNotificationSectionContract.State
+import net.thunderbird.feature.debug.settings.ui.notification.DebugNotificationSectionContract.Effect
+import net.thunderbird.feature.debug.settings.ui.notification.DebugNotificationSectionContract.Event
+import net.thunderbird.feature.debug.settings.ui.notification.DebugNotificationSectionContract.State
 import net.thunderbird.feature.notification.api.NotificationGroup
 import net.thunderbird.feature.notification.api.NotificationGroupKey
 import net.thunderbird.feature.notification.api.content.AuthenticationErrorNotification
