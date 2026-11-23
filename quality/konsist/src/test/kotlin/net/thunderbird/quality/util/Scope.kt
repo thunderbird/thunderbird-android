@@ -4,3 +4,4 @@ import com.lemonappdev.konsist.api.Konsist
 
 val projectScope = Konsist.scopeFromProject()
 val testScope = Konsist.scopeFromTest()
+val productionScope = Konsist.scopeFromProduction()
