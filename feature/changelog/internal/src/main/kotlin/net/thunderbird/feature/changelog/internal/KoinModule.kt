@@ -1,5 +1,7 @@
 package net.thunderbird.feature.changelog.internal
 
+import net.thunderbird.feature.changelog.internal.ui.ChangelogViewModel
+import net.thunderbird.feature.changelog.internal.ui.RecentChangesViewModel
 import net.thunderbird.feature.navigation.changelog.api.ChangeLogMode
 import net.thunderbird.feature.navigation.changelog.api.ChangelogNavigation
 import org.koin.core.module.dsl.viewModel

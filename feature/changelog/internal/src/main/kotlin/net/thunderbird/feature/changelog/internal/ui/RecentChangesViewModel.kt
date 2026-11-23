@@ -1,4 +1,4 @@
-package net.thunderbird.feature.changelog.internal
+package net.thunderbird.feature.changelog.internal.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import net.thunderbird.core.preference.GeneralSettingsManager
+import net.thunderbird.feature.changelog.internal.ChangeLogManager
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class RecentChangesViewModel(

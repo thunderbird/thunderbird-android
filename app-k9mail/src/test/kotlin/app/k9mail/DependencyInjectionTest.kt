@@ -27,7 +27,7 @@ import net.thunderbird.app.common.feature.account.AccountRemoverWorker
 import net.thunderbird.core.common.mail.html.HtmlSettings
 import net.thunderbird.core.configstore.ConfigId
 import net.thunderbird.feature.account.AccountId
-import net.thunderbird.feature.changelog.internal.ChangelogViewModel
+import net.thunderbird.feature.changelog.internal.ui.ChangelogViewModel
 import net.thunderbird.feature.mail.message.list.ui.dialog.SetupArchiveFolderDialogContract
 import net.thunderbird.feature.mail.message.reader.api.css.CssClassNameProvider
 import net.thunderbird.feature.mail.message.reader.api.ui.MessageReaderViewContract

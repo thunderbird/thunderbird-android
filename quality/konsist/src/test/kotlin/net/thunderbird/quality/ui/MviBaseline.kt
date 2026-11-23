@@ -10,7 +10,7 @@ internal object MviBaseline {
     val viewModelsWithoutBase = setOf(
         "components/ui/catalog/src/main/kotlin/net/thunderbird/components/ui/catalog/ui/CatalogViewModel.kt::CatalogViewModel",
         "components/ui/catalog/src/main/kotlin/net/thunderbird/components/ui/catalog/ui/page/CatalogPageViewModel.kt::CatalogPageViewModel",
-        "feature/changelog/internal/src/main/kotlin/net/thunderbird/feature/changelog/internal/RecentChangesViewModel.kt::RecentChangesViewModel",
+        "feature/changelog/internal/src/main/kotlin/net/thunderbird/feature/changelog/internal/ui/RecentChangesViewModel.kt::RecentChangesViewModel",
         "feature/settings/import/src/main/kotlin/app/k9mail/feature/settings/import/ui/AuthViewModel.kt::AuthViewModel",
         "feature/settings/import/src/main/kotlin/app/k9mail/feature/settings/import/ui/PickAppViewModel.kt::PickAppViewModel",
         "feature/settings/import/src/main/kotlin/app/k9mail/feature/settings/import/ui/SettingsImportViewModel.kt::SettingsImportViewModel",
@@ -32,15 +32,12 @@ internal object MviBaseline {
     )
 
     val viewModelsOutsideUiPackage = setOf(
-        "feature/changelog/internal/src/main/kotlin/net/thunderbird/feature/changelog/internal/ChangelogViewModel.kt::ChangelogViewModel",
-        "feature/changelog/internal/src/main/kotlin/net/thunderbird/feature/changelog/internal/RecentChangesViewModel.kt::RecentChangesViewModel",
         "feature/debug-settings/src/main/kotlin/net/thunderbird/feature/debug/settings/featureflag/DebugFeatureFlagSectionViewModel.kt::DebugFeatureFlagSectionViewModel",
         "feature/debug-settings/src/main/kotlin/net/thunderbird/feature/debug/settings/notification/DebugNotificationSectionViewModel.kt::DebugNotificationSectionViewModel",
         "legacy/ui/legacy/src/main/java/com/fsck/k9/activity/setup/AccountSetupCompositionViewModel.kt::AccountSetupCompositionViewModel",
     )
 
     val screensOutsideUiPackage = setOf(
-        "feature/changelog/internal/src/main/kotlin/net/thunderbird/feature/changelog/internal/ChangelogScreen.kt::ChangelogScreen",
         "feature/debug-settings/src/main/kotlin/net/thunderbird/feature/debug/settings/SecretDebugSettingsScreen.kt::SecretDebugSettingsScreen",
         "feature/onboarding/migration/api/src/main/kotlin/app/k9mail/feature/onboarding/migration/api/OnboardingMigrationManager.kt::OnboardingMigrationScreen",
         "feature/onboarding/migration/noop/src/main/kotlin/app/k9mail/feature/onboarding/migration/noop/NoOpOnboardingMigrationManager.kt::OnboardingMigrationScreen",

@@ -1,4 +1,4 @@
-package net.thunderbird.feature.changelog.internal
+package net.thunderbird.feature.changelog.internal.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -44,6 +44,7 @@ import net.thunderbird.components.ui.bolt.atom.text.TextTitleLarge
 import net.thunderbird.components.ui.bolt.organism.TopAppBar
 import net.thunderbird.components.ui.bolt.template.Scaffold
 import net.thunderbird.components.ui.bolt.theme.BoltTheme
+import net.thunderbird.feature.changelog.internal.R
 
 @Composable
 internal fun ChangelogScreen(

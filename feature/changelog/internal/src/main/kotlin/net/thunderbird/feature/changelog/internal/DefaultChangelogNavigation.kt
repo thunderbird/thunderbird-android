@@ -4,6 +4,9 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.toRoute
 import net.thunderbird.core.ui.contract.mvi.observe
 import net.thunderbird.core.ui.navigation.deepLinkComposable
+import net.thunderbird.feature.changelog.internal.ui.ChangelogContract
+import net.thunderbird.feature.changelog.internal.ui.ChangelogScreen
+import net.thunderbird.feature.changelog.internal.ui.ChangelogViewModel
 import net.thunderbird.feature.navigation.changelog.api.ChangelogNavigation
 import net.thunderbird.feature.navigation.changelog.api.ChangelogRoute
 import org.koin.compose.viewmodel.koinViewModel
