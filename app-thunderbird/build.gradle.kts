@@ -263,6 +263,8 @@ dependencies {
     fullBetaImplementation(projects.feature.funding.googleplay)
     fullReleaseImplementation(projects.feature.funding.googleplay)
 
+    implementation(projects.feature.funding.common)
+
     implementation(projects.feature.onboarding.migration.thunderbird)
     implementation(projects.feature.migration.launcher.thunderbird)
     implementation(projects.feature.thundermail.api)

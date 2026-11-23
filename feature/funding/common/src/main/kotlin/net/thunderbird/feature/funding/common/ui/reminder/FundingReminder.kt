@@ -77,8 +77,8 @@ class FundingReminder(
                 fragmentObserver.register(observedFragmentManager) {
                     showFundingReminderDialog(
                         dialogFragmentManager,
-                        R.string.funding_reminder_eoy_title,
-                        R.string.funding_reminder_eoy_content,
+                        headerRes = R.string.funding_reminder_eoy_title,
+                        bodyRes = R.string.funding_reminder_eoy_content,
                     )
                 }
             }
@@ -109,7 +109,7 @@ class FundingReminder(
         fragmentManager: FragmentManager,
         headerRes: Int? = null,
         bodyRes: Int? = null,
-        imageRes: Int? = null,
+        imageRes: Int = settings.getReminderDefaultBannerResource(),
     ) {
         // We're about to show the funding reminder dialog. So mark it as being shown. This way, if there's an error,
         // we err on the side of the dialog not being shown rather than it being shown more than once.
