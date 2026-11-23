@@ -89,10 +89,12 @@ class FundingReminder(
 
     private fun shouldShowDonationAppeal(appealCount: Int): Boolean {
         val currentTime = clock.now().toEpochMilliseconds()
+        val baseTimestamp =
+            if (appealCount == 1) settings.getReminderReferenceTimestamp() else settings.getReminderShownTimestamp()
 
         return settings.getReminderShownCount() == appealCount - 1 &&
             settings.getReminderReferenceTimestamp() != 0L &&
-            settings.getReminderShownTimestamp() + (FUNDING_REMINDER_DELAY_MILLIS * appealCount) <= currentTime
+            baseTimestamp + (FUNDING_REMINDER_DELAY_MILLIS * appealCount) <= currentTime
     }
 
     private suspend fun resetReminderReferenceTimestamp() {
