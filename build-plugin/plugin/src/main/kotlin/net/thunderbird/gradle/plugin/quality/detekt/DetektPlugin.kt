@@ -52,11 +52,15 @@ class DetektPlugin : Plugin<Project> {
             withType<Detekt>().configureEach {
                 val isInProjectBuildDirectory = buildDirectoryExclusion(layout.buildDirectory.get().asFile)
 
-                if (name.contains("androidHostTest", ignoreCase = true)) {
+                if (isAndroidHostTest(name)) {
                     enabled = false
                 }
 
                 jvmTarget = ProjectConfig.Compiler.jvmTarget.target
+
+                if (isTypeResolved(name)) {
+                    config.setFrom(typeResolutionConfigFile())
+                }
 
                 exclude(isInProjectBuildDirectory)
 
@@ -73,13 +77,25 @@ class DetektPlugin : Plugin<Project> {
             withType<DetektCreateBaselineTask>().configureEach {
                 val isInProjectBuildDirectory = buildDirectoryExclusion(layout.buildDirectory.get().asFile)
 
-                if (name.contains("androidHostTest", ignoreCase = true)) {
+                if (isAndroidHostTest(name)) {
                     enabled = false
                 }
 
                 jvmTarget = ProjectConfig.Compiler.jvmTarget.target
 
+                if (isTypeResolved(name)) {
+                    config.setFrom(typeResolutionConfigFile())
+                }
+
                 exclude(isInProjectBuildDirectory)
+            }
+
+            // Plain detekt only analyzes src/main and src/test, which KMP modules don't have, so it has to run the
+            // source set tasks instead.
+            pluginManager.withPlugin("org.jetbrains.kotlin.multiplatform") {
+                named(DETEKT_TASK_NAME) {
+                    dependsOn(withType<Detekt>().matching { it.name.endsWith(SOURCE_SET_TASK_SUFFIX) })
+                }
             }
 
             register("detektAll") {
@@ -90,7 +106,36 @@ class DetektPlugin : Plugin<Project> {
             }
         }
     }
+
+    @Suppress("UnstableApiUsage")
+    private fun Project.typeResolutionConfigFile(): File =
+        isolated.rootProject.projectDirectory.file(TYPE_RESOLUTION_CONFIG).asFile
 }
+
+private const val DETEKT_TASK_NAME = "detekt"
+private const val DETEKT_BASELINE_TASK_NAME = "detektBaseline"
+private const val SOURCE_SET_TASK_SUFFIX = "SourceSet"
+
+// Type-resolved rules still report a backlog of existing findings with detekt.yml, so the type-resolved tasks only run
+// the rules enabled in this config.
+private const val TYPE_RESOLUTION_CONFIG = "config/detekt/detekt-type-resolution.yml"
+
+/**
+ * Matches both the source set tasks (`detektAndroidHostTestSourceSet`) and the type-resolved tasks
+ * (`detektHostTestAndroid`) for Android host tests.
+ */
+private fun isAndroidHostTest(taskName: String): Boolean =
+    taskName.contains("androidHostTest", ignoreCase = true) ||
+        taskName.contains("hostTestAndroid", ignoreCase = true)
+
+/**
+ * The plain `detekt` task and the `detekt<SourceSet>SourceSet` tasks run without type resolution. All other detekt
+ * tasks (`detekt<Variant>`, e.g. `detektDebugUnitTest` or `detektMainJvm`) are type-resolved.
+ */
+private fun isTypeResolved(taskName: String): Boolean =
+    taskName != DETEKT_TASK_NAME &&
+        taskName != DETEKT_BASELINE_TASK_NAME &&
+        !taskName.endsWith(SOURCE_SET_TASK_SUFFIX)
 
 private fun buildDirectoryExclusion(buildDirectory: File): (FileTreeElement) -> Boolean {
     val buildDirectoryPath = buildDirectory.normalizedPath()

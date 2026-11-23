@@ -582,7 +582,6 @@ class AttachmentResolverTest : RobolectricTest() {
             headerParameter(parameterName = "filename") { disposition }
                 .isEqualTo("attachment")
         }
-        assertThat(result.mimeType)
     }
 
     @Test

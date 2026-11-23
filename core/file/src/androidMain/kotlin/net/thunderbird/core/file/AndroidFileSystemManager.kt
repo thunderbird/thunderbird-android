@@ -29,8 +29,24 @@ class AndroidFileSystemManager(
         return contentResolver.openInputStream(uri.toAndroidUri())?.asSource()
     }
 
-    @Suppress("ThrowsCount")
     override fun delete(uri: Uri) {
+        val androidUri = uri.toAndroidUri()
+        if (androidUri.scheme == "file") {
+            deleteFile(androidUri.path ?: throw IOException("Missing path for URI: $uri"))
+        } else {
+            deleteContent(uri)
+        }
+    }
+
+    private fun deleteFile(path: String) {
+        val file = File(path)
+        if (file.isDirectory || (!file.delete() && file.exists())) {
+            throw IOException("Failed to delete: $path")
+        }
+    }
+
+    @Suppress("ThrowsCount")
+    private fun deleteContent(uri: Uri) {
         try {
             val rowsDeleted = contentResolver.delete(uri.toAndroidUri(), null, null)
             if (rowsDeleted == -1) {
@@ -44,6 +60,7 @@ class AndroidFileSystemManager(
         }
     }
 
+    @Suppress("ThrowsCount")
     override fun createDirectories(uri: Uri) {
         // On Android, directory creation is only supported for file:// URIs via java.io.File
         val androidUri = uri.toAndroidUri()

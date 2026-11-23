@@ -69,11 +69,29 @@ Detekt checks for:
 - Code style issues (naming conventions, formatting, etc.)
 - Performance issues (inefficient collection operations, etc.)
 
+In Kotlin Multiplatform modules, `./gradlew detekt` runs the per source set tasks (`detekt<SourceSet>SourceSet`, e.g.
+`detektCommonMainSourceSet`), because plain detekt only analyzes `src/main` and `src/test`.
+
+#### Type resolution
+
+Some rules, such as `IgnoredReturnValue`, need type resolution. They only run in the type-resolved tasks
+(`detekt<Variant>`, e.g. `detektDebugUnitTest`, `detektTestJvm` or `detektMainJvm`), not in `./gradlew detekt`.
+`detektAll` runs all detekt tasks of a module, including the type-resolved ones:
+
+```bash
+./gradlew detektAll --continue
+```
+
+With the full configuration, the type-resolved tasks still report many existing findings, so they run with
+`config/detekt/detekt-type-resolution.yml`, which only enables the rules we enforce so far.
+
 #### Configuration
 
 The project's Detekt configuration is defined in the `config/detekt/detekt.yml` file. This file specifies which rules
-to apply and their severity levels. The detekt plugin is configured in the
-`build-plugin/src/main/kotlin/thunderbird.quality.detekt.gradle.kts` file.
+to apply and their severity levels. `config/detekt/detekt-type-resolution.yml` is the narrower configuration used by
+the type-resolved tasks; keep the settings of rules listed there in sync with `detekt.yml`. The detekt plugin is
+configured in
+`build-plugin/plugin/src/main/kotlin/net/thunderbird/gradle/plugin/quality/detekt/DetektPlugin.kt`.
 
 ### Spotless
 

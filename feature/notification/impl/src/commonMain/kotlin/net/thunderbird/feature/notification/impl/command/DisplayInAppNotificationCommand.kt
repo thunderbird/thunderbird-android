@@ -56,5 +56,6 @@ internal class DisplayInAppNotificationCommand(
     //  executing the command
     // TODO(#9420): If the app is on background and the severity is Fatal or Critical, we should
     //  let the command execute, but store it in a database instead of triggering the show notification logic.
+    @Suppress("FunctionOnlyReturningConstant") // Placeholder until #9392 and #9420 are done
     private fun canExecuteCommand(): Boolean = true
 }

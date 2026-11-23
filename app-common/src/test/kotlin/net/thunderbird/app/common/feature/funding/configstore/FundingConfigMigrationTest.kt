@@ -68,7 +68,7 @@ class FundingConfigMigrationTest {
             migrationResult.keysToRemove.contains(
                 FundingConfigKeys.DEPRECATED_LAST_FUNDING_REMINDER_SHOWN_ACTIVITY_AMOUNT,
             ),
-        )
+        ).isTrue()
     }
 
     @Test
@@ -103,7 +103,7 @@ class FundingConfigMigrationTest {
             migrationResult.keysToRemove.contains(
                 FundingConfigKeys.DEPRECATED_LAST_FUNDING_REMINDER_SHOWN_ACTIVITY_AMOUNT,
             ),
-        )
+        ).isTrue()
 
         resetConfig[FundingConfigKeys.FUNDING_REMINDER_COUNT] = 2
         resetConfig[FundingConfigKeys.LAST_FUNDING_REMINDER_SHOWN] = 1000L
