@@ -161,6 +161,49 @@ class LegacyAccountStorageHandlerTest {
     }
 
     @Test
+    fun `load should default S_MIME signing fields when not stored`() {
+        // Arrange
+        val storage = createStorageWithAccount(
+            accountId = ACCOUNT_ID,
+            additionalValues = mapOf(
+                "$ACCOUNT_ID.email.0" to "test@example.com",
+            ),
+        )
+
+        // Act
+        val result = testSubject.load(ACCOUNT_ID, storage)
+
+        // Assert
+        assertThat(result.smimeSignCertificateAlias).isNull()
+        assertThat(result.hasSmimeSignCertificate()).isFalse()
+        assertThat(result.isSmimeSignByDefault).isFalse()
+        assertThat(result.hasPromptedSmimeSigning).isFalse()
+    }
+
+    @Test
+    fun `load should populate S_MIME signing fields when stored`() {
+        // Arrange
+        val storage = createStorageWithAccount(
+            accountId = ACCOUNT_ID,
+            additionalValues = mapOf(
+                "$ACCOUNT_ID.email.0" to "test@example.com",
+                "$ACCOUNT_ID.smimeSignCertificateAlias" to "my-smime-cert",
+                "$ACCOUNT_ID.smimeSignByDefault" to "true",
+                "$ACCOUNT_ID.smimePromptShown" to "true",
+            ),
+        )
+
+        // Act
+        val result = testSubject.load(ACCOUNT_ID, storage)
+
+        // Assert
+        assertThat(result.smimeSignCertificateAlias).isEqualTo("my-smime-cert")
+        assertThat(result.hasSmimeSignCertificate()).isTrue()
+        assertThat(result.isSmimeSignByDefault).isTrue()
+        assertThat(result.hasPromptedSmimeSigning).isTrue()
+    }
+
+    @Test
     fun `load should read AUTO message format from storage`() {
         // Arrange
         val storage = createStorageWithAccount(
@@ -437,6 +480,9 @@ class LegacyAccountStorageHandlerTest {
             isOpenPgpHideSignOnly = false,
             isOpenPgpEncryptSubject = false,
             isOpenPgpEncryptAllDrafts = false,
+            smimeSignCertificateAlias = "work-signing-cert",
+            isSmimeSignByDefault = true,
+            hasPromptedSmimeSigning = true,
             isMarkMessageAsReadOnView = false,
             isMarkMessageAsReadOnDelete = false,
             isAlwaysShowCcBcc = true,

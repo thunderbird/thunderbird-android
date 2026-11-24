@@ -99,6 +99,9 @@ data class LegacyAccount(
     val isOpenPgpHideSignOnly: Boolean = false,
     val isOpenPgpEncryptSubject: Boolean = false,
     val isOpenPgpEncryptAllDrafts: Boolean = false,
+    val smimeSignCertificateAlias: String? = null,
+    val isSmimeSignByDefault: Boolean = false,
+    val hasPromptedSmimeSigning: Boolean = false,
     val isMarkMessageAsReadOnView: Boolean = false,
     val isMarkMessageAsReadOnDelete: Boolean = false,
     val isAlwaysShowCcBcc: Boolean = false,
@@ -149,6 +152,10 @@ data class LegacyAccount(
 
     fun hasOpenPgpKey(): Boolean {
         return openPgpKey != NO_OPENPGP_KEY
+    }
+
+    fun hasSmimeSignCertificate(): Boolean {
+        return !smimeSignCertificateAlias.isNullOrBlank()
     }
 
     fun isIncomingServerPop3(): Boolean =
@@ -210,6 +217,18 @@ data class LegacyAccount(
     fun updateOpenPgpProvider(openPgpProvider: String?): LegacyAccount {
         return this.copy(
             openPgpProvider = openPgpProvider,
+        )
+    }
+
+    fun updateSmimeSigningSettings(
+        certificateAlias: String?,
+        signByDefault: Boolean,
+        hasPromptedSmimeSigning: Boolean,
+    ): LegacyAccount {
+        return this.copy(
+            smimeSignCertificateAlias = certificateAlias,
+            isSmimeSignByDefault = signByDefault,
+            hasPromptedSmimeSigning = hasPromptedSmimeSigning,
         )
     }
 

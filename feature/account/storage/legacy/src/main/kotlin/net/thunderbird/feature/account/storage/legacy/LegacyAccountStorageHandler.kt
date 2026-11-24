@@ -246,6 +246,10 @@ class LegacyAccountStorageHandler(
             isOpenPgpEncryptSubject = storage.getBoolean(keyGen.create("openPgpEncryptSubject"), true),
             isOpenPgpEncryptAllDrafts = storage.getBoolean(keyGen.create("openPgpEncryptAllDrafts"), true),
             autocryptPreferEncryptMutual = storage.getBoolean(keyGen.create("autocryptMutualMode"), false),
+            smimeSignCertificateAlias = storage.getStringOrNull(keyGen.create(SMIME_SIGN_CERTIFICATE_ALIAS_KEY))
+                ?.takeIf { it.isNotEmpty() },
+            isSmimeSignByDefault = storage.getBoolean(keyGen.create(SMIME_SIGN_BY_DEFAULT_KEY), false),
+            hasPromptedSmimeSigning = storage.getBoolean(keyGen.create(SMIME_PROMPT_SHOWN_KEY), false),
             isRemoteSearchFullText = storage.getBoolean(keyGen.create("remoteSearchFullText"), false),
             remoteSearchNumResults = storage.getInt(
                 keyGen.create("remoteSearchNumResults"),
@@ -403,6 +407,9 @@ class LegacyAccountStorageHandler(
             editor.putBoolean(keyGen.create("openPgpEncryptAllDrafts"), isOpenPgpEncryptAllDrafts)
             editor.putString(keyGen.create("openPgpProvider"), openPgpProvider)
             editor.putBoolean(keyGen.create("autocryptMutualMode"), autocryptPreferEncryptMutual)
+            editor.putString(keyGen.create(SMIME_SIGN_CERTIFICATE_ALIAS_KEY), smimeSignCertificateAlias)
+            editor.putBoolean(keyGen.create(SMIME_SIGN_BY_DEFAULT_KEY), isSmimeSignByDefault)
+            editor.putBoolean(keyGen.create(SMIME_PROMPT_SHOWN_KEY), hasPromptedSmimeSigning)
             editor.putBoolean(keyGen.create("remoteSearchFullText"), isRemoteSearchFullText)
             editor.putInt(keyGen.create("remoteSearchNumResults"), remoteSearchNumResults)
             editor.putBoolean(keyGen.create("uploadSentMessages"), isUploadSentMessages)
@@ -529,5 +536,8 @@ class LegacyAccountStorageHandler(
         const val IDENTITY_DESCRIPTION_KEY = "description"
 
         const val FOLDER_PATH_DELIMITER_KEY = "folderPathDelimiter"
+        const val SMIME_SIGN_CERTIFICATE_ALIAS_KEY = "smimeSignCertificateAlias"
+        const val SMIME_SIGN_BY_DEFAULT_KEY = "smimeSignByDefault"
+        const val SMIME_PROMPT_SHOWN_KEY = "smimePromptShown"
     }
 }
