@@ -159,7 +159,7 @@ dependencies {
     implementation(projects.feature.autodiscovery.api)
     implementation(projects.feature.account.settings.impl)
 
-    "fossImplementation"(projects.feature.funding.noop)
+    "fossImplementation"(projects.feature.funding.link)
     "fullImplementation"(projects.feature.funding.googleplay)
     implementation(projects.feature.migration.launcher.noop)
     implementation(projects.feature.onboarding.migration.noop)

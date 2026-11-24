@@ -37,6 +37,8 @@ fun FundingReminderDialog(
     @StringRes headerRes: Int,
     @StringRes bodyRes: Int,
     @DrawableRes imageRes: Int,
+    @StringRes imageDescRes: Int,
+    isBannerDialog: Boolean,
     onDismissClick: () -> Unit,
     onOkClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -49,6 +51,8 @@ fun FundingReminderDialog(
             headerRes,
             bodyRes,
             imageRes,
+            imageDescRes,
+            isBannerDialog,
             onDismissClick,
             onOkClick,
             modifier,
@@ -61,6 +65,8 @@ private fun FundingReminderContent(
     @StringRes headerRes: Int,
     @StringRes bodyRes: Int,
     @DrawableRes imageRes: Int,
+    @StringRes imageDescRes: Int,
+    isBannerDialog: Boolean,
     onDismissClick: () -> Unit,
     onOkClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -72,12 +78,13 @@ private fun FundingReminderContent(
         Column(
             modifier = Modifier.padding(BoltTheme.spacings.triple),
         ) {
+            val imageMinHeight = if (isBannerDialog) 90.dp else 48.dp
             Image(
                 painter = painterResource(imageRes),
-                contentDescription = stringResource(R.string.funding_reminder_roc_banner_content_description),
+                contentDescription = stringResource(imageDescRes),
                 contentScale = ContentScale.FillWidth,
                 modifier = Modifier
-                    .defaultMinSize(minHeight = 90.dp)
+                    .defaultMinSize(minHeight = imageMinHeight)
                     .fillMaxWidth(),
             )
             Spacer(modifier = Modifier.height(BoltTheme.spacings.triple))
@@ -122,6 +129,8 @@ private fun FundingReminderContentPreview() {
             headerRes = R.string.funding_reminder_title,
             bodyRes = R.string.funding_reminder_appeal_content,
             imageRes = R.drawable.funding_roc_banner,
+            imageDescRes = R.string.funding_reminder_roc_banner_content_description,
+            isBannerDialog = true,
             onDismissClick = {},
             onOkClick = {},
         )

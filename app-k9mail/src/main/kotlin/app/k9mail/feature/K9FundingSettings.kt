@@ -58,4 +58,10 @@ internal class K9FundingSettings(
     override fun getReminderDefaultBannerResource(): Int {
         return R.drawable.funding_k9_contribution_reminder_icon
     }
+
+    override fun getReminderDefaultBannerResourceContentDescription(): Int {
+        return R.string.funding_k9_dialog_icon_content_description
+    }
+
+    override fun isUsingBannerForDialog(): Boolean = false
 }

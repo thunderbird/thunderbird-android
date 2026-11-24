@@ -13,6 +13,7 @@ import net.thunderbird.feature.funding.common.R
 import net.thunderbird.feature.funding.common.api.FUNDING_REMINDER_DELAY_MILLIS
 import net.thunderbird.feature.funding.common.api.FundingReminderContract
 import net.thunderbird.feature.funding.common.api.FundingReminderContract.FragmentLifecycleObserver
+import net.thunderbird.feature.funding.common.api.FundingReminderDialogState
 
 class FundingReminder(
     private val activityProvider: ActivityProvider,
@@ -110,6 +111,8 @@ class FundingReminder(
         headerRes: Int? = null,
         bodyRes: Int? = null,
         imageRes: Int = settings.getReminderDefaultBannerResource(),
+        imageDescRes: Int = settings.getReminderDefaultBannerResourceContentDescription(),
+        isBannerDialog: Boolean = settings.isUsingBannerForDialog(),
     ) {
         // We're about to show the funding reminder dialog. So mark it as being shown. This way, if there's an error,
         // we err on the side of the dialog not being shown rather than it being shown more than once.
@@ -118,7 +121,14 @@ class FundingReminder(
             settings.setReminderShownTimestamp(now)
             settings.incrementReminderShownCount()
         }
+        val dialogState = FundingReminderDialogState(
+            headerRes = headerRes,
+            bodyRes = bodyRes,
+            imageRes = imageRes,
+            imageDescRes = imageDescRes,
+            isBannerDialog = isBannerDialog,
+        )
 
-        dialog.show(fragmentManager, headerRes, bodyRes, imageRes)
+        dialog.show(fragmentManager, dialogState)
     }
 }

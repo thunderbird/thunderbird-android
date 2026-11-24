@@ -58,4 +58,10 @@ internal class TbFundingSettings(
     override fun getReminderDefaultBannerResource(): Int {
         return R.drawable.funding_roc_banner
     }
+
+    override fun getReminderDefaultBannerResourceContentDescription(): Int {
+        return R.string.funding_reminder_roc_banner_content_description
+    }
+
+    override fun isUsingBannerForDialog(): Boolean = true
 }

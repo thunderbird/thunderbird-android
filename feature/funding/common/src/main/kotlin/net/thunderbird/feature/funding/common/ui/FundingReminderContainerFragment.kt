@@ -21,6 +21,8 @@ class FundingReminderContainerFragment : DialogFragment() {
         const val FUNDING_DIALOG_HEADER = "header"
         const val FUNDING_DIALOG_BODY = "body"
         const val FUNDING_DIALOG_IMAGE = "image"
+        const val FUNDING_DIALOG_IMAGE_CONTENT_DESC = "image_desc"
+        const val FUNDING_DIALOG_WITH_BANNER = "dialog_with_banner"
     }
 
     private val themeProvider: FeatureThemeProvider by inject<FeatureThemeProvider>()
@@ -43,6 +45,18 @@ class FundingReminderContainerFragment : DialogFragment() {
         } else {
             arguments?.getInt(FUNDING_DIALOG_IMAGE) ?: R.drawable.funding_roc_banner
         }
+        val imageDescRes: Int =
+            if (arguments == null || (arguments?.getInt(FUNDING_DIALOG_IMAGE_CONTENT_DESC) ?: 0) == 0) {
+                R.string.funding_reminder_roc_banner_content_description
+            } else {
+                arguments?.getInt(FUNDING_DIALOG_IMAGE_CONTENT_DESC)
+                    ?: R.string.funding_reminder_roc_banner_content_description
+            }
+        val isBannerDialog = if (arguments == null) {
+            true
+        } else {
+            arguments?.getBoolean(FUNDING_DIALOG_WITH_BANNER) ?: true
+        }
 
         return ComposeView(requireContext()).apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
@@ -52,6 +66,8 @@ class FundingReminderContainerFragment : DialogFragment() {
                         headerRes = headerRes,
                         bodyRes = bodyRes,
                         imageRes = imageRes,
+                        imageDescRes = imageDescRes,
+                        isBannerDialog,
                         onDismissClick = ::dismiss,
                         onOkClick = ::handlePositiveButton,
                     )

@@ -26,7 +26,7 @@ val featureModule = module {
 
     single<FundingSettings> {
         K9FundingSettings(
-            fundingConfigStore = get()
+            fundingConfigStore = get(),
         )
     }
 

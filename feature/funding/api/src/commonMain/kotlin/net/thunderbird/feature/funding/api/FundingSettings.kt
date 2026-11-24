@@ -10,4 +10,6 @@ interface FundingSettings {
     suspend fun setReminderShownCount(count: Int)
     suspend fun incrementReminderShownCount()
     fun getReminderDefaultBannerResource(): Int
+    fun getReminderDefaultBannerResourceContentDescription(): Int
+    fun isUsingBannerForDialog(): Boolean
 }
