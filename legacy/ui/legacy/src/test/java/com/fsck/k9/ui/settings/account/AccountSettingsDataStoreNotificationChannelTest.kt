@@ -112,6 +112,23 @@ class AccountSettingsDataStoreNotificationChannelTest : K9RobolectricTest() {
         }
     }
 
+    @Test
+    fun `creating the messages channel with ringing disabled should create a channel without sound`() {
+        // Arrange
+        accountManager.updateSync(account.id) {
+            it.copy(notificationSettings = it.notificationSettings.copy(isRingEnabled = false))
+        }
+
+        // Act
+        notificationChannelManager.updateChannels()
+
+        // Assert
+        assertThat(notificationManager.getNotificationChannel(messagesChannelId(version = 0)))
+            .isNotNull()
+            .prop("sound") { it.sound }
+            .isNull()
+    }
+
     private fun messagesChannelId(version: Int): String {
         val suffix = if (version == 0) "" else "_$version"
         return "messages_channel_${account.id}$suffix"

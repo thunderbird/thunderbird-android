@@ -264,9 +264,7 @@ class NotificationChannelManager(
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun NotificationChannel.setPropertiesFrom(settings: NotificationSettings, profile: ProfileDto) {
-        if (settings.isRingEnabled) {
-            setSound(settings.ringtone?.toUri(), Notification.AUDIO_ATTRIBUTES_DEFAULT)
-        }
+        setSound(settings.ringtoneUri, Notification.AUDIO_ATTRIBUTES_DEFAULT)
 
         settings.light.toColor(profile.color)?.let { lightColor ->
             this.lightColor = lightColor
