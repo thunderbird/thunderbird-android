@@ -30,6 +30,7 @@ import net.thunderbird.components.ui.bolt.common.annotation.PreviewDevicesWithBa
 import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.core.common.resources.StringRes
 import net.thunderbird.feature.funding.common.R
+import org.intellij.lang.annotations.JdkConstants
 import androidx.compose.ui.window.Dialog as MaterialDialog
 
 @Composable
@@ -78,15 +79,7 @@ private fun FundingReminderContent(
         Column(
             modifier = Modifier.padding(BoltTheme.spacings.triple),
         ) {
-            val imageMinHeight = if (isBannerDialog) 90.dp else 48.dp
-            Image(
-                painter = painterResource(imageRes),
-                contentDescription = stringResource(imageDescRes),
-                contentScale = ContentScale.FillWidth,
-                modifier = Modifier
-                    .defaultMinSize(minHeight = imageMinHeight)
-                    .fillMaxWidth(),
-            )
+            FundingReminderImage(imageRes, imageDescRes,isBannerDialog)
             Spacer(modifier = Modifier.height(BoltTheme.spacings.triple))
             TextHeadlineSmall(
                 text = stringResource(headerRes),
@@ -117,6 +110,34 @@ private fun FundingReminderContent(
                     color = BoltTheme.colors.secondary,
                 )
             }
+        }
+    }
+}
+
+@Composable
+private fun FundingReminderImage(
+    @DrawableRes imageRes: Int,
+    @StringRes imageDescRes: Int,
+    isBannerDialog: Boolean = true,
+) {
+    if (isBannerDialog) {
+        Image(
+            painter = painterResource(imageRes),
+            contentDescription = stringResource(imageDescRes),
+            contentScale = ContentScale.FillWidth,
+            modifier = Modifier
+                .defaultMinSize(minHeight = 90.dp)
+                .fillMaxWidth(),
+        )
+    } else {
+        Row(
+            horizontalArrangement = Arrangement.Center,
+            modifier = Modifier.fillMaxWidth(),
+        ) {
+            Image(
+                painter = painterResource(imageRes),
+                contentDescription = stringResource(imageDescRes),
+            )
         }
     }
 }

@@ -34,4 +34,10 @@ internal class FakeFundingSettings(
     override suspend fun incrementReminderShownCount() {
         fundingReminderCount++
     }
+
+    override fun getReminderDefaultBannerResource(): Int = 0
+
+    override fun getReminderDefaultBannerResourceContentDescription(): Int = 0
+
+    override fun isUsingBannerForDialog(): Boolean = true
 }
