@@ -4,6 +4,7 @@ import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNull
 import kotlin.test.Test
+import net.thunderbird.account.fake.FakeAccountData.ACCOUNT_ID
 import net.thunderbird.feature.account.avatar.Avatar
 import net.thunderbird.feature.account.storage.profile.AvatarDto
 import net.thunderbird.feature.account.storage.profile.AvatarTypeDto
@@ -40,6 +41,7 @@ class DefaultAccountAvatarDataMapperTest {
         avatarTypeDtos.forEach { type ->
             // Arrange
             val dto = AvatarDto(
+                accountId = ACCOUNT_ID,
                 avatarType = type,
                 avatarMonogram = null,
                 avatarImageUri = null,
@@ -50,7 +52,7 @@ class DefaultAccountAvatarDataMapperTest {
             val result = testSubject.toDomain(dto)
 
             // Assert
-            assertDomainMonogram(result, Avatar.Monogram("XX"))
+            assertDomainMonogram(result, Avatar.Monogram(accountId = ACCOUNT_ID, value = "XX"))
         }
     }
 
@@ -119,16 +121,34 @@ class DefaultAccountAvatarDataMapperTest {
 
         val testCases = listOf(
             TestCase(
-                AvatarDto(AvatarTypeDto.MONOGRAM, "AB", null, null),
-                Avatar.Monogram("AB"),
+                AvatarDto(
+                    accountId = ACCOUNT_ID,
+                    avatarType = AvatarTypeDto.MONOGRAM,
+                    avatarMonogram = "AB",
+                    avatarImageUri = null,
+                    avatarIconName = null,
+                ),
+                Avatar.Monogram(accountId = ACCOUNT_ID, value = "AB"),
             ),
             TestCase(
-                AvatarDto(AvatarTypeDto.IMAGE, null, "uri://img", null),
-                Avatar.Image("uri://img"),
+                AvatarDto(
+                    accountId = ACCOUNT_ID,
+                    avatarType = AvatarTypeDto.IMAGE,
+                    avatarMonogram = null,
+                    avatarImageUri = "uri://img",
+                    avatarIconName = null,
+                ),
+                Avatar.Image(accountId = ACCOUNT_ID, uri = "uri://img"),
             ),
             TestCase(
-                AvatarDto(AvatarTypeDto.ICON, null, null, "icon_name"),
-                Avatar.Icon("icon_name"),
+                AvatarDto(
+                    accountId = ACCOUNT_ID,
+                    avatarType = AvatarTypeDto.ICON,
+                    avatarMonogram = null,
+                    avatarImageUri = null,
+                    avatarIconName = "icon_name",
+                ),
+                Avatar.Icon(accountId = ACCOUNT_ID, name = "icon_name"),
             ),
         )
     }

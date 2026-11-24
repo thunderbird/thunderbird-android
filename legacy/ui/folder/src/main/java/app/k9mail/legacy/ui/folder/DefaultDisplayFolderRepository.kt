@@ -17,15 +17,15 @@ import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
-import net.thunderbird.core.android.account.LegacyAccountDto
-import net.thunderbird.core.android.account.LegacyAccountDtoManager
+import net.thunderbird.core.android.account.LegacyAccountManager
+import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.mail.folder.api.Folder
 import net.thunderbird.feature.mail.folder.FolderType
 import net.thunderbird.feature.mail.folder.api.OutboxFolderManager
 import com.fsck.k9.mail.FolderType as LegacyFolderType
 
 class DefaultDisplayFolderRepository(
-    private val accountManager: LegacyAccountDtoManager,
+    private val accountManager: LegacyAccountManager,
     private val messagingController: MessagingControllerRegistry,
     private val messageStoreManager: MessageStoreManager,
     private val outboxFolderManager: OutboxFolderManager,
@@ -44,11 +44,12 @@ class DefaultDisplayFolderRepository(
             ) { it.folder.name }
 
     private fun getDisplayFolders(
-        account: LegacyAccountDto,
+        accountId: AccountId,
         outboxFolderId: Long,
         includeHiddenFolders: Boolean,
     ): List<DisplayFolder> {
-        val messageStore = messageStoreManager.getMessageStore(account.uuid)
+        val account = accountManager.findById(accountId)?: error("Account not found $accountId")
+        val messageStore = messageStoreManager.getMessageStore(accountId)
         return messageStore.getDisplayFolders(
             includeHiddenFolders = includeHiddenFolders,
             outboxFolderId = outboxFolderId,
@@ -70,19 +71,19 @@ class DefaultDisplayFolderRepository(
     }
 
     override fun getDisplayFoldersFlow(
-        account: LegacyAccountDto,
+        accountId: AccountId,
         includeHiddenFolders: Boolean,
     ): Flow<List<DisplayFolder>> {
-        val messageStore = messageStoreManager.getMessageStore(account.uuid)
+        val messageStore = messageStoreManager.getMessageStore(accountId)
 
         return callbackFlow {
-            val outboxFolderId = outboxFolderManager.getOutboxFolderId(account.id)
-            send(getDisplayFolders(account, outboxFolderId, includeHiddenFolders))
+            val outboxFolderId = outboxFolderManager.getOutboxFolderId(accountId)
+            send(getDisplayFolders(accountId, outboxFolderId, includeHiddenFolders))
 
             val folderStatusChangedListener = object : SimpleMessagingListener() {
-                override fun folderStatusChanged(statusChangedAccount: LegacyAccountDto, folderId: Long) {
-                    if (statusChangedAccount.uuid == account.uuid) {
-                        trySendBlocking(getDisplayFolders(account, outboxFolderId, includeHiddenFolders))
+                override fun folderStatusChanged(changedAccountId: AccountId, folderId: Long) {
+                    if (changedAccountId == accountId) {
+                        trySendBlocking(getDisplayFolders(accountId, outboxFolderId, includeHiddenFolders))
                     }
                 }
             }
@@ -90,7 +91,7 @@ class DefaultDisplayFolderRepository(
 
             val folderSettingsChangedListener = FolderSettingsChangedListener {
                 withContext(ioDispatcher) {
-                    trySendBlocking(getDisplayFolders(account, outboxFolderId, includeHiddenFolders))
+                    trySendBlocking(getDisplayFolders(accountId, outboxFolderId, includeHiddenFolders))
                 }
             }
             messageStore.addFolderSettingsChangedListener(folderSettingsChangedListener)
@@ -104,9 +105,8 @@ class DefaultDisplayFolderRepository(
             .flowOn(ioDispatcher)
     }
 
-    override fun getDisplayFoldersFlow(accountUuid: String): Flow<List<DisplayFolder>> {
-        val account = accountManager.getAccount(accountUuid) ?: error("Account not found: $accountUuid")
-        return getDisplayFoldersFlow(account, includeHiddenFolders = false)
+    override fun getDisplayFoldersFlow(accountId: AccountId): Flow<List<DisplayFolder>> {
+        return getDisplayFoldersFlow(accountId, includeHiddenFolders = false)
     }
 
     private fun LegacyFolderType.toFolderType(): FolderType =

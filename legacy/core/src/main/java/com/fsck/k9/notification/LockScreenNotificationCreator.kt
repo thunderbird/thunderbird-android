@@ -15,16 +15,20 @@ internal class LockScreenNotificationCreator(
             LockScreenNotificationData.None -> {
                 builder.setVisibility(NotificationCompat.VISIBILITY_SECRET)
             }
+
             LockScreenNotificationData.AppName -> {
                 builder.setVisibility(NotificationCompat.VISIBILITY_PRIVATE)
             }
+
             LockScreenNotificationData.Public -> {
                 builder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             }
+
             is LockScreenNotificationData.SenderNames -> {
                 val publicNotification = createPublicNotificationWithSenderList(baseNotificationData)
                 builder.setPublicVersion(publicNotification)
             }
+
             LockScreenNotificationData.MessageCount -> {
                 val publicNotification = createPublicNotificationWithNewMessagesCount(baseNotificationData)
                 builder.setPublicVersion(publicNotification)
@@ -46,11 +50,14 @@ internal class LockScreenNotificationCreator(
     }
 
     private fun createPublicNotification(baseNotificationData: BaseNotificationData): NotificationCompat.Builder {
-        val account = baseNotificationData.account
         val newMessagesCount = baseNotificationData.newMessagesCount
         val title = resourceProvider.newMessagesTitle(newMessagesCount)
 
-        return notificationHelper.createNotificationBuilder(account, NotificationChannelManager.ChannelType.MESSAGES)
+        return notificationHelper.createNotificationBuilder(
+            baseNotificationData.accountId,
+            NotificationChannelManager.ChannelType.MESSAGES,
+            baseNotificationData.messagesNotificationChannelVersion,
+        )
             .setSmallIcon(resourceProvider.iconNewMail)
             .setColor(baseNotificationData.color)
             .setNumber(newMessagesCount)

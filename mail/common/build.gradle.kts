@@ -8,6 +8,7 @@ dependencies {
 
     implementation(projects.legacy.logging)
     implementation(projects.core.common)
+    implementation(projects.feature.account.api)
     implementation(projects.feature.mail.folder.api)
 
     implementation(libs.androidx.annotation)
@@ -21,7 +22,6 @@ dependencies {
     // We're only using this for its DefaultHostnameVerifier
     implementation(libs.apache.httpclient5)
 
-    testImplementation(projects.core.logging.testing)
     testImplementation(projects.mail.testing)
 
     testImplementation(libs.icu4j.charset)

@@ -1,11 +1,14 @@
 package net.thunderbird.core.featureflag.provider
 
 import java.io.IOException
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
+import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.core.featureflag.data.FeatureFlagCatalogDataSource
 import net.thunderbird.core.featureflag.model.FeatureFlagCatalog
 import net.thunderbird.core.featureflag.provider.context.FeatureFlagContext
-import net.thunderbird.core.logging.Logger
+
+private const val TAG = "DataSourceCatalogFeatureFlagProvider"
 
 /**
  * Base implementation of a catalog-based feature flag provider that loads flag
@@ -19,7 +22,8 @@ abstract class DataSourceCatalogFeatureFlagProvider internal constructor(
     protected val dataSource: FeatureFlagCatalogDataSource,
     providerName: String,
     protected val logger: Logger,
-) : BaseCatalogFeatureFlagProvider(providerName, logger) {
+    scope: CoroutineScope,
+) : BaseCatalogFeatureFlagProvider(providerName, logger, scope) {
     /**
      * Initializes the feature flag provider with the given context and loads the catalog.
      *
@@ -28,11 +32,11 @@ abstract class DataSourceCatalogFeatureFlagProvider internal constructor(
     override suspend fun initialize(initialContext: FeatureFlagContext) {
         super.initialize(initialContext)
         try {
-            catalog = loadCatalog()
-            resolvedFlags = resolve(context)
-            logger.verbose { "$logPrefix Resolved feature flags: $resolvedFlags" }
+            val catalog = loadCatalog()
+            resolve(context, catalog)
+            logger.verbose(TAG) { "$logPrefix Resolved feature flags: ${resolvedFlags()}" }
         } catch (e: IOException) {
-            logger.error(throwable = e) { "$logPrefix Failed to load feature flag catalog." }
+            logger.error(tag = TAG, throwable = e) { "$logPrefix Failed to load feature flag catalog." }
         }
     }
 

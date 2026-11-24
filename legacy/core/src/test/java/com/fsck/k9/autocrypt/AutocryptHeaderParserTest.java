@@ -9,7 +9,7 @@ import com.fsck.k9.mail.internet.MimeMessage;
 import net.thunderbird.core.android.testing.RobolectricTest;
 import net.thunderbird.core.common.exception.MessagingException;
 import net.thunderbird.legacy.logging.Log;
-import net.thunderbird.core.logging.testing.TestLogger;
+import net.thunderbird.components.core.logging.testing.TestLogger;
 import org.junit.Before;
 import org.junit.Test;
 import org.robolectric.RuntimeEnvironment;

@@ -25,13 +25,13 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
-import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.testing.RobolectricTest
 import net.thunderbird.core.common.appConfig.PlatformConfigProvider
 import net.thunderbird.legacy.logging.Log
-import net.thunderbird.core.logging.testing.TestLogger
+import net.thunderbird.components.core.logging.testing.TestLogger
 import net.thunderbird.core.preference.GeneralSettings
 import net.thunderbird.core.preference.GeneralSettingsManager
+import net.thunderbird.feature.account.AccountIdFactory
 import org.junit.After
 import org.junit.Assert.assertArrayEquals
 import org.junit.Before
@@ -48,7 +48,7 @@ class AttachmentControllerTest : RobolectricTest() {
     private val displayName = "document.pdf"
     private val mimeType = "application/pdf"
     private val part = LocalBodyPart(
-        "00000000-0000-4000-0000-000000000000",
+        AccountIdFactory.of("00000000-0000-4000-0000-000000000000"),
         null,
         1L,
         42L,
@@ -218,8 +218,7 @@ class AttachmentControllerTest : RobolectricTest() {
             listener: MessagingListener,
         ) {
             val localPart = part as? LocalPart
-            val account = LegacyAccountDto("00000000-0000-4000-0000-000000000000")
-            listener.loadAttachmentFinished(account, localPart?.message, part)
+            listener.loadAttachmentFinished(AccountIdFactory.create(), localPart?.message, part)
         }
     }
 

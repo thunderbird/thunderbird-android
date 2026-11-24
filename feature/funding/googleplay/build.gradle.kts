@@ -18,7 +18,6 @@ dependencies {
 
     implementation(projects.core.common)
     implementation(projects.core.android.common)
-    implementation(projects.core.logging.api)
     implementation(projects.core.ui.compose.common)
     implementation(projects.core.configstore.api)
     implementation(projects.feature.funding.common)
@@ -30,7 +29,6 @@ dependencies {
 
     testImplementation(projects.core.testing)
     testImplementation(projects.core.configstore.testing)
-    testImplementation(projects.core.logging.testing)
     testImplementation(projects.core.ui.compose.testing)
 
     testImplementation(libs.androidx.lifecycle.runtime.testing)

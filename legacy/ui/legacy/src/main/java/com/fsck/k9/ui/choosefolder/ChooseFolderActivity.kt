@@ -13,14 +13,14 @@ import app.k9mail.legacy.message.controller.MessageReference
 import app.k9mail.legacy.ui.folder.DisplayFolder
 import app.k9mail.legacy.ui.folder.FolderIconProvider
 import app.k9mail.legacy.ui.folder.FolderNameFormatter
-import com.fsck.k9.Preferences
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.BaseActivity
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import java.util.Locale
-import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.feature.account.AccountId
+import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.mail.folder.FolderType
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -29,14 +29,13 @@ import org.koin.core.parameter.parametersOf
 @Suppress("TooManyFunctions")
 class ChooseFolderActivity : BaseActivity() {
     private val viewModel: ChooseFolderViewModel by viewModel()
-    private val preferences: Preferences by inject()
     private val messagingController: MessagingController by inject()
     private val folderNameFormatter: FolderNameFormatter by inject()
     private val folderIconProvider: FolderIconProvider by inject { parametersOf(theme) }
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var itemAdapter: ItemAdapter<FolderListItem>
-    private lateinit var account: LegacyAccountDto
+    private lateinit var accountId: AccountId
     private lateinit var action: Action
     private var currentFolderId: Long? = null
     private var scrollToFolderId: Long? = null
@@ -67,14 +66,14 @@ class ChooseFolderActivity : BaseActivity() {
         val savedShowHiddenFolders = savedInstanceState?.getBoolean(STATE_SHOW_HIDDEN_FOLDERS)
         val showHiddenFolders = savedShowHiddenFolders ?: false
 
-        viewModel.setDisplayMode(account, showHiddenFolders)
+        viewModel.setDisplayMode(accountId, showHiddenFolders)
     }
 
     private fun decodeArguments(savedInstanceState: Bundle?): Boolean {
         action = intent.action?.toAction() ?: error("Missing Intent action")
 
         val accountUuid = intent.getStringExtra(EXTRA_ACCOUNT) ?: return false
-        account = preferences.getAccount(accountUuid) ?: return false
+        accountId = AccountIdFactory.of(accountUuid)
 
         messageReference = intent.getStringExtra(EXTRA_MESSAGE_REFERENCE)
         currentFolderId = intent.getLongExtraOrNull(EXTRA_CURRENT_FOLDER_ID)
@@ -188,11 +187,11 @@ class ChooseFolderActivity : BaseActivity() {
     }
 
     private fun refreshFolderList() {
-        messagingController.refreshFolderList(account)
+        messagingController.refreshFolderList(accountId)
     }
 
     private fun setShowHiddenFolders(enabled: Boolean) {
-        viewModel.setDisplayMode(account, enabled)
+        viewModel.setDisplayMode(accountId, enabled)
     }
 
     private fun returnResult(folderId: Long, displayName: String) {
@@ -251,14 +250,14 @@ class ChooseFolderActivity : BaseActivity() {
         fun buildLaunchIntent(
             context: Context,
             action: Action,
-            accountUuid: String,
+            accountId: AccountId,
             currentFolderId: Long? = null,
             scrollToFolderId: Long? = null,
             messageReference: MessageReference? = null,
         ): Intent {
             return Intent(context, ChooseFolderActivity::class.java).apply {
                 this.action = action.toString()
-                putExtra(EXTRA_ACCOUNT, accountUuid)
+                putExtra(EXTRA_ACCOUNT, accountId.toString())
                 currentFolderId?.let { putExtra(EXTRA_CURRENT_FOLDER_ID, currentFolderId) }
                 scrollToFolderId?.let { putExtra(EXTRA_SCROLL_TO_FOLDER_ID, scrollToFolderId) }
                 messageReference?.let { putExtra(EXTRA_MESSAGE_REFERENCE, it.toIdentityString()) }

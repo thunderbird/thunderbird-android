@@ -1,9 +1,10 @@
 package app.k9mail.legacy.mailstore.folder.push
 
 import app.cash.turbine.test
+import app.k9mail.legacy.mailstore.FakeMessageStoreFactory
+import app.k9mail.legacy.mailstore.FakeRemoteFolderDetailsRepository
 import app.k9mail.legacy.mailstore.FolderSettingsChangedListener
 import app.k9mail.legacy.mailstore.ListenableMessageStore
-import app.k9mail.legacy.mailstore.MessageStoreFactory
 import app.k9mail.legacy.mailstore.MessageStoreManager
 import app.k9mail.legacy.mailstore.RemoteFolderDetails
 import assertk.all
@@ -13,24 +14,15 @@ import assertk.assertions.isInstanceOf
 import assertk.assertions.prop
 import kotlin.test.Test
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import net.thunderbird.account.fake.FakeAccountData.ACCOUNT_ID_OTHER_RAW
-import net.thunderbird.account.fake.FakeAccountData.ACCOUNT_ID_RAW
 import net.thunderbird.components.core.outcome.Outcome
-import net.thunderbird.core.android.account.AccountRemovedListener
-import net.thunderbird.core.android.account.AccountsChangeListener
-import net.thunderbird.core.android.account.LegacyAccountDto
-import net.thunderbird.core.android.account.LegacyAccountDtoManager
 import net.thunderbird.core.common.exception.MessagingException
-import net.thunderbird.core.logging.testing.TestLogger
-import net.thunderbird.feature.account.AccountId
+import net.thunderbird.components.core.logging.testing.TestLogger
 import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.mail.folder.FolderType
 import net.thunderbird.feature.mail.folder.api.RemoteFolder
 import net.thunderbird.feature.mail.folder.api.data.FolderError
-import net.thunderbird.feature.mail.folder.api.data.repository.RemoteFolderDetailsRepository
 import org.mockito.kotlin.argumentCaptor
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
@@ -40,14 +32,13 @@ private const val ARCHIVE_FOLDER_ID = 2L
 
 @Suppress("MaxLineLength")
 class DefaultPushFoldersQueryRepositoryTest {
-    private val account = LegacyAccountDto(ACCOUNT_ID_RAW)
-    private val accountId = account.id
+
+    private val accountId = AccountIdFactory.create()
     private val messageStore = mock<ListenableMessageStore>()
-    private val accountManager = FakePushFoldersLegacyAccountDtoManager(accounts = listOf(account))
-    private val messageStoreFactory = FakePushFoldersMessageStoreFactory(
-        messageStoresByUuid = mapOf(account.uuid to messageStore),
+    private val messageStoreFactory = FakeMessageStoreFactory(
+        messageStoresById = mapOf(accountId to messageStore),
     )
-    private val messageStoreManager = MessageStoreManager(accountManager, messageStoreFactory)
+    private val messageStoreManager = MessageStoreManager(messageStoreFactory)
     private val remoteFolderDetailsRepository = FakeRemoteFolderDetailsRepository()
     private val testSubject = DefaultPushFoldersQueryRepository(
         logger = TestLogger(),
@@ -270,32 +261,3 @@ class DefaultPushFoldersQueryRepositoryTest {
     )
 }
 
-private class FakeRemoteFolderDetailsRepository(
-    var outcome: Outcome<List<RemoteFolderDetails>, FolderError> = Outcome.success(emptyList()),
-) : RemoteFolderDetailsRepository {
-    override suspend fun getAllByAccountId(accountId: AccountId): Outcome<List<RemoteFolderDetails>, FolderError> =
-        outcome
-}
-
-private class FakePushFoldersLegacyAccountDtoManager(
-    accounts: List<LegacyAccountDto> = emptyList(),
-) : LegacyAccountDtoManager {
-    private val accountsByUuid = accounts.associateBy { it.uuid }
-
-    override fun getAccounts(): List<LegacyAccountDto> = accountsByUuid.values.toList()
-    override fun getAccountsFlow(): Flow<List<LegacyAccountDto>> = flowOf(getAccounts())
-    override fun getAccount(accountUuid: String): LegacyAccountDto? = accountsByUuid[accountUuid]
-    override fun getAccountFlow(accountUuid: String): Flow<LegacyAccountDto?> = flowOf(getAccount(accountUuid))
-    override fun addAccountRemovedListener(listener: AccountRemovedListener) = Unit
-    override fun moveAccount(account: LegacyAccountDto, newPosition: Int) = Unit
-    override fun addOnAccountsChangeListener(accountsChangeListener: AccountsChangeListener) = Unit
-    override fun removeOnAccountsChangeListener(accountsChangeListener: AccountsChangeListener) = Unit
-    override fun saveAccount(account: LegacyAccountDto) = Unit
-}
-
-private class FakePushFoldersMessageStoreFactory(
-    private val messageStoresByUuid: Map<String, ListenableMessageStore>,
-) : MessageStoreFactory {
-    override fun create(account: LegacyAccountDto): ListenableMessageStore =
-        messageStoresByUuid.getValue(account.uuid)
-}

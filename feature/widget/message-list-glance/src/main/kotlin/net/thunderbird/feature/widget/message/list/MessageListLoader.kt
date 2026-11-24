@@ -12,6 +12,8 @@ import net.thunderbird.feature.mail.folder.api.OutboxFolderManager
 import net.thunderbird.feature.search.legacy.sql.SqlWhereClause
 import net.thunderbird.legacy.logging.Log
 
+private const val TAG = "MessageListLoader"
+
 internal class MessageListLoader(
     private val accountManager: LegacyAccountManager,
     private val messageListRepository: MessageListRepository,
@@ -25,7 +27,7 @@ internal class MessageListLoader(
         return try {
             getMessageListInfo(config)
         } catch (e: Exception) {
-            Log.e(e, "Error while fetching message list")
+            Log.e(TAG, e, "Error while fetching message list")
 
             // TODO: Return an error object instead of an empty list
             emptyList()
@@ -44,16 +46,16 @@ internal class MessageListLoader(
     }
 
     private fun loadMessageListForAccount(account: LegacyAccount, config: MessageListConfig): List<MessageListItem> {
-        val accountUuid = account.uuid
+        val accountId = account.id
         val sortOrder = buildSortOrder(config)
         val mapper = MessageListItemMapper(messageHelper, account, messageListPreferencesManager, outboxFolderManager)
 
         return if (config.showingThreadedList) {
             val (selection, selectionArgs) = buildSelection(config)
-            messageListRepository.getThreadedMessages(accountUuid, selection, selectionArgs, sortOrder, mapper)
+            messageListRepository.getThreadedMessages(accountId, selection, selectionArgs, sortOrder, mapper)
         } else {
             val (selection, selectionArgs) = buildSelection(config)
-            messageListRepository.getMessages(accountUuid, selection, selectionArgs, sortOrder, mapper)
+            messageListRepository.getMessages(accountId, selection, selectionArgs, sortOrder, mapper)
         }
     }
 

@@ -24,6 +24,7 @@ dependencies {
     implementation(projects.mail.protocols.imap)
     implementation(projects.mail.protocols.pop3)
     implementation(projects.mail.protocols.smtp)
+    implementation(projects.feature.account.api)
     implementation(projects.feature.mail.folder.api)
 
     implementation(projects.feature.autodiscovery.service)
@@ -39,7 +40,6 @@ dependencies {
     api(projects.feature.account.server.validation)
 
     implementation(projects.feature.thundermail.api)
-    testImplementation(projects.core.logging.testing)
     testImplementation(projects.core.ui.compose.testing)
 
     testImplementation(platform(libs.forkhandles.bom))

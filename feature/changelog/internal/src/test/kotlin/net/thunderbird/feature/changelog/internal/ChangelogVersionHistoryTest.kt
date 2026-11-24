@@ -11,15 +11,16 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runTest
-import net.thunderbird.core.logging.Logger
+import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.core.preference.storage.Storage
 import net.thunderbird.core.preference.storage.StorageEditor
-import net.thunderbird.core.preference.storage.StoragePersister
+import net.thunderbird.core.preference.storage.StorageProvider
 import org.junit.Before
 import org.junit.Test
 import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.never
+import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 
@@ -31,7 +32,7 @@ class ChangelogVersionHistoryTest {
     private val packageInfo = mock<PackageInfo>()
     private val changeLogProvider = mock<ChangelogProvider>()
     private val logger = mock<Logger>()
-    private val storagePersister = mock<StoragePersister>()
+    private val storageProvider = mock<StorageProvider>()
     private val storageEditor = mock<StorageEditor>()
     private val storage = mock<Storage>()
 
@@ -42,7 +43,8 @@ class ChangelogVersionHistoryTest {
     fun setUp() {
         whenever(context.packageManager).thenReturn(packageManager)
         whenever(context.packageName).thenReturn("net.thunderbird.android")
-        whenever(storagePersister.loadValues()).thenReturn(storage)
+        whenever(storageProvider.storage).thenReturn(storage)
+        whenever(storageProvider.createStorageEditor()).thenReturn(storageEditor)
 
         whenever(
             packageManager.getPackageInfo(
@@ -197,6 +199,21 @@ class ChangelogVersionHistoryTest {
     }
 
     @Test
+    fun `should use a new storage editor for each write`() = runTest {
+        givenStoredVersions(
+            firstVersionCode = NO_VERSION,
+            lastVersionCode = NO_VERSION,
+        )
+
+        val subject = createSubject()
+        testCoroutineDispatcher.scheduler.advanceUntilIdle()
+        subject.writeCurrentVersion()
+        testCoroutineDispatcher.scheduler.advanceUntilIdle()
+
+        verify(storageProvider, times(2)).createStorageEditor()
+    }
+
+    @Test
     fun `should return no version when package is not found`() = runTest {
         givenStoredVersions(
             firstVersionCode = FIRST_VERSION_CODE,
@@ -222,8 +239,7 @@ class ChangelogVersionHistoryTest {
             context = context,
             changeLogProvider = changeLogProvider,
             logger = logger,
-            storagePersister = storagePersister,
-            storageEditor = storageEditor,
+            storageProvider = storageProvider,
             ioDispatcher = testCoroutineDispatcher,
             scope = testScope,
         )

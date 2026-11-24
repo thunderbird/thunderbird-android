@@ -8,8 +8,8 @@ import kotlin.test.Test
 import kotlin.test.assertFailsWith
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.test.runTest
+import net.thunderbird.components.core.logging.testing.TestLogger
 import net.thunderbird.core.common.state.sideeffect.StateSideEffectHandler
-import net.thunderbird.core.logging.testing.TestLogger
 import net.thunderbird.feature.mail.message.list.internal.fakes.RecordingSuspendFunction
 import net.thunderbird.feature.mail.message.list.internal.ui.state.sideeffect.BaseSideEffectHandlerTest
 import net.thunderbird.feature.mail.message.list.ui.effect.MessageListEffect

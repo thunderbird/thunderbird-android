@@ -4,7 +4,6 @@ import android.app.Dialog
 import android.content.DialogInterface
 import android.content.DialogInterface.OnClickListener
 import android.os.Bundle
-import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.setFragmentResult
 import androidx.lifecycle.Lifecycle
@@ -49,7 +48,7 @@ internal class PickAppDialogFragment : DialogFragment() {
     }
 
     override fun onDismiss(dialog: DialogInterface) {
-        setFragmentResult(FRAGMENT_RESULT_KEY, bundleOf(FRAGMENT_RESULT_APP to selectedPackageName))
+        setFragmentResult(FRAGMENT_RESULT_KEY, Bundle().apply { putString(FRAGMENT_RESULT_APP, selectedPackageName) })
         super.onDismiss(dialog)
     }
 

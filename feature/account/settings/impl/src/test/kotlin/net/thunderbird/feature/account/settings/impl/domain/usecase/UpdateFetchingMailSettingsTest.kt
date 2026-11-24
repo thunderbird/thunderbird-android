@@ -1,6 +1,5 @@
 package net.thunderbird.feature.account.settings.impl.domain.usecase
 
-import androidx.compose.ui.viewinterop.NoOpUpdate
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
@@ -10,6 +9,7 @@ import com.fsck.k9.mail.ServerSettings
 import kotlin.test.Test
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import net.thunderbird.components.core.outcome.Outcome
@@ -31,7 +31,6 @@ internal class UpdateFetchingMailSettingsTest {
         val id = AccountIdFactory.create()
 
         return LegacyAccount(
-            isSensitiveDebugLoggingEnabled = { true },
             id = id,
             name = "Test Account",
             email = "test@example.com",
@@ -41,6 +40,7 @@ internal class UpdateFetchingMailSettingsTest {
                 name = "Test Account",
                 color = 0xFF0000,
                 avatar = AvatarDto(
+                    accountId = id,
                     avatarType = AvatarTypeDto.ICON,
                     avatarMonogram = null,
                     avatarImageUri = null,
@@ -93,20 +93,24 @@ internal class UpdateFetchingMailSettingsTest {
     private fun repoWith(account: LegacyAccount) = object : LegacyAccountRepository {
         var updated: LegacyAccount? = null
 
-        override fun getById(id: AccountId): Flow<LegacyAccount?> = flowOf(account)
+        override fun observeById(id: AccountId): Flow<LegacyAccount?> = flowOf(account)
 
-        override suspend fun update(account: LegacyAccount) {
-            updated = account
-        }
+        override suspend fun update(
+            accountId: AccountId,
+            transform: (LegacyAccount) -> LegacyAccount,
+        ): LegacyAccount? =
+            observeById(accountId).firstOrNull()?.let(transform)?.also { updated = it }
     }
 
     @Test
     fun `should return NotFound when account missing`() = runTest {
         val repo = object : LegacyAccountRepository {
-            override fun getById(id: AccountId): Flow<LegacyAccount?> = emptyFlow()
-            override suspend fun update(account: LegacyAccount) {
-                NoOpUpdate
-            }
+            override fun observeById(id: AccountId): Flow<LegacyAccount?> = emptyFlow()
+            override suspend fun update(
+                accountId: AccountId,
+                transform: (LegacyAccount) -> LegacyAccount,
+            ): LegacyAccount? =
+                observeById(accountId).firstOrNull()?.let(transform)
         }
 
         val useCase = UpdateFetchingMailSettings(repo)

@@ -2,5 +2,5 @@
 <resources>
     <string name="message_list_glance_widget_compose_action">نوشتن</string>
     <string name="message_list_glance_widget_inbox_title">صندوق ورودی یکپارچه</string>
-    <string name="message_list_glance_widget_label">سیاههٔ پیام‌ها</string>
+    <string name="message_list_glance_widget_label">لیست پیام‌ها</string>
 </resources>

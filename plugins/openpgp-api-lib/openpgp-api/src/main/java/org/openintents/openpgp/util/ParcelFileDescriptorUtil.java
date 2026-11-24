@@ -35,6 +35,8 @@ import org.openintents.openpgp.util.OpenPgpApi.OpenPgpDataSource;
 
 public class ParcelFileDescriptorUtil {
 
+    private static final String TAG = "ParcelFileDescriptorUtil";
+
     public static ParcelFileDescriptor pipeFrom(InputStream inputStream)
             throws IOException {
         ParcelFileDescriptor[] pipe = ParcelFileDescriptor.createPipe();
@@ -77,7 +79,7 @@ public class ParcelFileDescriptorUtil {
                     mOut.write(buf, 0, len);
                 }
             } catch (IOException e) {
-                Log.e(e, "IOException when writing to out");
+                Log.e(TAG, e, "IOException when writing to out");
             } finally {
                 try {
                     mIn.close();
@@ -116,11 +118,11 @@ public class ParcelFileDescriptorUtil {
                 dataSource.writeTo(outputStream);
             } catch (IOException e) {
                 if (dataSource.isCancelled()) {
-                    Log.d("Stopped writing because operation was cancelled.");
+                    Log.d(TAG, "Stopped writing because operation was cancelled.");
                 } else if (isIOExceptionCausedByEPIPE(e)) {
-                    Log.d("Stopped writing due to broken pipe (other end closed pipe?)");
+                    Log.d(TAG, "Stopped writing due to broken pipe (other end closed pipe?)");
                 } else {
-                    Log.e(e, "IOException when writing to out");
+                    Log.e(TAG, e, "IOException when writing to out");
                 }
             } finally {
                 try {
@@ -154,9 +156,9 @@ public class ParcelFileDescriptorUtil {
                 sinkResult = dataSink.processData(inputStream);
             } catch (IOException e) {
                 if (isIOExceptionCausedByEPIPE(e)) {
-                    Log.e("Stopped read due to broken pipe (other end closed pipe?)");
+                    Log.e(TAG, "Stopped read due to broken pipe (other end closed pipe?)");
                 } else {
-                    Log.e(e, "IOException while reading from in");
+                    Log.e(TAG, e, "IOException while reading from in");
                 }
                 sinkResult = null;
             } finally {

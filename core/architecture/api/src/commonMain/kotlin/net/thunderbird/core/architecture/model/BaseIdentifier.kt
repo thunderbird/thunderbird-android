@@ -1,7 +1,5 @@
 package net.thunderbird.core.architecture.model
 
-import kotlin.uuid.ExperimentalUuidApi
-
 /**
  * Represents a unique identifier for an entity.
  *
@@ -9,7 +7,6 @@ import kotlin.uuid.ExperimentalUuidApi
  *
  * @property value The underlying value.
  */
-@OptIn(ExperimentalUuidApi::class)
 abstract class BaseIdentifier<T : Comparable<T>>(val value: T) : Comparable<BaseIdentifier<T>> {
 
     override fun compareTo(other: BaseIdentifier<T>): Int {

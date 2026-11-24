@@ -14,12 +14,16 @@ import com.fsck.k9.ui.base.BaseActivity
 import com.fsck.k9.ui.base.extensions.fragmentTransaction
 import com.fsck.k9.ui.base.extensions.fragmentTransactionWithBackStack
 import com.fsck.k9.ui.base.livedata.observeNotNull
+import net.thunderbird.feature.account.AccountId
+import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.legacy.logging.Log
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
+private const val TAG = "AccountSettingsActivity"
+
 class AccountSettingsActivity : BaseActivity(), OnPreferenceStartScreenCallback {
     private val accountViewModel: AccountSettingsViewModel by viewModel()
-    private lateinit var accountUuid: String
+    private lateinit var accountId: AccountId
     private var startScreenKey: String? = null
     private var fragmentAdded = false
 
@@ -34,7 +38,7 @@ class AccountSettingsActivity : BaseActivity(), OnPreferenceStartScreenCallback 
         initializeActionBar()
 
         if (!decodeArguments()) {
-            Log.d("Invalid arguments")
+            Log.d(TAG, "Invalid arguments")
             finish()
             return
         }
@@ -49,7 +53,7 @@ class AccountSettingsActivity : BaseActivity(), OnPreferenceStartScreenCallback 
 
         accountSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-                onAccountSelected(selectedAccountUuid = accountSpinner.selection.uuid)
+                onAccountSelected(selectedAccountUuid = accountSpinner.selection.id.toString())
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) = Unit
@@ -61,22 +65,23 @@ class AccountSettingsActivity : BaseActivity(), OnPreferenceStartScreenCallback 
     }
 
     private fun onAccountSelected(selectedAccountUuid: String) {
-        if (selectedAccountUuid != accountUuid && !isFinishing) {
+        if (selectedAccountUuid != accountId.toString() && !isFinishing) {
             start(this, selectedAccountUuid)
             finish()
         }
     }
 
     private fun decodeArguments(): Boolean {
-        accountUuid = intent.getStringExtra(ARG_ACCOUNT_UUID) ?: return false
+        accountId = intent.getStringExtra(ARG_ACCOUNT_UUID)
+            ?.let { AccountIdFactory.of(it) } ?: return false
         startScreenKey = intent.getStringExtra(ARG_START_SCREEN_KEY)
         return true
     }
 
     private fun loadAccount() {
-        accountViewModel.getAccount(accountUuid).observe(this) { account ->
+        accountViewModel.getAccount(accountId).observe(this) { account ->
             if (account == null) {
-                Log.w("Account with UUID %s not found", accountUuid)
+                Log.w(TAG, "Account with ID %s not found", accountId)
                 finish()
                 return@observe
             }
@@ -91,7 +96,10 @@ class AccountSettingsActivity : BaseActivity(), OnPreferenceStartScreenCallback 
         if (needToAddFragment && !fragmentAdded) {
             fragmentAdded = true
             fragmentTransaction {
-                add(R.id.accountSettingsContainer, AccountSettingsFragment.create(accountUuid, startScreenKey))
+                add(
+                    R.id.accountSettingsContainer,
+                    AccountSettingsFragment.create(accountId.toString(), startScreenKey),
+                )
             }
         }
     }
@@ -110,7 +118,10 @@ class AccountSettingsActivity : BaseActivity(), OnPreferenceStartScreenCallback 
         preferenceScreen: PreferenceScreen,
     ): Boolean {
         fragmentTransactionWithBackStack {
-            replace(R.id.accountSettingsContainer, AccountSettingsFragment.create(accountUuid, preferenceScreen.key))
+            replace(
+                R.id.accountSettingsContainer,
+                AccountSettingsFragment.create(accountId.toString(), preferenceScreen.key),
+            )
         }
 
         return true

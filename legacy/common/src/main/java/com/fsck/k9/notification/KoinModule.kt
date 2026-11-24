@@ -12,5 +12,11 @@ val notificationModule = module {
         )
     }
     single<NotificationResourceProvider> { K9NotificationResourceProvider(get()) }
-    single<NotificationStrategy> { K9NotificationStrategy(get(), generalSettingsManager = get()) }
+    single<NotificationStrategy> {
+        K9NotificationStrategy(
+            contactRepository = get(),
+            generalSettingsManager = get(),
+            accountManager = get(),
+        )
+    }
 }

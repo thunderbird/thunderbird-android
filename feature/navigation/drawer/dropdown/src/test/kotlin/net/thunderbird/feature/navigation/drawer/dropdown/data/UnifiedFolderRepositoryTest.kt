@@ -6,8 +6,12 @@ import assertk.assertions.isEqualTo
 import kotlin.test.Test
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
+import net.thunderbird.feature.account.UnifiedAccountId
+import net.thunderbird.feature.mail.folder.FolderType
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.UnifiedDisplayFolder
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.UnifiedDisplayFolderType
+import net.thunderbird.feature.search.legacy.LocalMessageSearchType
+import net.thunderbird.feature.search.legacy.UnifiedFolderSelection
 import net.thunderbird.feature.search.legacy.api.MessageSearchField
 import net.thunderbird.feature.search.legacy.api.SearchAttribute
 
@@ -30,7 +34,7 @@ internal class UnifiedFolderRepositoryTest {
 
         assertThat(result).isEqualTo(
             UnifiedDisplayFolder(
-                id = "unified_inbox",
+                folderId = "unified_inbox",
                 unifiedType = folderType,
                 unreadMessageCount = 2,
                 starredMessageCount = 2,
@@ -38,7 +42,10 @@ internal class UnifiedFolderRepositoryTest {
         )
 
         val search = messageCountsProvider.recordedSearch
-        assertThat(search.id).isEqualTo("unified_inbox")
+        assertThat(search.id).isEqualTo(UnifiedAccountId)
+        assertThat(search.type).isEqualTo(
+            LocalMessageSearchType.Unified(UnifiedFolderSelection.Special(FolderType.INBOX)),
+        )
         val condition = search.conditions.condition
         assertThat(condition?.value).isEqualTo("1")
         assertThat(condition?.attribute).isEqualTo(SearchAttribute.EQUALS)

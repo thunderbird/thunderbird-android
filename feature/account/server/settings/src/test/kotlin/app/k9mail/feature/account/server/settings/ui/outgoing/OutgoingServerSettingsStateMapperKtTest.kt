@@ -57,6 +57,45 @@ class OutgoingServerSettingsStateMapperKtTest {
     }
 
     @Test
+    fun `should map to default state when outgoing server settings use an unsupported protocol`() {
+        val email = "test@example.com"
+        val accountState = AccountState(
+            emailAddress = email,
+            outgoingServerSettings = DEMO_SERVER_SETTINGS,
+        )
+
+        val result = accountState.toOutgoingServerSettingsState()
+
+        assertThat(result).isEqualTo(
+            State(
+                username = StringInputField(value = email),
+                password = StringInputField(value = ""),
+                server = StringInputField(value = email.toInvalidEmailDomain()),
+            ),
+        )
+    }
+
+    @Test
+    fun `should use password from incomingServerSettings when outgoing server settings use an unsupported protocol`() {
+        val email = "test@example.com"
+        val accountState = AccountState(
+            emailAddress = email,
+            incomingServerSettings = IMAP_SERVER_SETTINGS,
+            outgoingServerSettings = DEMO_SERVER_SETTINGS,
+        )
+
+        val result = accountState.toOutgoingServerSettingsState()
+
+        assertThat(result).isEqualTo(
+            State(
+                username = StringInputField(value = email),
+                password = StringInputField(value = INCOMING_SERVER_PASSWORD),
+                server = StringInputField(value = email.toInvalidEmailDomain()),
+            ),
+        )
+    }
+
+    @Test
     fun `should map from SMTP server settings to state`() {
         val accountState = AccountState(
             outgoingServerSettings = SMTP_SERVER_SETTINGS,
@@ -130,6 +169,17 @@ class OutgoingServerSettingsStateMapperKtTest {
             authenticationType = AuthType.PLAIN,
             username = "user",
             password = "password",
+            clientCertificateAlias = null,
+        )
+
+        private val DEMO_SERVER_SETTINGS = ServerSettings(
+            type = "demo",
+            host = "irrelevant",
+            port = 23,
+            connectionSecurity = MailConnectionSecurity.SSL_TLS_REQUIRED,
+            authenticationType = AuthType.PLAIN,
+            username = "irrelevant",
+            password = "irrelevant",
             clientCertificateAlias = null,
         )
 

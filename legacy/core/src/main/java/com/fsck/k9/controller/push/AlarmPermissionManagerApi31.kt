@@ -11,6 +11,8 @@ import androidx.core.app.AlarmManagerCompat
 import androidx.core.content.ContextCompat
 import net.thunderbird.legacy.logging.Log
 
+private const val TAG = "AlarmPermissionManagerApi31"
+
 /**
  * Starting with Android 12 we have to check whether the app can schedule exact alarms.
  */
@@ -40,7 +42,7 @@ internal class AlarmPermissionManagerApi31(
     @Synchronized
     override fun registerListener(listener: AlarmPermissionListener) {
         if (!isRegistered) {
-            Log.v("Registering alarm permission listener")
+            Log.v(TAG, "Registering alarm permission listener")
             isRegistered = true
             this.listener = listener
             ContextCompat.registerReceiver(context, receiver, intentFilter, ContextCompat.RECEIVER_NOT_EXPORTED)
@@ -50,7 +52,7 @@ internal class AlarmPermissionManagerApi31(
     @Synchronized
     override fun unregisterListener() {
         if (isRegistered) {
-            Log.v("Unregistering alarm permission listener")
+            Log.v(TAG, "Unregistering alarm permission listener")
             isRegistered = false
             listener = null
             context.unregisterReceiver(receiver)

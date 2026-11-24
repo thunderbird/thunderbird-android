@@ -7,6 +7,7 @@ import androidx.glance.preview.Preview
 import app.k9mail.legacy.message.controller.MessageReference
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
+import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.widget.message.list.MessageListItem
 
 @OptIn(ExperimentalGlancePreviewApi::class)
@@ -76,7 +77,7 @@ private fun generateMessageListItem(
         threadCount = 0,
         accountColor = color,
         uniqueId = 0,
-        messageReference = MessageReference("accountUuid", 123, "messageServerId"),
+        messageReference = MessageReference(AccountIdFactory.create(), 123, "messageServerId"),
         sortSubject = subject,
         sortMessageDate = 0,
         sortInternalDate = 0,

@@ -4,31 +4,31 @@ import app.k9mail.legacy.mailstore.FolderSettings
 import app.k9mail.legacy.mailstore.MessageStoreManager
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import com.fsck.k9.FakeLegacyAccount
 import com.fsck.k9.K9RobolectricTest
-import com.fsck.k9.Preferences
 import com.fsck.k9.backend.api.BackendStorage
-import com.fsck.k9.mail.AuthType
-import com.fsck.k9.mail.ConnectionSecurity
-import com.fsck.k9.mail.ServerSettings
-import net.thunderbird.core.android.account.LegacyAccountDto
-import org.junit.After
+import net.thunderbird.core.android.account.LegacyAccountManager
+import net.thunderbird.feature.account.AccountIdFactory
+import org.junit.Before
 import org.junit.Test
 import org.koin.core.component.inject
 import org.mockito.kotlin.any
 import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.whenever
 import org.mockito.kotlin.mock
 
 class K9BackendDefaultStorageTest : K9RobolectricTest() {
-    val preferences: Preferences by inject()
     val messageStoreManager: MessageStoreManager by inject()
     val saveMessageDataCreator: SaveMessageDataCreator by inject()
 
-    val account: LegacyAccountDto = createAccount()
-    val backendStorage = createBackendStorage()
+    val accountId = AccountIdFactory.create()
+    private lateinit var backendStorage: BackendStorage
 
-    @After
-    fun tearDown() {
-        preferences.deleteAccount(account)
+    @Before
+    fun setUp() {
+        val accountManager: LegacyAccountManager by inject()
+        whenever(accountManager.findById(accountId)).thenReturn(FakeLegacyAccount.create(id = accountId))
+        backendStorage = createBackendStorage()
     }
 
     @Test
@@ -65,34 +65,10 @@ class K9BackendDefaultStorageTest : K9RobolectricTest() {
         assertThat(value).isEqualTo(23L)
     }
 
-    @Suppress("ForbiddenComment")
-    fun createAccount(): LegacyAccountDto {
-        // FIXME: This is a hack to get Preferences into a state where it's safe to call newAccount()
-        preferences.clearAccounts()
-
-        return preferences.newAccount().apply {
-            incomingServerSettings = SERVER_SETTINGS
-            outgoingServerSettings = SERVER_SETTINGS
-        }
-    }
-
     private fun createBackendStorage(): BackendStorage {
-        val messageStore = messageStoreManager.getMessageStore(account)
+        val messageStore = messageStoreManager.getMessageStore(accountId)
         val folderSettingsProvider = createFolderSettingsProvider()
         return K9BackendStorage(messageStore, folderSettingsProvider, saveMessageDataCreator, emptyList())
-    }
-
-    companion object {
-        private val SERVER_SETTINGS = ServerSettings(
-            type = "irrelevant",
-            host = "irrelevant",
-            port = 993,
-            connectionSecurity = ConnectionSecurity.SSL_TLS_REQUIRED,
-            authenticationType = AuthType.PLAIN,
-            username = "username",
-            password = null,
-            clientCertificateAlias = null,
-        )
     }
 }
 

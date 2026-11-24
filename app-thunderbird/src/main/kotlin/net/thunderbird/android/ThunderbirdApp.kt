@@ -12,6 +12,7 @@ class ThunderbirdApp : FeatureFlagApplication() {
     override fun provideAppModule(): Module = appModule
     override val appName: String = "thunderbird"
     override val appVersion: String = BuildConfig.VERSION_NAME
+    override val buildType: String = BuildConfig.BUILD_TYPE
 
     override fun onCreate() {
         super.onCreate()

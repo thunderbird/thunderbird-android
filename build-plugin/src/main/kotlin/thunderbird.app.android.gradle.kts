@@ -1,3 +1,5 @@
+import net.thunderbird.gradle.plugin.ProjectConfig
+
 plugins {
     id("com.android.application")
     id("net.thunderbird.gradle.plugin.quality.coverage")
@@ -6,11 +8,11 @@ plugins {
 }
 
 android {
-    compileSdk = ThunderbirdProjectConfig.Android.sdkCompile
+    compileSdk = ProjectConfig.Android.sdkCompile
 
     defaultConfig {
-        minSdk = ThunderbirdProjectConfig.Android.sdkMin
-        targetSdk = ThunderbirdProjectConfig.Android.sdkTarget
+        minSdk = ProjectConfig.Android.sdkMin
+        targetSdk = ProjectConfig.Android.sdkTarget
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
@@ -22,8 +24,8 @@ android {
 
     compileOptions {
         isCoreLibraryDesugaringEnabled = true
-        sourceCompatibility = ThunderbirdProjectConfig.Compiler.javaCompatibility
-        targetCompatibility = ThunderbirdProjectConfig.Compiler.javaCompatibility
+        sourceCompatibility = ProjectConfig.Compiler.javaCompatibility
+        targetCompatibility = ProjectConfig.Compiler.javaCompatibility
     }
 
     dependenciesInfo {
@@ -59,14 +61,14 @@ android {
 
     testOptions {
         unitTests.all {
-            it.jvmArgs(ThunderbirdProjectConfig.Testing.robolectricJvmArgs)
+            it.jvmArgs(ProjectConfig.Testing.robolectricJvmArgs)
         }
     }
 }
 
 kotlin {
     compilerOptions {
-        jvmTarget = ThunderbirdProjectConfig.Compiler.jvmTarget
+        jvmTarget = ProjectConfig.Compiler.jvmTarget
     }
 }
 
@@ -75,16 +77,20 @@ dependencies {
 
     implementation(platform(libs.kotlin.bom))
     implementation(platform(libs.koin.bom))
+    implementation(platform(libs.tb.mobile.components.bom))
 
     implementation(libs.bundles.shared.android.app)
+    implementation(libs.bundles.shared.tmc.components)
 
     testImplementation(libs.bundles.shared.android.app.test)
+    testImplementation(libs.bundles.shared.tmc.components.test)
 }
 
 tasks.register("testsOnCi") {
+    description = "Run all tests except the unit tests on the release build."
     dependsOn(
         tasks.withType<Test>().matching {
             it.name != "testReleaseUnitTest"
-        }
+        },
     )
 }

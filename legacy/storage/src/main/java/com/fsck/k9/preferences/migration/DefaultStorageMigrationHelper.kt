@@ -4,15 +4,22 @@ import android.database.sqlite.SQLiteDatabase
 import androidx.core.content.contentValuesOf
 import app.k9mail.core.android.common.database.getStringOrThrow
 import app.k9mail.core.android.common.database.map
+import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.legacy.logging.Log
 
-class DefaultStorageMigrationHelper : StorageMigrationHelper {
+private const val TAG = "DefaultStorageMigrationHelper"
+
+class DefaultStorageMigrationHelper(
+    private val logger: Logger,
+) : StorageMigrationHelper {
     override fun readAllValues(db: SQLiteDatabase): Map<String, String> {
         return db.query(TABLE_NAME, arrayOf(KEY_COLUMN, VALUE_COLUMN), null, null, null, null, null).use {
             it.map { cursor ->
                 val key = cursor.getStringOrThrow(KEY_COLUMN)
                 val value = cursor.getStringOrThrow(VALUE_COLUMN)
-                Log.d("Loading key '%s', value = '%s'", key, value)
+                logger.debug(TAG) {
+                    "Loading key $key"
+                }
 
                 key to value
             }
@@ -30,8 +37,10 @@ class DefaultStorageMigrationHelper : StorageMigrationHelper {
             null,
         ).use { cursor ->
             if (cursor.moveToNext()) {
-                cursor.getStringOrThrow(VALUE_COLUMN).also { value ->
-                    Log.d("Loading key '%s', value = '%s'", key, value)
+                cursor.getStringOrThrow(VALUE_COLUMN).also {
+                    logger.debug(TAG) {
+                        "Loading key '$key'"
+                    }
                 }
             } else {
                 null
@@ -53,7 +62,9 @@ class DefaultStorageMigrationHelper : StorageMigrationHelper {
         val result = db.update(TABLE_NAME, values, "$KEY_COLUMN = ?", arrayOf(key))
 
         if (result == -1) {
-            Log.e("Error writing key '%s', value = '%s'", key, value)
+            logger.debug(TAG) {
+                "Error writing key '$key'"
+            }
         }
     }
 
@@ -70,7 +81,7 @@ class DefaultStorageMigrationHelper : StorageMigrationHelper {
         val result = db.insert(TABLE_NAME, null, values)
 
         if (result == -1L) {
-            Log.e("Error writing key '%s', value = '%s'", key, value)
+            Log.e(TAG, "Error writing key '%s', value = '%s'", key, value)
         }
     }
 

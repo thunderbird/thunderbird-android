@@ -16,9 +16,12 @@ import kotlin.time.ExperimentalTime
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.advanceTimeBy
 import kotlinx.coroutines.test.runTest
+import net.thunderbird.components.core.logging.LogLevel
+import net.thunderbird.components.core.logging.testing.TestLogger
 import net.thunderbird.core.common.state.builder.stateMachine
-import net.thunderbird.core.logging.testing.TestLogger
 import net.thunderbird.core.testing.TestClock
+
+private const val TAG = "StateMachineTest"
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @Suppress("MaxLineLength")
@@ -111,6 +114,27 @@ class StateMachineTest {
                 expectNoEvents()
             }
         }
+
+    @Test
+    fun `withLogger should use given tag for log messages`() = runTest {
+        // Arrange
+        val logger = TestLogger()
+        val stateMachine = stateMachine<State, Event>(scope = this) {
+            withLogger(logger, TAG)
+            initialState(State.Init) {
+                transition<Event.LoadData> { _, _ -> State.Loading }
+            }
+            finalState<State.Loading>()
+        }
+
+        // Act
+        stateMachine.process(Event.Cancel)
+
+        // Assert
+        val infoEvents = logger.events.filter { it.level == LogLevel.INFO }
+        assertThat(infoEvents).hasSize(1)
+        assertThat(infoEvents.single().tag).isEqualTo(TAG)
+    }
 
     @Test
     fun `process should return the current state when guard fails`() = runTest {
@@ -252,7 +276,7 @@ class StateMachineTest {
     fun `process should add to the history stack when current state has transition for given event`() = runTest {
         // Arrange
         val stateMachine = stateMachine(scope = this) {
-            withLogger(TestLogger())
+            withLogger(TestLogger(), TAG)
             enableDebug {
                 @OptIn(ExperimentalTime::class)
                 withClock(TestClock())
@@ -310,7 +334,7 @@ class StateMachineTest {
         runTest {
             // Arrange
             val stateMachine = stateMachine<State, Event>(scope = this) {
-                withLogger(TestLogger())
+                withLogger(TestLogger(), TAG)
                 enableDebug {
                     @OptIn(ExperimentalTime::class)
                     withClock(TestClock())

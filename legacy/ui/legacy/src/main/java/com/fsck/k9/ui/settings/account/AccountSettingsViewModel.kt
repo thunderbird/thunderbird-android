@@ -11,29 +11,30 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import net.thunderbird.components.core.outcome.fold
-import net.thunderbird.core.android.account.LegacyAccountDto
-import net.thunderbird.core.android.account.LegacyAccountDtoManager
+import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountManager
+import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.mail.folder.FolderType
 import net.thunderbird.feature.mail.folder.api.RemoteFolder
 import net.thunderbird.feature.mail.folder.api.data.repository.RemoteFolderQueryRepository
 
 class AccountSettingsViewModel(
-    private val accountManager: LegacyAccountDtoManager,
+    private val accountManager: LegacyAccountManager,
     private val remoteFolderQueryRepository: RemoteFolderQueryRepository,
     private val specialFolderSelectionStrategy: SpecialFolderSelectionStrategy,
     private val backgroundDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : ViewModel() {
-    val accounts = accountManager.getAccountsFlow().asLiveData()
-    private var accountUuid: String? = null
-    private val accountLiveData = MutableLiveData<LegacyAccountDto?>()
+    val accounts = accountManager.observeAll().asLiveData()
+    private var accountId: AccountId? = null
+    private val accountLiveData = MutableLiveData<LegacyAccount?>()
     private val foldersLiveData = MutableLiveData<RemoteFolderInfo>()
 
-    fun getAccount(accountUuid: String): LiveData<LegacyAccountDto?> {
-        if (this.accountUuid != accountUuid) {
-            this.accountUuid = accountUuid
+    fun getAccount(accountId: AccountId): LiveData<LegacyAccount?> {
+        if (this.accountId != accountId) {
+            this.accountId = accountId
             viewModelScope.launch {
                 val account = withContext(backgroundDispatcher) {
-                    loadAccount(accountUuid)
+                    loadAccount(accountId)
                 }
                 accountLiveData.value = account
             }
@@ -43,34 +44,34 @@ class AccountSettingsViewModel(
     }
 
     /**
-     * Returns the cached [LegacyAccountDto] if possible. Otherwise does a blocking load because
+     * Returns the cached [LegacyAccount] if possible. Otherwise does a blocking load because
      * `PreferenceFragmentCompat` doesn't support asynchronous preference loading.
      */
-    fun getAccountBlocking(accountUuid: String): LegacyAccountDto {
+    fun getAccountBlocking(accountId: AccountId): LegacyAccount {
         return accountLiveData.value
-            ?: loadAccount(accountUuid).also { account ->
-                this.accountUuid = accountUuid
+            ?: loadAccount(accountId).also { account ->
+                this.accountId = accountId
                 accountLiveData.value = account
             }
-            ?: error("Account $accountUuid not found")
+            ?: error("Account $accountId not found")
     }
 
-    private fun loadAccount(accountUuid: String): LegacyAccountDto? {
-        return accountManager.getAccount(accountUuid)
+    private fun loadAccount(accountId: AccountId): LegacyAccount? {
+        return accountManager.findById(accountId)
     }
 
-    fun getFolders(account: LegacyAccountDto): LiveData<RemoteFolderInfo> {
+    fun getFolders(accountId: AccountId): LiveData<RemoteFolderInfo> {
         if (foldersLiveData.value == null) {
-            loadFolders(account)
+            loadFolders(accountId)
         }
 
         return foldersLiveData
     }
 
-    private fun loadFolders(account: LegacyAccountDto) {
+    private fun loadFolders(accountId: AccountId) {
         viewModelScope.launch {
             val remoteFolderInfo = withContext(backgroundDispatcher) {
-                val folders = remoteFolderQueryRepository.getAllByAccountId(account.id)
+                val folders = remoteFolderQueryRepository.getAllByAccountId(accountId)
                     .fold(
                         onSuccess = { it },
                         onFailure = { error ->

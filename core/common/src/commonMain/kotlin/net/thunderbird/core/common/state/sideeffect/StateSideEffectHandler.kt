@@ -1,7 +1,9 @@
 package net.thunderbird.core.common.state.sideeffect
 
 import kotlinx.coroutines.CoroutineScope
-import net.thunderbird.core.logging.Logger
+import net.thunderbird.components.core.logging.Logger
+
+private const val TAG = "StateSideEffectHandler"
 
 /**
  * A class for handling side effects that arise when state transitions to another state.
@@ -52,7 +54,7 @@ abstract class StateSideEffectHandler<TState : Any, in TEvent : Any, TEffect : A
      */
     suspend fun handle(event: TEvent, oldState: TState, newState: TState): ConsumeResult {
         return if (accept(event, oldState, newState)) {
-            logger.verbose {
+            logger.verbose(TAG) {
                 """${this::class.simpleName}.handle() called with:
                     |   event = $event,
                     |   oldState = $oldState,

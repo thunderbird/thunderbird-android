@@ -460,7 +460,7 @@ Runtime requirements:
   version, or contains invalid JSON.
 * Return an empty changelog in release, beta, and daily builds when the index or a required release file is missing, has
   an unsupported schema version, or contains invalid JSON.
-* Use `net.thunderbird.core.logging.Logger` for non-PII diagnostics when decode fails.
+* Use `net.thunderbird.components.core.logging.Logger` for non-PII diagnostics when decode fails.
 * Map explicit JSON note types to the existing `NEW`, `CHANGED`, and `FIXED` UI categories.
 * Keep the existing Compose UI layout. Adding new display fields requires a later design.
 

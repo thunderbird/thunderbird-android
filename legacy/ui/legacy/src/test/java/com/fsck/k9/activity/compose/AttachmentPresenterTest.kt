@@ -27,6 +27,7 @@ import com.fsck.k9.mailstore.AttachmentViewInfo
 import com.fsck.k9.mailstore.LocalBodyPart
 import com.fsck.k9.mailstore.MessageViewInfo
 import java.util.function.Supplier
+import net.thunderbird.feature.account.AccountIdFactory
 import org.junit.Before
 import org.junit.Test
 import org.mockito.ArgumentMatchers.anyInt
@@ -41,7 +42,7 @@ private val loaderManager = mock<LoaderManager>()
 private val listener = mock<AttachmentsChangedListener>()
 private val attachmentResolver = mock<AttachmentResolver>()
 
-private const val ACCOUNT_UUID = "uuid"
+private val ACCOUNT_ID = AccountIdFactory.create()
 private const val SUBJECT = "subject"
 private const val TEXT = "text"
 private const val EXTRA_TEXT = "extra text"
@@ -81,7 +82,7 @@ class AttachmentPresenterTest : K9RobolectricTest() {
             size,
             URI,
             false,
-            LocalBodyPart(ACCOUNT_UUID, mock(), MESSAGE_ID, size),
+            LocalBodyPart(ACCOUNT_ID, mock(), MESSAGE_ID, size),
             true,
         )
         val messageViewInfo = MessageViewInfo(
@@ -114,7 +115,7 @@ class AttachmentPresenterTest : K9RobolectricTest() {
             size,
             URI,
             false,
-            LocalBodyPart(ACCOUNT_UUID, mock(), MESSAGE_ID, size),
+            LocalBodyPart(ACCOUNT_ID, mock(), MESSAGE_ID, size),
             false,
         )
         val messageViewInfo = MessageViewInfo(
@@ -135,7 +136,7 @@ class AttachmentPresenterTest : K9RobolectricTest() {
         val contentId = "xyz"
         val message = MimeMessage()
         MimeMessageHelper.setBody(message, TextBody(TEXT))
-        val localBodyPart = LocalBodyPart(ACCOUNT_UUID, mock(), MESSAGE_ID, size)
+        val localBodyPart = LocalBodyPart(ACCOUNT_ID, mock(), MESSAGE_ID, size)
         localBodyPart.addHeader(MimeHeader.HEADER_CONTENT_ID, contentId)
         val attachmentViewInfo = AttachmentViewInfo(MIME_TYPE, ATTACHMENT_NAME, size, URI, true, localBodyPart, true)
         val messageViewInfo = MessageViewInfo(
@@ -163,7 +164,7 @@ class AttachmentPresenterTest : K9RobolectricTest() {
         val contentId = "xyz"
         val message = MimeMessage()
         MimeMessageHelper.setBody(message, TextBody(TEXT))
-        val localBodyPart = LocalBodyPart(ACCOUNT_UUID, mock(), MESSAGE_ID, size)
+        val localBodyPart = LocalBodyPart(ACCOUNT_ID, mock(), MESSAGE_ID, size)
         localBodyPart.addHeader(MimeHeader.HEADER_CONTENT_ID, contentId)
         val attachmentViewInfo = AttachmentViewInfo(MIME_TYPE, ATTACHMENT_NAME, size, URI, true, localBodyPart, false)
         val messageViewInfo = MessageViewInfo(
@@ -274,7 +275,7 @@ class AttachmentPresenterTest : K9RobolectricTest() {
         // Arrange
         val fakeView = FakeAttachmentMvpView()
         val testSubject = createPresenter(fakeView)
-        val localBodyPart = LocalBodyPart(ACCOUNT_UUID, mock(), MESSAGE_ID, SIZE)
+        val localBodyPart = LocalBodyPart(ACCOUNT_ID, mock(), MESSAGE_ID, SIZE)
         localBodyPart.addHeader(MimeHeader.HEADER_CONTENT_ID, CONTENT_ID)
         val inlineAttachment =
             AttachmentViewInfo(MIME_TYPE, ATTACHMENT_NAME, SIZE, URI, true, localBodyPart, false)
@@ -591,7 +592,7 @@ class AttachmentPresenterTest : K9RobolectricTest() {
     }
 
     private fun missingInlineAttachment(name: String, uri: Uri = URI): AttachmentViewInfo {
-        val localBodyPart = LocalBodyPart(ACCOUNT_UUID, mock(), MESSAGE_ID, SIZE)
+        val localBodyPart = LocalBodyPart(ACCOUNT_ID, mock(), MESSAGE_ID, SIZE)
         localBodyPart.addHeader(MimeHeader.HEADER_CONTENT_ID, name)
         return AttachmentViewInfo(MIME_TYPE, name, SIZE, uri, true, localBodyPart, false)
     }
@@ -612,7 +613,7 @@ class AttachmentPresenterTest : K9RobolectricTest() {
             SIZE,
             uri,
             false,
-            LocalBodyPart(ACCOUNT_UUID, mock(), MESSAGE_ID, SIZE),
+            LocalBodyPart(ACCOUNT_ID, mock(), MESSAGE_ID, SIZE),
             true,
         )
     }
@@ -624,7 +625,7 @@ class AttachmentPresenterTest : K9RobolectricTest() {
             SIZE,
             uri,
             false,
-            LocalBodyPart(ACCOUNT_UUID, mock(), MESSAGE_ID, SIZE),
+            LocalBodyPart(ACCOUNT_ID, mock(), MESSAGE_ID, SIZE),
             false,
         )
     }

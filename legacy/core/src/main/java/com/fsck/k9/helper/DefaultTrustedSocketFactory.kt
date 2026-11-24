@@ -2,7 +2,6 @@ package com.fsck.k9.helper
 
 import android.content.Context
 import android.net.SSLCertificateSocketFactory
-import android.os.Build
 import android.text.TextUtils
 import com.fsck.k9.mail.ssl.TrustManagerFactory
 import com.fsck.k9.mail.ssl.TrustedSocketFactory
@@ -19,6 +18,8 @@ import javax.net.ssl.TrustManager
 import net.thunderbird.core.common.exception.MessagingException
 import net.thunderbird.core.common.net.HostNameUtils.isLegalIPAddress
 import net.thunderbird.legacy.logging.Log
+
+private const val TAG = "DefaultTrustedSocketFactory"
 
 class DefaultTrustedSocketFactory(
     private val context: Context?,
@@ -116,7 +117,7 @@ class DefaultTrustedSocketFactory(
                  */
                 supportedProtocols = socket.supportedProtocols
             } catch (e: Exception) {
-                Log.e(e, "Error getting information about available SSL/TLS ciphers and protocols")
+                Log.e(TAG, e, "Error getting information about available SSL/TLS ciphers and protocols")
             }
 
             ENABLED_CIPHERS = enabledCiphers?.let { remove(it, DISALLOWED_CIPHERS) }
@@ -128,23 +129,12 @@ class DefaultTrustedSocketFactory(
         }
 
         private fun setSniHost(factory: SSLSocketFactory, socket: SSLSocket, hostname: String) {
-            when {
-                factory is SSLCertificateSocketFactory -> factory.setHostname(socket, hostname)
-                Build.VERSION.SDK_INT >= Build.VERSION_CODES.N -> {
-                    val sslParameters = socket.sslParameters
-                    sslParameters.serverNames = listOf(SNIHostName(hostname))
-                    socket.sslParameters = sslParameters
-                }
-
-                else -> setHostnameViaReflection(socket, hostname)
-            }
-        }
-
-        private fun setHostnameViaReflection(socket: SSLSocket, hostname: String?) {
-            try {
-                socket.javaClass.getMethod("setHostname", String::class.java).invoke(socket, hostname)
-            } catch (e: Throwable) {
-                Log.e(e, "Could not call SSLSocket#setHostname(String) method ")
+            if (factory is SSLCertificateSocketFactory) {
+                factory.setHostname(socket, hostname)
+            } else {
+                val sslParameters = socket.sslParameters
+                sslParameters.serverNames = listOf(SNIHostName(hostname))
+                socket.sslParameters = sslParameters
             }
         }
     }

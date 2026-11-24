@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="account_oauth_sign_in_with_google_button">Mit Google anmelden</string>
-    <string name="account_oauth_loading_error">Anmelden mit OAuth fehlgeschlagen</string>
+    <string name="account_oauth_loading_error">OAuth-Anmeldung fehlgeschlagen</string>
     <string name="account_oauth_error_failed">Autorisierung mit folgendem Fehler fehlgeschlagen: <xliff:g id="error">%s</xliff:g></string>
     <string name="account_oauth_error_browser_not_available">Die App konnte keinen Browser finden, der für den Zugriff auf dein Konto verwendet werden kann.</string>
     <string name="account_oauth_error_not_supported">OAuth 2.0 wird von diesem Anbieter derzeit nicht unterstützt.</string>
@@ -9,6 +9,6 @@
     <string name="account_oauth_loading_message">Mit OAuth anmelden</string>
     <string name="account_oauth_sign_in_description">Wir leiten dich zu deinem E-Mail-Anbieter weiter, damit du dich anmelden kannst. Du musst der App Zugriff auf dein E-Mail-Konto gewähren.</string>
     <string name="account_oauth_sign_in_button">Anmelden</string>
-    <string name="account_oauth_google_sign_in_support_text_link_text">Artikel zur Unterstützung</string>
-    <string name="account_oauth_google_sign_in_support_text">Bei Schwierigkeiten beim Anmelden mit Google wenden Sie sich bitte an {placeHolder}.</string>
+    <string name="account_oauth_google_sign_in_support_text_link_text">Support-Artikel</string>
+    <string name="account_oauth_google_sign_in_support_text">Bei Schwierigkeiten beim Anmelden mit Google lese bitte unseren {placeHolder}.</string>
 </resources>

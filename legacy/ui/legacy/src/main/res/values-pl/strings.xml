@@ -83,7 +83,7 @@
     <string name="message_view_theme_action_dark">Przełącz na motyw ciemny</string>
     <string name="message_view_theme_action_light">Przełącz na motyw jasny</string>
     <string name="mark_as_unread_action">Oznacz jako nieprzeczytane</string>
-    <string name="read_receipt">Powiadomienie o przeczytaniu</string>
+    <string name="read_receipt">Potwierdzenie przeczytania</string>
     <string name="read_receipt_enabled">Żadaj powiadomienia o przeczytaniu</string>
     <string name="read_receipt_disabled">Nie wymagaj powiadomienia o przeczytaniu</string>
     <string name="add_attachment_action">Dodaj załącznik</string>
@@ -332,18 +332,18 @@
     <string name="account_settings_default_quoted_text_shown_summary">Dołącz oryginalną wiadomość do swojej odpowiedzi.</string>
     <string name="account_settings_reply_after_quote_label">Odpowiedź pod cytatem</string>
     <string name="account_settings_reply_after_quote_summary">Oryginalna wiadomość pojawi się nad Twoją odpowiedzią.</string>
-    <string name="account_settings_strip_signature_label">Wycinaj podpis z tekstu</string>
+    <string name="account_settings_strip_signature_label">Wycinaj podpis z tekstu</string>
     <string name="account_settings_strip_signature_summary">Gdy odpowiadasz na wiadomość, cytowany tekst nie bedzie zawierał podpisu</string>
     <string name="account_settings_message_format_label">Format wiadomości</string>
-    <string name="account_settings_message_format_text">Zwykły tekst (bez obrazów i formatowania)</string>
-    <string name="account_settings_message_format_html">HTML (z obrazami i formatowaniem)</string>
+    <string name="account_settings_message_format_text">Zwykły tekst (bez obrazów i formatowania)</string>
+    <string name="account_settings_message_format_html">HTML (z obrazami i formatowaniem)</string>
     <string name="account_settings_message_format_auto">Automatycznie</string>
     <string name="account_settings_always_show_cc_bcc_label">Zawsze wyświetlaj DW/UDW</string>
     <string name="account_settings_message_read_receipt_label">Potwierdzenie przeczytania</string>
-    <string name="account_settings_message_read_receipt_summary">Zawsze wymagaj potwierdzenia o przeczytaniu</string>
+    <string name="account_settings_message_read_receipt_summary">Zawsze wymagaj potwierdzenia przeczytania</string>
     <string name="account_settings_quote_style_label">Styl cytowania podczas odpowiedzi</string>
     <string name="account_settings_quote_style_prefix">Prefiks (jak Gmail)</string>
-    <string name="account_settings_quote_style_header">Nagłówek (jak Microsoft Outlook)</string>
+    <string name="account_settings_quote_style_header">Nagłówek (jak Outlook)</string>
     <string name="account_settings_upload_sent_messages_label">Dodaj wysłane wiadomości</string>
     <string name="account_settings_upload_sent_messages_summary">Dodaj wiadomości do folderu wysłanych po wysłaniu</string>
     <string name="account_settings_general_title">Ustawienia ogólne</string>
@@ -430,7 +430,7 @@
     <string name="account_settings_composition_title">Opcje tworzenia wiadomości</string>
     <string name="account_settings_composition_label">Tworzenie wiadomości</string>
     <string name="account_settings_composition_summary">Ustaw podpis oraz domyślne wartości Do, UDW</string>
-    <string name="account_settings_identities_label">Tożsamości</string>
+    <string name="account_settings_identities_label">Zarządzaj tożsamościami</string>
     <string name="account_settings_identities_summary">Ustaw alternatywne adresy nadawcy oraz podpisy</string>
     <string name="manage_identities_title">Zarządzaj tożsamościami</string>
     <string name="manage_identities_context_menu_title">Zarządzaj tożsamością</string>
@@ -975,4 +975,10 @@
     <string name="message_view_from_me_text">mnie</string>
     <string name="account_settings_signature_preview_empty">Tutaj pojawi się podgląd Twojego podpisu</string>
     <string name="error_no_contact_provider">Nie znaleziono aplikacji kontaktów. Zainstaluj aplikację kontaktów, aby dodać ten adres.</string>
+    <string name="remote_feature_flag_preferences">Flagi funkcji zdalnych</string>
+    <string name="account_setup_visibility_and_syncing">Synchronizacja folderów i przesyłanie</string>
+    <string name="account_settings_folder_sync_and_push">Synchronizacja folderów i przesyłanie</string>
+    <string name="account_settings_fetching_and_data_limits">Limity pobierania i danych</string>
+    <string name="account_settings_folder_visibility">Widoczność folderów</string>
+    <string name="account_settings_sync_and_notifications">Synchronizacja i powiadomienia</string>
 </resources>

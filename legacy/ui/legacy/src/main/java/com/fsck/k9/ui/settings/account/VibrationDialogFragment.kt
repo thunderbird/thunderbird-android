@@ -1,7 +1,6 @@
 package com.fsck.k9.ui.settings.account
 
 import android.app.Dialog
-import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
@@ -178,11 +177,7 @@ class VibrationDialogFragment : PreferenceDialogFragmentCompat() {
                 }
 
                 val progress = vibrationTimes - 1
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    vibrationTimesSeekBar.setProgress(progress, false)
-                } else {
-                    vibrationTimesSeekBar.progress = progress
-                }
+                vibrationTimesSeekBar.setProgress(progress, false)
 
                 vibrationTimesSeekBar.setOnSeekBarChangeListener(
                     object : OnSeekBarChangeListener {

@@ -14,7 +14,7 @@ internal class GetLegacyAccount(
     override suspend fun invoke(
         accountId: AccountId,
     ): Outcome<LegacyAccount, AccountSettingsDomainContract.AccountSettingError> {
-        val account = repository.getById(accountId).firstOrNull()
+        val account = repository.observeById(accountId).firstOrNull()
         if (account != null) {
             return Outcome.success(account)
         }

@@ -10,11 +10,14 @@ import androidx.work.workDataOf
 import java.util.concurrent.TimeUnit
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
-import net.thunderbird.core.android.account.LegacyAccountDto
-import net.thunderbird.core.logging.Logger
+import net.thunderbird.components.core.logging.Logger
+import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.legacy.logging.Log
 import net.thunderbird.core.preference.BackgroundOps
 import net.thunderbird.core.preference.GeneralSettingsManager
+import net.thunderbird.feature.account.AccountId
+
+private const val TAG = "MailSyncWorkerManager"
 
 class MailSyncWorkerManager
 @OptIn(ExperimentalTime::class)
@@ -25,20 +28,20 @@ constructor(
     val generalSettingsManager: GeneralSettingsManager,
 ) {
 
-    fun cancelMailSync(account: LegacyAccountDto) {
-        Log.v("Canceling mail sync worker for %s", account)
-        val uniqueWorkName = createUniqueWorkName(account.uuid)
+    fun cancelMailSync(account: LegacyAccount) {
+        Log.v(TAG, "Canceling mail sync worker for %s", account)
+        val uniqueWorkName = createUniqueWorkName(account.id)
         workManager.cancelUniqueWork(uniqueWorkName)
     }
 
-    fun scheduleMailSync(account: LegacyAccountDto) {
+    fun scheduleMailSync(account: LegacyAccount) {
         if (isNeverSyncInBackground()) return
 
         getSyncIntervalIfEnabled(account)?.let { syncIntervalMinutes ->
-            Log.v("Scheduling mail sync worker for %s", account)
-            Log.v("  sync interval: %d minutes", syncIntervalMinutes)
-            syncDebugLogger.info(null, null) { "Scheduling mail sync worker $account" }
-            syncDebugLogger.info(null, null) { "  sync interval: $syncIntervalMinutes minutes\"" }
+            Log.v(TAG, "Scheduling mail sync worker for %s", account)
+            Log.v(TAG, "  sync interval: %d minutes", syncIntervalMinutes)
+            syncDebugLogger.info(TAG, null) { "Scheduling mail sync worker $account" }
+            syncDebugLogger.info(TAG, null) { "  sync interval: $syncIntervalMinutes minutes\"" }
 
             val constraints = Constraints.Builder()
                 .setRequiredNetworkType(NetworkType.CONNECTED)
@@ -46,14 +49,14 @@ constructor(
                 .build()
 
             val lastSyncTime = account.lastSyncTime
-            Log.v("  last sync time: %tc", lastSyncTime)
-            syncDebugLogger.info(null, null) { "last sync time: $lastSyncTime" }
+            Log.v(TAG, "  last sync time: %tc", lastSyncTime)
+            syncDebugLogger.info(TAG, null) { "last sync time: $lastSyncTime" }
 
             val initialDelay = calculateInitialDelay(lastSyncTime, syncIntervalMinutes)
-            Log.v("  initial delay: %d ms", initialDelay)
-            syncDebugLogger.info(null, null) { "  initial delay: $initialDelay ms" }
+            Log.v(TAG, "  initial delay: %d ms", initialDelay)
+            syncDebugLogger.info(TAG, null) { "  initial delay: $initialDelay ms" }
 
-            val data = workDataOf(MailSyncWorker.EXTRA_ACCOUNT_UUID to account.uuid)
+            val data = workDataOf(MailSyncWorker.EXTRA_ACCOUNT_UUID to account.id.toString())
 
             val mailSyncRequest = PeriodicWorkRequestBuilder<MailSyncWorker>(syncIntervalMinutes, TimeUnit.MINUTES)
                 .setInitialDelay(initialDelay, TimeUnit.MILLISECONDS)
@@ -63,7 +66,7 @@ constructor(
                 .addTag(MAIL_SYNC_TAG)
                 .build()
 
-            val uniqueWorkName = createUniqueWorkName(account.uuid)
+            val uniqueWorkName = createUniqueWorkName(account.id)
             workManager.enqueueUniquePeriodicWork(
                 uniqueWorkName,
                 ExistingPeriodicWorkPolicy.REPLACE,
@@ -75,9 +78,9 @@ constructor(
     private fun isNeverSyncInBackground() =
         generalSettingsManager.getConfig().network.backgroundOps == BackgroundOps.NEVER
 
-    private fun getSyncIntervalIfEnabled(account: LegacyAccountDto): Long? {
+    private fun getSyncIntervalIfEnabled(account: LegacyAccount): Long? {
         val intervalMinutes = account.automaticCheckIntervalMinutes
-        if (intervalMinutes <= LegacyAccountDto.INTERVAL_MINUTES_NEVER) {
+        if (intervalMinutes <= INTERVAL_MINUTES_NEVER) {
             return null
         }
 
@@ -96,11 +99,12 @@ constructor(
         }
     }
 
-    private fun createUniqueWorkName(accountUuid: String): String {
-        return "$MAIL_SYNC_TAG:$accountUuid"
+    private fun createUniqueWorkName(accountId: AccountId): String {
+        return "$MAIL_SYNC_TAG:$accountId"
     }
 
     companion object {
+        const val INTERVAL_MINUTES_NEVER = -1
         const val MAIL_SYNC_TAG = "MailSync"
         private const val INITIAL_BACKOFF_DELAY_MINUTES = 5L
     }

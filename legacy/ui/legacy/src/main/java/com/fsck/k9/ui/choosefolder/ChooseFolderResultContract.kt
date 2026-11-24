@@ -6,6 +6,7 @@ import android.content.Intent
 import androidx.activity.result.contract.ActivityResultContract
 import app.k9mail.legacy.message.controller.MessageReference
 import com.fsck.k9.ui.choosefolder.ChooseFolderActivity.Action
+import net.thunderbird.feature.account.AccountId
 
 class ChooseFolderResultContract(
     private val action: Action,
@@ -15,7 +16,7 @@ class ChooseFolderResultContract(
         return ChooseFolderActivity.buildLaunchIntent(
             context = context,
             action = action,
-            accountUuid = input.accountUuid,
+            accountId = input.accountId,
             currentFolderId = input.currentFolderId,
             scrollToFolderId = input.scrollToFolderId,
             messageReference = input.messageReference,
@@ -33,7 +34,7 @@ class ChooseFolderResultContract(
     }
 
     data class Input(
-        val accountUuid: String,
+        val accountId: AccountId,
         val currentFolderId: Long? = null,
         val scrollToFolderId: Long? = null,
         val messageReference: MessageReference? = null,

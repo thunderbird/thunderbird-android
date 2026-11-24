@@ -1,3 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    </resources>
+    <string name="thundermail_redirecting">Thundermail にリダイレクトしています…</string>
+    <string name="thundermail_something_went_wrong">問題が発生しました</string>
+    <string name="thundermail_browser_is_not_available">ブラウザーを使用できません。端末の設定を確認してください</string>
+    <string name="thundermail_operation_was_canceled">操作をキャンセルしました</string>
+    <string name="thundermail_unknown_error_please_consider_reporting">予期せぬエラーが発生しました。報告をお願いします。</string>
+    <string name="thundermail_add_account">アカウントを追加</string>
+    <string name="thundermail_add_an_email_account">メールアカウントを追加</string>
+    <string name="thundermail_what_is_thundermail">Thundermail とは？</string>
+    <string name="thundermail_or_divider">– または –</string>
+</resources>

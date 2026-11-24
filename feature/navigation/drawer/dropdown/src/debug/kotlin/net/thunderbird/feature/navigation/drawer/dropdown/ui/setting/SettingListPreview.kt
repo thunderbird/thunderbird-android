@@ -10,7 +10,6 @@ internal fun SettingListPreview() {
     PreviewWithTheme {
         FolderSettingList(
             onSyncAccountClick = {},
-            onManageFoldersClick = {},
             onSyncAllAccountsClick = {},
             onSettingsClick = {},
             isUnifiedAccount = false,
@@ -25,7 +24,6 @@ internal fun SettingListWithUnifiedAccountPreview() {
     PreviewWithTheme {
         FolderSettingList(
             onSyncAccountClick = {},
-            onManageFoldersClick = {},
             onSyncAllAccountsClick = {},
             onSettingsClick = {},
             isUnifiedAccount = true,

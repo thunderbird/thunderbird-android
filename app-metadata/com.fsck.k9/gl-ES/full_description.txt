@@ -1,0 +1,24 @@
+K-9 Mail é un cliente de correo electrónico de código aberto que funciona con practicamente todos os provedores de correo.
+
+<b>Características</b>
+
+* Admite varias contas
+* Caixa de entrada unificada
+* Respectuoso coa privacidade (sen ningún tipo de seguimento; só conecta co teu provedor de correo)
+* Sincronización automática en segundo plano ou notificacións push
+* Busca local e no servidor
+* Cifrado de correo electrónico OpenPGP (PGP/MIME)
+
+Instala a aplicación <a href="https://f-droid.org/packages/org.sufficientlysecure.keychain">OpenKeychain: Easy PGP</a> para cifrar e descifrar os teus correos electrónicos mediante OpenPGP.
+
+
+<b>Asistencia</b>
+
+Se tes problemas con K-9 Mail, solicita axuda no noso <a href="https://forum.k9mail.app">foro de asistencia</a>.
+
+
+<b>Queres axudar?</b>
+
+K-9 Mail é un proxecto desenvolvido pola comunidade. Se che interesa axudar a mellorar a aplicación, únete a nós!
+Podes atopar o noso sistema de seguimento de erros, o código fonte e a wiki en <a href="https://github.com/thunderbird/thunderbird-android">https://github.com/thunderbird/thunderbird-android</a>.
+Sempre recibimos con alegría novos desenvolvedores, deseñadores, redactores de documentación, tradutores, persoas encargadas de xestionar erros e amigos.

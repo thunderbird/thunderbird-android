@@ -1,6 +1,6 @@
 package net.thunderbird.legacy.core
 
-import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.mail.message.list.LocalDeleteOperationDecider
 
 /**
@@ -8,7 +8,7 @@ import net.thunderbird.feature.mail.message.list.LocalDeleteOperationDecider
  */
 class StubLocalDeleteOperationDecider : LocalDeleteOperationDecider {
     override fun isDeleteImmediately(
-        account: LegacyAccountDto,
+        accountId: AccountId,
         folderId: Long,
     ): Boolean = false
 }

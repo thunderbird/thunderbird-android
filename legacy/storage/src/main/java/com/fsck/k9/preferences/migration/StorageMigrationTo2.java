@@ -11,8 +11,10 @@ import net.thunderbird.legacy.logging.Log;
 
 
 public class StorageMigrationTo2 {
+    private static final String TAG = "StorageMigrationTo2";
+
     public static void urlEncodeUserNameAndPassword(SQLiteDatabase db, StorageMigrationHelper migrationsHelper) {
-        Log.i("Updating preferences to urlencoded username/password");
+        Log.i(TAG, "Updating preferences to urlencoded username/password");
 
         String accountUuids = migrationsHelper.readValue(db, "accountUuids");
         if (accountUuids != null && accountUuids.length() != 0) {
@@ -92,7 +94,7 @@ public class StorageMigrationTo2 {
                         migrationsHelper.writeValue(db, uuid + ".storeUri", newStoreUriStr);
                     }
                 } catch (Exception e) {
-                    Log.e(e, "ooops");
+                    Log.e(TAG, e, "ooops");
                 }
             }
         }

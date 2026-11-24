@@ -10,9 +10,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.advanceUntilIdle
+import net.thunderbird.components.core.logging.testing.TestLogger
 import net.thunderbird.core.common.action.SwipeAction
 import net.thunderbird.core.common.action.SwipeActions
-import net.thunderbird.core.logging.testing.TestLogger
 import net.thunderbird.core.preference.debugging.DebuggingSettings
 import net.thunderbird.core.preference.debugging.DebuggingSettingsPreferenceManager
 import net.thunderbird.core.preference.display.visualSettings.message.list.MessageListDateTimeFormat

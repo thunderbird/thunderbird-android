@@ -5,12 +5,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import app.k9mail.legacy.ui.folder.DisplayFolder
 import app.k9mail.legacy.ui.folder.DisplayFolderRepository
-import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.feature.account.AccountId
 
 class ManageFoldersViewModel(
     private val folderRepository: DisplayFolderRepository,
 ) : ViewModel() {
-    fun getFolders(account: LegacyAccountDto): LiveData<List<DisplayFolder>> {
-        return folderRepository.getDisplayFoldersFlow(account, includeHiddenFolders = true).asLiveData()
+    fun getFolders(accountId: AccountId): LiveData<List<DisplayFolder>> {
+        return folderRepository.getDisplayFoldersFlow(accountId, includeHiddenFolders = true).asLiveData()
     }
 }

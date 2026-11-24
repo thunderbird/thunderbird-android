@@ -21,7 +21,7 @@
     <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
     <string name="changelog_snackbar_text">Descubre las novedades de esta versión</string>
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
-    <string name="changelog_snackbar_button_text">Leer</string>
+    <string name="changelog_snackbar_button_text">Texto del botón de la barra de notificaciones que aparece cuando se actualiza la aplicación. Texto del botón de la barra de notificaciones que aparece cuando se actualiza la aplicación.</string>
     <!--Default signature-->
     <!--General strings that include the app name-->
     <!--=== General strings ==================================================================-->
@@ -324,30 +324,30 @@
     <string name="account_settings_show_pictures_never">No</string>
     <string name="account_settings_show_pictures_only_from_contacts">De contactos</string>
     <string name="account_settings_show_pictures_always">De cualquiera</string>
-    <string name="account_settings_composition">Correo saliente</string>
-    <string name="account_settings_default_quoted_text_shown_label">Incluir correo original al responder</string>
-    <string name="account_settings_default_quoted_text_shown_summary">Al responder a los correos el contenido del mismo se incluirá en tu respuesta.</string>
-    <string name="account_settings_reply_after_quote_label">Respuesta tras correo original</string>
-    <string name="account_settings_reply_after_quote_summary">Al responder a un correo, el texto original aparecerá por encima de tu respuesta.</string>
-    <string name="account_settings_strip_signature_label">Borrar firma del correo original</string>
-    <string name="account_settings_strip_signature_summary">Al responder a los correos se eliminará la firma del original</string>
-    <string name="account_settings_message_format_label">Formato del correo</string>
-    <string name="account_settings_message_format_text">Texto simple (se quitan las imágenes y el formato)</string>
-    <string name="account_settings_message_format_html">HTML (se mantienen las imágenes y el formato)</string>
+    <string name="account_settings_composition">Envío de correo</string>
+    <string name="account_settings_default_quoted_text_shown_label">Citar el mensaje al responder</string>
+    <string name="account_settings_default_quoted_text_shown_summary">Incluye el mensaje original en tu respuesta.</string>
+    <string name="account_settings_reply_after_quote_label">Responder después del texto citado</string>
+    <string name="account_settings_reply_after_quote_summary">El mensaje original aparecerá encima de tu respuesta.</string>
+    <string name="account_settings_strip_signature_label">Eliminar las firmas en la respuesta</string>
+    <string name="account_settings_strip_signature_summary">Las firmas se eliminarán de los mensajes citados</string>
+    <string name="account_settings_message_format_label">Formato del mensaje</string>
+    <string name="account_settings_message_format_text">Texto sin formato (eliminar imágenes y formato)</string>
+    <string name="account_settings_message_format_html">HTML (mantener las imágenes y el formato)</string>
     <string name="account_settings_message_format_auto">Automático</string>
-    <string name="account_settings_always_show_cc_bcc_label">Mostrar siempre Cc/Cco</string>
+    <string name="account_settings_always_show_cc_bcc_label">Mostrar siempre Cc y Cco</string>
     <string name="account_settings_message_read_receipt_label">Confirmación de lectura</string>
-    <string name="account_settings_message_read_receipt_summary">Solicitar siempre confirmación de lectura</string>
-    <string name="account_settings_quote_style_label">Estilo de respuesta</string>
-    <string name="account_settings_quote_style_prefix">Prefijo (como Gmail)</string>
-    <string name="account_settings_quote_style_header">Cabecera (como Outlook)</string>
-    <string name="account_settings_upload_sent_messages_label">Subir los correos enviados</string>
-    <string name="account_settings_upload_sent_messages_summary">Subir correos a la carpeta de «Enviados» tras enviarlos</string>
+    <string name="account_settings_message_read_receipt_summary">Pide siempre un acuse de lectura</string>
+    <string name="account_settings_quote_style_label">Estilo de respuesta con cita</string>
+    <string name="account_settings_quote_style_prefix">Prefijo (como en Gmail)</string>
+    <string name="account_settings_quote_style_header">Encabezado (como en Outlook)</string>
+    <string name="account_settings_upload_sent_messages_label">Subir los mensajes enviados</string>
+    <string name="account_settings_upload_sent_messages_summary">Mover los mensajes a la carpeta Enviados tras su envío</string>
     <string name="account_settings_general_title">Ajustes generales</string>
     <string name="account_settings_reading_mail">Al leer el correo</string>
     <string name="account_settings_sync">Comprobación de correo</string>
     <string name="account_settings_folders">Carpetas</string>
-    <string name="account_settings_quote_prefix_label">Prefijo de texto citado</string>
+    <string name="account_settings_quote_prefix_label">Prefijo del texto citado</string>
     <string name="account_settings_crypto">Cifrado de extremo a extremo</string>
     <string name="account_settings_crypto_app">Activar soporte para OpenPGP</string>
     <string name="account_settings_crypto_app_select_title">Elegir aplicación OpenPGP</string>
@@ -398,7 +398,7 @@
     <string name="account_settings_incoming_label">Servidor de entrada</string>
     <string name="account_settings_incoming_summary">Configurar el servidor de correo de entrada</string>
     <string name="account_settings_outgoing_label">Servidor de salida</string>
-    <string name="account_settings_outgoing_summary">Configurar servidor de salida (SMTP)</string>
+    <string name="account_settings_outgoing_summary">Configurar el servidor de correo saliente (SMTP)</string>
     <string name="account_settings_name_label">Tu nombre</string>
     <string name="notifications_title">Notificaciones</string>
     <string name="account_settings_vibration">Vibración</string>
@@ -425,10 +425,10 @@
     <string name="account_settings_notification_light_cyan">Cian</string>
     <string name="account_settings_notification_light_magenta">Magenta</string>
     <string name="account_settings_composition_title">Opciones de redacción de correos</string>
-    <string name="account_settings_composition_label">Campos predeterminados</string>
-    <string name="account_settings_composition_summary">Configurar «De», «Cco» y firma predeterminadas</string>
-    <string name="account_settings_identities_label">Identidades</string>
-    <string name="account_settings_identities_summary">Configurar direcciones y firmas alternativas</string>
+    <string name="account_settings_composition_label">Valores predeterminados de composición</string>
+    <string name="account_settings_composition_summary">Configura el remitente predeterminado, el campo Ccoculto y la firma</string>
+    <string name="account_settings_identities_label">Gestionar identidades</string>
+    <string name="account_settings_identities_summary">Configurar direcciones de remitente y firmas alternativas</string>
     <string name="manage_identities_title">Gestionar identidades</string>
     <string name="manage_identities_context_menu_title">Gestionar identidad</string>
     <string name="edit_identity_title">Editar identidad</string>
@@ -631,8 +631,8 @@
     </plurals>
     <plurals name="remote_search_downloading_limited">
         <item quantity="one">Obteniendo elemento %1$d de %2$d</item>
-        <item quantity="many">Obteniendo elemento %1$d de %2$d</item>
-        <item quantity="other">Obteniendo elemento %1$d de %2$d</item>
+        <item quantity="many">Obteniendo elementos %1$d de %2$d</item>
+        <item quantity="other">Obteniendo elementos %1$d de %2$d</item>
     </plurals>
     <string name="remote_search_error">Ha fallado la búsqueda remota</string>
     <string name="account_settings_search">Buscar</string>
@@ -799,7 +799,7 @@
     <string name="push_info_configure_notification_text">Sin embargo, Android también te permite ocultar la notificación.</string>
     <string name="push_info_learn_more_text">Leer más sobre el tema</string>
     <string name="push_info_configure_notification_action">Configurar la apariencia de la notificación</string>
-    <string name="push_info_disable_push_text">En caso de no necesitar notificaciones instantáneas de correos nuevos puedes desactivar las comprobaciones rápidas («push», o IDLE) y seguir utilizando comprobaciones normales («poll»); esta opción clásica pregunta al servidor de vez en cuando, conectándose de forma esporádica a intervalos regulares y no necesita mantener una conexión permanente ni mantener un servicio y notificación constante en segundo plano. Gastando menos batería.</string>
+    <string name="push_info_disable_push_text">Si no necesitas notificaciones inmediatas sobre los mensajes nuevos, deberías desactivar la función Push y utilizar la función Polling. La función Polling comprueba si hay correo nuevo a intervalos regulares y no requiere notificación.</string>
     <string name="push_info_disable_push_action">Desactivar sincronización rápida («push»)</string>
     <!--Name of the swipe action to select a message. Try to keep it short.-->
     <!--Name of the swipe action to deselect a message. Try to keep it short.-->
@@ -956,4 +956,19 @@
     <string name="changelog_type_changed_text">CAMBIOS</string>
     <string name="changelog_type_new_text">NOVEDADES</string>
     <string name="changelog_latest_label_text">RECIENTES</string>
+    <string name="camera_capture_lost">La imagen capturada se ha perdido porque se cerró la aplicación. Inténtalo de nuevo.</string>
+    <string name="message_view_from_me_text">Aparece en la pantalla de detalles del mensaje cuando el usuario lo ha enviado. Se muestra después de la etiqueta De. Es posible que, en algunos idiomas, se requiera una forma gramatical diferente a la de message_view_to_me_text. En inglés, ambas son me.</string>
+    <string name="global_settings_privacy_incognito_keyboard">Teclado incognito</string>
+    <string name="global_settings_privacy_incognito_keyboard_detail">Configura el teclado para que no aprenda de lo que escribes al redactar mensajes</string>
+    <string name="account_setup_visibility_and_syncing">Visibilidad y sincronización</string>
+    <string name="account_settings_signature_html_label">Firma HTML</string>
+    <string name="account_settings_signature_is_html_label">Guardar la firma como HTML</string>
+    <string name="account_settings_signature_is_html_summary">Interpreta la firma como HTML. Los scripts y los controladores de eventos se eliminarán por motivos de seguridad.</string>
+    <string name="account_settings_signature_preview">Vista previa de la firma</string>
+    <string name="account_settings_signature_preview_empty">Aquí aparecerá la vista previa de tu firma</string>
+    <string name="account_settings_signature_clear_label">Borrar firma</string>
+    <string name="sort_by_indicator">•</string>
+    <string name="remote_feature_flag_preferences">Indicadores de funciones remotos</string>
+    <string name="message_compose_encrypting_message">Cifrando el mensaje…</string>
+    <string name="error_no_contact_provider">No se ha encontrado ninguna aplicación de contactos. Instala una aplicación de contactos para añadir esta dirección.</string>
 </resources>

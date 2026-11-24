@@ -2,21 +2,22 @@ package com.fsck.k9.notification
 
 import android.app.PendingIntent
 import app.k9mail.legacy.message.controller.MessageReference
-import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.feature.account.AccountId
 
 interface NotificationActionCreator {
     fun createViewMessagePendingIntent(messageReference: MessageReference): PendingIntent
 
-    fun createViewFolderPendingIntent(account: LegacyAccountDto, folderId: Long): PendingIntent
+    fun createViewFolderPendingIntent(accountId: AccountId, folderId: Long): PendingIntent
 
     fun createViewMessagesPendingIntent(
-        account: LegacyAccountDto,
+        accountId: AccountId,
         messageReferences: List<MessageReference>,
     ): PendingIntent
 
-    fun createViewFolderListPendingIntent(account: LegacyAccountDto): PendingIntent
+    fun createViewFolderListPendingIntent(accountId: AccountId): PendingIntent
 
-    fun createDismissAllMessagesPendingIntent(account: LegacyAccountDto): PendingIntent
+    fun createDismissAllMessagesPendingIntent(accountId: AccountId): PendingIntent
 
     fun createDismissMessagePendingIntent(messageReference: MessageReference): PendingIntent
 
@@ -25,25 +26,25 @@ interface NotificationActionCreator {
     fun createMarkMessageAsReadPendingIntent(messageReference: MessageReference): PendingIntent
 
     fun createMarkAllAsReadPendingIntent(
-        account: LegacyAccountDto,
+        accountId: AccountId,
         messageReferences: List<MessageReference>,
     ): PendingIntent
 
-    fun getEditIncomingServerSettingsIntent(account: LegacyAccountDto): PendingIntent
+    fun getEditIncomingServerSettingsIntent(account: LegacyAccount): PendingIntent
 
-    fun getEditOutgoingServerSettingsIntent(account: LegacyAccountDto): PendingIntent
+    fun getEditOutgoingServerSettingsIntent(account: LegacyAccount): PendingIntent
 
     fun createDeleteMessagePendingIntent(messageReference: MessageReference): PendingIntent
 
     fun createDeleteAllPendingIntent(
-        account: LegacyAccountDto,
+        accountId: AccountId,
         messageReferences: List<MessageReference>,
     ): PendingIntent
 
     fun createArchiveMessagePendingIntent(messageReference: MessageReference): PendingIntent
 
     fun createArchiveAllPendingIntent(
-        account: LegacyAccountDto,
+        accountId: AccountId,
         messageReferences: List<MessageReference>,
     ): PendingIntent
 

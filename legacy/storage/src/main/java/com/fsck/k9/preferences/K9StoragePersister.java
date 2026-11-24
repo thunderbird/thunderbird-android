@@ -15,7 +15,7 @@ import com.fsck.k9.helper.Utility;
 import com.fsck.k9.preferences.migration.DefaultStorageMigrationHelper;
 import com.fsck.k9.preferences.migration.StorageMigrations;
 import com.fsck.k9.preferences.migration.StorageMigrationHelper;
-import net.thunderbird.core.logging.Logger;
+import net.thunderbird.components.core.logging.Logger;
 import net.thunderbird.core.preference.storage.InMemoryStorage;
 import net.thunderbird.core.preference.storage.Storage;
 import net.thunderbird.core.preference.storage.StorageEditor;
@@ -23,12 +23,13 @@ import net.thunderbird.core.preference.storage.StoragePersister;
 import net.thunderbird.core.preference.storage.StorageUpdater;
 
 public class K9StoragePersister implements StoragePersister {
-    private static final int DB_VERSION = 30;
+    private static final String TAG = "K9StoragePersister";
+    private static final int DB_VERSION = 31;
     private static final String DB_NAME = "preferences_storage";
 
     private final Context context;
     private final Logger logger;
-    private final StorageMigrationHelper migrationHelper = new DefaultStorageMigrationHelper();
+    private final StorageMigrationHelper migrationHelper;
 
     public K9StoragePersister(
         Context context,
@@ -36,6 +37,7 @@ public class K9StoragePersister implements StoragePersister {
     ) {
         this.context = context;
         this.logger = logger;
+        this.migrationHelper = new DefaultStorageMigrationHelper(logger);
     }
 
     private SQLiteDatabase openDB() {
@@ -68,7 +70,7 @@ public class K9StoragePersister implements StoragePersister {
     }
 
     private void createStorageDatabase(SQLiteDatabase db) {
-        logger.info(null, null, () -> "Creating Storage database");
+        logger.info(TAG, null, () -> "Creating Storage database");
 
         db.execSQL("DROP TABLE IF EXISTS preferences_storage");
         db.execSQL("CREATE TABLE preferences_storage " +
@@ -85,15 +87,18 @@ public class K9StoragePersister implements StoragePersister {
 
             StoragePersistOperations storagePersistOperations = new StoragePersistOperations(workingStorage, workingDb);
             workingDb.beginTransaction();
-            operationCallback.persist(storagePersistOperations);
-            storagePersistOperations.close();
-            workingDb.setTransactionSuccessful();
-
-            operationCallback.onPersistTransactionSuccess(workingStorage);
+            try {
+                operationCallback.persist(storagePersistOperations);
+                workingDb.setTransactionSuccessful();
+            } finally {
+                storagePersistOperations.close();
+                workingDb.endTransaction();
+            }
         } finally {
-            workingDb.endTransaction();
             workingDb.close();
         }
+
+        operationCallback.onPersistTransactionSuccess(workingStorage);
     }
 
     @NonNull
@@ -149,13 +154,13 @@ public class K9StoragePersister implements StoragePersister {
     @Override
     public Storage loadValues() {
         long startTime = SystemClock.elapsedRealtime();
-        logger.info(null, null, () -> "Loading preferences from DB into Storage");
+        logger.info(TAG, null, () -> "Loading preferences from DB into Storage");
 
         try (SQLiteDatabase database = openDB()) {
             return new InMemoryStorage(readAllValues(database), logger);
         } finally {
             long endTime = SystemClock.elapsedRealtime();
-            logger.info(null, null, () -> String.format("Preferences load took %d ms", endTime - startTime));
+            logger.info(TAG, null, () -> String.format("Preferences load took %d ms", endTime - startTime));
         }
     }
 
@@ -165,9 +170,8 @@ public class K9StoragePersister implements StoragePersister {
         try {
             cursor = database.rawQuery("SELECT primkey, value FROM preferences_storage", null);
             while (cursor.moveToNext()) {
-                String key = cursor.getString(0);
-                String value = cursor.getString(1);
-                logger.debug(null, null, () -> String.format("Loading key '%s', value = '%s'", key, value));
+                final String key = cursor.getString(0);
+                final String value = cursor.getString(1);
                 loadedValues.put(key, value);
             }
         } finally {

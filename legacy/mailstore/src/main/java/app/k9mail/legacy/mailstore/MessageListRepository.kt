@@ -1,13 +1,15 @@
 package app.k9mail.legacy.mailstore
 
+import net.thunderbird.feature.account.AccountId
+
 interface MessageListRepository {
     fun addListener(listener: MessageListChangedListener)
-    fun addListener(accountUuid: String, listener: MessageListChangedListener)
+    fun addListener(accountId: AccountId, listener: MessageListChangedListener)
     fun removeListener(listener: MessageListChangedListener)
-    fun notifyMessageListChanged(accountUuid: String)
+    fun notifyMessageListChanged(accountId: AccountId)
 
     fun <T> getMessages(
-        accountUuid: String,
+        accountId: AccountId,
         selection: String,
         selectionArgs: Array<String>,
         sortOrder: String,
@@ -15,7 +17,7 @@ interface MessageListRepository {
     ): List<T>
 
     fun <T> getThreadedMessages(
-        accountUuid: String,
+        accountId: AccountId,
         selection: String,
         selectionArgs: Array<String>,
         sortOrder: String,
@@ -23,7 +25,7 @@ interface MessageListRepository {
     ): List<T>
 
     fun <T> getThread(
-        accountUuid: String,
+        accountId: AccountId,
         threadId: Long,
         sortOrder: String,
         messageMapper: MessageMapper<T>,

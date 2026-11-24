@@ -130,4 +130,5 @@
     <string name="account_settings_idle_refresh_period_36min">每 36 分钟</string>
     <string name="account_settings_idle_refresh_period_48min">每 48 分钟</string>
     <string name="account_settings_idle_refresh_period_60min">每 60 分钟</string>
+    <string name="account_settings_composition_summary">设置默认的发件地址、Bcc 密送地址和签名</string>
 </resources>

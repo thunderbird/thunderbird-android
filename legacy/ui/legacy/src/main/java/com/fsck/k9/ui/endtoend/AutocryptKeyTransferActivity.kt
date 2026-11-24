@@ -22,6 +22,8 @@ import org.koin.android.ext.android.inject
 import org.koin.core.parameter.parametersOf
 import org.openintents.openpgp.util.OpenPgpIntentStarter
 
+private const val TAG = "AutocryptKeyTransferActivity"
+
 @Suppress("TooManyFunctions")
 class AutocryptKeyTransferActivity : BaseActivity() {
     private val presenter: AutocryptKeyTransferPresenter by inject { parametersOf(this, this) }
@@ -165,7 +167,7 @@ class AutocryptKeyTransferActivity : BaseActivity() {
         try {
             OpenPgpIntentStarter.startIntentSender(this, pendingIntent.intentSender)
         } catch (e: SendIntentException) {
-            Log.e(e, "Error starting PendingIntent")
+            Log.e(TAG, e, "Error starting PendingIntent")
         }
     }
 

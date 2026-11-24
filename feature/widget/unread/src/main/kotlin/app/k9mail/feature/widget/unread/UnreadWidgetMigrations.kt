@@ -4,17 +4,21 @@ import android.content.SharedPreferences
 import androidx.core.content.edit
 import app.k9mail.feature.widget.unread.UnreadWidgetRepository.Companion.PREFS_VERSION
 import app.k9mail.feature.widget.unread.UnreadWidgetRepository.Companion.PREF_VERSION_KEY
-import com.fsck.k9.Preferences
 import net.thunderbird.components.core.outcome.fold
+import net.thunderbird.core.android.account.LegacyAccountManager
+import net.thunderbird.feature.account.AccountIdFactory
+import net.thunderbird.feature.account.UnifiedAccountId
 import net.thunderbird.feature.mail.folder.api.FolderServerId
 import net.thunderbird.feature.mail.folder.api.data.repository.FolderQueryRepository
 
 internal class UnreadWidgetMigrations(
-    private val accountRepository: Preferences,
+    private val accountManager: LegacyAccountManager,
     private val folderQueryRepository: FolderQueryRepository,
 ) {
+    @Suppress("MagicNumber")
     suspend fun upgradePreferences(preferences: SharedPreferences, version: Int) {
         if (version < 2) rewriteFolderNameToFolderId(preferences)
+        if (version < 3) rewriteLegacyUnifiedAccountId(preferences)
 
         preferences.setVersion(PREFS_VERSION)
     }
@@ -32,7 +36,8 @@ internal class UnreadWidgetMigrations(
         preferences.edit {
             for (widgetId in widgetIds) {
                 val accountUuid = preferences.getString("unread_widget.$widgetId", null) ?: continue
-                val account = accountRepository.getAccount(accountUuid) ?: continue
+                val accountId = runCatching { AccountIdFactory.of(accountUuid) }.getOrNull() ?: continue
+                val account = accountManager.findById(accountId) ?: continue
 
                 val folderServerId = preferences.getString("unread_widget.$widgetId.folder_name", null)
                 if (folderServerId != null) {
@@ -52,5 +57,26 @@ internal class UnreadWidgetMigrations(
                 remove("unread_widget.$widgetId.folder_name")
             }
         }
+    }
+
+    /**
+     * Before the switch to [net.thunderbird.feature.account.AccountId], the unified folders widget stored a
+     * special string instead of an account UUID. Rewrite it to [UnifiedAccountId].
+     */
+    private fun rewriteLegacyUnifiedAccountId(preferences: SharedPreferences) {
+        val legacyUnifiedAccountKeys = preferences.all
+            .filter { (key, value) -> WIDGET_ACCOUNT_KEY.matches(key) && value in LEGACY_UNIFIED_ACCOUNT_IDS }
+            .keys
+
+        preferences.edit {
+            for (key in legacyUnifiedAccountKeys) {
+                putString(key, UnifiedAccountId.toString())
+            }
+        }
+    }
+
+    private companion object {
+        val WIDGET_ACCOUNT_KEY = Regex("unread_widget\\.\\d+")
+        val LEGACY_UNIFIED_ACCOUNT_IDS = setOf("unified_folders", "unified_inbox")
     }
 }

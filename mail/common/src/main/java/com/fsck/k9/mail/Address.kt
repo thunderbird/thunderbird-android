@@ -11,6 +11,8 @@ import org.apache.james.mime4j.codec.EncoderUtil
 import org.apache.james.mime4j.field.address.DefaultAddressParser
 import org.jetbrains.annotations.VisibleForTesting
 
+private const val TAG = "Address"
+
 class Address @JvmOverloads constructor(
     address: String,
     personal: String? = null,
@@ -47,7 +49,7 @@ class Address @JvmOverloads constructor(
                     name
                 }
             } else {
-                Log.e("Invalid address: %s", address)
+                Log.e(TAG, "Invalid address: %s", address)
             }
         }
     }
@@ -160,7 +162,7 @@ class Address @JvmOverloads constructor(
                     }
                     .toTypedArray()
             } catch (pe: MimeException) {
-                Log.e(pe, "MimeException in Address.parse()")
+                Log.e(TAG, pe, "MimeException in Address.parse()")
                 // broken addresses are never added to the resulting array
                 EMPTY_ADDRESS_ARRAY
             }

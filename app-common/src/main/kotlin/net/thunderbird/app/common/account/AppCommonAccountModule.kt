@@ -4,9 +4,17 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import app.k9mail.feature.account.setup.AccountSetupExternalContract
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import net.thunderbird.app.common.account.data.AccountDisplayOrderManager
+import net.thunderbird.app.common.account.data.AccountFolderUpdater
+import net.thunderbird.app.common.account.data.AccountLocalDataSource
+import net.thunderbird.app.common.account.data.DefaultAccountDisplayOrderManager
 import net.thunderbird.app.common.account.data.DefaultAccountProfileLocalDataSource
 import net.thunderbird.app.common.account.data.DefaultLegacyAccountManager
 import net.thunderbird.app.common.account.data.DefaultLegacyAccountRepository
+import net.thunderbird.app.common.account.data.LegacyAccountCache
+import net.thunderbird.app.common.account.data.LegacyAccountFolderUpdater
+import net.thunderbird.app.common.account.data.LegacyAccountLocalDataSource
+import net.thunderbird.app.common.account.data.LegacyInMemoryAccountCache
 import net.thunderbird.core.android.account.AccountDefaultsProvider
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.LegacyAccountManager
@@ -18,23 +26,49 @@ import net.thunderbird.feature.account.avatar.DefaultAvatarIconCatalog
 import net.thunderbird.feature.account.avatar.DefaultAvatarMonogramCreator
 import net.thunderbird.feature.account.core.AccountCoreExternalContract.AccountProfileLocalDataSource
 import net.thunderbird.feature.account.storage.legacy.featureAccountStorageLegacyModule
-import net.thunderbird.feature.mail.account.api.AccountManager
 import org.koin.android.ext.koin.androidApplication
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.qualifier.named
-import org.koin.dsl.binds
+import org.koin.dsl.bind
 import org.koin.dsl.module
 import app.k9mail.core.ui.legacy.theme2.common.R as ThemeCommonR
 
 internal val appCommonAccountModule = module {
     includes(featureAccountStorageLegacyModule)
 
-    single<AccountManager<LegacyAccount>> {
-        DefaultLegacyAccountManager(
-            accountManager = get(),
-            accountDataMapper = get(),
+    single<AccountLocalDataSource> {
+        LegacyAccountLocalDataSource(
+            storageProvider = get(),
+            accountStorageHandler = get(),
+            accountDefaultsProvider = get(),
         )
-    } binds arrayOf(LegacyAccountManager::class)
+    }
+
+    single<LegacyAccountCache> {
+        LegacyInMemoryAccountCache()
+    }
+
+    single<AccountDisplayOrderManager> {
+        DefaultAccountDisplayOrderManager(
+            storageProvider = get(),
+        )
+    }
+
+    single<AccountFolderUpdater> {
+        LegacyAccountFolderUpdater(
+            localStoreProvider = get(),
+            logger = get(),
+        )
+    }
+
+    single {
+        DefaultLegacyAccountManager(
+            accountStorage = get(),
+            accountCache = get(),
+            accountDisplayOrderManager = get(),
+            accountFolderUpdater = get(),
+        )
+    } bind LegacyAccountManager::class
 
     single<AccountProfileLocalDataSource> {
         DefaultAccountProfileLocalDataSource(
@@ -81,12 +115,17 @@ internal val appCommonAccountModule = module {
         AccountCreator(
             accountColorPicker = get(),
             localFoldersCreator = get(),
-            preferences = get(),
+            accountManager = get(),
             context = androidApplication(),
-            deletePolicyProvider = get(),
             messagingController = get(),
+            backendManager = get(),
+            deletePolicyProvider = get(),
             avatarMonogramCreator = get(),
             unifiedInboxConfigurator = get(),
+            accountDefaultsProvider = get(),
+            featureFlagProvider = get(),
+            getFolderIdsForTypeUseCase = get(),
+            setPushForFolderUseCase = get(),
         )
     }
 }

@@ -14,12 +14,14 @@ import android.text.TextUtils;
 import com.fsck.k9.mailstore.CryptoResultAnnotation;
 import com.fsck.k9.mailstore.MessageViewInfo;
 import com.fsck.k9.view.MessageCryptoDisplayStatus;
-import net.thunderbird.core.android.account.LegacyAccountDto;
+import net.thunderbird.core.android.account.LegacyAccount;
 import net.thunderbird.legacy.logging.Log;
 
 
 @SuppressWarnings("WeakerAccess")
 public class MessageCryptoPresenter {
+    private static final String TAG = "MessageCryptoPresenter";
+
     public static final int REQUEST_CODE_UNKNOWN_KEY = 123;
     public static final int REQUEST_CODE_SECURITY_WARNING = 124;
 
@@ -48,7 +50,7 @@ public class MessageCryptoPresenter {
         }
     }
 
-    public boolean maybeHandleShowMessage(MessageTopView messageView, LegacyAccountDto account, MessageViewInfo messageViewInfo) {
+    public boolean maybeHandleShowMessage(MessageTopView messageView, LegacyAccount account, MessageViewInfo messageViewInfo) {
         this.cryptoResultAnnotation = messageViewInfo.cryptoResultAnnotation;
 
         MessageCryptoDisplayStatus displayStatus =
@@ -122,7 +124,7 @@ public class MessageCryptoPresenter {
                     pendingIntent.getIntentSender(), REQUEST_CODE_UNKNOWN_KEY);
             }
         } catch (IntentSender.SendIntentException e) {
-            Log.e(e, "SendIntentException");
+            Log.e(TAG, e, "SendIntentException");
         }
     }
 
@@ -138,7 +140,7 @@ public class MessageCryptoPresenter {
                         pendingIntent.getIntentSender(), REQUEST_CODE_SECURITY_WARNING);
             }
         } catch (IntentSender.SendIntentException e) {
-            Log.e(e, "SendIntentException");
+            Log.e(TAG, e, "SendIntentException");
         }
     }
 

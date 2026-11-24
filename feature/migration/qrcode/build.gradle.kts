@@ -16,6 +16,8 @@ android {
 dependencies {
     implementation(projects.core.common)
     implementation(projects.core.android.account)
+    implementation(projects.core.featureflag)
+    implementation(projects.feature.mail.folder.api)
     implementation(projects.legacy.common)
     implementation(projects.legacy.logging)
     implementation(projects.legacy.ui.base)
@@ -29,7 +31,6 @@ dependencies {
     implementation(libs.okio)
     implementation(libs.zxing)
 
-    testImplementation(projects.core.logging.testing)
     testImplementation(projects.core.ui.compose.testing)
 }
 

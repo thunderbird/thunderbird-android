@@ -32,7 +32,7 @@ internal class MigrationTo91(private val db: SQLiteDatabase, private val migrati
             db.execSQL("ALTER TABLE messages ADD account_id TEXT")
         }
 
-        val accountUuid = migrationsHelper.account.uuid
+        val accountUuid = migrationsHelper.account.id.toString()
         db.execSQL("UPDATE messages SET account_id = ?", arrayOf(accountUuid))
         db.execSQL("UPDATE folders SET account_id = ?", arrayOf(accountUuid))
 

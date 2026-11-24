@@ -16,7 +16,7 @@ import kotlinx.coroutines.withContext
 import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.core.common.cache.TimeLimitedCache
 import net.thunderbird.core.common.exception.MessagingException
-import net.thunderbird.core.logging.Logger
+import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.components.core.outcome.Outcome
 import net.thunderbird.components.core.outcome.handleAsync
 import net.thunderbird.feature.account.AccountId
@@ -28,7 +28,6 @@ private const val VISIBLE_LIMIT = 100
 
 class DefaultOutboxFolderManager(
     private val logger: Logger,
-    private val accountManager: LegacyAccountManager,
     private val localStoreProvider: LocalStoreProvider,
     private val outboxFolderIdCache: TimeLimitedCache<AccountId, Long>,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
@@ -149,10 +148,6 @@ class DefaultOutboxFolderManager(
     }
 
     private fun createLocalStore(accountId: AccountId): LocalStore {
-        val account = requireNotNull(accountManager.getAccount(accountId.toString())) {
-            "Account with id $accountId not found"
-        }
-
-        return localStoreProvider.getInstanceByLegacyAccount(account = account)
+        return localStoreProvider.getInstance(accountId)
     }
 }

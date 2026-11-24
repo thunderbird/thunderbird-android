@@ -2,8 +2,8 @@ package net.thunderbird.app.common.appVersion
 
 import android.content.Context
 import android.content.pm.PackageManager
+import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.core.common.provider.AppVersionProvider
-import net.thunderbird.core.logging.Logger
 
 private const val TAG = "DefaultAppVersionProvider"
 

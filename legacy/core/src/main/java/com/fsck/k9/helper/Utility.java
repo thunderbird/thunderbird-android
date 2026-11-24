@@ -13,6 +13,8 @@ import android.text.TextUtils;
 import net.thunderbird.legacy.logging.Log;
 
 public class Utility {
+    private static final String TAG = "Utility";
+
 
     // \u00A0 (non-breaking space) happens to be used by French MUA
 
@@ -162,12 +164,12 @@ public class Utility {
         while (imgMatches.find()) {
             String uriScheme = imgMatches.group(1);
             if (uriScheme.equals("http") || uriScheme.equals("https")) {
-                Log.d("External images found");
+                Log.d(TAG, "External images found");
                 return true;
             }
         }
 
-        Log.d("No external images.");
+        Log.d(TAG, "No external images.");
         return false;
     }
 

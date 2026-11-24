@@ -76,10 +76,10 @@ internal fun FolderListItem(
                     },
                 )
             },
-            selected = selectedFolderId == displayFolder.id,
+            selected = selectedFolderId == displayFolder.folderId,
             onClick = {
                 when (displayFolder) {
-                    is MailDisplayFolder if displayFolder.accountId == null -> isExpanded.value = !isExpanded.value
+                    is MailDisplayFolder if displayFolder.isPlaceholder -> isExpanded.value = !isExpanded.value
                     else -> onClick(displayFolder)
                 }
             },
@@ -184,8 +184,7 @@ private fun mapFolderIcon(folder: DisplayFolder): ImageVector {
 }
 
 private fun mapDisplayAccountFolderIcon(folder: MailDisplayFolder): ImageVector {
-    // Show a special icon for top-group regular folders, but not for placeholders (accountId == null)
-    if (folder.folder.type == FolderType.REGULAR && folder.isInTopGroup && folder.accountId != null) {
+    if (folder.folder.type == FolderType.REGULAR && folder.isInTopGroup && !folder.isPlaceholder) {
         return Icons.Outlined.FavoriteFolder
     }
 

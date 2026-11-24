@@ -29,6 +29,8 @@ import com.fsck.k9.message.extractors.AttachmentInfoExtractor;
  * the underlying part structure.
  */
 public class AttachmentResolver {
+    private static final String TAG = "AttachmentResolver";
+
     Map<String,Uri> contentIdToAttachmentUriMap;
 
 
@@ -73,7 +75,7 @@ public class AttachmentResolver {
                         result.put(contentId, attachmentInfo.internalUri);
                     }
                 } catch (MessagingException e) {
-                    Log.e(e, "Error extracting attachment info");
+                    Log.e(TAG, e, "Error extracting attachment info");
                 }
             }
         }

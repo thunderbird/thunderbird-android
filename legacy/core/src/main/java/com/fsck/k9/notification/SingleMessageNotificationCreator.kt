@@ -9,6 +9,8 @@ import net.thunderbird.legacy.logging.Log
 import net.thunderbird.core.preference.notification.NotificationPreferenceManager
 import androidx.core.app.NotificationCompat.Builder as NotificationBuilder
 
+private const val TAG = "SingleMessageNotificationCreator"
+
 internal class SingleMessageNotificationCreator(
     private val notificationHelper: NotificationHelper,
     private val actionCreator: NotificationActionCreator,
@@ -22,11 +24,15 @@ internal class SingleMessageNotificationCreator(
         singleNotificationData: SingleNotificationData,
         isGroupSummary: Boolean = false,
     ) {
-        val account = baseNotificationData.account
+        val accountId = baseNotificationData.accountId
         val notificationId = singleNotificationData.notificationId
         val content = singleNotificationData.content
 
-        val notification = notificationHelper.createNotificationBuilder(account, ChannelType.MESSAGES)
+        val notification = notificationHelper.createNotificationBuilder(
+            accountId,
+            ChannelType.MESSAGES,
+            baseNotificationData.messagesNotificationChannelVersion,
+        )
             .setCategory(NotificationCompat.CATEGORY_EMAIL)
             .setGroup(baseNotificationData.groupKey)
             .setGroupSummary(isGroupSummary)
@@ -50,12 +56,13 @@ internal class SingleMessageNotificationCreator(
 
         if (isGroupSummary) {
             Log.v(
+                TAG,
                 "Creating single summary notification (silent=%b): %s",
                 singleNotificationData.isSilent,
                 notification,
             )
         }
-        notificationHelper.notify(account, notificationId, notification)
+        notificationHelper.notify(accountId, notificationId, notification)
     }
 
     private fun NotificationBuilder.setAvatar(content: NotificationContent) = apply {

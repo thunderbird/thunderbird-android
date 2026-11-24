@@ -1,7 +1,7 @@
 package app.k9mail.legacy.mailstore
 
-import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.feature.account.AccountId
 
 interface MessageStoreFactory {
-    fun create(account: LegacyAccountDto): ListenableMessageStore
+    fun create(accountId: AccountId): ListenableMessageStore
 }

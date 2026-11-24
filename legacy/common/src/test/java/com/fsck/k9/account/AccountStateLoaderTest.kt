@@ -9,42 +9,58 @@ import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ConnectionSecurity
 import com.fsck.k9.mail.ServerSettings
 import kotlinx.coroutines.test.runTest
-import net.thunderbird.account.fake.FakeAccountData.ACCOUNT_ID_RAW
+import net.thunderbird.account.fake.FakeAccountData.ACCOUNT_ID
 import net.thunderbird.core.android.account.Identity
-import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.fake.FakeLegacyAccountManager
+import net.thunderbird.feature.account.storage.profile.AvatarDto
+import net.thunderbird.feature.account.storage.profile.AvatarTypeDto
+import net.thunderbird.feature.account.storage.profile.ProfileDto
 import org.junit.Test
 
 class AccountStateLoaderTest {
 
     @Test
     fun `loadAccountState() SHOULD return null when accountManager returns null`() = runTest {
-        val accountManager = FakeLegacyAccountDtoManager()
+        val accountManager = FakeLegacyAccountManager()
         val testSubject = AccountStateLoader(accountManager)
 
-        val result = testSubject.loadAccountState(ACCOUNT_ID_RAW)
+        val result = testSubject.loadAccountState(ACCOUNT_ID)
 
         assertThat(result).isNull()
     }
 
     @Test
     fun `loadAccountState() SHOULD return account when present in accountManager`() = runTest {
-        val accounts = mutableMapOf(
-            ACCOUNT_ID_RAW to LegacyAccountDto(uuid = ACCOUNT_ID_RAW).apply {
-                identities = mutableListOf(Identity())
-                email = "emailAddress"
-                incomingServerSettings = INCOMING_SERVER_SETTINGS
-                outgoingServerSettings = OUTGOING_SERVER_SETTINGS
-                oAuthState = "oAuthState"
-            },
+        val account = LegacyAccount(
+            id = ACCOUNT_ID,
+            name = "name",
+            email = "emailAddress",
+            profile = ProfileDto(
+                id = ACCOUNT_ID,
+                name = "name",
+                color = -1,
+                avatar = AvatarDto(
+                    accountId = ACCOUNT_ID,
+                    avatarType = AvatarTypeDto.MONOGRAM,
+                    avatarMonogram = "NA",
+                    avatarImageUri = null,
+                    avatarIconName = null,
+                ),
+            ),
+            incomingServerSettings = INCOMING_SERVER_SETTINGS,
+            outgoingServerSettings = OUTGOING_SERVER_SETTINGS,
+            identities = listOf(Identity()),
+            oAuthState = "oAuthState",
         )
-        val accountManager = FakeLegacyAccountDtoManager(accounts = accounts)
+        val accountManager = FakeLegacyAccountManager(listOf(account))
         val testSubject = AccountStateLoader(accountManager)
 
-        val result = testSubject.loadAccountState(ACCOUNT_ID_RAW)
+        val result = testSubject.loadAccountState(ACCOUNT_ID)
 
         assertThat(result).isEqualTo(
             AccountState(
-                uuid = ACCOUNT_ID_RAW,
+                id = ACCOUNT_ID,
                 emailAddress = "emailAddress",
                 incomingServerSettings = INCOMING_SERVER_SETTINGS,
                 outgoingServerSettings = OUTGOING_SERVER_SETTINGS,

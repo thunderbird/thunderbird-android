@@ -11,7 +11,7 @@ import com.fsck.k9.CoreResourceProvider
 import com.fsck.k9.activity.MessageCompose
 import com.fsck.k9.activity.MessageHomeActivity
 import com.fsck.k9.activity.MessageHomeActivity.Companion.intentDisplaySearch
-import net.thunderbird.feature.search.legacy.SearchAccount.Companion.createUnifiedFoldersSearch
+import net.thunderbird.feature.search.legacy.SearchAccount.Companion.createUnifiedInboxSearch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -63,7 +63,7 @@ abstract class BaseMessageListWidgetProvider : AppWidgetProvider(), KoinComponen
     }
 
     private fun viewUnifiedFoldersPendingIntent(context: Context): PendingIntent {
-        val unifiedFoldersSearch = createUnifiedFoldersSearch(
+        val unifiedFoldersSearch = createUnifiedInboxSearch(
             title = coreResourceProvider.searchUnifiedFoldersTitle(),
             detail = coreResourceProvider.searchUnifiedFoldersDetail(),
         )

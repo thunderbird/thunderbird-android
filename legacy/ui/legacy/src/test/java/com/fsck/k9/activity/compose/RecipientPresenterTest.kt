@@ -23,7 +23,7 @@ import com.fsck.k9.message.ComposePgpEnableByDefaultDecider
 import com.fsck.k9.message.ComposePgpInlineDecider
 import com.fsck.k9.view.RecipientSelectView.Recipient
 import kotlin.test.assertNotNull
-import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.testing.RobolectricPendingWorkRule
 import org.junit.Before
 import org.junit.Ignore
@@ -59,7 +59,7 @@ class RecipientPresenterTest : K9RobolectricTest() {
         }
     }
     private val recipientMvpView = mock<RecipientMvpView>()
-    private val account = mock<LegacyAccountDto>()
+    private val account = mock<LegacyAccount>()
     private val composePgpInlineDecider = mock<ComposePgpInlineDecider>()
     private val composePgpEnableByDefaultDecider = mock<ComposePgpEnableByDefaultDecider>()
     private val autocryptStatusInteractor = mock<AutocryptStatusInteractor>()
@@ -291,7 +291,7 @@ class RecipientPresenterTest : K9RobolectricTest() {
     private fun setupCryptoProvider(autocryptStatusResult: RecipientAutocryptStatus) {
         stubbing(account) {
             on { openPgpProvider } doReturn CRYPTO_PROVIDER
-            on { isOpenPgpProviderConfigured } doReturn true
+            on { isOpenPgpProviderConfigured() } doReturn true
             on { openPgpKey } doReturn CRYPTO_KEY_ID
         }
 

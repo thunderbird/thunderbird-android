@@ -9,7 +9,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
+import app.k9mail.feature.account.setup.ui.autodiscovery.AccountSetupTestTags
 import net.thunderbird.components.ui.bolt.atom.icon.Icon
 import net.thunderbird.components.ui.bolt.atom.icon.Icons
 import net.thunderbird.components.ui.bolt.atom.text.TextBodyMedium
@@ -47,6 +49,7 @@ internal fun AutoDiscoveryResultHeaderView(
         ) {
             TextTitleLarge(
                 text = stringResource(state.titleResourceId),
+                modifier = Modifier.testTag(selectTitleTestTag(state)),
             )
             TextBodyMedium(
                 text = stringResource(state.subtitleResourceId),
@@ -58,6 +61,16 @@ internal fun AutoDiscoveryResultHeaderView(
                 modifier = Modifier.padding(BoltTheme.spacings.default),
             )
         }
+    }
+}
+
+private fun selectTitleTestTag(state: AutoDiscoveryResultHeaderState): String {
+    return when (state) {
+        AutoDiscoveryResultHeaderState.NoSettings -> AccountSetupTestTags.TEST_TAG_TXT_CONFIG_NOT_FOUND
+
+        AutoDiscoveryResultHeaderState.Trusted,
+        AutoDiscoveryResultHeaderState.Untrusted,
+        -> AccountSetupTestTags.TEST_TAG_TXT_CONFIG_FOUND
     }
 }
 

@@ -6,4 +6,5 @@
     <string name="migration_qrcode_permission_denied_message">Android の設定で許可をタップして、カメラへのアクセスを許可してください。</string>
     <string name="migration_qrcode_scanning_progress">%1$s / %2$s 個をスキャンしました</string>
     <string name="migration_qrcode_scanning_instructions">デスクトップ版 Thunderbird に表示される QR コードに合わせてください</string>
+    <string name="migration_qrcode_unsupported_code">QR コードを検出しましたが、無効または非対応のデータが含まれています。</string>
 </resources>

@@ -5,24 +5,34 @@ import com.fsck.k9.mailstore.MigrationsHelper
 
 internal class MigrationTo75(private val db: SQLiteDatabase, private val migrationsHelper: MigrationsHelper) {
     fun updateAccountWithSpecialFolderIds() {
+        // Look up the folder IDs first, so no database query runs while the account is being updated
         val account = migrationsHelper.account
+        val inboxFolderId = getFolderId(account.legacyInboxFolder)
+        val draftsFolderId = getFolderId(account.importedDraftsFolder)
+        val sentFolderId = getFolderId(account.importedSentFolder)
+        val trashFolderId = getFolderId(account.importedTrashFolder)
+        val archiveFolderId = getFolderId(account.importedArchiveFolder)
+        val spamFolderId = getFolderId(account.importedSpamFolder)
+        val autoExpandFolderId = getFolderId(account.importedAutoExpandFolder)
 
-        account.inboxFolderId = getFolderId(account.legacyInboxFolder)
-        account.draftsFolderId = getFolderId(account.importedDraftsFolder)
-        account.sentFolderId = getFolderId(account.importedSentFolder)
-        account.trashFolderId = getFolderId(account.importedTrashFolder)
-        account.archiveFolderId = getFolderId(account.importedArchiveFolder)
-        account.spamFolderId = getFolderId(account.importedSpamFolder)
-        account.autoExpandFolderId = getFolderId(account.importedAutoExpandFolder)
+        migrationsHelper.updateAccount { latestAccount ->
+            latestAccount.copy(
+                inboxFolderId = inboxFolderId,
+                draftsFolderId = draftsFolderId,
+                sentFolderId = sentFolderId,
+                trashFolderId = trashFolderId,
+                archiveFolderId = archiveFolderId,
+                spamFolderId = spamFolderId,
+                autoExpandFolderId = autoExpandFolderId,
 
-        account.importedDraftsFolder = null
-        account.importedSentFolder = null
-        account.importedTrashFolder = null
-        account.importedArchiveFolder = null
-        account.importedSpamFolder = null
-        account.importedAutoExpandFolder = null
-
-        migrationsHelper.saveAccount()
+                importedDraftsFolder = null,
+                importedSentFolder = null,
+                importedTrashFolder = null,
+                importedArchiveFolder = null,
+                importedSpamFolder = null,
+                importedAutoExpandFolder = null,
+            )
+        }
     }
 
     private fun getFolderId(serverId: String?): Long? {

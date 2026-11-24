@@ -7,10 +7,12 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
+import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.core.common.state.StateMachine
 import net.thunderbird.core.common.state.sideeffect.StateSideEffectHandler
-import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.ui.contract.mvi.UnidirectionalViewModel
+
+private const val TAG = "BaseStateMachineViewModel"
 
 /**
  * An abstract base ViewModel that implements [UnidirectionalViewModel] and provides a
@@ -109,7 +111,7 @@ abstract class BaseStateMachineViewModel<TState : Any, TEvent : Any, TUiSideEffe
             val currentState = stateMachine.currentStateSnapshot
             val newState = stateMachine.process(event)
             if (newState != currentState) {
-                logger.verbose { "event(${event::class.simpleName}): state update." }
+                logger.verbose(TAG) { "event(${event::class.simpleName}): state update." }
             } else {
                 onEventWithoutStateModification(event, currentState)
             }

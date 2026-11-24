@@ -1,30 +1,35 @@
 package net.thunderbird.feature.account.storage.legacy
 
 import net.thunderbird.core.android.account.AccountDefaultsProvider
-import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.preference.storage.Storage
 import net.thunderbird.core.preference.storage.StorageEditor
+import net.thunderbird.feature.account.AccountId
+import net.thunderbird.feature.account.storage.profile.ProfileDto
 
 class LegacyProfileDtoStorageHandler(
     private val avatarDtoStorageHandler: AvatarDtoStorageHandler,
 ) : ProfileDtoStorageHandler {
 
     override fun load(
-        data: LegacyAccountDto,
+        accountId: AccountId,
         storage: Storage,
-    ) {
-        val keyGen = AccountKeyGenerator(data.id)
+    ): ProfileDto {
+        val keyGen = AccountKeyGenerator(accountId)
 
-        with(data) {
-            name = storage.getStringOrNull(keyGen.create(KEY_NAME))
-            chipColor = storage.getInt(keyGen.create(KEY_COLOR), AccountDefaultsProvider.COLOR)
-        }
+        val avatar = avatarDtoStorageHandler.load(accountId, storage)
 
-        avatarDtoStorageHandler.load(data, storage)
+        val profileDto = ProfileDto(
+            id = accountId,
+            name = storage.getStringOrDefault(keyGen.create(KEY_NAME), ""),
+            color = storage.getInt(keyGen.create(KEY_COLOR), AccountDefaultsProvider.COLOR),
+            avatar = avatar,
+        )
+
+        return profileDto
     }
 
     override fun save(
-        data: LegacyAccountDto,
+        data: ProfileDto,
         storage: Storage,
         editor: StorageEditor,
     ) {
@@ -32,23 +37,23 @@ class LegacyProfileDtoStorageHandler(
 
         with(data) {
             editor.putString(keyGen.create(KEY_NAME), name)
-            editor.putInt(keyGen.create(KEY_COLOR), chipColor)
+            editor.putInt(keyGen.create(KEY_COLOR), color)
         }
 
-        avatarDtoStorageHandler.save(data, storage, editor)
+        avatarDtoStorageHandler.save(data.avatar, storage, editor)
     }
 
     override fun delete(
-        data: LegacyAccountDto,
+        accountId: AccountId,
         storage: Storage,
         editor: StorageEditor,
     ) {
-        val keyGen = AccountKeyGenerator(data.id)
+        val keyGen = AccountKeyGenerator(accountId)
 
         editor.remove(keyGen.create(KEY_NAME))
         editor.remove(keyGen.create(KEY_COLOR))
 
-        avatarDtoStorageHandler.delete(data, storage, editor)
+        avatarDtoStorageHandler.delete(accountId, storage, editor)
     }
 
     private companion object Companion {

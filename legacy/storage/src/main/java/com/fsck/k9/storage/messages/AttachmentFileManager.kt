@@ -6,6 +6,8 @@ import java.io.File
 import net.thunderbird.legacy.logging.Log
 import net.thunderbird.core.preference.GeneralSettingsManager
 
+private const val TAG = "AttachmentFileManager"
+
 internal class AttachmentFileManager(
     private val storageFilesProvider: StorageFilesProvider,
     private val generalSettingsManager: GeneralSettingsManager,
@@ -13,7 +15,7 @@ internal class AttachmentFileManager(
     fun deleteFile(messagePartId: Long) {
         val file = getAttachmentFile(messagePartId)
         if (file.exists() && !file.delete() && generalSettingsManager.getConfig().debugging.isDebugLoggingEnabled) {
-            Log.w("Couldn't delete message part file: %s", file.absolutePath)
+            Log.w(TAG, "Couldn't delete message part file: %s", file.absolutePath)
         }
     }
 

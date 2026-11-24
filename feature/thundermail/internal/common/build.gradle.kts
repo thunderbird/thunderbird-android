@@ -14,7 +14,6 @@ android {
 dependencies {
     implementation(libs.appauth)
 
-    implementation(projects.core.logging.api)
     implementation(projects.core.ui.contract)
     implementation(projects.core.ui.navigation)
     implementation(projects.feature.account.common)

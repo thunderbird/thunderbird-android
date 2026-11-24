@@ -3,9 +3,9 @@ package net.thunderbird.feature.mail.message.list.internal.ui
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.core.common.resources.StringsResourceManager
 import net.thunderbird.core.common.state.StateMachine
-import net.thunderbird.core.logging.Logger
 import net.thunderbird.feature.mail.message.list.internal.ui.state.machine.MessageListStateMachine
 import net.thunderbird.feature.mail.message.list.ui.MessageListContract
 import net.thunderbird.feature.mail.message.list.ui.effect.MessageListEffect

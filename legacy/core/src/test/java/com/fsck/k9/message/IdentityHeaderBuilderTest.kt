@@ -11,7 +11,7 @@ import com.fsck.k9.mail.internet.TextBody
 import net.thunderbird.core.android.account.Identity
 import net.thunderbird.core.android.account.QuoteStyle
 import net.thunderbird.core.android.testing.RobolectricTest
-import net.thunderbird.core.logging.testing.TestLogger
+import net.thunderbird.components.core.logging.testing.TestLogger
 import net.thunderbird.legacy.logging.Log
 import org.junit.Before
 import org.junit.Test

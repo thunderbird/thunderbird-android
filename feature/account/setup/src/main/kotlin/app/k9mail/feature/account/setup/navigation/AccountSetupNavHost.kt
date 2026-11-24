@@ -179,7 +179,7 @@ fun AccountSetupNavHost(
 
         composable(route = NESTED_NAVIGATION_CREATE_ACCOUNT) {
             CreateAccountScreen(
-                onNext = { accountUuid -> onFinish(AccountSetupRoute.AccountSetup(accountUuid.value)) },
+                onNext = { accountId -> onFinish(AccountSetupRoute.AccountSetup(accountId.toString())) },
                 onBack = { navController.popBackStack() },
                 viewModel = koinViewModel<CreateAccountViewModel>(),
                 brandNameProvider = koinInject(),

@@ -10,3 +10,7 @@ android {
 codeCoverage {
     lineCoverage = 0
 }
+
+dependencies {
+    api(projects.feature.account.api)
+}

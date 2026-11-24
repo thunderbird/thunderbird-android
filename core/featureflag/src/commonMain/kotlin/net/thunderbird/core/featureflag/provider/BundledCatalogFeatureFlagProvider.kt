@@ -1,7 +1,9 @@
 package net.thunderbird.core.featureflag.provider
 
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.core.featureflag.data.FeatureFlagCatalogDataSource
-import net.thunderbird.core.logging.Logger
 
 /**
  * [FeatureFlagProvider][BaseCatalogFeatureFlagProvider] backed by the bundled (offline) catalog.
@@ -12,10 +14,12 @@ import net.thunderbird.core.logging.Logger
 class BundledCatalogFeatureFlagProvider(
     dataSource: FeatureFlagCatalogDataSource,
     logger: Logger,
+    scope: CoroutineScope = CoroutineScope(Dispatchers.Main.immediate),
 ) : DataSourceCatalogFeatureFlagProvider(
     dataSource = dataSource,
     providerName = "bundled_catalog",
     logger = logger,
+    scope = scope,
 ),
     BundledFeatureFlagDefaults {
     override fun defaults(): Map<String, Boolean> = resolvedFlags()
@@ -23,7 +27,7 @@ class BundledCatalogFeatureFlagProvider(
     override fun toString(): String {
         return """
             |feature-flag provider '${metadata.name}':
-            |   resolvedFlags = $resolvedFlags,
+            |   resolvedFlags = ${resolvedFlags()},
             |   defaults = ${defaults()}
         """.trimMargin()
     }

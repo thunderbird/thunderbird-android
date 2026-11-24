@@ -10,7 +10,6 @@ import com.fsck.k9.mail.ssl.TrustedSocketFactory
 import com.fsck.k9.mail.store.imap.IdleRefreshManager
 import com.fsck.k9.mail.store.imap.ImapClientInfo
 import com.fsck.k9.mail.store.imap.ImapStore
-import com.fsck.k9.mail.store.imap.ImapStoreConfig
 import com.fsck.k9.mail.transport.smtp.SmtpTransport
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -18,7 +17,6 @@ import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
 import net.thunderbird.backend.api.BackendFactory
 import net.thunderbird.backend.api.BackendStorageFactory
-import net.thunderbird.core.android.account.Expunge
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.feature.account.AccountId
@@ -37,7 +35,7 @@ class DefaultImapBackendFactory(
     private val clientInfoAppVersion: String,
 ) : ImapBackendFactory {
     override fun createBackend(accountId: AccountId): Backend {
-        val account = accountManager.getAccount(accountId.toString()) ?: error("Account not found: $accountId")
+        val account = accountManager.findById(accountId) ?: error("Account not found: $accountId")
         // TODO: should we pass the account name or userId here?
         val accountName = account.profile.name
         val backendStorage = backendStorageFactory.createBackendStorage(accountId)
@@ -65,26 +63,17 @@ class DefaultImapBackendFactory(
             null
         }
 
-        val config = createImapStoreConfig(account)
+        val config = AccountImapStoreConfig(
+            accountManager = accountManager,
+            accountId = account.id,
+            clientInfo = ImapClientInfo(appName = clientInfoAppName, appVersion = clientInfoAppVersion),
+        )
         return ImapStore.create(
             serverSettings,
             config,
             trustedSocketFactory,
             oAuth2TokenProvider,
         )
-    }
-
-    private fun createImapStoreConfig(account: LegacyAccount): ImapStoreConfig {
-        return object : ImapStoreConfig {
-            override val logLabel
-                get() = account.uuid
-
-            override fun isSubscribedFoldersOnly() = account.isSubscribedFoldersOnly
-
-            override fun isExpungeImmediately() = account.expungePolicy == Expunge.EXPUNGE_IMMEDIATELY
-
-            override fun clientInfo() = ImapClientInfo(appName = clientInfoAppName, appVersion = clientInfoAppVersion)
-        }
     }
 
     private fun createSmtpTransport(account: LegacyAccount): SmtpTransport {
@@ -105,13 +94,13 @@ class DefaultImapBackendFactory(
 
     private fun createPushConfigProvider(account: LegacyAccount) = object : ImapPushConfigProvider {
         override val maxPushFoldersFlow: Flow<Int>
-            get() = accountManager.getAccountFlow(account.uuid)
+            get() = accountManager.observeById(account.id)
                 .filterNotNull()
                 .map { it.maxPushFolders }
                 .distinctUntilChanged()
 
         override val idleRefreshMinutesFlow: Flow<Int>
-            get() = accountManager.getAccountFlow(account.uuid)
+            get() = accountManager.observeById(account.id)
                 .filterNotNull()
                 .map { it.idleRefreshMinutes }
                 .distinctUntilChanged()

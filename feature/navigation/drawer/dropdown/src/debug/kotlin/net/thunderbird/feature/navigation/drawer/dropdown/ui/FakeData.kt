@@ -5,9 +5,8 @@ import androidx.compose.ui.graphics.toArgb
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
-import net.thunderbird.account.fake.FakeAccountData.ACCOUNT_ID_RAW
-import net.thunderbird.core.android.account.Identity
-import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.account.fake.FakeAccountData.ACCOUNT_ID
+import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.account.avatar.Avatar
 import net.thunderbird.feature.mail.folder.FolderType
 import net.thunderbird.feature.mail.folder.api.Folder
@@ -24,22 +23,6 @@ internal object FakeData {
     const val DISPLAY_NAME = "Account Name"
     const val EMAIL_ADDRESS = "test@example.com"
 
-    val ACCOUNT = LegacyAccountDto(
-        uuid = ACCOUNT_ID_RAW,
-    ).apply {
-        identities = ArrayList()
-
-        val identity = Identity(
-            signatureUse = false,
-            signature = "",
-            description = "",
-        )
-        identities.add(identity)
-
-        name = DISPLAY_NAME
-        email = EMAIL_ADDRESS
-    }
-
     val UNIFIED_DISPLAY_ACCOUNT = UnifiedDisplayAccount(
         unreadMessageCount = 224,
         starredMessageCount = 42,
@@ -47,11 +30,14 @@ internal object FakeData {
     )
 
     val MAIL_DISPLAY_ACCOUNT = MailDisplayAccount(
-        id = ACCOUNT_ID_RAW,
+        id = ACCOUNT_ID,
         name = DISPLAY_NAME,
         email = EMAIL_ADDRESS,
         color = Color.Red.toArgb(),
-        avatar = Avatar.Monogram("AC"),
+        avatar = Avatar.Monogram(
+            accountId = ACCOUNT_ID,
+            value = "AC",
+        ),
         unreadMessageCount = 0,
         starredMessageCount = 0,
         hasError = false,
@@ -66,7 +52,7 @@ internal object FakeData {
     )
 
     val DISPLAY_FOLDER = MailDisplayFolder(
-        accountId = ACCOUNT_ID_RAW,
+        accountId = ACCOUNT_ID,
         folder = FOLDER,
         isInTopGroup = false,
         unreadMessageCount = 14,
@@ -99,7 +85,7 @@ internal object FakeData {
     )
 
     val UNIFIED_FOLDER = UnifiedDisplayFolder(
-        id = "unified_inbox",
+        folderId = UnifiedDisplayFolderType.INBOX.id,
         unifiedType = UnifiedDisplayFolderType.INBOX,
         unreadMessageCount = 123,
         starredMessageCount = 567,
@@ -153,35 +139,47 @@ internal object FakeData {
     )
 
     fun createAccountList(): PersistentList<MailDisplayAccount> {
+        val id1 = AccountIdFactory.of("00000000-0000-0000-0000-000000000001")
+        val id2 = AccountIdFactory.of("00000000-0000-0000-0000-000000000002")
+        val id3 = AccountIdFactory.of("00000000-0000-0000-0000-000000000003")
         return persistentListOf(
             MailDisplayAccount(
-                id = "account1",
+                id = id1,
                 name = "job@example.com",
                 email = "job@example.com",
                 color = Color.Green.toArgb(),
-                avatar = Avatar.Monogram("JD"),
+                avatar = Avatar.Monogram(
+                    accountId = id1,
+                    value = "JD",
+                ),
                 unreadMessageCount = 2,
                 starredMessageCount = 0,
                 hasError = false,
                 hasAutoExpandFolder = false,
             ),
             MailDisplayAccount(
-                id = "account2",
+                id = id2,
                 name = "Jodie Doe",
                 email = "jodie@example.com",
                 color = Color.Red.toArgb(),
-                avatar = Avatar.Monogram("JO"),
+                avatar = Avatar.Monogram(
+                    accountId = id2,
+                    value = "JO",
+                ),
                 unreadMessageCount = 12,
                 starredMessageCount = 0,
                 hasError = false,
                 hasAutoExpandFolder = false,
             ),
             MailDisplayAccount(
-                id = "account3",
+                id = id3,
                 name = "John Doe",
                 email = "john@example.com",
                 color = Color.Cyan.toArgb(),
-                avatar = Avatar.Monogram("J"),
+                avatar = Avatar.Monogram(
+                    accountId = id3,
+                    value = "J",
+                ),
                 unreadMessageCount = 0,
                 starredMessageCount = 0,
                 hasError = false,

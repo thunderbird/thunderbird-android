@@ -14,7 +14,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.android.account.LegacyAccount
 import org.openintents.openpgp.util.OpenPgpApi
 
 class AutocryptSetupMessageLiveEvent(
@@ -22,7 +22,7 @@ class AutocryptSetupMessageLiveEvent(
     private val eventScope: CoroutineScope = MainScope(),
 ) : SingleLiveEvent<AutocryptSetupMessage>() {
 
-    fun loadAutocryptSetupMessageAsync(openPgpApi: OpenPgpApi, account: LegacyAccountDto) {
+    fun loadAutocryptSetupMessageAsync(openPgpApi: OpenPgpApi, account: LegacyAccount) {
         eventScope.launch {
             val result = withContext(Dispatchers.IO) {
                 loadAutocryptSetupMessage(openPgpApi, account)
@@ -32,7 +32,7 @@ class AutocryptSetupMessageLiveEvent(
         }
     }
 
-    private fun loadAutocryptSetupMessage(openPgpApi: OpenPgpApi, account: LegacyAccountDto): AutocryptSetupMessage {
+    private fun loadAutocryptSetupMessage(openPgpApi: OpenPgpApi, account: LegacyAccount): AutocryptSetupMessage {
         val keyIds = longArrayOf(account.openPgpKey)
         val address = Address.parse(account.getIdentity(0).email)[0]
 

@@ -10,24 +10,23 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import net.thunderbird.components.core.logging.Logger
+import net.thunderbird.components.core.logging.LoggingControl
 import net.thunderbird.core.common.appConfig.PlatformConfigProvider
-import net.thunderbird.core.logging.LogLevel
-import net.thunderbird.core.logging.LogLevelManager
-import net.thunderbird.core.logging.Logger
+import net.thunderbird.core.logging.DebugLogConfigurator
 import net.thunderbird.core.preference.PreferenceChangeBroker
 import net.thunderbird.core.preference.PreferenceChangeSubscriber
 import net.thunderbird.core.preference.PreferenceScope
 import net.thunderbird.core.preference.storage.Storage
-import net.thunderbird.core.preference.storage.StorageEditor
-import net.thunderbird.core.preference.storage.StoragePersister
+import net.thunderbird.core.preference.storage.StorageProvider
 
 private const val TAG = "DefaultDebuggingSettingsPreferenceManager"
 
 class DefaultDebuggingSettingsPreferenceManager(
     private val logger: Logger,
-    private val storagePersister: StoragePersister,
-    private val storageEditor: StorageEditor,
-    private val logLevelManager: LogLevelManager,
+    private val storageProvider: StorageProvider,
+    private val loggingControl: LoggingControl,
+    private val debugLogConfigurator: DebugLogConfigurator,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
     private var scope: CoroutineScope = CoroutineScope(SupervisorJob()),
     private val platformConfigProvider: PlatformConfigProvider,
@@ -40,7 +39,7 @@ class DefaultDebuggingSettingsPreferenceManager(
     private val configState: MutableStateFlow<DebuggingSettings> = MutableStateFlow(value = loadConfig())
     private val mutex = Mutex()
     private val storage: Storage
-        get() = storagePersister.loadValues()
+        get() = storageProvider.storage
 
     override fun getConfig(): DebuggingSettings = configState.value
     override fun getConfigFlow(): Flow<DebuggingSettings> = configState
@@ -48,7 +47,7 @@ class DefaultDebuggingSettingsPreferenceManager(
     override fun save(config: DebuggingSettings) {
         logger.debug(TAG) { "save() called with: config = $config" }
         writeConfig(config)
-        configState.update { config.also(::updateDebugLogLevel) }
+        configState.update { config.also(::applyLoggingConfig) }
     }
 
     private fun loadConfig(): DebuggingSettings = DebuggingSettings(
@@ -64,12 +63,13 @@ class DefaultDebuggingSettingsPreferenceManager(
             key = DebugSettingKey.EnableSensitiveLogging.value,
             defValue = DEBUGGING_SETTINGS_DEFAULT_SENSITIVE_LOGGING_ENABLED,
         ),
-    ).also(::updateDebugLogLevel)
+    ).also(::applyLoggingConfig)
 
     private fun writeConfig(config: DebuggingSettings) {
         logger.debug(TAG) { "writeConfig() called with: config = $config" }
         scope.launch(ioDispatcher) {
             mutex.withLock {
+                val storageEditor = storageProvider.createStorageEditor()
                 storageEditor.putBoolean(DebugSettingKey.EnableDebugLogging.value, config.isDebugLoggingEnabled)
                 storageEditor.putBoolean(DebugSettingKey.EnableSyncDebugLogging.value, config.isSyncLoggingEnabled)
                 storageEditor.putBoolean(DebugSettingKey.EnableSensitiveLogging.value, config.isSensitiveLoggingEnabled)
@@ -80,12 +80,9 @@ class DefaultDebuggingSettingsPreferenceManager(
         }
     }
 
-    private fun updateDebugLogLevel(config: DebuggingSettings) {
-        if (config.isDebugLoggingEnabled) {
-            logLevelManager.override(LogLevel.VERBOSE)
-        } else {
-            logLevelManager.restoreDefault()
-        }
+    private fun applyLoggingConfig(config: DebuggingSettings) {
+        loggingControl.setEnabled(config.isDebugLoggingEnabled)
+        debugLogConfigurator.updateSyncLogging(config.isSyncLoggingEnabled)
     }
 
     override fun receive(scope: PreferenceScope) {

@@ -30,5 +30,5 @@ data class MessageListItem(
     val contactColor: Int,
 ) {
     val messageReference: MessageReference
-        get() = MessageReference(account.uuid, folderId, messageUid)
+        get() = MessageReference(account.id, folderId, messageUid)
 }

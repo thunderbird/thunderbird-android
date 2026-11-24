@@ -1,6 +1,5 @@
 package net.thunderbird.feature.account.settings.impl.domain.usecase
 
-import kotlinx.coroutines.flow.firstOrNull
 import net.thunderbird.components.core.outcome.Outcome
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.LegacyAccountRepository
@@ -17,29 +16,25 @@ internal class UpdateReadEmailSettings(
         accountId: AccountId,
         command: UpdateReadMessageSettingsCommand,
     ): Outcome<Unit, AccountSettingsDomainContract.AccountSettingError> {
-        return repository.getById(accountId).firstOrNull()?.let { account: LegacyAccount ->
-            when (command) {
-                is UpdateReadMessageSettingsCommand.UpdateIsMarkMessageAsReadOnView -> {
-                    repository.update(account.copy(isMarkMessageAsReadOnView = command.value))
-                }
+        return repository.update(accountId) { account -> account.updatedWith(command) }
+            ?.let { Outcome.success(Unit) }
+            ?: Outcome.failure(AccountSettingsDomainContract.AccountSettingError.NotFound("Account not found"))
+    }
 
-                is UpdateReadMessageSettingsCommand.UpdateShowPictures -> {
-                    when (command.value) {
-                        ShowPictures.NEVER.name -> {
-                            repository.update(account.copy(showPictures = ShowPictures.NEVER))
-                        }
+    private fun LegacyAccount.updatedWith(command: UpdateReadMessageSettingsCommand): LegacyAccount {
+        return when (command) {
+            is UpdateReadMessageSettingsCommand.UpdateIsMarkMessageAsReadOnView -> {
+                copy(isMarkMessageAsReadOnView = command.value)
+            }
 
-                        ShowPictures.ALWAYS.name -> {
-                            repository.update(account.copy(showPictures = ShowPictures.ALWAYS))
-                        }
-
-                        ShowPictures.ONLY_FROM_CONTACTS.name -> {
-                            repository.update(account.copy(showPictures = ShowPictures.ONLY_FROM_CONTACTS))
-                        }
-                    }
+            is UpdateReadMessageSettingsCommand.UpdateShowPictures -> {
+                when (command.value) {
+                    ShowPictures.NEVER.name -> copy(showPictures = ShowPictures.NEVER)
+                    ShowPictures.ALWAYS.name -> copy(showPictures = ShowPictures.ALWAYS)
+                    ShowPictures.ONLY_FROM_CONTACTS.name -> copy(showPictures = ShowPictures.ONLY_FROM_CONTACTS)
+                    else -> this
                 }
             }
-            Outcome.success(Unit)
-        } ?: run { Outcome.failure(AccountSettingsDomainContract.AccountSettingError.NotFound("Account not found")) }
+        }
     }
 }

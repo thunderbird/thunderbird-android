@@ -1,6 +1,5 @@
 package net.thunderbird.feature.account.settings.impl.domain.usecase
 
-import kotlinx.coroutines.flow.firstOrNull
 import net.thunderbird.components.core.outcome.Outcome
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.LegacyAccountRepository
@@ -16,13 +15,14 @@ internal class UpdateSearchSettings(
         accountId: AccountId,
         command: UpdateSearchSettingsCommand,
     ): Outcome<Unit, AccountSettingsDomainContract.AccountSettingError> {
-        return repository.getById(accountId).firstOrNull()?.let { account: LegacyAccount ->
+        return repository.update(accountId) { account: LegacyAccount ->
             when (command) {
                 is UpdateSearchSettingsCommand.UpdateServerSearchLimit -> {
-                    repository.update(account.copy(remoteSearchNumResults = command.value))
+                    account.copy(remoteSearchNumResults = command.value)
                 }
             }
-            Outcome.success(Unit)
-        } ?: run { Outcome.failure(AccountSettingsDomainContract.AccountSettingError.NotFound("Account not found")) }
+        }
+            ?.let { Outcome.success(Unit) }
+            ?: Outcome.failure(AccountSettingsDomainContract.AccountSettingError.NotFound("Account not found"))
     }
 }

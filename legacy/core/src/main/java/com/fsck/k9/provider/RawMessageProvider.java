@@ -17,7 +17,6 @@ import android.provider.OpenableColumns;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import app.k9mail.legacy.di.DI;
-import com.fsck.k9.Preferences;
 import app.k9mail.legacy.message.controller.MessageReference;
 import com.fsck.k9.mail.FetchProfile;
 import net.thunderbird.core.common.exception.MessagingException;
@@ -26,7 +25,7 @@ import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.mailstore.LocalStoreProvider;
-import net.thunderbird.core.android.account.LegacyAccountDto;
+import net.thunderbird.feature.account.AccountId;
 import org.openintents.openpgp.util.OpenPgpApi.OpenPgpDataSource;
 import net.thunderbird.legacy.logging.Log;
 
@@ -35,6 +34,8 @@ import net.thunderbird.legacy.logging.Log;
  * A simple ContentProvider that allows file access to a raw message.
  */
 public class RawMessageProvider extends ContentProvider {
+    private static final String TAG = "RawMessageProvider";
+
     private static String AUTHORITY;
     private static Uri CONTENT_URI;
 
@@ -102,7 +103,7 @@ public class RawMessageProvider extends ContentProvider {
             message.writeTo(countingOutputStream);
             return countingOutputStream.getCount();
         } catch (IOException | MessagingException e) {
-            Log.w(e, "Unable to compute message size");
+            Log.w(TAG, e, "Unable to compute message size");
             return 0;
         }
     }
@@ -144,7 +145,7 @@ public class RawMessageProvider extends ContentProvider {
             }
             return openPgpDataSource.startPumpThread();
         } catch (IOException e) {
-            Log.e(e, "Error creating ParcelFileDescriptor");
+            Log.e(TAG, e, "Error creating ParcelFileDescriptor");
             return null;
         }
     }
@@ -169,24 +170,18 @@ public class RawMessageProvider extends ContentProvider {
     }
 
     private LocalMessage loadMessage(MessageReference messageReference) {
-        String accountUuid = messageReference.getAccountUuid();
+        AccountId accountId = messageReference.getAccountId();
         long folderId = messageReference.getFolderId();
         String uid = messageReference.getUid();
 
-        LegacyAccountDto account = Preferences.getPreferences().getAccount(accountUuid);
-        if (account == null) {
-            Log.w("Account not found: %s", accountUuid);
-            return null;
-        }
-
         try {
-            LocalStore localStore = DI.get(LocalStoreProvider.class).getInstance(account);
+            LocalStore localStore = DI.get(LocalStoreProvider.class).getInstance(accountId);
             LocalFolder localFolder = localStore.getFolder(folderId);
             localFolder.open();
 
             LocalMessage message = localFolder.getMessage(uid);
             if (message == null || message.getDatabaseId() == 0) {
-                Log.w("Message not found: folder=%s, uid=%s", folderId, uid);
+                Log.w(TAG, "Message not found: folder=%s, uid=%s", folderId, uid);
                 return null;
             }
 
@@ -196,7 +191,7 @@ public class RawMessageProvider extends ContentProvider {
 
             return message;
         } catch (MessagingException e) {
-            Log.e(e, "Error loading message: folder=%d, uid=%s", folderId, uid);
+            Log.e(TAG, e, "Error loading message: folder=%d, uid=%s", folderId, uid);
             return null;
         }
     }

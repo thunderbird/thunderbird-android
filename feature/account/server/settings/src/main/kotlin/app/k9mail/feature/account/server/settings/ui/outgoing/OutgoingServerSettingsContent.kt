@@ -25,11 +25,12 @@ internal fun OutgoingServerSettingsContent(
     val resources = LocalResources.current
 
     ResponsiveWidthContainer(
-        modifier = Modifier.testTag("OutgoingServerSettingsContent")
-            .then(modifier),
+        modifier = modifier,
     ) { contentPadding ->
         LazyColumn(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize()
+                .testTag(OutgoingServerSettingsTestTags.TEST_TAG_CONTENT),
             contentPadding = contentPadding,
             horizontalAlignment = Alignment.Start,
             verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.default),

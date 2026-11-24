@@ -16,6 +16,8 @@ import rs.ltt.jmap.common.entity.EmailImport
 import rs.ltt.jmap.common.method.call.email.ImportEmailMethodCall
 import rs.ltt.jmap.common.method.response.email.ImportEmailMethodResponse
 
+private const val TAG = "CommandUpload"
+
 class CommandUpload(
     private val jmapClient: JmapClient,
     private val okHttpClient: OkHttpClient,
@@ -25,7 +27,7 @@ class CommandUpload(
     private val moshi = Moshi.Builder().build()
 
     fun uploadMessage(folderServerId: String, message: Message): String? {
-        Log.d("Uploading message to $folderServerId")
+        Log.d(TAG, "Uploading message to $folderServerId")
 
         val uploadResponse = uploadMessageAsBlob(message)
         return importEmailBlob(uploadResponse, folderServerId)

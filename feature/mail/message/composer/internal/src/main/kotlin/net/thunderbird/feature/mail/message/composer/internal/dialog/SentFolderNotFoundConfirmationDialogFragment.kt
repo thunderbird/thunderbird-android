@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import androidx.compose.ui.platform.ComposeView
-import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.setFragmentResult
@@ -33,14 +32,14 @@ internal class SentFolderNotFoundConfirmationDialogFragment : DialogFragment() {
                             dismiss()
                             setFragmentResult(
                                 requestKey = RESULT_CODE_ASSIGN_SENT_FOLDER_REQUEST_KEY,
-                                result = bundleOf(ACCOUNT_UUID_ARG to accountUuid),
+                                result = Bundle().apply { putString(ACCOUNT_UUID_ARG, accountUuid) },
                             )
                         },
                         onSendAndDeleteClick = {
                             dismiss()
                             setFragmentResult(
                                 requestKey = RESULT_CODE_SEND_AND_DELETE_REQUEST_KEY,
-                                result = bundleOf(ACCOUNT_UUID_ARG to accountUuid),
+                                result = Bundle().apply { putString(ACCOUNT_UUID_ARG, accountUuid) },
                             )
                         },
                         onDismiss = ::dismiss,
@@ -54,7 +53,7 @@ internal class SentFolderNotFoundConfirmationDialogFragment : DialogFragment() {
         private const val TAG = "SentFolderNotFoundConfirmationDialogFragment"
         override fun show(accountUuid: String, fragmentManager: FragmentManager) {
             SentFolderNotFoundConfirmationDialogFragment().apply {
-                arguments = bundleOf(ACCOUNT_UUID_ARG to accountUuid)
+                arguments = Bundle().apply { putString(ACCOUNT_UUID_ARG, accountUuid) }
                 show(fragmentManager, TAG)
             }
         }

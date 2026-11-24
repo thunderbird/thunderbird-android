@@ -1,3 +1,5 @@
+import net.thunderbird.gradle.plugin.ProjectConfig
+
 plugins {
     id("com.android.library")
     id("net.thunderbird.gradle.plugin.quality.coverage")
@@ -6,18 +8,18 @@ plugins {
 }
 
 android {
-    compileSdk = ThunderbirdProjectConfig.Android.sdkCompile
+    compileSdk = ProjectConfig.Android.sdkCompile
 
     defaultConfig {
-        minSdk = ThunderbirdProjectConfig.Android.sdkMin
+        minSdk = ProjectConfig.Android.sdkMin
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
 
     compileOptions {
-        sourceCompatibility = ThunderbirdProjectConfig.Compiler.javaCompatibility
-        targetCompatibility = ThunderbirdProjectConfig.Compiler.javaCompatibility
+        sourceCompatibility = ProjectConfig.Compiler.javaCompatibility
+        targetCompatibility = ProjectConfig.Compiler.javaCompatibility
     }
 
     buildFeatures {
@@ -52,34 +54,33 @@ android {
 
     testOptions {
         unitTests.all {
-            it.jvmArgs(ThunderbirdProjectConfig.Testing.robolectricJvmArgs)
+            it.jvmArgs(ProjectConfig.Testing.robolectricJvmArgs)
         }
     }
 }
 
 kotlin {
     compilerOptions {
-        jvmTarget.set(ThunderbirdProjectConfig.Compiler.jvmTarget)
+        jvmTarget.set(ProjectConfig.Compiler.jvmTarget)
     }
 }
 
 dependencies {
     implementation(platform(libs.kotlin.bom))
     implementation(platform(libs.koin.bom))
+    implementation(platform(libs.tb.mobile.components.bom))
 
     implementation(libs.bundles.shared.android)
-
-    if (rootProject.name != "components") {
-        implementation(libs.bundles.shared.tfa.components)
-    }
+    implementation(libs.bundles.shared.tmc.components)
 
     testImplementation(libs.bundles.shared.android.test)
+    testImplementation(libs.bundles.shared.tmc.components.test)
 }
 
 tasks.register("testsOnCi") {
     dependsOn(
         tasks.withType<Test>().matching {
             it.name != "testReleaseUnitTest"
-        }
+        },
     )
 }

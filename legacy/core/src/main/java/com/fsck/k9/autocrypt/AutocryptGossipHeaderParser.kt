@@ -7,6 +7,8 @@ import java.util.Collections
 import net.thunderbird.legacy.logging.Log
 import okio.ByteString.Companion.decodeBase64
 
+private const val TAG = "AutocryptGossipHeaderParser"
+
 internal object AutocryptGossipHeaderParser {
 
     fun getAllAutocryptGossipHeaders(part: Part): List<AutocryptGossipHeader> {
@@ -26,22 +28,22 @@ internal object AutocryptGossipHeaderParser {
 
         return when {
             type != null && type != AutocryptHeader.AUTOCRYPT_TYPE_1 -> {
-                Log.e("autocrypt: unsupported type parameter %s", type)
+                Log.e(TAG, "autocrypt: unsupported type parameter %s", type)
                 null
             }
 
             base64KeyData == null -> {
-                Log.e("autocrypt: missing key parameter")
+                Log.e(TAG, "autocrypt: missing key parameter")
                 null
             }
 
             decodedKey == null -> {
-                Log.e("autocrypt: error parsing base64 data")
+                Log.e(TAG, "autocrypt: error parsing base64 data")
                 null
             }
 
             addr == null -> {
-                Log.e("autocrypt: no to header!")
+                Log.e(TAG, "autocrypt: no to header!")
                 null
             }
 
@@ -62,7 +64,7 @@ internal object AutocryptGossipHeaderParser {
     private fun parseAllAutocryptGossipHeaders(headers: Array<String>): List<AutocryptGossipHeader> {
         return headers.mapNotNull { header ->
             parseAutocryptGossipHeader(header) ?: run {
-                Log.e("Encountered malformed autocrypt-gossip header - skipping!")
+                Log.e(TAG, "Encountered malformed autocrypt-gossip header - skipping!")
                 null
             }
         }

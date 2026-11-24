@@ -15,7 +15,7 @@ import com.fsck.k9.mail.BodyPart;
 import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.Multipart;
 import net.thunderbird.legacy.logging.Log;
-import net.thunderbird.core.logging.testing.TestLogger;
+import net.thunderbird.components.core.logging.testing.TestLogger;
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Test;

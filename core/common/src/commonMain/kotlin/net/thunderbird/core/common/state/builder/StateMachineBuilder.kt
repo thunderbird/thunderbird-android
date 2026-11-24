@@ -3,12 +3,13 @@ package net.thunderbird.core.common.state.builder
 import kotlin.reflect.KClass
 import kotlin.time.Clock
 import kotlinx.coroutines.CoroutineScope
+import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.core.common.state.DefaultStateMachine
 import net.thunderbird.core.common.state.DefaultStateMachine.StateRegistry
 import net.thunderbird.core.common.state.StateMachine
 import net.thunderbird.core.common.state.StateMachine.Transition
+import net.thunderbird.core.common.state.StateMachineLogger
 import net.thunderbird.core.common.state.TransactionKey
-import net.thunderbird.core.logging.Logger
 
 /**
  * A DSL builder for creating [StateMachine] instances.
@@ -28,21 +29,19 @@ class StateMachineBuilder<TState : Any, TEvent : Any> internal constructor(
 ) {
     private var initialState: TState? = null
     private val stateRegistrar = mutableMapOf<KClass<out TState>, StateRegistry<TState, TState, TEvent>>()
-    private var logger: Logger? = null
-    private var logTag: String? = null
+    private var logger: StateMachineLogger? = null
     private var debuggerBuilder: StateMachineDebuggerBuilder<TState, TEvent>? = null
 
-    fun withLogger(logger: Logger, logTag: String? = null) {
-        this.logger = logger
-        this.logTag = logTag
+    fun withLogger(logger: Logger, logTag: String) {
+        this.logger = StateMachineLogger(logger, logTag)
     }
 
     fun enableDebug(builder: StateMachineDebuggerBuilder<TState, TEvent>.() -> Unit) {
         debuggerBuilder = StateMachineDebuggerBuilder<TState, TEvent>().apply {
             builder()
             enabled = true
-            debuggerLogger = this@StateMachineBuilder.logger
-            debuggerLogTag = this@StateMachineBuilder.logTag
+            debuggerLogger = this@StateMachineBuilder.logger?.logger
+            debuggerLogTag = this@StateMachineBuilder.logger?.tag
         }
     }
 
@@ -182,7 +181,6 @@ class StateMachineBuilder<TState : Any, TEvent : Any> internal constructor(
         }
         return DefaultStateMachine(
             logger = logger,
-            logTag = logTag,
             stateMachineDebugger = debuggerBuilder?.build(),
             scope = scope,
             initialState = initialState,

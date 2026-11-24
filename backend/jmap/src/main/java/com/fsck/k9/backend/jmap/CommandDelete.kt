@@ -9,12 +9,14 @@ import rs.ltt.jmap.common.method.call.email.SetEmailMethodCall
 import rs.ltt.jmap.common.method.response.email.QueryEmailMethodResponse
 import rs.ltt.jmap.common.method.response.email.SetEmailMethodResponse
 
+private const val TAG = "CommandDelete"
+
 class CommandDelete(
     private val jmapClient: JmapClient,
     private val accountId: String,
 ) {
     fun deleteMessages(messageServerIds: List<String>) {
-        Log.v("Deleting messages %s", messageServerIds)
+        Log.v(TAG, "Deleting messages %s", messageServerIds)
 
         val session = jmapClient.session.get()
         val maxObjectsInSet = session.maxObjectsInSet
@@ -32,13 +34,13 @@ class CommandDelete(
     }
 
     fun deleteAllMessages(folderServerId: String) {
-        Log.d("Deleting all messages from %s", folderServerId)
+        Log.d(TAG, "Deleting all messages from %s", folderServerId)
 
         val session = jmapClient.session.get()
         val limit = session.maxObjectsInSet.coerceAtMost(MAX_CHUNK_SIZE).toLong()
 
         do {
-            Log.v("Trying to delete up to %d messages from %s", limit, folderServerId)
+            Log.v(TAG, "Trying to delete up to %d messages from %s", limit, folderServerId)
             val multiCall = jmapClient.newMultiCall()
 
             val queryEmailCall = multiCall.call(
@@ -65,7 +67,7 @@ class CommandDelete(
 
             setEmailCall.getMainResponseBlocking<SetEmailMethodResponse>()
 
-            Log.v("Deleted %d messages from %s", numberOfReturnedEmails, folderServerId)
+            Log.v(TAG, "Deleted %d messages from %s", numberOfReturnedEmails, folderServerId)
         } while (totalNumberOfEmails > numberOfReturnedEmails)
     }
 }

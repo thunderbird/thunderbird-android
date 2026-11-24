@@ -9,6 +9,8 @@ kotlin {
     }
     sourceSets {
         commonMain.dependencies {
+            api(projects.feature.account.api)
+
             implementation(projects.core.common)
             implementation(projects.core.featureflag)
         }

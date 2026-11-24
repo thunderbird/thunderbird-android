@@ -11,15 +11,14 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.fsck.k9.CoreResourceProvider
-import com.fsck.k9.Preferences.Companion.getPreferences
 import com.fsck.k9.ui.R
 import com.google.android.material.textview.MaterialTextView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.core.preference.GeneralSettingsManager
-import net.thunderbird.feature.mail.account.api.BaseAccount
 import net.thunderbird.feature.search.legacy.SearchAccount
 import org.koin.android.ext.android.inject
 
@@ -34,6 +33,8 @@ abstract class AccountList : BaseListActivity(), OnItemClickListener {
     private val coreResourceProvider: CoreResourceProvider by inject()
 
     private val generalSettingsManager: GeneralSettingsManager by inject()
+
+    private val accountManager: LegacyAccountManager by inject()
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,7 +54,7 @@ abstract class AccountList : BaseListActivity(), OnItemClickListener {
     }
 
     override fun onItemClick(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-        val account = parent.getItemAtPosition(position) as BaseAccount
+        val account = parent.getItemAtPosition(position) ?: return
         onAccountSelected(account)
     }
 
@@ -62,7 +63,7 @@ abstract class AccountList : BaseListActivity(), OnItemClickListener {
      */
     private suspend fun loadAccounts() {
         val accounts = withContext(Dispatchers.IO) {
-            getPreferences().getAccounts()
+            accountManager.findAll()
         }
 
         populateListView(accounts)
@@ -74,11 +75,11 @@ abstract class AccountList : BaseListActivity(), OnItemClickListener {
      * @param realAccounts
      * An array of accounts to display.
      */
-    private fun populateListView(realAccounts: List<LegacyAccountDto>) {
-        val accounts: MutableList<BaseAccount> = ArrayList()
+    private fun populateListView(realAccounts: List<LegacyAccount>) {
+        val accounts: MutableList<Any> = ArrayList()
 
         if (generalSettingsManager.getConfig().display.inboxSettings.isShowUnifiedInbox) {
-            val unifiedInboxAccount: BaseAccount = SearchAccount.createUnifiedFoldersSearch(
+            val unifiedInboxAccount = SearchAccount.createUnifiedInboxSearch(
                 title = coreResourceProvider.searchUnifiedFoldersTitle(),
                 detail = coreResourceProvider.searchUnifiedFoldersDetail(),
             )
@@ -99,9 +100,9 @@ abstract class AccountList : BaseListActivity(), OnItemClickListener {
      * @param account
      * The account the user selected.
      */
-    protected abstract fun onAccountSelected(account: BaseAccount)
+    protected abstract fun onAccountSelected(account: Any)
 
-    internal inner class AccountsAdapter(accounts: List<BaseAccount?>) : ArrayAdapter<BaseAccount?>(
+    internal inner class AccountsAdapter(accounts: List<Any?>) : ArrayAdapter<Any?>(
         this@AccountList,
         0,
         accounts,
@@ -114,18 +115,16 @@ abstract class AccountList : BaseListActivity(), OnItemClickListener {
                 view.tag = this
             }
 
-            val accountName = account!!.name
-            if (accountName != null) {
-                holder.description.text = accountName
-                holder.email.text = account.email
-                holder.email.visibility = View.VISIBLE
+            if (account is SearchAccount) {
+                bindSearchAccount(account, holder)
+            } else if (account is LegacyAccount) {
+                bindAccount(account, holder)
             } else {
-                holder.description.text = account.email
-                holder.email.visibility = View.GONE
+                error("Unknown account type: $account")
             }
 
-            if (account is LegacyAccountDto) {
-                holder.chip.setBackgroundColor(account.chipColor)
+            if (account is LegacyAccount) {
+                holder.chip.setBackgroundColor(account.profile.color)
             } else {
                 holder.chip.setBackgroundColor(
                     ResourcesCompat.getColor(
@@ -139,6 +138,30 @@ abstract class AccountList : BaseListActivity(), OnItemClickListener {
             holder.chip.background.alpha = BACKGROUND_ALPHA
 
             return view
+        }
+
+        private fun bindSearchAccount(account: SearchAccount, holder: AccountViewHolder) {
+            val accountName = account.name
+            if (accountName.isNotEmpty()) {
+                holder.description.text = accountName
+                holder.email.text = account.email
+                holder.email.visibility = View.VISIBLE
+            } else {
+                holder.description.text = account.email
+                holder.email.visibility = View.GONE
+            }
+        }
+
+        private fun bindAccount(account: LegacyAccount, holder: AccountViewHolder) {
+            val accountName = account.name
+            if (!accountName.isNullOrEmpty()) {
+                holder.description.text = accountName
+                holder.email.text = account.email
+                holder.email.visibility = View.VISIBLE
+            } else {
+                holder.description.text = account.email
+                holder.email.visibility = View.GONE
+            }
         }
 
         internal inner class AccountViewHolder(view: View) {
