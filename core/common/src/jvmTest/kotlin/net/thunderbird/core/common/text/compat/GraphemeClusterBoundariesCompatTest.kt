@@ -31,6 +31,26 @@ class GraphemeClusterBoundariesCompatTest {
     }
 
     @Test
+    fun `should join ZWJ sequences split by Unicode 9 and 10 rules`() {
+        // Android 8.x and 9 only join emoji after a ZWJ that are on a fixed list, so these are split there
+        val heartOnFire = "❤️‍🔥"
+        val rainbowFlag = "🏳️‍🌈"
+        val transgenderFlag = "🏳️‍⚧️"
+
+        assertThat(correct("❤️‍", "🔥")).containsExactly(0, heartOnFire.length)
+        assertThat(correct("🏳️‍", "🌈")).containsExactly(0, rainbowFlag.length)
+        assertThat(correct("🏳️‍", "⚧️")).containsExactly(0, transgenderFlag.length)
+    }
+
+    @Test
+    fun `should join skin tone modifiers on newer emoji`() {
+        // Android 8.x and 9 don't know newer emoji like 🫱 as a base for skin tone modifiers
+        val handshake = "🫱🏻‍🫲🏿"
+
+        assertThat(correct("🫱", "🏻‍", "🫲", "🏿")).containsExactly(0, handshake.length)
+    }
+
+    @Test
     fun `should join skin tone modifiers`() {
         assertThat(correct("👍", "🏽")).containsExactly(0, 4)
         assertThat(correct("👨", "🏽‍", "💻")).containsExactly(0, 7)

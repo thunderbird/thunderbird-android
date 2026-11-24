@@ -1,13 +1,15 @@
 package net.thunderbird.core.common.text.compat
 
 /**
- * Corrects grapheme cluster boundaries produced by a [java.text.BreakIterator] that predates the Unicode 9 emoji
- * rules, such as the ICU on Android 7.x (API 24/25) or JDKs before 20.
+ * Corrects grapheme cluster boundaries produced by a [java.text.BreakIterator] that predates the Unicode 11 emoji
+ * rules, such as the ICU on Android 7.x to 9 (API 24 to 28) or JDKs before 20.
  *
  * These implementations split ZWJ sequences, skin tone modifiers and tag sequences, and merge runs of regional
- * indicators into a single cluster.
+ * indicators into a single cluster. Implementations with the Unicode 9 or 10 rules (Android 8.x and 9) still split
+ * ZWJ sequences with emoji that aren't on their fixed list of joinable emoji (e.g. 🐦‍🔥 or ❤️‍🔥), and skin tone
+ * modifiers on newer emoji (e.g. 🫱🏻).
  *
- * Remove once minSdk is 26 or higher.
+ * Remove once minSdk is 29 or higher.
  */
 internal object GraphemeClusterBoundariesCompat {
 
