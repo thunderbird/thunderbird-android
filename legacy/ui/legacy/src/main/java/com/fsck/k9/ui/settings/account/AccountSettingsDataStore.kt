@@ -63,6 +63,7 @@ class AccountSettingsDataStore(
             "openpgp_encrypt_subject" -> account.isOpenPgpEncryptSubject
             "openpgp_encrypt_all_drafts" -> account.isOpenPgpEncryptAllDrafts
             "autocrypt_prefer_encrypt" -> account.autocryptPreferEncryptMutual
+            "smime_sign_by_default" -> account.isSmimeSignByDefault
             "upload_sent_messages" -> account.isUploadSentMessages
             "ignore_chat_messages" -> account.isIgnoreChatMessages
             "subscribed_folders_only" -> account.isSubscribedFoldersOnly
@@ -88,6 +89,7 @@ class AccountSettingsDataStore(
             "openpgp_encrypt_subject" -> updateValue { it.copy(isOpenPgpEncryptSubject = value) }
             "openpgp_encrypt_all_drafts" -> updateValue { it.copy(isOpenPgpEncryptAllDrafts = value) }
             "autocrypt_prefer_encrypt" -> updateValue { it.copy(autocryptPreferEncryptMutual = value) }
+            "smime_sign_by_default" -> updateValue { it.copy(isSmimeSignByDefault = value) }
             "upload_sent_messages" -> updateValue { it.copy(isUploadSentMessages = value) }
             "ignore_chat_messages" -> updateValue { it.copy(isIgnoreChatMessages = value) }
             "subscribed_folders_only" -> updateSubscribedFoldersOnly(value)

@@ -514,6 +514,20 @@
     <string name="account_settings_crypto_encrypt_all_drafts">Store all drafts encrypted</string>
     <string name="account_settings_crypto_encrypt_all_drafts_on">All drafts will be stored encrypted</string>
     <string name="account_settings_crypto_encrypt_all_drafts_off">Encrypt drafts only if encryption is enabled</string>
+    <string name="account_settings_smime_category">S/MIME</string>
+    <string name="account_settings_smime_sign_certificate">S/MIME signing certificate</string>
+    <string name="account_settings_smime_certificate_none">None selected</string>
+    <string name="account_settings_smime_sign_by_default">Sign messages by default</string>
+    <string name="account_settings_smime_sign_by_default_on">Outgoing emails will be digitally signed with S/MIME automatically</string>
+    <string name="account_settings_smime_sign_by_default_off">Choose S/MIME signing per email</string>
+    <string name="account_settings_smime_certificate_dialog_title">S/MIME signing certificate</string>
+    <string name="account_settings_smime_certificate_dialog_message">Currently selected certificate: %1$s</string>
+    <string name="account_settings_smime_certificate_change">Change certificate</string>
+    <string name="account_settings_smime_certificate_remove">Remove</string>
+    <string name="smime_sign_enable">Sign with S/MIME</string>
+    <string name="smime_sign_enabled">S/MIME signing: On</string>
+    <string name="smime_sign_status_on_content_description">S/MIME signing enabled</string>
+    <string name="smime_sign_status_off_content_description">Sign email with S/MIME</string>
 
     <string name="account_settings_mail_check_frequency_label">Folder poll frequency</string>
 

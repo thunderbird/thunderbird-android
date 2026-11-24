@@ -146,6 +146,17 @@ class AccountSettingsDataStoreTest {
         assertThat(storedSubscribedFoldersOnlyOnRefresh).isNotNull().isTrue()
     }
 
+    @Test
+    fun `toggling smime_sign_by_default should update account default signing preference`() {
+        // Act
+        testSubject.putBoolean("smime_sign_by_default", true)
+
+        // Assert
+        assertThat(testSubject.getBoolean("smime_sign_by_default", false)).isTrue()
+        assertThat(accountManager.findById(account.id)).isNotNull()
+            .prop(LegacyAccount::isSmimeSignByDefault).isTrue()
+    }
+
     private companion object {
         const val LAST_SYNC_TIME = 1_700_000_000_000L
         const val INBOX_FOLDER_ID = 42L

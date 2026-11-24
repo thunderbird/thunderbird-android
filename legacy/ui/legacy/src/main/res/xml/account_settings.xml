@@ -236,6 +236,25 @@
             android:title="@string/ac_transfer_setting_title"
             />
 
+        <PreferenceCategory
+            android:key="smime_category"
+            android:title="@string/account_settings_smime_category"
+            >
+
+            <Preference
+                android:key="smime_sign_certificate"
+                android:title="@string/account_settings_smime_sign_certificate"
+                />
+
+            <SwitchPreference
+                android:key="smime_sign_by_default"
+                android:title="@string/account_settings_smime_sign_by_default"
+                android:summaryOn="@string/account_settings_smime_sign_by_default_on"
+                android:summaryOff="@string/account_settings_smime_sign_by_default_off"
+                />
+
+        </PreferenceCategory>
+
     </PreferenceScreen>
 
 </PreferenceScreen>
