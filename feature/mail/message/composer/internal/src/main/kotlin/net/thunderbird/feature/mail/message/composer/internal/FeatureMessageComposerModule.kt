@@ -9,10 +9,13 @@ import net.thunderbird.feature.mail.message.composer.internal.html.DefaultMessag
 import net.thunderbird.feature.mail.message.composer.internal.signature.DefaultHtmlSignatureSanitizer
 import net.thunderbird.feature.mail.message.composer.internal.smime.AndroidKeyChainSmimeProvider
 import net.thunderbird.feature.mail.message.composer.internal.smime.CmsSignedDataBuilder
+import net.thunderbird.feature.mail.message.composer.internal.smime.CmsSignedDataVerifier
 import net.thunderbird.feature.mail.message.composer.internal.smime.DefaultSmimeSigner
+import net.thunderbird.feature.mail.message.composer.internal.smime.DefaultSmimeVerifier
 import net.thunderbird.feature.mail.message.composer.signature.HtmlSignatureSanitizer
 import net.thunderbird.feature.mail.message.composer.smime.SmimeKeyChainProvider
 import net.thunderbird.feature.mail.message.composer.smime.SmimeSigner
+import net.thunderbird.feature.mail.message.composer.smime.SmimeVerifier
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
@@ -38,6 +41,13 @@ val featureMessageComposerModule = module {
         DefaultSmimeSigner(
             keyChainProvider = get(),
             cmsSignedDataBuilder = get(),
+            logger = get(),
+        )
+    }
+    single { CmsSignedDataVerifier() }
+    single<SmimeVerifier> {
+        DefaultSmimeVerifier(
+            cmsSignedDataVerifier = get(),
             logger = get(),
         )
     }
