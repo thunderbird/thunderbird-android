@@ -5,4 +5,22 @@
     <string name="sent_folder_not_found_dialog_assign_folder_action">Assign Sent Folder</string>
     <string name="sent_folder_not_found_dialog_cancel_action">Cancel</string>
     <string name="sent_folder_not_found_dialog_send_and_delete_action">Send and Delete</string>
+
+    <string name="smime_signing_dialog_first_send_title">Sign email with S/MIME?</string>
+    <string name="smime_signing_dialog_first_send_supporting_text">Digitally sign this email using a personal certificate from Android\'s certificate store so recipients can verify it came from you.</string>
+    <string name="smime_signing_dialog_title">S/MIME digital signature</string>
+    <string name="smime_signing_dialog_supporting_text">Choose a certificate from Android\'s certificate store to digitally sign outgoing emails.</string>
+    <string name="smime_signing_dialog_choose_certificate">Tap to choose a certificate</string>
+    <string name="smime_signing_dialog_choose_certificate_subtitle">Opens Android\'s built-in certificate store</string>
+    <string name="smime_signing_dialog_certificate_issuer">Issued by %1$s · Tap to change</string>
+    <string name="smime_signing_dialog_certificate_alias_subtitle">Alias: %1$s · Tap to change</string>
+    <string name="smime_signing_dialog_certificate_expired">Certificate expired · Tap to choose another</string>
+    <string name="smime_signing_dialog_no_certificate_hint">No certificate was selected. You can install a personal S/MIME (.p12 or .pfx) certificate in Android Settings → Security → Encryption &amp; credentials.</string>
+    <string name="smime_signing_dialog_set_default_checkbox">Automatically sign all emails for this account by default</string>
+    <string name="smime_signing_dialog_action_choose_certificate">Choose certificate</string>
+    <string name="smime_signing_dialog_action_sign_and_send">Sign &amp; Send</string>
+    <string name="smime_signing_dialog_action_send_unsigned">Send unsigned</string>
+    <string name="smime_signing_dialog_action_apply">Apply</string>
+    <string name="smime_signing_dialog_action_turn_off">Turn off</string>
+    <string name="smime_signing_dialog_action_cancel">Cancel</string>
 </resources>
