@@ -129,12 +129,46 @@ internal class MessageDetailsViewModel(
 
     private fun CryptoResultAnnotation.toCryptoDetails(): CryptoDetails {
         val messageCryptoDisplayStatus = MessageCryptoDisplayStatus.fromResultAnnotation(this)
+        val smimeDescription = buildSmimeDescription(this, messageCryptoDisplayStatus)
         return CryptoDetails(
             cryptoStatus = messageCryptoDisplayStatus,
-            isClickable = messageCryptoDisplayStatus.hasAssociatedKey() ||
-                messageCryptoDisplayStatus.isUnknownKey ||
-                hasOpenPgpInsecureWarningPendingIntent(),
+            isClickable = !isSmimeResult && (
+                messageCryptoDisplayStatus.hasAssociatedKey() ||
+                    messageCryptoDisplayStatus.isUnknownKey ||
+                    hasOpenPgpInsecureWarningPendingIntent()
+                ),
+            customDescription = smimeDescription,
         )
+    }
+
+    private fun buildSmimeDescription(
+        annotation: CryptoResultAnnotation,
+        displayStatus: MessageCryptoDisplayStatus,
+    ): String? {
+        val smimeResult = annotation.smimeVerificationResult
+        val baseDescription = displayStatus.descriptionTextRes?.let(resources::getString)
+        return if (smimeResult == null || baseDescription == null) {
+            null
+        } else {
+            val signer = smimeResult.signerDisplayName ?: smimeResult.signerEmail
+            val issuer = smimeResult.issuerDisplayName
+            when {
+                signer != null && issuer != null -> resources.getString(
+                    R.string.crypto_msg_smime_details_signer_and_issuer,
+                    baseDescription,
+                    signer,
+                    issuer,
+                )
+
+                signer != null -> resources.getString(
+                    R.string.crypto_msg_smime_details_signer,
+                    baseDescription,
+                    signer,
+                )
+
+                else -> baseDescription
+            }
+        }
     }
 
     private fun List<Address>.toParticipants(account: LegacyAccount, isSender: Boolean): List<Participant> {

@@ -363,6 +363,8 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         cryptoStatusIcon.setVisibility(View.VISIBLE);
         cryptoStatusIcon.setImageResource(displayStatus.getStatusIconRes());
         cryptoStatusIcon.setColorFilter(color);
+        Integer titleTextRes = displayStatus.getTitleTextRes();
+        cryptoStatusIcon.setContentDescription(titleTextRes != null ? getContext().getString(titleTextRes) : null);
     }
 
     public void setMessageHeaderClickListener(MessageHeaderClickListener messageHeaderClickListener) {

@@ -17,8 +17,10 @@ import androidx.loader.app.LoaderManager;
 import androidx.loader.app.LoaderManager.LoaderCallbacks;
 import androidx.loader.content.Loader;
 import com.fsck.k9.autocrypt.AutocryptOperations;
+import app.k9mail.legacy.di.DI;
 import app.k9mail.legacy.message.controller.MessageReference;
 import com.fsck.k9.controller.MessagingController;
+import com.fsck.k9.crypto.MessageCryptoStructureDetector;
 import app.k9mail.legacy.message.controller.MessagingListener;
 import app.k9mail.legacy.message.controller.SimpleMessagingListener;
 import com.fsck.k9.helper.RetainFragment;
@@ -36,6 +38,7 @@ import com.fsck.k9.ui.crypto.OpenPgpApiFactory;
 import com.fsck.k9.ui.message.LocalMessageExtractorLoader;
 import com.fsck.k9.ui.message.LocalMessageLoader;
 import net.thunderbird.feature.account.AccountId;
+import net.thunderbird.feature.mail.message.composer.smime.SmimeVerifier;
 import org.openintents.openpgp.OpenPgpDecryptionResult;
 import net.thunderbird.legacy.logging.Log;
 
@@ -158,7 +161,7 @@ public class MessageLoaderHelper {
         cancelAndClearDecodeLoader();
 
         String openPgpProvider = account.getOpenPgpProvider();
-        if (openPgpProvider != null) {
+        if (openPgpProvider != null || MessageCryptoStructureDetector.hasSmimeSignedPart(localMessage)) {
             startOrResumeCryptoOperation(openPgpProvider);
         } else {
             startOrResumeDecodeMessage();
@@ -251,7 +254,7 @@ public class MessageLoaderHelper {
         }
 
         String openPgpProvider = account.getOpenPgpProvider();
-        if (openPgpProvider != null) {
+        if (openPgpProvider != null || MessageCryptoStructureDetector.hasSmimeSignedPart(localMessage)) {
             startOrResumeCryptoOperation(openPgpProvider);
             return;
         }
@@ -311,14 +314,15 @@ public class MessageLoaderHelper {
 
     // process with crypto helper
 
-    private void startOrResumeCryptoOperation(String openPgpProvider) {
+    private void startOrResumeCryptoOperation(@Nullable String openPgpProvider) {
         RetainFragment<MessageCryptoHelper> retainCryptoHelperFragment = getMessageCryptoHelperRetainFragment(true);
         if (retainCryptoHelperFragment.hasData()) {
             messageCryptoHelper = retainCryptoHelperFragment.getData();
         }
         if (messageCryptoHelper == null || !messageCryptoHelper.isConfiguredForOpenPgpProvider(openPgpProvider)) {
+            SmimeVerifier smimeVerifier = DI.get(SmimeVerifier.class);
             messageCryptoHelper = new MessageCryptoHelper(
-                context, new OpenPgpApiFactory(), AutocryptOperations.getInstance(), openPgpProvider);
+                context, new OpenPgpApiFactory(), AutocryptOperations.getInstance(), openPgpProvider, smimeVerifier);
             retainCryptoHelperFragment.setData(messageCryptoHelper);
         }
         messageCryptoHelper.asyncStartOrResumeProcessingMessage(
