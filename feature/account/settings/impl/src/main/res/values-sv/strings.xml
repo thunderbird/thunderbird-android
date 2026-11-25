@@ -24,16 +24,16 @@
     <string name="account_settings_avatar_error_unsupported_format">Endast JPEG-bilder stöds.</string>
     <string name="account_settings_avatar_hint_jpeg_only">Endast JPEG</string>
     <string name="account_settings_show_pictures_label">Visa alltid bilder</string>
-    <string name="account_settings_reading_mail">Läser e-post</string>
+    <string name="account_settings_reading_mail">Läsa e-post</string>
     <string name="account_settings_mark_message_as_read_on_view_label">Markera som läst när det öppnats</string>
     <string name="account_settings_mark_message_as_read_on_view_summary">Markera ett meddelande som läst när det öppnats för visning</string>
     <string name="account_settings_show_pictures_never">Nej</string>
     <string name="account_settings_show_pictures_only_from_contacts">Från kontakter</string>
     <string name="account_settings_show_pictures_always">Från vem som helst</string>
-    <string name="account_settings_remove_account_action">Radera konto</string>
+    <string name="account_settings_remove_account_action">Ta bort konto</string>
     <string name="account_settings_okay_action">OK</string>
     <string name="account_settings_cancel_action">Avbryt</string>
-    <string name="account_settings_account_delete_dlg_title">Radera konto</string>
+    <string name="account_settings_account_delete_dlg_title">Ta bort konto</string>
     <string name="account_settings_account_delete_dlg_instructions_fmt">Kontot \"<xliff:g id="account">%1$s</xliff:g>\" kommer att raderas från <xliff:g id="app_name">%2$s</xliff:g>.</string>
     <string name="account_settings_search_action">Sök</string>
     <string name="account_settings_remote_search_num_results_entries_all">Alla</string>
@@ -155,7 +155,7 @@
     <string name="account_settings_upload_sent_messages_summary">Ladda upp meddelanden till mappen Skickat efter sändning</string>
     <string name="account_settings_outgoing_label">Utgående server</string>
     <string name="account_settings_outgoing_summary">Konfigurera servern för utgående e-post (SMTP)</string>
-    <string name="account_settings_composition">Skickar e-post</string>
+    <string name="account_settings_composition">Skicka e-post</string>
     <string name="account_settings_notificaction_and_sync">Aviseringar och synkronisering</string>
     <string name="account_settings_notification_style">Aviseringsstil</string>
     <string name="account_settings_notification_style_description">Anpassa ljud, vibration, märken</string>

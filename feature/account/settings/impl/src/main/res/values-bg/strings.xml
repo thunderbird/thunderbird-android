@@ -15,4 +15,7 @@
     <string name="account_settings_general_name_error_too_long">Името е много дълго</string>
     <string name="account_settings_general_color_title">Цвят на профил</string>
     <string name="account_settings_general_avatar_monogram_title">Монограм на аватара</string>
+    <string name="account_settings_general_color_description">Акцентнен цвят на този профил, използван в папките и списъците с тях.</string>
+    <string name="account_settings_general_avatar_monogram_error_too_long">Монограмът е много дълъг</string>
+    <string name="account_settings_general_avatar_icon_title">Аватар</string>
 </resources>

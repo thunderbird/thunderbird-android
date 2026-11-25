@@ -967,4 +967,15 @@
     <string name="animation_setting_follow_system">Bruk systemstandard</string>
     <string name="message_compose_encrypting_message">Krypterer melding…</string>
     <string name="error_no_contact_provider">Ingen kontaktapp ble funnet. Installer en kontaktapp for å legge til denne adressen.</string>
+    <string name="unified_outbox_title">Forent utboks</string>
+    <string name="unified_drafts_title">Forent kladd</string>
+    <string name="unified_sent_title">Forent sendt</string>
+    <string name="unified_archive_title">Forent arkiv</string>
+    <string name="unified_spam_title">Forent søppelpost</string>
+    <string name="unified_trash_title">Forent papirkurv</string>
+    <string name="message_list_empty">Ingen meldinger</string>
+    <string name="message_list_empty_search">Ingen resultater</string>
+    <string name="message_list_not_synced">Ikke synkronisert enda</string>
+    <string name="message_list_not_synced_hint">Dra ned for å synkronisere</string>
+    <string name="unified_inbox_detail">Meldinger i innboksen til alle kontoer</string>
 </resources>

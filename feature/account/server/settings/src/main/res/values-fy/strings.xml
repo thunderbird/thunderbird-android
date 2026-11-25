@@ -35,4 +35,6 @@
     <string name="account_server_settings_password_authentication_failed">Autentikaasje mislearre!</string>
     <string name="account_server_settings_password_authentication_unable_to_start">Kin biometryske prompt net starte.</string>
     <string name="account_server_settings_password_input_label">Wachtwurd</string>
+    <string name="account_server_settings_pop3_hint_title">IMAP wurdt oanrekommandearre</string>
+    <string name="account_server_settings_pop3_hint_text">IMAP hâldt jo e-mail syngronisearre oer al jo apparaten. Kies IMAP as jo e-mailprovider it stipet.</string>
 </resources>

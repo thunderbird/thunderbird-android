@@ -322,7 +322,7 @@
     <string name="account_settings_show_pictures_never">Nej</string>
     <string name="account_settings_show_pictures_only_from_contacts">Från kontakter</string>
     <string name="account_settings_show_pictures_always">Från vem som helst</string>
-    <string name="account_settings_composition">Skickar e-post</string>
+    <string name="account_settings_composition">Skicka e-post</string>
     <string name="account_settings_default_quoted_text_shown_label">Citera meddelandet när du svarar</string>
     <string name="account_settings_default_quoted_text_shown_summary">Inkludera det ursprungliga meddelandet i ditt svar.</string>
     <string name="account_settings_reply_after_quote_label">Svar efter citerad text</string>
@@ -342,7 +342,7 @@
     <string name="account_settings_upload_sent_messages_label">Ladda upp skickade meddelanden</string>
     <string name="account_settings_upload_sent_messages_summary">Ladda upp meddelanden till mappen Skickat efter sändning</string>
     <string name="account_settings_general_title">Allmänna inställningar</string>
-    <string name="account_settings_reading_mail">Läser e-post</string>
+    <string name="account_settings_reading_mail">Läsa e-post</string>
     <string name="account_settings_sync">E-posthämtning</string>
     <string name="account_settings_folders">Mappar</string>
     <string name="account_settings_quote_prefix_label">Prefix för citerad text</string>
@@ -966,4 +966,15 @@
     <string name="account_settings_fetching_and_data_limits">Hämtning och databegränsningar</string>
     <string name="account_settings_sync_and_notifications">Synkronisering och aviseringar</string>
     <string name="account_settings_folder_visibility">Mappsynlighet</string>
+    <string name="unified_inbox_detail">Meddelanden i inkorgen för varje konto</string>
+    <string name="unified_outbox_title">Samlad utkorg</string>
+    <string name="unified_drafts_title">Samlad utkast</string>
+    <string name="unified_sent_title">Samlad skickat</string>
+    <string name="unified_archive_title">Samlat arkiv</string>
+    <string name="unified_spam_title">Samlad skräppost</string>
+    <string name="unified_trash_title">Samlad papperskorg</string>
+    <string name="message_list_empty">Inga meddelanden</string>
+    <string name="message_list_empty_search">Inga resultat</string>
+    <string name="message_list_not_synced">Inte synkroniserad ännu</string>
+    <string name="message_list_not_synced_hint">Dra nedåt för att synkronisera</string>
 </resources>

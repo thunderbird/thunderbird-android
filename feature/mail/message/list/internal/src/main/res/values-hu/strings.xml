@@ -1,3 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    </resources>
+    <string name="setup_archive_folder_dialog_done">Kész</string>
+    <string name="setup_archive_folder_dialog_cancel">Mégse</string>
+    <string name="setup_archive_folder_dialog_dont_show_again">Ne jelenjen meg többé ez az üzenet</string>
+    <string name="setup_archive_folder_dialog_email_can_not_be_archived">Az e-mail nem archiválható</string>
+    <string name="setup_archive_folder_dialog_configure_archive_folder">Archívum mappa beállítása most</string>
+    <string name="setup_archive_folder_dialog_skip_for_now">Kihagyás most</string>
+    <string name="setup_archive_folder_dialog_set_archive_folder">Archívum mappa beállítása</string>
+    <string name="setup_archive_folder_dialog_error_retrieve_folders">Hoppá, hiba történt a fiók mappáinak lekérése közben!</string>
+    <string name="setup_archive_folder_dialog_error_retrieve_folders_detailed_message">Hiba részletei: %1$s</string>
+    <string name="setup_archive_folder_dialog_create_new_folder">Új mappa létrehozása</string>
+    <string name="setup_archive_folder_dialog_create_and_set_new_folder"><![CDATA[Új mappa létrehozása és beállítása]]></string>
+    <string name="setup_archive_folder_set_archive_error_account_not_found">Nem található a(z) \'%1$s\' UUID-hoz társított fiók</string>
+    <string name="setup_archive_folder_unhandled_error">Kezeletlen hiba: %1$s</string>
+    <string name="setup_archive_folder_create_archive_folder_syncing">Szinkronizálás…</string>
+    <string name="setup_archive_folder_create_archive_folder_local_folder_created">A helyi mappa létrejött. Szinkronizálás indítása…</string>
+    <string name="setup_archive_folder_create_archive_folder_remote_folder_created">A távoli mappa létrejött.</string>
+    <string name="setup_archive_folder_create_archive_folder_creating_folder_email_provider">Mappa létrehozása az e-mail-szolgáltatónál…</string>
+    <string name="setup_archive_folder_create_archive_folder_updating_special_folder_rules">Különleges mappaszabályok frissítése…</string>
+    <string name="setup_archive_folder_create_archive_folder_account_not_found">A fiók (%1$s) nem található</string>
+    <string name="setup_archive_folder_create_archive_folder_failed_create_local_folder">Nem sikerült létrehozni a(z) \'%1$s\' helyi mappát.</string>
+    <string name="setup_archive_folder_create_archive_folder_failed_sync_folder">Nem sikerült szinkronizálni a(z) \'%1$s\' mappát a távoli mappával. Üzenet: %2$s</string>
+    <string name="setup_archive_folder_create_archive_folder_error_folder_name_blank">A mappa neve nem lehet üres</string>
+    <string name="setup_archive_folder_create_archive_folder_invalid_folder_name">Érvénytelen mappanév: \'%1$s\'</string>
+    <string name="message_list_state_new_message_description">Új</string>
+    <string name="message_list_state_read_message_description">Olvasott</string>
+    <string name="message_list_state_unread_message_description">Olvasatlan</string>
+    <string name="message_list_state_active_new_message_description">Aktív, új</string>
+    <string name="message_list_state_active_read_message_description">Aktív, olvasott</string>
+    <string name="message_list_state_active_unread_message_description">Aktív, olvasatlan</string>
+    <string name="message_list_state_selected_new_message_description">Kijelölt, új</string>
+    <string name="message_list_state_selected_read_message_description">Kijelölt, olvasott</string>
+    <string name="message_list_state_selected_unread_message_description">Kijelölt, olvasatlan</string>
+</resources>

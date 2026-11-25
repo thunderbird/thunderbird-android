@@ -265,7 +265,7 @@
     <string name="drafts_folder_label">Konsepten</string>
     <string name="sent_folder_label">Ferstjoerd</string>
     <string name="trash_folder_label">Jiskefet</string>
-    <string name="archive_folder_label">Argyf</string>
+    <string name="archive_folder_label">Argyfmap</string>
     <string name="spam_folder_label">Net-winske</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">Allinnich abonnearre mappen toane</string>
     <string name="account_setup_options_mail_check_frequency_never">Nea</string>
@@ -966,4 +966,15 @@
     <string name="account_settings_fetching_and_data_limits">Ophelje &amp; gegevenslimiten</string>
     <string name="account_settings_sync_and_notifications">Syngronisaasje &amp; meldingen</string>
     <string name="account_settings_folder_visibility">Mapsichtberheid</string>
+    <string name="unified_inbox_detail">Berjochten yn Postfek YN fan elk account</string>
+    <string name="unified_outbox_title">Gearfoege Postfek YN</string>
+    <string name="unified_drafts_title">Gearfoege Konsepten</string>
+    <string name="unified_sent_title">Gearfoege Ferstjoerd</string>
+    <string name="unified_archive_title">Gearfoege Argyf</string>
+    <string name="unified_spam_title">Gearfoege Net-winske</string>
+    <string name="unified_trash_title">Gearfoege Jiskefet</string>
+    <string name="message_list_empty">Gjin berjochten</string>
+    <string name="message_list_empty_search">Gjin resultaten</string>
+    <string name="message_list_not_synced">Noch net syngronisearre</string>
+    <string name="message_list_not_synced_hint">Lûke om te syngronisearjen</string>
 </resources>

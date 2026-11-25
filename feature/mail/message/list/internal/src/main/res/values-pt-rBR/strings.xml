@@ -1,3 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    </resources>
+    <string name="setup_archive_folder_set_archive_error_account_not_found">Não foi possível encontrar uma conta associada ao UUID \'%1$s\'</string>
+    <string name="setup_archive_folder_create_archive_folder_syncing">Sincronizando…</string>
+    <string name="setup_archive_folder_create_archive_folder_account_not_found">Conta (%1$s) não encontrada</string>
+</resources>

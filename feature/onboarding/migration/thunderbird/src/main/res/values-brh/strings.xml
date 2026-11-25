@@ -1,3 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
-    </resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="onboarding_migration_thunderbird_qr_code_import_title">مالو ان Thunderbird اے ڈیسک ٹاپ اے استعمال کرسہ ارے؟</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_text">QR کوڈ اے اسکین کننگ ان آسانی ٹی تینا اکاونٹ اے اتنگ کیرے.</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_intro">Thunderbird ڈیسک ٹاپ ٹی، ان بو:</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_require_latest">Thunderbird Desktop 128 نا پوسکنا ورژن خواست اے اتنگ پورہ مننگ کن. <xliff:g id="link_text">%s</xliff:g></string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_learn_update">ہیل کبو Thunderbird اے امر پوسکن کیرہ.</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_button_text">سیٹنگاتے اتبو</string>
+    <string name="onboarding_migration_thunderbird_new_account_title">Thunderbird ٹی پوسکن ارے؟</string>
+    <string name="onboarding_migration_thunderbird_new_account_button_text">داسہ ای میل اکاونٹ اس شاغبو</string>
+    <string name="onboarding_migration_thunderbird_import_title">پین ایپ یا ڈیوائس اسے ان برسہ ارے؟</string>
+    <string name="onboarding_migration_thunderbird_import_button_text">تینا اکاونٹ سیٹنگاتے داسہ اتبو</string>
+    <string name="onboarding_migration_thunderbird_link_open_error">د لنک اے ملنگ کن ہچو ایپ ملے تو.</string>
+</resources>

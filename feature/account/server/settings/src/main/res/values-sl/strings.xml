@@ -35,4 +35,6 @@
     <string name="account_server_settings_password_authentication_unable_to_start">Biometričnega poziva ni mogoče zagnati.</string>
     <string name="account_server_settings_password_authentication_failed">Overjanje je spodletelo!</string>
     <string name="account_server_settings_password_input_label">Geslo</string>
+    <string name="account_server_settings_pop3_hint_title">Priporočljiv je IMAP.</string>
+    <string name="account_server_settings_pop3_hint_text">IMAP usklajuje e-pošto med napravami. Če ga vaš e-poštni ponudnik podpira, ga izberite.</string>
 </resources>

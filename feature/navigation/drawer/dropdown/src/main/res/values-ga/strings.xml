@@ -9,4 +9,10 @@
     <string name="navigation_drawer_dropdown_unified_account_title">Cuntas Aontaithe</string>
     <string name="navigation_drawer_dropdown_action_add_account">Cuir cuntas leis</string>
     <string name="navigation_drawer_dropdown_action_sync_account">Cuntas sioncrónaithe</string>
+    <string name="navigation_drawer_dropdown_unified_outbox_title">Bosca amach</string>
+    <string name="navigation_drawer_dropdown_unified_drafts_title">Dréachtaí</string>
+    <string name="navigation_drawer_dropdown_unified_sent_title">Seolta</string>
+    <string name="navigation_drawer_dropdown_unified_archive_title">Cartlann</string>
+    <string name="navigation_drawer_dropdown_unified_spam_title">Turscar</string>
+    <string name="navigation_drawer_dropdown_unified_trash_title">Bruscar</string>
 </resources>

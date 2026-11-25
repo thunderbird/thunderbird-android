@@ -1,3 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    </resources>
+    <string name="funding_googleplay_contribution_footer_payment_cancel_button">کینسل</string>
+    <string name="funding_googleplay_contribution_error_unknown">ناچاہوک ردی</string>
+    <string name="funding_googleplay_contribution_list_type_recurring">ہر تو</string>
+    <string name="funding_googleplay_contribution_list_type_none_available">ہچ موجود اف</string>
+    <string name="funding_googleplay_contribution_error_show_more">پین تفصیل ہربو</string>
+    <string name="funding_googleplay_contribution_reminder_statement_point_1">نن اشتہار نشان تفہ نہ.</string>
+    <string name="funding_googleplay_contribution_reminder_statement_point_2">نن نما ڈیٹا اے بحا کپنہ.</string>
+    <string name="funding_googleplay_contribution_reminder_negative_button">داسہ نہ</string>
+</resources>

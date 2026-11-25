@@ -1,3 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    </resources>
+    <string name="thundermail_redirecting">Átirányítás a Thundermailre…</string>
+    <string name="thundermail_something_went_wrong">Hiba történt</string>
+    <string name="thundermail_browser_is_not_available">A böngésző nem érhető el. Kérjük, ellenőrizze az eszköze beállításait</string>
+    <string name="thundermail_operation_was_canceled">A művelet megszakadt</string>
+    <string name="thundermail_unknown_error_please_consider_reporting">Ismeretlen hiba. Kérjük, fontolja meg a hiba jelentését.</string>
+    <string name="thundermail_add_account">Fiók hozzáadása</string>
+    <string name="thundermail_add_an_email_account">E-mail-fiók hozzáadása</string>
+    <string name="thundermail_what_is_thundermail">Mi az a Thundermail?</string>
+    <string name="thundermail_or_divider">– vagy –</string>
+</resources>

@@ -1,3 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    </resources>
+    <string name="thundermail_something_went_wrong">Algo deu errado</string>
+    <string name="thundermail_operation_was_canceled">A operação foi cancelada</string>
+    <string name="thundermail_add_account">Adicionar conta</string>
+    <string name="thundermail_what_is_thundermail">O que é Thundermail?</string>
+    <string name="thundermail_or_divider">– ou –</string>
+</resources>

@@ -1,3 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    </resources>
+    <string name="account_edit_save_server_settings_loading_message">سرور سیٹنگاک خوندی مرسہ او…</string>
+    <string name="account_edit_save_server_settings_error_message">سرور سیٹنگاک خوندی مننگ متور</string>
+    <string name="account_edit_save_server_settings_success_message">سرور سیٹنگاک خوندی مسر</string>
+</resources>

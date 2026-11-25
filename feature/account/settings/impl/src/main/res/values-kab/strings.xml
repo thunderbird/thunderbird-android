@@ -1,3 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    </resources>
+    <string name="account_settings_message_format_auto">Awurman</string>
+    <string name="account_settings_remote_search_num_results_entries_all">Akk</string>
+    <string name="account_settings_search_action">Nadi</string>
+    <string name="account_settings_remote_search_num_results_entries_25">25</string>
+    <string name="account_settings_cancel_action">Semmet</string>
+    <string name="account_settings_general_avatar_option_icon">Tignit</string>
+    <string name="account_settings_message_age_0">ass-a</string>
+    <string name="account_settings_general_avatar_option_image">Tugna</string>
+</resources>

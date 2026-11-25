@@ -522,9 +522,9 @@
     <string name="account_setup_push_limit_500">Do 500 folderów</string>
     <string name="account_setup_push_limit_1000">Do 1000 folderów</string>
     <string name="animations_title">Animacje</string>
-    <string name="show_unified_inbox_title">Pokaż zintegrowaną skrzynkę odbiorczą</string>
+    <string name="show_unified_inbox_title">Pokaż ujednoliconą skrzynkę odbiorczą</string>
     <string name="show_starred_count_title">Pokaż liczbę oznaczonych gwiazdką</string>
-    <string name="integrated_inbox_title">Zintegrowana odbiorcza</string>
+    <string name="integrated_inbox_title">Ujednolicone odebrane</string>
     <string name="account_settings_no_folder_selected">Żaden</string>
     <string name="account_settings_automatic_special_folder">Automatyczny (%s)</string>
     <string name="font_size_settings_title">Rozmiar czcionki</string>
@@ -979,4 +979,15 @@
     <string name="account_settings_fetching_and_data_limits">Limity pobierania i danych</string>
     <string name="account_settings_folder_visibility">Widoczność folderów</string>
     <string name="account_settings_sync_and_notifications">Synchronizacja i powiadomienia</string>
+    <string name="unified_inbox_detail">Wiadomości w skrzynce odbiorczej każdego konta</string>
+    <string name="message_list_not_synced_hint">Pociągnij w dół, aby zsynchronizować</string>
+    <string name="message_list_not_synced">Jeszcze nie zsynchronizowano</string>
+    <string name="message_list_empty_search">Brak wyników</string>
+    <string name="message_list_empty">Brak wiadomości</string>
+    <string name="unified_outbox_title">Ujednolicone wychodzące</string>
+    <string name="unified_drafts_title">Ujednolicone wersje robocze</string>
+    <string name="unified_sent_title">Ujednolicone wysłane</string>
+    <string name="unified_archive_title">Ujednolicone archiwum</string>
+    <string name="unified_spam_title">Ujednolicony spam</string>
+    <string name="unified_trash_title">Ujednolicony kosz</string>
 </resources>

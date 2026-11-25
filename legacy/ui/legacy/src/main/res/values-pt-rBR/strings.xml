@@ -378,7 +378,7 @@
     <string name="account_settings_autodownload_message_size_any">qualquer tamanho (sem limites)</string>
     <string name="account_settings_message_age_label">Sincronização de mensagens</string>
     <string name="account_settings_message_age_any">de qualquer data (sem limites)</string>
-    <string name="account_settings_message_age_0">de hoje</string>
+    <string name="account_settings_message_age_0">hoje</string>
     <string name="account_settings_message_age_1">dos últimos 2 dias</string>
     <string name="account_settings_message_age_2">dos últimos 3 dias</string>
     <string name="account_settings_message_age_7">da última semana</string>
@@ -968,4 +968,6 @@
     <string name="account_settings_signature_preview_empty">A prévia da sua assinatura aparecerá aqui</string>
     <string name="error_no_contact_provider">Nenhum aplicativo de contatos foi encontrado. Instale um primeiro para adicionar este endereço.</string>
     <string name="remote_feature_flag_preferences">Sinalizadores de recursos remotos</string>
+    <string name="message_list_empty">Nenhuma mensagem</string>
+    <string name="message_list_empty_search">Nenhum resultado</string>
 </resources>

@@ -35,4 +35,6 @@
     <string name="account_server_settings_password_authentication_failed">Theip ar an bhfíordheimhniú!</string>
     <string name="account_server_settings_password_authentication_unable_to_start">Ní féidir an leid bhithmhéadrach a thosú.</string>
     <string name="account_server_settings_password_input_label">Pasfhocal</string>
+    <string name="account_server_settings_pop3_hint_title">Moltar IMAP</string>
+    <string name="account_server_settings_pop3_hint_text">Coinníonn IMAP do ríomhphost sioncronaithe thar do ghléasanna go léir. Roghnaigh IMAP má thacaíonn do sholáthraí ríomhphoist leis.</string>
 </resources>

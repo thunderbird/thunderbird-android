@@ -311,8 +311,8 @@
     <string name="account_notify_contacts_mail_only_summary">Erakutsi kontaktu ezagunen mezuen jakinarazpenak bakarrik</string>
     <string name="account_settings_ignore_chat_messages_label">Baztertu txateko mezuak</string>
     <string name="account_settings_ignore_chat_messages_summary">Ez erakutsi posta elektronikoko txat bateko mezuen jakinarazpenak</string>
-    <string name="account_settings_mark_message_as_read_on_view_label">Markatu irakurritako gisa irekitzean</string>
-    <string name="account_settings_mark_message_as_read_on_view_summary">Markatu mezua irakurritako gisa ikusteko irekitzerakoan</string>
+    <string name="account_settings_mark_message_as_read_on_view_label">Markatu irakurrita gisa irekitzean</string>
+    <string name="account_settings_mark_message_as_read_on_view_summary">Markatu mezu bat irakurrita bezala ikusteko irekitzen denean</string>
     <string name="account_settings_mark_message_as_read_on_delete_label">Markatu irakurritako gisa ezabatzean</string>
     <string name="account_settings_mark_message_as_read_on_delete_summary">Markatu mezua irakurritako gisa ikusteko ezabatzean</string>
     <string name="account_settings_notification_channels_label">Jakinarazpen kategoriak</string>
@@ -321,7 +321,7 @@
     <string name="account_settings_show_pictures_label">Erakutsi beti irudiak</string>
     <string name="account_settings_show_pictures_never">Ez</string>
     <string name="account_settings_show_pictures_only_from_contacts">Kontaktuetatik</string>
-    <string name="account_settings_show_pictures_always">Edonorengandik</string>
+    <string name="account_settings_show_pictures_always">Edonorrengandik</string>
     <string name="account_settings_composition">Posta bidaltzea</string>
     <string name="account_settings_default_quoted_text_shown_label">Aipatu mezua erantzutean</string>
     <string name="account_settings_default_quoted_text_shown_summary">Sartu jatorrizko mezua zure erantzunean.</string>
@@ -342,7 +342,7 @@
     <string name="account_settings_upload_sent_messages_label">Igo bidalitako mezuak</string>
     <string name="account_settings_upload_sent_messages_summary">Igo mezuak bidalitakoak karpetara bidali eta gero</string>
     <string name="account_settings_general_title">Ezarpen orokorrak</string>
-    <string name="account_settings_reading_mail">Posta irakurtzea</string>
+    <string name="account_settings_reading_mail">Posta irakurtzen</string>
     <string name="account_settings_sync">Posta eskuratzen</string>
     <string name="account_settings_folders">Karpetak</string>
     <string name="account_settings_quote_prefix_label">Aipuaren aurrizkia</string>
@@ -608,7 +608,7 @@
     <string name="webview_contextmenu_email_save_action">Gorde Kontaktuetan</string>
     <string name="webview_contextmenu_email_copy_action">Kopiatu helbidea arbelera</string>
     <string name="webview_contextmenu_email_clipboard_label">Posta helbidea</string>
-    <string name="account_settings_remote_search_num_results_entries_all">Guztiak</string>
+    <string name="account_settings_remote_search_num_results_entries_all">Denak</string>
     <string name="account_settings_remote_search_num_results_entries_10">10</string>
     <string name="account_settings_remote_search_num_results_entries_25">25</string>
     <string name="account_settings_remote_search_num_results_entries_50">50</string>
@@ -616,7 +616,7 @@
     <string name="account_settings_remote_search_num_results_entries_250">250</string>
     <string name="account_settings_remote_search_num_results_entries_500">500</string>
     <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
-    <string name="account_settings_remote_search_num_label">Zerbitzarian bilatzeko muga</string>
+    <string name="account_settings_remote_search_num_label">Zerbitzariaren bilaketa muga</string>
     <string name="remote_search_sending_query">Kontsulta zerbitzarira bidaltzen</string>
     <plurals name="remote_search_downloading">
         <item quantity="one">Emaitza %d eskuratzen</item>

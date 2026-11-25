@@ -1,3 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    </resources>
+    <string name="account_server_certificate_warning_title">محتاط</string>
+    <string name="account_server_certificate_unknown_error_subtitle">سرٹیفکیٹ نا ردی</string>
+</resources>
