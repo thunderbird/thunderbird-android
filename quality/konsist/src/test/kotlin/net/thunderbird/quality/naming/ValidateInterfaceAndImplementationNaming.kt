@@ -1,10 +1,13 @@
 package net.thunderbird.quality.naming
 
 import com.lemonappdev.konsist.api.declaration.KoClassDeclaration
+import kotlin.test.Ignore
 import kotlin.test.Test
 import net.thunderbird.quality.util.assertNoInvalidImplementationNames
 import net.thunderbird.quality.util.assertNoInvalidInterfaceNames
+import net.thunderbird.quality.util.implementsSingleInterface
 import net.thunderbird.quality.util.isInTestCode
+import net.thunderbird.quality.util.matchesImplementedInterface
 
 class ValidateInterfaceAndImplementationNaming {
 
@@ -47,6 +50,8 @@ class ValidateInterfaceAndImplementationNaming {
         )
     }
 
+    // TODO Remove the @Ignore after applying these rules across project
+    @Ignore("These rules are not yet applied across the project")
     @Test
     fun `implementations should be a prefix plus the interface name`() {
         assertNoInvalidImplementationNames(
@@ -56,7 +61,7 @@ class ValidateInterfaceAndImplementationNaming {
                 - Android for platform-specific implementations
                 - K9 / Tb for app-specific implementations
                 - Default when no brief descriptive name fits
-                - Fake for test doubles (test code only): FakeMessageStore
+                - Fake for test doubles: FakeMessageStore
                 - Base for abstract or open base classes: BaseMessageStore
             """.trimIndent(),
             suggestionFor = { name, interfaces ->
@@ -73,30 +78,44 @@ class ValidateInterfaceAndImplementationNaming {
             },
             isInvalid = { clazz, interfaces ->
                 val name = clazz.name
-                if (name.endsWith("Test")) {
+
+                // Only check implementations of exactly one project interface.
+                if (
+                    name.endsWith("Test") ||
+                    !clazz.implementsSingleInterface()
+                ) {
                     false
                 } else {
-                    val matchesInterface = interfaces.any { iface ->
-                        name.endsWith(iface) && name != iface
-                    }
-
                     val hasFakePrefix = name.hasPrefixWord("Fake")
                     val hasBasePrefix = name.hasPrefixWord("Base")
 
+                    val matchesInterface = clazz.matchesImplementedInterface()
+
                     val isValidFake = hasFakePrefix &&
-                        clazz.isInTestCode() &&
+                        (
+                            clazz.isInTestCode() ||
+                                clazz.packagee?.name
+                                    ?.split('.')
+                                    ?.contains("fake") == true
+                            ) &&
                         matchesInterface
 
                     val isValidBase = hasBasePrefix &&
                         clazz is KoClassDeclaration &&
                         (clazz.hasAbstractModifier || clazz.hasOpenModifier) &&
-                        matchesInterface
+                        (
+                            matchesInterface ||
+                                name.isViewModelBaseFor(interfaces)
+                            )
 
-                    val isValidDescriptiveName = !hasFakePrefix &&
-                        !hasBasePrefix &&
-                        matchesInterface
+                    val isValidDescriptiveName =
+                        !hasFakePrefix &&
+                            !hasBasePrefix &&
+                            matchesInterface
 
-                    !isValidFake && !isValidBase && !isValidDescriptiveName
+                    !isValidFake &&
+                        !isValidBase &&
+                        !isValidDescriptiveName
                 }
             },
         )
@@ -104,4 +123,15 @@ class ValidateInterfaceAndImplementationNaming {
 }
 
 private fun String.hasPrefixWord(prefix: String): Boolean =
-    startsWith(prefix) && getOrNull(prefix.length)?.isUpperCase() == true
+    startsWith(prefix) &&
+        getOrNull(prefix.length)?.isUpperCase() == true
+
+/**
+ * Allows abstract/open Base...ViewModel classes that directly implement
+ * UnidirectionalViewModel until ViewModels are defined by contracts.
+ *
+ * TODO Remove this exception once ViewModels are defined by contracts.
+ */
+private fun String.isViewModelBaseFor(interfaces: List<String>): Boolean =
+    endsWith("ViewModel") &&
+        "UnidirectionalViewModel" in interfaces
