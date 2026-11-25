@@ -59,7 +59,14 @@ internal object GraphemeClusterBoundariesCompat {
     }
 
     private const val ZERO_WIDTH_JOINER = '‍'
-    private val EMOJI_MODIFIERS = 0x1F3FB..0x1F3FF
-    private val TAGS = 0xE0020..0xE007F
-    private val REGIONAL_INDICATORS = 0x1F1E6..0x1F1FF
+    private const val EMOJI_MODIFIER_FIRST = 0x1F3FB
+    private const val EMOJI_MODIFIER_LAST = 0x1F3FF
+    private const val TAG_FIRST = 0xE0020
+    private const val TAG_LAST = 0xE007F
+    private const val REGIONAL_INDICATOR_FIRST = 0x1F1E6
+    private const val REGIONAL_INDICATOR_LAST = 0x1F1FF
+
+    private val EMOJI_MODIFIERS = EMOJI_MODIFIER_FIRST..EMOJI_MODIFIER_LAST
+    private val TAGS = TAG_FIRST..TAG_LAST
+    private val REGIONAL_INDICATORS = REGIONAL_INDICATOR_FIRST..REGIONAL_INDICATOR_LAST
 }
