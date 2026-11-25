@@ -79,7 +79,7 @@ private fun FundingReminderContent(
         Column(
             modifier = Modifier.padding(BoltTheme.spacings.triple),
         ) {
-            FundingReminderImage(imageRes, imageDescRes,isBannerDialog)
+            FundingReminderImage(imageRes, imageDescRes, isBannerDialog)
             Spacer(modifier = Modifier.height(BoltTheme.spacings.triple))
             TextHeadlineSmall(
                 text = stringResource(headerRes),
