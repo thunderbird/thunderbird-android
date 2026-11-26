@@ -98,6 +98,7 @@ import com.fsck.k9.ui.BuildConfig
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.choosefolder.ChooseFolderActivity
 import com.fsck.k9.ui.choosefolder.ChooseFolderResultContract
+import com.fsck.k9.ui.messagelist.MessageListFragmentBridgeContract.Companion.ARG_ACTIVE_MESSAGE
 import com.fsck.k9.ui.messagelist.MessageListFragmentBridgeContract.Companion.ARG_IS_THREAD_DISPLAY
 import com.fsck.k9.ui.messagelist.MessageListFragmentBridgeContract.Companion.ARG_SEARCH
 import com.fsck.k9.ui.messagelist.MessageListFragmentBridgeContract.Companion.ARG_THREADED_LIST
@@ -399,6 +400,8 @@ class MessageListFragment :
         val arguments = requireArguments()
         showingThreadedList = arguments.getBoolean(ARG_THREADED_LIST, false)
         isThreadDisplay = arguments.getBoolean(ARG_IS_THREAD_DISPLAY, false)
+        // The active message may have been restored from the saved instance state, which takes precedence.
+        activeMessage = activeMessage ?: MessageReference.parse(arguments.getString(ARG_ACTIVE_MESSAGE))
 
         localSearch = arguments.getByteArray(ARG_SEARCH)?.let {
             LocalMessageSearchSerializer.deserialize(it)
@@ -2556,6 +2559,7 @@ class MessageListFragment :
             search: LocalMessageSearch,
             isThreadDisplay: Boolean,
             threadedList: Boolean,
+            activeMessage: MessageReference?,
         ): MessageListFragment {
             val searchBytes = LocalMessageSearchSerializer.serialize(search)
 
@@ -2564,6 +2568,7 @@ class MessageListFragment :
                     putByteArray(ARG_SEARCH, searchBytes)
                     putBoolean(ARG_IS_THREAD_DISPLAY, isThreadDisplay)
                     putBoolean(ARG_THREADED_LIST, threadedList)
+                    putString(ARG_ACTIVE_MESSAGE, activeMessage?.toIdentityString())
                 }
             }
         }

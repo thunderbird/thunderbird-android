@@ -23,6 +23,9 @@ import net.thunderbird.feature.mail.message.list.ui.state.withState
  *   without changing any message's selected state.
  * - On [MessageListSearchEvent.EnterSearchMode]: Moves to [MessageListState.SearchingMessages]
  *   with an empty search query.
+ * - On [MessageItemEvent.SetMessageActive]: Moves to [MessageListState.LoadingMessages] to reload the
+ *   message list, so the list honors the new active message, e.g. when displaying a threaded message list
+ *   where the active message must stay part of the list.
  */
 internal fun StateMachineBuilder<MessageListState, MessageListEvent>.loadedMessagesState() {
     state<MessageListState.LoadedMessages> {
@@ -52,11 +55,14 @@ internal fun StateMachineBuilder<MessageListState, MessageListEvent>.loadedMessa
             )
         }
         transition<MessageItemEvent.SetMessageActive> { state, event ->
-            state
-                .mapMessages { message ->
+            MessageListState.LoadingMessages(
+                progress = 1f,
+                metadata = state.metadata.copy(activeMessage = event.message),
+                preferences = state.preferences,
+                messages = state.messages.map { message ->
                     message.copy(active = message.id == event.message?.id)
-                }
-                .withMetadata { copy(activeMessage = event.message) }
+                }.toPersistentList(),
+            )
         }
         transition<MessageItemEvent.OnMessageClick> { state, event ->
             state

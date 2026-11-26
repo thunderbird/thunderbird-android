@@ -376,6 +376,8 @@ class LegacyMessageListFragment :
         val arguments = requireArguments()
         showingThreadedList = arguments.getBoolean(ARG_THREADED_LIST, false)
         isThreadDisplay = arguments.getBoolean(ARG_IS_THREAD_DISPLAY, false)
+        // The active message may have been restored from the saved instance state, which takes precedence.
+        activeMessage = activeMessage ?: MessageReference.parse(arguments.getString(ARG_ACTIVE_MESSAGE))
 
         localSearch = arguments.getByteArray(ARG_SEARCH)?.let {
             LocalMessageSearchSerializer.deserialize(it)
@@ -2758,6 +2760,7 @@ class LegacyMessageListFragment :
             search: LocalMessageSearch,
             isThreadDisplay: Boolean,
             threadedList: Boolean,
+            activeMessage: MessageReference?,
         ): LegacyMessageListFragment {
             val searchBytes = LocalMessageSearchSerializer.serialize(search)
 
@@ -2766,6 +2769,7 @@ class LegacyMessageListFragment :
                     putByteArray(ARG_SEARCH, searchBytes)
                     putBoolean(ARG_IS_THREAD_DISPLAY, isThreadDisplay)
                     putBoolean(ARG_THREADED_LIST, threadedList)
+                    putString(ARG_ACTIVE_MESSAGE, activeMessage?.toIdentityString())
                 }
             }
         }
@@ -2775,6 +2779,7 @@ class LegacyMessageListFragment :
         protected const val ARG_SEARCH = "searchObject"
         protected const val ARG_THREADED_LIST = "showingThreadedList"
         protected const val ARG_IS_THREAD_DISPLAY = "isThreadedDisplay"
+        protected const val ARG_ACTIVE_MESSAGE = "activeMessage"
 
         protected const val STATE_SELECTED_MESSAGES = "selectedMessages"
         protected const val STATE_ACTIVE_MESSAGES = "activeMessages"

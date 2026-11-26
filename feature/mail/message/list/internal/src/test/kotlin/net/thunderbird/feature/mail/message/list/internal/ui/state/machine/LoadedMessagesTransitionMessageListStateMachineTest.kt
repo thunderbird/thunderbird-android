@@ -48,7 +48,7 @@ class LoadedMessagesTransitionMessageListStateMachineTest : BaseMessageListState
         }
 
     @Test
-    fun `process() should set activeMessage when event is SetMessageActive in LoadedMessages`() =
+    fun `process() should set activeMessage and reload messages when event is SetMessageActive in LoadedMessages`() =
         runTest {
             // Arrange
             val messages = createMessageUiItemList(size = 5)
@@ -65,7 +65,7 @@ class LoadedMessagesTransitionMessageListStateMachineTest : BaseMessageListState
 
                 // Assert
                 assertThat(awaitItem())
-                    .isInstanceOf<MessageListState.LoadedMessages>()
+                    .isInstanceOf<MessageListState.LoadingMessages>()
                     .all {
                         transform { it.metadata.activeMessage }.isEqualTo(targetMessage)
                         transform { state -> state.messages.first { it.id == targetMessage.id }.active }.isTrue()
@@ -90,7 +90,7 @@ class LoadedMessagesTransitionMessageListStateMachineTest : BaseMessageListState
                 // Set active first
                 stateMachine.process(MessageItemEvent.SetMessageActive(messages.first()))
                 assertThat(awaitItem())
-                    .isInstanceOf<MessageListState.LoadedMessages>()
+                    .isInstanceOf<MessageListState.LoadingMessages>()
                     .transform { it.metadata.activeMessage }
                     .isNotNull()
 
@@ -99,7 +99,7 @@ class LoadedMessagesTransitionMessageListStateMachineTest : BaseMessageListState
 
                 // Assert
                 assertThat(awaitItem())
-                    .isInstanceOf<MessageListState.LoadedMessages>()
+                    .isInstanceOf<MessageListState.LoadingMessages>()
                     .all {
                         transform { it.metadata.activeMessage }.isNull()
                         transform { state -> state.messages.none { it.active } }.isTrue()

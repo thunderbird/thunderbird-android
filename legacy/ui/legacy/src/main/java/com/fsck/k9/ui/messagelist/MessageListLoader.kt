@@ -1,6 +1,7 @@
 package com.fsck.k9.ui.messagelist
 
 import app.k9mail.legacy.mailstore.MessageListRepository
+import app.k9mail.legacy.message.controller.MessageReference
 import com.fsck.k9.contacts.ContactLetterBitmapCreator
 import com.fsck.k9.helper.MessageHelper
 import com.fsck.k9.mailstore.LocalFolder
@@ -105,6 +106,7 @@ class MessageListLoader(
         val conditions = config.search.conditionsFor(account, outboxFolderManager) ?: return emptyList()
         val threadId = getThreadId(config.search)
         val sortOrder = buildSortOrder(config)
+        val activeMessage = config.activeMessage
         val mapper = MessageListItemMapper(
             messageHelper,
             account,
@@ -123,7 +125,14 @@ class MessageListLoader(
 
             config.showingThreadedList -> {
                 val (selection, selectionArgs) = buildSelection(account, config, conditions)
-                messageListRepository.getThreadedMessages(accountId, selection, selectionArgs, sortOrder, mapper)
+                val messageListItems = messageListRepository.getThreadedMessages(
+                    accountId,
+                    selection,
+                    selectionArgs,
+                    sortOrder,
+                    mapper,
+                )
+                includeActiveMessage(messageListItems, account, activeMessage, sortOrder, mapper)
             }
 
             else -> {
@@ -131,6 +140,40 @@ class MessageListLoader(
                 messageListRepository.getMessages(accountId, selection, selectionArgs, sortOrder, mapper)
             }
         }
+    }
+
+    /**
+     * Ensures the message being viewed is part of a threaded message list.
+     *
+     * A threaded message list only contains the newest message of each thread. When the message being viewed is an
+     * older message of a thread, e.g. when the message list was opened from a notification, it isn't part of the
+     * list. To still display it, the entry of the active message's thread is replaced with an entry for the active
+     * message.
+     */
+    private fun includeActiveMessage(
+        messageListItems: List<MessageListItem>,
+        account: LegacyAccount,
+        activeMessage: MessageReference?,
+        sortOrder: String,
+        mapper: MessageListItemMapper,
+    ): List<MessageListItem> {
+        val relevantActiveMessage = activeMessage?.takeIf { it.accountId == account.id }
+        if (relevantActiveMessage == null || messageListItems.any { it.messageReference == relevantActiveMessage }) {
+            return messageListItems
+        }
+
+        val selection = "${MessageColumns.UID} = ? AND ${MessageColumns.FOLDER_ID} = ?"
+        val selectionArgs = arrayOf(relevantActiveMessage.uid, relevantActiveMessage.folderId.toString())
+        val activeMessageItem = messageListRepository.getMessages(
+            account.id,
+            selection,
+            selectionArgs,
+            sortOrder,
+            mapper,
+        ).singleOrNull()
+
+        return activeMessageItem?.let { messageListItems.mergeActiveMessage(relevantActiveMessage, it) }
+            ?: messageListItems
     }
 
     private fun buildSelection(
@@ -236,6 +279,26 @@ class MessageListLoader(
         }.thenByDescending { it.databaseId }
 
         return this.sortedWith(comparator)
+    }
+}
+
+/**
+ * Replaces the entry of the active message's thread with an entry for the active message, keeping the thread's
+ * position in the list and its thread count.
+ *
+ * A threaded message list only contains the newest message of each thread. When the message being viewed is an older
+ * message of a thread, its thread's entry is replaced with an entry for the viewed message so it can be displayed.
+ */
+internal fun List<MessageListItem>.mergeActiveMessage(
+    activeMessage: MessageReference,
+    activeMessageItem: MessageListItem,
+): List<MessageListItem> {
+    val threadIndex = indexOfFirst { it.threadRoot == activeMessageItem.threadRoot }
+    val isAlreadyPresent = any { it.messageReference == activeMessage }
+    if (threadIndex == -1 || isAlreadyPresent) return this
+
+    return toMutableList().apply {
+        this[threadIndex] = activeMessageItem.copy(threadCount = this[threadIndex].threadCount)
     }
 }
 

@@ -19,7 +19,7 @@ import net.thunderbird.feature.mail.message.list.ui.state.MessageListState
 class SetMessageActiveSideEffectTest : BaseSideEffectHandlerTest() {
 
     @Test
-    fun `handle() should return Consumed when event is SetMessageActive, newState is LoadedMessages, and activeMessage is not null`() =
+    fun `handle() should return Consumed when event is SetMessageActive, newState is LoadingMessages, and activeMessage is not null`() =
         runTest {
             // Arrange
             val message = createMessageItemUi()
@@ -29,7 +29,7 @@ class SetMessageActiveSideEffectTest : BaseSideEffectHandlerTest() {
             val result = testSubject.handle(
                 event = MessageItemEvent.SetMessageActive(message),
                 oldState = createLoadedMessagesState(),
-                newState = createLoadedMessagesState(activeMessage = message),
+                newState = createLoadingMessagesState(activeMessage = message),
             )
 
             // Assert
@@ -37,7 +37,7 @@ class SetMessageActiveSideEffectTest : BaseSideEffectHandlerTest() {
         }
 
     @Test
-    fun `handle() should return Ignored when event is SetMessageActive, newState is LoadedMessages, but activeMessage is null`() =
+    fun `handle() should return Ignored when event is SetMessageActive, newState is LoadingMessages, but activeMessage is null`() =
         runTest {
             // Arrange
             val testSubject = createTestSubject()
@@ -46,7 +46,7 @@ class SetMessageActiveSideEffectTest : BaseSideEffectHandlerTest() {
             val result = testSubject.handle(
                 event = MessageItemEvent.SetMessageActive(null),
                 oldState = createLoadedMessagesState(),
-                newState = createLoadedMessagesState(activeMessage = null),
+                newState = createLoadingMessagesState(activeMessage = null),
             )
 
             // Assert
@@ -54,7 +54,7 @@ class SetMessageActiveSideEffectTest : BaseSideEffectHandlerTest() {
         }
 
     @Test
-    fun `handle() should return Ignored when event is SetMessageActive but newState is not LoadedMessages`() = runTest {
+    fun `handle() should return Ignored when event is SetMessageActive but newState is not LoadingMessages`() = runTest {
         // Arrange
         val message = createMessageItemUi()
         val testSubject = createTestSubject()
@@ -97,7 +97,7 @@ class SetMessageActiveSideEffectTest : BaseSideEffectHandlerTest() {
         testSubject.handle(
             event = MessageItemEvent.SetMessageActive(message),
             oldState = createLoadedMessagesState(),
-            newState = createLoadedMessagesState(activeMessage = message),
+            newState = createLoadingMessagesState(activeMessage = message),
         )
 
         // Assert
