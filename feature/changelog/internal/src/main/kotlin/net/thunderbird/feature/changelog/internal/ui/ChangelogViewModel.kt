@@ -1,4 +1,4 @@
-package net.thunderbird.feature.changelog.internal
+package net.thunderbird.feature.changelog.internal.ui
 
 import androidx.lifecycle.viewModelScope
 import kotlinx.collections.immutable.persistentListOf
@@ -8,9 +8,11 @@ import kotlinx.coroutines.launch
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.update
 import net.thunderbird.core.ui.contract.mvi.BaseViewModel
-import net.thunderbird.feature.changelog.internal.ChangelogContract.Effect
-import net.thunderbird.feature.changelog.internal.ChangelogContract.Event
-import net.thunderbird.feature.changelog.internal.ChangelogContract.State
+import net.thunderbird.feature.changelog.internal.ChangeLogManager
+import net.thunderbird.feature.changelog.internal.ReleaseItem
+import net.thunderbird.feature.changelog.internal.ui.ChangelogContract.Effect
+import net.thunderbird.feature.changelog.internal.ui.ChangelogContract.Event
+import net.thunderbird.feature.changelog.internal.ui.ChangelogContract.State
 import net.thunderbird.feature.navigation.changelog.api.ChangeLogMode
 
 class ChangelogViewModel(

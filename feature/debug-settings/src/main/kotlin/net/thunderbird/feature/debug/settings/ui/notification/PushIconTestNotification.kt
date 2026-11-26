@@ -1,4 +1,4 @@
-package net.thunderbird.feature.debug.settings.notification
+package net.thunderbird.feature.debug.settings.ui.notification
 
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.notification.api.NotificationChannel

@@ -1,4 +1,4 @@
-package net.thunderbird.feature.debug.settings.featureflag
+package net.thunderbird.feature.debug.settings.ui.featureflag
 
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.persistentMapOf

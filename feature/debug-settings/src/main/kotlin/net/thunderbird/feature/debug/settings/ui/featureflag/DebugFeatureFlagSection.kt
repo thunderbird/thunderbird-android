@@ -1,4 +1,4 @@
-package net.thunderbird.feature.debug.settings.featureflag
+package net.thunderbird.feature.debug.settings.ui.featureflag
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement

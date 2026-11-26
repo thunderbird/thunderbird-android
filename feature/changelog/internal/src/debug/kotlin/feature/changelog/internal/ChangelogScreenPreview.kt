@@ -4,9 +4,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import kotlinx.collections.immutable.persistentListOf
 import net.thunderbird.components.ui.bolt.PreviewWithThemesLightDark
-import net.thunderbird.feature.changelog.internal.ChangeType
-import net.thunderbird.feature.changelog.internal.ChangelogScreen
-import net.thunderbird.feature.changelog.internal.ReleaseUiModel
+import net.thunderbird.feature.changelog.internal.ui.ChangeType
+import net.thunderbird.feature.changelog.internal.ui.ChangelogScreen
+import net.thunderbird.feature.changelog.internal.ui.ReleaseUiModel
 
 @Composable
 @PreviewLightDark

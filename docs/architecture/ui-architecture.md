@@ -262,6 +262,15 @@ graph LR
 - **⚡ [Actions](ui-architecture.md#-actions)**: Operations triggered by the ViewModel to interact with the domain layer.
 - **📊 [Results](ui-architecture.md#-results)**: Responses from the domain layer that are processed by the ViewModel to update the state.
 
+**Enforced conventions**: the Konsist test `ValidateMviConventions` (in `quality/konsist`) checks that:
+- ViewModels extend `BaseViewModel` or `BaseStateMachineViewModel`
+- a contract with a nested `ViewModel` declares `State`, `Event` and `Effect`, nested or as its MVI type arguments
+- ViewModels and `*Screen` composables live in `ui` packages
+- only `*Screen` composables and `koinViewModel()` entry points take a ViewModel; others take `state` and `onEvent`
+
+Run it with `./gradlew :quality:konsist:test`. Existing violations are listed in `MviBaseline.kt`. When you fix one,
+remove its entry: the test fails on entries that no longer match.
+
 ### 🧩 Components
 
 The MVI architecture is implemented using the following components:

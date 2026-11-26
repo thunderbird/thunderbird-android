@@ -1,9 +1,9 @@
 package net.thunderbird.feature.debug.settings.inject
 
-import net.thunderbird.feature.debug.settings.featureflag.DebugFeatureFlagSectionViewModel
 import net.thunderbird.feature.debug.settings.navigation.DefaultSecretDebugSettingsNavigation
 import net.thunderbird.feature.debug.settings.navigation.SecretDebugSettingsNavigation
-import net.thunderbird.feature.debug.settings.notification.DebugNotificationSectionViewModel
+import net.thunderbird.feature.debug.settings.ui.featureflag.DebugFeatureFlagSectionViewModel
+import net.thunderbird.feature.debug.settings.ui.notification.DebugNotificationSectionViewModel
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 

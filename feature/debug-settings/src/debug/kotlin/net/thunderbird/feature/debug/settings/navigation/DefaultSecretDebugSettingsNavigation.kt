@@ -5,7 +5,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.toRoute
 import net.thunderbird.core.ui.navigation.deepLinkComposable
-import net.thunderbird.feature.debug.settings.SecretDebugSettingsScreen
+import net.thunderbird.feature.debug.settings.ui.SecretDebugSettingsScreen
 
 internal class DefaultSecretDebugSettingsNavigation : SecretDebugSettingsNavigation {
     override fun registerRoutes(

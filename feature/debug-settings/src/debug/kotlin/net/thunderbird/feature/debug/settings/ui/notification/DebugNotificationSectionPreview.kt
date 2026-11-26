@@ -1,4 +1,4 @@
-package net.thunderbird.feature.debug.settings.notification
+package net.thunderbird.feature.debug.settings.ui.notification
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable

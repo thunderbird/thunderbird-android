@@ -1,4 +1,4 @@
-package net.thunderbird.feature.debug.settings.featureflag
+package net.thunderbird.feature.debug.settings.ui.featureflag
 
 import androidx.lifecycle.viewModelScope
 import kotlinx.collections.immutable.ImmutableMap
@@ -13,10 +13,10 @@ import net.thunderbird.core.featureflag.keys.GeneratedFeatureFlagKey
 import net.thunderbird.core.featureflag.provider.BundledFeatureFlagDefaults
 import net.thunderbird.core.featureflag.provider.RuntimeDebugOverrideFeatureFlagProvider
 import net.thunderbird.core.ui.contract.mvi.BaseViewModel
-import net.thunderbird.feature.debug.settings.featureflag.DebugFeatureFlagSectionContract.Effect
-import net.thunderbird.feature.debug.settings.featureflag.DebugFeatureFlagSectionContract.Event
-import net.thunderbird.feature.debug.settings.featureflag.DebugFeatureFlagSectionContract.State
-import net.thunderbird.feature.debug.settings.featureflag.DebugFeatureFlagSectionContract.ViewModel
+import net.thunderbird.feature.debug.settings.ui.featureflag.DebugFeatureFlagSectionContract.Effect
+import net.thunderbird.feature.debug.settings.ui.featureflag.DebugFeatureFlagSectionContract.Event
+import net.thunderbird.feature.debug.settings.ui.featureflag.DebugFeatureFlagSectionContract.State
+import net.thunderbird.feature.debug.settings.ui.featureflag.DebugFeatureFlagSectionContract.ViewModel
 
 class DebugFeatureFlagSectionViewModel(
     bundleDefaults: BundledFeatureFlagDefaults,

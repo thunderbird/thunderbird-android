@@ -1,4 +1,4 @@
-package net.thunderbird.feature.debug.settings
+package net.thunderbird.feature.debug.settings.ui
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -18,9 +18,10 @@ import net.thunderbird.components.ui.bolt.organism.TopAppBar
 import net.thunderbird.components.ui.bolt.template.pager.HorizontalTabPagerSecondary
 import net.thunderbird.components.ui.bolt.template.pager.TabSecondaryConfig
 import net.thunderbird.components.ui.bolt.theme.BoltTheme
-import net.thunderbird.feature.debug.settings.featureflag.DebugFeatureFlagSection
+import net.thunderbird.feature.debug.settings.R
 import net.thunderbird.feature.debug.settings.navigation.SecretDebugSettingsRoute
-import net.thunderbird.feature.debug.settings.notification.DebugNotificationSection
+import net.thunderbird.feature.debug.settings.ui.featureflag.DebugFeatureFlagSection
+import net.thunderbird.feature.debug.settings.ui.notification.DebugNotificationSection
 import net.thunderbird.feature.notification.api.ui.InAppNotificationScaffold
 
 @Composable
