@@ -55,8 +55,8 @@ an identifier shared across devices or provided by a mail server. In particular,
 
 The global store uses these identifiers at repository boundaries:
 
-- `AccountId` is the existing UUID-backed account identifier. The global mail database uses it to retain account scope
-  and does not replace or regenerate it during cutover.
+- `AccountId` is the UUID-backed account identifier. During cutover, each existing real account receives a UUIDv7
+  replacement. The global mail database uses the replacement to retain account scope.
 - `FolderId` identifies one local folder record across all accounts, replacing the legacy account-local folder number.
 - `MessageId` identifies one local message record across all accounts. Copies of a message in different folders are
   separate local records and have separate identifiers.
@@ -77,14 +77,21 @@ The migration has one authoritative mail store at a time:
 2. For every POP3 account, create and verify the portable mail archive defined by RFC 0008. A user may decline the
    archive after an explicit warning and continue at their own risk. For IMAP accounts, offer the same archive as an
    optional action.
-3. Read legacy storage without modifying it. Import durable data into an unpublished global database.
-4. Rebuild derived data, then validate the imported database, queued operations, attachments, and representative search
-   queries.
-5. Set the durable cutover state and switch repository bindings to the global implementation.
-6. Remove all legacy database and attachment artifacts, including data left behind by previously deleted accounts.
+3. Generate and durably record one old-to-new UUIDv7 `AccountId` mapping for each existing real account. Copy its
+   namespaced settings without deleting the old settings, keep the copied account disabled, and retain its previous
+   enabled state. Read legacy storage without modifying it and import durable data into an unpublished global database
+   using the new account IDs.
+4. Rebuild derived data, then validate the imported database, migrated settings, queued operations, attachments, and
+   representative search queries.
+5. Publish the new account IDs, restore each account's previous enabled state, set the durable cutover state, and switch
+   repository bindings to the global implementation.
+6. Remove old account settings and all legacy database and attachment artifacts, including data left behind by
+   previously deleted accounts.
 
-Before cutover, legacy storage remains authoritative. After cutover, global storage remains authoritative. There are no
-dual reads, dual writes, or fallback to legacy storage.
+Before cutover, the old account list, settings, and legacy mail storage remain authoritative. Copied settings under new
+account namespaces are not published through the account list. After cutover, the new account IDs and global storage
+remain authoritative. There are no dual reads, dual writes, or fallback to legacy mail storage. Durable migration phases
+and stable old-to-new mappings make cutover restart-safe.
 
 The free-space check is a blocking pre-flight requirement, not a warning. Migration temporarily needs enough storage for
 the legacy and global stores to coexist, along with working space for database transactions and rebuilt data. If the
@@ -121,10 +128,11 @@ import is Android-only.
 This RFC does not:
 
 - redesign or normalize the legacy mail schema or queue behavior
-- move account settings or profile runtime storage into the global database
+- move account settings or profile runtime storage into the global database. Account settings remain in their existing
+  storage after their keys are migrated to the new account namespace
 - introduce profiles or synchronization
 - define portable-data or backup formats. RFC 0008 owns that work.
-- select or migrate UUID identifier formats. RFC 0009 owns that work
+- define UUID identifier policy. RFC 0009 owns the policy and specifies the account ID replacement executed here
 - add remote synchronization, telemetry, or remote migration reporting
 - add iOS or Web persistence support
 
