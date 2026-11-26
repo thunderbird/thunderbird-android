@@ -20,6 +20,7 @@ data class MessageDetailsUi(
 data class CryptoDetails(
     val cryptoStatus: MessageCryptoDisplayStatus,
     val isClickable: Boolean,
+    val customDescription: String? = null,
 )
 
 data class Participant(

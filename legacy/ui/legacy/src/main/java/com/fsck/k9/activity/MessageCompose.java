@@ -22,6 +22,7 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.content.IntentSender.SendIntentException;
 import android.content.pm.ActivityInfo;
+import android.content.res.ColorStateList;
 import android.graphics.Typeface;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -32,6 +33,7 @@ import android.os.Handler;
 import android.os.Parcelable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.TypedValue;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -54,6 +56,7 @@ import androidx.annotation.StringRes;
 import androidx.appcompat.app.ActionBar;
 import androidx.core.content.IntentCompat;
 import androidx.core.os.BundleCompat;
+import androidx.core.widget.ImageViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons;
@@ -129,6 +132,7 @@ import com.fsck.k9.message.PgpMessageBuilder;
 import com.fsck.k9.message.QuotedTextMode;
 import com.fsck.k9.message.SimpleMessageBuilder;
 import com.fsck.k9.message.SimpleMessageFormat;
+import com.fsck.k9.message.SmimeMessageBuilder;
 import com.fsck.k9.ui.R;
 import com.fsck.k9.ui.base.BaseActivity;
 import com.fsck.k9.ui.compose.IntentData;
@@ -148,6 +152,7 @@ import net.thunderbird.components.core.outcome.OutcomeKt;
 import net.thunderbird.core.preference.GeneralSettingsManager;
 import net.thunderbird.core.ui.theme.manager.ThemeManager;
 import net.thunderbird.feature.mail.message.composer.dialog.SentFolderNotFoundConfirmationDialogFragmentFactory;
+import net.thunderbird.feature.mail.message.composer.dialog.SmimeSigningDialogFragmentFactory;
 import net.thunderbird.feature.mail.message.composer.signature.SignaturePreviewWebView;
 import net.thunderbird.feature.notification.api.command.outcome.CommandExecutionFailed;
 import net.thunderbird.feature.notification.api.content.NotificationFactoryCoroutineCompat;
@@ -167,6 +172,13 @@ import static app.k9mail.core.android.common.camera.CameraCaptureHandler.REQUEST
 import static net.thunderbird.feature.mail.message.composer.dialog.SentFolderNotFoundConfirmationDialogFragmentFactory.ACCOUNT_UUID_ARG;
 import static net.thunderbird.feature.mail.message.composer.dialog.SentFolderNotFoundConfirmationDialogFragmentFactory.RESULT_CODE_ASSIGN_SENT_FOLDER_REQUEST_KEY;
 import static net.thunderbird.feature.mail.message.composer.dialog.SentFolderNotFoundConfirmationDialogFragmentFactory.RESULT_CODE_SEND_AND_DELETE_REQUEST_KEY;
+import static net.thunderbird.feature.mail.message.composer.dialog.SmimeSigningDialogFragmentFactory.ACTION_DISABLE_SIGNING;
+import static net.thunderbird.feature.mail.message.composer.dialog.SmimeSigningDialogFragmentFactory.ACTION_SEND_UNSIGNED;
+import static net.thunderbird.feature.mail.message.composer.dialog.SmimeSigningDialogFragmentFactory.ACTION_SIGN;
+import static net.thunderbird.feature.mail.message.composer.dialog.SmimeSigningDialogFragmentFactory.REQUEST_KEY_SMIME_SIGNING_RESULT;
+import static net.thunderbird.feature.mail.message.composer.dialog.SmimeSigningDialogFragmentFactory.RESULT_ACTION;
+import static net.thunderbird.feature.mail.message.composer.dialog.SmimeSigningDialogFragmentFactory.RESULT_CERTIFICATE_ALIAS;
+import static net.thunderbird.feature.mail.message.composer.dialog.SmimeSigningDialogFragmentFactory.RESULT_SET_AS_DEFAULT;
 import static net.thunderbird.feature.notification.api.content.SentFolderNotFoundNotificationKt.SentFolderNotFoundNotification;
 
 
@@ -210,6 +222,14 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
     private static final String STATE_ALREADY_NOTIFIED_USER_OF_EMPTY_SUBJECT = "alreadyNotifiedUserOfEmptySubject";
     private static final String STATE_ACTIVE_IN_APP_NOTIFICATIONS =
             "com.fsck.k9.activity.MessageCompose.activeInAppNotifications";
+    private static final String STATE_SMIME_SIGN_ENABLED =
+            "com.fsck.k9.activity.MessageCompose.smimeSignEnabled";
+    private static final String STATE_SMIME_CERTIFICATE_ALIAS =
+            "com.fsck.k9.activity.MessageCompose.smimeCertificateAlias";
+    private static final String STATE_SMIME_FIRST_SEND_PROMPT_HANDLED =
+            "com.fsck.k9.activity.MessageCompose.smimeFirstSendPromptHandled";
+    private static final String STATE_PENDING_SEND_AFTER_SMIME_PROMPT =
+            "com.fsck.k9.activity.MessageCompose.pendingSendAfterSmimePrompt";
 
     private static final String FRAGMENT_WAITING_FOR_ATTACHMENT = "waitingForAttachment";
     private static final String FRAGMENT_ENCRYPTING_MESSAGE = "encryptingMessage";
@@ -260,6 +280,8 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
         new NotificationDismisserCompat(notificationDismisser);
     private final SentFolderNotFoundConfirmationDialogFragmentFactory sentFolderNotFoundDialogFragmentFactory =
         DI.get(SentFolderNotFoundConfirmationDialogFragmentFactory.class);
+    private final SmimeSigningDialogFragmentFactory smimeSigningDialogFragmentFactory =
+        DI.get(SmimeSigningDialogFragmentFactory.class);
 
     private final Set<Integer> activeInAppNotifications = new HashSet<>();
 
@@ -321,6 +343,12 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
     private boolean sendMessageHasBeenTriggered = false;
     private boolean ignoreSentFolderNotAssigned = false;
 
+    private boolean smimeSignEnabled = false;
+    private String smimeCertificateAlias = null;
+    private boolean hasHandledFirstSendSmimePrompt = false;
+    private boolean pendingSendAfterSmimePrompt = false;
+    private ImageView smimeSignStatusView;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -375,6 +403,11 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
 
         chooseIdentityView = findViewById(R.id.identity);
         chooseIdentityView.setOnClickListener(this);
+
+        smimeSignStatusView = findViewById(R.id.smime_sign_status);
+        smimeSignStatusView.setOnClickListener(this);
+        initializeSmimeStateFromAccount();
+        updateSmimeSignStatusIcon();
 
         ReplyToView replyToView = new ReplyToView(this);
         replyToPresenter = new ReplyToPresenter(replyToView);
@@ -612,6 +645,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
             currentMessageBuilder.reattachCallback(this);
         }
         setupSentFolderNotFoundDialogResults();
+        setupSmimeSigningDialogResults();
 
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
@@ -648,6 +682,119 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
                 }
             }
         );
+    }
+
+    private void setupSmimeSigningDialogResults() {
+        getSupportFragmentManager().setFragmentResultListener(
+            REQUEST_KEY_SMIME_SIGNING_RESULT,
+            this,
+            (requestKey, result) -> {
+                if (!REQUEST_KEY_SMIME_SIGNING_RESULT.equals(requestKey)) {
+                    return;
+                }
+                String actionResult = result.getString(RESULT_ACTION);
+                String selectedAlias = result.getString(RESULT_CERTIFICATE_ALIAS);
+                boolean setAsDefault = result.getBoolean(RESULT_SET_AS_DEFAULT, false);
+                boolean shouldContinueSending = pendingSendAfterSmimePrompt;
+                pendingSendAfterSmimePrompt = false;
+
+                if (ACTION_SIGN.equals(actionResult) && !TextUtils.isEmpty(selectedAlias)) {
+                    smimeCertificateAlias = selectedAlias;
+                    smimeSignEnabled = true;
+                    hasHandledFirstSendSmimePrompt = true;
+                    persistSmimeAccountSettings(selectedAlias, setAsDefault, true);
+                    updateSmimeSignStatusIcon();
+                    invalidateOptionsMenu();
+                    if (shouldContinueSending) {
+                        performSendAfterChecks();
+                    }
+                } else if (ACTION_SEND_UNSIGNED.equals(actionResult)) {
+                    hasHandledFirstSendSmimePrompt = true;
+                    persistSmimeAccountSettings(
+                        account.getSmimeSignCertificateAlias(),
+                        account.isSmimeSignByDefault(),
+                        true
+                    );
+                    if (shouldContinueSending) {
+                        performSendAfterChecks();
+                    }
+                } else if (ACTION_DISABLE_SIGNING.equals(actionResult)) {
+                    smimeSignEnabled = false;
+                    updateSmimeSignStatusIcon();
+                    invalidateOptionsMenu();
+                }
+            }
+        );
+    }
+
+    private void persistSmimeAccountSettings(
+        @Nullable String certificateAlias,
+        boolean signByDefault,
+        boolean hasPromptedSmimeSigning
+    ) {
+        LegacyAccount updated = accountManager.updateSync(
+            account.getId(),
+            current -> current.updateSmimeSigningSettings(certificateAlias, signByDefault, hasPromptedSmimeSigning)
+        );
+        if (updated != null) {
+            account = updated;
+        }
+    }
+
+    private void initializeSmimeStateFromAccount() {
+        smimeCertificateAlias = account.getSmimeSignCertificateAlias();
+        smimeSignEnabled = account.isSmimeSignByDefault() && account.hasSmimeSignCertificate();
+        hasHandledFirstSendSmimePrompt = false;
+        pendingSendAfterSmimePrompt = false;
+    }
+
+    private boolean shouldPromptForFirstTimeSmimeSigning() {
+        return !account.isOpenPgpProviderConfigured()
+            && !smimeSignEnabled
+            && !account.getHasPromptedSmimeSigning()
+            && !account.hasSmimeSignCertificate()
+            && !hasHandledFirstSendSmimePrompt;
+    }
+
+    private void showSmimeSigningDialog(boolean isFirstTimeSendPrompt) {
+        pendingSendAfterSmimePrompt = isFirstTimeSendPrompt;
+        String currentAlias = !TextUtils.isEmpty(smimeCertificateAlias)
+            ? smimeCertificateAlias
+            : account.getSmimeSignCertificateAlias();
+        smimeSigningDialogFragmentFactory.show(
+            getSupportFragmentManager(),
+            currentAlias,
+            account.isSmimeSignByDefault(),
+            smimeSignEnabled,
+            isFirstTimeSendPrompt
+        );
+    }
+
+    private void updateSmimeSignStatusIcon() {
+        if (smimeSignStatusView == null) {
+            return;
+        }
+        if (account.isOpenPgpProviderConfigured()) {
+            smimeSignStatusView.setVisibility(View.GONE);
+            return;
+        }
+
+        smimeSignStatusView.setVisibility(View.VISIBLE);
+        boolean isActive = smimeSignEnabled && !TextUtils.isEmpty(smimeCertificateAlias);
+        int colorAttr = isActive ? R.attr.openpgp_blue : R.attr.openpgp_dark_grey;
+        ImageViewCompat.setImageTintList(smimeSignStatusView, ColorStateList.valueOf(resolveThemeColor(colorAttr)));
+        smimeSignStatusView.setAlpha(isActive ? 1.0f : 0.6f);
+        smimeSignStatusView.setContentDescription(getString(
+            isActive
+                ? R.string.smime_sign_status_on_content_description
+                : R.string.smime_sign_status_off_content_description
+        ));
+    }
+
+    private int resolveThemeColor(int attrResId) {
+        TypedValue typedValue = new TypedValue();
+        getTheme().resolveAttribute(attrResId, typedValue, true);
+        return typedValue.data;
     }
 
     private void fetchAccount(Intent intent) {
@@ -768,6 +915,10 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
         outState.putBoolean(STATE_KEY_CHANGES_MADE_SINCE_LAST_SAVE, changesMadeSinceLastSave);
         outState.putBoolean(STATE_ALREADY_NOTIFIED_USER_OF_EMPTY_SUBJECT, alreadyNotifiedUserOfEmptySubject);
         outState.putIntegerArrayList(STATE_ACTIVE_IN_APP_NOTIFICATIONS, new ArrayList<>(activeInAppNotifications));
+        outState.putBoolean(STATE_SMIME_SIGN_ENABLED, smimeSignEnabled);
+        outState.putString(STATE_SMIME_CERTIFICATE_ALIAS, smimeCertificateAlias);
+        outState.putBoolean(STATE_SMIME_FIRST_SEND_PROMPT_HANDLED, hasHandledFirstSendSmimePrompt);
+        outState.putBoolean(STATE_PENDING_SEND_AFTER_SMIME_PROMPT, pendingSendAfterSmimePrompt);
 
         replyToPresenter.onSaveInstanceState(outState);
         recipientPresenter.onSaveInstanceState(outState);
@@ -813,8 +964,13 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
         if (activeInAppNotifications != null && !activeInAppNotifications.isEmpty()) {
             this.activeInAppNotifications.addAll(activeInAppNotifications);
         }
+        smimeSignEnabled = savedInstanceState.getBoolean(STATE_SMIME_SIGN_ENABLED, smimeSignEnabled);
+        smimeCertificateAlias = savedInstanceState.getString(STATE_SMIME_CERTIFICATE_ALIAS, smimeCertificateAlias);
+        hasHandledFirstSendSmimePrompt = savedInstanceState.getBoolean(STATE_SMIME_FIRST_SEND_PROMPT_HANDLED, false);
+        pendingSendAfterSmimePrompt = savedInstanceState.getBoolean(STATE_PENDING_SEND_AFTER_SMIME_PROMPT, false);
 
         updateFrom();
+        updateSmimeSignStatusIcon();
 
         updateMessageFormat();
     }
@@ -844,6 +1000,11 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
             PgpMessageBuilder pgpBuilder = PgpMessageBuilder.newInstance();
             recipientPresenter.builderSetProperties(pgpBuilder, cryptoStatus);
             builder = pgpBuilder;
+        } else if (!isDraft && smimeSignEnabled && !TextUtils.isEmpty(smimeCertificateAlias)) {
+            SmimeMessageBuilder smimeBuilder = SmimeMessageBuilder.newInstance();
+            smimeBuilder.setCertificateAlias(smimeCertificateAlias);
+            recipientPresenter.builderSetProperties(smimeBuilder);
+            builder = smimeBuilder;
         } else {
             builder = SimpleMessageBuilder.newInstance();
             recipientPresenter.builderSetProperties(builder);
@@ -945,6 +1106,11 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
         if (account.isUploadSentMessages()
             && !ignoreSentFolderNotAssigned && !account.hasSentFolder()) {
             sentFolderNotFoundDialogFragmentFactory.show(account.getId().toString(), getSupportFragmentManager());
+            return;
+        }
+
+        if (shouldPromptForFirstTimeSmimeSigning()) {
+            showSmimeSigningDialog(true);
             return;
         }
 
@@ -1133,6 +1299,9 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
             // that doesn't have this setting checked.
             recipientPresenter.onSwitchAccount(this.account);
             quotedMessagePresenter.onSwitchAccount(this.account);
+            initializeSmimeStateFromAccount();
+            updateSmimeSignStatusIcon();
+            invalidateOptionsMenu();
 
             // not sure how to handle mFolder, mSourceMessage?
         }
@@ -1261,6 +1430,8 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
     public void onClick(View view) {
         if (view.getId() == R.id.identity) {
             showDialog(DIALOG_CHOOSE_IDENTITY);
+        } else if (view.getId() == R.id.smime_sign_status) {
+            showSmimeSigningDialog(false);
         }
     }
 
@@ -1308,6 +1479,8 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
             showPopupMenu(attachmentMenuAnchor);
         } else if (id == R.id.read_receipt) {
             onReadReceipt();
+        } else if (id == R.id.smime_sign) {
+            showSmimeSigningDialog(false);
         } else {
             return super.onOptionsItemSelected(item);
         }
@@ -1337,6 +1510,16 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
         super.onPrepareOptionsMenu(menu);
 
         recipientPresenter.onPrepareOptionsMenu(menu);
+
+        MenuItem smimeSignItem = menu.findItem(R.id.smime_sign);
+        if (smimeSignItem != null) {
+            boolean showSmime = !account.isOpenPgpProviderConfigured();
+            smimeSignItem.setVisible(showSmime);
+            if (showSmime) {
+                boolean isActive = smimeSignEnabled && !TextUtils.isEmpty(smimeCertificateAlias);
+                smimeSignItem.setTitle(isActive ? R.string.smime_sign_enabled : R.string.smime_sign_enable);
+            }
+        }
 
         return true;
     }

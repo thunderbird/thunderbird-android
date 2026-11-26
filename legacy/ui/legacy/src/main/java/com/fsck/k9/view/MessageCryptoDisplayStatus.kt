@@ -7,6 +7,7 @@ import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons
 import com.fsck.k9.mailstore.CryptoResultAnnotation
 import com.fsck.k9.mailstore.CryptoResultAnnotation.CryptoError
 import com.fsck.k9.ui.R
+import net.thunderbird.feature.mail.message.composer.smime.SmimeVerificationStatus
 import org.openintents.openpgp.OpenPgpDecryptionResult.RESULT_ENCRYPTED
 import org.openintents.openpgp.OpenPgpDecryptionResult.RESULT_INSECURE
 import org.openintents.openpgp.OpenPgpDecryptionResult.RESULT_NOT_ENCRYPTED
@@ -200,6 +201,42 @@ enum class MessageCryptoDisplayStatus(
         titleTextRes = R.string.crypto_msg_title_encrypted_unknown,
         descriptionTextRes = R.string.crypto_msg_unsupported_signed,
     ),
+    SMIME_SIGN_VERIFIED(
+        colorAttr = R.attr.openpgp_green,
+        statusIconRes = R.drawable.ic_smime_sign,
+        titleTextRes = R.string.crypto_msg_title_smime_signed,
+        descriptionTextRes = R.string.crypto_msg_smime_sign_verified,
+    ),
+    SMIME_SIGN_UNTRUSTED(
+        colorAttr = R.attr.openpgp_blue,
+        statusIconRes = R.drawable.ic_smime_sign,
+        titleTextRes = R.string.crypto_msg_title_smime_signed,
+        descriptionTextRes = R.string.crypto_msg_smime_sign_untrusted,
+    ),
+    SMIME_SIGN_MISMATCH(
+        colorAttr = R.attr.openpgp_orange,
+        statusIconRes = Icons.Outlined.Help,
+        titleTextRes = R.string.crypto_msg_title_smime_signed,
+        descriptionTextRes = R.string.crypto_msg_smime_sign_mismatch,
+    ),
+    SMIME_SIGN_EXPIRED(
+        colorAttr = R.attr.openpgp_orange,
+        statusIconRes = Icons.Outlined.Help,
+        titleTextRes = R.string.crypto_msg_title_smime_signed,
+        descriptionTextRes = R.string.crypto_msg_smime_sign_expired,
+    ),
+    SMIME_SIGN_ERROR(
+        colorAttr = R.attr.openpgp_red,
+        statusIconRes = Icons.Outlined.Help,
+        titleTextRes = R.string.crypto_msg_title_smime_sign_error,
+        descriptionTextRes = R.string.crypto_msg_smime_sign_error,
+    ),
+    SMIME_SIGN_INCOMPLETE(
+        colorAttr = R.attr.openpgp_black,
+        statusIconRes = Icons.Outlined.Help,
+        titleTextRes = R.string.crypto_msg_title_smime_signed,
+        descriptionTextRes = R.string.crypto_msg_smime_sign_incomplete,
+    ),
     ;
 
     fun hasAssociatedKey(): Boolean {
@@ -244,6 +281,23 @@ enum class MessageCryptoDisplayStatus(
                 CryptoError.OPENPGP_SIGNED_API_ERROR -> UNENCRYPTED_SIGN_ERROR
                 CryptoError.OPENPGP_ENCRYPTED_API_ERROR -> ENCRYPTED_ERROR
                 CryptoError.OPENPGP_ENCRYPTED_NO_PROVIDER -> ENCRYPTED_NO_PROVIDER
+                CryptoError.SMIME_OK -> getDisplayStatusForSmimeResult(cryptoResult)
+                CryptoError.SMIME_SIGNED_BUT_INCOMPLETE -> SMIME_SIGN_INCOMPLETE
+            }
+        }
+
+        private fun getDisplayStatusForSmimeResult(
+            cryptoResult: CryptoResultAnnotation,
+        ): MessageCryptoDisplayStatus {
+            return when (cryptoResult.smimeVerificationResult?.status) {
+                SmimeVerificationStatus.VALID_TRUSTED -> SMIME_SIGN_VERIFIED
+                SmimeVerificationStatus.VALID_UNTRUSTED -> SMIME_SIGN_UNTRUSTED
+                SmimeVerificationStatus.VALID_SENDER_MISMATCH -> SMIME_SIGN_MISMATCH
+                SmimeVerificationStatus.VALID_EXPIRED -> SMIME_SIGN_EXPIRED
+                SmimeVerificationStatus.INVALID_SIGNATURE,
+                SmimeVerificationStatus.ERROR,
+                null,
+                -> SMIME_SIGN_ERROR
             }
         }
 

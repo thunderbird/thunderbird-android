@@ -45,6 +45,18 @@
             style="@style/ComposeEditText"
             />
 
+        <ImageView
+            android:id="@+id/smime_sign_status"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_vertical"
+            android:padding="8dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/smime_sign_enable"
+            app:srcCompat="@drawable/ic_smime_sign"
+            app:tint="?attr/openpgp_dark_grey"
+            />
+
         <com.fsck.k9.view.ToolableViewAnimator
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

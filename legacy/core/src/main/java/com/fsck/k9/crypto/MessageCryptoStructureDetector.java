@@ -32,6 +32,8 @@ public class MessageCryptoStructureDetector {
     private static final String PROTOCOL_PARAMETER = "protocol";
     private static final String APPLICATION_PGP_ENCRYPTED = "application/pgp-encrypted";
     private static final String APPLICATION_PGP_SIGNATURE = "application/pgp-signature";
+    private static final String APPLICATION_PKCS7_SIGNATURE = "application/pkcs7-signature";
+    private static final String APPLICATION_X_PKCS7_SIGNATURE = "application/x-pkcs7-signature";
     private static final String TEXT_PLAIN = "text/plain";
     // APPLICATION/PGP is a special case which occurs from mutt. see http://www.mutt.org/doc/PGP-Notes.txt
     private static final String APPLICATION_PGP = "application/pgp";
@@ -230,7 +232,9 @@ public class MessageCryptoStructureDetector {
 
         // for partially downloaded messages the protocol parameter isn't yet available, so we'll just assume it's ok
         boolean dataUnavailable = protocolParameter == null && mimeMultipart.getBodyPart(0).getBody() == null;
-        boolean protocolMatches = isSameMimeType(protocolParameter, mimeMultipart.getBodyPart(1).getMimeType());
+        String signaturePartMimeType = mimeMultipart.getBodyPart(1).getMimeType();
+        boolean protocolMatches = isSameMimeType(protocolParameter, signaturePartMimeType) ||
+                (isSmimeSignatureMimeType(protocolParameter) && isSmimeSignatureMimeType(signaturePartMimeType));
         return dataUnavailable || protocolMatches;
     }
 
@@ -270,6 +274,42 @@ public class MessageCryptoStructureDetector {
 
         String protocolParameter = MimeUtility.getHeaderParameter(part.getContentType(), PROTOCOL_PARAMETER);
         return APPLICATION_PGP_SIGNATURE.equalsIgnoreCase(protocolParameter);
+    }
+
+    public static boolean isMultipartSignedSmimeProtocol(Part part) {
+        if (!isSameMimeType(part.getMimeType(), MULTIPART_SIGNED)) {
+            return false;
+        }
+
+        String protocolParameter = MimeUtility.getHeaderParameter(part.getContentType(), PROTOCOL_PARAMETER);
+        if (isSmimeSignatureMimeType(protocolParameter)) {
+            return true;
+        }
+        if (protocolParameter == null && part.getBody() instanceof MimeMultipart) {
+            MimeMultipart multipart = (MimeMultipart) part.getBody();
+            if (multipart.getCount() == 2) {
+                return isSmimeSignatureMimeType(multipart.getBodyPart(1).getMimeType());
+            }
+        }
+        return false;
+    }
+
+    public static boolean hasSmimeSignedPart(@Nullable Part startPart) {
+        if (startPart == null) {
+            return false;
+        }
+        List<Part> signedParts = findMultipartSignedParts(startPart, new MessageCryptoAnnotations());
+        for (Part part : signedParts) {
+            if (isMultipartSignedSmimeProtocol(part)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static boolean isSmimeSignatureMimeType(@Nullable String mimeType) {
+        return APPLICATION_PKCS7_SIGNATURE.equalsIgnoreCase(mimeType) ||
+                APPLICATION_X_PKCS7_SIGNATURE.equalsIgnoreCase(mimeType);
     }
 
     @VisibleForTesting

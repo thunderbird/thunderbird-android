@@ -514,6 +514,20 @@
     <string name="account_settings_crypto_encrypt_all_drafts">Store all drafts encrypted</string>
     <string name="account_settings_crypto_encrypt_all_drafts_on">All drafts will be stored encrypted</string>
     <string name="account_settings_crypto_encrypt_all_drafts_off">Encrypt drafts only if encryption is enabled</string>
+    <string name="account_settings_smime_category">S/MIME</string>
+    <string name="account_settings_smime_sign_certificate">S/MIME signing certificate</string>
+    <string name="account_settings_smime_certificate_none">None selected</string>
+    <string name="account_settings_smime_sign_by_default">Sign messages by default</string>
+    <string name="account_settings_smime_sign_by_default_on">Outgoing emails will be digitally signed with S/MIME automatically</string>
+    <string name="account_settings_smime_sign_by_default_off">Choose S/MIME signing per email</string>
+    <string name="account_settings_smime_certificate_dialog_title">S/MIME signing certificate</string>
+    <string name="account_settings_smime_certificate_dialog_message">Currently selected certificate: %1$s</string>
+    <string name="account_settings_smime_certificate_change">Change certificate</string>
+    <string name="account_settings_smime_certificate_remove">Remove</string>
+    <string name="smime_sign_enable">Sign with S/MIME</string>
+    <string name="smime_sign_enabled">S/MIME signing: On</string>
+    <string name="smime_sign_status_on_content_description">S/MIME signing enabled</string>
+    <string name="smime_sign_status_off_content_description">Sign email with S/MIME</string>
 
     <string name="account_settings_mail_check_frequency_label">Folder poll frequency</string>
 
@@ -967,6 +981,16 @@
     <string name="crypto_msg_unencrypted_sign_error">end-to-end signature contained an error</string>
     <string name="crypto_msg_incomplete_signed">must fully download message to process signature</string>
     <string name="crypto_msg_unsupported_signed">contains unsupported end-to-end signature</string>
+    <string name="crypto_msg_title_smime_signed">S/MIME digitally signed</string>
+    <string name="crypto_msg_title_smime_sign_error">Invalid S/MIME signature</string>
+    <string name="crypto_msg_smime_sign_verified">Valid trusted S/MIME signature</string>
+    <string name="crypto_msg_smime_sign_untrusted">Valid S/MIME signature (untrusted certificate)</string>
+    <string name="crypto_msg_smime_sign_mismatch">S/MIME certificate does not match sender address</string>
+    <string name="crypto_msg_smime_sign_expired">S/MIME signing certificate has expired</string>
+    <string name="crypto_msg_smime_sign_error">Signature is invalid or message was altered</string>
+    <string name="crypto_msg_smime_sign_incomplete">Download full message to verify S/MIME signature</string>
+    <string name="crypto_msg_smime_details_signer">%1$s · Signed by %2$s</string>
+    <string name="crypto_msg_smime_details_signer_and_issuer">%1$s · Signed by %2$s (issued by %3$s)</string>
     <string name="crypto_msg_unsupported_encrypted">Message is encrypted, but in an unsupported format.</string>
     <string name="crypto_msg_cancelled">Message is encrypted, but decryption was cancelled.</string>
 

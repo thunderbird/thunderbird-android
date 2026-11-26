@@ -33,8 +33,13 @@ internal class CryptoStatusItem(val cryptoDetails: CryptoDetails) : AbstractItem
             cryptoStatus.titleTextRes?.let { stringResId ->
                 titleTextView.text = context.getString(stringResId)
             }
-            cryptoStatus.descriptionTextRes?.let { stringResId ->
-                descriptionTextView.text = context.getString(stringResId)
+            val customDescription = cryptoDetails.customDescription
+            if (customDescription != null) {
+                descriptionTextView.text = customDescription
+            } else {
+                cryptoStatus.descriptionTextRes?.let { stringResId ->
+                    descriptionTextView.text = context.getString(stringResId)
+                }
             }
 
             if (cryptoDetails.isClickable) {

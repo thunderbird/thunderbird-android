@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.security.KeyChain
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -36,6 +37,7 @@ import com.fsck.k9.ui.settings.onClick
 import com.fsck.k9.ui.settings.oneTimeClickListener
 import com.fsck.k9.ui.settings.remove
 import com.fsck.k9.ui.settings.removeEntry
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.takisoft.preferencex.PreferenceFragmentCompat
 import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.NO_OPENPGP_KEY
 import net.thunderbird.core.android.account.LegacyAccount
@@ -372,6 +374,82 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         configureEnablePgpSupport(account, isPgpConfigured, pgpProviderName)
         configurePgpKey(account, pgpProvider)
         configureAutocryptTransfer(account.id)
+        configureSmimePreferences(account)
+    }
+
+    private fun configureSmimePreferences(account: LegacyAccount) {
+        val certificateAlias = account.smimeSignCertificateAlias
+        findPreference<Preference>(PREFERENCE_SMIME_SIGN_CERTIFICATE)?.apply {
+            summary = certificateAlias ?: getString(R.string.account_settings_smime_certificate_none)
+            onClick {
+                if (certificateAlias == null) {
+                    launchSmimeCertificatePicker(account.id, null)
+                } else {
+                    showSmimeCertificateOptionsDialog(account.id, certificateAlias)
+                }
+            }
+        }
+
+        findPreference<SwitchPreference>(PREFERENCE_SMIME_SIGN_BY_DEFAULT)?.apply {
+            val hasCertificate = account.hasSmimeSignCertificate()
+            isEnabled = hasCertificate
+            isChecked = hasCertificate && account.isSmimeSignByDefault
+        }
+    }
+
+    private fun showSmimeCertificateOptionsDialog(accountId: AccountId, currentAlias: String) {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(R.string.account_settings_smime_certificate_dialog_title)
+            .setMessage(getString(R.string.account_settings_smime_certificate_dialog_message, currentAlias))
+            .setPositiveButton(R.string.account_settings_smime_certificate_change) { _, _ ->
+                launchSmimeCertificatePicker(accountId, currentAlias)
+            }
+            .setNeutralButton(R.string.account_settings_smime_certificate_remove) { _, _ ->
+                clearSmimeCertificate(accountId)
+            }
+            .setNegativeButton(BaseR.string.cancel_action, null)
+            .show()
+    }
+
+    private fun launchSmimeCertificatePicker(accountId: AccountId, currentAlias: String?) {
+        val hostActivity = activity ?: return
+        KeyChain.choosePrivateKeyAlias(
+            hostActivity,
+            { selectedAlias ->
+                if (selectedAlias != null) {
+                    setSmimeCertificate(accountId, selectedAlias)
+                    hostActivity.runOnUiThread {
+                        if (isAdded) {
+                            configureSmimePreferences(getAccount())
+                        }
+                    }
+                }
+            },
+            null,
+            null,
+            null,
+            -1,
+            currentAlias,
+        )
+    }
+
+    private fun setSmimeCertificate(accountId: AccountId, certificateAlias: String) {
+        accountManager.updateSync(accountId) { currentAccount ->
+            currentAccount.copy(
+                smimeSignCertificateAlias = certificateAlias,
+                hasPromptedSmimeSigning = true,
+            )
+        }
+    }
+
+    private fun clearSmimeCertificate(accountId: AccountId) {
+        accountManager.updateSync(accountId) { currentAccount ->
+            currentAccount.copy(
+                smimeSignCertificateAlias = null,
+                isSmimeSignByDefault = false,
+            )
+        }
+        configureSmimePreferences(getAccount())
     }
 
     private fun getOpenPgpProviderName(pgpProvider: String?): String? {
@@ -539,6 +617,8 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         private const val PREFERENCE_OPENPGP_ENABLE = "openpgp_provider"
         private const val PREFERENCE_OPENPGP_KEY = "openpgp_key"
         private const val PREFERENCE_AUTOCRYPT_TRANSFER = "autocrypt_transfer"
+        private const val PREFERENCE_SMIME_SIGN_CERTIFICATE = "smime_sign_certificate"
+        private const val PREFERENCE_SMIME_SIGN_BY_DEFAULT = "smime_sign_by_default"
         private const val PREFERENCE_AUTO_SELECT_FOLDER = "auto_select_folder"
         private const val PREFERENCE_SUBSCRIBED_FOLDERS_ONLY = "subscribed_folders_only"
         private const val PREFERENCE_ARCHIVE_FOLDER = "archive_folder"

@@ -35,6 +35,12 @@
         android:icon="@drawable/ic_action_request_read_receipt_light"
         />
     <item
+        android:id="@+id/smime_sign"
+        android:title="@string/smime_sign_enable"
+        android:icon="@drawable/ic_smime_sign"
+        app:showAsAction="never"
+        />
+    <item
         android:id="@+id/openpgp_encrypt_enable"
         android:title="@string/enable_encryption"
         app:showAsAction="never"

@@ -8,11 +8,13 @@ import java.io.OutputStream;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.List;
+import java.util.Objects;
 
 import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -28,6 +30,7 @@ import com.fsck.k9.mail.Message;
 import net.thunderbird.core.common.exception.MessagingException;
 import com.fsck.k9.mail.Multipart;
 import com.fsck.k9.mail.Part;
+import com.fsck.k9.mail.filter.EOLConvertingOutputStream;
 import com.fsck.k9.mail.internet.MessageExtractor;
 import com.fsck.k9.mail.internet.MimeBodyPart;
 import com.fsck.k9.mail.internet.MimeMultipart;
@@ -40,6 +43,9 @@ import com.fsck.k9.mailstore.MessageHelper;
 import com.fsck.k9.mailstore.MimePartStreamParser;
 import com.fsck.k9.mailstore.util.FileFactory;
 import com.fsck.k9.provider.DecryptedFileProvider;
+import net.thunderbird.feature.mail.message.composer.smime.SmimeVerificationResult;
+import net.thunderbird.feature.mail.message.composer.smime.SmimeVerificationStatus;
+import net.thunderbird.feature.mail.message.composer.smime.SmimeVerifier;
 import org.apache.commons.io.IOUtils;
 import org.openintents.openpgp.IOpenPgpService2;
 import org.openintents.openpgp.OpenPgpDecryptionResult;
@@ -65,8 +71,11 @@ public class MessageCryptoHelper {
 
 
     private final Context context;
+    @Nullable
     private final String openPgpProvider;
     private final AutocryptOperations autocryptOperations;
+    @Nullable
+    private final SmimeVerifier smimeVerifier;
     private final Object callbackLock = new Object();
     private final Deque<CryptoPart> partsToProcess = new ArrayDeque<>();
 
@@ -94,16 +103,23 @@ public class MessageCryptoHelper {
 
 
     public MessageCryptoHelper(Context context, OpenPgpApiFactory openPgpApiFactory,
-            AutocryptOperations autocryptOperations, @NonNull String openPgpProvider) {
+            AutocryptOperations autocryptOperations, @Nullable String openPgpProvider) {
+        this(context, openPgpApiFactory, autocryptOperations, openPgpProvider, null);
+    }
+
+    public MessageCryptoHelper(Context context, OpenPgpApiFactory openPgpApiFactory,
+            AutocryptOperations autocryptOperations, @Nullable String openPgpProvider,
+            @Nullable SmimeVerifier smimeVerifier) {
         this.context = context.getApplicationContext();
 
         this.autocryptOperations = autocryptOperations;
         this.openPgpApiFactory = openPgpApiFactory;
         this.openPgpProvider = openPgpProvider;
+        this.smimeVerifier = smimeVerifier;
     }
 
-    public boolean isConfiguredForOpenPgpProvider(String openPgpProvider) {
-        return this.openPgpProvider.equals(openPgpProvider);
+    public boolean isConfiguredForOpenPgpProvider(@Nullable String openPgpProvider) {
+        return Objects.equals(this.openPgpProvider, openPgpProvider);
     }
 
     public void asyncStartOrResumeProcessingMessage(Message message, MessageCryptoCallback callback,
@@ -130,6 +146,9 @@ public class MessageCryptoHelper {
     }
 
     private void findPartsForMultipartEncryptionPass() {
+        if (openPgpProvider == null) {
+            return;
+        }
         List<Part> encryptedParts = MessageCryptoStructureDetector.findMultipartEncryptedParts(currentMessage);
         for (Part part : encryptedParts) {
             if (!MessageHelper.isCompletePartAvailable(part)) {
@@ -149,6 +168,24 @@ public class MessageCryptoHelper {
         List<Part> signedParts = MessageCryptoStructureDetector
                 .findMultipartSignedParts(currentMessage, messageAnnotations);
         for (Part part : signedParts) {
+            if (MessageCryptoStructureDetector.isMultipartSignedSmimeProtocol(part)) {
+                if (!MessageHelper.isCompletePartAvailable(part)) {
+                    MimeBodyPart replacementPart = getMultipartSignedContentPartIfAvailable(part);
+                    addErrorAnnotation(part, CryptoError.SMIME_SIGNED_BUT_INCOMPLETE, replacementPart);
+                    continue;
+                }
+                if (smimeVerifier != null) {
+                    CryptoPart cryptoPart = new CryptoPart(CryptoPartType.SMIME_SIGNED, part);
+                    partsToProcess.add(cryptoPart);
+                    continue;
+                }
+                MimeBodyPart replacementPart = getMultipartSignedContentPartIfAvailable(part);
+                addErrorAnnotation(part, CryptoError.SIGNED_BUT_UNSUPPORTED, replacementPart);
+                continue;
+            }
+            if (openPgpProvider == null) {
+                continue;
+            }
             if (!processSignedOnly) {
                 boolean isEncapsulatedSignature =
                         messageAnnotations.findKeyForAnnotationWithReplacementPart(part) != null;
@@ -172,6 +209,9 @@ public class MessageCryptoHelper {
     }
 
     private void findPartsForPgpInlinePass() {
+        if (openPgpProvider == null) {
+            return;
+        }
         List<Part> inlineParts = MessageCryptoStructureDetector.findPgpInlineParts(currentMessage);
         for (Part part : inlineParts) {
             if (!processSignedOnly && !MessageCryptoStructureDetector.isPartPgpInlineEncrypted(part)) {
@@ -193,6 +233,9 @@ public class MessageCryptoHelper {
     }
 
     private void findPartsForAutocryptPass() {
+        if (openPgpProvider == null) {
+            return;
+        }
         boolean otherCryptoPerformed = !messageAnnotations.isEmpty();
         if (otherCryptoPerformed) {
             return;
@@ -223,17 +266,71 @@ public class MessageCryptoHelper {
             return;
         }
 
+        currentCryptoPart = partsToProcess.peekFirst();
+        if (currentCryptoPart.type == CryptoPartType.SMIME_SIGNED) {
+            verifySmimeCurrentPart();
+            return;
+        }
+
         if (!isBoundToCryptoProviderService()) {
             connectToCryptoProviderService();
             return;
         }
 
-        currentCryptoPart = partsToProcess.peekFirst();
         if (currentCryptoPart.type == CryptoPartType.PLAIN_AUTOCRYPT) {
             processAutocryptHeaderForCurrentPart();
         } else {
             decryptOrVerifyCurrentPart();
         }
+    }
+
+    @SuppressWarnings("deprecation")
+    private void verifySmimeCurrentPart() {
+        final Part signedPart = currentCryptoPart.part;
+        final Address[] fromAddresses = currentMessage.getFrom();
+        final String senderEmail = fromAddresses != null && fromAddresses.length > 0
+                ? fromAddresses[0].getAddress()
+                : null;
+        final SmimeVerifier verifier = smimeVerifier;
+
+        new AsyncTask<Void, Void, CryptoResultAnnotation>() {
+            @Override
+            protected CryptoResultAnnotation doInBackground(Void... params) {
+                MimeBodyPart replacementPart = getMultipartSignedContentPartIfAvailable(signedPart);
+                if (verifier == null || replacementPart == null) {
+                    return CryptoResultAnnotation.createSmimeResultAnnotation(
+                            new SmimeVerificationResult(SmimeVerificationStatus.ERROR, null, null, null),
+                            replacementPart
+                    );
+                }
+                try {
+                    ByteArrayOutputStream contentBuffer = new ByteArrayOutputStream();
+                    try (EOLConvertingOutputStream eolOut = new EOLConvertingOutputStream(contentBuffer)) {
+                        replacementPart.writeTo(eolOut);
+                        eolOut.flush();
+                    }
+                    byte[] signatureData = MessageCryptoStructureDetector.getSignatureData(signedPart);
+                    SmimeVerificationResult result = signatureData != null
+                            ? verifier.verify(contentBuffer.toByteArray(), signatureData, senderEmail)
+                            : new SmimeVerificationResult(SmimeVerificationStatus.INVALID_SIGNATURE, null, null, null);
+                    return CryptoResultAnnotation.createSmimeResultAnnotation(result, replacementPart);
+                } catch (IOException | MessagingException e) {
+                    Log.e(TAG, e, "Failed to read S/MIME signed part for verification");
+                    return CryptoResultAnnotation.createSmimeResultAnnotation(
+                            new SmimeVerificationResult(SmimeVerificationStatus.ERROR, null, null, null),
+                            replacementPart
+                    );
+                }
+            }
+
+            @Override
+            protected void onPostExecute(CryptoResultAnnotation resultAnnotation) {
+                if (isCancelled) {
+                    return;
+                }
+                onCryptoOperationSuccess(resultAnnotation);
+            }
+        }.execute();
     }
 
     private boolean isBoundToCryptoProviderService() {
@@ -304,6 +401,7 @@ public class MessageCryptoHelper {
                     return;
                 }
                 case PLAIN_AUTOCRYPT:
+                case SMIME_SIGNED:
                     throw new IllegalStateException("This part type must have been handled previously!");
             }
 
@@ -820,6 +918,7 @@ public class MessageCryptoHelper {
         PGP_INLINE,
         PGP_ENCRYPTED,
         PGP_SIGNED,
+        SMIME_SIGNED,
         PLAIN_AUTOCRYPT
     }
 
