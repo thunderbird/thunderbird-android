@@ -133,7 +133,7 @@ class MessageHelperTest : RobolectricTest() {
     }
 
     @Test
-    fun toFriendly_spoofPreventionOverridesPersonal() {
+    fun toFriendly_spoofPreventionExpandsToShowBothPersonalAndAddress() {
         val address = Address("test@testor.com", "potus@whitehouse.gov")
         val friendly =
             toFriendly(
@@ -143,7 +143,21 @@ class MessageHelperTest : RobolectricTest() {
                 messageListPreferencesManager.getConfig().contactNameColor,
                 contactRepository,
             )
-        assertThat(friendly).isEqualTo("test@testor.com")
+        assertThat(friendly).isEqualTo("potus@whitehouse.gov <test@testor.com>")
+    }
+
+    @Test
+    fun toFriendly_firefoxRelayAddressShowsOriginalSenderAndRelayAddress() {
+        val address = Address("alias123@mozmail.com", "sender@example.com [via Relay]")
+        val friendly =
+            toFriendly(
+                address,
+                messageListPreferencesManager.getConfig().isShowCorrespondentNames,
+                messageListPreferencesManager.getConfig().isChangeContactNameColor,
+                messageListPreferencesManager.getConfig().contactNameColor,
+                contactRepository,
+            )
+        assertThat(friendly).isEqualTo("sender@example.com [via Relay] <alias123@mozmail.com>")
     }
 
     @Test
