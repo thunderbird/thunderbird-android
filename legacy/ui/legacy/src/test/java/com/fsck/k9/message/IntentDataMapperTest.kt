@@ -2,12 +2,13 @@ package com.fsck.k9.message
 
 import android.content.Intent
 import android.net.Uri
+import assertk.assertThat
+import assertk.assertions.isEqualTo
+import assertk.assertions.isTrue
 import com.fsck.k9.K9RobolectricTest
 import com.fsck.k9.activity.MessageCompose
 import com.fsck.k9.ui.compose.IntentData
 import com.fsck.k9.ui.compose.IntentDataMapper
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.openintents.openpgp.util.OpenPgpApi
@@ -30,9 +31,9 @@ class IntentDataMapperTest : K9RobolectricTest() {
 
         val result = intentDataMapper.initFromIntent(intent)
 
-        assertEquals(uri, result.mailToUri)
-        assertTrue(result.startedByExternalIntent)
-        assertTrue(result.shouldInitFromSendOrViewIntent)
+        assertThat(result.mailToUri).isEqualTo(uri)
+        assertThat(result.startedByExternalIntent).isTrue()
+        assertThat(result.shouldInitFromSendOrViewIntent).isTrue()
     }
 
     @Test
@@ -50,12 +51,12 @@ class IntentDataMapperTest : K9RobolectricTest() {
 
         val result = intentDataMapper.initFromIntent(intent)
 
-        assertEquals(subject, result.subject)
-        assertEquals(text, result.extraText)
-        assertEquals("text/plain", result.intentType)
-        assertEquals(listOf(streamUri), result.extraStream)
-        assertTrue(result.startedByExternalIntent)
-        assertTrue(result.shouldInitFromSendOrViewIntent)
+        assertThat(result.subject).isEqualTo(subject)
+        assertThat(result.extraText).isEqualTo(text)
+        assertThat(result.intentType).isEqualTo("text/plain")
+        assertThat(result.extraStream).isEqualTo(listOf(streamUri))
+        assertThat(result.startedByExternalIntent).isTrue()
+        assertThat(result.shouldInitFromSendOrViewIntent).isTrue()
     }
 
     @Test
@@ -73,9 +74,9 @@ class IntentDataMapperTest : K9RobolectricTest() {
 
         val result = intentDataMapper.initFromIntent(intent)
 
-        assertEquals(2, result.extraStream.size)
-        assertTrue(result.extraStream.contains(streamUri1))
-        assertTrue(result.extraStream.contains(streamUri2))
+        assertThat(result.extraStream.size).isEqualTo(2)
+        assertThat(result.extraStream.contains(streamUri1)).isTrue()
+        assertThat(result.extraStream.contains(streamUri2)).isTrue()
     }
 
     @Test
@@ -87,8 +88,8 @@ class IntentDataMapperTest : K9RobolectricTest() {
 
         val result = intentDataMapper.initFromIntent(intent)
 
-        assertEquals(trustId, result.trustId)
-        assertTrue(result.startedByExternalIntent)
+        assertThat(result.trustId).isEqualTo(trustId)
+        assertThat(result.startedByExternalIntent).isTrue()
     }
 
     @Test
@@ -97,6 +98,6 @@ class IntentDataMapperTest : K9RobolectricTest() {
 
         val result = intentDataMapper.initFromIntent(intent)
 
-        assertEquals(IntentData(), result)
+        assertThat(result).isEqualTo(IntentData())
     }
 }

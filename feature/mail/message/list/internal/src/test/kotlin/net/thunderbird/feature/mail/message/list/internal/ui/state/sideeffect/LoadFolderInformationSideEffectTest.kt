@@ -4,13 +4,13 @@ package net.thunderbird.feature.mail.message.list.internal.ui.state.sideeffect
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
+import assertk.assertFailure
 import assertk.assertThat
 import assertk.assertions.containsExactly
 import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
 import kotlin.test.Test
-import kotlin.test.assertFailsWith
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
@@ -400,13 +400,13 @@ class LoadFolderInformationSideEffectTest : BaseSideEffectHandlerTest() {
             )
 
             // Act & Assert
-            assertFailsWith<NoSuchElementException> {
+            assertFailure {
                 testSubject.handle(
                     event = MessageListEvent.LoadConfigurations,
                     oldState = MessageListState.WarmingUp(),
                     newState = MessageListState.WarmingUp(),
                 )
-            }
+            }.isInstanceOf<NoSuchElementException>()
         }
 
     @Test

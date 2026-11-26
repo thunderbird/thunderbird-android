@@ -18,7 +18,7 @@ android {
         testApplicationId = "com.fsck.k9.tests"
 
         versionCode = 39021
-        versionName = "26.0"
+        versionName = "27.0"
         versionNameSuffix = "b0"
 
         buildConfigField("String", "CLIENT_INFO_APP_NAME", "\"K-9 Mail\"")
@@ -88,14 +88,14 @@ android {
     }
 
     buildTypes {
-        val isCI = providers.gradleProperty("ci")
+        val minify = providers.gradleProperty("minify")
             .map(String::toBoolean)
-            .orElse(false)
+            .orElse(true)
         release {
             signingConfig = signingConfigs.getByType(SigningType.K9_RELEASE)
 
-            isMinifyEnabled = !isCI.get()
-            isShrinkResources = !isCI.get()
+            isMinifyEnabled = minify.get()
+            isShrinkResources = minify.get()
 
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),

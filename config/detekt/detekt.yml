@@ -477,7 +477,13 @@ potential-bugs:
       - 'kotlin.sequences.Sequence'
       - 'kotlinx.coroutines.flow.*Flow'
       - 'java.util.stream.*Stream'
-    ignoreFunctionCall: []
+      - 'assertk.Assert'
+    ignoreFunctionCall:
+      # assertk assertions that return an Assert for optional chaining but are complete on their own
+      - 'assertk.assertions.isInstanceOf'
+      - 'assertk.assertions.isNotNull'
+      - 'assertk.assertions.isSuccess'
+      - 'assertk.assertions.isFailure'
   ImplicitDefaultLocale:
     active: true
   ImplicitUnitReturnType:

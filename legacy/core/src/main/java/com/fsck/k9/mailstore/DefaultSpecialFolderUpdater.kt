@@ -86,18 +86,9 @@ class DefaultSpecialFolderUpdater(
 
         val updated = account.copy(inboxFolderId = newInboxId)
 
-        if (oldInboxId != null && folders.any { it.id == oldInboxId }) {
-            val partialUpdate = PartialUpdatableFolderDetails(
-                folderId = oldInboxId,
-                includeInUnifiedInbox = false,
-            )
-            folderDetailsRepository.update(accountId, partialUpdate)
-        }
-
         if (newInboxId != null) {
             val partialUpdate = PartialUpdatableFolderDetails(
                 folderId = newInboxId,
-                includeInUnifiedInbox = true,
                 visible = true,
                 syncEnabled = true,
                 notificationsEnabled = true,

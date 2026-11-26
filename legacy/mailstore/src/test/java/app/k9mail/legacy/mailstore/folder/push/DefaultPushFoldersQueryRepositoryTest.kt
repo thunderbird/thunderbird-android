@@ -253,7 +253,6 @@ class DefaultPushFoldersQueryRepositoryTest {
     ): RemoteFolderDetails = RemoteFolderDetails(
         folder = RemoteFolder(id = id, serverId = "serverId", name = name, type = FolderType.REGULAR),
         isInTopGroup = false,
-        isIntegrate = false,
         isSyncEnabled = true,
         isVisible = true,
         isNotificationsEnabled = true,

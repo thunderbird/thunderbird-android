@@ -9,10 +9,20 @@ plugins {
     id("net.thunderbird.gradle.plugin.quality.spotless")
 }
 
+android {
+    testOptions {
+        // AGP's Compose Preview task (since AGP 9.5) requires Android resources in unit tests, like the KMP setup
+        unitTests.isIncludeAndroidResources = true
+    }
+}
+
 androidComponents {
-    beforeVariants(selector().withBuildType("release")) { variantBuilder ->
+    beforeVariants { variantBuilder ->
+        // AGP's Compose Preview task (since AGP 9.5) requires unit tests for every variant
         @Suppress("UnstableApiUsage")
-        variantBuilder.hostTests[HostTestBuilder.UNIT_TEST_TYPE]?.enable = false
+        variantBuilder.hostTests[HostTestBuilder.UNIT_TEST_TYPE]?.enable = true
+    }
+    beforeVariants(selector().withBuildType("release")) { variantBuilder ->
         variantBuilder.enableAndroidTest = false
     }
 }

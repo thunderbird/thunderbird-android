@@ -16,7 +16,6 @@ import net.thunderbird.core.common.exception.MessagingException;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.MessageExtractor;
 import com.fsck.k9.mail.internet.MimeUtility;
-import com.fsck.k9.mailstore.AttachmentResolver;
 import com.fsck.k9.mailstore.MessageViewInfo;
 import com.fsck.k9.message.IdentityField;
 import com.fsck.k9.message.MessageBuilder;
@@ -117,9 +116,8 @@ public class QuotedMessagePresenter {
             // Add the HTML reply header to the top of the content.
             quotedHtmlContent = HtmlQuoteCreator.quoteOriginalHtmlMessage(messageViewInfo.message, content, quoteStyle, generalSettingsManager);
 
-            // Load the message with the reply header. TODO replace with MessageViewInfo data
-            view.setQuotedHtml(quotedHtmlContent.getQuotedContent(),
-                    AttachmentResolver.createFromPart(messageViewInfo.rootPart));
+            // Load the message with the reply header.
+            view.setQuotedHtml(quotedHtmlContent.getQuotedContent(), messageViewInfo.attachmentResolver);
 
             // TODO: Also strip the signature from the text/plain part
             view.setQuotedText(textQuoteCreator.quoteOriginalTextMessage(messageViewInfo.message,
@@ -300,9 +298,7 @@ public class QuotedMessagePresenter {
                     } else {
                         quotedHtmlContent.setFooterInsertionPoint(bodyOffset);
                     }
-                    // TODO replace with MessageViewInfo data
-                    view.setQuotedHtml(quotedHtmlContent.getQuotedContent(),
-                            AttachmentResolver.createFromPart(messageViewInfo.rootPart));
+                    view.setQuotedHtml(quotedHtmlContent.getQuotedContent(), messageViewInfo.attachmentResolver);
                 }
             }
             if (bodyPlainOffset != null && bodyPlainLength != null) {

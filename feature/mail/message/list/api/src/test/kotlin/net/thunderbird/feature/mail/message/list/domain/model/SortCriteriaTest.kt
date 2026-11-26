@@ -1,8 +1,11 @@
 package net.thunderbird.feature.mail.message.list.domain.model
 
-import kotlin.test.assertEquals
-import kotlin.test.assertFailsWith
-import kotlin.test.assertNull
+import assertk.assertFailure
+import assertk.assertThat
+import assertk.assertions.hasMessage
+import assertk.assertions.isEqualTo
+import assertk.assertions.isInstanceOf
+import assertk.assertions.isNull
 import org.junit.Test
 
 @Suppress("MaxLineLength")
@@ -18,8 +21,8 @@ class SortCriteriaTest {
         val criteria = SortCriteria(primary = primary)
 
         // Assert
-        assertEquals(primary, criteria.primary)
-        assertNull(criteria.secondary)
+        assertThat(criteria.primary).isEqualTo(primary)
+        assertThat(criteria.secondary).isNull()
     }
 
     @Test
@@ -31,8 +34,8 @@ class SortCriteriaTest {
         val criteria = SortCriteria(primary = primary)
 
         // Assert
-        assertEquals(primary, criteria.primary)
-        assertNull(criteria.secondary)
+        assertThat(criteria.primary).isEqualTo(primary)
+        assertThat(criteria.secondary).isNull()
     }
 
     @Test
@@ -44,8 +47,8 @@ class SortCriteriaTest {
         val criteria = SortCriteria(primary = primary)
 
         // Assert
-        assertEquals(primary, criteria.primary)
-        assertNull(criteria.secondary)
+        assertThat(criteria.primary).isEqualTo(primary)
+        assertThat(criteria.secondary).isNull()
     }
 
     @Test
@@ -57,8 +60,8 @@ class SortCriteriaTest {
         val criteria = SortCriteria(primary = primary)
 
         // Assert
-        assertEquals(primary, criteria.primary)
-        assertNull(criteria.secondary)
+        assertThat(criteria.primary).isEqualTo(primary)
+        assertThat(criteria.secondary).isNull()
     }
 
     @Test
@@ -71,8 +74,8 @@ class SortCriteriaTest {
         val criteria = SortCriteria(primary = primary, secondary = secondary)
 
         // Assert
-        assertEquals(primary, criteria.primary)
-        assertEquals(secondary, criteria.secondary)
+        assertThat(criteria.primary).isEqualTo(primary)
+        assertThat(criteria.secondary).isEqualTo(secondary)
     }
 
     @Test
@@ -85,8 +88,8 @@ class SortCriteriaTest {
         val criteria = SortCriteria(primary = primary, secondary = secondary)
 
         // Assert
-        assertEquals(primary, criteria.primary)
-        assertEquals(secondary, criteria.secondary)
+        assertThat(criteria.primary).isEqualTo(primary)
+        assertThat(criteria.secondary).isEqualTo(secondary)
     }
 
     // endregion [Valid constructions]
@@ -99,10 +102,10 @@ class SortCriteriaTest {
         val secondary = SortType.DateDesc
 
         // Act & Assert
-        val exception = assertFailsWith<IllegalArgumentException> {
+        assertFailure {
             SortCriteria(primary = primary, secondary = secondary)
-        }
-        assertEquals("Secondary sorting criterion must be null for $primary", exception.message)
+        }.isInstanceOf<IllegalArgumentException>()
+            .hasMessage("Secondary sorting criterion must be null for $primary")
     }
 
     @Test
@@ -112,10 +115,10 @@ class SortCriteriaTest {
         val secondary = SortType.DateAsc
 
         // Act & Assert
-        val exception = assertFailsWith<IllegalArgumentException> {
+        assertFailure {
             SortCriteria(primary = primary, secondary = secondary)
-        }
-        assertEquals("Secondary sorting criterion must be null for $primary", exception.message)
+        }.isInstanceOf<IllegalArgumentException>()
+            .hasMessage("Secondary sorting criterion must be null for $primary")
     }
 
     @Test
@@ -125,10 +128,10 @@ class SortCriteriaTest {
         val secondary = SortType.DateDesc
 
         // Act & Assert
-        val exception = assertFailsWith<IllegalArgumentException> {
+        assertFailure {
             SortCriteria(primary = primary, secondary = secondary)
-        }
-        assertEquals("Secondary sorting criterion must be null for $primary", exception.message)
+        }.isInstanceOf<IllegalArgumentException>()
+            .hasMessage("Secondary sorting criterion must be null for $primary")
     }
 
     @Test
@@ -138,10 +141,10 @@ class SortCriteriaTest {
         val secondary = SortType.DateAsc
 
         // Act & Assert
-        val exception = assertFailsWith<IllegalArgumentException> {
+        assertFailure {
             SortCriteria(primary = primary, secondary = secondary)
-        }
-        assertEquals("Secondary sorting criterion must be null for $primary", exception.message)
+        }.isInstanceOf<IllegalArgumentException>()
+            .hasMessage("Secondary sorting criterion must be null for $primary")
     }
 
     @Test
@@ -150,10 +153,10 @@ class SortCriteriaTest {
         val primary = SortType.UnreadAsc
 
         // Act & Assert
-        val exception = assertFailsWith<IllegalArgumentException> {
+        assertFailure {
             SortCriteria(primary = primary, secondary = null)
-        }
-        assertEquals("Secondary sorting criterion is missing for $primary", exception.message)
+        }.isInstanceOf<IllegalArgumentException>()
+            .hasMessage("Secondary sorting criterion is missing for $primary")
     }
 
     @Test
@@ -163,10 +166,10 @@ class SortCriteriaTest {
         val secondary = SortType.AttachmentDesc
 
         // Act & Assert
-        val exception = assertFailsWith<IllegalArgumentException> {
+        assertFailure {
             SortCriteria(primary = primary, secondary = secondary)
-        }
-        assertEquals("Secondary sorting criterion $secondary is not supported for $primary", exception.message)
+        }.isInstanceOf<IllegalArgumentException>()
+            .hasMessage("Secondary sorting criterion $secondary is not supported for $primary")
     }
     // endregion [Invalid constructions]
 }

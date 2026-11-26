@@ -9,7 +9,6 @@ import app.k9mail.legacy.message.controller.MessagingControllerRegistry
 import com.fsck.k9.backend.BackendManager
 import com.fsck.k9.mailstore.LocalStoreProvider
 import com.fsck.k9.mailstore.SaveMessageDataCreator
-import com.fsck.k9.mailstore.SpecialLocalFoldersCreator
 import com.fsck.k9.notification.NotificationController
 import com.fsck.k9.notification.NotificationStrategy
 import net.thunderbird.core.android.account.LegacyAccountManager
@@ -21,6 +20,7 @@ import net.thunderbird.feature.mail.message.list.LocalDeleteOperationDecider
 import net.thunderbird.feature.mail.message.list.LocalMessageUidPrefixProvider
 import net.thunderbird.feature.notification.api.NotificationManager
 import org.koin.core.qualifier.named
+import org.koin.dsl.bind
 import org.koin.dsl.binds
 import org.koin.dsl.module
 
@@ -34,12 +34,12 @@ val controllerModule = module {
             get<BackendManager>(),
             get<MessageStoreManager>(),
             get<SaveMessageDataCreator>(),
-            get<SpecialLocalFoldersCreator>(),
             get<LocalDeleteOperationDecider>(),
             get<LocalMessageUidPrefixProvider>(),
             get(named("controllerExtensions")),
             get<FeatureFlagProvider>(),
             get<Logger>(named("syncDebug")),
+            get<Logger>(),
             get<NotificationManager>(),
             get<OutboxFolderManager>(),
             get<LegacyAccountManager>(),
@@ -49,6 +49,14 @@ val controllerModule = module {
     single {
         MessagingControllerWrapper(
             messagingController = get(),
+        )
+    } bind FolderSynchronizer::class
+
+    single {
+        UnifiedFolderSynchronizer(
+            accountManager = get(),
+            outboxFolderManager = get(),
+            folderSynchronizer = get(),
         )
     }
 

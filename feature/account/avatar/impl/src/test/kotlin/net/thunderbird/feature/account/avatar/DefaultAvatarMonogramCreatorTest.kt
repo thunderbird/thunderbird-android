@@ -29,6 +29,26 @@ class DefaultAvatarMonogramCreatorTest {
     }
 
     @Test
+    fun `create keeps a ZWJ emoji sequence intact instead of splitting it`() {
+        val name = "🐦‍🔥 Phoenix"
+        val expectedMonogram = "🐦‍🔥P"
+
+        val result = testSubject.create(name, null)
+
+        assertThat(result).isEqualTo(expectedMonogram)
+    }
+
+    @Test
+    fun `create keeps a single surrogate-pair emoji intact`() {
+        val name = "🔥"
+        val expectedMonogram = "🔥"
+
+        val result = testSubject.create(name, null)
+
+        assertThat(result).isEqualTo(expectedMonogram)
+    }
+
+    @Test
     fun `create returns default monogram for null or empty inputs`() {
         val expectedMonogram = "XX"
 
@@ -37,5 +57,19 @@ class DefaultAvatarMonogramCreatorTest {
 
         val resultWithEmptyStrings = testSubject.create("", "")
         assertThat(resultWithEmptyStrings).isEqualTo(expectedMonogram)
+
+        val resultWithBlankStrings = testSubject.create("   ", "   ")
+        assertThat(resultWithBlankStrings).isEqualTo(expectedMonogram)
+    }
+
+    @Test
+    fun `create returns monogram for email when name is blank`() {
+        val name = "   "
+        val email = "test@example.com"
+        val expectedMonogram = "TE"
+
+        val result = testSubject.create(name, email)
+
+        assertThat(result).isEqualTo(expectedMonogram)
     }
 }

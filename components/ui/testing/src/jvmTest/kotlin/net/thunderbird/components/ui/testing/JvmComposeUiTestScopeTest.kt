@@ -16,8 +16,9 @@ import androidx.compose.ui.input.key.type
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import assertk.assertThat
+import assertk.assertions.isTrue
 import kotlin.test.Test
-import kotlin.test.assertTrue
 
 class JvmComposeUiTestScopeTest : ComposeUiTestHarness() {
 
@@ -51,7 +52,7 @@ class JvmComposeUiTestScopeTest : ComposeUiTestHarness() {
 
         pressBack()
 
-        assertTrue(escapePressed)
+        assertThat(escapePressed).isTrue()
     }
 
     @Test
@@ -71,7 +72,7 @@ class JvmComposeUiTestScopeTest : ComposeUiTestHarness() {
 
         pressBack()
 
-        assertTrue(dismissed)
+        assertThat(dismissed).isTrue()
     }
 
     private companion object {

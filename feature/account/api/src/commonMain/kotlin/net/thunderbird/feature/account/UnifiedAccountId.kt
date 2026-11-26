@@ -10,7 +10,8 @@ import kotlin.uuid.Uuid
  *
  * The unified account ID is represented by a nil UUID (all zeros).
  *
- * See [RFC 4122 Section 4.1.7](https://datatracker.ietf.org/doc/html/rfc4122#section-4.1.7) for more details on nil UUIDs.
+ * See [RFC 4122 Section 4.1.7](https://datatracker.ietf.org/doc/html/rfc4122#section-4.1.7) for more details on nil
+ * UUIDs.
  */
 @OptIn(ExperimentalUuidApi::class)
 val UnifiedAccountId: AccountId = AccountId(Uuid.NIL)

@@ -12,29 +12,28 @@ internal class TbFundingSettings(
 
     override fun isReady(): Boolean = fundingConfigStore.configStateFlow.value != FundingConfig.DEFAULT
 
-    override fun getReminderReferenceTimestamp(): Long = K9.fundingReminderReferenceTimestamp
-
-    override fun setReminderReferenceTimestamp(timestamp: Long) {
-        K9.fundingReminderReferenceTimestamp = timestamp
-        K9.saveSettingsAsync()
+    override fun getReminderReferenceTimestamp(): Long {
+        return fundingConfigStore.configStateFlow.value.reminderReferenceTimestamp ?: 0
     }
 
-    override fun getReminderShownTimestamp() = K9.fundingReminderShownTimestamp
-
-    override fun setReminderShownTimestamp(timestamp: Long) {
-        K9.fundingReminderShownTimestamp = timestamp
-        K9.saveSettingsAsync()
-    }
-
-    override fun getLastReminderShownActivityAmount(): Long {
-        return fundingConfigStore.configStateFlow.value.lastFundingReminderShownActivityAmount ?: 0L
-    }
-
-    override suspend fun setLastReminderShownActivityAmount(activityInMillis: Long) {
+    override suspend fun setReminderReferenceTimestamp(timestamp: Long) {
         fundingConfigStore.update {
             val oldConfig = it ?: FundingConfig.DEFAULT
             oldConfig.copy(
-                lastFundingReminderShownActivityAmount = activityInMillis,
+                reminderReferenceTimestamp = timestamp,
+            )
+        }
+    }
+
+    override fun getReminderShownTimestamp(): Long {
+        return fundingConfigStore.configStateFlow.value.lastFundingReminderShownTimestamp ?: 0L
+    }
+
+    override suspend fun setReminderShownTimestamp(timestamp: Long) {
+        fundingConfigStore.update {
+            val oldConfig = it ?: FundingConfig.DEFAULT
+            oldConfig.copy(
+                lastFundingReminderShownTimestamp = timestamp,
             )
         }
     }
@@ -54,12 +53,5 @@ internal class TbFundingSettings(
 
     override suspend fun incrementReminderShownCount() {
         setReminderShownCount(getReminderShownCount() + 1)
-    }
-
-    override fun getActivityCounterInMillis(): Long = K9.fundingActivityCounterInMillis
-
-    override fun setActivityCounterInMillis(activeTime: Long) {
-        K9.fundingActivityCounterInMillis = activeTime
-        K9.saveSettingsAsync()
     }
 }

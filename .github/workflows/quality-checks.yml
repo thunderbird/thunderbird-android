@@ -58,14 +58,23 @@ jobs:
       - name: Quality - Detekt
         run: ./gradlew detekt
 
-      - name: Running Detekt including KMP
-        # As we were not verifying detekt in KMP sources before,
-        # this step is likely to fail.
-        continue-on-error: true
-        run: |
-          ./gradlew detektMetadataCommonMain
-          ./gradlew detektMetadataMain
-          ./gradlew detektMetadataCommonJvmMain
+  quality-detekt-type-resolution:
+    name: Detekt check (type resolution)
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    steps:
+      - name: Checkout the repo
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 1
+
+      - name: Setup Gradle environment
+        uses: ./.github/actions/setup-gradle
+
+      - name: Quality - Detekt with type resolution
+        # The type-resolved tasks use config/detekt/detekt-type-resolution.yml, see DetektPlugin
+        run: ./gradlew detektAll --continue
 
   quality-dependency-guard:
     name: Dependency guard check

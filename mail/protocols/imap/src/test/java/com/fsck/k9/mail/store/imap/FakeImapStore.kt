@@ -1,6 +1,6 @@
 package com.fsck.k9.mail.store.imap
 
-import kotlin.test.fail
+import assertk.fail
 
 class FakeImapStore : ImapStore {
     private var openConnectionCount = 0

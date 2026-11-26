@@ -10,7 +10,7 @@ import org.junit.runner.RunWith
  *
  * Needs an account in `local.properties`:
  * ```
- * ./gradlew :app-k9mail:benchmarks:connectedFullBenchmarkReleaseAndroidTest
+ * ./gradlew :app-k9mail:benchmarks:connectedFullBenchmarkReleaseAndroidTest -Pbenchmark=true
  * ```
  */
 @RunWith(AndroidJUnit4::class)

@@ -9,7 +9,7 @@
 - Check out our [contribution code quality guides](https://github.com/thunderbird/thunderbird-android/tree/main/docs/contributing), especially our [git commit guide](https://github.com/thunderbird/thunderbird-android/blob/main/docs/contributing/git-commit-guide.md), which can also help you write your pull request title
 
 > [!IMPORTANT]
-> Pull requests may take a few days to weeks to review. We’re a small team and prioritize contributions aligned with our [current roadmap](https://developer.thunderbird.net/planning/android-roadmap). 
+> Pull requests may take a few days to weeks to review. We’re a small team and prioritize contributions aligned with our [current roadmap](https://roadmaps.thunderbird.net/en-US/android/). 
 > You can help us by categorizing your pull request with labels. 
 > We appreciate you working with us and will get to reviewing your contribution as soon as we can!
 

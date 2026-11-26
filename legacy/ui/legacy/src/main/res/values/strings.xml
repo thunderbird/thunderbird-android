@@ -735,9 +735,14 @@
     <string name="expand_folders">Expand Folders</string>
 
     <string name="integrated_inbox_title">Unified Inbox</string>
-    <string name="integrated_inbox_detail">All messages in unified folders</string>
-
-    <string name="folder_settings_include_in_integrated_inbox_label">Unify</string>
+    <!-- Detail of the Unified Inbox, e.g. when choosing what a widget shows. -->
+    <string name="unified_inbox_detail">Messages in the inbox of every account</string>
+    <string name="unified_outbox_title">Unified Outbox</string>
+    <string name="unified_drafts_title">Unified Drafts</string>
+    <string name="unified_sent_title">Unified Sent</string>
+    <string name="unified_archive_title">Unified Archive</string>
+    <string name="unified_spam_title">Unified Spam</string>
+    <string name="unified_trash_title">Unified Trash</string>
 
     <string name="account_settings_no_folder_selected">None</string>
     <string name="account_settings_automatic_special_folder">Automatic (%s)</string>
@@ -1104,6 +1109,14 @@ You can keep this message and use it as a backup for your secret key. If you wan
     <string name="message_list_error_title">Error</string>
     <!-- Displayed instead of the message list when a folder couldn't be found, e.g. due to an outdated home screen shortcut. -->
     <string name="message_list_error_folder_not_found">Folder not found</string>
+    <!-- Displayed instead of the message list when a folder contains no messages. -->
+    <string name="message_list_empty">No messages</string>
+    <!-- Displayed instead of the message list when a search found no messages. -->
+    <string name="message_list_empty_search">No results</string>
+    <!-- Displayed instead of the message list when a folder is empty because it hasn't been synchronized with the server yet. -->
+    <string name="message_list_not_synced">Not synced yet</string>
+    <!-- Displayed below "Not synced yet" to explain how to synchronize the folder. -->
+    <string name="message_list_not_synced_hint">Pull down to sync</string>
 
     <!-- Title of the toolbar that is displayed when the message details bottom sheet has been expanded -->
     <string name="message_details_toolbar_title">Message details</string>

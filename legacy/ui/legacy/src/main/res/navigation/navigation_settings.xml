@@ -64,7 +64,6 @@
         android:id="@+id/settingsExportScreen"
         android:name="com.fsck.k9.ui.settings.export.SettingsExportFragment"
         android:label="@string/settings_export_title"
-        tools:layout="@layout/fragment_settings_export"
         />
 
     <fragment

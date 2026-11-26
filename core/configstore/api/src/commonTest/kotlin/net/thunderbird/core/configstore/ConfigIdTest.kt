@@ -1,9 +1,10 @@
 package net.thunderbird.core.configstore
 
+import assertk.assertFailure
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import assertk.assertions.isInstanceOf
 import kotlin.test.Test
-import kotlin.test.assertFailsWith
 
 class ConfigIdTest {
 
@@ -28,9 +29,9 @@ class ConfigIdTest {
         val feature = "valid_feature"
 
         // Act & Assert
-        assertFailsWith<IllegalArgumentException> {
+        assertFailure {
             ConfigId(backend, feature)
-        }
+        }.isInstanceOf<IllegalArgumentException>()
     }
 
     @Test
@@ -40,9 +41,9 @@ class ConfigIdTest {
         val feature = ""
 
         // Act & Assert
-        assertFailsWith<IllegalArgumentException> {
+        assertFailure {
             ConfigId(backend, feature)
-        }
+        }.isInstanceOf<IllegalArgumentException>()
     }
 
     @Test
@@ -52,9 +53,9 @@ class ConfigIdTest {
         val feature = "valid_feature"
 
         // Act & Assert
-        assertFailsWith<IllegalArgumentException> {
+        assertFailure {
             ConfigId(backend, feature)
-        }
+        }.isInstanceOf<IllegalArgumentException>()
     }
 
     @Test
@@ -64,9 +65,9 @@ class ConfigIdTest {
         val feature = "invalid-feature"
 
         // Act & Assert
-        assertFailsWith<IllegalArgumentException> {
+        assertFailure {
             ConfigId(backend, feature)
-        }
+        }.isInstanceOf<IllegalArgumentException>()
     }
 
     @Test

@@ -1,9 +1,9 @@
 package net.thunderbird.app.common.feature.funding.configstore
 
+import assertk.assertThat
+import assertk.assertions.isEqualTo
 import kotlin.apply
-import kotlin.test.DefaultAsserter.assertEquals
 import kotlin.test.Test
-import kotlin.test.assertEquals
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.TestScope
@@ -19,20 +19,15 @@ import net.thunderbird.feature.funding.api.FundingConfigStore
 
 class DefaultFundingConfigStoreTest {
 
-    val defaultConfig = FundingConfig(
-        lastFundingReminderShownActivityAmount = 0L,
-        fundingReminderCount = 0,
-    )
-
     @Test
-    fun `config should start with default values`() = runTest {
+    fun `config should start with default values provided to the backend`() = runTest {
         // Setup test subject and expected values
         val backend = getDefaultTestConfigBackend()
         val configTestSubject = createTestSubject(backend)
 
         // Get and test initial value
         val initialTestValue = configTestSubject.config.first()
-        assertEquals("Backend should set initial values.", defaultConfig, initialTestValue)
+        assertThat(initialTestValue).isEqualTo(DEFAULT_CONFIG)
     }
 
     @Test
@@ -41,7 +36,8 @@ class DefaultFundingConfigStoreTest {
         val backend = getDefaultTestConfigBackend()
         val configTestSubject = createTestSubject(backend)
         val newConfig = FundingConfig(
-            lastFundingReminderShownActivityAmount = 10000L,
+            reminderReferenceTimestamp = 0L,
+            lastFundingReminderShownTimestamp = 10000L,
             fundingReminderCount = 1,
         )
 
@@ -50,21 +46,16 @@ class DefaultFundingConfigStoreTest {
             configTestSubject.update {
                 val oldConfig = it ?: FundingConfig.DEFAULT
                 oldConfig.copy(
-                    lastFundingReminderShownActivityAmount = newConfig.lastFundingReminderShownActivityAmount,
+                    lastFundingReminderShownTimestamp = newConfig.lastFundingReminderShownTimestamp,
                     fundingReminderCount = newConfig.fundingReminderCount,
                 )
             }
 
             // Ensure test subject has new values
             val testConfig = configTestSubject.config.first()
-            assertEquals(
-                newConfig.lastFundingReminderShownActivityAmount,
-                testConfig.lastFundingReminderShownActivityAmount,
-            )
-            assertEquals(
-                newConfig.fundingReminderCount,
-                testConfig.fundingReminderCount,
-            )
+            assertThat(testConfig.lastFundingReminderShownTimestamp)
+                .isEqualTo(newConfig.lastFundingReminderShownTimestamp)
+            assertThat(testConfig.fundingReminderCount).isEqualTo(newConfig.fundingReminderCount)
         }
     }
 
@@ -76,13 +67,21 @@ class DefaultFundingConfigStoreTest {
 
     private fun getDefaultTestConfigBackend() = TestConfigBackend(
         initialConfig = Config().apply {
-            this[FundingConfigKeys.LAST_FUNDING_REMINDER_SHOWN_ACTIVITY_AMOUNT] = 0L
-            this[FundingConfigKeys.FUNDING_REMINDER_COUNT] = 0
+            this[FundingConfigKeys.REMINDER_REFERENCE_TIMESTAMP] = DEFAULT_CONFIG.reminderReferenceTimestamp ?: 0L
+            this[FundingConfigKeys.LAST_FUNDING_REMINDER_SHOWN] = DEFAULT_CONFIG.lastFundingReminderShownTimestamp ?: 0L
+            this[FundingConfigKeys.FUNDING_REMINDER_COUNT] = DEFAULT_CONFIG.fundingReminderCount ?: 0
         },
     )
 
     private companion object {
         val CONFIG_ID = ConfigId(backend = "test", feature = "fundingconfig")
+
+        // The default config uses null values as a placeholder to load data. This is the loaded data
+        val DEFAULT_CONFIG = FundingConfig(
+            reminderReferenceTimestamp = 0L,
+            lastFundingReminderShownTimestamp = 0L,
+            fundingReminderCount = 0,
+        )
     }
 }
 

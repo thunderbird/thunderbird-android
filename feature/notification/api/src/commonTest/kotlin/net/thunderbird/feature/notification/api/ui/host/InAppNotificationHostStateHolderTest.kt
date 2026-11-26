@@ -2,6 +2,7 @@ package net.thunderbird.feature.notification.api.ui.host
 
 import app.cash.turbine.test
 import assertk.all
+import assertk.assertFailure
 import assertk.assertThat
 import assertk.assertions.contains
 import assertk.assertions.containsExactly
@@ -16,7 +17,6 @@ import assertk.assertions.isNull
 import assertk.assertions.isTrue
 import assertk.assertions.prop
 import kotlin.test.Test
-import kotlin.test.assertFails
 import kotlinx.collections.immutable.persistentSetOf
 import kotlinx.coroutines.test.runTest
 import net.thunderbird.feature.notification.api.NotificationSeverity
@@ -183,12 +183,12 @@ class InAppNotificationHostStateHolderTest {
             val testSubject = InAppNotificationHostStateHolder(enabled = flags)
 
             // Act
-            val exception = assertFails {
+            val exception = assertFailure {
                 testSubject.showInAppNotification(notification)
             }
 
             // Assert
-            assertThat(exception)
+            exception
                 .isInstanceOf<IllegalStateException>()
                 .hasMessage(expectedMessage)
         }
@@ -208,12 +208,12 @@ class InAppNotificationHostStateHolderTest {
             val testSubject = InAppNotificationHostStateHolder(enabled = flags)
 
             // Act
-            val exception = assertFails {
+            val exception = assertFailure {
                 testSubject.showInAppNotification(notification)
             }
 
             // Assert
-            assertThat(exception)
+            exception
                 .isInstanceOf<IllegalStateException>()
                 .hasMessage(expectedMessage)
         }
@@ -446,12 +446,12 @@ class InAppNotificationHostStateHolderTest {
             val testSubject = InAppNotificationHostStateHolder(enabled = flags)
 
             // Act
-            val exception = assertFails {
+            val exception = assertFailure {
                 testSubject.showInAppNotification(notification)
             }
 
             // Assert
-            assertThat(exception)
+            exception
                 .isInstanceOf<IllegalStateException>()
                 .hasMessage(expectedMessage)
         }
@@ -471,12 +471,12 @@ class InAppNotificationHostStateHolderTest {
             val testSubject = InAppNotificationHostStateHolder(enabled = flags)
 
             // Act
-            val exception = assertFails {
+            val exception = assertFailure {
                 testSubject.showInAppNotification(notification)
             }
 
             // Assert
-            assertThat(exception)
+            exception
                 .isInstanceOf<IllegalStateException>()
                 .hasMessage(expectedMessage)
         }
@@ -496,12 +496,12 @@ class InAppNotificationHostStateHolderTest {
             val testSubject = InAppNotificationHostStateHolder(enabled = flags)
 
             // Act
-            val exception = assertFails {
+            val exception = assertFailure {
                 testSubject.showInAppNotification(notification)
             }
 
             // Assert
-            assertThat(exception)
+            exception
                 .isInstanceOf<IllegalStateException>()
                 .hasMessage(expectedMessage)
         }
@@ -521,12 +521,12 @@ class InAppNotificationHostStateHolderTest {
             val testSubject = InAppNotificationHostStateHolder(enabled = flags)
 
             // Act
-            val exception = assertFails {
+            val exception = assertFailure {
                 testSubject.showInAppNotification(notification)
             }
 
             // Assert
-            assertThat(exception)
+            exception
                 .isInstanceOf<IllegalStateException>()
                 .hasMessage(expectedMessage)
         }
@@ -547,12 +547,12 @@ class InAppNotificationHostStateHolderTest {
             val testSubject = InAppNotificationHostStateHolder(enabled = flags)
 
             // Act
-            val exception = assertFails {
+            val exception = assertFailure {
                 testSubject.showInAppNotification(notification)
             }
 
             // Assert
-            assertThat(exception)
+            exception
                 .isInstanceOf<IllegalStateException>()
                 .hasMessage(expectedMessage)
         }
@@ -573,12 +573,12 @@ class InAppNotificationHostStateHolderTest {
             val testSubject = InAppNotificationHostStateHolder(enabled = flags)
 
             // Act
-            val exception = assertFails {
+            val exception = assertFailure {
                 testSubject.showInAppNotification(notification)
             }
 
             // Assert
-            assertThat(exception)
+            exception
                 .isInstanceOf<IllegalStateException>()
                 .hasMessage(expectedMessage)
         }
@@ -601,12 +601,12 @@ class InAppNotificationHostStateHolderTest {
             val testSubject = InAppNotificationHostStateHolder(enabled = flags)
 
             // Act
-            val exception = assertFails {
+            val exception = assertFailure {
                 testSubject.showInAppNotification(notification)
             }
 
             // Assert
-            assertThat(exception)
+            exception
                 .isInstanceOf<IllegalStateException>()
                 .hasMessage(expectedMessage)
         }
@@ -722,12 +722,12 @@ class InAppNotificationHostStateHolderTest {
             val testSubject = InAppNotificationHostStateHolder(enabled = flags)
 
             // Act
-            val exception = assertFails {
+            val exception = assertFailure {
                 testSubject.showInAppNotification(notification)
             }
 
             // Assert
-            assertThat(exception)
+            exception
                 .isInstanceOf<IllegalStateException>()
                 .hasMessage(expectedMessage)
         }
@@ -748,12 +748,12 @@ class InAppNotificationHostStateHolderTest {
             val testSubject = InAppNotificationHostStateHolder(enabled = flags)
 
             // Act
-            val exception = assertFails {
+            val exception = assertFailure {
                 testSubject.showInAppNotification(notification)
             }
 
             // Assert
-            assertThat(exception)
+            exception
                 .isInstanceOf<IllegalStateException>()
                 .hasMessage(expectedMessage)
         }
@@ -772,12 +772,12 @@ class InAppNotificationHostStateHolderTest {
             val testSubject = InAppNotificationHostStateHolder(enabled = flags)
 
             // Act
-            val exception = assertFails {
+            val exception = assertFailure {
                 testSubject.showInAppNotification(notification)
             }
 
             // Assert
-            assertThat(exception)
+            exception
                 .isInstanceOf<IllegalStateException>()
                 .hasMessage(expectedMessage)
         }

@@ -1,11 +1,11 @@
 package net.thunderbird.feature.notification.api.ui.style
 
+import assertk.assertFailure
 import assertk.assertThat
 import assertk.assertions.hasMessage
 import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
 import kotlin.test.Test
-import kotlin.test.assertFails
 
 @Suppress("MaxLineLength")
 class InAppNotificationStyleTest {
@@ -80,7 +80,7 @@ class InAppNotificationStyleTest {
             "Current style is $firstStyle, trying to set $secondStyle."
 
         // Act
-        val actual = assertFails {
+        val actual = assertFailure {
             inAppNotificationStyle {
                 bannerInline()
                 bannerGlobal()
@@ -90,7 +90,7 @@ class InAppNotificationStyleTest {
         }
 
         // Assert
-        assertThat(actual)
+        actual
             .isInstanceOf<IllegalStateException>()
             .hasMessage(expectedErrorMessage)
     }
@@ -103,7 +103,7 @@ class InAppNotificationStyleTest {
             "Current style is $styleName, trying to set $styleName."
 
         // Act
-        val actual = assertFails {
+        val actual = assertFailure {
             inAppNotificationStyle {
                 bannerInline()
                 bannerInline()
@@ -112,7 +112,7 @@ class InAppNotificationStyleTest {
         }
 
         // Assert
-        assertThat(actual)
+        actual
             .isInstanceOf<IllegalStateException>()
             .hasMessage(expectedErrorMessage)
     }
@@ -125,7 +125,7 @@ class InAppNotificationStyleTest {
             "Current style is $styleName, trying to set $styleName."
 
         // Act
-        val actual = assertFails {
+        val actual = assertFailure {
             inAppNotificationStyle {
                 bannerGlobal()
                 bannerGlobal()
@@ -134,7 +134,7 @@ class InAppNotificationStyleTest {
         }
 
         // Assert
-        assertThat(actual)
+        actual
             .isInstanceOf<IllegalStateException>()
             .hasMessage(expectedErrorMessage)
     }
@@ -147,7 +147,7 @@ class InAppNotificationStyleTest {
             "Current style is $styleName, trying to set $styleName."
 
         // Act
-        val actual = assertFails {
+        val actual = assertFailure {
             inAppNotificationStyle {
                 snackbar()
                 snackbar(duration = SnackbarDuration.Short)
@@ -156,7 +156,7 @@ class InAppNotificationStyleTest {
         }
 
         // Assert
-        assertThat(actual)
+        actual
             .isInstanceOf<IllegalStateException>()
             .hasMessage(expectedErrorMessage)
     }
@@ -164,14 +164,14 @@ class InAppNotificationStyleTest {
     @Test
     fun `inAppNotificationStyle dsl should throw IllegalStateException when in-app notification style is called without any style configuration`() {
         // Arrange & Act
-        val exception = assertFails {
+        val exception = assertFailure {
             inAppNotificationStyle {
                 // intentionally empty.
             }
         }
 
         // Assert
-        assertThat(exception)
+        exception
             .isInstanceOf<IllegalStateException>()
             .hasMessage("You must pick one in-app notification style.")
     }

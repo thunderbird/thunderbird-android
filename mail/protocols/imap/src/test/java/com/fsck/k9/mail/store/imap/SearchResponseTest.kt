@@ -1,14 +1,11 @@
 package com.fsck.k9.mail.store.imap
 
-import assertk.all
 import assertk.assertThat
 import assertk.assertions.containsExactly
 import assertk.assertions.isEmpty
 import assertk.assertions.prop
 import com.fsck.k9.mail.store.imap.SearchResponse.Companion.parse
-import jdk.dynalink.linker.support.Guards.isNotNull
 import kotlin.test.Test
-import org.junit.Assert
 
 class SearchResponseTest {
     @Test
@@ -25,11 +22,7 @@ class SearchResponseTest {
         val result = parse(imapResponses)
 
         // Assert
-        assertThat(result).all {
-            isNotNull()
-            prop("numbers") { it.numbers }
-                .containsExactly(1L, 2L, 3L, 4L)
-        }
+        assertThat(result).prop(SearchResponse::numbers).containsExactly(1L, 2L, 3L, 4L)
     }
 
     @Test
@@ -52,11 +45,7 @@ class SearchResponseTest {
         val result = parse(imapResponses)
 
         // Assert
-        assertThat(result).all {
-            isNotNull()
-            prop("numbers") { it.numbers }
-                .containsExactly(1L, 2L, 3L, 4L, 5L, 6L, 7L, 8L)
-        }
+        assertThat(result).prop(SearchResponse::numbers).containsExactly(1L, 2L, 3L, 4L, 5L, 6L, 7L, 8L)
     }
 
     @Test
@@ -67,15 +56,8 @@ class SearchResponseTest {
         // Act
         val result = parse(imapResponses)
 
-        Assert.assertNotNull(result)
-        Assert.assertEquals(emptyList<Any>(), result.numbers)
-
         // Assert
-        assertThat(result).all {
-            isNotNull()
-            prop("numbers") { it.numbers }
-                .isEmpty()
-        }
+        assertThat(result).prop(SearchResponse::numbers).isEmpty()
     }
 
     @Test
@@ -87,11 +69,7 @@ class SearchResponseTest {
         val result = parse(imapResponses)
 
         // Assert
-        assertThat(result).all {
-            isNotNull()
-            prop("numbers") { it.numbers }
-                .isEmpty()
-        }
+        assertThat(result).prop(SearchResponse::numbers).isEmpty()
     }
 
     @Test
@@ -103,11 +81,7 @@ class SearchResponseTest {
         val result = parse(imapResponses)
 
         // Assert
-        assertThat(result).all {
-            isNotNull()
-            prop("numbers") { it.numbers }
-                .isEmpty()
-        }
+        assertThat(result).prop(SearchResponse::numbers).isEmpty()
     }
 
     @Test
@@ -119,10 +93,6 @@ class SearchResponseTest {
         val result = parse(imapResponses)
 
         // Assert
-        assertThat(result).all {
-            isNotNull()
-            prop("numbers") { it.numbers }
-                .isEmpty()
-        }
+        assertThat(result).prop(SearchResponse::numbers).isEmpty()
     }
 }

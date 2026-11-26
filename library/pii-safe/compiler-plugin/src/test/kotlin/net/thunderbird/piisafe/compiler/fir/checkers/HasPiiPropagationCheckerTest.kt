@@ -1,8 +1,9 @@
 package net.thunderbird.piisafe.compiler.fir.checkers
 
+import assertk.assertThat
+import assertk.assertions.isEqualTo
 import com.tschuchort.compiletesting.KotlinCompilation
 import kotlin.test.Test
-import kotlin.test.assertEquals
 import net.thunderbird.piisafe.compiler.fir.TestFirExtensionRegistrar
 import net.thunderbird.piisafe.compiler.testing.compileWithPiiSafePlugin
 import net.thunderbird.piisafe.compiler.testing.testFirRegistrar
@@ -33,9 +34,9 @@ class HasPiiPropagationCheckerTest {
         )
 
         // Assert
-        assertEquals(expected = KotlinCompilation.ExitCode.COMPILATION_ERROR, actual = result.exitCode)
-        assertEquals(expected = 1, actual = result.diagnosticMessages.size)
-        assertEquals(expected = expectedMessage, actual = result.diagnosticMessages.first().message)
+        assertThat(result.exitCode).isEqualTo(KotlinCompilation.ExitCode.COMPILATION_ERROR)
+        assertThat(result.diagnosticMessages.size).isEqualTo(1)
+        assertThat(result.diagnosticMessages.first().message).isEqualTo(expectedMessage)
     }
 
     @Test
@@ -61,9 +62,9 @@ class HasPiiPropagationCheckerTest {
         )
 
         // Assert
-        assertEquals(expected = KotlinCompilation.ExitCode.COMPILATION_ERROR, actual = result.exitCode)
-        assertEquals(expected = 1, actual = result.diagnosticMessages.size)
-        assertEquals(expected = expectedMessage, actual = result.diagnosticMessages.first().message)
+        assertThat(result.exitCode).isEqualTo(KotlinCompilation.ExitCode.COMPILATION_ERROR)
+        assertThat(result.diagnosticMessages.size).isEqualTo(1)
+        assertThat(result.diagnosticMessages.first().message).isEqualTo(expectedMessage)
     }
 
     @Test
@@ -88,7 +89,7 @@ class HasPiiPropagationCheckerTest {
         )
 
         // Assert
-        assertEquals(expected = KotlinCompilation.ExitCode.OK, actual = result.exitCode)
+        assertThat(result.exitCode).isEqualTo(KotlinCompilation.ExitCode.OK)
     }
 
     @OptIn(ExperimentalCompilerApi::class)
@@ -109,6 +110,6 @@ class HasPiiPropagationCheckerTest {
         )
 
         // Assert
-        assertEquals(expected = KotlinCompilation.ExitCode.OK, actual = result.exitCode)
+        assertThat(result.exitCode).isEqualTo(KotlinCompilation.ExitCode.OK)
     }
 }

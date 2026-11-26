@@ -8,6 +8,7 @@ import androidx.core.net.toUri
 import androidx.test.core.app.ApplicationProvider
 import app.k9mail.legacy.message.controller.MessagingListener
 import assertk.assertThat
+import assertk.assertions.isEqualTo
 import assertk.assertions.isNotNull
 import assertk.assertions.isTrue
 import com.fsck.k9.mail.Part
@@ -18,7 +19,6 @@ import com.fsck.k9.provider.AttachmentTempFileProvider
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import kotlin.test.Test
-import kotlin.test.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
@@ -33,7 +33,6 @@ import net.thunderbird.core.preference.GeneralSettings
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.feature.account.AccountIdFactory
 import org.junit.After
-import org.junit.Assert.assertArrayEquals
 import org.junit.Before
 import org.koin.core.context.GlobalContext.stopKoin
 import org.koin.core.context.startKoin
@@ -148,7 +147,7 @@ class AttachmentControllerTest : RobolectricTest() {
 
         // Assert
         val writtenBytes = outputStream.toByteArray()
-        assertArrayEquals(fileContent, writtenBytes)
+        assertThat(writtenBytes).isEqualTo(fileContent)
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -190,8 +189,8 @@ class AttachmentControllerTest : RobolectricTest() {
         // Assert
         val intent = shadowApplication.nextStartedActivity
         assertThat(intent).isNotNull()
-        assertEquals(Intent.ACTION_VIEW, intent.action)
-        assertEquals("application/octet-stream", intent.type)
+        assertThat(intent.action).isEqualTo(Intent.ACTION_VIEW)
+        assertThat(intent.type).isEqualTo("application/octet-stream")
     }
 
     private fun initializeAttachmentTempFileProvider() {

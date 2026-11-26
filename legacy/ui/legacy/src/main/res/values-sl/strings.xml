@@ -520,8 +520,6 @@
     <string name="show_unified_inbox_title">Pokaži skupno mapo prejetih sporočil</string>
     <string name="show_starred_count_title">Pokaži število označb z zvezdico</string>
     <string name="integrated_inbox_title">Skupna mapa prejetih sporočil</string>
-    <string name="integrated_inbox_detail">Vsa sporočila v skupnih mapah</string>
-    <string name="folder_settings_include_in_integrated_inbox_label">Združi</string>
     <string name="account_settings_no_folder_selected">Brez usklajevanja</string>
     <string name="account_settings_automatic_special_folder">Samodejno (%s)</string>
     <string name="font_size_settings_title">Velikost pisave</string>
@@ -977,5 +975,9 @@
     <string name="account_settings_signature_preview_empty">Predogled vašega podpisa bo prikazan tukaj.</string>
     <string name="error_no_contact_provider">Programa za stike ni bilo mogoče najti. Če želite dodati ta naslov, ga namestite.</string>
     <string name="remote_feature_flag_preferences">Zastavice oddaljenih značilnosti</string>
-    <string name="account_setup_visibility_and_syncing">Vidnost in usklajevanje</string>
+    <string name="account_setup_visibility_and_syncing">Usklajevanje map in potisk</string>
+    <string name="account_settings_folder_sync_and_push">Usklajevanje map in potisk</string>
+    <string name="account_settings_fetching_and_data_limits">Pridobivanje in omejitev podatkov</string>
+    <string name="account_settings_sync_and_notifications">Usklajevanje in obvestila</string>
+    <string name="account_settings_folder_visibility">Vidnost map</string>
 </resources>

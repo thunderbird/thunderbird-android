@@ -10,15 +10,15 @@ import app.k9mail.legacy.mailstore.domain.GetFolderIdsForTypeUseCase
 import app.k9mail.legacy.mailstore.domain.SetPushForFolderUseCase
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import assertk.assertions.isFalse
 import assertk.assertions.isInstanceOf
 import assertk.assertions.isNotEmpty
 import assertk.assertions.isNull
+import assertk.assertions.isTrue
 import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ConnectionSecurity
 import com.fsck.k9.mail.FolderType as K9FolderType
 import com.fsck.k9.mail.ServerSettings
-import junit.framework.TestCase.assertFalse
-import junit.framework.TestCase.assertTrue
 import kotlin.test.Test
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.runTest
@@ -105,7 +105,6 @@ class DefaultFolderDetailsRepositoryTest {
             id = REGULAR_FOLDER_ID,
             name = "Regular",
             isInTopGroup = true,
-            isIntegrate = true,
             isSyncEnabled = true,
             isVisible = true,
             isNotificationsEnabled = false,
@@ -123,7 +122,6 @@ class DefaultFolderDetailsRepositoryTest {
         assertThat(folderDetails?.folder?.name).isEqualTo("Regular")
         assertThat(folderDetails?.folder?.type).isEqualTo(FolderType.REGULAR)
         assertThat(folderDetails?.isInTopGroup).isEqualTo(true)
-        assertThat(folderDetails?.isIntegrate).isEqualTo(true)
         assertThat(folderDetails?.isSyncEnabled).isEqualTo(true)
         assertThat(folderDetails?.isVisible).isEqualTo(true)
         assertThat(folderDetails?.isNotificationsEnabled).isEqualTo(false)
@@ -208,24 +206,9 @@ class DefaultFolderDetailsRepositoryTest {
 
         // Assert
         verify(messageStore).setSyncEnabled(REGULAR_FOLDER_ID, true)
-        verify(messageStore, never()).setIncludeInUnifiedInbox(any(), any())
         verify(messageStore, never()).setVisible(any(), any())
         verify(messageStore, never()).setNotificationsEnabled(any(), any())
         verify(messageStore, never()).setPushEnabled(any(), any())
-        assertThat(result).isEqualTo(Outcome.success(Unit))
-    }
-
-    @Test
-    fun `partial update should update unified inbox inclusion when provided`() = runTest {
-        // Arrange
-        val partialUpdate = PartialUpdatableFolderDetails(
-            folderId = REGULAR_FOLDER_ID,
-            includeInUnifiedInbox = true,
-        )
-        // Act
-        val result = testSubject.update(accountId, partialUpdate)
-        // Assert
-        verify(messageStore).setIncludeInUnifiedInbox(REGULAR_FOLDER_ID, true)
         assertThat(result).isEqualTo(Outcome.success(Unit))
     }
 
@@ -234,7 +217,6 @@ class DefaultFolderDetailsRepositoryTest {
         // Arrange
         val partialUpdate = PartialUpdatableFolderDetails(
             folderId = REGULAR_FOLDER_ID,
-            includeInUnifiedInbox = true,
             syncEnabled = false,
             visible = true,
             notificationsEnabled = false,
@@ -245,7 +227,6 @@ class DefaultFolderDetailsRepositoryTest {
         val result = testSubject.update(accountId, partialUpdate)
 
         // Assert
-        verify(messageStore).setIncludeInUnifiedInbox(REGULAR_FOLDER_ID, true)
         verify(messageStore).setSyncEnabled(REGULAR_FOLDER_ID, false)
         verify(messageStore).setVisible(REGULAR_FOLDER_ID, true)
         verify(messageStore).setNotificationsEnabled(REGULAR_FOLDER_ID, false)
@@ -302,11 +283,8 @@ class DefaultFolderDetailsRepositoryTest {
         var inboxFolderDetails = (testSubject.findById(accountId, INBOX_FOLDER_ID) as Outcome.Success).data
 
         // Check that push has not been enabled yet
-        assertFalse(
-            "Is push enabled: ${inboxFolderDetails?.isPushEnabled} was supposed to be false " +
-                "before calling SetPushForFolderUseCase.",
-            inboxFolderDetails?.isPushEnabled == true,
-        )
+        assertThat(inboxFolderDetails?.isPushEnabled == true, name = "isPushEnabled before SetPushForFolderUseCase")
+            .isFalse()
 
         // Call the same use case used in the account creation function to enable push
         SetPushForFolderUseCase(
@@ -322,11 +300,8 @@ class DefaultFolderDetailsRepositoryTest {
         inboxFolderDetails = (testSubject.findById(accountId, INBOX_FOLDER_ID) as Outcome.Success).data
 
         // Check folder's push settings changed
-        assertTrue(
-            "Is push enabled: ${inboxFolderDetails?.isPushEnabled} was supposed to be true " +
-                "after calling SetPushForFolderUseCase.",
-            inboxFolderDetails?.isPushEnabled == true,
-        )
+        assertThat(inboxFolderDetails?.isPushEnabled == true, name = "isPushEnabled after SetPushForFolderUseCase")
+            .isTrue()
     }
 
     @Test
@@ -337,7 +312,6 @@ class DefaultFolderDetailsRepositoryTest {
             name = "Regular",
             type = K9FolderType.REGULAR,
             isInTopGroup = true,
-            isIntegrate = true,
             isSyncEnabled = true,
             isVisible = true,
             isNotificationsEnabled = false,
@@ -363,7 +337,6 @@ class DefaultFolderDetailsRepositoryTest {
             name = "Inbox",
             type = K9FolderType.INBOX,
             isInTopGroup = true,
-            isIntegrate = true,
             isSyncEnabled = true,
             isVisible = true,
             isNotificationsEnabled = false,
@@ -404,7 +377,6 @@ private fun createFolderDetails(id: Long): FolderDetails {
             isLocalOnly = false,
         ),
         isInTopGroup = false,
-        isIntegrate = false,
         isSyncEnabled = true,
         isVisible = true,
         isNotificationsEnabled = true,
@@ -461,7 +433,6 @@ private class FakeFolderDetailsAccessor(
     override val type: K9FolderType = K9FolderType.REGULAR,
     override val isLocalOnly: Boolean = false,
     override val isInTopGroup: Boolean = false,
-    override val isIntegrate: Boolean = false,
     override val isSyncEnabled: Boolean = true,
     override val isVisible: Boolean = true,
     override val isNotificationsEnabled: Boolean = true,

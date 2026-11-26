@@ -1,3 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    </resources>
+    <string name="thundermail_redirecting">Omdirigerer til Thundermail…</string>
+    <string name="thundermail_something_went_wrong">Noe gikk galt</string>
+    <string name="thundermail_browser_is_not_available">Nettleseren er ikke tilgjengelig. Bekreft konfigurasjonen til enheten din</string>
+    <string name="thundermail_operation_was_canceled">Handlingen ble avbrutt</string>
+    <string name="thundermail_unknown_error_please_consider_reporting">Ukjent feil. Send helst inn en feilrapport.</string>
+    <string name="thundermail_add_account">Legg til konto</string>
+    <string name="thundermail_add_an_email_account">Legg til en e-postkonto</string>
+    <string name="thundermail_what_is_thundermail">Hva er Thundermail?</string>
+    <string name="thundermail_or_divider">– eller –</string>
+</resources>

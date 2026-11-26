@@ -7,5 +7,4 @@ data class FolderSettings(
     val isNotificationsEnabled: Boolean,
     val isPushEnabled: Boolean,
     val inTopGroup: Boolean,
-    val integrate: Boolean,
 )

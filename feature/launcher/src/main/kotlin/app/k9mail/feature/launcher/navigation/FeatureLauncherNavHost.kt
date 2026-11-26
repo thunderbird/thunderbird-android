@@ -179,7 +179,10 @@ private fun NavGraphBuilder.registerThundermailNavigation(
                 is ThundermailRoute.AccountSetup ->
                     navController.navigate(ThundermailRoute.AccountSetup())
 
-                is ThundermailRoute.Permissions -> {
+                is ThundermailRoute.Permissions ->
+                    navController.navigate(route)
+
+                is ThundermailRoute.OnboardComplete -> {
                     messageListLauncher.launch(route.accountId)
                     activity.finish()
                 }
@@ -192,8 +195,6 @@ private fun NavGraphBuilder.registerThundermailNavigation(
 
                 is ThundermailRoute.ScanQrCode ->
                     navController.navigate(ThundermailRoute.ScanQrCode)
-
-                else -> Unit
             }
         },
     )

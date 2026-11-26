@@ -1,14 +1,15 @@
 package com.fsck.k9.provider
 
 import android.net.Uri
+import assertk.assertFailure
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import assertk.assertions.isInstanceOf
 import assertk.assertions.isNull
 import com.fsck.k9.helper.MimeTypeUtil
 import java.io.FileNotFoundException
 import net.thunderbird.core.android.testing.RobolectricTest
 import org.junit.Test
-import org.junit.Assert.assertThrows
 
 class AttachmentProviderTest : RobolectricTest() {
     private val testSubject = AttachmentProvider()
@@ -29,9 +30,9 @@ class AttachmentProviderTest : RobolectricTest() {
 
     @Test
     fun openFileWithInvalidAccountIdThrowsFileNotFound() {
-        assertThrows(FileNotFoundException::class.java) {
+        assertFailure {
             testSubject.openFile(Uri.parse("content://attachmentprovider/not-a-uuid/1"), "r")
-        }
+        }.isInstanceOf<FileNotFoundException>()
     }
 
     @Test

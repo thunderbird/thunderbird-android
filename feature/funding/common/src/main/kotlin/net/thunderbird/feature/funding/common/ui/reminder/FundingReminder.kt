@@ -1,7 +1,5 @@
 package net.thunderbird.feature.funding.common.ui.reminder
 
-import android.content.Context
-import android.content.pm.PackageManager.NameNotFoundException
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
 import kotlin.time.Clock
@@ -11,29 +9,22 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import net.thunderbird.core.android.common.activity.ActivityProvider
 import net.thunderbird.feature.funding.api.FundingSettings
+import net.thunderbird.feature.funding.common.R
 import net.thunderbird.feature.funding.common.api.FUNDING_REMINDER_DELAY_MILLIS
-import net.thunderbird.feature.funding.common.api.FUNDING_REMINDER_MIN_ACTIVITY_MILLIS
 import net.thunderbird.feature.funding.common.api.FundingReminderContract
-import net.thunderbird.feature.funding.common.api.FundingReminderContract.ActivityLifecycleObserver
 import net.thunderbird.feature.funding.common.api.FundingReminderContract.FragmentLifecycleObserver
 
 class FundingReminder(
     private val activityProvider: ActivityProvider,
     private val settings: FundingSettings,
     private val fragmentObserver: FragmentLifecycleObserver,
-    private val activityCounterObserver: ActivityLifecycleObserver,
     private val dialog: FundingReminderContract.Dialog,
     private val clock: Clock = Clock.System,
     private val scope: CoroutineScope,
 ) : FundingReminderContract.Reminder {
 
-    init {
-        val activity = activityProvider.getCurrent() as AppCompatActivity
-        val observedFragmentManager = activity.supportFragmentManager
-        activityCounterObserver.register(activity.lifecycle) {
-            fragmentObserver.unregister(observedFragmentManager)
-            activityCounterObserver.unregister(activity.lifecycle)
-        }
+    private companion object {
+        const val REMINDERS_TO_SHOW = 3
     }
 
     /**
@@ -41,14 +32,21 @@ class FundingReminder(
      * We may choose to refactor this in the future to allow for multiple ongoing campaigns:
      *      https://github.com/thunderbird/thunderbird-android/issues/11557
      */
+    @Suppress("MagicNumber")
     override fun registerReminder(
         onOpenFunding: () -> Unit,
     ) {
         scope.launch {
             // Wait a bit so settings can be ready to be used.
-            while (wasReminderShown() && !settings.isReady()) {
+            while (!settings.isReady()) {
                 delay(250.milliseconds)
             }
+
+            // If all reminders have already been shown, we don't need to show any again.
+            if (allRemindersShown()) {
+                return@launch
+            }
+
             val activity = activityProvider.getCurrent() as? AppCompatActivity ?: return@launch
             // TODO: Let the caller make the decision on which FragmentManager to use.
             val dialogFragmentManager = activity.supportFragmentManager
@@ -66,102 +64,60 @@ class FundingReminder(
                 }
             }
 
-            // If the reminder reference timestamp is not set, we set it to the first install time.
+            // Set reference to first launch of activity setting up reminder
             if (settings.getReminderReferenceTimestamp() == 0L) {
-                resetReminderReferenceTimestamp(activity)
+                resetReminderReferenceTimestamp()
             }
 
-            // If the reminder has already been shown, we don't need to show it again.
-            if (wasReminderShown() && wasSecondReminderShown()) {
-                return@launch
-            }
-
-            when {
-                shouldShowReminder() -> fragmentObserver.register(observedFragmentManager) {
+            if (shouldShowDonationAppeal(1) || shouldShowDonationAppeal(2)) {
+                fragmentObserver.register(observedFragmentManager) {
                     showFundingReminderDialog(dialogFragmentManager)
                 }
-
-                shouldShowSecondReminder() -> fragmentObserver.register(observedFragmentManager) {
-                    // TODO make this point to the new dialog: #11526
-                    showSecondFundingReminderDialog(dialogFragmentManager)
+            } else if (shouldShowDonationAppeal(3)) {
+                fragmentObserver.register(observedFragmentManager) {
+                    showFundingReminderDialog(
+                        dialogFragmentManager,
+                        R.string.funding_reminder_eoy_title,
+                        R.string.funding_reminder_eoy_content,
+                    )
                 }
             }
         }
     }
 
-    private fun wasReminderShown(): Boolean {
-        return settings.getReminderShownTimestamp() != 0L || settings.getReminderShownCount() > 0
-    }
-
-    private fun wasSecondReminderShown(): Boolean {
+    private fun allRemindersShown(): Boolean {
         return settings.getReminderShownTimestamp() != 0L &&
-            settings.getLastReminderShownActivityAmount() > settings.getReminderShownTimestamp() &&
-            settings.getReminderShownCount() >= 2
+            settings.getReminderShownCount() >= REMINDERS_TO_SHOW &&
+            settings.getReminderReferenceTimestamp() != 0L
     }
 
-    private fun shouldShowReminder(): Boolean {
+    private fun shouldShowDonationAppeal(appealCount: Int): Boolean {
         val currentTime = clock.now().toEpochMilliseconds()
+        val baseTimestamp =
+            if (appealCount == 1) settings.getReminderReferenceTimestamp() else settings.getReminderShownTimestamp()
 
-        return settings.getReminderShownTimestamp() == 0L &&
-            settings.getReminderReferenceTimestamp() + FUNDING_REMINDER_DELAY_MILLIS <= currentTime &&
-            settings.getActivityCounterInMillis() >= FUNDING_REMINDER_MIN_ACTIVITY_MILLIS &&
-            settings.getLastReminderShownActivityAmount() == 0L &&
-            settings.getReminderShownCount() == 0
+        return settings.getReminderShownCount() == appealCount - 1 &&
+            settings.getReminderReferenceTimestamp() != 0L &&
+            baseTimestamp + (FUNDING_REMINDER_DELAY_MILLIS * appealCount) <= currentTime
     }
 
-    /**
-     * The second reminder should display after 30 minutes of activity since the first reminder was shown
-     * It should only display if the current reminder has already displayed and has not been displayed already
-     */
-    private fun shouldShowSecondReminder(): Boolean {
-        val activityAtLastReminder = settings.getLastReminderShownActivityAmount()
-        val shouldShowTime = activityAtLastReminder + FUNDING_REMINDER_MIN_ACTIVITY_MILLIS
-        return settings.getReminderShownTimestamp() > 0L &&
-            settings.getActivityCounterInMillis() >= shouldShowTime &&
-            settings.getReminderShownCount() > 0 &&
-            settings.getReminderShownCount() < 2
+    private suspend fun resetReminderReferenceTimestamp() {
+        settings.setReminderReferenceTimestamp(clock.now().toEpochMilliseconds())
     }
 
-    @Suppress("SwallowedException")
-    private fun resetReminderReferenceTimestamp(context: Context) {
-        try {
-            val installTime = context.packageManager.getPackageInfo(context.packageName, 0).firstInstallTime
-            settings.setReminderReferenceTimestamp(installTime)
-        } catch (exception: NameNotFoundException) {
-            settings.setReminderReferenceTimestamp(clock.now().toEpochMilliseconds())
-        }
-    }
-
-    private fun showFundingReminderDialog(fragmentManager: FragmentManager) {
+    private fun showFundingReminderDialog(
+        fragmentManager: FragmentManager,
+        headerRes: Int? = null,
+        bodyRes: Int? = null,
+    ) {
         // We're about to show the funding reminder dialog. So mark it as being shown. This way, if there's an error,
         // we err on the side of the dialog not being shown rather than it being shown more than once.
         scope.launch {
             val now = clock.now().toEpochMilliseconds()
             settings.setReminderShownTimestamp(now)
-            settings.setLastReminderShownActivityAmount(settings.getActivityCounterInMillis())
             settings.incrementReminderShownCount()
         }
 
-        dialog.show(fragmentManager)
-    }
-
-    private fun showSecondFundingReminderDialog(fragmentManager: FragmentManager) {
-        scope.launch {
-            val now = clock.now().toEpochMilliseconds()
-            val hasSeenFundingReminderBeforeCount = settings.getReminderShownCount() == 0 &&
-                settings.getReminderShownTimestamp() != 0L
-
-            settings.setReminderShownTimestamp(now)
-            settings.setLastReminderShownActivityAmount(settings.getActivityCounterInMillis())
-
-            // Users who saw the first popup before the counter was added will need to increment this
-            // twice as to not potentially see a third one until we release another.
-            if (hasSeenFundingReminderBeforeCount) {
-                settings.setReminderShownCount(2)
-            } else {
-                settings.incrementReminderShownCount()
-            }
-        }
-        dialog.show(fragmentManager)
+        dialog.show(fragmentManager, headerRes, bodyRes)
     }
 }

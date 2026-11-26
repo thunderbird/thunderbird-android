@@ -4,12 +4,14 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class FundingConfig(
-    val lastFundingReminderShownActivityAmount: Long?,
+    val reminderReferenceTimestamp: Long?,
+    val lastFundingReminderShownTimestamp: Long?,
     val fundingReminderCount: Int?,
 ) {
     companion object {
         val DEFAULT = FundingConfig(
-            lastFundingReminderShownActivityAmount = null,
+            reminderReferenceTimestamp = null,
+            lastFundingReminderShownTimestamp = null,
             fundingReminderCount = null,
         )
     }

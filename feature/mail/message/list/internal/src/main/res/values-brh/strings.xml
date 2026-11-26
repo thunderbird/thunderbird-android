@@ -1,3 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    </resources>
+    <string name="setup_archive_folder_dialog_dont_show_again">دا پیغام اے دوارہ نشان تفہ بو</string>
+    <string name="setup_archive_folder_dialog_email_can_not_be_archived">ای میل آرکایو مننگ کمک</string>
+</resources>

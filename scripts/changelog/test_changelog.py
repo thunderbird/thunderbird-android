@@ -3,47 +3,12 @@ from pathlib import Path
 import tempfile
 import unittest
 from unittest.mock import patch
-import xml.etree.ElementTree as ET
-
 import generate_changelog_json as generator
-import migrate_changelog_to_json as migration
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 
 
 class ChangelogTest(unittest.TestCase):
-    def test_migration_preserves_beta_history_and_normalizes_date(self):
-        root = ET.fromstring(
-            '<changelog><release version="16.0b1" versioncode="40" date="2025-12-8">'
-            '<change>Fixed: A bug</change><change>New: A feature</change>'
-            '</release></changelog>'
-        )
-        schema = migration.load_schema(REPO_ROOT / 'schemas/changelog-release.schema.json')
-        with tempfile.TemporaryDirectory() as directory:
-            output = Path(directory)
-            index = migration.migrate_changelog(root, output, schema)
-            release_file = output / 'changelog_release_16_0b1.json'
-            release = json.loads(release_file.read_text())
-            migration.write_index_file(index, output)
-            self.assertTrue(release_file.read_bytes().endswith(b'\n'))
-            self.assertTrue((output / 'changelog_index.json').read_bytes().endswith(b'\n'))
-            self.assertEqual([note['type'] for note in release['notes']], ['fixed', 'new'])
-            self.assertEqual([note['text'] for note in release['notes']], ['Fixed: A bug', 'New: A feature'])
-
-    def test_k9_migration_excludes_beta_versions(self):
-        root = ET.fromstring(
-            '<changelog><release version="10.0b1" versioncode="39021" date="2025-03-19">'
-            '<change>Beta note</change></release>'
-            '<release version="6.904" versioncode="39004" date="2024-06-27">'
-            '<change>Stable note</change></release></changelog>'
-        )
-        schema = migration.load_schema(REPO_ROOT / 'schemas/changelog-release.schema.json')
-        with tempfile.TemporaryDirectory() as directory:
-            output = Path(directory)
-            index = migration.migrate_changelog(root, output, schema, exclude_beta=True)
-            self.assertEqual([entry['version'] for entry in index['releases']], ['6.904'])
-            self.assertFalse((output / 'changelog_release_10_0b1.json').exists())
-
     def test_generation_orders_versions_not_dates(self):
         index = {'schemaVersion': 1, 'releases': [
             {'version': '6.711', 'versioncode': 37011, 'date': '2023-10-04',

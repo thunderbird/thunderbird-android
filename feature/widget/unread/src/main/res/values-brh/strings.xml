@@ -1,3 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    </resources>
+    <string name="unread_widget_select_account">خواننگ مفروکاتا عدد نشان ایتبو…</string>
+    <string name="unread_widget_account_title">اکاؤنٹ</string>
+    <string name="unread_widget_account_summary">اکاؤنٹ ہمونہ نخوانوکاتا عدد نشان ایتنگے</string>
+    <string name="unread_widget_unified_inbox_account_summary">اوار آ انباکس</string>
+    <string name="unread_widget_folder_enabled_title">فولڈر تا تعداد</string>
+    <string name="unread_widget_folder_enabled_summary">بیرہ اسہ فولڈر نا کواننگ مفروکاتا عدد نشان ایتبو</string>
+    <string name="unread_widget_folder_title">فولڈر</string>
+    <string name="unread_widget_choose_account_title">اکاؤنٹ گچین کبو</string>
+    <string name="unread_widget_label">خواننگ مفروکاتا تعداد</string>
+    <string name="unread_widget_folder_not_selected">ہچو فولڈر گچین اف</string>
+    <string name="unread_widget_account_not_selected">ہچو اکاؤنٹ گچین اف</string>
+    <string name="unread_widget_action_done">مس</string>
+    <string name="unread_widget_folder_summary">فولڈر ہمونہ نخوانوکاتا عدد نشان ایتنگے</string>
+</resources>

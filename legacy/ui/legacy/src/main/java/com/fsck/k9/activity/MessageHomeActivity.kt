@@ -40,11 +40,10 @@ import com.fsck.k9.K9.fontSizes
 import com.fsck.k9.activity.compose.MessageActions
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.search.isUnified
-import com.fsck.k9.search.isUnifiedInbox
+import com.fsck.k9.search.unifiedFolderRole
 import com.fsck.k9.ui.BuildConfig
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.BaseActivity
-import com.fsck.k9.ui.managefolders.ManageFoldersActivity
 import com.fsck.k9.ui.messagelist.DefaultFolderProvider
 import com.fsck.k9.ui.messagelist.MessageListFragmentBridgeContract
 import com.fsck.k9.ui.messagelist.MessageListFragmentBridgeContract.MessageListFragmentListener
@@ -72,6 +71,7 @@ import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.account.usecase.GetDefaultAccountId
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.funding.api.FundingManager
+import net.thunderbird.feature.mail.folder.FolderRole
 import net.thunderbird.feature.mail.folder.FolderType
 import net.thunderbird.feature.funding.api.FundingType
 import net.thunderbird.feature.navigation.drawer.api.NavigationDrawer
@@ -707,7 +707,7 @@ open class MessageHomeActivity :
             openAccount = { accountId -> openRealAccount(accountId) },
             openAddAccount = { launchAddAccountScreen() },
             openFolder = { accountId, folderId -> openFolder(accountId, folderId) },
-            openUnifiedFolder = { openUnifiedFolders() },
+            openUnifiedFolder = { role -> openUnifiedFolder(role) },
             openSettings = { SettingsActivity.launch(this) },
             createDrawerListener = { createDrawerListener() },
         )
@@ -745,8 +745,8 @@ open class MessageHomeActivity :
         performSearch(search)
     }
 
-    private fun openFolderImmediately(folderId: Long) {
-        openFolder(account!!.id, folderId)
+    private fun openFolderImmediately(accountId: AccountId, folderId: Long) {
+        openFolder(accountId, folderId)
         commitOpenFolderTransaction()
     }
 
@@ -759,10 +759,10 @@ open class MessageHomeActivity :
         onMessageListDisplayed()
     }
 
-    private fun openUnifiedFolders() {
+    private fun openUnifiedFolder(role: FolderRole) {
         actionDisplaySearch(
             this,
-            createSearchAccount().relatedSearch,
+            LocalMessageSearch.createUnifiedSearch(role),
             false,
             false,
         )
@@ -777,7 +777,7 @@ open class MessageHomeActivity :
 
     fun openRealAccount(accountId: AccountId) {
         if (accountId == UnifiedAccountId) {
-            openUnifiedFolders()
+            openUnifiedFolder(FolderRole.INBOX)
         } else {
             val account = accountManager.findById(accountId) ?: return
             val folderId = defaultFolderProvider.getDefaultFolder(accountId)
@@ -832,8 +832,12 @@ open class MessageHomeActivity :
 
     @Suppress("NestedBlockDepth")
     private fun handleOnBackPressed(callback: OnBackPressedCallback) {
-        if (isDrawerEnabled && navigationDrawer!!.isOpen) {
-            navigationDrawer!!.close()
+        val drawer = navigationDrawer
+        val currentAccount = account
+        val currentSearch = search
+
+        if (isDrawerEnabled && drawer?.isOpen == true) {
+            drawer.close()
         } else if (displayMode == DisplayMode.MESSAGE_VIEW) {
             if (messageViewOnly) {
                 finish()
@@ -842,18 +846,18 @@ open class MessageHomeActivity :
             }
         } else if (!isSearchViewCollapsed()) {
             collapseSearchView()
-        } else if (isDrawerEnabled && account != null && supportFragmentManager.backStackEntryCount == 0) {
+        } else if (isDrawerEnabled && currentAccount != null && supportFragmentManager.backStackEntryCount == 0) {
             if (generalSettingsManager.getConfig().display.inboxSettings.isShowUnifiedInbox) {
-                if (!search!!.isUnifiedInbox) {
-                    openUnifiedFolders()
+                if (currentSearch?.unifiedFolderRole != FolderRole.INBOX) {
+                    openUnifiedFolder(FolderRole.INBOX)
                 } else {
                     dispatchOnBackPressed(callback)
                 }
             } else {
-                val defaultFolderId = defaultFolderProvider.getDefaultFolder(account!!.id)
-                val currentFolder = if (singleFolderMode) search!!.folderIds[0] else null
+                val defaultFolderId = defaultFolderProvider.getDefaultFolder(currentAccount.id)
+                val currentFolder = if (singleFolderMode) currentSearch?.folderIds?.firstOrNull() else null
                 if (currentFolder == null || defaultFolderId != currentFolder) {
-                    openFolderImmediately(defaultFolderId)
+                    openFolderImmediately(currentAccount.id, defaultFolderId)
                 } else {
                     dispatchOnBackPressed(callback)
                 }
@@ -1428,7 +1432,7 @@ open class MessageHomeActivity :
     }
 
     private fun clearNotifications() {
-        messagingController.clearNotifications(search)
+        search?.let { messagingController.clearNotifications(it) }
     }
 
     private val isAdditionalMessageListDisplayed: Boolean
@@ -1494,20 +1498,20 @@ open class MessageHomeActivity :
                     )
                 }
 
-                // Don't select any item in the drawer because the Unified Inbox is displayed,
+                // Don't select any item in the drawer because the unified folder is displayed,
                 // but not listed in the drawer
-                search.isUnifiedInbox &&
+                search.isUnified &&
                     !generalSettingsManager.getConfig().display.inboxSettings.isShowUnifiedInbox -> drawer.deselect()
 
-                search.isUnifiedInbox -> drawer.selectUnifiedInbox()
+                else -> search.unifiedFolderRole?.let { drawer.selectUnifiedFolder(it) }
             }
         } ?: logger.warn(TAG) { "Couldn't select folder for $accountId as LocalSearch is null." }
     }
 
     private fun createSearchAccount(): SearchAccount {
         return SearchAccount.createUnifiedInboxSearch(
-            title = coreResourceProvider.searchUnifiedFoldersTitle(),
-            detail = coreResourceProvider.searchUnifiedFoldersDetail(),
+            title = coreResourceProvider.unifiedInboxTitle(),
+            detail = coreResourceProvider.unifiedInboxDetail(),
         )
     }
 
@@ -1609,8 +1613,8 @@ open class MessageHomeActivity :
         ): Intent {
             return Intent(context, MessageHomeActivity::class.java).apply {
                 val search = SearchAccount.createUnifiedInboxSearch(
-                    title = coreResourceProvider.searchUnifiedFoldersTitle(),
-                    detail = coreResourceProvider.searchUnifiedFoldersDetail(),
+                    title = coreResourceProvider.unifiedInboxTitle(),
+                    detail = coreResourceProvider.unifiedInboxDetail(),
                 ).relatedSearch
 
                 putExtra(EXTRA_ACCOUNT, accountId.toString())
@@ -1678,8 +1682,8 @@ open class MessageHomeActivity :
             return Intent(context, MessageHomeActivity::class.java).apply {
                 if (openInUnifiedInbox) {
                     val search = SearchAccount.createUnifiedInboxSearch(
-                        title = coreResourceProvider.searchUnifiedFoldersTitle(),
-                        detail = coreResourceProvider.searchUnifiedFoldersDetail(),
+                        title = coreResourceProvider.unifiedInboxTitle(),
+                        detail = coreResourceProvider.unifiedInboxDetail(),
                     ).relatedSearch
                     putExtra(EXTRA_SEARCH, LocalMessageSearchSerializer.serialize(search))
                 }

@@ -28,7 +28,7 @@ class AboutViewModelTest {
     @Test
     fun `initial state contains app version and libraries`() {
         val state = viewModel.state.value
-        assertThat(state.version, "9.9.9")
+        assertThat(state.version).isEqualTo("9.9.9")
         assertThat(state.libraries.isNotEmpty()).isEqualTo(true)
     }
 

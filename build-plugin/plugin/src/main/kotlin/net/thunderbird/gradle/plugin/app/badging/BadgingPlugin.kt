@@ -10,7 +10,8 @@ import org.gradle.kotlin.dsl.assign
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.register
 
-private val variantsToCheck = listOf("release", "beta", "daily")
+// Exact build type match, so derived build types like `benchmarkRelease` or `nonMinifiedRelease` are not checked
+private val buildTypesToCheck = setOf("release", "beta", "daily")
 
 /**
  * This is a Gradle plugin that adds a task to generate the badging of the APKs and a task to check that the
@@ -33,7 +34,7 @@ class BadgingPlugin : Plugin<Project> {
     private fun Project.configureBadging() {
         extensions.configure<ApplicationAndroidComponentsExtension> {
             onVariants { variant ->
-                if (variantsToCheck.any { variant.name.contains(it, ignoreCase = true) }) {
+                if (variant.buildType in buildTypesToCheck) {
                     val capitalizedVariantName = variant.name.capitalized()
                     val generateBadgingTaskName = "generate${capitalizedVariantName}Badging"
                     val generateBadging = tasks.register<GenerateBadgingTask>(generateBadgingTaskName) {

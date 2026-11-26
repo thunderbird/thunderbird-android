@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="onboarding_welcome_start_button">Kom i gang</string>
-    <string name="onboarding_welcome_import_button">Importér innstillinger</string>
+    <string name="onboarding_welcome_import_button">Importer innstillinger fra K-9</string>
     <string name="onboarding_welcome_text">En privatlivsfokusert og reklamefri e-postapp for Android med åpen kildekode.</string>
-    <string name="onboarding_welcome_developed_by">Utviklet av et dedikert team hos MZLA Technologies og et globalt samfunn frivillige. En del av Mozilla-familien.</string>
+    <string name="onboarding_welcome_developed_by">Utviklet av et dedikert team hos Thunderbird Technologies Corporation og et globalt samfunn frivillige. En stolt del av Mozilla-familien.</string>
 </resources>

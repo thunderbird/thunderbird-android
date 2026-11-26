@@ -11,7 +11,7 @@ import org.junit.runner.RunWith
  * The profile is generated from the release builds, which need an account in `local.properties`, and merged into
  * `app-k9mail/src/main/generated/baselineProfiles/`:
  * ```
- * ./gradlew :app-k9mail:generateBaselineProfile
+ * ./gradlew :app-k9mail:generateBaselineProfile -Pbenchmark=true
  * ```
  */
 @RunWith(AndroidJUnit4::class)

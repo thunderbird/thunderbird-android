@@ -39,14 +39,19 @@ internal fun MessageListItemView(item: MessageListItem) {
         GlanceModifier.Companion.fillMaxWidth().wrapContentHeight().clickable {
             CoroutineScope(Dispatchers.IO).launch {
                 val intent = MessageHomeActivity.Companion.actionDisplayMessageIntent(context, item.messageReference)
-                PendingIntentCompat.getActivity(
-                    context,
-                    Random.Default.nextInt(),
-                    intent,
-                    PendingIntent.FLAG_UPDATE_CURRENT,
-                    false,
-                )!!
-                    .send()
+                // Only returns null when using FLAG_NO_CREATE
+                val pendingIntent = checkNotNull(
+                    PendingIntentCompat.getActivity(
+                        context,
+                        Random.Default.nextInt(),
+                        intent,
+                        PendingIntent.FLAG_UPDATE_CURRENT,
+                        false,
+                    ),
+                ) {
+                    "Failed to create activity PendingIntent"
+                }
+                pendingIntent.send()
             }
         },
     ) {

@@ -5,4 +5,14 @@
     <string name="account_settings_general_avatar_option_monogram">Монограм</string>
     <string name="account_settings_general_avatar_option_image">Изображение</string>
     <string name="account_settings_general_avatar_option_icon">Иконка</string>
+    <string name="account_settings_general_avatar_image_title">Изображение за аватар</string>
+    <string name="account_settings_general_avatar_image_description">Избор на изображение представящо профила ви.</string>
+    <string name="account_settings_general_avatar_image_select">Избор на изображение</string>
+    <string name="account_settings_general_name_title">Име на профил</string>
+    <string name="account_settings_general_name_description">Името свързано с вашия профил.</string>
+    <string name="account_settings_general_name_error_empty">Името не може да е празно</string>
+    <string name="account_settings_general_avatar_description">Избор на визуализация на аватар.</string>
+    <string name="account_settings_general_name_error_too_long">Името е много дълго</string>
+    <string name="account_settings_general_color_title">Цвят на профил</string>
+    <string name="account_settings_general_avatar_monogram_title">Монограм на аватара</string>
 </resources>

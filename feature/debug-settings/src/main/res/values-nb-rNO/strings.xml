@@ -1,3 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    </resources>
+    <string name="debug_settings_notifications_loading">Laster…</string>
+    <string name="debug_settings_notifications_trigger_notification">Utløs varsling</string>
+    <string name="debug_settings_notifications_single_mail_sender">Sender</string>
+    <string name="debug_settings_notifications_single_mail_subject">Emne</string>
+    <string name="debug_settings_notifications_single_mail_summary">Oppsummering</string>
+    <string name="debug_settings_notifications_single_mail_preview">Forhåndsvising</string>
+    <string name="debug_settings_notifications_title">Varslinger</string>
+    <string name="debug_settings_screen_title">Hemmelig side for feilsøkingsinnstillinger</string>
+    <string name="debug_settings_notifications_common_notification_information">Felles varslingsinformasjon</string>
+    <string name="debug_settings_notifications_in_app_notification">Varsling i appen</string>
+    <string name="debug_settings_notifications_system_notification">Systemvarsling</string>
+    <string name="debug_settings_notifications_preparing_notification">Forbereder varsling %1$s</string>
+    <string name="debug_settings_notification_status_log">Varslingsstatuslogg</string>
+    <string name="debug_settings_notifications_status">"Status: "</string>
+    <string name="debug_settings_notifications_clear_status_log">Tøm statusloggen</string>
+    <string name="debug_settings_feature_flag_title">Funksjonsflagg</string>
+    <string name="debug_settings_feature_flag_unsaved_changes">Ulagrede endringer</string>
+    <string name="debug_settings_feature_flag_unsaved_changes_content_text">Du har endringer som ikke er lagret. Er du sikker på at du vil avslutte?</string>
+    <string name="debug_settings_feature_flag_unsaved_changes_stay_button">Bli her</string>
+    <string name="debug_settings_feature_flag_unsaved_changes_leave_button">Avslutt</string>
+    <string name="debug_settings_feature_flag_restore_default_values">Gjenopprett standardverdier</string>
+    <string name="debug_settings_feature_flag_apply_changes">Bruk endringene</string>
+    <string name="debug_settings_feature_flag_modified_indicator">"* "</string>
+    <string name="debug_settings_feature_flag_overridden">"overskrevet; "</string>
+    <string name="debug_settings_feature_flag_default_value">standardverdi: %1$b</string>
+</resources>

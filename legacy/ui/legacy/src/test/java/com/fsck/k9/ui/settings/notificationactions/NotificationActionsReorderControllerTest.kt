@@ -1,8 +1,9 @@
 package com.fsck.k9.ui.settings.notificationactions
 
+import assertk.assertThat
+import assertk.assertions.isEqualTo
+import assertk.assertions.isTrue
 import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertTrue
 
 class NotificationActionsReorderControllerTest {
     private val initialActions = listOf(
@@ -23,9 +24,9 @@ class NotificationActionsReorderControllerTest {
             delta = -1,
         )
 
-        assertTrue(moved)
-        assertEquals(3, controller.cutoffIndex)
-        assertEquals(
+        assertThat(moved).isTrue()
+        assertThat(controller.cutoffIndex).isEqualTo(3)
+        assertThat(controller.actionOrder()).isEqualTo(
             listOf(
                 MessageNotificationAction.Reply,
                 MessageNotificationAction.Archive,
@@ -34,7 +35,6 @@ class NotificationActionsReorderControllerTest {
                 MessageNotificationAction.Star,
                 MessageNotificationAction.Delete,
             ),
-            controller.actionOrder(),
         )
     }
 
@@ -49,7 +49,7 @@ class NotificationActionsReorderControllerTest {
             visibleItems = controller.visibleItemsForTest(),
         )
 
-        assertEquals(
+        assertThat(controller.actionOrder()).isEqualTo(
             listOf(
                 MessageNotificationAction.Reply,
                 MessageNotificationAction.Archive,
@@ -58,16 +58,15 @@ class NotificationActionsReorderControllerTest {
                 MessageNotificationAction.Star,
                 MessageNotificationAction.Delete,
             ),
-            controller.actionOrder(),
         )
-        assertEquals(3, controller.cutoffIndex)
+        assertThat(controller.cutoffIndex).isEqualTo(3)
 
         controller.dragBy(
             deltaY = -50f,
             visibleItems = controller.visibleItemsForTest(),
         )
 
-        assertEquals(
+        assertThat(controller.actionOrder()).isEqualTo(
             listOf(
                 MessageNotificationAction.Reply,
                 MessageNotificationAction.Archive,
@@ -76,9 +75,8 @@ class NotificationActionsReorderControllerTest {
                 MessageNotificationAction.Star,
                 MessageNotificationAction.Delete,
             ),
-            controller.actionOrder(),
         )
-        assertEquals(3, controller.cutoffIndex)
+        assertThat(controller.cutoffIndex).isEqualTo(3)
     }
 
     private fun createController(): NotificationActionsReorderController {

@@ -20,6 +20,13 @@ class ValidateAvatarMonogramTest {
     }
 
     @Test
+    fun `should succeed when monogram is a single multi-code-point emoji`() {
+        // A ZWJ sequence (🐦‍🔥) spans several UTF-16 units but is a single grapheme cluster.
+        assertThat(testSubject("🐦‍🔥")).isInstanceOf<Outcome.Success<Unit>>()
+        assertThat(testSubject("👨‍👩‍👧‍👦")).isInstanceOf<Outcome.Success<Unit>>()
+    }
+
+    @Test
     fun `should fail when monogram is empty`() {
         val result = testSubject("")
 
@@ -40,6 +47,15 @@ class ValidateAvatarMonogramTest {
     @Test
     fun `should fail when monogram is longer than 3 characters`() {
         val result = testSubject("ABCD")
+
+        assertThat(result).isInstanceOf<Outcome.Failure<ValidationError>>()
+            .prop(Outcome.Failure<ValidationError>::error)
+            .isInstanceOf<ValidateMonogramError.TooLongMonogram>()
+    }
+
+    @Test
+    fun `should fail when monogram is longer than 3 emoji`() {
+        val result = testSubject("🔥🔥🔥🔥")
 
         assertThat(result).isInstanceOf<Outcome.Failure<ValidationError>>()
             .prop(Outcome.Failure<ValidationError>::error)

@@ -114,7 +114,8 @@ class PasswordPromptDialogFragment : DialogFragment() {
 
         val resultIntent = PasswordPromptResult(accountUuid, incomingServerPassword, outgoingServerPassword).asIntent()
 
-        targetFragment!!.onActivityResult(targetRequestCode, Activity.RESULT_OK, resultIntent)
+        val target = checkNotNull(targetFragment) { "Missing target fragment" }
+        target.onActivityResult(targetRequestCode, Activity.RESULT_OK, resultIntent)
     }
 
     companion object {

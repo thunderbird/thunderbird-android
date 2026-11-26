@@ -3,4 +3,8 @@
     <string name="account_setup_error_network">Fazi rouedad. Gwiriit stad ho kevreadenn ha klaskit en-dro.</string>
     <string name="account_setup_error_unknown">Fazi dianav</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_required">Chomlec\'h postel rekis.</string>
+    <string name="account_setup_auto_discovery_connection_security_start_tls">StartTLS</string>
+    <string name="account_setup_auto_discovery_connection_security_ssl">SSL/TLS</string>
+    <string name="account_setup_special_folders_folder_none">Hini ebet</string>
+    <string name="account_setup_options_section_sync_options">Dibarzhioù goubredañ</string>
 </resources>

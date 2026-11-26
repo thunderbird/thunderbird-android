@@ -37,7 +37,6 @@ class DefaultRemoteFolderDetailsRepository(
                             type = folder.type.toFolderType(),
                         ),
                         isInTopGroup = folder.isInTopGroup,
-                        isIntegrate = folder.isIntegrate,
                         isSyncEnabled = folder.isSyncEnabled,
                         isVisible = folder.isVisible,
                         isNotificationsEnabled = folder.isNotificationsEnabled,

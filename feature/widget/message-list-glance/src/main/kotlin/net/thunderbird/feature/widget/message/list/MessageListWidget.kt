@@ -43,8 +43,8 @@ internal class MessageListWidget : GlanceAppWidget(), KoinComponent {
             LaunchedEffect(Unit) {
                 CoroutineScope(Dispatchers.IO).launch {
                     val unifiedInboxSearch = createUnifiedInboxSearch(
-                        title = coreResourceProvider.searchUnifiedFoldersTitle(),
-                        detail = coreResourceProvider.searchUnifiedFoldersDetail(),
+                        title = coreResourceProvider.unifiedInboxTitle(),
+                        detail = coreResourceProvider.unifiedInboxDetail(),
                     ).relatedSearch
                     val messageListConfig = MessageListConfig(
                         search = unifiedInboxSearch,
@@ -69,8 +69,8 @@ internal class MessageListWidget : GlanceAppWidget(), KoinComponent {
 
     private fun openApp(context: Context) {
         val unifiedFoldersSearch = createUnifiedInboxSearch(
-            title = coreResourceProvider.searchUnifiedFoldersTitle(),
-            detail = coreResourceProvider.searchUnifiedFoldersDetail(),
+            title = coreResourceProvider.unifiedInboxTitle(),
+            detail = coreResourceProvider.unifiedInboxDetail(),
         )
         val intent = intentDisplaySearch(
             context = context,
@@ -81,12 +81,18 @@ internal class MessageListWidget : GlanceAppWidget(), KoinComponent {
         ).apply {
             action = nextInt().toString()
         }
-        PendingIntentCompat.getActivity(
-            context,
-            nextInt(),
-            intent,
-            PendingIntent.FLAG_UPDATE_CURRENT,
-            false,
-        )!!.send()
+        // Only returns null when using FLAG_NO_CREATE
+        val pendingIntent = checkNotNull(
+            PendingIntentCompat.getActivity(
+                context,
+                nextInt(),
+                intent,
+                PendingIntent.FLAG_UPDATE_CURRENT,
+                false,
+            ),
+        ) {
+            "Failed to create activity PendingIntent"
+        }
+        pendingIntent.send()
     }
 }

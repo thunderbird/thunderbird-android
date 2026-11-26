@@ -26,58 +26,6 @@ class CheckFolderOperationsTest : RobolectricTest() {
     }
 
     @Test
-    fun `single folder not included in Unified Inbox`() {
-        val folderIds = listOf(sqliteDatabase.createFolder(integrate = false))
-
-        val result = checkFolderOperations.areAllIncludedInUnifiedInbox(folderIds)
-
-        assertThat(result).isFalse()
-    }
-
-    @Test
-    fun `single folder included in Unified Inbox`() {
-        val folderIds = listOf(sqliteDatabase.createFolder(integrate = true))
-
-        val result = checkFolderOperations.areAllIncludedInUnifiedInbox(folderIds)
-
-        assertThat(result).isTrue()
-    }
-
-    @Test
-    fun `not all folders included in Unified Inbox`() {
-        val folderIds = listOf(
-            sqliteDatabase.createFolder(integrate = true),
-            sqliteDatabase.createFolder(integrate = false),
-        )
-
-        val result = checkFolderOperations.areAllIncludedInUnifiedInbox(folderIds)
-
-        assertThat(result).isFalse()
-    }
-
-    @Test
-    fun `1000 folders included in Unified Inbox`() {
-        val folderIds = List(1000) {
-            sqliteDatabase.createFolder(integrate = true)
-        }
-
-        val result = checkFolderOperations.areAllIncludedInUnifiedInbox(folderIds)
-
-        assertThat(result).isTrue()
-    }
-
-    @Test
-    fun `999 of 1000 folders included in Unified Inbox`() {
-        val folderIds = List(999) {
-            sqliteDatabase.createFolder(integrate = true)
-        } + sqliteDatabase.createFolder(integrate = false)
-
-        val result = checkFolderOperations.areAllIncludedInUnifiedInbox(folderIds)
-
-        assertThat(result).isFalse()
-    }
-
-    @Test
     fun `hasPushEnabledFolder() with one folder enabled for push`() {
         sqliteDatabase.createFolder(pushEnabled = true)
         sqliteDatabase.createFolder(pushEnabled = false)

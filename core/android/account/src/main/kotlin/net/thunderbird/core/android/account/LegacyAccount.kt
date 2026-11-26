@@ -261,4 +261,8 @@ data class LegacyAccount(
             lastFolderListRefreshTime = lastFolderListRefreshTime,
         )
     }
+
+    override fun toString(): String {
+        return "LegacyAccount(id=$id)"
+    }
 }

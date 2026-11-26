@@ -18,7 +18,7 @@ android {
         testApplicationId = "net.thunderbird.android.tests"
 
         versionCode = 66
-        versionName = "26.0"
+        versionName = "27.0"
 
         buildConfigField("String", "CLIENT_INFO_APP_NAME", "\"Thunderbird for Android\"")
     }
@@ -94,14 +94,14 @@ android {
     }
 
     buildTypes {
-        val isCI = providers.gradleProperty("ci")
+        val minify = providers.gradleProperty("minify")
             .map(String::toBoolean)
-            .orElse(false)
+            .orElse(true)
         release {
             signingConfig = signingConfigs.getByType(SigningType.TB_RELEASE)
 
-            isMinifyEnabled = !isCI.get()
-            isShrinkResources = !isCI.get()
+            isMinifyEnabled = minify.get()
+            isShrinkResources = minify.get()
             isDebuggable = false
 
             proguardFiles(
@@ -118,10 +118,10 @@ android {
             signingConfig = signingConfigs.getByType(SigningType.TB_BETA)
 
             applicationIdSuffix = ".beta"
-            versionNameSuffix = "b4"
+            versionNameSuffix = "b0"
 
-            isMinifyEnabled = isCI.get()
-            isShrinkResources = isCI.get()
+            isMinifyEnabled = minify.get()
+            isShrinkResources = minify.get()
             isDebuggable = false
 
             matchingFallbacks += listOf("release")
@@ -142,8 +142,8 @@ android {
             applicationIdSuffix = ".daily"
             versionNameSuffix = "a1"
 
-            isMinifyEnabled = isCI.get()
-            isShrinkResources = isCI.get()
+            isMinifyEnabled = minify.get()
+            isShrinkResources = minify.get()
             isDebuggable = false
 
             matchingFallbacks += listOf("release")

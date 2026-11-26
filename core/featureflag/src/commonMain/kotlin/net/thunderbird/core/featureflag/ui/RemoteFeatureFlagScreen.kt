@@ -116,49 +116,10 @@ private fun RemoteFeatureFlagScreen(
                 .padding(paddingValues)
                 .padding(top = BoltTheme.spacings.triple),
         ) {
-            item {
-                Row(
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    modifier = Modifier.clickable(
-                        enabled = state.remoteFeatureFlagCatalogAvailable,
-                        role = Role.Switch,
-                        onClick = { onEnableChange(!state.remoteFeatureFlagEnabled) },
-                    ),
-                ) {
-                    Column(modifier = Modifier.weight(1f)) {
-                        TextTitleMedium(text = stringResource(Res.string.remote_feature_flag_screen_enabled_title))
-                        TextBodyMedium(text = stringResource(Res.string.remote_feature_flag_screen_enabled_description))
-                    }
-                    Switch(
-                        checked = state.remoteFeatureFlagEnabled,
-                        enabled = state.remoteFeatureFlagCatalogAvailable,
-                        onCheckedChange = onEnableChange,
-                    )
-                }
-            }
+            item { FeatureFlagEnabledToggle(state, onEnableChange) }
 
-            item {
-                Column(
-                    verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.half),
-                    modifier = Modifier.padding(vertical = BoltTheme.spacings.default),
-                ) {
-                    TextTitleMedium(text = stringResource(Res.string.remote_feature_flag_screen_catalog_location))
-                    TextBodyMedium(
-                        text = buildAnnotatedString {
-                            when (val location = state.location) {
-                                FeatureFlagLocation.Remote if location.url != null -> {
-                                    append(stringResource(location.label))
-                                    withLink(LinkAnnotation.Url(location.url)) {
-                                        append(" " + location.url)
-                                    }
-                                }
+            item { FeatureFlagCatalogLocation(state) }
 
-                                else -> append(stringResource(location.label))
-                            }
-                        },
-                    )
-                }
-            }
             item {
                 TextTitleMedium(
                     text = stringResource(Res.string.remote_feature_flag_screen_enabled_flags),
@@ -168,23 +129,7 @@ private fun RemoteFeatureFlagScreen(
 
             when {
                 state.flags.isEmpty() -> {
-                    item {
-                        Column(
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.spacedBy(
-                                BoltTheme.spacings.double,
-                                alignment = Alignment.CenterVertically,
-                            ),
-                            modifier = Modifier.fillMaxSize(),
-                        ) {
-                            Icon(
-                                imageVector = Icons.Outlined.Warning,
-                                contentDescription = null,
-                                modifier = Modifier.size(BoltTheme.sizes.large),
-                            )
-                            TextBodyMedium(text = stringResource(Res.string.remote_feature_flag_screen_no_flags_found))
-                        }
-                    }
+                    item { NoFeatureFlags() }
                 }
 
                 else -> {
@@ -202,6 +147,74 @@ private fun RemoteFeatureFlagScreen(
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun FeatureFlagEnabledToggle(
+    state: RemoteFeatureFlagUiContract.State,
+    onEnableChange: (Boolean) -> Unit,
+) {
+    Row(
+        horizontalArrangement = Arrangement.SpaceBetween,
+        modifier = Modifier.clickable(
+            enabled = state.remoteFeatureFlagCatalogAvailable,
+            role = Role.Switch,
+            onClick = { onEnableChange(!state.remoteFeatureFlagEnabled) },
+        ),
+    ) {
+        Column(modifier = Modifier.weight(1f)) {
+            TextTitleMedium(text = stringResource(Res.string.remote_feature_flag_screen_enabled_title))
+            TextBodyMedium(text = stringResource(Res.string.remote_feature_flag_screen_enabled_description))
+        }
+        Switch(
+            checked = state.remoteFeatureFlagEnabled,
+            enabled = state.remoteFeatureFlagCatalogAvailable,
+            onCheckedChange = onEnableChange,
+        )
+    }
+}
+
+@Composable
+private fun FeatureFlagCatalogLocation(state: RemoteFeatureFlagUiContract.State) {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.half),
+        modifier = Modifier.padding(vertical = BoltTheme.spacings.default),
+    ) {
+        TextTitleMedium(text = stringResource(Res.string.remote_feature_flag_screen_catalog_location))
+        TextBodyMedium(
+            text = buildAnnotatedString {
+                when (val location = state.location) {
+                    FeatureFlagLocation.Remote if location.url != null -> {
+                        append(stringResource(location.label))
+                        withLink(LinkAnnotation.Url(location.url)) {
+                            append(" " + location.url)
+                        }
+                    }
+
+                    else -> append(stringResource(location.label))
+                }
+            },
+        )
+    }
+}
+
+@Composable
+private fun NoFeatureFlags() {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(
+            BoltTheme.spacings.double,
+            alignment = Alignment.CenterVertically,
+        ),
+        modifier = Modifier.fillMaxSize(),
+    ) {
+        Icon(
+            imageVector = Icons.Outlined.Warning,
+            contentDescription = null,
+            modifier = Modifier.size(BoltTheme.sizes.large),
+        )
+        TextBodyMedium(text = stringResource(Res.string.remote_feature_flag_screen_no_flags_found))
     }
 }
 

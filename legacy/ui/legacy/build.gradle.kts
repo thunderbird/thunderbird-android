@@ -70,7 +70,7 @@ dependencies {
 
     implementation(libs.commons.io)
     implementation(libs.androidx.core.ktx)
-    implementation(libs.jcip.annotations)
+    implementation(libs.androidx.annotation)
     implementation(libs.mime4j.core)
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.coroutines.android)

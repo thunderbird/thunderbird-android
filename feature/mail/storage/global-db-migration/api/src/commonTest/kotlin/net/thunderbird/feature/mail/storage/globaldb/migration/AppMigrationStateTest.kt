@@ -1,9 +1,10 @@
 package net.thunderbird.feature.mail.storage.globaldb.migration
 
+import assertk.assertFailure
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import assertk.assertions.isInstanceOf
 import kotlin.test.Test
-import kotlin.test.assertFailsWith
 import net.thunderbird.feature.mail.storage.globaldb.migration.AppMigrationState
 
 class AppMigrationStateTest {
@@ -21,29 +22,29 @@ class AppMigrationStateTest {
 
     @Test
     fun `InProgress rejects progress below range`() {
-        assertFailsWith<IllegalArgumentException> {
+        assertFailure {
             AppMigrationState.InProgress(-0.1f)
-        }
+        }.isInstanceOf<IllegalArgumentException>()
     }
 
     @Test
     fun `InProgress rejects progress above range`() {
-        assertFailsWith<IllegalArgumentException> {
+        assertFailure {
             AppMigrationState.InProgress(1.1f)
-        }
+        }.isInstanceOf<IllegalArgumentException>()
     }
 
     @Test
     fun `InProgress rejects NaN progress`() {
-        assertFailsWith<IllegalArgumentException> {
+        assertFailure {
             AppMigrationState.InProgress(Float.NaN)
-        }
+        }.isInstanceOf<IllegalArgumentException>()
     }
 
     @Test
     fun `InProgress rejects infinite progress`() {
-        assertFailsWith<IllegalArgumentException> {
+        assertFailure {
             AppMigrationState.InProgress(Float.POSITIVE_INFINITY)
-        }
+        }.isInstanceOf<IllegalArgumentException>()
     }
 }

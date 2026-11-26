@@ -2,9 +2,9 @@ package app.k9mail.legacy.message.controller
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import assertk.assertions.isNotNull
 import assertk.assertions.isNull
 import assertk.assertions.isTrue
-import kotlin.test.assertNotNull
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.AccountIdFactory
 import org.junit.Test
@@ -26,7 +26,7 @@ class MessageReferenceTest {
     fun parseIdentityString() {
         val result = MessageReference.parse("#:MDFhMGU4ZDctODdkYy03NGE0LWE1MmMtM2Y1MDdjNmRjMDJj:Mg==:MTAxMDEwMTA=")
 
-        assertNotNull(result) { messageReference ->
+        assertThat(result).isNotNull().given { messageReference ->
             assertThat(messageReference.accountId).isEqualTo(accountId)
             assertThat(messageReference.folderId).isEqualTo(2)
             assertThat(messageReference.uid).isEqualTo("10101010")

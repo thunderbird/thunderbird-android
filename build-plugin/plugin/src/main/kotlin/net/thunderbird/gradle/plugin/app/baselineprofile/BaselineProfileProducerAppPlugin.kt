@@ -107,6 +107,12 @@ abstract class BaselineProfileProducerAppPlugin : Plugin<Project> {
         }
 
         androidComponents {
+            // The app variants this module tests only exist with `-Pbenchmark=true`,
+            // see BaselineProfileConsumerAppPlugin
+            if (!isBenchmarkEnabled()) {
+                beforeVariants { variant -> variant.enable = false }
+            }
+
             onVariants { variant ->
                 val artifactsLoader = variant.artifacts.getBuiltArtifactsLoader()
                 @Suppress("UnstableApiUsage")

@@ -15,7 +15,6 @@ import com.fsck.k9.FakePlatformConfigProvider
 import com.fsck.k9.mail.Address
 import com.fsck.k9.mailstore.LocalMessage
 import com.fsck.k9.mailstore.NotificationMessage
-import kotlin.test.assertNotNull
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import net.thunderbird.core.android.account.fake.FakeLegacyAccountManager
@@ -128,10 +127,12 @@ class NotificationRepositoryTest {
 
         val result = testSubject.addNotification(accountId, content, timestamp = 40L)
 
-        val notificationId = assertNotNull(result).notificationHolder.notificationId
-        assertThat(notificationStore.operations).containsExactly(
-            NotificationStoreOperation.Add(content.messageReference, notificationId, timestamp = 40L),
-        )
+        assertThat(result).isNotNull().given { addResult ->
+            val notificationId = addResult.notificationHolder.notificationId
+            assertThat(notificationStore.operations).containsExactly(
+                NotificationStoreOperation.Add(content.messageReference, notificationId, timestamp = 40L),
+            )
+        }
         assertThat(newMessageStateStore.newMessageStates).containsOnly(content.messageReference to true)
     }
 
