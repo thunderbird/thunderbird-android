@@ -14,7 +14,9 @@ jobs:
   issue-needinfo-stale:
     name: Close stale needinfo issues
     runs-on: ubuntu-latest
-    environment: botmobile
+    environment:
+      name: botmobile
+      deployment: false
     permissions:
       issues: write
       pull-requests: write
