@@ -556,7 +556,6 @@
     <string name="background_ops_label">Sioncronú cúlra</string>
     <string name="background_ops_never">Riamh</string>
     <string name="background_ops_always">I gcónaí</string>
-    <string name="background_ops_auto_sync_only">Nuair a dhéantar seiceáil ar \'Uathshioncronú\'</string>
     <string name="account_setup_push_limit_label">Uasfhillteáin le seiceáil le brú</string>
     <string name="account_setup_push_limit_5">5 fillteán</string>
     <string name="account_setup_push_limit_10">10 fillteán</string>

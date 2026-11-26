@@ -448,7 +448,6 @@
     <string name="background_ops_label">Sinkronisasi latar belakang</string>
     <string name="background_ops_never">Tidak pernah</string>
     <string name="background_ops_always">Selalu</string>
-    <string name="background_ops_auto_sync_only">Saat \'Sinkronisasi otomatis\' dicentang</string>
     <string name="batch_select_all">Pilih semua</string>
     <string name="account_setup_push_limit_label">Folder maks. untuk memeriksa dengan dorongan</string>
     <string name="account_setup_push_limit_5">5 folder</string>

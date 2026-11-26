@@ -499,7 +499,6 @@
     <string name="background_ops_label">Sinchronizuoti fone</string>
     <string name="background_ops_never">Niekada</string>
     <string name="background_ops_always">Visada</string>
-    <string name="background_ops_auto_sync_only">Kai pažymėtas „automatinis sinchronizavimas“</string>
     <string name="batch_select_all">Pasirinkti viską</string>
     <string name="account_setup_push_limit_label">Kiek daugiausia aplankų tikrinti siunčiant</string>
     <string name="account_setup_push_limit_5">5 aplankai</string>
