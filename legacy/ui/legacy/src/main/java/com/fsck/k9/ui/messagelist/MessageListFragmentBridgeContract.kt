@@ -63,6 +63,7 @@ interface MessageListFragmentBridgeContract {
         fun startSearch(query: String, accountId: AccountId?, folderId: Long?): Boolean
         fun startSupportActionMode(callback: ActionMode.Callback): ActionMode?
         fun goBack()
+        fun onFolderDeleted(accountId: AccountId, folderId: Long)
 
         companion object Companion {
             const val MAX_PROGRESS = 10000
