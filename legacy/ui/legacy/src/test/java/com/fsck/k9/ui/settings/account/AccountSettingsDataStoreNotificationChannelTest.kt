@@ -55,6 +55,26 @@ class AccountSettingsDataStoreNotificationChannelTest : K9RobolectricTest() {
     )
 
     @Test
+    fun `changing the ringtone with a missing messages channel should create the channel with the new ringtone`() {
+        // Arrange
+        assertThat(notificationManager.getNotificationChannel(messagesChannelId(version = 0))).isNull()
+
+        // Act
+        testSubject.putString("account_ringtone", NEW_RINGTONE)
+
+        // Assert
+        val storedAccount = accountManager.findById(account.id)
+        assertThat(storedAccount).isNotNull().all {
+            prop(LegacyAccount::messagesNotificationChannelVersion).isEqualTo(0)
+            prop("ringtone") { it.notificationSettings.ringtone }.isEqualTo(NEW_RINGTONE)
+        }
+        assertThat(notificationManager.getNotificationChannel(messagesChannelId(version = 0)))
+            .isNotNull()
+            .prop("sound") { it.sound }
+            .isEqualTo(NEW_RINGTONE.toUri())
+    }
+
+    @Test
     fun `changing the ringtone should recreate the messages channel with the new ringtone`() {
         // Arrange
         notificationChannelManager.updateChannels()
@@ -90,6 +110,23 @@ class AccountSettingsDataStoreNotificationChannelTest : K9RobolectricTest() {
             prop(LegacyAccount::messagesNotificationChannelVersion).isEqualTo(1)
             prop(LegacyAccount::isAlwaysShowCcBcc).isTrue()
         }
+    }
+
+    @Test
+    fun `creating the messages channel with ringing disabled should create a channel without sound`() {
+        // Arrange
+        accountManager.updateSync(account.id) {
+            it.copy(notificationSettings = it.notificationSettings.copy(isRingEnabled = false))
+        }
+
+        // Act
+        notificationChannelManager.updateChannels()
+
+        // Assert
+        assertThat(notificationManager.getNotificationChannel(messagesChannelId(version = 0)))
+            .isNotNull()
+            .prop("sound") { it.sound }
+            .isNull()
     }
 
     private fun messagesChannelId(version: Int): String {
