@@ -248,6 +248,7 @@ class GeneralSettingsDataStore(
             "messageview_visible_refile_actions" -> {
                 mutableSetOf<String>().apply {
                     if (visualSettings.isMessageViewDeleteActionVisible) add("delete")
+                    if (visualSettings.isMessageViewToggleUnreadActionVisible) add("toggle_unread")
                     if (visualSettings.isMessageViewArchiveActionVisible) add("archive")
                     if (visualSettings.isMessageViewMoveActionVisible) add("move")
                     if (visualSettings.isMessageViewCopyActionVisible) add("copy")
@@ -286,6 +287,7 @@ class GeneralSettingsDataStore(
                             visualSettings = settings.display.visualSettings.copy(
                                 isMessageViewArchiveActionVisible = "archive" in checkedValues,
                                 isMessageViewDeleteActionVisible = "delete" in checkedValues,
+                                isMessageViewToggleUnreadActionVisible = "toggle_unread" in checkedValues,
                                 isMessageViewMoveActionVisible = "move" in checkedValues,
                                 isMessageViewCopyActionVisible = "copy" in checkedValues,
                                 isMessageViewSpamActionVisible = "spam" in checkedValues,

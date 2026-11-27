@@ -11,6 +11,7 @@ enum class DisplayVisualSettingKey(val value: String) {
     DrawerExpandAllFolder("drawerExpandAllFolder"),
     MessageViewArchiveActionVisible("messageViewArchiveActionVisible"),
     MessageViewDeleteActionVisible("messageViewDeleteActionVisible"),
+    MessageViewToggleUnreadActionVisible("messageViewToggleUnreadActionVisible"),
     MessageViewMoveActionVisible("messageViewMoveActionVisible"),
     MessageViewCopyActionVisible("messageViewCopyActionVisible"),
     MessageViewSpamActionVisible("messageViewSpamActionVisible"),
