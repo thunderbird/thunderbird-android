@@ -291,7 +291,8 @@ public abstract class MessageBuilder {
     }
 
     private void addContentDisposition(MimeBodyPart bodyPart, String disposition, String fileName, Long size) {
-        String value = Headers.contentDisposition(disposition, fileName, size);
+        Long sizeParameter = (size != null && size >= 0) ? size : null;
+        String value = Headers.contentDisposition(disposition, fileName, sizeParameter);
         bodyPart.addHeader(MimeHeader.HEADER_CONTENT_DISPOSITION, value);
     }
 
