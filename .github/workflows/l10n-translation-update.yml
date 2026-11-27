@@ -1,0 +1,201 @@
+name: l10n - Translation Update
+
+on:
+  schedule:
+    - cron: '0 0 * * 3' # every Wednesday at 00:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: translation-update
+  cancel-in-progress: true
+
+jobs:
+  translations-update:
+    if: github.repository == 'thunderbird/thunderbird-android' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+
+    env:
+      BRANCH_NAME: l10n/update-translations
+      BASE_BRANCH: main
+      PR_TITLE: "chore(l10n): translations update from l10n repository"
+      COMMIT_MESSAGE: "chore(l10n): update translations"
+      PR_BODY: |
+        Automated translation update from the [Thunderbird for Android l10n repository](https://github.com/thunderbird/thunderbird-android-l10n).
+
+        Translations are managed in [Weblate](https://hosted.weblate.org/projects/thunderbird/thunderbird-android/) and retain their upstream history in the l10n repository.
+      L10N_REMOTE: "https://github.com/thunderbird/thunderbird-android-l10n.git"
+      L10N_BRANCH: main
+      L10N_BASE_REVISION: 5a4e7b122fb17040a0ca84ed8840cee158ba5283
+
+    steps:
+      - name: Checkout the repo
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+
+      - name: Checkout l10n repository
+        env:
+          L10N_ROOT: ${{ runner.temp }}/thunderbird-android-l10n
+        run: |
+          set -euo pipefail
+
+          git clone \
+            --branch "$L10N_BRANCH" \
+            --single-branch \
+            "$L10N_REMOTE" \
+            "$L10N_ROOT"
+
+      - name: Set up JDK
+        uses: actions/setup-java@b843ebf9b913146b38da2eaa7aeddf76074ae1ad # v6.1.0
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Configure source checkout
+        run: |
+          set -euo pipefail
+
+          git config user.name "Translation Bot"
+          git config user.email "translation-bot@thunderbird.net"
+          git fetch origin "$BASE_BRANCH"
+          git checkout -B "$BRANCH_NAME" "origin/$BASE_BRANCH"
+
+      - name: Export l10n changes
+        env:
+          L10N_ROOT: ${{ runner.temp }}/thunderbird-android-l10n
+        run: |
+          set -euo pipefail
+
+          "$L10N_ROOT/scripts/l10n-sync" export \
+            --branch "$BASE_BRANCH" \
+            --l10n-repo "$L10N_ROOT" \
+            --apply
+
+      - name: Detect incoming l10n changes
+        id: changes
+        run: |
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "No incoming l10n changes found"
+            echo "has_changes=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "Incoming l10n changes found"
+            echo "has_changes=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Build metadata
+        if: steps.changes.outputs.has_changes == 'true'
+        env:
+          L10N_ROOT: ${{ runner.temp }}/thunderbird-android-l10n
+        run: |
+          set -euo pipefail
+
+          l10n_revision="$(git -C "$L10N_ROOT" rev-parse HEAD)"
+          previous_l10n_revision="$(
+            git log \
+              --format='%(trailers:key=L10n-Revision,valueonly)' \
+              "origin/$BASE_BRANCH" \
+              | sed -n '/./{p;q;}'
+          )"
+          previous_l10n_revision="${previous_l10n_revision:-$L10N_BASE_REVISION}"
+
+          if ! git -C "$L10N_ROOT" merge-base --is-ancestor "$previous_l10n_revision" "$l10n_revision"; then
+            echo "Previous l10n revision is not an ancestor of $l10n_revision: $previous_l10n_revision" >&2
+            exit 1
+          fi
+
+          git ls-files --modified --deleted --others --exclude-standard -z \
+            | xargs -0 git -C "$L10N_ROOT" log \
+                --format='%aN <%aE>' \
+                "$previous_l10n_revision..$l10n_revision" \
+                -- \
+            | awk '$0 != "Hosted Weblate <hosted@weblate.org>"' \
+            | sort -u \
+            | sed 's/^/Co-authored-by: /' \
+            > .git/l10n-coauthors.txt
+
+          {
+            printf '%s\n\n' "$PR_BODY"
+            printf 'L10n revision: [`%s`](%s/commit/%s)\n' \
+              "$l10n_revision" \
+              "${L10N_REMOTE%.git}" \
+              "$l10n_revision"
+
+            if [ -s .git/l10n-coauthors.txt ]; then
+              printf '\n### Contributors\n'
+              sed -e 's/^Co-authored-by: /- /' -e 's/ <.*>$//' .git/l10n-coauthors.txt
+            fi
+          } > .git/pr-body.txt
+
+          {
+            printf '%s\n\n' "$COMMIT_MESSAGE"
+            printf 'L10n-Revision: %s\n' "$l10n_revision"
+
+            if [ -s .git/l10n-coauthors.txt ]; then
+              cat .git/l10n-coauthors.txt
+            fi
+          } > .git/commit-message.txt
+
+          echo "Generated PR body:"
+          cat .git/pr-body.txt
+
+          echo "Generated co-author trailers:"
+          cat .git/l10n-coauthors.txt || true
+
+          echo "Generated commit message:"
+          cat .git/commit-message.txt
+
+      - name: Create commit
+        if: steps.changes.outputs.has_changes == 'true'
+        id: commit
+        run: |
+          set -euo pipefail
+
+          git add -A
+
+          if git diff --cached --quiet; then
+            echo "No staged changes after applying l10n tree"
+            echo "created_commit=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          git commit -F .git/commit-message.txt
+          echo "created_commit=true" >> "$GITHUB_OUTPUT"
+
+      - name: Push sync branch
+        if: steps.commit.outputs.created_commit == 'true'
+        run: |
+          set -euo pipefail
+
+          git push --force-with-lease origin "$BRANCH_NAME"
+
+      - name: Create or update pull request
+        if: steps.commit.outputs.created_commit == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          PR_NUMBER="$(gh pr list \
+          --head "$BRANCH_NAME" \
+          --base "$BASE_BRANCH" \
+          --state open \
+          --json number \
+          --jq '.[0].number')"
+
+          if [ -n "$PR_NUMBER" ] && [ "$PR_NUMBER" != "null" ]; then
+            gh pr edit "$PR_NUMBER" \
+              --title "$PR_TITLE" \
+              --body-file .git/pr-body.txt
+          else
+            gh pr create \
+            --base "$BASE_BRANCH" \
+            --head "$BRANCH_NAME" \
+            --title "$PR_TITLE" \
+            --body-file .git/pr-body.txt \
+            --label "type: translation" \
+            --label "report: include"
+          fi
