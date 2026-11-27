@@ -25,6 +25,10 @@
     <string name="setup_archive_folder_create_archive_folder_invalid_folder_name">Invalid folder name \'%1$s\'</string>
 
     <!--  Message List  -->
+    <string name="message_list_empty_folder_title">No messages found</string>
+    <string name="message_list_empty_folder_description">This folder is empty</string>
+    <string name="message_list_empty_search_title">No results found</string>
+    <string name="message_list_empty_search_description">Try a different search query</string>
     <string name="message_list_state_new_message_description">New</string>
     <string name="message_list_state_read_message_description">Read</string>
     <string name="message_list_state_unread_message_description">Unread</string>
