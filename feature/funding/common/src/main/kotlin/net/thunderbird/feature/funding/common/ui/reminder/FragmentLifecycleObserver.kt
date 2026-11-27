@@ -39,7 +39,7 @@ class FragmentLifecycleObserver(
             override fun onFragmentDetached(fragmentManager: FragmentManager, fragment: Fragment) {
                 super.onFragmentDetached(fragmentManager, fragment)
 
-                if (fragment.tag == targetFragmentTag) {
+                if (fragment.tag == targetFragmentTag && !fragmentManager.isStateSaved) {
                     onCallback()
                 }
             }

@@ -355,8 +355,6 @@ class FundingReminderTest {
 
     private companion object {
         const val PACKAGE_NAME = "test.package.name"
-
-        const val INSTALL_TIME = 1000L
         const val REMINDER_REFERENCE_TIMESTAMP_UNSET = 0L
         const val REMINDER_REFERENCE_TIMESTAMP = 1000L
         const val REMINDER_SHOWN_TIMESTAMP_UNSET = 0L
