@@ -46,7 +46,8 @@ open class BaseSideEffectHandlerTest {
 
     protected fun createLoadingMessagesState(
         progress: Float = 0f,
-        metadata: MessageListMetadata = createMetadata(),
+        activeMessage: MessageItemUi? = null,
+        metadata: MessageListMetadata = createMetadata().copy(activeMessage = activeMessage),
         preferences: MessageListPreferences = createMessageListPreferences(),
     ) = MessageListState.LoadingMessages(
         progress = progress,

@@ -2,6 +2,7 @@ package net.thunderbird.feature.mail.message.list.internal.ui.state.machine
 
 import kotlinx.collections.immutable.toPersistentList
 import net.thunderbird.core.common.state.builder.StateMachineBuilder
+import net.thunderbird.feature.mail.message.list.ui.event.MessageItemEvent
 import net.thunderbird.feature.mail.message.list.ui.event.MessageListEvent
 import net.thunderbird.feature.mail.message.list.ui.state.MessageListState
 
@@ -13,6 +14,8 @@ import net.thunderbird.feature.mail.message.list.ui.state.MessageListState
  * - On [MessageListEvent.MessagesLoaded]: Transitions to the [MessageListState.LoadedMessages] state, but only
  *   if the loading progress has reached 100% (`progress == 1f`). This ensures a smooth transition
  *   after the loading animation completes.
+ * - On [MessageItemEvent.SetMessageActive]: Updates the active message while the messages are loading, which
+ *   re-triggers the message list loading so the list honors the new active message.
  */
 internal fun StateMachineBuilder<MessageListState, MessageListEvent>.loadingMessagesState(
     dispatch: (MessageListEvent) -> Unit,
@@ -32,6 +35,13 @@ internal fun StateMachineBuilder<MessageListState, MessageListEvent>.loadingMess
                 preferences = state.preferences,
                 messages = event.messages.toPersistentList(),
             )
+        }
+        transition<MessageItemEvent.SetMessageActive> { state, event ->
+            state
+                .mapMessages { message ->
+                    message.copy(active = message.id == event.message?.id)
+                }
+                .withMetadata { copy(activeMessage = event.message) }
         }
     }
 }

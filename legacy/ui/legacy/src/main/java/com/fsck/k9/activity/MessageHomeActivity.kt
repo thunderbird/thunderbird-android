@@ -360,6 +360,7 @@ open class MessageHomeActivity :
                     .inboxSettings
                     .isThreadedViewEnabled &&
                     !noThreading,
+                activeMessage = messageReference,
             )
             fragmentTransaction.add(R.id.message_list_container, messageListFragment as Fragment)
             fragmentTransaction.commitNow()

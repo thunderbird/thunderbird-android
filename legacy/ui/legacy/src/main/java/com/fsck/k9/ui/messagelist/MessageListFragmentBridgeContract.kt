@@ -86,6 +86,8 @@ interface MessageListFragmentBridgeContract {
          * @param search The search query that defines which messages to display.
          * @param isThreadDisplay `true` if the fragment is used to display a single thread, `false` otherwise.
          * @param threadedList `true` to display the message list in a threaded conversation view, `false` otherwise.
+         * @param activeMessage The message that is currently being displayed and must stay part of the message list,
+         *   or `null` if there is no such message.
          *
          * @return An instance of [MessageListFragment] if the new state feature flag is enabled;
          *  otherwise, an instance of [LegacyMessageListFragment].
@@ -94,6 +96,7 @@ interface MessageListFragmentBridgeContract {
             search: LocalMessageSearch,
             isThreadDisplay: Boolean,
             threadedList: Boolean,
+            activeMessage: MessageReference? = null,
         ): MessageListFragmentBridgeContract
     }
 
@@ -101,6 +104,7 @@ interface MessageListFragmentBridgeContract {
         const val ARG_SEARCH = "searchObject"
         const val ARG_THREADED_LIST = "showingThreadedList"
         const val ARG_IS_THREAD_DISPLAY = "isThreadedDisplay"
+        const val ARG_ACTIVE_MESSAGE = "activeMessage"
 
         const val STATE_SELECTED_MESSAGES = "selectedMessages"
         const val STATE_ACTIVE_MESSAGES = "activeMessages"
