@@ -1,9 +1,9 @@
 package net.thunderbird.android.feature
 
-import com.fsck.k9.K9
 import net.thunderbird.feature.funding.api.FundingConfig
 import net.thunderbird.feature.funding.api.FundingConfigStore
 import net.thunderbird.feature.funding.api.FundingSettings
+import net.thunderbird.feature.funding.common.R
 
 @Suppress("TooManyFunctions")
 internal class TbFundingSettings(
@@ -54,4 +54,14 @@ internal class TbFundingSettings(
     override suspend fun incrementReminderShownCount() {
         setReminderShownCount(getReminderShownCount() + 1)
     }
+
+    override fun getReminderDefaultBannerResource(): Int {
+        return R.drawable.funding_roc_banner
+    }
+
+    override fun getReminderDefaultBannerResourceContentDescription(): Int {
+        return R.string.funding_reminder_roc_banner_content_description
+    }
+
+    override fun isUsingBannerForDialog(): Boolean = true
 }

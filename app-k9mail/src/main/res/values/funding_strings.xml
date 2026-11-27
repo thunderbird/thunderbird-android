@@ -8,4 +8,5 @@
     <string name="funding_googleplay_contribution_list_empty_message">K-9 Mail is developed by Thunderbird.\nVisit <xliff:g id="link_text">%s</xliff:g> for more ways to support our work.</string>
     <string name="funding_googleplay_contribution_reminder_title">Support K-9 Mail</string>
     <string name="funding_googleplay_contribution_reminder_statement">K-9 Mail is free and open source.</string>
+    <string name="funding_k9_dialog_icon_content_description">Heart icon</string>
 </resources>

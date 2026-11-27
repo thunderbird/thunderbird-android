@@ -1,5 +1,6 @@
 package net.thunderbird.feature.funding.common.ui
 
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -27,13 +28,18 @@ import net.thunderbird.components.ui.bolt.atom.text.TextBodyMedium
 import net.thunderbird.components.ui.bolt.atom.text.TextHeadlineSmall
 import net.thunderbird.components.ui.bolt.common.annotation.PreviewDevicesWithBackground
 import net.thunderbird.components.ui.bolt.theme.BoltTheme
+import net.thunderbird.core.common.resources.StringRes
 import net.thunderbird.feature.funding.common.R
+import org.intellij.lang.annotations.JdkConstants
 import androidx.compose.ui.window.Dialog as MaterialDialog
 
 @Composable
 fun FundingReminderDialog(
-    header: String,
-    body: String,
+    @StringRes headerRes: Int,
+    @StringRes bodyRes: Int,
+    @DrawableRes imageRes: Int,
+    @StringRes imageDescRes: Int,
+    isBannerDialog: Boolean,
     onDismissClick: () -> Unit,
     onOkClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -43,8 +49,11 @@ fun FundingReminderDialog(
         properties = DialogProperties(),
     ) {
         FundingReminderContent(
-            header,
-            body,
+            headerRes,
+            bodyRes,
+            imageRes,
+            imageDescRes,
+            isBannerDialog,
             onDismissClick,
             onOkClick,
             modifier,
@@ -54,8 +63,11 @@ fun FundingReminderDialog(
 
 @Composable
 private fun FundingReminderContent(
-    header: String,
-    body: String,
+    @StringRes headerRes: Int,
+    @StringRes bodyRes: Int,
+    @DrawableRes imageRes: Int,
+    @StringRes imageDescRes: Int,
+    isBannerDialog: Boolean,
     onDismissClick: () -> Unit,
     onOkClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -67,23 +79,16 @@ private fun FundingReminderContent(
         Column(
             modifier = Modifier.padding(BoltTheme.spacings.triple),
         ) {
-            Image(
-                painter = painterResource(R.drawable.funding_roc_banner),
-                contentDescription = stringResource(R.string.funding_reminder_roc_banner_content_description),
-                contentScale = ContentScale.FillWidth,
-                modifier = Modifier
-                    .defaultMinSize(minHeight = 90.dp)
-                    .fillMaxWidth(),
-            )
+            FundingReminderImage(imageRes, imageDescRes, isBannerDialog)
             Spacer(modifier = Modifier.height(BoltTheme.spacings.triple))
             TextHeadlineSmall(
-                text = header,
+                text = stringResource(headerRes),
                 textAlign = TextAlign.Center,
                 color = BoltTheme.colors.secondary,
             )
             Spacer(modifier = Modifier.height(BoltTheme.spacings.double))
             TextBodyMedium(
-                text = body,
+                text = stringResource(bodyRes),
             )
             Spacer(modifier = Modifier.height(BoltTheme.spacings.triple))
             Row(
@@ -110,12 +115,43 @@ private fun FundingReminderContent(
 }
 
 @Composable
+private fun FundingReminderImage(
+    @DrawableRes imageRes: Int,
+    @StringRes imageDescRes: Int,
+    isBannerDialog: Boolean = true,
+) {
+    if (isBannerDialog) {
+        Image(
+            painter = painterResource(imageRes),
+            contentDescription = stringResource(imageDescRes),
+            contentScale = ContentScale.FillWidth,
+            modifier = Modifier
+                .defaultMinSize(minHeight = 90.dp)
+                .fillMaxWidth(),
+        )
+    } else {
+        Row(
+            horizontalArrangement = Arrangement.Center,
+            modifier = Modifier.fillMaxWidth(),
+        ) {
+            Image(
+                painter = painterResource(imageRes),
+                contentDescription = stringResource(imageDescRes),
+            )
+        }
+    }
+}
+
+@Composable
 @PreviewDevicesWithBackground
 private fun FundingReminderContentPreview() {
     PreviewWithTheme {
         FundingReminderContent(
-            header = "Thunderbird",
-            body = "Support Thunderbird! We need your support to make the best email app even better!",
+            headerRes = R.string.funding_reminder_title,
+            bodyRes = R.string.funding_reminder_appeal_content,
+            imageRes = R.drawable.funding_roc_banner,
+            imageDescRes = R.string.funding_reminder_roc_banner_content_description,
+            isBannerDialog = true,
             onDismissClick = {},
             onOkClick = {},
         )
