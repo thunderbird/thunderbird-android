@@ -16,7 +16,7 @@ import net.thunderbird.components.ui.bolt.atom.text.TextBodyLarge
 import kotlin.random.Random
 import net.thunderbird.components.ui.bolt.atom.icon.Icons
 import net.thunderbird.components.ui.bolt.template.pager.HorizontalTabPagerPrimary
-import net.thunderbird.components.ui.bolt.template.pager.HorizontalTabPagerSecondary
+import net.thunderbird.components.ui.bolt.template.pager.SecondaryHorizontalTabPagerScope
 import net.thunderbird.components.ui.bolt.template.pager.TabPrimaryConfig
 import net.thunderbird.components.ui.bolt.template.pager.TabSecondaryConfig
 import net.thunderbird.components.ui.catalog.ui.page.common.list.fullSpanItem
@@ -76,7 +76,7 @@ private fun LazyGridScope.horizontalPagerSecondary() {
                 },
             )
         }
-        HorizontalTabPagerSecondary(
+        SecondaryHorizontalTabPagerScope(
             initialSelected = pages.first(),
             modifier = Modifier
                 .fillMaxWidth()

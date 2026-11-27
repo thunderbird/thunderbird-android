@@ -21,7 +21,7 @@ import net.thunderbird.feature.notification.api.ui.host.visual.SnackbarVisual
 @Stable
 class InAppNotificationHostStateHolder(private val enabled: ImmutableSet<DisplayInAppNotificationFlag>) {
     private val internalState =
-        MutableStateFlow<InAppNotificationHostStateImpl>(value = InAppNotificationHostStateImpl())
+        MutableStateFlow(value = DefaultInAppNotificationHostState())
     internal val currentInAppNotificationHostState: StateFlow<InAppNotificationHostState> = internalState.asStateFlow()
     private val bannerGlobalVisuals = maxPriorityQueueOf<BannerGlobalVisual>()
 
@@ -47,7 +47,7 @@ class InAppNotificationHostStateHolder(private val enabled: ImmutableSet<Display
         }
     }
 
-    private fun ImmutableSet<BannerInlineVisual>.showIfNeeded(): InAppNotificationHostStateImpl {
+    private fun ImmutableSet<BannerInlineVisual>.showIfNeeded(): DefaultInAppNotificationHostState {
         if (!isEnabled(flag = DisplayInAppNotificationFlag.BannerInlineNotifications)) {
             return internalState.value
         }
@@ -65,9 +65,9 @@ class InAppNotificationHostStateHolder(private val enabled: ImmutableSet<Display
 
     private inline fun <TVisual : InAppNotificationVisual> TVisual?.showIfNeeded(
         ifFlagEnabled: DisplayInAppNotificationFlag,
-        select: InAppNotificationHostStateImpl.() -> TVisual?,
-        transformIfDifferent: InAppNotificationHostStateImpl.(TVisual) -> InAppNotificationHostStateImpl,
-    ): InAppNotificationHostStateImpl {
+        select: DefaultInAppNotificationHostState.() -> TVisual?,
+        transformIfDifferent: DefaultInAppNotificationHostState.(TVisual) -> DefaultInAppNotificationHostState,
+    ): DefaultInAppNotificationHostState {
         if (!isEnabled(ifFlagEnabled)) {
             return internalState.value
         }
@@ -130,14 +130,14 @@ class InAppNotificationHostStateHolder(private val enabled: ImmutableSet<Display
         return enabled.any { it == flag } || enabled == DisplayInAppNotificationFlag.AllNotifications
     }
 
-    private data class InAppNotificationHostStateImpl(
+    private data class DefaultInAppNotificationHostState(
         override val bannerGlobalVisual: BannerGlobalVisual? = null,
         override val bannerInlineVisuals: ImmutableSet<BannerInlineVisual> = persistentSetOf(),
         override val snackbarVisual: SnackbarVisual? = null,
     ) : InAppNotificationHostState
 
     private fun InAppNotification.toInAppNotificationData(): InAppNotificationHostState =
-        InAppNotificationHostStateImpl(
+        DefaultInAppNotificationHostState(
             bannerGlobalVisual = BannerGlobalVisual.from(notification = this),
             bannerInlineVisuals = BannerInlineVisual.from(notification = this)
                 ?.let { persistentSetOf(it) }

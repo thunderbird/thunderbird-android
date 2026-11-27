@@ -7,7 +7,7 @@ import kotlinx.collections.immutable.ImmutableList
 private annotation class HorizontalTabPagerScopeDslMarker
 
 /**
- * A DSL scope for building the pages within a [HorizontalTabPagerPrimary] or [HorizontalTabPagerSecondary].
+ * A DSL scope for building the pages within a [HorizontalTabPagerPrimary] or [SecondaryHorizontalTabPagerScope].
  *
  * This scope provides the `pages` function to define the content and configuration for each tab/page
  * in the pager.
