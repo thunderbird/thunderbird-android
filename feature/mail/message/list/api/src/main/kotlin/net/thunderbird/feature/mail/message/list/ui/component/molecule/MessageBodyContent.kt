@@ -61,7 +61,7 @@ internal fun MessageBodyContent(
             val inlineContent = rememberInlineContent(configuration.excerptLineConfiguration)
             val prefixAnnotatedString = rememberPrefixAnnotatedString(configuration.excerptLineConfiguration)
             if (prefixAnnotatedString.isEmpty()) {
-                // Avoid TextBodySmall overload with annotated string when possible
+                // Avoid slow TextBodySmall(text: AnnotatedString) overload when possible
                 TextBodySmall(
                     text = excerpt,
                     maxLines = configuration.maxExcerptLines,

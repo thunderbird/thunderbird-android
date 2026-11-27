@@ -118,8 +118,6 @@ internal fun MessageItem(
         color = colors.containerColor,
         contentColor = colors.contentColor,
     ) {
-        // No IntrinsicSize.Min here: an intrinsic pass measures every text in the row a second time.
-        // The content column defines the row height; side elements are centered against it.
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.padding(contentPadding),

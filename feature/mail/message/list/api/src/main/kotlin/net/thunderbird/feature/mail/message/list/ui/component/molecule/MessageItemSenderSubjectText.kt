@@ -70,7 +70,7 @@ internal fun MessageItemSenderSubjectSecondLine(
 ) {
     val text = styledSenderOrSubject(useSender = useSender, senders = senders, subject = subject, prefix = prefix)
     if (text.isPlain()) {
-        // Plain strings take a cheaper text layout path than annotated ones.
+        // Avoid slow TextBodySmall(text: AnnotatedString) overload when possible
         TextBodySmall(text = text.text, maxLines = 1, overflow = TextOverflow.Ellipsis, modifier = modifier)
     } else {
         TextBodySmall(
@@ -102,42 +102,37 @@ internal fun buildStyledSenderOrSubject(
     forceRegularFontWeight: Boolean,
 ): AnnotatedString = buildAnnotatedString {
     prefix?.let { append(it) }
-    // Style offsets are relative to the sender or subject, which starts after the prefix.
-    val offset = prefix?.length ?: 0
-    val text = if (useSender) senders.displayName else subject
-    append(text)
-    val end = offset + text.length
-    when {
-        forceRegularFontWeight -> {
-            addStyle(style = SpanStyle(fontWeight = FontWeight.Normal), start = offset, end = end)
-        }
+    append(
+        buildAnnotatedString {
+            val text = if (useSender) senders.displayName else subject
+            append(text)
+            when {
+                forceRegularFontWeight -> addFontWeight(FontWeight.Normal, 0, text.length)
 
-        useSender -> {
-            senders.displayNameStyles.forEach { style ->
-                when (style) {
-                    ComposedAddressStyle.AllBold -> addStyle(
-                        SpanStyle(fontWeight = FontWeight.Bold),
-                        start = offset,
-                        end = end,
-                    )
+                useSender -> senders.displayNameStyles.forEach { style ->
+                    when (style) {
+                        ComposedAddressStyle.AllBold -> addFontWeight(FontWeight.Bold, 0, text.length)
 
-                    is ComposedAddressStyle.Bold -> addStyle(
-                        style = SpanStyle(fontWeight = FontWeight.Bold),
-                        start = offset + style.start,
-                        end = style.end?.let { offset + it } ?: end,
-                    )
+                        is ComposedAddressStyle.Bold ->
+                            addFontWeight(FontWeight.Bold, style.start, style.end ?: text.length)
 
-                    is ComposedAddressStyle.Regular -> addStyle(
-                        style = SpanStyle(fontWeight = FontWeight.Normal),
-                        start = offset + style.start,
-                        end = style.end?.let { offset + it } ?: end,
-                    )
+                        is ComposedAddressStyle.Regular ->
+                            addFontWeight(FontWeight.Normal, style.start, style.end ?: text.length)
+                    }
                 }
             }
-        }
-    }
+        },
+    )
 }
 
-private fun AnnotatedString.isPlain(): Boolean =
-    spanStyles.isEmpty() && paragraphStyles.isEmpty() && getStringAnnotations(0, length).isEmpty() &&
-        !hasLinkAnnotations(0, length)
+private fun AnnotatedString.Builder.addFontWeight(weight: FontWeight, start: Int, end: Int) =
+    addStyle(SpanStyle(fontWeight = weight), start, end)
+
+private val NoAnnotations = AnnotatedString("")
+
+/**
+ * A quick check of whether this `AnnotatedString(str)` is essentially the same as just `str`.
+ */
+internal fun AnnotatedString.isPlain(): Boolean =
+    // note `hasEqualAnnotations` doesn't compare string content, just annotations, so an empty plain string works
+    hasEqualAnnotations(NoAnnotations)

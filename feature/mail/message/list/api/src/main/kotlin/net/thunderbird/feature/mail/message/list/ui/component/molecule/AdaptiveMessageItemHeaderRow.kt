@@ -58,7 +58,6 @@ private fun HeaderRow(
     modifier: Modifier = Modifier,
     headerRowContent: @Composable RowScope.() -> Unit,
 ) {
-    // fillMaxWidth() already fixes the width, so no intrinsic width pass is needed here.
     Row(
         horizontalArrangement = Arrangement.spacedBy(BoltTheme.spacings.default),
         modifier = modifier

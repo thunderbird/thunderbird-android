@@ -59,7 +59,6 @@ internal fun MessageListScope.MessageList(
         items(
             items = state.messages,
             key = { message -> message.id },
-            // Read/unread/new rows are different composables; typing them lets the lazy list reuse like with like.
             contentType = { message -> message.state },
         ) { message ->
             val messageSwipeActions = swipeActions[message.account.id]
@@ -99,17 +98,15 @@ internal fun MessageListScope.MessageList(
 }
 
 @OptIn(ExperimentalFoundationApi::class)
-private val MessageListCacheWindow = LazyLayoutCacheWindow(aheadFraction = 0.5f, behindFraction = 0.5f)
-
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun rememberMessageListLazyState(
     state: MessageListState,
     dispatchEvent: (MessageListEvent) -> Unit,
 ): LazyListState {
-    // Prepare rows half a screen ahead in idle frame time and keep half a screen behind composed, so flings and
-    // direction changes don't compose rows on the frame they become visible.
-    val listState = rememberLazyListState(cacheWindow = MessageListCacheWindow)
+    // expand the window of eagerly rendered list items to reduce scrolling jank
+    val listState = rememberLazyListState(
+        cacheWindow = LazyLayoutCacheWindow(aheadFraction = 0.5f, behindFraction = 0.5f),
+    )
     val latestPaging by rememberUpdatedState(state.metadata.paging)
 
     LaunchedEffect(listState, state.metadata.folder?.id) {

@@ -61,19 +61,18 @@ fun SwipeableRow(
     backgroundContent: @Composable RowScope.() -> Unit,
     modifier: Modifier = Modifier,
     gesturesEnabled: Boolean = true,
-    onSwipeEnd: (SwipeDirection) -> Unit = {},
+    onSwipeEnd: ((SwipeDirection) -> Unit)? = null,
     onSwipeChange: ((SwipeDirection) -> Unit)? = null,
     content: @Composable RowScope.() -> Unit,
 ) {
     val hapticFeedback = LocalHapticFeedback.current
 
-    // Rows in long lists usually don't observe swipe changes; skip the per-row coroutine then.
+    // only launch the collector for rows concerned with changes, for unsettled swipes
     if (onSwipeChange != null) {
-        // Keyed on state only, so a new callback instance doesn't restart the effect and lose the current direction.
         val currentOnSwipeChange by rememberUpdatedState(onSwipeChange)
         LaunchedEffect(state) {
             snapshotFlow { state.swipeDirection }
-                .dropWhile { it == SwipeDirection.Settled } // Report changes only, not the resting state.
+                .dropWhile { it == SwipeDirection.Settled }
                 .distinctUntilChanged()
                 .collectLatest { currentOnSwipeChange(it) }
         }
@@ -85,7 +84,7 @@ fun SwipeableRow(
         onSwipeEnd = { direction ->
             state.accessibilityState.swipeToDirection(direction)
             performHapticFeedback(state, hapticFeedback)
-            onSwipeEnd(direction)
+            onSwipeEnd?.invoke(direction)
         },
     )
 
@@ -112,7 +111,7 @@ fun SwipeableRow(
                         onDragStopped = { velocity ->
                             if (state.onDragStopped(velocity)) {
                                 performHapticFeedback(state, hapticFeedback)
-                                onSwipeEnd(state.swipeDirection)
+                                onSwipeEnd?.invoke(state.swipeDirection)
                             }
                         },
                         onDragStarted = { state.onDragStarted() },
@@ -123,6 +122,8 @@ fun SwipeableRow(
         }
     }
 }
+
+private val UnusedSwipeHandler: (SwipeDirection) -> Unit = {}
 
 /**
  * Shows [content] and plays [exit] once [dismissed] becomes `true`.

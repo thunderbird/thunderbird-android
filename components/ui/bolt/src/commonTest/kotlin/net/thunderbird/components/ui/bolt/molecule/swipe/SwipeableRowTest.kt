@@ -762,8 +762,8 @@ private fun TestSwipeableRow(
     endToStartBehaviour: SwipeBehaviour = SwipeBehaviour.Dismiss(),
     gesturesEnabled: Boolean = true,
     accessibilityActions: ImmutableList<SwipeDirectionAccessibilityAction> = persistentListOf(),
-    onSwipeEnd: (SwipeDirection) -> Unit = {},
-    onSwipeChange: ((SwipeDirection) -> Unit)? = {},
+    onSwipeEnd: ((SwipeDirection) -> Unit)? = null,
+    onSwipeChange: ((SwipeDirection) -> Unit)? = null,
 ) {
     val state = rememberSwipeableRowState(
         startToEndBehaviour = startToEndBehaviour,
