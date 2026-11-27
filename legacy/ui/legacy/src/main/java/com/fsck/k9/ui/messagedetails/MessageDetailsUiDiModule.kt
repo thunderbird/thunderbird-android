@@ -1,0 +1,31 @@
+package com.fsck.k9.ui.messagedetails
+
+import org.koin.core.module.dsl.viewModel
+import org.koin.dsl.module
+
+internal val messageDetailsUiDiModule = module {
+    viewModel {
+        MessageDetailsViewModel(
+            resources = get(),
+            messageRepository = get(),
+            folderQueryRepository = get(),
+            contactSettingsProvider = get(),
+            contactRepository = get(),
+            contactPermissionResolver = get(),
+            clipboardManager = get(),
+            accountManager = get(),
+            participantFormatter = get(),
+            folderNameFormatter = get(),
+        )
+    }
+    factory { ContactSettingsProvider(messageListPreferencesManager = get()) }
+    factory { AddToContactsLauncher() }
+    factory { ShowContactLauncher() }
+    factory {
+        createMessageDetailsParticipantFormatter(
+            contactNameProvider = get(),
+            resources = get(),
+            messageListPreferencesManager = get(),
+        )
+    }
+}

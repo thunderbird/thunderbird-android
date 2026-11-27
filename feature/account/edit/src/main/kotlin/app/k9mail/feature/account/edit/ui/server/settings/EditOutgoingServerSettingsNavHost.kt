@@ -10,10 +10,10 @@ import app.k9mail.feature.account.edit.navigation.AccountEditRoute
 import app.k9mail.feature.account.edit.ui.server.settings.modify.ModifyOutgoingServerSettingsViewModel
 import app.k9mail.feature.account.edit.ui.server.settings.save.SaveOutgoingServerSettingsViewModel
 import app.k9mail.feature.account.edit.ui.server.settings.save.SaveServerSettingsScreen
-import app.k9mail.feature.account.server.settings.R
-import app.k9mail.feature.account.server.settings.ui.outgoing.OutgoingServerSettingsScreen
 import app.k9mail.feature.account.server.validation.ui.OutgoingServerValidationViewModel
 import app.k9mail.feature.account.server.validation.ui.ServerValidationScreen
+import net.thunderbird.feature.account.server.settings.R
+import net.thunderbird.feature.account.server.settings.ui.outgoing.OutgoingServerSettingsScreen
 import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf

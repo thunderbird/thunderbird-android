@@ -163,9 +163,6 @@ dependencies {
     "fullImplementation"(projects.feature.funding.googleplay)
     implementation(projects.feature.migration.launcher.noop)
     implementation(projects.feature.onboarding.migration.noop)
-    implementation(projects.feature.thundermail.api)
-    implementation(projects.feature.thundermail.k9mail)
-    implementation(projects.feature.thundermail.api)
     implementation(projects.feature.telemetry.noop)
     implementation(projects.feature.widget.messageList)
     implementation(projects.feature.widget.messageListGlance)
@@ -180,10 +177,10 @@ dependencies {
     // Required for DependencyInjectionTest
     testImplementation(projects.feature.account.api)
     testImplementation(projects.feature.account.common)
-    testImplementation(projects.feature.thundermail.internal.common)
     testImplementation(projects.plugins.openpgpApiLib.openpgpApi)
     testImplementation(projects.feature.changelog.api)
     testImplementation(projects.feature.changelog.internal)
+    testImplementation(projects.feature.thundermail.internal)
 
     testImplementation(libs.appauth)
 

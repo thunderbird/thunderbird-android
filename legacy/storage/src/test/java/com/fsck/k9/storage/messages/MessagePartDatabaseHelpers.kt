@@ -3,10 +3,10 @@ package com.fsck.k9.storage.messages
 import android.content.ContentValues
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
-import app.k9mail.core.android.common.database.getIntOrNull
-import app.k9mail.core.android.common.database.getLongOrNull
-import app.k9mail.core.android.common.database.getStringOrNull
-import app.k9mail.core.android.common.database.map
+import net.thunderbird.core.android.common.database.getIntOrNull
+import net.thunderbird.core.android.common.database.getLongOrNull
+import net.thunderbird.core.android.common.database.getStringOrNull
+import net.thunderbird.core.android.common.database.map
 
 fun SQLiteDatabase.createMessagePart(
     type: Int = MessagePartType.UNKNOWN,

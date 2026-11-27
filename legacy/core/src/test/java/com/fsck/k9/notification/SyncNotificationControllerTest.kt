@@ -5,10 +5,10 @@ import android.app.PendingIntent
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.test.core.app.ApplicationProvider
-import app.k9mail.core.android.common.provider.NotificationIconResourceProvider
 import com.fsck.k9.FakeLegacyAccount
 import com.fsck.k9.mailstore.LocalFolder
 import net.thunderbird.core.android.account.LegacyAccountManager
+import net.thunderbird.core.android.common.provider.NotificationIconResourceProvider
 import net.thunderbird.core.android.testing.MockHelper.mockBuilder
 import net.thunderbird.core.android.testing.RobolectricTest
 import net.thunderbird.feature.account.AccountIdFactory

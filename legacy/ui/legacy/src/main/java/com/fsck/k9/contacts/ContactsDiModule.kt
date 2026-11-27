@@ -1,0 +1,12 @@
+package com.fsck.k9.contacts
+
+import org.koin.dsl.module
+
+internal val contactsDiModule = module {
+    single { ContactLetterExtractor() }
+    factory { ContactLetterBitmapConfig(context = get(), themeManager = get(), messageListPreferencesManager = get()) }
+    factory { ContactLetterBitmapCreator(letterExtractor = get(), config = get()) }
+    factory { ContactPhotoLoader(contentResolver = get(), contactRepository = get()) }
+    factory { ContactPictureLoader(context = get(), contactLetterBitmapCreator = get()) }
+    factory { ContactImageBitmapDecoderFactory(contactPhotoLoader = get()) }
+}

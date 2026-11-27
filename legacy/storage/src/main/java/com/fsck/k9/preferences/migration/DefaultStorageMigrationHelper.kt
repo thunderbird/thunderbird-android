@@ -2,9 +2,9 @@ package com.fsck.k9.preferences.migration
 
 import android.database.sqlite.SQLiteDatabase
 import androidx.core.content.contentValuesOf
-import app.k9mail.core.android.common.database.getStringOrThrow
-import app.k9mail.core.android.common.database.map
 import net.thunderbird.components.core.logging.Logger
+import net.thunderbird.core.android.common.database.getStringOrThrow
+import net.thunderbird.core.android.common.database.map
 import net.thunderbird.legacy.logging.Log
 
 private const val TAG = "DefaultStorageMigrationHelper"

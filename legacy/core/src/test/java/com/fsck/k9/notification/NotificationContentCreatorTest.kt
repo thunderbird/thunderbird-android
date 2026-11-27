@@ -1,6 +1,5 @@
 package com.fsck.k9.notification
 
-import app.k9mail.core.android.common.contact.ContactRepository
 import app.k9mail.legacy.message.controller.MessageReference
 import app.k9mail.legacy.message.extractors.PreviewResult.PreviewType
 import assertk.assertThat
@@ -15,6 +14,7 @@ import com.fsck.k9.mail.ServerSettings
 import com.fsck.k9.mailstore.LocalMessage
 import net.thunderbird.core.android.account.Identity
 import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.common.contact.ContactRepository
 import net.thunderbird.core.android.testing.RobolectricTest
 import net.thunderbird.core.preference.display.visualSettings.message.list.DisplayMessageListSettings
 import net.thunderbird.feature.account.AccountIdFactory

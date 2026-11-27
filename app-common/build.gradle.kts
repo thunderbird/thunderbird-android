@@ -61,7 +61,8 @@ dependencies {
     implementation(projects.mail.protocols.imap)
     implementation(projects.backend.imap)
 
-    implementation(projects.feature.thundermail.internal.common)
+    implementation(projects.feature.thundermail.api)
+    implementation(projects.feature.thundermail.internal)
 
     implementation(libs.androidx.core.splashscreen)
     implementation(libs.androidx.work.runtime)

@@ -5,9 +5,6 @@ import android.content.res.Resources
 import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import app.k9mail.core.android.common.contact.CachingRepository
-import app.k9mail.core.android.common.contact.ContactPermissionResolver
-import app.k9mail.core.android.common.contact.ContactRepository
 import app.k9mail.legacy.message.controller.MessageReference
 import app.k9mail.legacy.ui.folder.FolderNameFormatter
 import com.fsck.k9.helper.ClipboardManager
@@ -29,6 +26,9 @@ import kotlinx.coroutines.launch
 import net.thunderbird.components.core.outcome.fold
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.LegacyAccountManager
+import net.thunderbird.core.android.common.contact.CachingRepository
+import net.thunderbird.core.android.common.contact.ContactPermissionResolver
+import net.thunderbird.core.android.common.contact.ContactRepository
 import net.thunderbird.core.common.mail.toEmailAddressOrNull
 import net.thunderbird.feature.mail.folder.api.Folder
 import net.thunderbird.feature.mail.folder.api.data.repository.FolderQueryRepository

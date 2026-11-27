@@ -1,6 +1,6 @@
 package net.thunderbird.android.provider
 
-import app.k9mail.core.android.common.provider.NotificationIconResourceProvider
+import net.thunderbird.core.android.common.provider.NotificationIconResourceProvider
 
 class TbAppIconNotificationProvider : NotificationIconResourceProvider {
     override val pushNotificationIcon: Int

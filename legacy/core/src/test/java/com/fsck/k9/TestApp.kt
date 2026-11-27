@@ -2,8 +2,7 @@ package com.fsck.k9
 
 import android.app.Application
 import androidx.work.WorkManager
-import app.k9mail.core.android.common.provider.NotificationIconResourceProvider
-import app.k9mail.feature.telemetry.telemetryModule
+import app.k9mail.feature.telemetry.featureTelemetryDiModule
 import app.k9mail.legacy.di.DI
 import com.fsck.k9.backend.BackendManager
 import com.fsck.k9.controller.ControllerExtension
@@ -12,17 +11,18 @@ import com.fsck.k9.notification.NotificationActionCreator
 import com.fsck.k9.notification.NotificationResourceProvider
 import com.fsck.k9.notification.NotificationStrategy
 import com.fsck.k9.notification.TestNotificationIconResourceProvider
-import com.fsck.k9.storage.storageModule
-import net.thunderbird.core.android.account.AccountDefaultsProvider
-import net.thunderbird.core.android.account.LegacyAccountManager
-import net.thunderbird.core.android.preferences.TestStoragePersister
+import com.fsck.k9.storage.legacyStorageDiModule
 import net.thunderbird.components.core.logging.LogLevel
 import net.thunderbird.components.core.logging.LogLevelProvider
 import net.thunderbird.components.core.logging.Logger
 import net.thunderbird.components.core.logging.LoggingControl
+import net.thunderbird.components.core.logging.testing.TestLogger
+import net.thunderbird.core.android.account.AccountDefaultsProvider
+import net.thunderbird.core.android.account.LegacyAccountManager
+import net.thunderbird.core.android.common.provider.NotificationIconResourceProvider
+import net.thunderbird.core.android.preferences.TestStoragePersister
 import net.thunderbird.core.common.appConfig.PlatformConfigProvider
 import net.thunderbird.core.common.inject.factoryListOf
-import net.thunderbird.components.core.logging.testing.TestLogger
 import net.thunderbird.core.logging.DebugLogConfigurator
 import net.thunderbird.core.preference.storage.StoragePersister
 import net.thunderbird.feature.account.avatar.AvatarImageRepository
@@ -50,7 +50,7 @@ class TestApp : Application() {
         Log.logger = logger
         DI.start(
             application = this,
-            modules = legacyCoreModule + storageModule + telemetryModule + testModule,
+            modules = legacyCoreDiModule + legacyStorageDiModule + featureTelemetryDiModule + testModule,
             allowOverride = true,
         )
 

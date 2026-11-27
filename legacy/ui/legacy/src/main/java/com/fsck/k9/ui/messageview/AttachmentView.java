@@ -9,7 +9,7 @@ import android.view.View.OnClickListener;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
-import app.k9mail.core.android.common.activity.ContextHelper;
+import net.thunderbird.core.android.common.activity.ContextHelper;
 import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;

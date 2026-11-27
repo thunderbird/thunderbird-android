@@ -9,7 +9,7 @@ import org.koin.core.module.Module
 class ThunderbirdApp : FeatureFlagApplication() {
     private val telemetryManager: TelemetryManager by inject()
 
-    override fun provideAppModule(): Module = appModule
+    override fun provideAppModule(): Module = thunderbirdDiModule
     override val appName: String = "thunderbird"
     override val appVersion: String = BuildConfig.VERSION_NAME
     override val buildType: String = BuildConfig.BUILD_TYPE

@@ -1,0 +1,29 @@
+package com.fsck.k9.activity.setup
+
+import app.k9mail.feature.launcher.FeatureLauncherExternalContract
+import com.fsck.k9.activity.account.identity.LegacyIdentitySignatureWebViewConfigurator
+import org.koin.core.module.dsl.viewModel
+import org.koin.dsl.module
+
+internal val setUpDiModule = module {
+    factory {
+        LegacyIdentitySignatureWebViewConfigurator(
+            webViewConfigProvider = get(),
+            displayHtmlUiFactory = get(),
+            htmlSignatureSanitizer = get(),
+        )
+    }
+    viewModel { (accountId: String) ->
+        AccountSetupCompositionViewModel(
+            legacyAccountManager = get(),
+            accountUuid = accountId,
+            resources = get(),
+            emailAddressValidator = get(),
+            legacyIdentitySignatureWebViewConfigurator = get(),
+        )
+    }
+
+    single<FeatureLauncherExternalContract.AccountSetupCompositionLauncher> {
+        DefaultAccountSetupCompositionLauncher()
+    }
+}

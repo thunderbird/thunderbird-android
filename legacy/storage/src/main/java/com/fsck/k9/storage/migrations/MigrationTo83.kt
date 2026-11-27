@@ -3,8 +3,8 @@ package com.fsck.k9.storage.migrations
 import android.content.ContentValues
 import android.database.sqlite.SQLiteDatabase
 import androidx.core.database.getLongOrNull
-import app.k9mail.core.android.common.database.map
 import com.fsck.k9.mailstore.MigrationsHelper
+import net.thunderbird.core.android.common.database.map
 
 private const val EXTRA_HIGHEST_KNOWN_UID = "imapHighestKnownUid"
 

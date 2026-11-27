@@ -4,11 +4,11 @@ import androidx.lifecycle.viewModelScope
 import app.k9mail.feature.account.common.domain.AccountDomainContract
 import app.k9mail.feature.account.common.domain.entity.InteractionMode
 import app.k9mail.feature.account.edit.domain.AccountEditDomainContract
-import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSettingsContract
-import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSettingsViewModel
-import app.k9mail.feature.account.server.settings.ui.incoming.toIncomingServerSettingsState
 import kotlinx.coroutines.launch
 import net.thunderbird.feature.account.AccountId
+import net.thunderbird.feature.account.server.settings.ui.incoming.IncomingServerSettingsContract
+import net.thunderbird.feature.account.server.settings.ui.incoming.IncomingServerSettingsViewModel
+import net.thunderbird.feature.account.server.settings.ui.incoming.toIncomingServerSettingsState
 
 class ModifyIncomingServerSettingsViewModel(
     val accountId: AccountId,

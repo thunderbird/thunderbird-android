@@ -1,7 +1,6 @@
 package net.thunderbird.components.ui.catalog
 
 import android.app.Application
-import net.thunderbird.components.ui.catalog.di.catalogUiModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
@@ -13,7 +12,7 @@ class CatalogApplication : Application() {
         startKoin {
             allowOverride(false)
             androidContext(this@CatalogApplication)
-            modules(catalogUiModule)
+            modules(componentsUiCatalogDiModule)
         }
     }
 }
