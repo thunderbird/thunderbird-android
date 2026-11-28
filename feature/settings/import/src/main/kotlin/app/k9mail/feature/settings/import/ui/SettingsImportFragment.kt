@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.os.BundleCompat
 import androidx.core.view.isGone
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
@@ -55,6 +56,11 @@ class SettingsImportFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel.initialize()
+
+        if (savedInstanceState == null) {
+            arguments?.let { BundleCompat.getParcelable(it, ARG_CONTENT_URI, Uri::class.java) }
+                ?.let { contentUri -> viewModel.onDocumentPicked(contentUri) }
+        }
 
         setFragmentResultListener(PickAppDialogFragment.FRAGMENT_RESULT_KEY) { _, result: Bundle ->
             val packageName = result.getString(PickAppDialogFragment.FRAGMENT_RESULT_APP)
@@ -298,6 +304,9 @@ class SettingsImportFragment : Fragment() {
     companion object {
         private const val REQUEST_PASSWORD_PROMPT = Activity.RESULT_FIRST_USER
         private const val REQUEST_AUTHORIZATION = Activity.RESULT_FIRST_USER + 1
+
+        /** Optional [Uri] of a settings file to read right away, e.g. when opening a `.k9s` file from another app. */
+        const val ARG_CONTENT_URI = "contentUri"
 
         const val FRAGMENT_RESULT_KEY = "settings_import"
         const val FRAGMENT_RESULT_ACCOUNT_IMPORTED = "accountImported"
