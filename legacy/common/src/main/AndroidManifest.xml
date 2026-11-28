@@ -156,8 +156,26 @@
 
         <activity
             android:name="com.fsck.k9.ui.settings.SettingsActivity"
+            android:exported="true"
             android:label="@string/prefs_title"
-            />
+            >
+
+            <!-- Offer the app in "Open with" for exported settings files (*.k9s) -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="content" />
+                <data android:scheme="file" />
+                <data android:host="*" />
+                <data android:mimeType="*/*" />
+                <data android:pathPattern=".*\\.k9s" />
+                <data android:pathPattern=".*\\..*\\.k9s" />
+                <data android:pathPattern=".*\\..*\\..*\\.k9s" />
+            </intent-filter>
+        </activity>
 
         <activity
             android:name="com.fsck.k9.ui.settings.general.GeneralSettingsActivity"
