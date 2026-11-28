@@ -33,7 +33,7 @@ import net.thunderbird.legacy.logging.Log;
 import net.thunderbird.core.preference.GeneralSettingsManager;
 
 
-public class QuotedMessagePresenter {
+public class QuotedMessagePresenter implements QuotedTextState {
     private static final String TAG = "QuotedMessagePresenter";
 
     private static final String STATE_KEY_HTML_QUOTE = "state:htmlQuote";
@@ -390,14 +390,17 @@ public class QuotedMessagePresenter {
         messageCompose.loadQuotedTextForEdit();
     }
 
+    @Override
     public boolean includeQuotedText() {
         return quotedTextMode == QuotedTextMode.SHOW;
     }
 
+    @Override
     public boolean isForcePlainText() {
         return forcePlainText;
     }
 
+    @Override
     public boolean isQuotedTextText() {
         return quotedTextFormat == SimpleMessageFormat.TEXT;
     }
