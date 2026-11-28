@@ -19,6 +19,9 @@ on:
 permissions:
   contents: read
 
+env:
+  CI_CHECK_RELEASE_BUILDS: 'false'
+
 concurrency:
   group: android-ci-${{ github.ref }}-${{ github.event.pull_request.number || 'no-pr' }}
   cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
@@ -26,6 +29,8 @@ concurrency:
 jobs:
   build-common:
     name: Build - Common code
+    # Run this job only when it would contribute to the cache
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
     timeout-minutes: 90
 
@@ -42,9 +47,8 @@ jobs:
         uses: ./.github/actions/disk-cleanup
 
       - name: Setup Gradle environment
+        id: setup-gradle
         uses: ./.github/actions/setup-gradle
-        with:
-          write-cache: ${{ github.ref == 'refs/heads/main' }}
 
       - name: Prime configuration and dependency cache
         run: ./gradlew --no-daemon help
@@ -55,11 +59,23 @@ jobs:
       - name: Show disk usage
         uses: ./.github/actions/disk-usage
 
+      - name: Prepare Gradle cache
+        run: |
+          ./gradlew --stop || true
+          find ~/.gradle/caches -name '*.lock' -type f -delete || true
+
+      - name: Save Gradle cache
+        uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ steps.setup-gradle.outputs.cache-primary-key }}
+
   build-k9:
     name: Build - K9 application
     runs-on: ubuntu-latest
     timeout-minutes: 90
-    needs: [build-common]
     steps:
       - name: Checkout the repo
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -69,35 +85,21 @@ jobs:
       - name: Setup Gradle environment
         uses: ./.github/actions/setup-gradle
 
-      - name: Build K9 application
-        run: ./gradlew :app-k9mail:assemble -Pminify=false
-
-  check-badging-k9:
-    name: Check - K9 badging
-    runs-on: ubuntu-latest
-    timeout-minutes: 90
-    needs: [ build-common ]
-    steps:
-      - name: Checkout the repo
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          fetch-depth: 1
-
-      - name: Setup Gradle environment
-        uses: ./.github/actions/setup-gradle
-
-      - name: Check K9 Badging
+      - name: Build K9 application and check badging
         run: |
-          ./gradlew :app-k9mail:checkFossReleaseBadging \
+          ./gradlew :app-k9mail:assemble \
+                    :app-k9mail:checkFossReleaseBadging \
                     :app-k9mail:checkFullReleaseBadging \
-                    -x assemble \
-                    -x build
+                    -Pminify=false \
+                    --continue
+
+      - name: Check K9 R8 minification
+        run: ./gradlew :app-k9mail:minifyFossReleaseWithR8
 
   build-thunderbird:
     name: Build - Thunderbird application
     runs-on: ubuntu-latest
     timeout-minutes: 90
-    needs: [build-common]
     steps:
       - name: Checkout the repo
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -107,39 +109,25 @@ jobs:
       - name: Setup Gradle environment
         uses: ./.github/actions/setup-gradle
 
-      - name: Build Thunderbird application
-        run: ./gradlew :app-thunderbird:assemble -Pminify=false
-
-  check-badging-thunderbird:
-    name: Check - Thunderbird badging
-    runs-on: ubuntu-latest
-    timeout-minutes: 90
-    needs: [ build-common ]
-    steps:
-      - name: Checkout the repo
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          fetch-depth: 1
-
-      - name: Setup Gradle environment
-        uses: ./.github/actions/setup-gradle
-
-      - name: Check Thunderbird Badging
+      - name: Build Thunderbird application and check badging
         run: |
-          ./gradlew :app-thunderbird:checkFossBetaBadging \
+          ./gradlew :app-thunderbird:assemble \
+                    :app-thunderbird:checkFossBetaBadging \
                     :app-thunderbird:checkFossDailyBadging \
                     :app-thunderbird:checkFossReleaseBadging \
                     :app-thunderbird:checkFullBetaBadging \
                     :app-thunderbird:checkFullDailyBadging \
                     :app-thunderbird:checkFullReleaseBadging \
-                    -x assemble \
-                    -x build
+                    -Pminify=false \
+                    --continue
+
+      - name: Check Thunderbird R8 minification
+        run: ./gradlew :app-thunderbird:minifyFossReleaseWithR8
 
   build-ui-catalog:
     name: Build - UI-catalog application
     runs-on: ubuntu-latest
     timeout-minutes: 90
-    needs: [build-common]
     steps:
       - name: Checkout the repo
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -156,7 +144,6 @@ jobs:
     name: Quality - Unit tests
     runs-on: ubuntu-latest
     timeout-minutes: 90
-    needs: [build-common]
     steps:
       - name: Checkout the repo
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -173,7 +160,6 @@ jobs:
     name: Quality - Lint
     runs-on: ubuntu-latest
     timeout-minutes: 90
-    needs: [build-common]
     steps:
       - name: Checkout the repo
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
