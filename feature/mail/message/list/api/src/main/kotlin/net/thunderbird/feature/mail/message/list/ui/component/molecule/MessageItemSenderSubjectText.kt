@@ -2,6 +2,7 @@ package net.thunderbird.feature.mail.message.list.ui.component.molecule
 
 import androidx.compose.foundation.text.InlineTextContent
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
@@ -31,18 +32,19 @@ internal fun MessageItemSenderSubjectFirstLine(
     modifier: Modifier = Modifier,
     forceRegularFontWeight: Boolean = false,
 ) {
-    TextTitleSmall(
-        text = styledSenderOrSubject(
-            useSender = useSender,
-            senders = senders,
-            subject = subject,
-            prefix = null,
-            forceRegularFontWeight = forceRegularFontWeight,
-        ),
-        maxLines = 1,
-        overflow = TextOverflow.Ellipsis,
-        modifier = modifier,
+    val text = styledSenderOrSubject(
+        useSender = useSender,
+        senders = senders,
+        subject = subject,
+        prefix = null,
+        forceRegularFontWeight = forceRegularFontWeight,
     )
+    if (text.isPlain()) {
+        // Plain strings take a cheaper text layout path than annotated ones.
+        TextTitleSmall(text = text.text, maxLines = 1, overflow = TextOverflow.Ellipsis, modifier = modifier)
+    } else {
+        TextTitleSmall(text = text, maxLines = 1, overflow = TextOverflow.Ellipsis, modifier = modifier)
+    }
 }
 
 /**
@@ -66,13 +68,19 @@ internal fun MessageItemSenderSubjectSecondLine(
     prefix: AnnotatedString? = null,
     inlineContent: ImmutableMap<String, InlineTextContent> = persistentMapOf(),
 ) {
-    TextBodySmall(
-        text = styledSenderOrSubject(useSender = useSender, senders = senders, subject = subject, prefix = prefix),
-        maxLines = 1,
-        overflow = TextOverflow.Ellipsis,
-        modifier = modifier,
-        inlineContent = inlineContent,
-    )
+    val text = styledSenderOrSubject(useSender = useSender, senders = senders, subject = subject, prefix = prefix)
+    if (text.isPlain()) {
+        // Avoid slow TextBodySmall(text: AnnotatedString) overload when possible
+        TextBodySmall(text = text.text, maxLines = 1, overflow = TextOverflow.Ellipsis, modifier = modifier)
+    } else {
+        TextBodySmall(
+            text = text,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            modifier = modifier,
+            inlineContent = inlineContent,
+        )
+    }
 }
 
 @Composable
@@ -82,37 +90,49 @@ private fun styledSenderOrSubject(
     subject: AnnotatedString,
     prefix: AnnotatedString? = null,
     forceRegularFontWeight: Boolean = false,
+): AnnotatedString = remember(useSender, senders, subject, prefix, forceRegularFontWeight) {
+    buildStyledSenderOrSubject(useSender, senders, subject, prefix, forceRegularFontWeight)
+}
+
+internal fun buildStyledSenderOrSubject(
+    useSender: Boolean,
+    senders: ComposedAddressUi,
+    subject: AnnotatedString,
+    prefix: AnnotatedString?,
+    forceRegularFontWeight: Boolean,
 ): AnnotatedString = buildAnnotatedString {
     prefix?.let { append(it) }
-    val text = if (useSender) senders.displayName else subject
-    append(text)
-    when {
-        forceRegularFontWeight -> {
-            addStyle(style = SpanStyle(fontWeight = FontWeight.Normal), start = 0, end = text.length)
-        }
+    append(
+        buildAnnotatedString {
+            val text = if (useSender) senders.displayName else subject
+            append(text)
+            when {
+                forceRegularFontWeight -> addFontWeight(FontWeight.Normal, 0, text.length)
 
-        useSender -> {
-            senders.displayNameStyles.forEach { style ->
-                when (style) {
-                    ComposedAddressStyle.AllBold -> addStyle(
-                        SpanStyle(fontWeight = FontWeight.Bold),
-                        start = 0,
-                        end = text.length,
-                    )
+                useSender -> senders.displayNameStyles.forEach { style ->
+                    when (style) {
+                        ComposedAddressStyle.AllBold -> addFontWeight(FontWeight.Bold, 0, text.length)
 
-                    is ComposedAddressStyle.Bold -> addStyle(
-                        style = SpanStyle(fontWeight = FontWeight.Bold),
-                        start = style.start,
-                        end = style.end ?: text.length,
-                    )
+                        is ComposedAddressStyle.Bold ->
+                            addFontWeight(FontWeight.Bold, style.start, style.end ?: text.length)
 
-                    is ComposedAddressStyle.Regular -> addStyle(
-                        style = SpanStyle(fontWeight = FontWeight.Normal),
-                        start = style.start,
-                        end = style.end ?: text.length,
-                    )
+                        is ComposedAddressStyle.Regular ->
+                            addFontWeight(FontWeight.Normal, style.start, style.end ?: text.length)
+                    }
                 }
             }
-        }
-    }
+        },
+    )
 }
+
+private fun AnnotatedString.Builder.addFontWeight(weight: FontWeight, start: Int, end: Int) =
+    addStyle(SpanStyle(fontWeight = weight), start, end)
+
+private val NoAnnotations = AnnotatedString("")
+
+/**
+ * A quick check of whether this `AnnotatedString(str)` is essentially the same as just `str`.
+ */
+internal fun AnnotatedString.isPlain(): Boolean =
+    // note `hasEqualAnnotations` doesn't compare string content, just annotations, so an empty plain string works
+    hasEqualAnnotations(NoAnnotations)

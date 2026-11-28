@@ -1,8 +1,9 @@
 package net.thunderbird.components.ui.bolt.molecule.swipe
 
-import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.EnterTransition
-import androidx.compose.animation.togetherWith
+import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
@@ -11,6 +12,9 @@ import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.absoluteOffset
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.hapticfeedback.HapticFeedback
@@ -25,7 +29,7 @@ import androidx.compose.ui.unit.IntOffset
 import kotlin.math.roundToInt
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.drop
+import kotlinx.coroutines.flow.dropWhile
 import net.thunderbird.components.ui.bolt.molecule.swipe.SwipeDirection.EndToStart
 import net.thunderbird.components.ui.bolt.molecule.swipe.SwipeDirection.StartToEnd
 import net.thunderbird.components.ui.bolt.molecule.swipe.SwipeDirectionAccessibilityAction.EndToStartAccessibilityAction
@@ -57,17 +61,21 @@ fun SwipeableRow(
     backgroundContent: @Composable RowScope.() -> Unit,
     modifier: Modifier = Modifier,
     gesturesEnabled: Boolean = true,
-    onSwipeEnd: (SwipeDirection) -> Unit = {},
-    onSwipeChange: (SwipeDirection) -> Unit = {},
+    onSwipeEnd: ((SwipeDirection) -> Unit)? = null,
+    onSwipeChange: ((SwipeDirection) -> Unit)? = null,
     content: @Composable RowScope.() -> Unit,
 ) {
     val hapticFeedback = LocalHapticFeedback.current
 
-    LaunchedEffect(state, onSwipeChange) {
-        snapshotFlow { state.swipeDirection }
-            .drop(1) // Skip the initial `Settled` emission
-            .distinctUntilChanged()
-            .collectLatest { onSwipeChange(it) }
+    // only launch the collector for rows concerned with changes, for unsettled swipes
+    if (onSwipeChange != null) {
+        val currentOnSwipeChange by rememberUpdatedState(onSwipeChange)
+        LaunchedEffect(state) {
+            snapshotFlow { state.swipeDirection }
+                .dropWhile { it == SwipeDirection.Settled }
+                .distinctUntilChanged()
+                .collectLatest { currentOnSwipeChange(it) }
+        }
     }
 
     val accessibilityCustomActions = rememberAccessibilityActions(
@@ -76,44 +84,74 @@ fun SwipeableRow(
         onSwipeEnd = { direction ->
             state.accessibilityState.swipeToDirection(direction)
             performHapticFeedback(state, hapticFeedback)
-            onSwipeEnd(direction)
+            onSwipeEnd?.invoke(direction)
         },
     )
 
-    AnimatedContent(
-        targetState = state.swipeState == SwipeState.Dismissed,
-        transitionSpec = { EnterTransition.None togetherWith state.activeExitTransition },
-        label = "SwipeableRowContentAnimation",
+    AnimatedDismissal(
+        dismissed = state.swipeState == SwipeState.Dismissed,
+        exit = state.activeExitTransition,
         modifier = modifier.testTag(SwipeableRowDefaults.SWIPEABLE_ROW_ANIMATED_CONTENT_TEST_TAG),
-    ) { isDismissed ->
-        if (!isDismissed) {
-            Box(
+    ) {
+        Box(
+            modifier = Modifier
+                .testTag(SwipeableRowDefaults.SWIPEABLE_ROW_CORE_ELEMENT_TEST_TAG)
+                .semantics(mergeDescendants = true) { customActions = accessibilityCustomActions }
+                .onSizeChanged { state.onContainerSizeChanged(it) },
+            propagateMinConstraints = true,
+        ) {
+            SwipeableRowBackground(state, gesturesEnabled, backgroundContent)
+            Row(
                 modifier = Modifier
-                    .testTag(SwipeableRowDefaults.SWIPEABLE_ROW_CORE_ELEMENT_TEST_TAG)
-                    .semantics(mergeDescendants = true) { customActions = accessibilityCustomActions }
-                    .onSizeChanged { state.onContainerSizeChanged(it) },
-                propagateMinConstraints = true,
-            ) {
-                SwipeableRowBackground(state, gesturesEnabled, backgroundContent)
-                Row(
-                    modifier = Modifier
-                        .testTag(SwipeableRowDefaults.SWIPEABLE_ROW_DRAGGABLE_ELEMENT_TEST_TAG)
-                        .draggable(
-                            state = state.draggableState,
-                            orientation = Orientation.Horizontal,
-                            enabled = gesturesEnabled && state.acceptsGestures,
-                            onDragStopped = { velocity ->
-                                if (state.onDragStopped(velocity)) {
-                                    performHapticFeedback(state, hapticFeedback)
-                                    onSwipeEnd(state.swipeDirection)
-                                }
-                            },
-                            onDragStarted = { state.onDragStarted() },
-                        )
-                        .absoluteOffset { IntOffset(x = state.animatedOffset.value.roundToInt(), y = 0) },
-                    content = content,
-                )
-            }
+                    .testTag(SwipeableRowDefaults.SWIPEABLE_ROW_DRAGGABLE_ELEMENT_TEST_TAG)
+                    .draggable(
+                        state = state.draggableState,
+                        orientation = Orientation.Horizontal,
+                        enabled = gesturesEnabled && state.acceptsGestures,
+                        onDragStopped = { velocity ->
+                            if (state.onDragStopped(velocity)) {
+                                performHapticFeedback(state, hapticFeedback)
+                                onSwipeEnd?.invoke(state.swipeDirection)
+                            }
+                        },
+                        onDragStarted = { state.onDragStarted() },
+                    )
+                    .absoluteOffset { IntOffset(x = state.animatedOffset.value.roundToInt(), y = 0) },
+                content = content,
+            )
+        }
+    }
+}
+
+private val UnusedSwipeHandler: (SwipeDirection) -> Unit = {}
+
+/**
+ * Shows [content] and plays [exit] once [dismissed] becomes `true`.
+ *
+ * Only a dismissed row needs an exit animation. Setting up AnimatedVisibility for every row up front is costly in
+ * long lazy lists, so the transition is created when the dismissal happens. Because of that, [content] is composed
+ * anew on dismissal and any state remembered inside it is reset; keep such state outside of [content].
+ */
+@Composable
+private fun AnimatedDismissal(
+    dismissed: Boolean,
+    exit: ExitTransition,
+    modifier: Modifier = Modifier,
+    content: @Composable () -> Unit,
+) {
+    if (dismissed) {
+        val visibleState = remember { MutableTransitionState(true) }.apply { targetState = false }
+        AnimatedVisibility(
+            visibleState = visibleState,
+            enter = EnterTransition.None,
+            exit = exit,
+            modifier = modifier,
+        ) {
+            content()
+        }
+    } else {
+        Box(modifier = modifier, propagateMinConstraints = true) {
+            content()
         }
     }
 }

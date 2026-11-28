@@ -1,14 +1,14 @@
 package net.thunderbird.feature.mail.message.list.ui.component.organism
 
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.core.MutableTransitionState
+import androidx.compose.animation.core.rememberTransition
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.text.InlineTextContent
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithCache
@@ -118,9 +119,8 @@ internal fun MessageItem(
         contentColor = colors.contentColor,
     ) {
         Row(
-            modifier = Modifier
-                .padding(contentPadding)
-                .height(IntrinsicSize.Min),
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.padding(contentPadding),
         ) {
             // Unread/New Indicator and Sender Avatar
             LeadingElements(
@@ -131,7 +131,7 @@ internal fun MessageItem(
             Spacer(Modifier.width(BoltTheme.spacings.default))
             // Message Content and Contents
             Column(
-                modifier = Modifier.weight(1f).fillMaxHeight(),
+                modifier = Modifier.weight(1f),
                 verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.half, Alignment.CenterVertically),
             ) {
                 AdaptiveMessageItemHeaderRow(configuration, receivedAt, firstLine)
@@ -144,10 +144,8 @@ internal fun MessageItem(
             Spacer(Modifier.width(BoltTheme.spacings.half))
             // Message controls and interaction items
             Column(
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .widthIn(min = BoltTheme.sizes.icon),
-                verticalArrangement = Arrangement.SpaceEvenly,
+                modifier = Modifier.widthIn(min = BoltTheme.sizes.icon),
+                verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.half, Alignment.CenterVertically),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 configuration.trailingConfiguration.elements.forEach { element ->
@@ -206,14 +204,14 @@ private fun LeadingElements(
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(BoltTheme.spacings.quarter),
-        modifier = modifier.fillMaxHeight(),
+        modifier = modifier,
     ) {
         when (configuration.badgeStyle) {
             MessageBadgeStyle.New -> NewMessageBadge()
             MessageBadgeStyle.Unread -> UnreadMessageBadge()
             null -> Spacer(Modifier.width(MESSAGE_BADGE_SIZE.dp))
         }
-        AnimatedContent(targetState = selected) { selected ->
+        AnimatedContentOnChange(targetState = selected) { selected ->
             when {
                 selected -> ButtonIcon(
                     onClick = onClick,
@@ -239,5 +237,29 @@ private fun LeadingElements(
                 else -> Unit
             }
         }
+    }
+}
+
+/**
+ * Like [AnimatedContent], but only builds the animation machinery while [targetState] is changing.
+ *
+ * Creating an [AnimatedContent] for every row is costly when rows scroll in, and the animation only matters for the
+ * row whose state changes. Because of that, [content] is composed anew when an animation starts and again when it
+ * ends, and any state remembered inside it is reset; keep such state outside of [content].
+ */
+// Resetting content state when switching branches is intended (see above); movableContentOf would avoid it, but
+// adds per-row cost, which is what this function avoids.
+@Suppress("ContentSlotReused")
+@Composable
+private fun <T> AnimatedContentOnChange(
+    targetState: T,
+    content: @Composable (T) -> Unit,
+) {
+    val transitionState = remember { MutableTransitionState(targetState) }
+    transitionState.targetState = targetState
+    if (transitionState.isIdle && transitionState.currentState == targetState) {
+        content(targetState)
+    } else {
+        rememberTransition(transitionState).AnimatedContent { state -> content(state) }
     }
 }

@@ -6,6 +6,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.platform.testTag
@@ -137,6 +140,49 @@ class SwipeableRowTest : ComposeUiTestHarness() {
 
         // Assert
         assertThat(swipeChangeDirections).contains(SwipeDirection.StartToEnd)
+    }
+
+    @Test
+    fun `should not call onSwipeChange on initial composition`() = runComposeTest {
+        // Arrange
+        val swipeChangeDirections = mutableListOf<SwipeDirection>()
+
+        // Act
+        setContentWithTheme {
+            TestSwipeableRow(
+                onSwipeChange = { swipeChangeDirections.add(it) },
+            )
+        }
+        waitForIdle()
+
+        // Assert
+        assertThat(swipeChangeDirections).isEmpty()
+    }
+
+    @Test
+    fun `should report the current direction when onSwipeChange is set while the row is revealed`() = runComposeTest {
+        // Arrange
+        val swipeChangeDirections = mutableListOf<SwipeDirection>()
+        var onSwipeChange by mutableStateOf<((SwipeDirection) -> Unit)?>(null)
+        // Created once so that recomposing with a new callback keeps the same row state.
+        val startToEndBehaviour = SwipeBehaviour.Reveal()
+        val endToStartBehaviour = SwipeBehaviour.Dismiss()
+        setContentWithTheme {
+            TestSwipeableRow(
+                startToEndBehaviour = startToEndBehaviour,
+                endToStartBehaviour = endToStartBehaviour,
+                onSwipeChange = onSwipeChange,
+            )
+        }
+        onNodeWithTag(TEST_TAG).performTouchInput { swipeRight() }
+        waitForIdle()
+
+        // Act
+        onSwipeChange = { swipeChangeDirections.add(it) }
+        waitForIdle()
+
+        // Assert
+        assertThat(swipeChangeDirections).isEqualTo(listOf(SwipeDirection.StartToEnd))
     }
 
     @Test
@@ -716,8 +762,8 @@ private fun TestSwipeableRow(
     endToStartBehaviour: SwipeBehaviour = SwipeBehaviour.Dismiss(),
     gesturesEnabled: Boolean = true,
     accessibilityActions: ImmutableList<SwipeDirectionAccessibilityAction> = persistentListOf(),
-    onSwipeEnd: (SwipeDirection) -> Unit = {},
-    onSwipeChange: (SwipeDirection) -> Unit = {},
+    onSwipeEnd: ((SwipeDirection) -> Unit)? = null,
+    onSwipeChange: ((SwipeDirection) -> Unit)? = null,
 ) {
     val state = rememberSwipeableRowState(
         startToEndBehaviour = startToEndBehaviour,
