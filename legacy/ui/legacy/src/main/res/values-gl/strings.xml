@@ -467,7 +467,6 @@
     <string name="background_ops_label">Sincronizar en segundo plano</string>
     <string name="background_ops_never">Nunca</string>
     <string name="background_ops_always">Sempre</string>
-    <string name="background_ops_auto_sync_only">Cando \'Sincr Auto\' está marcado</string>
     <string name="batch_select_all">Seleccionar todos</string>
     <string name="account_setup_push_limit_label">Max. subscripcións</string>
     <string name="account_setup_push_limit_5">5 cartafoles</string>

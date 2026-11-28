@@ -509,7 +509,6 @@
     <string name="background_ops_label">Фонавая сінхранізацыя</string>
     <string name="background_ops_never">Ніколі</string>
     <string name="background_ops_always">Заўсёды</string>
-    <string name="background_ops_auto_sync_only">Калі аўтасінхранізацыя ўключаная</string>
     <string name="batch_select_all">Абраць усё</string>
     <string name="account_setup_push_limit_label">Максімальная колькасць каталогаў для прымусовага правярання</string>
     <string name="account_setup_push_limit_5">5 каталогаў</string>

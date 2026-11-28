@@ -708,7 +708,7 @@
     <string name="background_ops_label">Background sync</string>
     <string name="background_ops_never">Never</string>
     <string name="background_ops_always">Always</string>
-    <string name="background_ops_auto_sync_only">When \'Auto-sync\' is checked</string>
+    <string name="background_ops_system_auto_sync_only">When Android\'s \'Auto-sync data\' is on</string>
 
     <string name="batch_select_all">Select all</string>
 

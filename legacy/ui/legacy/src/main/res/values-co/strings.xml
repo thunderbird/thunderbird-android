@@ -572,7 +572,6 @@
     <string name="messagelist_preferences">Liste di i messaghji</string>
     <string name="settings_language_label">Lingua</string>
     <string name="background_ops_label">Sincrunizazione in tacca di sfondulu</string>
-    <string name="background_ops_auto_sync_only">Quandu a sincrunizazione autumatica hè attivata</string>
     <string name="setting_language_system">Lingua predefinita di u sistema</string>
     <string name="background_ops_never">Mai</string>
     <string name="background_ops_always">Sempre</string>
