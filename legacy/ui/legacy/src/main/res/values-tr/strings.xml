@@ -492,7 +492,6 @@
     <string name="background_ops_label">Arka planda eşitleme</string>
     <string name="background_ops_never">Hiçbir zaman</string>
     <string name="background_ops_always">Her zaman</string>
-    <string name="background_ops_auto_sync_only">\'Otomatik eşitle\' işaretlendiğinde</string>
     <string name="batch_select_all">Tümünü seç</string>
     <string name="account_setup_push_limit_label">Anında ilet ile denetlenecek en fazla klasör sayısı</string>
     <string name="account_setup_push_limit_5">5 klasör</string>

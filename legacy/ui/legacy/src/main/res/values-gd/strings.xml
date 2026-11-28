@@ -439,7 +439,6 @@
     <string name="background_ops_label">Sioncronachadh sa chùlaibh</string>
     <string name="background_ops_never">Chan ann idir</string>
     <string name="background_ops_always">An-còmhnaidh</string>
-    <string name="background_ops_auto_sync_only">Ma tha cromag ri “Sioncronachadh fèin-obrachail”</string>
     <string name="batch_select_all">Tagh na h-uile</string>
     <string name="account_setup_push_limit_label">An àireamh as motha a phasganan air an doirear sùil le putadh</string>
     <string name="account_setup_push_limit_5">5 pasganan</string>

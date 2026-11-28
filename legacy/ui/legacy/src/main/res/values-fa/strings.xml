@@ -505,7 +505,6 @@
     <string name="background_ops_label">همگام‌سازی در پس‌زمینه</string>
     <string name="background_ops_never">هرگز</string>
     <string name="background_ops_always">همیشه</string>
-    <string name="background_ops_auto_sync_only">وقتی که «همگام‌سازی خودکار» فعال است</string>
     <string name="batch_select_all">انتخاب همه</string>
     <string name="account_setup_push_limit_label">حداکثر تعداد پوشه‌هایی که با پیشرانی به‌روز می‌شوند</string>
     <string name="account_setup_push_limit_5">۵ پوشه</string>

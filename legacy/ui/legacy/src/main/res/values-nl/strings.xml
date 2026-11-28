@@ -505,7 +505,6 @@
     <string name="background_ops_label">Achtergrondsynchronisatie</string>
     <string name="background_ops_never">Nooit</string>
     <string name="background_ops_always">Altijd</string>
-    <string name="background_ops_auto_sync_only">Als ‘Auto-sync’ is geselecteerd</string>
     <string name="batch_select_all">Alle selecteren</string>
     <string name="account_setup_push_limit_label">Max. aantal pushmappen om te controleren</string>
     <string name="account_setup_push_limit_5">5 mappen</string>

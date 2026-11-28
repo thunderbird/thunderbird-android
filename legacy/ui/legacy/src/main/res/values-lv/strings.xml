@@ -507,7 +507,6 @@
     <string name="background_ops_label">Sinhronizēšana fonā</string>
     <string name="background_ops_never">Nekad</string>
     <string name="background_ops_always">Vienmēr</string>
-    <string name="background_ops_auto_sync_only">Kad izvēlēta \'Automātiska sinhronizācija\'</string>
     <string name="batch_select_all">Atzīmēt visus</string>
     <string name="account_setup_push_limit_label">Maksimālais mapju skaits, kas pārbaudāms ar grūdeni/stūmekli (push)</string>
     <string name="account_setup_push_limit_5">5 mapes</string>

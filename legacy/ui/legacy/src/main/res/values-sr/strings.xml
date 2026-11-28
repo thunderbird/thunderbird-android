@@ -450,7 +450,6 @@
     <string name="background_ops_label">Синхронизација у позадини</string>
     <string name="background_ops_never">Никад</string>
     <string name="background_ops_always">Увек</string>
-    <string name="background_ops_auto_sync_only">Када је омогућена опција „Аутоматска синхронизација“</string>
     <string name="batch_select_all">Изабери све</string>
     <string name="account_setup_push_limit_label">Максималан број фолдера за проверу помоћу push-а</string>
     <string name="account_setup_push_limit_5">5 фолдера</string>
