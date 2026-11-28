@@ -64,5 +64,5 @@ jobs:
         uses: ./.github/actions/setup-gradle
 
       - name: Quality - Detekt
-        # Includes plain detekt. The type-resolved tasks use config/detekt/detekt-type-resolution.yml, see DetektPlugin
+        # runs plain and type-resolved detekt together
         run: ./gradlew detektAll --continue

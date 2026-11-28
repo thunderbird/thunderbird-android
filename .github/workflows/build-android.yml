@@ -29,7 +29,7 @@ concurrency:
 jobs:
   build-common:
     name: Build - Common code
-    # Only primes the cache for later runs; other jobs don't wait for it.
+    # Run this job only when it would contribute to the cache
     if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
     timeout-minutes: 90
@@ -70,7 +70,6 @@ jobs:
           path: |
             ~/.gradle/caches
             ~/.gradle/wrapper
-          # Reuse the restore key; hashing again after the build could pick up generated files.
           key: ${{ steps.setup-gradle.outputs.cache-primary-key }}
 
   build-k9:
