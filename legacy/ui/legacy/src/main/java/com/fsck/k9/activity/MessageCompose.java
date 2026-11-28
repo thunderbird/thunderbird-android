@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.regex.Pattern;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
@@ -22,8 +23,8 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.content.IntentSender.SendIntentException;
 import android.content.pm.ActivityInfo;
-import android.graphics.Typeface;
 import android.content.pm.PackageManager;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -47,6 +48,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.Toast;
+
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -56,36 +58,24 @@ import androidx.core.content.IntentCompat;
 import androidx.core.os.BundleCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import app.k9mail.core.android.common.camera.CameraCaptureHandler;
 import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons;
+import app.k9mail.legacy.di.DI;
+import app.k9mail.legacy.message.controller.MessageReference;
+import app.k9mail.legacy.message.controller.MessagingListener;
+import app.k9mail.legacy.message.controller.SimpleMessagingListener;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.fsck.k9.activity.compose.MessageComposeInAppNotificationFragment;
-import com.fsck.k9.activity.listener.RecipientExpanderListener;
-import com.fsck.k9.ui.settings.account.AccountSettingsActivity;
-import com.fsck.k9.ui.settings.account.AccountSettingsFragment;
-import com.fsck.k9.message.html.DisplayHtml;
-import net.thunderbird.core.android.account.LegacyAccount;
-import net.thunderbird.core.android.account.LegacyAccountManager;
-import net.thunderbird.feature.account.AccountIdFactory;
-import net.thunderbird.feature.mail.message.composer.signature.HtmlSignatureSanitizer;
-import com.fsck.k9.ui.helper.DisplayHtmlUiFactory;
-import com.fsck.k9.view.MessageWebView;
-import com.fsck.k9.view.WebViewConfigProvider;
-import kotlin.Unit;
-import net.thunderbird.feature.account.AccountId;
-import net.thunderbird.feature.account.usecase.GetDefaultAccountId;
-import app.k9mail.legacy.di.DI;
-import net.thunderbird.core.android.account.Identity;
 import com.fsck.k9.K9;
 import com.fsck.k9.activity.MessageLoaderHelper.MessageLoaderCallbacks;
 import com.fsck.k9.activity.compose.AttachmentPresenter;
 import com.fsck.k9.activity.compose.AttachmentPresenter.AttachmentMvpView;
 import com.fsck.k9.activity.compose.AttachmentPresenter.WaitingAction;
-import app.k9mail.core.android.common.camera.CameraCaptureHandler;
 import com.fsck.k9.activity.compose.ComposeCryptoStatus;
 import com.fsck.k9.activity.compose.ComposeCryptoStatus.SendErrorState;
 import com.fsck.k9.activity.compose.IdentityAdapter;
 import com.fsck.k9.activity.compose.IdentityAdapter.IdentityContainer;
+import com.fsck.k9.activity.compose.MessageComposeInAppNotificationFragment;
 import com.fsck.k9.activity.compose.PgpEnabledErrorDialog.OnOpenPgpDisableListener;
 import com.fsck.k9.activity.compose.PgpInlineDialog.OnOpenPgpInlineChangeListener;
 import com.fsck.k9.activity.compose.PgpSignOnlyDialog.OnOpenPgpSignOnlyChangeListener;
@@ -94,12 +84,10 @@ import com.fsck.k9.activity.compose.RecipientPresenter;
 import com.fsck.k9.activity.compose.ReplyToPresenter;
 import com.fsck.k9.activity.compose.ReplyToView;
 import com.fsck.k9.activity.compose.SaveMessageTask;
+import com.fsck.k9.activity.listener.RecipientExpanderListener;
 import com.fsck.k9.activity.misc.Attachment;
 import com.fsck.k9.autocrypt.AutocryptDraftStateHeaderParser;
-import app.k9mail.legacy.message.controller.MessageReference;
 import com.fsck.k9.controller.MessagingController;
-import app.k9mail.legacy.message.controller.MessagingListener;
-import app.k9mail.legacy.message.controller.SimpleMessagingListener;
 import com.fsck.k9.fragment.AttachmentDownloadDialogFragment;
 import com.fsck.k9.fragment.AttachmentDownloadDialogFragment.AttachmentDownloadCancelListener;
 import com.fsck.k9.fragment.ProgressDialogFragment;
@@ -111,11 +99,8 @@ import com.fsck.k9.helper.MailTo;
 import com.fsck.k9.helper.ReplyToParser;
 import com.fsck.k9.helper.SimpleTextWatcher;
 import com.fsck.k9.helper.Utility;
-import net.thunderbird.core.android.network.ConnectivityManager;
-import net.thunderbird.core.common.mail.Flag;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Message.RecipientType;
-import net.thunderbird.core.common.exception.MessagingException;
 import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.MessageViewInfo;
@@ -129,25 +114,43 @@ import com.fsck.k9.message.PgpMessageBuilder;
 import com.fsck.k9.message.QuotedTextMode;
 import com.fsck.k9.message.SimpleMessageBuilder;
 import com.fsck.k9.message.SimpleMessageFormat;
+import com.fsck.k9.message.html.DisplayHtml;
 import com.fsck.k9.ui.R;
 import com.fsck.k9.ui.base.BaseActivity;
+import com.fsck.k9.ui.compose.ComposeMessageFormatDecider;
 import com.fsck.k9.ui.compose.IntentData;
 import com.fsck.k9.ui.compose.IntentDataMapper;
 import com.fsck.k9.ui.compose.QuotedMessageMvpView;
 import com.fsck.k9.ui.compose.QuotedMessagePresenter;
 import com.fsck.k9.ui.compose.WrapUriTextWatcher;
+import com.fsck.k9.ui.helper.DisplayHtmlUiFactory;
 import com.fsck.k9.ui.helper.SizeFormatter;
 import com.fsck.k9.ui.messagelist.DefaultFolderProvider;
+import com.fsck.k9.ui.settings.account.AccountSettingsActivity;
+import com.fsck.k9.ui.settings.account.AccountSettingsFragment;
+import com.fsck.k9.view.MessageWebView;
+import com.fsck.k9.view.WebViewConfigProvider;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textview.MaterialTextView;
-import net.thunderbird.core.android.account.MessageFormat;
+import kotlin.Unit;
+import net.thunderbird.components.core.outcome.OutcomeKt;
+import net.thunderbird.core.android.account.Identity;
+import net.thunderbird.core.android.account.LegacyAccount;
+import net.thunderbird.core.android.account.LegacyAccountManager;
+import net.thunderbird.core.android.common.startup.DatabaseUpgradeInterceptor;
 import net.thunderbird.core.android.contact.ContactIntentHelper;
+import net.thunderbird.core.android.network.ConnectivityManager;
+import net.thunderbird.core.common.exception.MessagingException;
+import net.thunderbird.core.common.mail.Flag;
 import net.thunderbird.core.featureflag.FeatureFlagProvider;
 import net.thunderbird.core.featureflag.keys.GeneratedFeatureFlagKey;
-import net.thunderbird.components.core.outcome.OutcomeKt;
 import net.thunderbird.core.preference.GeneralSettingsManager;
 import net.thunderbird.core.ui.theme.manager.ThemeManager;
+import net.thunderbird.feature.account.AccountId;
+import net.thunderbird.feature.account.AccountIdFactory;
+import net.thunderbird.feature.account.usecase.GetDefaultAccountId;
 import net.thunderbird.feature.mail.message.composer.dialog.SentFolderNotFoundConfirmationDialogFragmentFactory;
+import net.thunderbird.feature.mail.message.composer.signature.HtmlSignatureSanitizer;
 import net.thunderbird.feature.mail.message.composer.signature.SignaturePreviewWebView;
 import net.thunderbird.feature.notification.api.command.outcome.CommandExecutionFailed;
 import net.thunderbird.feature.notification.api.content.NotificationFactoryCoroutineCompat;
@@ -157,13 +160,13 @@ import net.thunderbird.feature.notification.api.dismisser.compat.NotificationDis
 import net.thunderbird.feature.notification.api.sender.NotificationSender;
 import net.thunderbird.feature.notification.api.sender.compat.NotificationSenderCompat;
 import net.thunderbird.feature.search.legacy.LocalMessageSearch;
+import net.thunderbird.legacy.logging.Log;
 import org.openintents.openpgp.OpenPgpApiManager;
 import org.openintents.openpgp.util.OpenPgpIntentStarter;
-import net.thunderbird.core.android.common.startup.DatabaseUpgradeInterceptor;
-import net.thunderbird.legacy.logging.Log;
-import static com.fsck.k9.activity.compose.AttachmentPresenter.REQUEST_CODE_ATTACHMENT_URI;
+
 import static app.k9mail.core.android.common.camera.CameraCaptureHandler.CAMERA_PERMISSION_REQUEST_CODE;
 import static app.k9mail.core.android.common.camera.CameraCaptureHandler.REQUEST_IMAGE_CAPTURE;
+import static com.fsck.k9.activity.compose.AttachmentPresenter.REQUEST_CODE_ATTACHMENT_URI;
 import static net.thunderbird.feature.mail.message.composer.dialog.SentFolderNotFoundConfirmationDialogFragmentFactory.ACCOUNT_UUID_ARG;
 import static net.thunderbird.feature.mail.message.composer.dialog.SentFolderNotFoundConfirmationDialogFragmentFactory.RESULT_CODE_ASSIGN_SENT_FOLDER_REQUEST_KEY;
 import static net.thunderbird.feature.mail.message.composer.dialog.SentFolderNotFoundConfirmationDialogFragmentFactory.RESULT_CODE_SEND_AND_DELETE_REQUEST_KEY;
@@ -264,6 +267,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
     private final Set<Integer> activeInAppNotifications = new HashSet<>();
 
     private QuotedMessagePresenter quotedMessagePresenter;
+    private ComposeMessageFormatDecider messageFormatDecider;
     private MessageLoaderHelper messageLoaderHelper;
     private AttachmentPresenter attachmentPresenter;
     private SizeFormatter sizeFormatter;
@@ -406,6 +410,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
 
         QuotedMessageMvpView quotedMessageMvpView = new QuotedMessageMvpView(this);
         quotedMessagePresenter = new QuotedMessagePresenter(this, quotedMessageMvpView, account);
+        messageFormatDecider = new ComposeMessageFormatDecider(quotedMessagePresenter);
         attachmentPresenter = new AttachmentPresenter(getApplicationContext(), attachmentMvpView,
                 getSupportLoaderManager(), this);
 
@@ -1826,36 +1831,12 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
     }
 
     public void updateMessageFormat() {
-        MessageFormat origMessageFormat = account.getMessageFormat();
-        SimpleMessageFormat messageFormat;
-        if (origMessageFormat == MessageFormat.TEXT) {
-            // The user wants to send text/plain messages. We don't override that choice under
-            // any circumstances.
-            messageFormat = SimpleMessageFormat.TEXT;
-        } else if (quotedMessagePresenter.isForcePlainText()
-                && quotedMessagePresenter.includeQuotedText()) {
-            // Right now we send a text/plain-only message when the quoted text was edited, no
-            // matter what the user selected for the message format.
-            messageFormat = SimpleMessageFormat.TEXT;
-        } else if (recipientPresenter.isForceTextMessageFormat()) {
-            // Right now we only support PGP inline which doesn't play well with HTML. So force
-            // plain text in those cases.
-            messageFormat = SimpleMessageFormat.TEXT;
-        } else if (origMessageFormat == MessageFormat.AUTO) {
-            if (action == Action.COMPOSE || quotedMessagePresenter.isQuotedTextText() ||
-                    !quotedMessagePresenter.includeQuotedText()) {
-                // If the message format is set to "AUTO" we use text/plain whenever possible. That
-                // is, when composing new messages and replying to or forwarding text/plain
-                // messages.
-                messageFormat = SimpleMessageFormat.TEXT;
-            } else {
-                messageFormat = SimpleMessageFormat.HTML;
-            }
-        } else {
-            // In all other cases use HTML
-            messageFormat = SimpleMessageFormat.HTML;
-        }
-
+        SimpleMessageFormat messageFormat = messageFormatDecider.decide(
+                account.getMessageFormat(),
+                identity,
+                action,
+                recipientPresenter.isForceTextMessageFormat()
+        );
         setCurrentMessageFormat(messageFormat);
     }
 
